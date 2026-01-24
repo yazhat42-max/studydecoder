@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us – Study Decoder</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .study-decoder {
+            --primary: #6C63FF;
+            --secondary: #2A2A2A;
+            --accent: #FF6584;
+            --light-bg: #F9F9FB;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .study-decoder * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .study-decoder {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--secondary);
+            line-height: 1.6;
+        }
+
+        .study-decoder .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2%;
+        }
+
+        .study-decoder header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 100px 2% 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .study-decoder header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .study-decoder header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -1px;
+        }
+
+        .study-decoder header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 650px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+        }
+
+        .study-decoder .header-tagline {
+            font-size: 1.15rem;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        .study-decoder .content-section {
+            background: var(--white);
+            padding: 100px 2%;
+        }
+
+        .study-decoder .content-block {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .study-decoder .content-block h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .study-decoder .content-block h3 {
+            font-size: 1.6rem;
+            color: var(--secondary);
+            margin: 50px 0 25px 0;
+            font-weight: 600;
+        }
+
+        .study-decoder .content-block p {
+            font-size: 1.05rem;
+            color: #555;
+            line-height: 1.9;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }
+
+        .study-decoder .content-block p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .study-decoder .cta-block {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 100px 2%;
+            text-align: center;
+            margin-top: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .study-decoder .cta-block::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .study-decoder .cta-block p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+        }
+
+        .study-decoder .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .study-decoder .btn {
+            display: inline-block;
+            padding: 14px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .study-decoder .btn-primary {
+            background: var(--white);
+            color: #667eea;
+        }
+
+        .study-decoder .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .study-decoder .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .study-decoder .btn-secondary:hover {
+            background: var(--white);
+            color: #667eea;
+        }
+
+        .study-decoder .nav-links {
+            background: var(--white);
+            padding: 70px 2%;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .study-decoder .nav-links h3 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 30px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .study-decoder .nav-links-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            list-style: none;
+        }
+
+        .study-decoder .nav-links-list a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            font-size: 1rem;
+        }
+
+        .study-decoder .nav-links-list a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .study-decoder .nav-links-list a:hover {
+            color: var(--secondary);
+        }
+
+        .study-decoder .nav-links-list a:hover::after {
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .study-decoder header h1 {
+                font-size: 2.8rem;
+            }
+
+            .study-decoder .content-block h2 {
+                font-size: 1.9rem;
+            }
+
+            .study-decoder .content-block h3 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .study-decoder header {
+                padding: 80px 2% 60px;
+            }
+
+            .study-decoder header h1 {
+                font-size: 2.2rem;
+            }
+
+            .study-decoder header p {
+                font-size: 1rem;
+            }
+
+            .study-decoder .content-section {
+                padding: 60px 2%;
+            }
+
+            .study-decoder .content-block h2 {
+                font-size: 1.6rem;
+            }
+
+            .study-decoder .content-block h3 {
+                font-size: 1.2rem;
+            }
+
+            .study-decoder .cta-block {
+                padding: 60px 2%;
+            }
+
+            .study-decoder .cta-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .study-decoder .btn {
+                width: 100%;
+            }
+
+            .study-decoder .nav-links {
+                padding: 50px 2%;
+            }
+
+            .study-decoder .nav-links-list {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .study-decoder header h1 {
+                font-size: 1.8rem;
+            }
+
+            .study-decoder header p {
+                font-size: 0.95rem;
+            }
+
+            .study-decoder .content-block h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="study-decoder">
+    <header>
+        <h1>About us</h1>
+        <p class="header-tagline">Making study fun again</p>
+    </header>
+
+    <section class="content-section">
+        <div class="content-block">
+            <h2>Our Mission:</h2>
+            <p>Study decoder was created to help students navigate the often confusing world of school syllabuses. Simplifying the syllabuses gives the student a competitive advantage as it allows the student to understand what they will learn and be assessed on.</p>
+
+            <h3>Why We Exist:</h3>
+            <p>School is stressful and competitive, but finding the right information shouldn't be. Study Decoder is designed to save students time, reduce confusion, and make studying a little less overwhelming, giving them a competitive advantage.</p>
+        </div>
+    </section>
+
+    <section class="cta-block">
+        <p>Ready to join us on making study fun again? Sign up to Junior Study Decoder, or Senior Study Decoder today.</p>
+        <div class="cta-buttons">
+            <a href="https://studydecoder.com/junior-bot" class="btn btn-primary">Junior Study Decoder</a>
+            <a href="https://studydecoder.com/senior-bot" class="btn btn-secondary">Senior Study Decoder</a>
+        </div>
+    </section>
+
+    <section class="nav-links">
+        <h3>Quick Links</h3>
+        <ul class="nav-links-list">
+            <li><a href="https://studydecoder.com/">Home</a></li>
+            <li><a href="https://studydecoder.com/about">About us</a></li>
+            <li><a href="https://studydecoder.com/contact">Contact us</a></li>
+            <li><a href="https://studydecoder.com/junior-bot">Study Decoder Bot – Juniors</a></li>
+            <li><a href="https://studydecoder.com/senior-bot">Study Decoder Bot – Seniors</a></li>
+        </ul>
+    </section>
+</div>
+</body>
+</html>

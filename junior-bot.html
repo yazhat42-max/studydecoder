@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Junior Study Decoder Bot – Study Decoder</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="shortcut icon" href="logo.png" type="image/png">
+    <meta name="msapplication-TileImage" content="logo.png">
+    <meta name="msapplication-TileColor" content="#6C63FF">
+    <meta name="theme-color" content="#6C63FF">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .study-decoder {
+            --primary: #6C63FF;
+            --secondary: #2A2A2A;
+            --accent: #FF6584;
+            --light-bg: #F9F9FB;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .study-decoder * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .study-decoder {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--secondary);
+            line-height: 1.6;
+        }
+
+        .study-decoder .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2%;
+        }
+
+        .study-decoder header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 100px 2% 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .study-decoder header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .study-decoder header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -1px;
+        }
+
+        .study-decoder header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 650px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+        }
+
+        .study-decoder .header-tagline {
+            font-size: 1.15rem;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        .study-decoder .intro-section {
+            background: var(--white);
+            padding: 80px 2%;
+            text-align: center;
+        }
+
+        .study-decoder .intro-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .study-decoder .intro-content p {
+            font-size: 1.15rem;
+            color: #666;
+            line-height: 1.9;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .study-decoder .bot-section {
+            background: linear-gradient(180deg, #ffffff 0%, #f5f7ff 100%);
+            padding: 60px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .study-decoder .bot-container {
+            max-width: 95vw;
+            width: 100%;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .study-decoder .bot-iframe {
+            width: 100%;
+            height: 99vh;
+            border: none;
+            display: block;
+        }
+
+        .study-decoder .nav-links {
+            background: var(--white);
+            padding: 70px 2%;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .study-decoder .nav-links h3 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 30px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .study-decoder .nav-links-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            list-style: none;
+        }
+
+        .study-decoder .nav-links-list a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            font-size: 1rem;
+        }
+
+        .study-decoder .nav-links-list a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .study-decoder .nav-links-list a:hover {
+            color: var(--secondary);
+        }
+
+        .study-decoder .nav-links-list a:hover::after {
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .study-decoder header h1 {
+                font-size: 2.8rem;
+            }
+
+            .study-decoder header p {
+                font-size: 1.1rem;
+            }
+
+            .study-decoder .bot-iframe {
+                height: 700px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .study-decoder header {
+                padding: 80px 2% 60px;
+            }
+
+            .study-decoder header h1 {
+                font-size: 2.2rem;
+            }
+
+            .study-decoder header p {
+                font-size: 1rem;
+            }
+
+            .study-decoder .intro-section {
+                padding: 60px 2%;
+            }
+
+            .study-decoder .bot-section {
+                padding: 40px 2%;
+            }
+
+            .study-decoder .bot-iframe {
+                height: 600px;
+            }
+
+            .study-decoder .nav-links {
+                padding: 50px 2%;
+            }
+
+            .study-decoder .nav-links-list {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .study-decoder header h1 {
+                font-size: 1.8rem;
+            }
+
+            .study-decoder header p {
+                font-size: 0.95rem;
+            }
+
+            .study-decoder .bot-iframe {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="study-decoder">
+    <header>
+        <h1>Welcome to Junior Study Decoder</h1>
+        <p style="font-size:1.3rem; margin-top: 18px;">Please select one of the following tools to continue:</p>
+        <div class="main-menu-container">
+            <button class="main-menu-btn" onclick="showSubPage('syllabus')">Syllabus Summary</button>
+            <button class="main-menu-btn" onclick="showSubPage('timetable')">Timetable Generator</button>
+            <button class="main-menu-btn" onclick="showSubPage('practice')">Practice Question Generator</button>
+        </div>
+    </header>
+    <main id="subpage-content" style="max-width:900px;margin:40px auto 0;display:none;"></main>
+</div>
+<script>
+// Hide all subpages by default, only show when selected
+function showSubPage(page) {
+    const main = document.getElementById('subpage-content');
+    let html = '';
+    const botIframe = `<iframe src=\"https://www.chatbase.co/chatbot-iframe/MhoDNlIlP6vClpEulkrdw\" width=\"100%\" style=\"height: 100%; min-height: 700px\" frameborder=\"0\"></iframe>`;
+    if (page === 'syllabus') {
+        html = `<h2>Syllabus Summary</h2><p>This tool helps you generate and view syllabus summaries for your courses. Use the features below to get started.</p>` + botIframe;
+    } else if (page === 'timetable') {
+        html = `<h2>Timetable Generator</h2><p>Generate a personalized timetable for your study schedule. Use the options below to create your timetable.</p>` + botIframe;
+    } else if (page === 'practice') {
+        html = `<h2>Practice Question Generator</h2><p>Create and practice custom questions for your subjects. Use the generator below to begin practicing.</p>` + botIframe;
+    }
+    main.innerHTML = html + '<button style="margin-top:32px;font-size:1.1rem;padding:12px 32px;border-radius:12px;background:#6C63FF;color:#fff;border:none;cursor:pointer;" onclick="hideSubPage()">Back to Menu</button>';
+    main.style.display = 'block';
+    document.querySelector('.main-menu-container').style.display = 'none';
+}
+function hideSubPage() {
+    document.getElementById('subpage-content').style.display = 'none';
+    document.querySelector('.main-menu-container').style.display = 'flex';
+}
+</script>
+<style>
+.main-menu-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 900px;
+}
+.main-menu-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    font-size: 2.1rem;
+    font-weight: 700;
+    padding: 48px 80px;
+    border-radius: 32px;
+    text-decoration: none;
+    box-shadow: 0 16px 48px rgba(108,99,255,0.18), var(--shadow-lg);
+    transition: var(--transition);
+    margin: 18px 0;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+}
+.main-menu-btn:hover {
+    background: linear-gradient(135deg, #6C63FF 0%, #FF6584 100%);
+    color: #fff;
+    transform: translateY(-10px) scale(1.07);
+    box-shadow: 0 24px 64px rgba(108,99,255,0.22);
+    filter: brightness(1.08);
+}
+@media (max-width: 768px) {
+    .main-menu-container {
+        flex-direction: column;
+        gap: 18px;
+    }
+    .main-menu-btn {
+        width: 98%;
+        font-size: 1.3rem;
+        padding: 32px 0;
+    }
+}
+</style>
+</body>
+</html>

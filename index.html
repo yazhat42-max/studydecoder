@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study decoder </title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <meta name="msapplication-TileImage" content="favicon.ico">
+    <meta name="msapplication-TileColor" content="#6C63FF">
+    <meta name="theme-color" content="#6C63FF">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #2A2A2A;
+            --accent: #FF6584;
+            --light-bg: #F9F9FB;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--secondary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2%;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--white);
+            padding: 3% 2%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 100px 2% 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 750px;
+            margin: 0 auto 40px;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 14px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--white);
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: #667eea;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 2%;
+            background: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 60px;
+            color: var(--secondary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.05) 0%, rgba(255, 101, 132, 0.05) 100%);
+            padding: 3rem 2rem;
+            border-radius: var(--radius);
+            border: 1px solid rgba(108, 99, 255, 0.1);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.1) 0%, rgba(255, 101, 132, 0.1) 100%);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* Courses Section */
+        .courses {
+            padding: 100px 2%;
+            background: var(--light-bg);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .course-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .course-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .course-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .course-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .course-body {
+            padding: 2rem;
+        }
+
+        .course-body p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .course-body .btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 100px 2%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .cta h2 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta p {
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--white);
+            padding: 70px 2%;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        footer h3 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            font-size: 1rem;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            nav ul {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 80px 2% 60px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            nav ul {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .cta h2 {
+                font-size: 2rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            nav .logo {
+                font-size: 1.2rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo"><img src="logo.png" alt="Study Decoder" style="height: 80px; width: auto;"></div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Making Study Fun Again</h1>
+            <p>Explore our AI-powered study assistance. Get a competitive advantage with smart learning tools.</p>
+            <div class="hero-buttons">
+                <a href="#courses" class="btn btn-primary">Explore Study Decoders</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose Us?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI Study Bots</h3>
+                    <p>Get personalized study assistance with our intelligent bots that provide practice questions, summaries, and guidance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Save Time</h3>
+                    <p>Navigate syllabuses easily and reduce confusion. Focus on what matters most with our streamlined learning approach.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses" id="courses">
+        <div class="container">
+            <h2 class="section-title">Our Offerings</h2>
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-header">
+                        <div class="course-badge">Year 7-10</div>
+                        <h3>Junior Study Decoder</h3>
+                    </div>
+                    <div class="course-body">
+                        <p>Summarizes core subjects and provides study advice and practice questions. Develop healthy study habits early on and get a competitive advantage.</p>
+                        <a href="junior-bot.html" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header">
+                        <div class="course-badge">Year 10-12</div>
+                        <h3>Senior Study Decoder</h3>
+                    </div>
+                    <div class="course-body">
+                        <p>Built on major NESA syllabuses. Break down complex topics, create custom timetables, and access practice questions for advanced studies.</p>
+                        <a href="senior-bot.html" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Transform Your Study Experience?</h2>
+            <p> Study smarter, not harder. Choose your path and start learning today.</p>
+            <div class="hero-buttons">
+                    <a href="junior-bot.html" class="btn btn-primary">Junior Bot</a>
+                    <a href="senior-bot.html" class="btn btn-secondary">Senior Bot</a>
+                    <a href="syllabus.html" class="btn btn-primary">Syllabus Decoder</a>
+                    <a href="practice.html" class="btn btn-primary">Practice Question Generator</a>
+                    <a href="timetable.html" class="btn btn-primary">Timetable Generator</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+                <li><a href="https://studydecoder.com">Home</a></li>
+                <li><a href="https://studydecoder.com/about">About Us</a></li>
+                <li><a href="https://studydecoder.com/contact">Contact Us</a></li>
+                <li><a href="https://studydecoder.com/junior-bot">Junior Bot</a></li>
+                <li><a href="https://studydecoder.com/senior-bot">Senior Bot</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

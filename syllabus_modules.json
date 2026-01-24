@@ -1,0 +1,80 @@
+{
+  "English": [
+    "Module: Texts, Culture and Value"
+  ],
+  "Mathematics": [],
+  "Chemistry": [
+    "Module 1: Properties and Structure of Matter",
+    "Module 2: Introduction to Quantitative Chemistry",
+    "Module 3: Reactive Chemistry",
+    "Module 4: Drivers of Reactions",
+    "Module 5: Equilibrium and Acid Reactions",
+    "Module 6: Acid",
+    "Module 7: Organic Chemistry",
+    "Module 8: Applying Chemical Ideas"
+  ],
+  "earth-and-environmental-science-stage-6-syllabus-2017": [
+    "Module 1: Earth",
+    "Module 2: Plate Tectonics",
+    "Module 3: Energy Transformations",
+    "Module 4: Human Impacts",
+    "Module 5: Earth",
+    "Module 6: Hazards",
+    "Module 7: Climate Science",
+    "Module 8: Resource Management"
+  ],
+  "investigating-science-stage-6-syllabus-2017": [
+    "Module 1: Cause and Effect - Observing",
+    "Module 2: Cause and Effect - Inferences and Generalisations",
+    "Module 3: Scientific Models",
+    "Module 4: Theories and Laws",
+    "Module 5: Scientific Investigations",
+    "Module 6: Technologies",
+    "Module 7: Fact or Fallacy",
+    "Module 8: Science and Society"
+  ],
+  "Physics": [
+    "Module 1: Kinematics",
+    "Module 2: Dynamics",
+    "Module 3: Waves and Thermodynamics",
+    "Module 4: Electricity and Magnetism",
+    "Module 5: Advanced Mechanics",
+    "Module 6: Electromagnetism",
+    "Module 7: The Nature of Light",
+    "Module 8: From the Universe to the Atom"
+  ],
+  "science-extension-stage-6-syllabus-2017": [
+    "Module 1: The Foundations of Scientific Thinking",
+    "Module 2: The Scientific Research Proposal",
+    "Module 3: The Data, Evidence and Decisions",
+    "Module 4: The Research Report"
+  ],
+  "Biology": [
+    "Module 1: Cells as the Basis of Life",
+    "Module 2: Organisation of Living Things",
+    "Module 3: Biological Diversity",
+    "Module 4: Ecosystem Dynamics",
+    "Module 5: Heredity",
+    "Module 6: Genetic Change",
+    "Module 7: Infectious Disease",
+    "Module 8: Non-infectious Disease and Disorders"
+  ],
+  "Enterprise Computing": [
+    "Interactive media and the user experience",
+    "Networking systems and social computing",
+    "Principles of cybersecurity",
+    "Data science",
+    "Data visualisation",
+    "Intelligent systems",
+    "Enterprise project"
+  ],
+  "Software Engineering": [
+    "Programming fundamentals",
+    "The object-oriented paradigm",
+    "Programming mechatronics",
+    "Secure software architecture",
+    "Programming for the web",
+    "Software automation",
+    "Software engineering project"
+  ]
+}
