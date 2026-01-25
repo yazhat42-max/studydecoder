@@ -6,72 +6,116 @@
     <title>Practice Question Bot</title>
     <link rel="icon" type="image/png" href="logo.png">
     <style>
-        body {
-            background: linear-gradient(135deg, #e0e7ff 0%, #f6f7fb 100%);
-            min-height: 100vh;
+        html, body {
+            height: 100%;
             margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f6f7fb 100%);
             font-family: 'Segoe UI', Arial, sans-serif;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: stretch;
         }
-        .bot-card {
+        .bot-header-bar {
+            width: 100vw;
             background: #fff;
-            box-shadow: 0 6px 32px rgba(79,140,255,0.10);
-            border-radius: 22px;
-            max-width: 700px;
-            width: 100%;
-            padding: 2.5rem 2rem 2rem 2rem;
-            margin: 2rem 0;
+            box-shadow: 0 2px 12px rgba(79,140,255,0.07);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 32px 14px 32px;
+            z-index: 10;
+        }
+        .bot-header-bar a {
+            text-decoration: none;
+            color: #fff;
+            background: #4f8cff;
+            padding: 7px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.02rem;
+            box-shadow: 0 2px 8px rgba(79,140,255,0.10);
+            transition: background 0.2s;
+            margin-right: 12px;
+        }
+        .bot-header-bar a:last-child {
+            color: #4f8cff;
+            background: transparent;
+            box-shadow: none;
+            margin-right: 0;
+        }
+        .bot-main {
+            flex: 1 1 auto;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-start;
+            width: 100vw;
+            height: 100%;
+            padding: 0;
         }
         .bot-title {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: #4f8cff;
-            margin-bottom: 1.2rem;
+            margin: 2.5rem 0 0.7rem 0;
             text-align: center;
             letter-spacing: 0.5px;
         }
         .bot-desc {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             color: #2d3748;
-            margin-bottom: 2rem;
+            margin-bottom: 2.2rem;
             text-align: center;
         }
         .bot-iframe-box {
-            width: 100%;
-            min-height: 700px;
-            border-radius: 18px;
+            width: 100vw;
+            max-width: 1200px;
+            height: calc(100vh - 220px);
+            min-height: 600px;
+            border-radius: 22px;
             overflow: hidden;
-            box-shadow: 0 2px 12px rgba(79,140,255,0.08);
+            box-shadow: 0 4px 32px rgba(79,140,255,0.10);
             background: #f6f7fb;
             border: 1.5px solid #e2e8f0;
+            margin: 0 auto 2.5rem auto;
         }
-        @media (max-width: 800px) {
-            .bot-card {
-                padding: 1.2rem 0.5rem;
-                max-width: 98vw;
-            }
-            .bot-iframe-box {
-                min-height: 500px;
-            }
+        .bot-iframe-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            min-height: 600px;
+        }
+        @media (max-width: 900px) {
+            .bot-title { font-size: 1.7rem; }
+            .bot-desc { font-size: 1.05rem; }
+            .bot-iframe-box { max-width: 99vw; }
+        }
+        @media (max-width: 600px) {
+            .bot-header-bar { padding: 10px 6px 8px 6px; }
+            .bot-title { margin-top: 1.2rem; }
+            .bot-iframe-box { min-height: 350px; height: 60vh; }
         }
     </style>
 </head>
 <body>
-    <div class="bot-card">
-        <a href="senior-bot.html" style="align-self: flex-end; margin-bottom: 10px; text-decoration: none; color: #4f8cff; font-weight: 500; font-size: 1.02rem;">← Back to Senior Bot</a>
+    <div class="bot-header-bar">
+        <a href="index.html">← Back to Home</a>
+        <a href="senior-bot.html">← Back to Senior Bot</a>
+    </div>
+    <div class="bot-main">
         <div class="bot-title">Practice Question Generator Bot</div>
         <div class="bot-desc">Get instant practice questions and exam simulations for any subject/module.</div>
         <div class="bot-iframe-box">
             <iframe
                 src="https://www.chatbase.co/chatbot-iframe/lEntCN_GjB4GS2fqU7ixM"
-                width="100%"
-                style="height: 100%; min-height: 700px; border: none;"
-                frameborder="0"
                 allow="clipboard-write"
             ></iframe>
         </div>
