@@ -269,22 +269,57 @@
             <button class="main-menu-btn" onclick="showSubPage('practice')">Practice Question Generator</button>
         </div>
     </header>
-    <main id="subpage-content" style="max-width:900px;margin:40px auto 0;display:none;"></main>
+    <main id="subpage-content" style="display:none;"></main>
 </div>
 <script>
 // Hide all subpages by default, only show when selected
 function showSubPage(page) {
     const main = document.getElementById('subpage-content');
     let html = '';
-    const botIframe = `<iframe src=\"https://www.chatbase.co/chatbot-iframe/MhoDNlIlP6vClpEulkrdw\" width=\"100%\" style=\"height: 100%; min-height: 700px\" frameborder=\"0\"></iframe>`;
-    if (page === 'syllabus') {
-        html = `<h2>Syllabus Summary</h2><p>This tool helps you generate and view syllabus summaries for your courses. Use the features below to get started.</p>` + botIframe;
+        if (page === 'syllabus') {
+            html = `
+            <div class="bot-header-bar">
+                <a href="index.html">← Back to Home</a>
+                <a href="#" onclick="hideSubPage();return false;">← Back to Junior Bot</a>
+            </div>
+            <div class="bot-main">
+                <div class="bot-title">Syllabus Decoder Bot</div>
+                <div class="bot-desc">Decode syllabus dot points and get instant explanations.</div>
+                <div class="bot-iframe-box">
+                    <iframe src="https://www.chatbase.co/chatbot-iframe/MhoDNlIlP6vClpEulkrdw" allow="clipboard-write"></iframe>
+                </div>
+            </div>
+            `;
     } else if (page === 'timetable') {
-        html = `<h2>Timetable Generator</h2><p>Generate a personalized timetable for your study schedule. Use the options below to create your timetable.</p>` + botIframe;
+        html = `
+        <div class="bot-header-bar">
+            <a href="index.html">← Back to Home</a>
+            <a href="#" onclick="hideSubPage();return false;">← Back to Junior Bot</a>
+        </div>
+        <div class="bot-main">
+            <div class="bot-title">Timetable Generator Bot</div>
+            <div class="bot-desc">Generate smart study timetables instantly.</div>
+            <div class="bot-iframe-box">
+                    <iframe src="https://www.chatbase.co/chatbot-iframe/MhoDNlIlP6vClpEulkrdw" allow="clipboard-write"></iframe>
+            </div>
+        </div>
+        `;
     } else if (page === 'practice') {
-        html = `<h2>Practice Question Generator</h2><p>Create and practice custom questions for your subjects. Use the generator below to begin practicing.</p>` + botIframe;
+        html = `
+        <div class="bot-header-bar">
+            <a href="index.html">← Back to Home</a>
+            <a href="#" onclick="hideSubPage();return false;">← Back to Junior Bot</a>
+        </div>
+        <div class="bot-main">
+            <div class="bot-title">Practice Question Generator Bot</div>
+            <div class="bot-desc">Get instant practice questions and exam simulations for any subject/module.</div>
+            <div class="bot-iframe-box">
+                    <iframe src="https://www.chatbase.co/chatbot-iframe/MhoDNlIlP6vClpEulkrdw" allow="clipboard-write"></iframe>
+            </div>
+        </div>
+        `;
     }
-    main.innerHTML = html + '<button style="margin-top:32px;font-size:1.1rem;padding:12px 32px;border-radius:12px;background:#6C63FF;color:#fff;border:none;cursor:pointer;" onclick="hideSubPage()">Back to Menu</button>';
+    main.innerHTML = html;
     main.style.display = 'block';
     document.querySelector('.main-menu-container').style.display = 'none';
 }
@@ -294,47 +329,142 @@ function hideSubPage() {
 }
 </script>
 <style>
+/* Main menu layout: match screenshot style */
 .main-menu-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    gap: 28px;
     margin: 0 auto;
-    max-width: 900px;
+    max-width: 420px;
+    width: 100%;
+    padding: 0;
+    position: relative;
+    z-index: 2;
 }
 .main-menu-btn {
-    display: inline-block;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    min-width: 220px;
+    background: linear-gradient(90deg, #6c8cff 0%, #a16ae8 100%);
     color: #fff;
-    font-size: 2.1rem;
+    font-size: 2rem;
     font-weight: 700;
-    padding: 48px 80px;
-    border-radius: 32px;
+    padding: 28px 0;
+    border-radius: 22px;
     text-decoration: none;
-    box-shadow: 0 16px 48px rgba(108,99,255,0.18), var(--shadow-lg);
+    box-shadow: 0 8px 32px rgba(108,99,255,0.18), 0 2px 8px rgba(79,140,255,0.10);
     transition: var(--transition);
-    margin: 18px 0;
+    margin: 0;
     letter-spacing: 1px;
     border: none;
     cursor: pointer;
+    text-align: center;
 }
 .main-menu-btn:hover {
-    background: linear-gradient(135deg, #6C63FF 0%, #FF6584 100%);
+    background: linear-gradient(90deg, #6C63FF 0%, #FF6584 100%);
     color: #fff;
-    transform: translateY(-10px) scale(1.07);
-    box-shadow: 0 24px 64px rgba(108,99,255,0.22);
+    transform: translateY(-6px) scale(1.04);
+    box-shadow: 0 16px 48px rgba(108,99,255,0.22);
     filter: brightness(1.08);
 }
 @media (max-width: 768px) {
     .main-menu-container {
-        flex-direction: column;
-        gap: 18px;
+        gap: 14px;
+        max-width: 98vw;
+        padding: 0;
     }
     .main-menu-btn {
         width: 98%;
-        font-size: 1.3rem;
-        padding: 32px 0;
+        font-size: 1.2rem;
+        padding: 18px 0;
+        border-radius: 14px;
+        max-width: 99vw;
+        min-width: unset;
     }
+}
+/* Subpage layout styles (copied from attached pages) */
+.bot-header-bar {
+    width: 100vw;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(79,140,255,0.07);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 32px 14px 32px;
+    z-index: 10;
+}
+.bot-header-bar a {
+    text-decoration: none;
+    color: #fff;
+    background: #4f8cff;
+    padding: 7px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    box-shadow: 0 2px 8px rgba(79,140,255,0.10);
+    transition: background 0.2s;
+    margin-right: 12px;
+}
+.bot-header-bar a:last-child {
+    color: #4f8cff;
+    background: transparent;
+    box-shadow: none;
+    margin-right: 0;
+}
+.bot-main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100vw;
+    height: 100%;
+    padding: 0;
+}
+.bot-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #4f8cff;
+    margin: 2.5rem 0 0.7rem 0;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+.bot-desc {
+    font-size: 1.25rem;
+    color: #2d3748;
+    margin-bottom: 2.2rem;
+    text-align: center;
+}
+.bot-iframe-box {
+    width: 100vw;
+    max-width: 1200px;
+    height: calc(100vh - 220px);
+    min-height: 600px;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 4px 32px rgba(79,140,255,0.10);
+    background: #f6f7fb;
+    border: 1.5px solid #e2e8f0;
+    margin: 0 auto 2.5rem auto;
+}
+.bot-iframe-box iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    min-height: 600px;
+}
+@media (max-width: 900px) {
+    .bot-title { font-size: 1.7rem; }
+    .bot-desc { font-size: 1.05rem; }
+    .bot-iframe-box { max-width: 99vw; }
+}
+@media (max-width: 600px) {
+    .bot-header-bar { padding: 10px 6px 8px 6px; }
+    .bot-title { margin-top: 1.2rem; }
+    .bot-iframe-box { min-height: 350px; height: 60vh; }
 }
 </style>
 </body>

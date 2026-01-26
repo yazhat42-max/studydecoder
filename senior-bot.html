@@ -264,9 +264,9 @@
         <h1>Welcome to Senior Study Decoder</h1>
         <p style="font-size:1.3rem; margin-top: 18px;">Please select one of the following tools to continue:</p>
         <div class="main-menu-container">
-            <a class="main-menu-btn" href="syllabus.html" style="text-decoration:none;display:inline-block;">Syllabus Decoder</a>
-            <a class="main-menu-btn" href="practice.html" style="text-decoration:none;display:inline-block;">Practice Question Generator</a>
-            <a class="main-menu-btn" href="timetable.html" style="text-decoration:none;display:inline-block;">Timetable Generator</a>
+            <a class="main-menu-btn" href="syllabus.html">Syllabus Decoder</a>
+            <a class="main-menu-btn" href="timetable.html">Timetable Generator</a>
+            <a class="main-menu-btn" href="practice.html">Practice Question Generator</a>
         </div>
     </header>
     <main id="subpage-content" style="max-width:900px;margin:40px auto 0;display:none;"></main>
@@ -295,46 +295,60 @@ function hideSubPage() {
 }
 </script>
 <style>
+/* Main menu layout: match junior bot screenshot style */
 .main-menu-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    gap: 28px;
     margin: 0 auto;
-    max-width: 900px;
+    max-width: 420px;
+    width: 100%;
+    padding: 0;
+    position: relative;
+    z-index: 2;
 }
 .main-menu-btn {
-    display: inline-block;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    min-width: 220px;
+    background: linear-gradient(90deg, #6c8cff 0%, #a16ae8 100%);
     color: #fff;
-    font-size: 1.3rem;
-    font-weight: 600;
-    padding: 24px 36px;
-    border-radius: 20px;
+    font-size: 2rem;
+    font-weight: 700;
+    padding: 28px 0;
+    border-radius: 22px;
     text-decoration: none;
-    box-shadow: 0 16px 48px rgba(108,99,255,0.18), var(--shadow-lg);
+    box-shadow: 0 8px 32px rgba(108,99,255,0.18), 0 2px 8px rgba(79,140,255,0.10);
     transition: var(--transition);
-    margin: 18px 0;
+    margin: 0;
     letter-spacing: 1px;
     border: none;
     cursor: pointer;
+    text-align: center;
 }
 .main-menu-btn:hover {
-    background: linear-gradient(135deg, #6C63FF 0%, #FF6584 100%);
+    background: linear-gradient(90deg, #6C63FF 0%, #FF6584 100%);
     color: #fff;
-    transform: translateY(-10px) scale(1.07);
-    box-shadow: 0 24px 64px rgba(108,99,255,0.22);
+    transform: translateY(-6px) scale(1.04);
+    box-shadow: 0 16px 48px rgba(108,99,255,0.22);
     filter: brightness(1.08);
 }
 @media (max-width: 768px) {
     .main-menu-container {
-        flex-direction: column;
-        gap: 18px;
+        gap: 14px;
+        max-width: 98vw;
+        padding: 0;
     }
     .main-menu-btn {
         width: 98%;
-        font-size: 1.3rem;
-        padding: 32px 0;
+        font-size: 1.2rem;
+        padding: 18px 0;
+        border-radius: 14px;
+        max-width: 99vw;
+        min-width: unset;
     }
 }
 </style>
