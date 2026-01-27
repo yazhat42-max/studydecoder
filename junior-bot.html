@@ -253,13 +253,35 @@
             }
         }
     </style>
+
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+    // Replace with your Google Client ID
+    const GOOGLE_CLIENT_ID = '875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com';
+</script>
 </head>
 
 <body>
+<div id="g_id_onload"
+    data-client_id="875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com"
+    data-callback="handleCredentialResponse"
+    data-auto_prompt="false">
+</div>
+<div id="google-signin-btn" style="display:flex;justify-content:center;margin:40px 0;">
+  <div class="g_id_signin"
+      data-type="standard"
+      data-size="large"
+      data-theme="outline"
+      data-text="sign_in_with"
+      data-shape="rectangular"
+      data-logo_alignment="left">
+  </div>
+</div>
     <div style="width:100%;display:flex;justify-content:flex-start;align-items:center;margin-bottom:10px;">
         <a href="index.html" style="text-decoration:none;color:#fff;background:#4f8cff;padding:7px 18px;border-radius:8px;font-weight:600;font-size:1.02rem;box-shadow:0 2px 8px rgba(79,140,255,0.10);transition:background 0.2s;">← Back to Home</a>
     </div>
-<div class="study-decoder">
+<div class="study-decoder" id="bot-content" style="display:none;">
     <header>
         <h1>Welcome to Junior Study Decoder</h1>
         <p style="font-size:1.3rem; margin-top: 18px;">Please select one of the following tools to continue:</p>
@@ -272,6 +294,18 @@
     <main id="subpage-content" style="display:none;"></main>
 </div>
 <script>
+// Google Sign-In logic
+function handleCredentialResponse(response) {
+    // You can verify the ID token on the backend if needed
+    // For static sites, just show the bot content
+    document.getElementById('bot-content').style.display = 'block';
+    document.getElementById('google-signin-btn').style.display = 'none';
+}
+window.onload = function() {
+    // Hide bot content until signed in
+    document.getElementById('bot-content').style.display = 'none';
+    document.getElementById('google-signin-btn').style.display = 'flex';
+};
 // Hide all subpages by default, only show when selected
 function showSubPage(page) {
     const main = document.getElementById('subpage-content');
@@ -327,6 +361,7 @@ function hideSubPage() {
     document.getElementById('subpage-content').style.display = 'none';
     document.querySelector('.main-menu-container').style.display = 'flex';
 }
+// ...existing code...
 </script>
 <style>
 /* Main menu layout: match screenshot style */
