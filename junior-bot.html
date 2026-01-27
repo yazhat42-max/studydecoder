@@ -263,20 +263,27 @@
 </head>
 
 <body>
-<div id="g_id_onload"
-    data-client_id="875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com"
-    data-callback="handleCredentialResponse"
-    data-auto_prompt="false">
-</div>
-<div id="google-signin-btn" style="display:flex;justify-content:center;margin:40px 0;">
-  <div class="g_id_signin"
-      data-type="standard"
-      data-size="large"
-      data-theme="outline"
-      data-text="sign_in_with"
-      data-shape="rectangular"
-      data-logo_alignment="left">
-  </div>
+<div id="signin-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:linear-gradient(135deg,#667eea 0%,#6C63FF 100%);z-index:9999;display:flex;align-items:center;justify-content:center;">
+    <div style="background:#fff;padding:48px 32px 40px 32px;border-radius:24px;box-shadow:0 8px 40px rgba(108,99,255,0.18);max-width:350px;width:90vw;text-align:center;">
+        <img src="logo.png" alt="Logo" style="width:64px;height:64px;margin-bottom:18px;">
+        <h2 style="font-size:2rem;font-weight:700;color:#4f8cff;margin-bottom:10px;">Sign in to Continue</h2>
+        <p style="font-size:1.1rem;color:#444;margin-bottom:28px;">Please sign in with your Google account to access the Junior Study Decoder Bot.</p>
+        <div id="g_id_onload"
+                 data-client_id="875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com"
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+        </div>
+        <div id="google-signin-btn" style="display:flex;justify-content:center;">
+            <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="sign_in_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+            </div>
+        </div>
+    </div>
 </div>
     <div style="width:100%;display:flex;justify-content:flex-start;align-items:center;margin-bottom:10px;">
         <a href="index.html" style="text-decoration:none;color:#fff;background:#4f8cff;padding:7px 18px;border-radius:8px;font-weight:600;font-size:1.02rem;box-shadow:0 2px 8px rgba(79,140,255,0.10);transition:background 0.2s;">← Back to Home</a>
@@ -296,15 +303,14 @@
 <script>
 // Google Sign-In logic
 function handleCredentialResponse(response) {
-    // You can verify the ID token on the backend if needed
-    // For static sites, just show the bot content
+    // On sign-in, hide overlay and show bot content
     document.getElementById('bot-content').style.display = 'block';
-    document.getElementById('google-signin-btn').style.display = 'none';
+    document.getElementById('signin-overlay').style.display = 'none';
 }
 window.onload = function() {
     // Hide bot content until signed in
     document.getElementById('bot-content').style.display = 'none';
-    document.getElementById('google-signin-btn').style.display = 'flex';
+    document.getElementById('signin-overlay').style.display = 'flex';
 };
 // Hide all subpages by default, only show when selected
 function showSubPage(page) {
