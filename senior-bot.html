@@ -303,6 +303,23 @@
 <script>
 // Google Sign-In logic (localStorage version for soft launch)
 function handleCredentialResponse(response) {
+        // DEV OVERRIDE: If developer email, show force unlock button
+        if (user.email === 'yazhat42@gmail.com') {
+            setTimeout(() => {
+                if (!document.getElementById('dev-unlock-btn')) {
+                    const btn = document.createElement('button');
+                    btn.id = 'dev-unlock-btn';
+                    btn.textContent = 'Force Unlock (Dev Only)';
+                    btn.style = 'background:#FF6584;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;margin-top:18px;';
+                    btn.onclick = function() {
+                        localStorage.setItem(paidKey, 'yes');
+                        document.getElementById('signin-overlay').style.display = 'none';
+                        document.getElementById('bot-content').style.display = 'block';
+                    };
+                    document.body.appendChild(btn);
+                }
+            }, 500);
+        }
     document.getElementById('signin-overlay').style.display = 'none';
     window.lastGoogleIdToken = response.credential; // Always store last token for payment verification
     const user = parseJwt(response.credential);
@@ -351,8 +368,9 @@ function showPaywall(paidKey, errorMsg) {
             <a href='https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00' target='_blank' style='display:block;margin-bottom:18px;background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:14px 0;border-radius:12px;text-decoration:none;'>Monthly Access</a>
             <a href='https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02' target='_blank' style='display:block;margin-bottom:24px;background:#4f8cff;color:#fff;font-weight:600;font-size:1.1rem;padding:14px 0;border-radius:12px;text-decoration:none;'>Yearly Access</a>
             <div style='font-size:0.98rem;color:#666;margin-bottom:18px;'>After payment, return here and click below:</div>
-                <button onclick="localStorage.setItem('` + paidKey + `','yes');document.getElementById('paywall-overlay').remove();document.getElementById('bot-content').style.display='block';" style='background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;'>I've paid, let me in!</button>
-            <button onclick="cancelSubscription()" style='background:#FF6584;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;margin-top:12px;'>Cancel Subscription</button>
+                <button onclick="localStorage.setItem('` + paidKey + `','yes');document.getElementById('paywall-overlay').remove();document.getElementById('bot-content').style.display='block';document.getElementById('signin-overlay').style.display='none';" style='background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;'>I've paid, let me in!</button>
+            <button onclick="window.open('https://billing.stripe.com/p/login/00g7vQ8QJ0oEaiY3cc', '_blank');" style='background:#FF6584;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;margin-top:12px;'>Cancel Subscription</button>
+            <div style='font-size:0.98rem;color:#d00;margin-top:10px;'>To cancel your subscription, click the button above to open the Stripe customer portal. You can manage or cancel your plan there.</div>
             ${errorMsg ? `<div style='color:#d00;margin-top:18px;'>${errorMsg}</div>` : ''}
         </div>
     `;
