@@ -9,15 +9,30 @@ from datetime import datetime
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
-# Set your Stripe secret key here
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', 'sk_test_...')
-stripe.api_key = STRIPE_SECRET_KEY
 
-# Your Google client ID
-GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com')
+# Defensive: Use os.getenv and move risky setup into a function
+def get_env_var(key, default=None):
+    return os.getenv(key, default)
 
-# Stripe webhook secret (set in Render env vars)
-STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
+def safe_init_stripe():
+    key = get_env_var('STRIPE_SECRET_KEY', 'sk_test_...')
+    try:
+        import stripe
+        stripe.api_key = key
+        return stripe
+    except Exception as e:
+        logging.error(f'Stripe init failed: {e}')
+        return None
+
+def safe_get_google_client_id():
+    return get_env_var('GOOGLE_CLIENT_ID', '875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com')
+
+def safe_get_stripe_webhook_secret():
+    return get_env_var('STRIPE_WEBHOOK_SECRET', '')
+
+stripe = safe_init_stripe()
+GOOGLE_CLIENT_ID = safe_get_google_client_id()
+STRIPE_WEBHOOK_SECRET = safe_get_stripe_webhook_secret()
 
 # In-memory store for first-time user detection (replace with DB for true enterprise)
 first_time_users = set()
@@ -55,23 +70,30 @@ def check_payment():
         logging.info(f'Returning user: {email} ({sub})')
 
     # Check Stripe for a successful payment with this email
-    customers = stripe.Customer.list(email=email, limit=1)
-    if not customers.data:
-        logging.info(f'No Stripe customer found for {email}')
+    if not stripe:
+        logging.error('Stripe not initialized')
+        return jsonify({'paid': False, 'first_time': is_first_time, 'error': 'Stripe not initialized'}), 500
+    try:
+        customers = stripe.Customer.list(email=email, limit=1)
+        if not customers.data:
+            logging.info(f'No Stripe customer found for {email}')
+            return jsonify({'paid': False, 'first_time': is_first_time})
+        customer_id = customers.data[0].id
+        # Check for active subscriptions
+        subs = stripe.Subscription.list(customer=customer_id, status='active')
+        if subs.data:
+            logging.info(f'Active subscription found for {email}')
+            return jsonify({'paid': True, 'first_time': is_first_time})
+        # Check for successful one-time payment
+        charges = stripe.Charge.list(customer=customer_id, paid=True)
+        if charges.data:
+            logging.info(f'One-time payment found for {email}')
+            return jsonify({'paid': True, 'first_time': is_first_time})
+        logging.info(f'No payment found for {email}')
         return jsonify({'paid': False, 'first_time': is_first_time})
-    customer_id = customers.data[0].id
-    # Check for active subscriptions
-    subs = stripe.Subscription.list(customer=customer_id, status='active')
-    if subs.data:
-        logging.info(f'Active subscription found for {email}')
-        return jsonify({'paid': True, 'first_time': is_first_time})
-    # Check for successful one-time payment
-    charges = stripe.Charge.list(customer=customer_id, paid=True)
-    if charges.data:
-        logging.info(f'One-time payment found for {email}')
-        return jsonify({'paid': True, 'first_time': is_first_time})
-    logging.info(f'No payment found for {email}')
-    return jsonify({'paid': False, 'first_time': is_first_time})
+    except Exception as e:
+        logging.error(f'Stripe API error: {e}')
+        return jsonify({'paid': False, 'first_time': is_first_time, 'error': 'Stripe API error'}), 500
 
 
 # Serve index.html at root
@@ -90,6 +112,9 @@ def stripe_webhook():
     payload = request.data
     sig_header = request.headers.get('Stripe-Signature')
     event = None
+    if not stripe:
+        logging.error('Stripe not initialized for webhook')
+        return '', 500
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, STRIPE_WEBHOOK_SECRET
