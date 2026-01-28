@@ -306,6 +306,14 @@ function handleCredentialResponse(response) {
     document.getElementById('signin-overlay').style.display = 'none';
     const user = parseJwt(response.credential);
     const paidKey = 'juniorbot_paid_' + user.sub;
+    // If user has signed up before, show sign in wording
+    if (localStorage.getItem(paidKey)) {
+        document.getElementById('signin-title').textContent = 'Sign in to Continue';
+        document.getElementById('signin-desc').textContent = 'Please sign in with your Google account to access the Junior Study Decoder Bot.';
+    } else {
+        document.getElementById('signin-title').textContent = 'Sign up to Continue';
+        document.getElementById('signin-desc').textContent = 'Please sign up with your Google account to access the Junior Study Decoder Bot.';
+    }
     if (localStorage.getItem(paidKey) === 'yes') {
         document.getElementById('bot-content').style.display = 'block';
     } else {
@@ -326,9 +334,16 @@ function showPaywall(paidKey, errorMsg) {
             <a href='https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02' target='_blank' style='display:block;margin-bottom:24px;background:#4f8cff;color:#fff;font-weight:600;font-size:1.1rem;padding:14px 0;border-radius:12px;text-decoration:none;'>Yearly Access</a>
             <div style='font-size:0.98rem;color:#666;margin-bottom:18px;'>After payment, return here and click below:</div>
             <button onclick="localStorage.setItem('` + paidKey + `','yes');document.getElementById('paywall-overlay').remove();document.getElementById('bot-content').style.display='block';" style='background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;'>I've paid, let me in!</button>
+            <button onclick="cancelSubscription()" style='background:#FF6584;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;margin-top:12px;'>Cancel Subscription</button>
             ${errorMsg ? `<div style='color:#d00;margin-top:18px;'>${errorMsg}</div>` : ''}
         </div>
     `;
+    document.body.appendChild(paywall);
+}
+
+function cancelSubscription() {
+    alert('To cancel your subscription, please contact support or use the Stripe customer portal. (Backend integration coming soon!)');
+}
     document.body.appendChild(paywall);
 }
 
