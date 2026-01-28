@@ -304,6 +304,7 @@
 // Google Sign-In logic (localStorage version for soft launch)
 function handleCredentialResponse(response) {
     document.getElementById('signin-overlay').style.display = 'none';
+    window.lastGoogleIdToken = response.credential; // Always store last token for payment verification
     const user = parseJwt(response.credential);
     const paidKey = 'seniorbot_paid_' + user.sub;
     // If user has signed up before, show sign in wording
@@ -350,59 +351,12 @@ function showPaywall(paidKey, errorMsg) {
             <a href='https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00' target='_blank' style='display:block;margin-bottom:18px;background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:14px 0;border-radius:12px;text-decoration:none;'>Monthly Access</a>
             <a href='https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02' target='_blank' style='display:block;margin-bottom:24px;background:#4f8cff;color:#fff;font-weight:600;font-size:1.1rem;padding:14px 0;border-radius:12px;text-decoration:none;'>Yearly Access</a>
             <div style='font-size:0.98rem;color:#666;margin-bottom:18px;'>After payment, return here and click below:</div>
-            <button id='verify-payment-btn' style='background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;'>I've paid, let me in!</button>
+                <button onclick="localStorage.setItem('` + paidKey + `','yes');document.getElementById('paywall-overlay').remove();document.getElementById('bot-content').style.display='block';" style='background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;'>I've paid, let me in!</button>
             <button onclick="cancelSubscription()" style='background:#FF6584;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;margin-top:12px;'>Cancel Subscription</button>
             ${errorMsg ? `<div style='color:#d00;margin-top:18px;'>${errorMsg}</div>` : ''}
         </div>
     `;
     document.body.appendChild(paywall);
-    // Add payment verification logic
-    setTimeout(() => {
-        const btn = document.getElementById('verify-payment-btn');
-        if (btn) {
-            btn.onclick = function() {
-                // Get last Google credential from sign-in overlay
-                let idToken = window.lastGoogleIdToken;
-                if (!idToken && window.handleCredentialResponse && typeof window.handleCredentialResponse.lastToken === 'string') {
-                    idToken = window.handleCredentialResponse.lastToken;
-                }
-                if (!idToken) {
-                    alert('Please sign in with Google first.');
-                    return;
-                }
-                btn.disabled = true;
-                btn.textContent = 'Verifying...';
-                fetch('/api/check_payment', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_token: idToken })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.paid === true) {
-                        localStorage.setItem(paidKey, 'yes');
-                        document.getElementById('paywall-overlay').remove();
-                        document.getElementById('bot-content').style.display = 'block';
-                    } else {
-                        btn.disabled = false;
-                        btn.textContent = "I've paid, let me in!";
-                        const err = document.createElement('div');
-                        err.style = 'color:#d00;margin-top:18px;';
-                        err.textContent = 'Payment not found. Please make sure you used the same Google account for payment.';
-                        btn.parentNode.appendChild(err);
-                    }
-                })
-                .catch(() => {
-                    btn.disabled = false;
-                    btn.textContent = "I've paid, let me in!";
-                    const err = document.createElement('div');
-                    err.style = 'color:#d00;margin-top:18px;';
-                    err.textContent = 'Error verifying payment. Please try again.';
-                    btn.parentNode.appendChild(err);
-                });
-            };
-        }
-    }, 100);
 }
 
 function cancelSubscription() {
