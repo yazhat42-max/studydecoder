@@ -22,6 +22,10 @@ STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
 # In-memory store for first-time user detection (replace with DB for true enterprise)
 first_time_users = set()
 
+# Serve static files from the current directory
+app = Flask(__name__, static_folder='.', static_url_path='')
+CORS(app)
+
 @app.route('/api/check_payment', methods=['POST'])
 def check_payment():
     data = request.get_json()
