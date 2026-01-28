@@ -302,7 +302,7 @@
 </div>
 <script>
 // Google Sign-In logic (localStorage version for soft launch)
-function handleCredentialResponse(response) {
+async function handleCredentialResponse(response) {
     // New logic: seamless onboarding, no 'let me in' button, backend-driven
     window.lastGoogleIdToken = response.credential;
     document.getElementById('signin-overlay').style.display = 'none';
@@ -360,9 +360,6 @@ function showPaywall(paidKey, errorMsg) {
     document.body.appendChild(paywall);
 }
 
-
-}
-
 // Helper to decode JWT (Google ID token)
 function parseJwt(token) {
     var base64Url = token.split('.')[1];
@@ -373,8 +370,6 @@ function parseJwt(token) {
     return JSON.parse(jsonPayload);
 }
 
-
-}
 
 window.onload = function() {
     // Hide bot content until signed in
