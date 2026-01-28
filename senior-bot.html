@@ -320,40 +320,25 @@ function handleCredentialResponse(response) {
                 }
             }, 500);
         }
-    document.getElementById('signin-overlay').style.display = 'none';
-    window.lastGoogleIdToken = response.credential; // Always store last token for payment verification
-    const user = parseJwt(response.credential);
-    const paidKey = 'seniorbot_paid_' + user.sub;
-    // If user has signed up before, show sign in wording
-    if (localStorage.getItem(paidKey)) {
-        document.getElementById('signin-title').textContent = 'Sign in to Continue';
-        document.getElementById('signin-desc').textContent = 'Please sign in with your Google account to access the Senior Study Decoder Bot.';
-    } else {
-        document.getElementById('signin-title').textContent = 'Sign up to Continue';
-        document.getElementById('signin-desc').textContent = 'Please sign up with your Google account to access the Senior Study Decoder Bot.';
-        // Migration: check backend for previous verification
-        fetch('/api/check_payment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_token: response.credential })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data && data.paid === true) {
-                localStorage.setItem(paidKey, 'yes');
+            console.log('[DEBUG] handleCredentialResponse called');
+            window.lastGoogleIdToken = response.credential; // Always store last token for payment verification
+            const user = parseJwt(response.credential);
+            const paidKey = 'seniorbot_paid_' + user.sub;
+            console.log('[DEBUG] Google user:', user.email, 'sub:', user.sub);
+            console.log('[DEBUG] paidKey:', paidKey, 'localStorage:', localStorage.getItem(paidKey));
+            // If user has signed up before, show sign in wording
+            if (localStorage.getItem(paidKey)) {
+                document.getElementById('signin-title').textContent = 'Sign in to Continue';
+                document.getElementById('signin-desc').textContent = 'Please sign in with your Google account to access the Senior Study Decoder Bot.';
+                console.log('[DEBUG] Already unlocked, showing bot-content');
                 document.getElementById('bot-content').style.display = 'block';
-            } else {
-                showPaywall(paidKey);
+                document.getElementById('signin-overlay').style.display = 'none';
+                return;
             }
-        })
-        .catch(() => showPaywall(paidKey));
-        return;
-    }
-    if (localStorage.getItem(paidKey) === 'yes') {
-        document.getElementById('bot-content').style.display = 'block';
-    } else {
-        showPaywall(paidKey);
-    }
+            document.getElementById('signin-title').textContent = 'Sign up to Continue';
+            document.getElementById('signin-desc').textContent = 'Please sign up with your Google account to access the Senior Study Decoder Bot.';
+            console.log('[DEBUG] Not unlocked, showing paywall');
+            showPaywall(paidKey);
 }
 
 function showPaywall(paidKey, errorMsg) {
@@ -415,9 +400,11 @@ window.onload = function() {
     // Hide bot content until signed in
     document.getElementById('bot-content').style.display = 'none';
     document.getElementById('signin-overlay').style.display = 'flex';
-    // Default to sign up wording
     document.getElementById('signin-title').textContent = 'Sign up to Continue';
     document.getElementById('signin-desc').textContent = 'Please sign up with your Google account to access the Senior Study Decoder Bot.';
+    // Remove any paywall overlays if present
+    const pw = document.getElementById('paywall-overlay');
+    if (pw) pw.remove();
 };
 
 // After successful payment, switch overlay to sign in wording for future visits
@@ -432,13 +419,19 @@ async function handleCredentialResponse(response) {
         const data = await res.json();
         if (data && data.paid === true) {
             document.getElementById('bot-content').style.display = 'block';
+            document.getElementById('signin-overlay').style.display = 'none';
+            const pw = document.getElementById('paywall-overlay');
+            if (pw) pw.remove();
         } else {
-            // Switch overlay to sign in for future
+            document.getElementById('bot-content').style.display = 'none';
+            document.getElementById('signin-overlay').style.display = 'flex';
             document.getElementById('signin-title').textContent = 'Sign in to Continue';
             document.getElementById('signin-desc').textContent = 'Please sign in with your Google account to access the Senior Study Decoder Bot.';
             showPaywall();
         }
     } catch (e) {
+        document.getElementById('bot-content').style.display = 'none';
+        document.getElementById('signin-overlay').style.display = 'flex';
         document.getElementById('signin-title').textContent = 'Sign in to Continue';
         document.getElementById('signin-desc').textContent = 'Please sign in with your Google account to access the Senior Study Decoder Bot.';
         showPaywall('Error verifying payment. Please try again.');

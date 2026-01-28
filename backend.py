@@ -1,14 +1,13 @@
-
 import os
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import requests
 import stripe
+import logging
+from datetime import datetime
 
-
-# Serve static files from the current directory
-app = Flask(__name__, static_folder='.', static_url_path='')
-CORS(app)
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 # Set your Stripe secret key here
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', 'sk_test_...')
@@ -17,36 +16,58 @@ stripe.api_key = STRIPE_SECRET_KEY
 # Your Google client ID
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com')
 
+# Stripe webhook secret (set in Render env vars)
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
+
+# In-memory store for first-time user detection (replace with DB for true enterprise)
+first_time_users = set()
+
 @app.route('/api/check_payment', methods=['POST'])
 def check_payment():
     data = request.get_json()
     id_token = data.get('id_token')
     if not id_token:
+        logging.warning('Missing id_token in request')
         return jsonify({'error': 'Missing id_token'}), 400
 
     # Verify Google ID token
     google_resp = requests.get(f'https://oauth2.googleapis.com/tokeninfo?id_token={id_token}')
     if google_resp.status_code != 200:
+        logging.warning('Invalid Google token')
         return jsonify({'error': 'Invalid Google token'}), 401
     google_data = google_resp.json()
     email = google_data.get('email')
-    if not email:
+    sub = google_data.get('sub')
+    if not email or not sub:
+        logging.warning('No email or sub in Google token')
         return jsonify({'error': 'No email in Google token'}), 401
+
+    # First-time user detection (in-memory, for demo)
+    is_first_time = sub not in first_time_users
+    if is_first_time:
+        first_time_users.add(sub)
+        logging.info(f'First time user detected: {email} ({sub})')
+    else:
+        logging.info(f'Returning user: {email} ({sub})')
 
     # Check Stripe for a successful payment with this email
     customers = stripe.Customer.list(email=email, limit=1)
     if not customers.data:
-        return jsonify({'paid': False})
+        logging.info(f'No Stripe customer found for {email}')
+        return jsonify({'paid': False, 'first_time': is_first_time})
     customer_id = customers.data[0].id
     # Check for active subscriptions
     subs = stripe.Subscription.list(customer=customer_id, status='active')
     if subs.data:
-        return jsonify({'paid': True})
+        logging.info(f'Active subscription found for {email}')
+        return jsonify({'paid': True, 'first_time': is_first_time})
     # Check for successful one-time payment
     charges = stripe.Charge.list(customer=customer_id, paid=True)
     if charges.data:
-        return jsonify({'paid': True})
-    return jsonify({'paid': False})
+        logging.info(f'One-time payment found for {email}')
+        return jsonify({'paid': True, 'first_time': is_first_time})
+    logging.info(f'No payment found for {email}')
+    return jsonify({'paid': False, 'first_time': is_first_time})
 
 
 # Serve index.html at root
@@ -58,6 +79,24 @@ def root():
 @app.route('/<path:path>')
 def static_proxy(path):
     return send_from_directory('.', path)
+
+# Stripe webhook for real-time payment status (production-grade)
+@app.route('/api/stripe_webhook', methods=['POST'])
+def stripe_webhook():
+    payload = request.data
+    sig_header = request.headers.get('Stripe-Signature')
+    event = None
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, STRIPE_WEBHOOK_SECRET
+        )
+    except Exception as e:
+        logging.error(f'Webhook error: {e}')
+        return '', 400
+    # Log the event
+    logging.info(f'Stripe webhook event: {event["type"]}')
+    # You can add DB updates or other logic here for true enterprise
+    return '', 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
