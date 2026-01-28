@@ -103,4 +103,5 @@ def stripe_webhook():
     return '', 200
 
 if __name__ == '__main__':
+    # Only run the server locally for development. Render/Gunicorn will serve the app in production.
     app.run(host='0.0.0.0', port=5000)
