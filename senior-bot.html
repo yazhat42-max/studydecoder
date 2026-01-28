@@ -333,8 +333,7 @@ function showPaywall(errorMsg) {
             <p style='font-size:1.1rem;color:#444;margin-bottom:28px;'>Choose a plan to access all features:</p>
             <a href='https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00' target='_blank' style='display:block;margin-bottom:18px;background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:14px 0;border-radius:12px;text-decoration:none;'>Monthly Access</a>
             <a href='https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02' target='_blank' style='display:block;margin-bottom:24px;background:#4f8cff;color:#fff;font-weight:600;font-size:1.1rem;padding:14px 0;border-radius:12px;text-decoration:none;'>Yearly Access</a>
-            <div style='font-size:0.98rem;color:#666;margin-bottom:18px;'>After payment, return here and click below:</div>
-            <button onclick="window.location.reload()" style='background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;'>I've paid, let me in!</button>
+            <div style='font-size:0.98rem;color:#666;margin-bottom:18px;'>After payment, return here and sign in with the same Google account you used to pay.</div>
             ${errorMsg ? `<div style='color:#d00;margin-top:18px;'>${errorMsg}</div>` : ''}
         </div>
     `;
