@@ -1,10 +1,13 @@
+
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import requests
 import stripe
 
-app = Flask(__name__)
+
+# Serve static files from the current directory
+app = Flask(__name__, static_folder='.', static_url_path='')
 CORS(app)
 
 # Set your Stripe secret key here
@@ -44,6 +47,17 @@ def check_payment():
     if charges.data:
         return jsonify({'paid': True})
     return jsonify({'paid': False})
+
+
+# Serve index.html at root
+@app.route('/')
+def root():
+    return send_from_directory('.', 'index.html')
+
+# Serve any other static file (css, js, images, etc.)
+@app.route('/<path:path>')
+def static_proxy(path):
+    return send_from_directory('.', path)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
