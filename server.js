@@ -235,6 +235,16 @@ process.on('exit', () => {
 
 // ==================== MIDDLEWARE ====================
 
+// Redirect non-www to www for custom domain (301 permanent redirect)
+app.use((req, res, next) => {
+    const host = req.get('host');
+    // Only redirect if it's the bare domain (no www, not onrender.com)
+    if (host === 'studydecoder.com.au') {
+        return res.redirect(301, `https://www.studydecoder.com.au${req.originalUrl}`);
+    }
+    next();
+});
+
 // Security headers
 app.use(helmet({
     contentSecurityPolicy: config.isDev ? false : {
