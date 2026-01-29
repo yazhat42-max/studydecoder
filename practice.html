@@ -3,122 +3,509 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice Question Bot</title>
+    <title>Practice Question Generator | Study Decoder</title>
     <link rel="icon" type="image/png" href="logo.png">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
+            height: 100%; width: 100%;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0f1419; color: #e7e9ea;
         }
-        body {
-            min-height: 100vh;
-            min-width: 100vw;
+        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100vw; }
+        .header {
+            background: #16202a; border-bottom: 1px solid #2f3336;
+            padding: 12px 24px; display: flex; align-items: center;
+            justify-content: space-between; flex-shrink: 0;
+        }
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        .back-btn {
+            color: #4f8cff; text-decoration: none; font-size: 14px; font-weight: 500;
+            padding: 8px 16px; border-radius: 8px; background: rgba(79, 140, 255, 0.1);
+            transition: all 0.2s;
+        }
+        .back-btn:hover { background: rgba(79, 140, 255, 0.2); }
+        .header-title { font-size: 20px; font-weight: 700; color: #e7e9ea; }
+        .header-subtitle { font-size: 12px; color: #71767b; margin-top: 2px; }
+        .mode-toggle { display: flex; background: #0f1419; border-radius: 8px; padding: 4px; gap: 4px; }
+        .mode-btn {
+            padding: 8px 16px; border: none; background: transparent; color: #71767b;
+            font-size: 13px; font-weight: 500; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+        }
+        .mode-btn.active { background: #4f8cff; color: #fff; }
+        .mode-btn:hover:not(.active) { background: rgba(79, 140, 255, 0.1); color: #e7e9ea; }
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .output-panel { flex: 1; overflow-y: auto; padding: 24px; background: #0f1419; }
+        .output-content { max-width: 900px; margin: 0 auto; }
+        .welcome-message { text-align: center; padding: 60px 20px; color: #71767b; }
+        .welcome-message h2 { font-size: 28px; color: #e7e9ea; margin-bottom: 12px; font-weight: 700; }
+        .welcome-message p { font-size: 16px; line-height: 1.6; max-width: 500px; margin: 0 auto; }
+        .welcome-features { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
+        .welcome-feature { background: #16202a; border: 1px solid #2f3336; border-radius: 12px; padding: 16px 20px; max-width: 200px; }
+        .welcome-feature h4 { color: #4f8cff; font-size: 14px; margin-bottom: 6px; }
+        .welcome-feature p { font-size: 12px; color: #71767b; margin: 0; }
+        .message { margin-bottom: 24px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .message-user {
+            background: #1d3a5f; border-radius: 16px 16px 4px 16px;
+            padding: 16px 20px; margin-left: auto; max-width: 80%; width: fit-content;
+        }
+        .message-assistant {
+            background: #16202a; border: 1px solid #2f3336;
+            border-radius: 4px 16px 16px 16px; padding: 20px 24px;
+        }
+        .message-assistant strong { color: #4f8cff; }
+        .message-assistant p { margin-bottom: 12px; line-height: 1.7; }
+        .loading { display: flex; align-items: center; gap: 8px; color: #71767b; padding: 16px; }
+        .loading-dots { display: flex; gap: 4px; }
+        .loading-dots span {
+            width: 8px; height: 8px; background: #4f8cff; border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        .input-panel { background: #16202a; border-top: 1px solid #2f3336; padding: 20px 24px; flex-shrink: 0; }
+        .input-form { max-width: 900px; margin: 0 auto; }
+        .form-title { font-size: 16px; font-weight: 600; color: #e7e9ea; margin-bottom: 16px; text-align: center; }
+        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-label { font-size: 12px; font-weight: 500; color: #71767b; }
+        .form-input, .form-select {
+            background: #0f1419; border: 1px solid #2f3336; border-radius: 8px;
+            padding: 12px 14px; color: #e7e9ea; font-size: 14px; font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus, .form-select:focus { outline: none; border-color: #4f8cff; }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
+        .checkbox-group input { width: 18px; height: 18px; accent-color: #4f8cff; }
+        .checkbox-group label { font-size: 14px; color: #e7e9ea; }
+        .submit-btn {
+            width: 100%; background: #4f8cff; color: #fff; border: none; border-radius: 8px;
+            padding: 14px 24px; font-size: 15px; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; margin-top: 8px;
+        }
+        .submit-btn:hover:not(:disabled) { background: #3d7ae8; }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .exam-mode-panel { display: none; }
+        .exam-mode-panel.active { display: block; }
+        .standard-panel { display: block; }
+        .standard-panel.hidden { display: none; }
+        .feedback-panel { display: none; }
+        .feedback-panel.active { display: block; }
+        .feedback-textarea {
+            width: 100%; min-height: 150px; background: #0f1419; border: 1px solid #2f3336;
+            border-radius: 8px; padding: 14px; color: #e7e9ea; font-size: 14px;
+            font-family: inherit; resize: vertical; margin-top: 8px;
+        }
+        .feedback-textarea:focus { outline: none; border-color: #4f8cff; }
+        .feedback-note {
+            background: rgba(79, 140, 255, 0.1); border: 1px solid rgba(79, 140, 255, 0.3);
+            border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #8ab4f8;
+        }
+        .exam-duration-info {
+            background: #1d3a5f; border-radius: 8px; padding: 12px 16px;
+            margin-bottom: 16px; font-size: 13px; color: #8ab4f8;
+        }
+        .exam-duration-info strong { color: #4f8cff; }
+        /* Auth overlay styles */
+        .auth-loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(135deg, #e0e7ff 0%, #f6f7fb 100%);
-            font-family: 'Segoe UI', Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            justify-content: stretch;
-        }
-        .bot-header-bar {
-            width: 100vw;
-            background: #fff;
-            box-shadow: 0 2px 12px rgba(79,140,255,0.07);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 32px 14px 32px;
-            z-index: 10;
-        }
-        .bot-header-bar a {
-            text-decoration: none;
-            color: #fff;
-            background: #4f8cff;
-            padding: 7px 18px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1.02rem;
-            box-shadow: 0 2px 8px rgba(79,140,255,0.10);
-            transition: background 0.2s;
-            margin-right: 12px;
-        }
-        .bot-header-bar a:last-child {
-            color: #4f8cff;
-            background: transparent;
-            box-shadow: none;
-            margin-right: 0;
-        }
-        .bot-main {
-            flex: 1 1 auto;
+            background: #0f1419;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            width: 100vw;
-            height: 100%;
-            padding: 0;
+            justify-content: center;
+            z-index: 9999;
         }
-        .bot-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #4f8cff;
-            margin: 2.5rem 0 0.7rem 0;
-            text-align: center;
-            letter-spacing: 0.5px;
+        .auth-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #2f3336;
+            border-top-color: #4f8cff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
-        .bot-desc {
-            font-size: 1.25rem;
-            color: #2d3748;
-            margin-bottom: 2.2rem;
-            text-align: center;
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .auth-text {
+            margin-top: 16px;
+            color: #71767b;
+            font-size: 1rem;
         }
-        .bot-iframe-box {
-            width: 100vw;
-            max-width: 1200px;
-            height: calc(100vh - 220px);
-            min-height: 600px;
-            border-radius: 22px;
-            overflow: hidden;
-            box-shadow: 0 4px 32px rgba(79,140,255,0.10);
-            background: #f6f7fb;
-            border: 1.5px solid #e2e8f0;
-            margin: 0 auto 2.5rem auto;
+        .hidden { display: none !important; }
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr 1fr; }
+            .header { padding: 12px 16px; flex-direction: column; gap: 12px; align-items: flex-start; }
+            .mode-toggle { width: 100%; }
+            .mode-btn { flex: 1; }
         }
-        .bot-iframe-box iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            min-height: 600px;
-        }
-        @media (max-width: 900px) {
-            .bot-title { font-size: 1.7rem; }
-            .bot-desc { font-size: 1.05rem; }
-            .bot-iframe-box { max-width: 99vw; }
-        }
-        @media (max-width: 600px) {
-            .bot-header-bar { padding: 10px 6px 8px 6px; }
-            .bot-title { margin-top: 1.2rem; }
-            .bot-iframe-box { min-height: 350px; height: 60vh; }
-        }
+        @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <div class="bot-header-bar">
-        <a href="index.html">← Back to Home</a>
-        <a href="senior-bot.html">← Back to Senior Bot</a>
+    <!-- Auth loading overlay -->
+    <div class="auth-loading-overlay" id="authOverlay">
+        <div class="auth-spinner"></div>
+        <div class="auth-text">Checking access...</div>
     </div>
-    <div class="bot-main">
-        <div class="bot-title">Practice Question Generator Bot</div>
-        <div class="bot-desc">Get instant practice questions and exam simulations for any subject/module.</div>
-        <div class="bot-iframe-box">
-            <iframe
-                src="https://www.chatbase.co/chatbot-iframe/lEntCN_GjB4GS2fqU7ixM"
-                allow="clipboard-write"
-            ></iframe>
-        </div>
+
+    <div class="app-container hidden" id="mainContent">
+        <header class="header">
+            <div class="header-left">
+                <a href="senior-bot.html" class="back-btn">← Back</a>
+                <div>
+                    <div class="header-title">Practice Question Generator</div>
+                    <div class="header-subtitle">Generate real NSW HSC exam-style questions</div>
+                </div>
+            </div>
+            <div class="mode-toggle">
+                <button class="mode-btn active" data-mode="standard">Standard</button>
+                <button class="mode-btn" data-mode="exam">Full Exam</button>
+                <button class="mode-btn" data-mode="feedback">Get Feedback</button>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="output-panel" id="outputPanel">
+                <div class="output-content" id="outputContent">
+                    <div class="welcome-message">
+                        <h2>Practice Question Generator</h2>
+                        <p>Generate authentic HSC exam-style questions based on official NSW NESA syllabuses and past papers.</p>
+                        <div class="welcome-features">
+                            <div class="welcome-feature">
+                                <h4>Standard Mode</h4>
+                                <p>Generate individual practice questions by topic</p>
+                            </div>
+                            <div class="welcome-feature">
+                                <h4>Full Exam Mode</h4>
+                                <p>Generate complete 1, 2, or 3 hour exam papers</p>
+                            </div>
+                            <div class="welcome-feature">
+                                <h4>Feedback Mode</h4>
+                                <p>Get marking feedback on your answers based on HSC criteria</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="input-panel">
+                <form class="input-form" id="inputForm">
+                    <div class="form-title">Generate Practice Questions</div>
+                    <div class="standard-panel" id="standardPanel">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">📘 Subject</label>
+                                <select class="form-select" id="subject" required>
+                                    <option value="">Loading subjects...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">📚 Topic/Module</label>
+                                <input type="text" class="form-input" id="topic" placeholder="e.g., Heredity, Macbeth..." required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">🎯 Difficulty</label>
+                                <select class="form-select" id="difficulty" required>
+                                    <option value="Easy">Easy (1-2 marks)</option>
+                                    <option value="Medium" selected>Medium (3-5 marks)</option>
+                                    <option value="Hard">Hard (6-8 marks)</option>
+                                    <option value="Extended">Extended (9-20 marks)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">📝 Question Type</label>
+                                <select class="form-select" id="questionType" required>
+                                    <option value="Multiple Choice">Multiple Choice</option>
+                                    <option value="Short Answer" selected>Short Answer</option>
+                                    <option value="Extended Response">Extended Response</option>
+                                    <option value="Source-Based">Source-Based</option>
+                                    <option value="Mixed">Mixed</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">🔢 Number of Questions</label>
+                                <select class="form-select" id="numQuestions">
+                                    <option value="1">1</option>
+                                    <option value="3" selected>3</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="includeAnswers">
+                                    <label for="includeAnswers">Include Model Answers</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exam-mode-panel" id="examPanel">
+                        <div class="exam-duration-info">
+                            <strong>Full Exam Mode:</strong> Generate a complete HSC-style exam paper with multiple sections, varied question types, and proper mark allocations.
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">📘 Subject</label>
+                                <select class="form-select" id="examSubject">
+                                    <option value="">Loading subjects...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">📚 Topics to Cover</label>
+                                <input type="text" class="form-input" id="examTopics" placeholder="e.g., All Year 12 content, Module 5-8...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">⏱️ Exam Duration</label>
+                                <select class="form-select" id="examDuration">
+                                    <option value="1 hour">1 hour (Mini Exam)</option>
+                                    <option value="2 hours" selected>2 hours (Standard)</option>
+                                    <option value="3 hours">3 hours (Full HSC)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feedback-panel" id="feedbackPanel">
+                        <div class="feedback-note">
+                            <strong>Feedback Mode:</strong> Paste a question and your answer below to receive detailed marking feedback based on official HSC marking criteria. I will NOT provide model answers — only feedback on YOUR response.
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">📘 Subject</label>
+                                <select class="form-select" id="feedbackSubject">
+                                    <option value="">Loading subjects...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">🎯 Mark Value</label>
+                                <select class="form-select" id="feedbackMarks">
+                                    <option value="1-2">1-2 marks</option>
+                                    <option value="3-4">3-4 marks</option>
+                                    <option value="5-6" selected>5-6 marks</option>
+                                    <option value="7-8">7-8 marks</option>
+                                    <option value="9-10">9-10 marks</option>
+                                    <option value="15-20">15-20 marks (Extended)</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">❓ The Question</label>
+                                <textarea class="feedback-textarea" id="feedbackQuestion" rows="3" placeholder="Paste or type the exam question here..." required></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">✍️ Your Answer</label>
+                                <textarea class="feedback-textarea" id="feedbackAnswer" rows="6" placeholder="Paste or type your answer here to receive feedback..." required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">Generate Questions</button>
+                </form>
+            </div>
+        </main>
     </div>
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
+        let conversationHistory = [];
+        let isLoading = false;
+        let currentMode = 'standard';
+        let subjects = [];
+        
+        const form = document.getElementById('inputForm');
+        const outputContent = document.getElementById('outputContent');
+        const outputPanel = document.getElementById('outputPanel');
+        const submitBtn = document.getElementById('submitBtn');
+        const modeBtns = document.querySelectorAll('.mode-btn');
+        const standardPanel = document.getElementById('standardPanel');
+        const examPanel = document.getElementById('examPanel');
+        const feedbackPanel = document.getElementById('feedbackPanel');
+        const subjectSelect = document.getElementById('subject');
+        const examSubjectSelect = document.getElementById('examSubject');
+        const feedbackSubjectSelect = document.getElementById('feedbackSubject');
+        
+        async function loadSubjects() {
+            try {
+                const response = await fetch(`${API_BASE}/api/subjects`);
+                const data = await response.json();
+                subjects = data.subjects;
+                const byCategory = {};
+                subjects.forEach(s => {
+                    if (!byCategory[s.category]) byCategory[s.category] = [];
+                    byCategory[s.category].push(s);
+                });
+                
+                [subjectSelect, examSubjectSelect, feedbackSubjectSelect].forEach(sel => {
+                    sel.innerHTML = '<option value="">Select your subject...</option>';
+                    Object.keys(byCategory).sort().forEach(cat => {
+                        const group = document.createElement('optgroup');
+                        group.label = cat;
+                        byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                            const opt = document.createElement('option');
+                            opt.value = s.id;
+                            opt.textContent = s.name;
+                            group.appendChild(opt);
+                        });
+                        sel.appendChild(group);
+                    });
+                });
+            } catch (e) {
+                console.error('Failed to load subjects:', e);
+            }
+        }
+        loadSubjects();
+        
+        modeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMode = btn.dataset.mode;
+                
+                standardPanel.classList.add('hidden');
+                examPanel.classList.remove('active');
+                feedbackPanel.classList.remove('active');
+                
+                if (currentMode === 'exam') {
+                    examPanel.classList.add('active');
+                    submitBtn.textContent = 'Generate Full Exam';
+                } else if (currentMode === 'feedback') {
+                    feedbackPanel.classList.add('active');
+                    submitBtn.textContent = 'Get Feedback';
+                } else {
+                    standardPanel.classList.remove('hidden');
+                    submitBtn.textContent = 'Generate Questions';
+                }
+            });
+        });
+        
+        function formatResponse(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/Topic:|Difficulty:|Marks:|Question \d+:|Answer:|Marking Guideline:|Section [A-Z]:/gi, '<br><br><strong>$&</strong>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+        }
+        
+        function addMessage(content, isUser = false) {
+            const welcome = outputContent.querySelector('.welcome-message');
+            if (welcome) welcome.remove();
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'message-user' : 'message-assistant'}`;
+            messageDiv.innerHTML = isUser ? content.replace(/\n/g, '<br>') : `<p>${formatResponse(content)}</p>`;
+            outputContent.appendChild(messageDiv);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
+        
+        function showLoading() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'loading';
+            loadingDiv.id = 'loadingIndicator';
+            loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Generating questions...</span>';
+            outputContent.appendChild(loadingDiv);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
+        
+        function hideLoading() {
+            const loading = document.getElementById('loadingIndicator');
+            if (loading) loading.remove();
+        }
+        
+        async function sendMessage(userMessage, subjectId) {
+            if (isLoading) return;
+            isLoading = true;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Generating...';
+            conversationHistory.push({ role: 'user', content: userMessage });
+            addMessage(userMessage, true);
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/chat/practice`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages: conversationHistory, subject: subjectId })
+                });
+                if (!response.ok) throw new Error('Failed');
+                const data = await response.json();
+                hideLoading();
+                conversationHistory.push({ role: 'assistant', content: data.reply });
+                addMessage(data.reply, false);
+            } catch (error) {
+                hideLoading();
+                addMessage('Error: Unable to generate questions. Please try again.', false);
+            } finally {
+                isLoading = false;
+                submitBtn.disabled = false;
+                submitBtn.textContent = currentMode === 'exam' ? 'Generate Full Exam' : 'Generate Questions';
+            }
+        }
+        
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let message, subjectId;
+            
+            if (currentMode === 'exam') {
+                subjectId = examSubjectSelect.value;
+                if (!subjectId) { alert('Please select a subject.'); return; }
+                const subjectName = examSubjectSelect.options[examSubjectSelect.selectedIndex].text;
+                const topics = document.getElementById('examTopics').value;
+                const duration = document.getElementById('examDuration').value;
+                message = `[FULL EXAM MODE]\nGenerate a complete ${duration} HSC EXAM PAPER:\nSubject: ${subjectName}\nTopics: ${topics || 'All Year 12 content'}\nDuration: ${duration}\n\nCreate a complete exam with multiple sections, varied question types matching HSC format, proper mark allocations, and reading time instructions. Structure it like a real HSC paper.`;
+            } else if (currentMode === 'feedback') {
+                subjectId = feedbackSubjectSelect.value;
+                if (!subjectId) { alert('Please select a subject.'); return; }
+                const subjectName = feedbackSubjectSelect.options[feedbackSubjectSelect.selectedIndex].text;
+                const marks = document.getElementById('feedbackMarks').value;
+                const question = document.getElementById('feedbackQuestion').value.trim();
+                const answer = document.getElementById('feedbackAnswer').value.trim();
+                if (!question || !answer) { alert('Please enter both the question and your answer.'); return; }
+                message = `[FEEDBACK MODE]\nSubject: ${subjectName}\nMark Value: ${marks} marks\n\nQUESTION:\n${question}\n\nSTUDENT'S ANSWER:\n${answer}\n\nProvide detailed marking feedback based on HSC marking criteria. Do NOT provide a model answer. Only assess the student's response.`;
+            } else {
+                subjectId = subjectSelect.value;
+                if (!subjectId) { alert('Please select a subject.'); return; }
+                const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
+                const topic = document.getElementById('topic').value;
+                const difficulty = document.getElementById('difficulty').value;
+                const questionType = document.getElementById('questionType').value;
+                const numQuestions = document.getElementById('numQuestions').value;
+                const includeAnswers = document.getElementById('includeAnswers').checked;
+                if (!topic) { alert('Please enter a topic.'); return; }
+                message = `[STANDARD MODE]\nSubject: ${subjectName}\nTopic: ${topic}\nDifficulty: ${difficulty}\nQuestion Type: ${questionType}\nNumber of Questions: ${numQuestions}\n${includeAnswers ? 'Include model answers with marking guidelines and band descriptors.' : 'Do not include answers.'}`;
+            }
+            sendMessage(message, subjectId);
+        });
+
+        // =====================
+        // AUTHENTICATION CHECK
+        // =====================
+        async function checkAuth() {
+            try {
+                const res = await fetch(`${API_BASE}/api/subscription`, {
+                    credentials: 'include'
+                });
+                
+                if (!res.ok) {
+                    window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                    return;
+                }
+                
+                const data = await res.json();
+                
+                if (!data.subscribed) {
+                    window.location.href = '/senior-bot.html';
+                    return;
+                }
+                
+                document.getElementById('authOverlay').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+                
+            } catch (e) {
+                console.error('Auth check failed:', e);
+                window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+            }
+        }
+        
+        checkAuth();
+    </script>
 </body>
 </html>

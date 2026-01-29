@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Selection Advisor – Study Decoder</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #2A2A2A;
+            --accent: #FF6584;
+            --light-bg: #F9F9FB;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: var(--light-bg); color: var(--secondary); min-height: 100vh; }
+        
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 5%; background: var(--white);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 100;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo img { height: 38px; }
+        .logo span { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+        .nav-right { display: flex; gap: 12px; align-items: center; }
+        .btn {
+            padding: 0.6rem 1.4rem; border-radius: 50px; text-decoration: none;
+            font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: var(--transition); border: none;
+        }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(108,99,255,0.3); }
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
+        .btn-outline:hover { background: var(--primary); color: #fff; }
+        
+        .login-gate {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 80vh; padding: 40px 20px; text-align: center;
+        }
+        .login-gate h1 {
+            font-size: 2rem; margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .login-gate p { color: #666; margin-bottom: 24px; max-width: 500px; }
+        .login-gate .btn { font-size: 1rem; padding: 0.8rem 2rem; }
+        
+        .advisor-container {
+            max-width: 900px; margin: 0 auto; padding: 30px 20px; display: none;
+        }
+        .advisor-container.active { display: block; }
+        
+        .advisor-header {
+            text-align: center; margin-bottom: 24px;
+        }
+        .advisor-header h1 {
+            font-size: 2rem; font-weight: 700; margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .advisor-header p { color: #666; font-size: 1rem; }
+        
+        .info-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff; padding: 16px 24px; border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        .info-banner h3 { font-size: 1rem; margin-bottom: 6px; }
+        .info-banner p { font-size: 0.9rem; opacity: 0.95; }
+        
+        .chat-container {
+            background: var(--white); border-radius: var(--radius);
+            box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(0,0,0,0.04);
+        }
+        .chat-messages {
+            height: 500px; overflow-y: auto; padding: 24px;
+            background: linear-gradient(180deg, #fafbff 0%, #fff 100%);
+        }
+        .message { margin-bottom: 20px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .message-user {
+            background: linear-gradient(135deg, var(--primary), #8b7cf7);
+            color: #fff; padding: 14px 18px; border-radius: 16px 16px 4px 16px;
+            margin-left: auto; max-width: 85%; width: fit-content;
+        }
+        .message-bot {
+            background: #f0f2ff; border: 1px solid #e0e4ff;
+            padding: 18px 20px; border-radius: 4px 16px 16px 16px; max-width: 95%;
+        }
+        .message-bot h2 { color: var(--primary); font-size: 16px; margin: 20px 0 12px 0; }
+        .message-bot h2:first-child { margin-top: 0; }
+        .message-bot h3 { color: var(--primary); font-size: 14px; margin: 16px 0 10px 0; }
+        .message-bot p { margin-bottom: 10px; line-height: 1.65; color: #444; }
+        .message-bot ul { margin: 8px 0 8px 18px; }
+        .message-bot li { margin-bottom: 8px; color: #555; line-height: 1.5; }
+        .message-bot strong { color: var(--primary); }
+        
+        .welcome-message {
+            text-align: center; padding: 60px 20px; color: #888;
+        }
+        .welcome-message h2 { font-size: 1.4rem; color: var(--secondary); margin-bottom: 10px; }
+        .welcome-message p { max-width: 500px; margin: 0 auto 20px; }
+        .welcome-message ul { text-align: left; max-width: 400px; margin: 0 auto; list-style: none; }
+        .welcome-message li { padding: 8px 0; border-bottom: 1px solid #eee; color: #666; }
+        .welcome-message li:last-child { border: none; }
+        
+        .loading { display: flex; align-items: center; gap: 10px; color: #888; padding: 16px; }
+        .loading-dots { display: flex; gap: 4px; }
+        .loading-dots span {
+            width: 8px; height: 8px; background: var(--primary); border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        
+        .input-panel {
+            background: #fff; border-top: 1px solid #eee; padding: 20px 24px;
+        }
+        .input-form { display: flex; gap: 12px; }
+        .chat-input {
+            flex: 1; padding: 14px 18px; border: 2px solid #e8e8e8; border-radius: 12px;
+            font-size: 14px; color: var(--secondary); resize: none;
+            transition: var(--transition); font-family: 'Poppins', sans-serif;
+        }
+        .chat-input:focus { outline: none; border-color: var(--primary); }
+        .chat-input:disabled { background: #f5f5f5; cursor: not-allowed; }
+        .send-btn {
+            background: linear-gradient(135deg, var(--primary), #8b7cf7);
+            color: #fff; border: none; border-radius: 12px; padding: 14px 24px;
+            font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition);
+            white-space: nowrap;
+        }
+        .send-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,99,255,0.35); }
+        .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .subject-list {
+            background: #f8f9ff; border-radius: 10px; padding: 16px; margin-top: 16px;
+        }
+        .subject-list h4 { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; }
+        .subject-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .subject-tag {
+            background: #fff; border: 1px solid #e0e4ff; padding: 6px 12px;
+            border-radius: 20px; font-size: 12px; color: var(--secondary);
+        }
+        
+        .mode-selector {
+            display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;
+        }
+        .mode-btn {
+            flex: 1; min-width: 200px; padding: 16px 20px; border-radius: 12px;
+            border: 2px solid #e8e8e8; background: #fff; cursor: pointer;
+            transition: var(--transition); text-align: left;
+        }
+        .mode-btn:hover { border-color: var(--primary); }
+        .mode-btn.active {
+            border-color: var(--primary); background: linear-gradient(135deg, #f0f2ff 0%, #fff 100%);
+            box-shadow: 0 4px 12px rgba(108,99,255,0.15);
+        }
+        .mode-btn h4 {
+            font-size: 14px; color: var(--primary); margin-bottom: 4px; font-weight: 600;
+        }
+        .mode-btn p {
+            font-size: 12px; color: #666; margin: 0; line-height: 1.4;
+        }
+        .mode-btn.active h4 { color: var(--primary); }
+        .mode-indicator {
+            display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+            margin-right: 8px; background: #ccc;
+        }
+        .mode-btn.active .mode-indicator { background: var(--primary); }
+        
+        @media (max-width: 768px) {
+            .advisor-header h1 { font-size: 1.6rem; }
+            .chat-messages { height: 400px; }
+            .input-form { flex-direction: column; }
+            .send-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Study Decoder">
+            <span>Study Decoder</span>
+        </a>
+        <div class="nav-right">
+            <a href="senior-bot.html" class="btn btn-outline">← Back to Tools</a>
+            <span id="userDisplay" style="font-size: 0.85rem; color: #666;"></span>
+        </div>
+    </nav>
+
+    <!-- Login Gate -->
+    <div class="login-gate" id="loginGate">
+        <h1>Subject Selection Advisor</h1>
+        <p>This tool helps Year 10 students choose the right subjects for Years 11-12. Sign in to access personalised subject recommendations.</p>
+        <a href="index.html#pricing" class="btn btn-primary">Subscribe to Access</a>
+    </div>
+
+    <!-- Main Advisor Interface -->
+    <div class="advisor-container" id="advisorContainer">
+        <div class="advisor-header">
+            <h1>Subject Selection Advisor</h1>
+            <p>Get personalised subject recommendations for Years 11-12 based on your strengths and goals</p>
+        </div>
+
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn active" data-mode="selection" onclick="setMode('selection')">
+                <h4><span class="mode-indicator"></span>Subject Selection</h4>
+                <p>Get personalised HSC subject recommendations based on your grades, interests, and goals</p>
+            </button>
+            <button class="mode-btn" data-mode="bridging" onclick="setMode('bridging')">
+                <h4><span class="mode-indicator"></span>Senior Pathway Bridging</h4>
+                <p>Understand how Year 7-10 subjects connect to senior subjects and prerequisites</p>
+            </button>
+            <button class="mode-btn" data-mode="pathway" onclick="setMode('pathway')">
+                <h4><span class="mode-indicator"></span>ATAR vs Non-ATAR</h4>
+                <p>Compare ATAR and non-ATAR pathways to find what suits your learning style</p>
+            </button>
+        </div>
+
+        <div class="info-banner" id="infoBanner">
+            <h3>How It Works</h3>
+            <p id="infoBannerText">Tell me about your current subjects, grades, interests, and future goals. I will analyse your profile and suggest suitable HSC subjects with clear reasoning.</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message" id="welcomeMessage">
+                    <h2>Welcome to Subject Selection Advisor</h2>
+                    <p>I help Year 10 students choose the right subjects for their senior years. To give you the best advice, please provide:</p>
+                    <ul>
+                        <li>Your current or proposed electives</li>
+                        <li>Recent grades in core subjects (English, Maths, Science, HSIE)</li>
+                        <li>Recent grades in your electives</li>
+                        <li>Your interests and strengths</li>
+                        <li>Future plans (ATAR, university, TAFE, trades, or unsure)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="input-panel">
+                <form class="input-form" id="chatForm">
+                    <textarea class="chat-input" id="userInput" placeholder="Describe your subjects, grades, interests, and goals..." rows="2"></textarea>
+                    <button type="submit" class="send-btn" id="sendBtn">Send</button>
+                </form>
+                <div class="subject-list">
+                    <h4>Available HSC Subjects</h4>
+                    <div class="subject-tags" id="subjectTags">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
+        
+        const loginGate = document.getElementById('loginGate');
+        const advisorContainer = document.getElementById('advisorContainer');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatForm = document.getElementById('chatForm');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const subjectTags = document.getElementById('subjectTags');
+        const userDisplay = document.getElementById('userDisplay');
+        const infoBannerText = document.getElementById('infoBannerText');
+        
+        let conversationHistory = [];
+        let currentMode = 'selection';
+        
+        const modeConfig = {
+            selection: {
+                banner: 'Tell me about your current subjects, grades, interests, and future goals. I will analyse your profile and suggest suitable HSC subjects with clear reasoning.',
+                welcome: '<h2>Welcome to Subject Selection Advisor</h2><p>I help Year 10 students choose the right subjects for their senior years. To give you the best advice, please provide:</p><ul><li>Your current or proposed electives</li><li>Recent grades in core subjects (English, Maths, Science, HSIE)</li><li>Recent grades in your electives</li><li>Your interests and strengths</li><li>Future plans (ATAR, university, TAFE, trades, or unsure)</li></ul>',
+                placeholder: 'Describe your subjects, grades, interests, and goals...'
+            },
+            bridging: {
+                banner: 'Ask about how your current Year 7-10 subjects connect to senior subjects. I will explain pathways, prerequisites, and what skills prepare you best.',
+                welcome: '<h2>Senior Pathway Bridging</h2><p>Understand how your current subjects prepare you for Years 11-12. Ask me about:</p><ul><li>Which junior subjects lead to specific HSC subjects</li><li>Prerequisites and assumed knowledge</li><li>Skills that matter more than marks</li><li>How to strengthen foundations before senior years</li></ul>',
+                placeholder: 'Ask about subject pathways, prerequisites, or how to prepare for senior subjects...'
+            },
+            pathway: {
+                banner: 'Compare ATAR and non-ATAR pathways. I will explain subject types, assessment styles, and post-school options for each pathway objectively.',
+                welcome: '<h2>ATAR vs Non-ATAR Pathways</h2><p>Understand which pathway matches your learning style and goals. Ask me about:</p><ul><li>Differences between ATAR and non-ATAR subjects</li><li>Assessment styles (exams vs practical)</li><li>University, TAFE, and vocational options</li><li>Which pathway suits your strengths</li></ul>',
+                placeholder: 'Ask about ATAR vs non-ATAR pathways, assessment styles, or post-school options...'
+            }
+        };
+        
+        function setMode(mode) {
+            currentMode = mode;
+            conversationHistory = [];
+            
+            // Update active button
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+            
+            // Update banner and welcome message
+            infoBannerText.textContent = modeConfig[mode].banner;
+            userInput.placeholder = modeConfig[mode].placeholder;
+            
+            // Reset chat
+            chatMessages.innerHTML = `<div class="welcome-message" id="welcomeMessage">${modeConfig[mode].welcome}</div>`;
+        }
+        
+        // Check subscription status
+        async function checkSubscription() {
+            try {
+                const response = await fetch(`${API_BASE}/api/subscription`, {
+                    credentials: 'include'
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.subscribed) {
+                        loginGate.style.display = 'none';
+                        advisorContainer.classList.add('active');
+                        userDisplay.textContent = data.name || data.email || 'Subscriber';
+                        loadSubjects();
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.error('Subscription check failed:', e);
+            }
+            loginGate.style.display = 'flex';
+            advisorContainer.classList.remove('active');
+        }
+        
+        // Load available subjects
+        async function loadSubjects() {
+            try {
+                const response = await fetch(`${API_BASE}/api/subjects`);
+                const data = await response.json();
+                
+                subjectTags.innerHTML = data.subjects
+                    .map(s => `<span class="subject-tag">${s.name}</span>`)
+                    .join('');
+            } catch (e) {
+                console.error('Failed to load subjects:', e);
+            }
+        }
+        
+        function formatResponse(text) {
+            return text
+                .replace(/## (.*)/g, '<h2>$1</h2>')
+                .replace(/### (.*)/g, '<h3>$1</h3>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/^\• (.*)/gm, '<li>$1</li>')
+                .replace(/^- (.*)/gm, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>\n?)+/gs, '<ul>$&</ul>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+        }
+        
+        function addMessage(content, isUser = false) {
+            const welcome = chatMessages.querySelector('.welcome-message');
+            if (welcome) welcome.remove();
+            
+            const div = document.createElement('div');
+            div.className = `message ${isUser ? 'message-user' : 'message-bot'}`;
+            
+            if (isUser) {
+                div.textContent = content;
+            } else {
+                div.innerHTML = `<p>${formatResponse(content)}</p>`;
+            }
+            
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function showLoading() {
+            const div = document.createElement('div');
+            div.className = 'loading';
+            div.id = 'loadingIndicator';
+            div.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Analysing your profile...</span>';
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function hideLoading() {
+            const loading = document.getElementById('loadingIndicator');
+            if (loading) loading.remove();
+        }
+        
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const message = userInput.value.trim();
+            if (!message) return;
+            
+            addMessage(message, true);
+            userInput.value = '';
+            
+            conversationHistory.push({ role: 'user', content: message });
+            
+            sendBtn.disabled = true;
+            userInput.disabled = true;
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/subject-advisor`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        message,
+                        mode: currentMode,
+                        history: conversationHistory.slice(-10)
+                    })
+                });
+                
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        throw new Error('Please subscribe to use this feature');
+                    }
+                    throw new Error('Request failed');
+                }
+                
+                const data = await response.json();
+                hideLoading();
+                
+                conversationHistory.push({ role: 'assistant', content: data.reply });
+                addMessage(data.reply, false);
+                
+            } catch (error) {
+                hideLoading();
+                addMessage(`Sorry, something went wrong: ${error.message}. Please try again.`, false);
+            } finally {
+                sendBtn.disabled = false;
+                userInput.disabled = false;
+                userInput.focus();
+            }
+        });
+        
+        // Handle Enter key
+        userInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                chatForm.dispatchEvent(new Event('submit'));
+            }
+        });
+        
+        // Initialize
+        checkSubscription();
+    </script>
+</body>
+</html>

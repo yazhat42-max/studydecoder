@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Timetable Generator | Study Decoder</title>
+    <title>Timetable Generator | StudyDecoder Junior</title>
     <link rel="icon" type="image/png" href="logo.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,19 +14,20 @@
         }
         .app-container { display: flex; flex-direction: column; height: 100vh; width: 100vw; }
         .header {
-            background: #16202a; border-bottom: 1px solid #2f3336;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-bottom: 1px solid #2f3336;
             padding: 12px 24px; display: flex; align-items: center;
             justify-content: space-between; flex-shrink: 0;
         }
         .header-left { display: flex; align-items: center; gap: 16px; }
         .back-btn {
-            color: #4f8cff; text-decoration: none; font-size: 14px; font-weight: 500;
-            padding: 8px 16px; border-radius: 8px; background: rgba(79, 140, 255, 0.1);
+            color: #fff; text-decoration: none; font-size: 14px; font-weight: 500;
+            padding: 8px 16px; border-radius: 8px; background: rgba(255,255,255,0.15);
             transition: all 0.2s;
         }
-        .back-btn:hover { background: rgba(79, 140, 255, 0.2); }
-        .header-title { font-size: 20px; font-weight: 700; color: #e7e9ea; }
-        .header-subtitle { font-size: 12px; color: #71767b; margin-top: 2px; }
+        .back-btn:hover { background: rgba(255,255,255,0.25); }
+        .header-title { font-size: 20px; font-weight: 700; color: #fff; }
+        .header-subtitle { font-size: 12px; color: rgba(255,255,255,0.8); margin-top: 2px; }
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .output-panel { flex: 1; overflow-y: auto; padding: 24px; background: #0f1419; }
         .output-content { max-width: 1000px; margin: 0 auto; }
@@ -36,30 +37,34 @@
         .message { margin-bottom: 24px; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .message-user {
-            background: #1d3a5f; border-radius: 16px 16px 4px 16px;
+            background: #4a3f8a; border-radius: 16px 16px 4px 16px;
             padding: 16px 20px; margin-left: auto; max-width: 80%; width: fit-content;
         }
         .message-assistant {
             background: #16202a; border: 1px solid #2f3336;
             border-radius: 4px 16px 16px 16px; padding: 20px 24px;
         }
-        .message-assistant h3 { color: #4f8cff; font-size: 16px; font-weight: 600; margin: 16px 0 12px 0; }
-        .message-assistant h3:first-child { margin-top: 0; }
+        .message-assistant h2 { color: #667eea; font-size: 16px; font-weight: 600; margin: 16px 0 8px 0; }
+        .message-assistant h2:first-child { margin-top: 0; }
         .message-assistant p { margin-bottom: 12px; line-height: 1.7; }
         .message-assistant table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
         .message-assistant th, .message-assistant td { border: 1px solid #2f3336; padding: 10px 12px; text-align: left; }
-        .message-assistant th { background: #1a2634; color: #4f8cff; font-weight: 600; }
-        .message-assistant tr:nth-child(even) { background: rgba(79, 140, 255, 0.05); }
+        .message-assistant th { background: #1a2634; color: #667eea; font-weight: 600; }
+        .message-assistant tr:nth-child(even) { background: rgba(102, 126, 234, 0.05); }
+        .message-assistant strong { color: #667eea; }
         .loading { display: flex; align-items: center; gap: 8px; color: #71767b; padding: 16px; }
         .loading-dots { display: flex; gap: 4px; }
         .loading-dots span {
-            width: 8px; height: 8px; background: #4f8cff; border-radius: 50%;
+            width: 8px; height: 8px; background: #667eea; border-radius: 50%;
             animation: bounce 1.4s infinite ease-in-out both;
         }
         .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
         .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
-        .input-panel { background: #16202a; border-top: 1px solid #2f3336; padding: 20px 24px; flex-shrink: 0; }
+        .input-panel {
+            background: #16202a; border-top: 1px solid #2f3336;
+            padding: 20px 24px; flex-shrink: 0;
+        }
         .input-form { max-width: 1000px; margin: 0 auto; }
         .form-title { font-size: 16px; font-weight: 600; color: #e7e9ea; margin-bottom: 16px; text-align: center; }
         .form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
@@ -72,39 +77,25 @@
             padding: 12px 14px; color: #e7e9ea; font-size: 14px; font-family: inherit;
             transition: border-color 0.2s;
         }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #4f8cff; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #667eea; }
         .form-textarea { resize: vertical; min-height: 60px; }
         .submit-btn {
-            width: 100%; background: #4f8cff; color: #fff; border: none; border-radius: 8px;
+            width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff; border: none; border-radius: 8px;
             padding: 14px 24px; font-size: 15px; font-weight: 600; cursor: pointer;
             transition: all 0.2s; margin-top: 8px;
         }
-        .submit-btn:hover:not(:disabled) { background: #3d7ae8; }
+        .submit-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
         .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .tag-input-container {
-            display: flex; flex-wrap: wrap; gap: 6px; background: #0f1419;
-            border: 1px solid #2f3336; border-radius: 8px; padding: 8px 12px;
-            min-height: 44px; align-items: center;
-        }
-        .tag-input-container:focus-within { border-color: #4f8cff; }
-        .tag {
-            background: #1d3a5f; color: #e7e9ea; padding: 4px 10px; border-radius: 4px;
-            font-size: 13px; display: flex; align-items: center; gap: 6px;
-        }
-        .tag-remove { cursor: pointer; color: #71767b; font-size: 16px; line-height: 1; }
-        .tag-remove:hover { color: #ff6b6b; }
-        .tag-input {
-            flex: 1; min-width: 100px; background: transparent; border: none;
-            color: #e7e9ea; font-size: 14px; padding: 4px;
-        }
-        .tag-input:focus { outline: none; }
         .subject-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
         .subject-chip {
             background: #0f1419; border: 1px solid #2f3336; padding: 6px 12px;
             border-radius: 16px; font-size: 12px; cursor: pointer; transition: all 0.2s;
         }
-        .subject-chip:hover { border-color: #4f8cff; }
-        .subject-chip.selected { background: #1d3a5f; border-color: #4f8cff; }
+        .subject-chip:hover { border-color: #667eea; }
+        .subject-chip.selected { background: #4a3f8a; border-color: #667eea; }
+        @media (max-width: 900px) { .form-grid { grid-template-columns: 1fr 1fr; } .form-group.half-width { grid-column: span 1; } }
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .header { padding: 12px 16px; } }
         /* Auth overlay styles */
         .auth-loading-overlay {
             position: fixed;
@@ -123,19 +114,17 @@
             width: 50px;
             height: 50px;
             border: 4px solid #2f3336;
-            border-top-color: #4f8cff;
+            border-top-color: #667eea;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: authSpin 1s linear infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes authSpin { to { transform: rotate(360deg); } }
         .auth-text {
             margin-top: 16px;
             color: #71767b;
             font-size: 1rem;
         }
         .hidden { display: none !important; }
-        @media (max-width: 900px) { .form-grid { grid-template-columns: repeat(2, 1fr); } .form-group.half-width { grid-column: span 1; } }
-        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .form-group.half-width { grid-column: span 1; } .header { padding: 12px 16px; } }
     </style>
 </head>
 <body>
@@ -148,10 +137,10 @@
     <div class="app-container hidden" id="mainContent">
         <header class="header">
             <div class="header-left">
-                <a href="senior-bot.html" class="back-btn">← Back</a>
+                <a href="junior-bot.html" class="back-btn">← Back</a>
                 <div>
-                    <div class="header-title">Smart Timetable Generator</div>
-                    <div class="header-subtitle">Create sustainable, personalised HSC study schedules</div>
+                    <div class="header-title">Timetable Generator</div>
+                    <div class="header-subtitle">StudyDecoder Junior • Years 7-10</div>
                 </div>
             </div>
         </header>
@@ -159,58 +148,56 @@
             <div class="output-panel" id="outputPanel">
                 <div class="output-content" id="outputContent">
                     <div class="welcome-message">
-                        <h2>Smart Timetable Generator</h2>
-                        <p>Select your HSC subjects and preferences below to generate a realistic, sustainable weekly timetable tailored to your needs and upcoming exams.</p>
+                        <h2>Timetable Generator</h2>
+                        <p>Create a realistic study timetable that fits your schedule. Balance your subjects and get organised for success.</p>
                     </div>
                 </div>
             </div>
             <div class="input-panel">
                 <form class="input-form" id="inputForm">
-                    <div class="form-title">Generate a Timetable</div>
+                    <div class="form-title">Create Your Timetable</div>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label">🎓 Year Level</label>
+                            <label class="form-label">Year Level</label>
                             <select class="form-select" id="yearLevel" required>
-                                <option value="Year 11">Year 11</option>
-                                <option value="Year 12" selected>Year 12</option>
+                                <option value="Year 7">Year 7</option>
+                                <option value="Year 8">Year 8</option>
+                                <option value="Year 9">Year 9</option>
+                                <option value="Year 10">Year 10</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">⏰ Study Hours/Day</label>
+                            <label class="form-label">Study Time Per Day</label>
                             <select class="form-select" id="studyHours" required>
-                                <option value="1">1 hour</option>
-                                <option value="2" selected>2 hours</option>
-                                <option value="3">3 hours</option>
-                                <option value="4">4 hours</option>
-                                <option value="5+">5+ hours</option>
+                                <option value="30 minutes">30 minutes</option>
+                                <option value="1 hour" selected>1 hour</option>
+                                <option value="1.5 hours">1.5 hours</option>
+                                <option value="2 hours">2 hours</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">🧠 Preferred Time</label>
+                            <label class="form-label">Preferred Time</label>
                             <select class="form-select" id="preferredTime" required>
-                                <option value="Morning">Morning</option>
-                                <option value="Afternoon" selected>Afternoon</option>
+                                <option value="After school" selected>After school</option>
                                 <option value="Evening">Evening</option>
-                                <option value="Night">Night</option>
+                                <option value="Morning">Morning</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">📅 Start Date</label>
+                            <label class="form-label">Start Date</label>
                             <input type="date" class="form-input" id="startDate">
                         </div>
                         <div class="form-group full-width">
-                            <label class="form-label">📘 Your HSC Subjects (click to select)</label>
-                            <div class="subject-chips" id="subjectChips">Loading subjects...</div>
+                            <label class="form-label">Your Subjects (click to select)</label>
+                            <div class="subject-chips" id="subjectChips">Loading...</div>
                         </div>
                         <div class="form-group half-width">
-                            <label class="form-label">📉 Weakest Subjects (select from above)</label>
-                            <div id="weakSubjects" class="tag-input-container">
-                                <span style="color:#71767b;font-size:13px;">Click subjects above first...</span>
-                            </div>
+                            <label class="form-label">Subjects You Find Hardest</label>
+                            <input type="text" class="form-input" id="hardSubjects" placeholder="e.g., Maths, Science...">
                         </div>
                         <div class="form-group half-width">
-                            <label class="form-label">📅 Upcoming Exams/Deadlines</label>
-                            <textarea class="form-textarea" id="deadlines" placeholder="e.g., Physics trial Feb 15, English essay due Feb 20, HSC Oct..."></textarea>
+                            <label class="form-label">Upcoming Tests or Assignments</label>
+                            <input type="text" class="form-input" id="upcoming" placeholder="e.g., Maths test next Monday...">
                         </div>
                     </div>
                     <button type="submit" class="submit-btn" id="submitBtn">Generate Timetable</button>
@@ -222,93 +209,36 @@
         const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
         let conversationHistory = [];
         let isLoading = false;
-        let allSubjects = [];
         let selectedSubjects = new Set();
-        let weakSubjects = new Set();
         
         const form = document.getElementById('inputForm');
         const outputContent = document.getElementById('outputContent');
         const outputPanel = document.getElementById('outputPanel');
         const submitBtn = document.getElementById('submitBtn');
         const subjectChips = document.getElementById('subjectChips');
-        const weakSubjectsDiv = document.getElementById('weakSubjects');
         
-        async function loadSubjects() {
-            try {
-                const response = await fetch(`${API_BASE}/api/subjects`);
-                const data = await response.json();
-                allSubjects = data.subjects;
-                
-                // Group by category
-                const byCategory = {};
-                allSubjects.forEach(s => {
-                    if (!byCategory[s.category]) byCategory[s.category] = [];
-                    byCategory[s.category].push(s);
-                });
-                
-                subjectChips.innerHTML = '';
-                Object.keys(byCategory).sort().forEach(cat => {
-                    const catDiv = document.createElement('div');
-                    catDiv.style = 'width:100%;margin-top:8px;';
-                    catDiv.innerHTML = `<div style="color:#4f8cff;font-size:11px;font-weight:600;margin-bottom:4px;">${cat}</div>`;
-                    const chipsDiv = document.createElement('div');
-                    chipsDiv.style = 'display:flex;flex-wrap:wrap;gap:6px;';
-                    byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
-                        const chip = document.createElement('span');
-                        chip.className = 'subject-chip';
-                        chip.dataset.id = s.id;
-                        chip.textContent = s.name;
-                        chip.onclick = () => toggleSubject(s.id, s.name, chip);
-                        chipsDiv.appendChild(chip);
-                    });
-                    catDiv.appendChild(chipsDiv);
-                    subjectChips.appendChild(catDiv);
-                });
-            } catch (e) {
-                console.error('Failed to load subjects:', e);
-                subjectChips.innerHTML = '<span style="color:#ff6b6b;">Error loading subjects</span>';
-            }
+        // Junior core subjects
+        const coreSubjects = ['English', 'Mathematics', 'Science', 'History', 'Geography', 'PDHPE', 'Technology', 'Visual Arts', 'Music', 'Drama', 'Languages'];
+        
+        function loadSubjects() {
+            subjectChips.innerHTML = '';
+            coreSubjects.forEach(name => {
+                const chip = document.createElement('span');
+                chip.className = 'subject-chip';
+                chip.textContent = name;
+                chip.onclick = () => {
+                    if (selectedSubjects.has(name)) {
+                        selectedSubjects.delete(name);
+                        chip.classList.remove('selected');
+                    } else {
+                        selectedSubjects.add(name);
+                        chip.classList.add('selected');
+                    }
+                };
+                subjectChips.appendChild(chip);
+            });
         }
         loadSubjects();
-        
-        function toggleSubject(id, name, chip) {
-            if (selectedSubjects.has(id)) {
-                selectedSubjects.delete(id);
-                weakSubjects.delete(id);
-                chip.classList.remove('selected');
-            } else {
-                selectedSubjects.add(id);
-                chip.classList.add('selected');
-            }
-            updateWeakSubjectsUI();
-        }
-        
-        function updateWeakSubjectsUI() {
-            if (selectedSubjects.size === 0) {
-                weakSubjectsDiv.innerHTML = '<span style="color:#71767b;font-size:13px;">Click subjects above first...</span>';
-                return;
-            }
-            weakSubjectsDiv.innerHTML = '';
-            selectedSubjects.forEach(id => {
-                const subj = allSubjects.find(s => s.id === id);
-                if (!subj) return;
-                const tag = document.createElement('span');
-                tag.className = 'tag';
-                tag.style.cursor = 'pointer';
-                tag.style.background = weakSubjects.has(id) ? '#8b3a3a' : '#1d3a5f';
-                tag.innerHTML = `${subj.name} <span class="tag-remove" title="Mark as weak">⚠</span>`;
-                tag.onclick = () => {
-                    if (weakSubjects.has(id)) weakSubjects.delete(id);
-                    else weakSubjects.add(id);
-                    updateWeakSubjectsUI();
-                };
-                weakSubjectsDiv.appendChild(tag);
-            });
-            const hint = document.createElement('span');
-            hint.style = 'color:#71767b;font-size:11px;width:100%;margin-top:4px;';
-            hint.textContent = 'Click a subject to mark it as weak (will get more study time)';
-            weakSubjectsDiv.appendChild(hint);
-        }
         
         function formatResponse(text) {
             let formatted = text
@@ -318,8 +248,7 @@
                 })
                 .replace(/((<tr>.*<\/tr>\s*)+)/g, '<table>$1</table>')
                 .replace(/<tr><td>-+<\/td>.*?<\/tr>/g, '')
-                .replace(/📅|🧠|🔁/g, '</p><h3>$&')
-                .replace(/(📅[^<]*|🧠[^<]*|🔁[^<]*)/g, '$1</h3><p>')
+                .replace(/## (.*)/g, '<h2>$1</h2>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\n\n/g, '</p><p>')
                 .replace(/\n/g, '<br>');
@@ -340,7 +269,7 @@
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'loading';
             loadingDiv.id = 'loadingIndicator';
-            loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Generating timetable...</span>';
+            loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Creating timetable...</span>';
             outputContent.appendChild(loadingDiv);
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
@@ -360,7 +289,7 @@
             showLoading();
             
             try {
-                const response = await fetch(`${API_BASE}/api/chat/timetable`, {
+                const response = await fetch(`${API_BASE}/api/junior-chat/timetable`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ messages: conversationHistory })
@@ -372,7 +301,7 @@
                 addMessage(data.reply, false);
             } catch (error) {
                 hideLoading();
-                addMessage('Error: Unable to generate timetable. Please try again.', false);
+                addMessage('Error: Unable to create timetable. Please try again.', false);
             } finally {
                 isLoading = false;
                 submitBtn.disabled = false;
@@ -392,22 +321,20 @@
             const studyHours = document.getElementById('studyHours').value;
             const preferredTime = document.getElementById('preferredTime').value;
             const startDate = document.getElementById('startDate').value;
-            const deadlines = document.getElementById('deadlines').value;
+            const hardSubjects = document.getElementById('hardSubjects').value;
+            const upcoming = document.getElementById('upcoming').value;
             
-            const subjectNames = Array.from(selectedSubjects).map(id => allSubjects.find(s => s.id === id)?.name).filter(Boolean);
-            const weakNames = Array.from(weakSubjects).map(id => allSubjects.find(s => s.id === id)?.name).filter(Boolean);
-            const strongNames = subjectNames.filter(n => !weakNames.includes(n));
+            const subjectList = Array.from(selectedSubjects).join(', ');
             
             const message = `Year Level: ${yearLevel}
-Subjects: ${subjectNames.join(', ')}
-Weakest Subjects: ${weakNames.length > 0 ? weakNames.join(', ') : 'None specified'}
-Strongest Subjects: ${strongNames.length > 0 ? strongNames.join(', ') : 'All equally balanced'}
-Available Study Time Per Day: ${studyHours} hours
-Preferred Study Time: ${preferredTime}
+Subjects: ${subjectList}
+Hardest Subjects: ${hardSubjects || 'Not specified'}
+Study Time Per Day: ${studyHours}
+Preferred Time: ${preferredTime}
 ${startDate ? `Start Date: ${startDate}` : 'Start Date: This week'}
-Upcoming Exams/Deadlines: ${deadlines || 'HSC trials coming up'}
+Upcoming Tests/Assignments: ${upcoming || 'None specified'}
 
-Please generate a detailed weekly study timetable in a clear table format with specific time slots and subjects.`;
+Please create a weekly study timetable with specific times and subjects.`;
             
             sendMessage(message);
         });
@@ -431,7 +358,7 @@ Please generate a detailed weekly study timetable in a clear table format with s
                 const data = await res.json();
                 
                 if (!data.subscribed) {
-                    window.location.href = '/senior-bot.html';
+                    window.location.href = '/junior-bot.html';
                     return;
                 }
                 

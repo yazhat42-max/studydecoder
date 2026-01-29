@@ -4,605 +4,288 @@
     <link rel="icon" type="image/png" href="logo.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Junior Study Decoder Bot – Study Decoder</title>
+    <title>Junior Study Decoder | Years 7-10</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="shortcut icon" href="logo.png" type="image/png">
     <meta name="msapplication-TileImage" content="logo.png">
-    <meta name="msapplication-TileColor" content="#6C63FF">
-    <meta name="theme-color" content="#6C63FF">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="theme-color" content="#667eea">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .study-decoder {
-            --primary: #6C63FF;
-            --secondary: #2A2A2A;
-            --accent: #FF6584;
-            --light-bg: #F9F9FB;
-            --white: #ffffff;
-            --shadow: 0 4px 20px rgba(0,0,0,0.08);
-            --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
-            --radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .study-decoder * {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        .study-decoder {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light-bg);
-            color: var(--secondary);
-            line-height: 1.6;
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(180deg, #f5f7ff 0%, #e8ecff 100%);
+            min-height: 100vh;
+            color: #2A2A2A;
         }
 
-        .study-decoder .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2%;
+        .back-btn-container {
+            padding: 20px 24px;
         }
 
-        .study-decoder header {
+        .back-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: var(--white);
-            padding: 100px 2% 80px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+
+        .header {
             text-align: center;
-            position: relative;
-            overflow: hidden;
+            padding: 40px 20px 50px;
         }
 
-        .study-decoder header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 600px;
-            height: 600px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            z-index: 0;
-        }
-
-        .study-decoder header h1 {
-            font-size: 3.5rem;
+        .header h1 {
+            font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.1;
-            position: relative;
-            z-index: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
             letter-spacing: -1px;
         }
 
-        .study-decoder header p {
-            font-size: 1.3rem;
-            opacity: 0.95;
-            max-width: 650px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-            font-weight: 300;
-        }
-
-        .study-decoder .header-tagline {
-            font-size: 1.15rem;
-            font-weight: 500;
-            opacity: 0.9;
-            margin-top: 15px;
-            position: relative;
-            z-index: 1;
-            letter-spacing: 0.5px;
-        }
-
-        .study-decoder .intro-section {
-            background: var(--white);
-            padding: 80px 2%;
-            text-align: center;
-        }
-
-        .study-decoder .intro-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .study-decoder .intro-content p {
-            font-size: 1.15rem;
+        .header p {
+            font-size: 1.2rem;
             color: #666;
-            line-height: 1.9;
-            margin-bottom: 20px;
-            font-weight: 300;
-        }
-
-        .study-decoder .bot-section {
-            background: linear-gradient(180deg, #ffffff 0%, #f5f7ff 100%);
-            padding: 60px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .study-decoder .bot-container {
-            max-width: 95vw;
-            width: 100%;
+            max-width: 600px;
             margin: 0 auto;
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid rgba(0, 0, 0, 0.04);
+            line-height: 1.6;
         }
 
-        .study-decoder .bot-iframe {
-            width: 100%;
-            height: 99vh;
-            border: none;
-            display: block;
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 20px;
         }
 
-        .study-decoder .nav-links {
-            background: var(--white);
-            padding: 70px 2%;
+        .tool-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 30px;
             text-align: center;
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .study-decoder .nav-links h3 {
-            font-size: 1.1rem;
-            color: var(--secondary);
-            margin-bottom: 30px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .study-decoder .nav-links-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            justify-content: center;
-            list-style: none;
-        }
-
-        .study-decoder .nav-links-list a {
-            color: var(--primary);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
             text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid transparent;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.15);
+            border-color: #667eea;
+        }
+
+        .tool-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 36px;
+        }
+
+        .tool-card h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2A2A2A;
+            margin-bottom: 12px;
+        }
+
+        .tool-card p {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .tool-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover .tool-cta {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.35);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e8ecff;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 16px;
+            color: #666;
             font-size: 1rem;
         }
 
-        .study-decoder .nav-links-list a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
+        .hidden {
+            display: none !important;
         }
 
-        .study-decoder .nav-links-list a:hover {
-            color: var(--secondary);
-        }
-
-        .study-decoder .nav-links-list a:hover::after {
-            width: 100%;
-        }
-
-        @media (max-width: 1024px) {
-            .study-decoder header h1 {
-                font-size: 2.8rem;
+        @media (max-width: 900px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin: 20px auto 0;
             }
 
-            .study-decoder header p {
-                font-size: 1.1rem;
-            }
-
-            .study-decoder .bot-iframe {
-                height: 700px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .study-decoder header {
-                padding: 80px 2% 60px;
-            }
-
-            .study-decoder header h1 {
+            .header h1 {
                 font-size: 2.2rem;
             }
 
-            .study-decoder header p {
+            .header p {
                 font-size: 1rem;
-            }
-
-            .study-decoder .intro-section {
-                padding: 60px 2%;
-            }
-
-            .study-decoder .bot-section {
-                padding: 40px 2%;
-            }
-
-            .study-decoder .bot-iframe {
-                height: 600px;
-            }
-
-            .study-decoder .nav-links {
-                padding: 50px 2%;
-            }
-
-            .study-decoder .nav-links-list {
-                flex-direction: column;
-                gap: 15px;
             }
         }
 
         @media (max-width: 480px) {
-            .study-decoder header h1 {
+            .header {
+                padding: 30px 16px 40px;
+            }
+
+            .header h1 {
                 font-size: 1.8rem;
             }
 
-            .study-decoder header p {
-                font-size: 0.95rem;
-            }
-
-            .study-decoder .bot-iframe {
-                height: 500px;
+            .tool-card {
+                padding: 30px 24px;
             }
         }
     </style>
-
-<!-- Google Identity Services -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<script>
-    // Replace with your Google Client ID
-    const GOOGLE_CLIENT_ID = '875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com';
-</script>
 </head>
-
 <body>
-<div id="signin-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:linear-gradient(135deg,#667eea 0%,#6C63FF 100%);z-index:9999;display:flex;align-items:center;justify-content:center;">
-    <div style="background:#fff;padding:48px 32px 40px 32px;border-radius:24px;box-shadow:0 8px 40px rgba(108,99,255,0.18);max-width:350px;width:90vw;text-align:center;">
-        <img src="logo.png" alt="Logo" style="width:64px;height:64px;margin-bottom:18px;">
-        <h2 id="signin-title" style="font-size:2rem;font-weight:700;color:#4f8cff;margin-bottom:10px;">Sign up to Continue</h2>
-        <p id="signin-desc" style="font-size:1.1rem;color:#444;margin-bottom:28px;">Please sign up with your Google account to access the Junior Study Decoder Bot.</p>
-        <div id="g_id_onload"
-                 data-client_id="875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com"
-                 data-callback="handleCredentialResponse"
-                 data-auto_prompt="false">
-        </div>
-        <div id="google-signin-btn" style="display:flex;justify-content:center;">
-            <div class="g_id_signin"
-                     data-type="standard"
-                     data-size="large"
-                     data-theme="outline"
-                     data-text="sign_in_with"
-                     data-shape="rectangular"
-                     data-logo_alignment="left">
-            </div>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Checking access...</div>
+    </div>
+
+    <div class="back-btn-container">
+        <a href="index.html" class="back-btn">← Back to Home</a>
+    </div>
+
+    <div class="main-container hidden" id="mainContent">
+        <header class="header">
+            <h1>StudyDecoder Junior</h1>
+            <p>AI-powered study tools for Years 7-10 students. Select a tool below to get started with your learning.</p>
+        </header>
+
+        <div class="tools-grid">
+            <a href="syllabus-jr.html" class="tool-card">
+                <div class="tool-icon">📘</div>
+                <h2>Syllabus Decoder</h2>
+                <p>Understand what you need to learn. Get clear explanations of syllabus topics in plain English.</p>
+                <span class="tool-cta">Open Tool →</span>
+            </a>
+
+            <a href="practice-jr.html" class="tool-card">
+                <div class="tool-icon">✏️</div>
+                <h2>Practice Questions</h2>
+                <p>Generate practice questions matched to your year level and subject. Prepare for tests and exams.</p>
+                <span class="tool-cta">Open Tool →</span>
+            </a>
+
+            <a href="timetable-jr.html" class="tool-card">
+                <div class="tool-icon">📅</div>
+                <h2>Timetable Generator</h2>
+                <p>Create a realistic study schedule that fits your life. Balance your subjects and stay organised.</p>
+                <span class="tool-cta">Open Tool →</span>
+            </a>
         </div>
     </div>
-</div>
-    <div style="width:100%;display:flex;justify-content:flex-start;align-items:center;margin-bottom:10px;">
-        <a href="index.html" style="text-decoration:none;color:#fff;background:#4f8cff;padding:7px 18px;border-radius:8px;font-weight:600;font-size:1.02rem;box-shadow:0 2px 8px rgba(79,140,255,0.10);transition:background 0.2s;">← Back to Home</a>
-    </div>
-<div class="study-decoder" id="bot-content" style="display:none;">
-    <header>
-        <h1>Welcome to Junior Study Decoder</h1>
-        <p style="font-size:1.3rem; margin-top: 18px;">Please select one of the following tools to continue:</p>
-        <div class="main-menu-container">
-            <button class="main-menu-btn" onclick="showSubPage('syllabus')">Syllabus Summary</button>
-            <button class="main-menu-btn" onclick="showSubPage('timetable')">Timetable Generator</button>
-            <button class="main-menu-btn" onclick="showSubPage('practice')">Practice Question Generator</button>
-        </div>
-    </header>
-    <main id="subpage-content" style="display:none;"></main>
-</div>
-<script>
-// Google Sign-In logic (localStorage version for soft launch)
-function handleCredentialResponse(response) {
-    document.getElementById('signin-overlay').style.display = 'none';
-    const user = parseJwt(response.credential);
-    const paidKey = 'juniorbot_paid_' + user.sub;
-    // If user has signed up before, show sign in wording
-    if (localStorage.getItem(paidKey)) {
-        document.getElementById('signin-title').textContent = 'Sign in to Continue';
-        document.getElementById('signin-desc').textContent = 'Please sign in with your Google account to access the Junior Study Decoder Bot.';
-    } else {
-        document.getElementById('signin-title').textContent = 'Sign up to Continue';
-        document.getElementById('signin-desc').textContent = 'Please sign up with your Google account to access the Junior Study Decoder Bot.';
-    }
-    if (localStorage.getItem(paidKey) === 'yes') {
-        document.getElementById('bot-content').style.display = 'block';
-    } else {
-        showPaywall(paidKey);
-    }
-}
 
-function showPaywall(paidKey, errorMsg) {
-    const paywall = document.createElement('div');
-    paywall.id = 'paywall-overlay';
-    paywall.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(245,247,255,0.98);z-index:9998;display:flex;align-items:center;justify-content:center;';
-    paywall.innerHTML = `
-        <div style="background:#fff;padding:48px 32px 40px 32px;border-radius:24px;box-shadow:0 8px 40px rgba(108,99,255,0.18);max-width:370px;width:90vw;text-align:center;">
-            <img src='logo.png' alt='Logo' style='width:54px;height:54px;margin-bottom:18px;'>
-            <h2 style='font-size:2rem;font-weight:700;color:#4f8cff;margin-bottom:10px;'>Unlock Junior Bot</h2>
-            <p style='font-size:1.1rem;color:#444;margin-bottom:28px;'>Choose a plan to access all features:</p>
-            <a href='https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00' target='_blank' style='display:block;margin-bottom:18px;background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:14px 0;border-radius:12px;text-decoration:none;'>Monthly Access</a>
-            <a href='https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02' target='_blank' style='display:block;margin-bottom:24px;background:#4f8cff;color:#fff;font-weight:600;font-size:1.1rem;padding:14px 0;border-radius:12px;text-decoration:none;'>Yearly Access</a>
-            <div style='font-size:0.98rem;color:#666;margin-bottom:18px;'>After payment, return here and click below:</div>
-            <button onclick="localStorage.setItem('` + paidKey + `','yes');document.getElementById('paywall-overlay').remove();document.getElementById('bot-content').style.display='block';" style='background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;'>I've paid, let me in!</button>
-            <button onclick="cancelSubscription()" style='background:#FF6584;color:#fff;font-weight:600;font-size:1.1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;margin-top:12px;'>Cancel Subscription</button>
-            ${errorMsg ? `<div style='color:#d00;margin-top:18px;'>${errorMsg}</div>` : ''}
-        </div>
-    `;
-    document.body.appendChild(paywall);
-}
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
 
-function cancelSubscription() {
-    alert('To cancel your subscription, please contact support or use the Stripe customer portal. (Backend integration coming soon!)');
-}
-    document.body.appendChild(paywall);
-}
-
-// Helper to decode JWT (Google ID token)
-function parseJwt(token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    return JSON.parse(jsonPayload);
-}
-
-function showPaywall(errorMsg) {
-    const paywall = document.createElement('div');
-    paywall.id = 'paywall-overlay';
-    paywall.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(245,247,255,0.98);z-index:9998;display:flex;align-items:center;justify-content:center;';
-    paywall.innerHTML = `
-        <div style="background:#fff;padding:48px 32px 40px 32px;border-radius:24px;box-shadow:0 8px 40px rgba(108,99,255,0.18);max-width:370px;width:90vw;text-align:center;">
-            <img src='logo.png' alt='Logo' style='width:54px;height:54px;margin-bottom:18px;'>
-            <h2 style='font-size:2rem;font-weight:700;color:#4f8cff;margin-bottom:10px;'>Unlock Junior Bot</h2>
-            <p style='font-size:1.1rem;color:#444;margin-bottom:28px;'>Choose a plan to access all features:</p>
-            <a href='https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00' target='_blank' style='display:block;margin-bottom:18px;background:#6C63FF;color:#fff;font-weight:600;font-size:1.1rem;padding:14px 0;border-radius:12px;text-decoration:none;'>Monthly Access</a>
-            <a href='https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02' target='_blank' style='display:block;margin-bottom:24px;background:#4f8cff;color:#fff;font-weight:600;font-size:1.1rem;padding:14px 0;border-radius:12px;text-decoration:none;'>Yearly Access</a>
-            <div style='font-size:0.98rem;color:#666;margin-bottom:18px;'>After payment, return here and sign in with the same Google account you used to pay.</div>
-            ${errorMsg ? `<div style='color:#d00;margin-top:18px;'>${errorMsg}</div>` : ''}
-        </div>
-    `;
-    document.body.appendChild(paywall);
-}
-
-window.onload = function() {
-    // Hide bot content until signed in
-    document.getElementById('bot-content').style.display = 'none';
-    document.getElementById('signin-overlay').style.display = 'flex';
-    // Default to sign up wording
-    document.getElementById('signin-title').textContent = 'Sign up to Continue';
-    document.getElementById('signin-desc').textContent = 'Please sign up with your Google account to access the Junior Study Decoder Bot.';
-};
-
-// After successful payment, switch overlay to sign in wording for future visits
-async function handleCredentialResponse(response) {
-    document.getElementById('signin-overlay').style.display = 'none';
-    try {
-        const res = await fetch('/api/check_payment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_token: response.credential })
-        });
-        const data = await res.json();
-        if (data && data.paid === true) {
-            document.getElementById('bot-content').style.display = 'block';
-        } else {
-            // Switch overlay to sign in for future
-            document.getElementById('signin-title').textContent = 'Sign in to Continue';
-            document.getElementById('signin-desc').textContent = 'Please sign in with your Google account to access the Junior Study Decoder Bot.';
-            showPaywall();
+        // Check subscription status
+        async function checkAccess() {
+            try {
+                const response = await fetch(`${API_BASE}/api/subscription`, { credentials: 'include' });
+                
+                if (!response.ok) {
+                    // Not logged in
+                    window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                    return;
+                }
+                
+                const data = await response.json();
+                
+                if (data.subscribed) {
+                    document.getElementById('loadingOverlay').classList.add('hidden');
+                    document.getElementById('mainContent').classList.remove('hidden');
+                } else {
+                    // Logged in but no subscription - redirect to login for payment
+                    window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                }
+            } catch (error) {
+                console.error('Access check failed:', error);
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+            }
         }
-    } catch (e) {
-        document.getElementById('signin-title').textContent = 'Sign in to Continue';
-        document.getElementById('signin-desc').textContent = 'Please sign in with your Google account to access the Junior Study Decoder Bot.';
-        showPaywall('Error verifying payment. Please try again.');
-    }
-}
-// Hide all subpages by default, only show when selected
-function showSubPage(page) {
-    const main = document.getElementById('subpage-content');
-    let html = '';
-        if (page === 'syllabus') {
-            html = `
-            <div class="bot-header-bar">
-                <a href="index.html">← Back to Home</a>
-                <a href="#" onclick="hideSubPage();return false;">← Back to Junior Bot</a>
-            </div>
-            <div class="bot-main">
-                <div class="bot-title">Syllabus Decoder Bot</div>
-                <div class="bot-desc">Decode syllabus dot points and get instant explanations.</div>
-                <div class="bot-iframe-box">
-                    <iframe src="https://www.chatbase.co/chatbot-iframe/MhoDNlIlP6vClpEulkrdw" allow="clipboard-write"></iframe>
-                </div>
-            </div>
-            `;
-    } else if (page === 'timetable') {
-        html = `
-        <div class="bot-header-bar">
-            <a href="index.html">← Back to Home</a>
-            <a href="#" onclick="hideSubPage();return false;">← Back to Junior Bot</a>
-        </div>
-        <div class="bot-main">
-            <div class="bot-title">Timetable Generator Bot</div>
-            <div class="bot-desc">Generate smart study timetables instantly.</div>
-            <div class="bot-iframe-box">
-                    <iframe src="https://www.chatbase.co/chatbot-iframe/MhoDNlIlP6vClpEulkrdw" allow="clipboard-write"></iframe>
-            </div>
-        </div>
-        `;
-    } else if (page === 'practice') {
-        html = `
-        <div class="bot-header-bar">
-            <a href="index.html">← Back to Home</a>
-            <a href="#" onclick="hideSubPage();return false;">← Back to Junior Bot</a>
-        </div>
-        <div class="bot-main">
-            <div class="bot-title">Practice Question Generator Bot</div>
-            <div class="bot-desc">Get instant practice questions and exam simulations for any subject/module.</div>
-            <div class="bot-iframe-box">
-                    <iframe src="https://www.chatbase.co/chatbot-iframe/MhoDNlIlP6vClpEulkrdw" allow="clipboard-write"></iframe>
-            </div>
-        </div>
-        `;
-    }
-    main.innerHTML = html;
-    main.style.display = 'block';
-    document.querySelector('.main-menu-container').style.display = 'none';
-}
-function hideSubPage() {
-    document.getElementById('subpage-content').style.display = 'none';
-    document.querySelector('.main-menu-container').style.display = 'flex';
-}
-// ...existing code...
-</script>
-<style>
-/* Main menu layout: match screenshot style */
-.main-menu-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 28px;
-    margin: 0 auto;
-    max-width: 420px;
-    width: 100%;
-    padding: 0;
-    position: relative;
-    z-index: 2;
-}
-.main-menu-btn {
-    display: block;
-    width: 100%;
-    max-width: 420px;
-    min-width: 220px;
-    background: linear-gradient(90deg, #6c8cff 0%, #a16ae8 100%);
-    color: #fff;
-    font-size: 2rem;
-    font-weight: 700;
-    padding: 28px 0;
-    border-radius: 22px;
-    text-decoration: none;
-    box-shadow: 0 8px 32px rgba(108,99,255,0.18), 0 2px 8px rgba(79,140,255,0.10);
-    transition: var(--transition);
-    margin: 0;
-    letter-spacing: 1px;
-    border: none;
-    cursor: pointer;
-    text-align: center;
-}
-.main-menu-btn:hover {
-    background: linear-gradient(90deg, #6C63FF 0%, #FF6584 100%);
-    color: #fff;
-    transform: translateY(-6px) scale(1.04);
-    box-shadow: 0 16px 48px rgba(108,99,255,0.22);
-    filter: brightness(1.08);
-}
-@media (max-width: 768px) {
-    .main-menu-container {
-        gap: 14px;
-        max-width: 98vw;
-        padding: 0;
-    }
-    .main-menu-btn {
-        width: 98%;
-        font-size: 1.2rem;
-        padding: 18px 0;
-        border-radius: 14px;
-        max-width: 99vw;
-        min-width: unset;
-    }
-}
-/* Subpage layout styles (copied from attached pages) */
-.bot-header-bar {
-    width: 100vw;
-    background: #fff;
-    box-shadow: 0 2px 12px rgba(79,140,255,0.07);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 32px 14px 32px;
-    z-index: 10;
-}
-.bot-header-bar a {
-    text-decoration: none;
-    color: #fff;
-    background: #4f8cff;
-    padding: 7px 18px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1.02rem;
-    box-shadow: 0 2px 8px rgba(79,140,255,0.10);
-    transition: background 0.2s;
-    margin-right: 12px;
-}
-.bot-header-bar a:last-child {
-    color: #4f8cff;
-    background: transparent;
-    box-shadow: none;
-    margin-right: 0;
-}
-.bot-main {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100vw;
-    height: 100%;
-    padding: 0;
-}
-.bot-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #4f8cff;
-    margin: 2.5rem 0 0.7rem 0;
-    text-align: center;
-    letter-spacing: 0.5px;
-}
-.bot-desc {
-    font-size: 1.25rem;
-    color: #2d3748;
-    margin-bottom: 2.2rem;
-    text-align: center;
-}
-.bot-iframe-box {
-    width: 100vw;
-    max-width: 1200px;
-    height: calc(100vh - 220px);
-    min-height: 600px;
-    border-radius: 22px;
-    overflow: hidden;
-    box-shadow: 0 4px 32px rgba(79,140,255,0.10);
-    background: #f6f7fb;
-    border: 1.5px solid #e2e8f0;
-    margin: 0 auto 2.5rem auto;
-}
-.bot-iframe-box iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    min-height: 600px;
-}
-@media (max-width: 900px) {
-    .bot-title { font-size: 1.7rem; }
-    .bot-desc { font-size: 1.05rem; }
-    .bot-iframe-box { max-width: 99vw; }
-}
-@media (max-width: 600px) {
-    .bot-header-bar { padding: 10px 6px 8px 6px; }
-    .bot-title { margin-top: 1.2rem; }
-    .bot-iframe-box { min-height: 350px; height: 60vh; }
-}
-</style>
+
+        checkAccess();
+    </script>
 </body>
 </html>

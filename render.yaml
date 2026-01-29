@@ -1,0 +1,24 @@
+# Render Build Configuration
+# This file tells Render how to build and run the application
+
+services:
+  - type: web
+    name: studydecoder
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd api && npm install
+    startCommand: cd api && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: GOOGLE_CLIENT_ID
+        value: 875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com
+      - key: FRONTEND_URL
+        value: https://studydecoder.onrender.com
+      - key: STRIPE_SECRET_KEY
+        sync: false  # Set manually in dashboard
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false  # Set manually in dashboard

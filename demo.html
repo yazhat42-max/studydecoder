@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try Study Decoder – Free Demo</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #2A2A2A;
+            --accent: #FF6584;
+            --light-bg: #F9F9FB;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: var(--light-bg); color: var(--secondary); min-height: 100vh; }
+        
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 5%; background: var(--white);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 100;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo img { height: 38px; }
+        .logo span { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+        .nav-right { display: flex; gap: 12px; align-items: center; }
+        .btn {
+            padding: 0.6rem 1.4rem; border-radius: 50px; text-decoration: none;
+            font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: var(--transition); border: none;
+        }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(108,99,255,0.3); }
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
+        .btn-outline:hover { background: var(--primary); color: #fff; }
+        
+        .demo-container {
+            max-width: 1000px; margin: 0 auto; padding: 30px 20px;
+        }
+        .demo-header {
+            text-align: center; margin-bottom: 30px;
+        }
+        .demo-header h1 {
+            font-size: 2.2rem; font-weight: 700; margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .demo-header p { color: #666; font-size: 1.05rem; }
+        
+        .usage-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff; padding: 16px 24px; border-radius: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+        }
+        .usage-left { display: flex; align-items: center; gap: 12px; }
+        .usage-count {
+            background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px;
+            font-weight: 600; font-size: 1.1rem;
+        }
+        .usage-text { font-size: 0.95rem; opacity: 0.95; }
+        .usage-cta { font-size: 0.9rem; }
+        .usage-cta a { color: #fff; font-weight: 600; text-decoration: underline; }
+        
+        .chat-container {
+            background: var(--white); border-radius: var(--radius);
+            box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(0,0,0,0.04);
+        }
+        .chat-messages {
+            height: 400px; overflow-y: auto; padding: 24px;
+            background: linear-gradient(180deg, #fafbff 0%, #fff 100%);
+        }
+        .message { margin-bottom: 20px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .message-user {
+            background: linear-gradient(135deg, var(--primary), #8b7cf7);
+            color: #fff; padding: 14px 18px; border-radius: 16px 16px 4px 16px;
+            margin-left: auto; max-width: 85%; width: fit-content;
+        }
+        .message-bot {
+            background: #f0f2ff; border: 1px solid #e0e4ff;
+            padding: 18px 20px; border-radius: 4px 16px 16px 16px; max-width: 90%;
+        }
+        .message-bot h3 { color: var(--primary); font-size: 14px; margin-bottom: 10px; }
+        .message-bot p { margin-bottom: 10px; line-height: 1.65; color: #444; }
+        .message-bot ul { margin: 8px 0 8px 18px; }
+        .message-bot li { margin-bottom: 6px; color: #555; }
+        .message-bot strong { color: var(--primary); }
+        
+        .signup-hint {
+            background: linear-gradient(135deg, #fff7e6 0%, #fff3db 100%);
+            border: 1px solid #ffe0a3; border-radius: 10px; padding: 14px 18px;
+            margin-top: 16px; display: flex; align-items: center; gap: 10px;
+        }
+        .signup-hint-icon { font-size: 20px; }
+        .signup-hint-text { font-size: 0.9rem; color: #8a6d3b; }
+        .signup-hint-text a { color: var(--primary); font-weight: 600; }
+        
+        .welcome-message {
+            text-align: center; padding: 60px 20px; color: #888;
+        }
+        .welcome-message h2 { font-size: 1.5rem; color: var(--secondary); margin-bottom: 10px; }
+        .welcome-message p { max-width: 400px; margin: 0 auto; }
+        
+        .loading { display: flex; align-items: center; gap: 10px; color: #888; padding: 16px; }
+        .loading-dots { display: flex; gap: 4px; }
+        .loading-dots span {
+            width: 8px; height: 8px; background: var(--primary); border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        
+        .input-panel {
+            background: #fff; border-top: 1px solid #eee; padding: 20px 24px;
+        }
+        .input-form { display: flex; flex-direction: column; gap: 14px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-select {
+            padding: 12px 14px; border: 2px solid #e8e8e8; border-radius: 10px;
+            font-size: 14px; color: var(--secondary); background: #fff;
+            cursor: pointer; transition: var(--transition);
+        }
+        .form-select:focus { outline: none; border-color: var(--primary); }
+        .form-select:disabled { background: #f5f5f5; cursor: not-allowed; opacity: 0.7; }
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary), #8b7cf7);
+            color: #fff; border: none; border-radius: 10px; padding: 14px 24px;
+            font-size: 15px; font-weight: 600; cursor: pointer; transition: var(--transition);
+        }
+        .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,99,255,0.35); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .limit-reached {
+            text-align: center; padding: 40px 20px;
+        }
+        .limit-reached h3 { color: var(--accent); font-size: 1.3rem; margin-bottom: 12px; }
+        .limit-reached p { color: #666; margin-bottom: 20px; }
+        
+        .bonus-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 14px; padding: 20px 24px; margin-top: 24px;
+            color: #fff;
+        }
+        .bonus-section h3 { font-size: 1.1rem; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .bonus-section p { font-size: 0.9rem; opacity: 0.95; margin-bottom: 16px; }
+        .bonus-btn {
+            background: #fff; color: #f5576c; border: none; border-radius: 8px;
+            padding: 12px 24px; font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: var(--transition);
+        }
+        .bonus-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .bonus-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .advisor-panel {
+            background: #fff; border-radius: 12px; padding: 20px;
+            margin-top: 16px; display: none;
+        }
+        .advisor-panel.active { display: block; }
+        .advisor-panel h4 { font-size: 14px; color: var(--secondary); margin-bottom: 12px; }
+        .advisor-textarea {
+            width: 100%; padding: 14px; border: 2px solid #e8e8e8; border-radius: 10px;
+            font-size: 14px; color: var(--secondary); resize: none;
+            font-family: 'Poppins', sans-serif; margin-bottom: 12px;
+        }
+        .advisor-textarea:focus { outline: none; border-color: var(--primary); }
+        .advisor-submit {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #fff; border: none; border-radius: 8px;
+            padding: 12px 24px; font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: var(--transition);
+        }
+        .advisor-submit:hover:not(:disabled) { transform: translateY(-2px); }
+        .advisor-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .advisor-modes {
+            display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
+        }
+        .advisor-mode-btn {
+            flex: 1; min-width: 120px; padding: 10px 12px; border-radius: 8px;
+            border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1);
+            color: #fff; cursor: pointer; transition: var(--transition);
+            font-size: 12px; font-weight: 500; text-align: center;
+        }
+        .advisor-mode-btn:hover { background: rgba(255,255,255,0.2); }
+        .advisor-mode-btn.active {
+            background: #fff; color: #f5576c; border-color: #fff;
+        }
+        .advisor-mode-btn span { display: block; font-weight: 600; margin-bottom: 2px; }
+        .advisor-mode-btn small { font-size: 10px; opacity: 0.9; }
+        
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .usage-banner { flex-direction: column; text-align: center; }
+            .demo-header h1 { font-size: 1.8rem; }
+            .chat-messages { height: 350px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Study Decoder">
+            <span>Study Decoder</span>
+        </a>
+        <div class="nav-right">
+            <a href="index.html" class="btn btn-outline">← Back</a>
+            <a href="index.html#pricing" class="btn btn-primary">Get Full Access</a>
+        </div>
+    </nav>
+
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>Try Study Decoder Free</h1>
+            <p>Experience our AI-powered study tools. Select a subject and get instant help.</p>
+        </div>
+
+        <div class="usage-banner">
+            <div class="usage-left">
+                <div class="usage-count" id="usageCount">3 / 3</div>
+                <div class="usage-text">free tries remaining today</div>
+            </div>
+            <div class="usage-cta">
+                Want unlimited access? <a href="index.html#pricing">Subscribe now →</a>
+            </div>
+        </div>
+
+        <!-- Bonus Subject Advisor Section -->
+        <div class="bonus-section" id="bonusSection">
+            <h3><span>BONUS</span> Subject Selection Advisor</h3>
+            <p>Not sure what subjects to pick for Year 11-12? Get a free personalised recommendation!</p>
+            <button class="bonus-btn" id="bonusBtn" onclick="toggleAdvisorPanel()">Try Subject Advisor</button>
+            <div class="advisor-panel" id="advisorPanel">
+                <h4>Select an advisor mode:</h4>
+                <div class="advisor-modes">
+                    <button class="advisor-mode-btn active" data-mode="selection" onclick="setAdvisorMode('selection')">
+                        <span>Subject Selection</span>
+                        <small>HSC subject recommendations</small>
+                    </button>
+                    <button class="advisor-mode-btn" data-mode="bridging" onclick="setAdvisorMode('bridging')">
+                        <span>Pathway Bridging</span>
+                        <small>Junior → Senior connections</small>
+                    </button>
+                    <button class="advisor-mode-btn" data-mode="pathway" onclick="setAdvisorMode('pathway')">
+                        <span>ATAR vs Non-ATAR</span>
+                        <small>Compare pathways</small>
+                    </button>
+                </div>
+                <textarea class="advisor-textarea" id="advisorInput" rows="4" placeholder="Example: I'm in Year 10, good at Maths (85%) and Science (80%), interested in engineering, planning to do ATAR. Current electives: IST and Commerce."></textarea>
+                <button class="advisor-submit" id="advisorSubmit" onclick="submitAdvisorRequest()">Get Advice</button>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    <h2>Welcome to the Demo</h2>
+                    <p>Select a subject and tool below to see Study Decoder in action. You have 3 free tries per day, plus 1 bonus Subject Advisor request!</p>
+                </div>
+            </div>
+
+            <div class="input-panel" id="inputPanel">
+                <form class="input-form" id="demoForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Year Level</label>
+                            <select class="form-select" id="yearLevel" required>
+                                <option value="">Select year...</option>
+                                <option value="Year 7">Year 7</option>
+                                <option value="Year 8">Year 8</option>
+                                <option value="Year 9">Year 9</option>
+                                <option value="Year 10">Year 10</option>
+                                <option value="Year 11">Year 11 (HSC)</option>
+                                <option value="Year 12">Year 12 (HSC)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Subject</label>
+                            <select class="form-select" id="subject" required>
+                                <option value="">Select subject...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Tool</label>
+                            <select class="form-select" id="tool" required>
+                                <option value="">Select tool...</option>
+                                <option value="syllabus">Syllabus Decoder</option>
+                                <option value="practice">Practice Questions</option>
+                                <option value="timetable">Study Timetable</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Topic (Optional)</label>
+                            <select class="form-select" id="topic">
+                                <option value="">Any topic</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">Generate Preview</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
+        
+        // Subject lists
+        const juniorSubjects = [
+            { id: 'english-7-10', name: 'English' },
+            { id: 'mathematics-7-10', name: 'Mathematics' },
+            { id: 'science-7-10', name: 'Science' }
+        ];
+        
+        const hscSubjects = [
+            { id: 'biology', name: 'Biology' },
+            { id: 'chemistry', name: 'Chemistry' },
+            { id: 'physics', name: 'Physics' },
+            { id: 'mathematics-advanced', name: 'Mathematics Advanced' },
+            { id: 'mathematics-standard', name: 'Mathematics Standard' },
+            { id: 'english-advanced', name: 'English Advanced' },
+            { id: 'english-standard', name: 'English Standard' },
+            { id: 'modern-history', name: 'Modern History' },
+            { id: 'ancient-history', name: 'Ancient History' },
+            { id: 'legal-studies', name: 'Legal Studies' },
+            { id: 'economics', name: 'Economics' },
+            { id: 'business-studies', name: 'Business Studies' },
+            { id: 'pdhpe', name: 'PDHPE' },
+            { id: 'software-engineering', name: 'Software Engineering' }
+        ];
+        
+        const topicsBySubject = {
+            'biology': ['Cells', 'Heredity', 'Genetics', 'Evolution', 'Ecosystems'],
+            'chemistry': ['Chemical Bonding', 'Acids and Bases', 'Organic Chemistry', 'Equilibrium'],
+            'physics': ['Mechanics', 'Waves', 'Electricity', 'Magnetism', 'Thermodynamics'],
+            'mathematics-advanced': ['Calculus', 'Trigonometry', 'Statistics', 'Functions'],
+            'english-advanced': ['Textual Analysis', 'Module A', 'Module B', 'Module C'],
+            'modern-history': ['World War I', 'World War II', 'Cold War', 'National Studies'],
+            'english-7-10': ['Persuasive Writing', 'Narratives', 'Poetry', 'Film Study'],
+            'mathematics-7-10': ['Algebra', 'Geometry', 'Statistics', 'Fractions'],
+            'science-7-10': ['Cells', 'Forces', 'Chemical Reactions', 'Ecosystems']
+        };
+        
+        let usedSubjects = JSON.parse(localStorage.getItem('demoUsedSubjects') || '[]');
+        let lastResetDate = localStorage.getItem('demoResetDate');
+        let advisorUsed = localStorage.getItem('demoAdvisorUsed') === 'true';
+        let currentAdvisorMode = 'selection';
+        
+        // Reset daily
+        const today = new Date().toDateString();
+        if (lastResetDate !== today) {
+            usedSubjects = [];
+            advisorUsed = false;
+            localStorage.setItem('demoUsedSubjects', '[]');
+            localStorage.setItem('demoAdvisorUsed', 'false');
+            localStorage.setItem('demoResetDate', today);
+        }
+        
+        const advisorPlaceholders = {
+            selection: "Example: I'm in Year 10, good at Maths (85%) and Science (80%), interested in engineering, planning to do ATAR. Current electives: IST and Commerce.",
+            bridging: "Example: I'm taking Year 10 Maths and Science. What senior subjects can I do? Do I need specific marks for Physics?",
+            pathway: "Example: What's the difference between ATAR and non-ATAR? I'm good at hands-on work but struggle with exams."
+        };
+        
+        function setAdvisorMode(mode) {
+            currentAdvisorMode = mode;
+            document.querySelectorAll('.advisor-mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+            document.getElementById('advisorInput').placeholder = advisorPlaceholders[mode];
+        }
+        
+        function toggleAdvisorPanel() {
+            if (advisorUsed) {
+                alert('You have already used your free Subject Advisor request today. Subscribe for unlimited access!');
+                return;
+            }
+            const panel = document.getElementById('advisorPanel');
+            panel.classList.toggle('active');
+        }
+        
+        async function submitAdvisorRequest() {
+            if (advisorUsed) {
+                alert('You have already used your free Subject Advisor request today.');
+                return;
+            }
+            
+            const input = document.getElementById('advisorInput');
+            const message = input.value.trim();
+            if (!message) {
+                alert('Please describe your situation first.');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('advisorSubmit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Generating...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/demo-advisor`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, mode: currentAdvisorMode })
+                });
+                
+                if (!response.ok) throw new Error('Request failed');
+                
+                const data = await response.json();
+                
+                // Mark as used
+                advisorUsed = true;
+                localStorage.setItem('demoAdvisorUsed', 'true');
+                
+                // Show response in chat
+                const welcome = chatMessages.querySelector('.welcome-message');
+                if (welcome) welcome.remove();
+                
+                const modeNames = { selection: 'Subject Selection', bridging: 'Pathway Bridging', pathway: 'ATAR vs Non-ATAR' };
+                addMessage(`${modeNames[currentAdvisorMode]}: ${message}`, true);
+                addMessage(data.reply, false);
+                
+                // Update bonus section
+                document.getElementById('bonusSection').innerHTML = `
+                    <h3>Subject Advisor Used</h3>
+                    <p>You've used your free Subject Advisor request. Subscribe for unlimited access to all 3 advisor modes!</p>
+                    <a href="index.html#pricing" class="bonus-btn" style="text-decoration:none;display:inline-block;">Get Full Access</a>
+                `;
+                
+            } catch (error) {
+                addMessage('Unable to get a response. Please check your connection and try again.', false);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Get Advice';
+            }
+        }
+        
+        // Check if advisor already used
+        if (advisorUsed) {
+            document.getElementById('bonusSection').innerHTML = `
+                <h3>Subject Advisor Used</h3>
+                <p>You've used your free Subject Advisor request today. Subscribe for unlimited access!</p>
+                <a href="index.html#pricing" class="bonus-btn" style="text-decoration:none;display:inline-block;">Get Full Access</a>
+            `;
+        }
+        
+        const yearSelect = document.getElementById('yearLevel');
+        const subjectSelect = document.getElementById('subject');
+        const topicSelect = document.getElementById('topic');
+        const toolSelect = document.getElementById('tool');
+        const form = document.getElementById('demoForm');
+        const chatMessages = document.getElementById('chatMessages');
+        const submitBtn = document.getElementById('submitBtn');
+        const usageCount = document.getElementById('usageCount');
+        
+        function updateUsageDisplay() {
+            const remaining = 3 - usedSubjects.length;
+            usageCount.textContent = `${remaining} / 3`;
+            
+            if (remaining <= 0) {
+                document.getElementById('inputPanel').innerHTML = `
+                    <div class="limit-reached">
+                        <h3>🎯 Daily Limit Reached</h3>
+                        <p>You've used all 3 free tries for today. Subscribe for unlimited access to all Study Decoder tools!</p>
+                        <a href="index.html#pricing" class="btn btn-primary" style="display:inline-block;margin-top:8px;">Get Unlimited Access →</a>
+                    </div>
+                `;
+            }
+        }
+        
+        updateUsageDisplay();
+        
+        // Update subjects based on year level
+        yearSelect.addEventListener('change', () => {
+            const year = yearSelect.value;
+            const isHSC = year === 'Year 11' || year === 'Year 12';
+            const subjects = isHSC ? hscSubjects : juniorSubjects;
+            
+            subjectSelect.innerHTML = '<option value="">Select subject...</option>';
+            subjects.forEach(s => {
+                if (!usedSubjects.includes(s.id)) {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    subjectSelect.appendChild(opt);
+                }
+            });
+            
+            topicSelect.innerHTML = '<option value="">Any topic</option>';
+        });
+        
+        // Update topics based on subject
+        subjectSelect.addEventListener('change', () => {
+            const subjectId = subjectSelect.value;
+            const topics = topicsBySubject[subjectId] || [];
+            
+            topicSelect.innerHTML = '<option value="">Any topic</option>';
+            topics.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t;
+                opt.textContent = t;
+                topicSelect.appendChild(opt);
+            });
+        });
+        
+        function formatResponse(text) {
+            return text
+                .replace(/## (.*)/g, '<h3>$1</h3>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/^\- (.*)/gm, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+        }
+        
+        function addMessage(content, isUser = false) {
+            const welcome = chatMessages.querySelector('.welcome-message');
+            if (welcome) welcome.remove();
+            
+            const div = document.createElement('div');
+            div.className = `message ${isUser ? 'message-user' : 'message-bot'}`;
+            
+            if (isUser) {
+                div.textContent = content;
+            } else {
+                div.innerHTML = `<p>${formatResponse(content)}</p>`;
+                
+                // Add signup hint after bot response
+                const hint = document.createElement('div');
+                hint.className = 'signup-hint';
+                hint.innerHTML = `
+                    <span class="signup-hint-icon">💡</span>
+                    <span class="signup-hint-text">This is a preview. <a href="index.html#pricing">Subscribe</a> for full, detailed responses and unlimited access.</span>
+                `;
+                div.appendChild(hint);
+            }
+            
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function showLoading() {
+            const div = document.createElement('div');
+            div.className = 'loading';
+            div.id = 'loadingIndicator';
+            div.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Generating preview...</span>';
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function hideLoading() {
+            const loading = document.getElementById('loadingIndicator');
+            if (loading) loading.remove();
+        }
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const yearLevel = yearSelect.value;
+            const subjectId = subjectSelect.value;
+            const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
+            const tool = toolSelect.value;
+            const topic = topicSelect.value;
+            
+            if (!yearLevel || !subjectId || !tool) {
+                alert('Please select year level, subject, and tool.');
+                return;
+            }
+            
+            // Check if already used this subject
+            if (usedSubjects.includes(subjectId)) {
+                alert('You have already used this subject today. Try a different subject or subscribe for unlimited access.');
+                return;
+            }
+            
+            // Mark subject as used
+            usedSubjects.push(subjectId);
+            localStorage.setItem('demoUsedSubjects', JSON.stringify(usedSubjects));
+            updateUsageDisplay();
+            
+            // Remove subject from dropdown
+            const opt = subjectSelect.querySelector(`option[value="${subjectId}"]`);
+            if (opt) opt.remove();
+            subjectSelect.value = '';
+            
+            // Build user message
+            const toolNames = { syllabus: 'Syllabus Decoder', practice: 'Practice Questions', timetable: 'Study Timetable' };
+            const userMsg = `${toolNames[tool]} for ${subjectName} (${yearLevel})${topic ? ` - ${topic}` : ''}`;
+            addMessage(userMsg, true);
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Generating...';
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/demo`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        yearLevel,
+                        subject: subjectId,
+                        subjectName,
+                        tool,
+                        topic
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Request failed');
+                
+                const data = await response.json();
+                hideLoading();
+                addMessage(data.reply, false);
+                
+            } catch (error) {
+                hideLoading();
+                addMessage('Unable to get a response. Please check your connection and try again.', false);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Generate Preview';
+            }
+        });
+        
+    </script>
+</body>
+</html>

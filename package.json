@@ -1,0 +1,12 @@
+{
+  "name": "study-decoder",
+  "version": "2.0.0",
+  "description": "Study Decoder - AI-powered study assistance platform",
+  "scripts": {
+    "start": "cd api && node server.js",
+    "postinstall": "cd api && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
