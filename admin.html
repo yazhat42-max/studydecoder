@@ -1210,6 +1210,8 @@
             output.innerHTML = '<div style="text-align: center; color: #00ff00;">⏳ Entering the Matrix...</div>';
             
             let totalSize = 0;
+            let loadedCount = 0;
+            let failedFiles = [];
             const select = document.getElementById('binaryFileSelect');
             select.innerHTML = '<option value="">Select a file...</option><option value="__ALL__">🔥 ALL FILES (Warning: Large!)</option>';
             
@@ -1220,23 +1222,36 @@
                         const text = await res.text();
                         websiteFiles[file] = text;
                         totalSize += text.length;
+                        loadedCount++;
                         
                         const option = document.createElement('option');
                         option.value = file;
                         option.textContent = `${file} (${(text.length / 1024).toFixed(1)} KB)`;
                         select.appendChild(option);
+                    } else {
+                        failedFiles.push(file + ' (' + res.status + ')');
                     }
                 } catch (e) {
-                    console.log('Could not load: ' + file);
+                    failedFiles.push(file + ' (error)');
+                    console.log('Could not load: ' + file, e);
                 }
             }
             
             document.getElementById('binarySize').textContent = `${(totalSize / 1024).toFixed(1)} KB | ${totalSize.toLocaleString()} characters | ~${(totalSize * 8).toLocaleString()} bits`;
             
             binaryLoaded = true;
+            
+            let statusMsg = loadedCount > 0 
+                ? `✅ Matrix loaded successfully! (${loadedCount} files)`
+                : '❌ No files could be loaded';
+            
+            if (failedFiles.length > 0) {
+                statusMsg += `<br><span style="color: #ff6600; font-size: 0.8rem;">Failed: ${failedFiles.join(', ')}</span>`;
+            }
+            
             output.innerHTML = `
                 <div style="text-align: center; padding: 30px; color: #00ff00;">
-                    ✅ Matrix loaded successfully!<br><br>
+                    ${statusMsg}<br><br>
                     <span style="color: #00aa00;">Select a file from the dropdown above to view its binary code.</span><br><br>
                     <span style="font-size: 1.5rem;">01001000 01100101 01101100 01101100 01101111</span><br>
                     <span style="color: #008800; font-size: 0.8rem;">(That's "Hello" in binary)</span>
@@ -1285,7 +1300,9 @@
         
         function toggleBinaryView() {
             const section = document.getElementById('binarySection');
-            if (section.style.display === 'none') {
+            const isHidden = !section || section.style.display === 'none' || getComputedStyle(section).display === 'none';
+            
+            if (isHidden) {
                 section.style.display = 'block';
                 if (!binaryLoaded) {
                     loadAllFiles();

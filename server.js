@@ -980,7 +980,12 @@ app.post('/api/logout', (req, res) => {
             console.error('Logout error:', err);
             return res.status(500).json({ error: 'Logout failed' });
         }
-        res.clearCookie('studydecoder.sid');
+        // Clear cookie with matching options
+        res.clearCookie('studydecoder.sid', {
+            secure: !config.isDev,
+            httpOnly: true,
+            sameSite: config.isDev ? 'lax' : 'strict'
+        });
         res.json({ success: true });
     });
 });
