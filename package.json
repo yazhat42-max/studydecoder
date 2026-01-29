@@ -2,9 +2,20 @@
   "name": "study-decoder",
   "version": "2.0.0",
   "description": "Study Decoder - AI-powered study assistance platform",
+  "main": "server.js",
   "scripts": {
-    "start": "cd api && node server.js",
-    "postinstall": "cd api && npm install"
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-session": "^1.17.3",
+    "helmet": "^7.1.0",
+    "session-file-store": "^1.5.0",
+    "stripe": "^14.14.0"
   },
   "engines": {
     "node": ">=18.0.0"
