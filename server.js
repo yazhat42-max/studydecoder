@@ -2833,8 +2833,8 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
 });
 
 // ==================== STATIC FILES (after API routes) ====================
-// Serve static files from parent directory
-app.use(express.static(path.join(__dirname, '..'), {
+// Serve static files from current directory
+app.use(express.static(__dirname, {
     maxAge: config.isDev ? 0 : '1d',
     etag: true
 }));
@@ -2845,7 +2845,7 @@ app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api/')) {
         return next();
     }
-    res.sendFile(path.join(__dirname, '..', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // ==================== ERROR HANDLING ====================
