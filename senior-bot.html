@@ -426,11 +426,15 @@ function showPaywall(user) {
             </div>
             
             <div style='font-size:0.95rem;color:#666;margin-bottom:16px;'>After payment, click below to activate:</div>
-            <button id="activateBtn" onclick="verifyAndActivate()" style='background:#10b981;color:#fff;font-weight:600;font-size:1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;margin-bottom:16px;transition:background 0.2s;'>✓ I've Paid - Activate Now</button>
-            <button onclick="logout()" style='background:#f1f5f9;color:#64748b;font-weight:500;font-size:0.9rem;padding:10px 0;width:100%;border:none;border-radius:8px;cursor:pointer;'>Sign Out</button>
+            <button id="activateBtn" style='background:#10b981;color:#fff;font-weight:600;font-size:1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;margin-bottom:16px;transition:background 0.2s;'>✓ I've Paid - Activate Now</button>
+            <button id="logoutBtn" style='background:#f1f5f9;color:#64748b;font-weight:500;font-size:0.9rem;padding:10px 0;width:100%;border:none;border-radius:8px;cursor:pointer;'>Sign Out</button>
         </div>
     `;
     document.body.appendChild(paywall);
+    
+    // Attach event listeners (CSP-safe, no inline handlers)
+    document.getElementById('activateBtn').addEventListener('click', verifyAndActivate);
+    document.getElementById('logoutBtn').addEventListener('click', logout);
 }
 
 async function verifyAndActivate() {
