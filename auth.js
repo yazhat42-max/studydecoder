@@ -71,6 +71,39 @@ const StudyDecoderAuth = {
         window.location.href = '/login.html';
     },
     
+    // Verify payment and activate subscription
+    async verifyPayment() {
+        const btn = document.getElementById('sd-activate-btn');
+        if (!btn) return;
+        
+        const originalText = btn.textContent;
+        btn.textContent = '⏳ Verifying...';
+        btn.disabled = true;
+        
+        try {
+            const res = await fetch('/api/verify-payment', { 
+                method: 'POST', 
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            
+            const data = await res.json();
+            
+            if (data.success && data.subscribed) {
+                btn.textContent = '✅ Activated!';
+                setTimeout(() => window.location.reload(), 1000);
+            } else {
+                alert(data.message || 'No payment found. Please complete payment first, then click this button.');
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        } catch (e) {
+            alert('Error verifying payment. Please try again.');
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+    },
+    
     // Get role badge HTML
     getRoleBadge(role) {
         switch (role) {
@@ -92,10 +125,10 @@ const StudyDecoderAuth = {
                     <h2>Unlock Full Access</h2>
                     <p class="sd-paywall-greeting">Hey <strong>${user?.name || user?.email || 'there'}</strong>! 👋</p>
                     <p class="sd-paywall-desc">Subscribe to access all Study Decoder tools.</p>
-                    <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="sd-paywall-btn sd-btn-primary">Monthly - $9.99/mo</a>
-                    <a href="https://buy.stripe.com/9B6dR89oV5IYaiKghZ7Vm01" target="_blank" class="sd-paywall-btn sd-btn-secondary">Yearly - $79.99/yr (Save 33%)</a>
+                    <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="sd-paywall-btn sd-btn-primary">Monthly - $5/mo</a>
+                    <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" class="sd-paywall-btn sd-btn-secondary">Yearly - $30/yr (Save 50%)</a>
                     <p class="sd-paywall-note">After payment, click below to activate:</p>
-                    <button onclick="window.location.reload()" class="sd-paywall-btn sd-btn-success">✓ I've Paid - Activate Now</button>
+                    <button onclick="StudyDecoderAuth.verifyPayment()" class="sd-paywall-btn sd-btn-success" id="sd-activate-btn">✓ I've Paid - Activate Now</button>
                     <button onclick="StudyDecoderAuth.logout()" class="sd-paywall-btn sd-btn-outline">Sign Out</button>
                 </div>
             </div>

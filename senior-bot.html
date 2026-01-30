@@ -402,12 +402,12 @@ function showPaywall(user) {
             <p style='font-size:1rem;color:#666;margin-bottom:28px;'>Subscribe to access all Study Decoder tools.</p>
             
             <a href='https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00' target='_blank' style='display:block;margin-bottom:14px;background:#6C63FF;color:#fff;font-weight:600;font-size:1.05rem;padding:14px 0;border-radius:12px;text-decoration:none;transition:transform 0.2s;'>
-                📅 Monthly - $8/month
+                📅 Monthly - $5/month
             </a>
             <a href='https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02' target='_blank' style='display:block;margin-bottom:8px;background:linear-gradient(135deg,#6C63FF,#8b5cf6);color:#fff;font-weight:600;font-size:1.05rem;padding:14px 0;border-radius:12px;text-decoration:none;transition:transform 0.2s;border:2px solid #6C63FF;'>
-                ⭐ Yearly - $60/year <span style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:6px;font-size:0.85rem;margin-left:8px;">Save 37%</span>
+                ⭐ Yearly - $30/year <span style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:6px;font-size:0.85rem;margin-left:8px;">Save 50%</span>
             </a>
-            <p style='font-size:0.8rem;color:#888;margin-bottom:20px;'>That's only $5/month - 4 months free!</p>
+            <p style='font-size:0.8rem;color:#888;margin-bottom:20px;'>That's only $2.50/month - 6 months free!</p>
             
             <!-- Trust Badges -->
             <div style='display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:20px;padding:12px;background:#f8fafc;border-radius:10px;'>
@@ -426,11 +426,45 @@ function showPaywall(user) {
             </div>
             
             <div style='font-size:0.95rem;color:#666;margin-bottom:16px;'>After payment, click below to activate:</div>
-            <button onclick="window.location.reload()" style='background:#10b981;color:#fff;font-weight:600;font-size:1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;margin-bottom:16px;transition:background 0.2s;'>✓ I've Paid - Activate Now</button>
+            <button id="activateBtn" onclick="verifyAndActivate()" style='background:#10b981;color:#fff;font-weight:600;font-size:1rem;padding:12px 0;width:100%;border:none;border-radius:10px;cursor:pointer;margin-bottom:16px;transition:background 0.2s;'>✓ I've Paid - Activate Now</button>
             <button onclick="logout()" style='background:#f1f5f9;color:#64748b;font-weight:500;font-size:0.9rem;padding:10px 0;width:100%;border:none;border-radius:8px;cursor:pointer;'>Sign Out</button>
         </div>
     `;
     document.body.appendChild(paywall);
+}
+
+async function verifyAndActivate() {
+    const btn = document.getElementById('activateBtn');
+    const originalText = btn.textContent;
+    btn.textContent = '⏳ Verifying...';
+    btn.disabled = true;
+    btn.style.background = '#9ca3af';
+    
+    try {
+        const res = await fetch('/api/verify-payment', { 
+            method: 'POST', 
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        const data = await res.json();
+        
+        if (data.success && data.subscribed) {
+            btn.textContent = '✅ Activated!';
+            btn.style.background = '#10b981';
+            setTimeout(() => window.location.reload(), 1000);
+        } else {
+            alert(data.message || 'No payment found. Please complete payment first, then click this button.');
+            btn.textContent = originalText;
+            btn.disabled = false;
+            btn.style.background = '#10b981';
+        }
+    } catch (e) {
+        alert('Error verifying payment. Please try again.');
+        btn.textContent = originalText;
+        btn.disabled = false;
+        btn.style.background = '#10b981';
+    }
 }
 
 async function logout() {

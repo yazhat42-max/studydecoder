@@ -1082,6 +1082,123 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
 });
 
 /**
+ * POST /api/verify-payment
+ * Verify payment with Stripe and activate subscription
+ */
+app.post('/api/verify-payment', requireAuth, async (req, res) => {
+    try {
+        const user = req.user;
+        
+        // First check if already subscribed
+        if (user.subscribed && user.expiresAt && new Date(user.expiresAt) > new Date()) {
+            return res.json({ 
+                success: true, 
+                subscribed: true, 
+                plan: user.plan,
+                message: 'Already subscribed!' 
+            });
+        }
+        
+        if (!stripe) {
+            return res.status(500).json({ error: 'Payment system unavailable' });
+        }
+        
+        // Search for Stripe customer by email
+        const customers = await stripe.customers.list({
+            email: user.email,
+            limit: 1
+        });
+        
+        if (customers.data.length === 0) {
+            return res.json({ 
+                success: false, 
+                subscribed: false,
+                message: 'No payment found for this email. Please complete payment first.' 
+            });
+        }
+        
+        const customer = customers.data[0];
+        
+        // Check for active subscriptions
+        const subscriptions = await stripe.subscriptions.list({
+            customer: customer.id,
+            status: 'active',
+            limit: 10
+        });
+        
+        if (subscriptions.data.length > 0) {
+            const sub = subscriptions.data[0];
+            const plan = sub.items.data[0]?.price?.recurring?.interval === 'year' ? 'yearly' : 'monthly';
+            const expiresAt = new Date(sub.current_period_end * 1000).toISOString();
+            
+            // Activate subscription in our DB
+            upsertUser(user.userId, {
+                subscribed: true,
+                plan: plan,
+                stripeCustomerId: customer.id,
+                stripeSubscriptionId: sub.id,
+                subscribedAt: new Date().toISOString(),
+                expiresAt: expiresAt
+            });
+            
+            console.log(`✅ Payment verified and activated for ${user.email} - ${plan}`);
+            
+            return res.json({ 
+                success: true, 
+                subscribed: true,
+                plan: plan,
+                expiresAt: expiresAt,
+                message: 'Payment verified! Subscription activated.' 
+            });
+        }
+        
+        // Check for completed checkout sessions (one-time or recent)
+        const sessions = await stripe.checkout.sessions.list({
+            customer: customer.id,
+            limit: 10
+        });
+        
+        const completedSession = sessions.data.find(s => s.payment_status === 'paid');
+        if (completedSession) {
+            const plan = completedSession.metadata?.plan || 'monthly';
+            const expiration = new Date();
+            if (plan === 'yearly') {
+                expiration.setFullYear(expiration.getFullYear() + 1);
+            } else {
+                expiration.setMonth(expiration.getMonth() + 1);
+            }
+            
+            upsertUser(user.userId, {
+                subscribed: true,
+                plan: plan,
+                stripeCustomerId: customer.id,
+                subscribedAt: new Date().toISOString(),
+                expiresAt: expiration.toISOString()
+            });
+            
+            console.log(`✅ Checkout payment verified for ${user.email} - ${plan}`);
+            
+            return res.json({ 
+                success: true, 
+                subscribed: true,
+                plan: plan,
+                message: 'Payment verified! Subscription activated.' 
+            });
+        }
+        
+        return res.json({ 
+            success: false, 
+            subscribed: false,
+            message: 'No active subscription or payment found. Please complete payment first.' 
+        });
+        
+    } catch (error) {
+        console.error('Verify payment error:', error);
+        res.status(500).json({ error: 'Failed to verify payment. Please try again.' });
+    }
+});
+
+/**
  * POST /api/subscribe
  * Manual subscription activation (for legacy checkout links)
  */
