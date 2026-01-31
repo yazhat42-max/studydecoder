@@ -291,6 +291,8 @@ const corsOptions = {
             'http://127.0.0.1:3001',
             'http://127.0.0.1:5500',
             'https://studydecoder.onrender.com',
+            'https://www.studydecoder.com.au',
+            'https://studydecoder.com.au',
             config.frontendUrl
         ].filter(Boolean);
         
@@ -1158,7 +1160,10 @@ app.post('/api/verify-payment', requireAuth, async (req, res) => {
             limit: 10
         });
         
-        const completedSession = sessions.data.find(s => s.payment_status === 'paid');
+        // payment_status can be 'paid' OR 'no_payment_required' (for 100% coupons)
+        const completedSession = sessions.data.find(s => 
+            s.payment_status === 'paid' || s.payment_status === 'no_payment_required'
+        );
         if (completedSession) {
             const plan = completedSession.metadata?.plan || 'monthly';
             const expiration = new Date();
