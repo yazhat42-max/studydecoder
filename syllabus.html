@@ -161,6 +161,10 @@
                                 <option value="">Select subject first...</option>
                             </select>
                         </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">📝 Specific Dot Point (Optional)</label>
+                            <textarea class="form-textarea" id="dotpoint" placeholder="Leave blank to decode the entire topic, or paste a specific syllabus dot point for focused decoding..."></textarea>
+                        </div>
                     </div>
                     <button type="submit" class="submit-btn" id="submitBtn">Decode Syllabus</button>
                 </form>
@@ -617,7 +621,16 @@
             const subjectId = document.getElementById('subject').value;
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
             const topic = topicSelect.options[topicSelect.selectedIndex].text;
-            const message = `Subject: ${subjectName}\nTopic: ${topic}\n\nPlease decode this topic from the syllabus. Explain what I need to know and how it appears in exams.`;
+            const dotpoint = document.getElementById('dotpoint').value.trim();
+            
+            let message;
+            if (dotpoint) {
+                // User provided a specific dot point
+                message = `Subject: ${subjectName}\nTopic: ${topic}\nSpecific Dot Point: ${dotpoint}\n\nPlease decode this specific syllabus dot point. Explain what I need to know and how it appears in exams.`;
+            } else {
+                // User only provided subject and topic - decode entire topic
+                message = `Subject: ${subjectName}\nTopic: ${topic}\n\nPlease decode this entire topic/module from the syllabus. Give me an overview of the key concepts, what I need to know, and how this topic appears in exams.`;
+            }
             sendMessage(message, subjectId);
         });
 

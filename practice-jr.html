@@ -156,7 +156,7 @@
                         <div class="form-group">
                             <label class="form-label">Subject</label>
                             <select class="form-select" id="subject" required>
-                                <option value="">Loading...</option>
+                                <option value="">Select subject...</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -170,7 +170,9 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Topic</label>
-                            <input type="text" class="form-input" id="topic" placeholder="e.g., Fractions, Ecosystems..." required>
+                            <select class="form-select" id="topic" required>
+                                <option value="">Select subject first...</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Difficulty</label>
@@ -230,6 +232,38 @@
             });
         }
         loadSubjects();
+        
+        // Topics for junior subjects
+        const subjectTopics = {
+            'english-7-10': ['Reading and Comprehension', 'Creative Writing', 'Persuasive Writing', 'Essay Writing', 'Poetry Analysis', 'Novel Study', 'Film Study', 'Grammar and Punctuation', 'Speaking and Listening'],
+            'mathematics-7-10': ['Integers', 'Fractions and Decimals', 'Ratios and Rates', 'Percentages', 'Algebra - Equations', 'Linear Relationships', 'Measurement - Area and Volume', 'Geometry - Angles and Shapes', 'Statistics and Graphs', 'Probability', 'Trigonometry'],
+            'science-7-10': ['Cells and Living Things', 'Body Systems', 'Ecosystems', 'Classification', 'Forces and Motion', 'Energy', 'Waves and Sound', 'Electricity', 'Elements and Compounds', 'Chemical Reactions', 'Atoms and Particles', 'Rocks and Minerals', 'Earth Systems', 'Space and the Universe']
+        };
+        
+        const topicSelect = document.getElementById('topic');
+        
+        subjectSelect.addEventListener('change', () => {
+            const subjectId = subjectSelect.value;
+            topicSelect.innerHTML = '';
+            
+            if (!subjectId) {
+                topicSelect.innerHTML = '<option value="">Select subject first...</option>';
+                return;
+            }
+            
+            const topics = subjectTopics[subjectId];
+            if (topics && topics.length > 0) {
+                topicSelect.innerHTML = '<option value="">Select a topic...</option>';
+                topics.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t;
+                    opt.textContent = t;
+                    topicSelect.appendChild(opt);
+                });
+            } else {
+                topicSelect.innerHTML = '<option value="All Topics">All Topics</option>';
+            }
+        });
         
         function formatResponse(text) {
             return text
@@ -299,9 +333,11 @@
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const subjectId = document.getElementById('subject').value;
+            if (!subjectId) { alert('Please select a subject.'); return; }
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
             const yearLevel = document.getElementById('yearLevel').value;
-            const topic = document.getElementById('topic').value;
+            const topic = topicSelect.options[topicSelect.selectedIndex]?.text || 'All Topics';
+            if (!topic || topic === 'Select subject first...' || topic === 'Select a topic...') { alert('Please select a topic.'); return; }
             const difficulty = document.getElementById('difficulty').value;
             const numQuestions = document.getElementById('numQuestions').value;
             const includeAnswers = document.getElementById('includeAnswers').checked;

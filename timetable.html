@@ -199,14 +199,16 @@
                             <input type="date" class="form-input" id="startDate">
                         </div>
                         <div class="form-group full-width">
-                            <label class="form-label">📘 Your HSC Subjects (click to select)</label>
-                            <div class="subject-chips" id="subjectChips">Loading subjects...</div>
+                            <label class="form-label">📘 Your HSC Subjects (hold Ctrl/Cmd to select multiple)</label>
+                            <select class="form-select" id="subjectSelect" multiple style="min-height: 150px;">
+                                <option value="">Loading subjects...</option>
+                            </select>
                         </div>
                         <div class="form-group half-width">
-                            <label class="form-label">📉 Weakest Subjects (select from above)</label>
-                            <div id="weakSubjects" class="tag-input-container">
-                                <span style="color:#71767b;font-size:13px;">Click subjects above first...</span>
-                            </div>
+                            <label class="form-label">📉 Weakest Subject</label>
+                            <select class="form-select" id="weakSubject">
+                                <option value="">Select your weakest subject...</option>
+                            </select>
                         </div>
                         <div class="form-group half-width">
                             <label class="form-label">📅 Upcoming Exams/Deadlines</label>
@@ -222,19 +224,16 @@
         const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
         let conversationHistory = [];
         let isLoading = false;
-        let allSubjects = [];
-        let selectedSubjects = new Set();
-        let weakSubjects = new Set();
         
         const form = document.getElementById('inputForm');
         const outputContent = document.getElementById('outputContent');
         const outputPanel = document.getElementById('outputPanel');
         const submitBtn = document.getElementById('submitBtn');
-        const subjectChips = document.getElementById('subjectChips');
-        const weakSubjectsDiv = document.getElementById('weakSubjects');
+        const subjectSelect = document.getElementById('subjectSelect');
+        const weakSubjectSelect = document.getElementById('weakSubject');
         
         // Hardcoded HSC subjects (grouped by category)
-        allSubjects = [
+        const allSubjects = [
             { id: 'agriculture', name: 'Agriculture', category: 'TAS' },
             { id: 'ancient-history', name: 'Ancient History', category: 'HSIE' },
             { id: 'biology', name: 'Biology', category: 'Science' },
@@ -277,7 +276,7 @@
             { id: 'visual-arts', name: 'Visual Arts', category: 'Creative Arts' }
         ];
         
-        // Populate subject chips
+        // Populate subject dropdowns
         function loadSubjects() {
             const byCategory = {};
             allSubjects.forEach(s => {
@@ -285,65 +284,35 @@
                 byCategory[s.category].push(s);
             });
             
-            subjectChips.innerHTML = '';
+            // Populate main subject multi-select
+            subjectSelect.innerHTML = '';
             Object.keys(byCategory).sort().forEach(cat => {
-                const catDiv = document.createElement('div');
-                catDiv.style = 'width:100%;margin-top:8px;';
-                catDiv.innerHTML = `<div style="color:#4f8cff;font-size:11px;font-weight:600;margin-bottom:4px;">${cat}</div>`;
-                const chipsDiv = document.createElement('div');
-                chipsDiv.style = 'display:flex;flex-wrap:wrap;gap:6px;';
+                const group = document.createElement('optgroup');
+                group.label = cat;
                 byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
-                    const chip = document.createElement('span');
-                    chip.className = 'subject-chip';
-                    chip.dataset.id = s.id;
-                    chip.textContent = s.name;
-                    chip.onclick = () => toggleSubject(s.id, s.name, chip);
-                    chipsDiv.appendChild(chip);
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    group.appendChild(opt);
                 });
-                catDiv.appendChild(chipsDiv);
-                subjectChips.appendChild(catDiv);
+                subjectSelect.appendChild(group);
+            });
+            
+            // Populate weak subject dropdown
+            weakSubjectSelect.innerHTML = '<option value="">Select your weakest subject...</option>';
+            Object.keys(byCategory).sort().forEach(cat => {
+                const group = document.createElement('optgroup');
+                group.label = cat;
+                byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    group.appendChild(opt);
+                });
+                weakSubjectSelect.appendChild(group);
             });
         }
         loadSubjects();
-        
-        function toggleSubject(id, name, chip) {
-            if (selectedSubjects.has(id)) {
-                selectedSubjects.delete(id);
-                weakSubjects.delete(id);
-                chip.classList.remove('selected');
-            } else {
-                selectedSubjects.add(id);
-                chip.classList.add('selected');
-            }
-            updateWeakSubjectsUI();
-        }
-        
-        function updateWeakSubjectsUI() {
-            if (selectedSubjects.size === 0) {
-                weakSubjectsDiv.innerHTML = '<span style="color:#71767b;font-size:13px;">Click subjects above first...</span>';
-                return;
-            }
-            weakSubjectsDiv.innerHTML = '';
-            selectedSubjects.forEach(id => {
-                const subj = allSubjects.find(s => s.id === id);
-                if (!subj) return;
-                const tag = document.createElement('span');
-                tag.className = 'tag';
-                tag.style.cursor = 'pointer';
-                tag.style.background = weakSubjects.has(id) ? '#8b3a3a' : '#1d3a5f';
-                tag.innerHTML = `${subj.name} <span class="tag-remove" title="Mark as weak">⚠</span>`;
-                tag.onclick = () => {
-                    if (weakSubjects.has(id)) weakSubjects.delete(id);
-                    else weakSubjects.add(id);
-                    updateWeakSubjectsUI();
-                };
-                weakSubjectsDiv.appendChild(tag);
-            });
-            const hint = document.createElement('span');
-            hint.style = 'color:#71767b;font-size:11px;width:100%;margin-top:4px;';
-            hint.textContent = 'Click a subject to mark it as weak (will get more study time)';
-            weakSubjectsDiv.appendChild(hint);
-        }
         
         function formatResponse(text) {
             let formatted = text
@@ -418,10 +387,15 @@
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            if (selectedSubjects.size === 0) {
+            // Get selected subjects from multi-select
+            const selectedOptions = Array.from(subjectSelect.selectedOptions);
+            if (selectedOptions.length === 0) {
                 alert('Please select at least one subject');
                 return;
             }
+            
+            const subjectNames = selectedOptions.map(opt => opt.text);
+            const weakSubject = weakSubjectSelect.options[weakSubjectSelect.selectedIndex]?.text;
             
             const yearLevel = document.getElementById('yearLevel').value;
             const studyHours = document.getElementById('studyHours').value;
@@ -429,14 +403,9 @@
             const startDate = document.getElementById('startDate').value;
             const deadlines = document.getElementById('deadlines').value;
             
-            const subjectNames = Array.from(selectedSubjects).map(id => allSubjects.find(s => s.id === id)?.name).filter(Boolean);
-            const weakNames = Array.from(weakSubjects).map(id => allSubjects.find(s => s.id === id)?.name).filter(Boolean);
-            const strongNames = subjectNames.filter(n => !weakNames.includes(n));
-            
             const message = `Year Level: ${yearLevel}
 Subjects: ${subjectNames.join(', ')}
-Weakest Subjects: ${weakNames.length > 0 ? weakNames.join(', ') : 'None specified'}
-Strongest Subjects: ${strongNames.length > 0 ? strongNames.join(', ') : 'All equally balanced'}
+Weakest Subject: ${weakSubject && weakSubject !== 'Select your weakest subject...' ? weakSubject : 'None specified'}
 Available Study Time Per Day: ${studyHours} hours
 Preferred Study Time: ${preferredTime}
 ${startDate ? `Start Date: ${startDate}` : 'Start Date: This week'}
