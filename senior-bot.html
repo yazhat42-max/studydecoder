@@ -336,6 +336,109 @@
             .tool-card {
                 padding: 30px 24px;
             }
+            
+            .back-btn-container {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start !important;
+            }
+        }
+        
+        /* Subscription Modal */
+        .sub-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .sub-modal {
+            background: #fff;
+            padding: 32px;
+            border-radius: 20px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .sub-modal h2 {
+            color: #2A2A2A;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+        }
+        
+        .sub-modal p {
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        
+        .sub-modal-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+        
+        .sub-modal-btn-cancel {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #fff;
+        }
+        
+        .sub-modal-btn-cancel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+        }
+        
+        .sub-modal-btn-close {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        
+        .sub-modal-btn-close:hover {
+            background: #e2e8f0;
+        }
+        
+        .sub-info {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .sub-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .sub-info-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .sub-info-label {
+            color: #64748b;
+        }
+        
+        .sub-info-value {
+            color: #2A2A2A;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -344,11 +447,36 @@
         <div class="spinner"></div>
         <div class="loading-text">Checking access...</div>
     </div>
+    
+    <!-- Subscription Management Modal -->
+    <div class="sub-modal-overlay hidden" id="subModalOverlay" onclick="closeSubModal(event)">
+        <div class="sub-modal" onclick="event.stopPropagation()">
+            <h2>⚙️ Manage Subscription</h2>
+            <div class="sub-info" id="subInfo">
+                <div class="sub-info-row">
+                    <span class="sub-info-label">Plan</span>
+                    <span class="sub-info-value" id="subPlan">-</span>
+                </div>
+                <div class="sub-info-row">
+                    <span class="sub-info-label">Status</span>
+                    <span class="sub-info-value" id="subStatus">-</span>
+                </div>
+                <div class="sub-info-row">
+                    <span class="sub-info-label">Expires</span>
+                    <span class="sub-info-value" id="subExpires">-</span>
+                </div>
+            </div>
+            <p>Cancelling will stop auto-renewal. You'll keep access until your current period ends.</p>
+            <button class="sub-modal-btn sub-modal-btn-cancel" id="cancelSubBtn" onclick="cancelSubscription()">Cancel Subscription</button>
+            <button class="sub-modal-btn sub-modal-btn-close" onclick="closeSubModal()">Close</button>
+        </div>
+    </div>
 
     <div id="paywallOverlay" class="paywall-overlay hidden"></div>
 
-    <div class="back-btn-container hidden" id="backBtnContainer">
+    <div class="back-btn-container hidden" id="backBtnContainer" style="display: flex; justify-content: space-between; align-items: center;">
         <a href="index.html" class="back-btn">← Back to Home</a>
+        <button id="manageSubBtn" class="back-btn" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); display: none;" onclick="showManageSubscription()">⚙️ Manage Subscription</button>
     </div>
 
     <div class="main-container hidden" id="mainContent">
@@ -406,6 +534,17 @@
                     document.getElementById('loadingOverlay').classList.add('hidden');
                     document.getElementById('backBtnContainer').classList.remove('hidden');
                     document.getElementById('mainContent').classList.remove('hidden');
+                    
+                    // Show manage subscription button for subscribed users (not owner/og_tester)
+                    if (data.subscribed && data.role !== 'owner' && data.role !== 'og_tester') {
+                        document.getElementById('manageSubBtn').style.display = 'inline-block';
+                        // Store subscription data for modal
+                        window.currentSubData = {
+                            plan: data.plan || 'monthly',
+                            expiresAt: data.expiresAt,
+                            subscribed: data.subscribed
+                        };
+                    }
                 } else {
                     document.getElementById('loadingOverlay').classList.add('hidden');
                     showPaywall(data);
@@ -413,6 +552,74 @@
             } catch (error) {
                 console.error('Auth error:', error);
                 window.location.href = '/login.html';
+            }
+        }
+        
+        function showManageSubscription() {
+            const modal = document.getElementById('subModalOverlay');
+            modal.classList.remove('hidden');
+            
+            // Populate subscription info
+            if (window.currentSubData) {
+                document.getElementById('subPlan').textContent = window.currentSubData.plan === 'yearly' ? 'Yearly ($30/year)' : 'Monthly ($5/month)';
+                document.getElementById('subStatus').textContent = 'Active';
+                document.getElementById('subStatus').style.color = '#10b981';
+                
+                if (window.currentSubData.expiresAt) {
+                    const expDate = new Date(window.currentSubData.expiresAt);
+                    document.getElementById('subExpires').textContent = expDate.toLocaleDateString('en-AU', { 
+                        day: 'numeric', 
+                        month: 'long', 
+                        year: 'numeric' 
+                    });
+                } else {
+                    document.getElementById('subExpires').textContent = 'N/A';
+                }
+            }
+        }
+        
+        function closeSubModal(event) {
+            if (!event || event.target === document.getElementById('subModalOverlay')) {
+                document.getElementById('subModalOverlay').classList.add('hidden');
+            }
+        }
+        
+        async function cancelSubscription() {
+            const btn = document.getElementById('cancelSubBtn');
+            
+            if (!confirm('Are you sure you want to cancel your subscription? You will keep access until your current billing period ends.')) {
+                return;
+            }
+            
+            btn.textContent = 'Cancelling...';
+            btn.disabled = true;
+            
+            try {
+                const res = await fetch(API_BASE + '/api/cancel', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    btn.textContent = '✓ Cancelled';
+                    btn.style.background = '#64748b';
+                    document.getElementById('subStatus').textContent = 'Cancelled (access until period ends)';
+                    document.getElementById('subStatus').style.color = '#f59e0b';
+                    
+                    setTimeout(() => {
+                        closeSubModal();
+                        alert('Your subscription has been cancelled. You will retain access until the end of your current billing period.');
+                    }, 500);
+                } else {
+                    throw new Error(data.error || 'Failed to cancel');
+                }
+            } catch (e) {
+                alert('Error cancelling subscription. Please try again or contact support.');
+                btn.textContent = 'Cancel Subscription';
+                btn.disabled = false;
             }
         }
 
