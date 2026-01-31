@@ -235,9 +235,21 @@
         
         async function loadSubjects() {
             try {
-                const response = await fetch(`${API_BASE}/api/subjects`);
+                const response = await fetch(`${API_BASE}/api/subjects`, {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    console.error('Failed to load subjects:', response.status);
+                    subjectChips.innerHTML = '<span style="color:#ff6b6b;">Error loading subjects</span>';
+                    return;
+                }
                 const data = await response.json();
-                allSubjects = data.subjects;
+                allSubjects = data.subjects || [];
+                
+                if (allSubjects.length === 0) {
+                    subjectChips.innerHTML = '<span style="color:#ff6b6b;">No subjects available</span>';
+                    return;
+                }
                 
                 // Group by category
                 const byCategory = {};

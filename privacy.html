@@ -214,20 +214,21 @@
 
     <section class="content-section">
         <div class="last-updated">
-            <strong>Last Updated:</strong> January 2025
+            <strong>Last Updated:</strong> January 2026
         </div>
 
         <h2>1. Introduction</h2>
-        <p>Study Decoder ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our educational platform.</p>
+        <p>Study Decoder ("we", "our", or "us") is committed to protecting your privacy in accordance with the <strong>Australian Privacy Act 1988 (Cth)</strong> and the <strong>Australian Privacy Principles (APPs)</strong>. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our educational platform.</p>
+        <p>Study Decoder operates from New South Wales, Australia, and complies with all applicable state and federal privacy legislation.</p>
 
         <h2>2. Information We Collect</h2>
         
-        <h3 style="font-size: 1.1rem; margin: 20px 0 10px;">Personal Information</h3>
+        <h3 style="font-size: 1.1rem; margin: 20px 0 10px;">Personal Information (APP 3)</h3>
         <p>When you create an account, we may collect:</p>
         <ul>
             <li>Name and email address</li>
             <li>Google account information (if using Google Sign-In)</li>
-            <li>Payment information (processed securely by Stripe)</li>
+            <li>Payment information (processed securely by Stripe - we do not store card details)</li>
             <li>School year level and subject preferences</li>
         </ul>
 
@@ -235,12 +236,12 @@
         <p>We automatically collect:</p>
         <ul>
             <li>Device and browser information</li>
-            <li>IP address and general location</li>
+            <li>IP address and general location (not precise location)</li>
             <li>Pages visited and features used</li>
             <li>Study session data and interactions with AI tools</li>
         </ul>
 
-        <h2>3. How We Use Your Information</h2>
+        <h2>3. How We Use Your Information (APP 6)</h2>
         <p>We use the collected information to:</p>
         <ul>
             <li>Provide and improve our educational services</li>
@@ -248,63 +249,84 @@
             <li>Process payments and manage subscriptions</li>
             <li>Send important account notifications</li>
             <li>Analyze usage patterns to improve our platform</li>
-            <li>Comply with legal obligations</li>
+            <li>Comply with legal obligations under Australian law</li>
         </ul>
 
         <div class="highlight-box">
-            <strong>Important:</strong> We do NOT sell your personal information to third parties. Your data is used solely to provide and improve our educational services.
+            <strong>Important:</strong> We do NOT sell your personal information to third parties. Your data is used solely to provide and improve our educational services. This is in compliance with APP 6 (use and disclosure of personal information).
         </div>
 
-        <h2>4. Data Storage and Security</h2>
-        <p>We implement industry-standard security measures to protect your information, including:</p>
+        <h2>4. Data Storage and Security (APP 11)</h2>
+        <p>We implement industry-standard security measures to protect your information, as required by APP 11, including:</p>
         <ul>
-            <li>Encrypted data transmission (HTTPS/SSL)</li>
-            <li>Secure password hashing</li>
-            <li>Regular security audits</li>
-            <li>Limited employee access to personal data</li>
+            <li>Encrypted data transmission (HTTPS/TLS 1.3)</li>
+            <li>Secure password hashing (bcrypt with high cost factor)</li>
+            <li>Rate limiting to prevent brute force attacks</li>
+            <li>Content Security Policy (CSP) headers</li>
+            <li>Regular security assessments</li>
+            <li>Limited access to personal data on a need-to-know basis</li>
         </ul>
-        <p>While we strive to protect your information, no method of transmission over the Internet is 100% secure. We cannot guarantee absolute security.</p>
+        <p>Data is stored on secure servers. While we strive to protect your information using industry best practices, no method of transmission over the Internet is 100% secure.</p>
 
-        <h2>5. Third-Party Services</h2>
+        <h2>5. Third-Party Services & Overseas Disclosure (APP 8)</h2>
         <p>We use trusted third-party services that may have access to your information:</p>
         <ul>
-            <li><strong>Google Sign-In:</strong> For authentication (subject to Google's Privacy Policy)</li>
-            <li><strong>Stripe:</strong> For payment processing (subject to Stripe's Privacy Policy)</li>
-            <li><strong>OpenAI:</strong> For AI-powered study tools (conversations are not stored permanently)</li>
+            <li><strong>Google Sign-In:</strong> For authentication (US-based, subject to Google's Privacy Policy)</li>
+            <li><strong>Stripe:</strong> For payment processing (US-based, PCI-DSS compliant, subject to Stripe's Privacy Policy)</li>
+            <li><strong>OpenAI:</strong> For AI-powered study tools (US-based - conversations are processed but not permanently stored)</li>
+            <li><strong>Render:</strong> For web hosting (US-based, SOC 2 Type II certified)</li>
         </ul>
+        <p>By using Study Decoder, you consent to the transfer of your data to these overseas service providers. We ensure these providers offer comparable privacy protections through contractual agreements.</p>
 
         <h2>6. Cookies</h2>
-        <p>We use cookies and similar technologies to:</p>
+        <p>We use essential cookies for:</p>
         <ul>
-            <li>Keep you logged in</li>
-            <li>Remember your preferences</li>
-            <li>Analyze site traffic and usage</li>
+            <li>Keeping you logged in (session management)</li>
+            <li>Security tokens</li>
         </ul>
-        <p>You can control cookies through your browser settings, though some features may not work properly without them.</p>
+        <p>We do not use third-party tracking or advertising cookies. You can control cookies through your browser settings, though some features may not work properly without essential cookies.</p>
 
-        <h2>7. Your Rights</h2>
-        <p>Depending on your location, you may have the right to:</p>
+        <h2>7. Your Rights Under Australian Privacy Law (APP 12 & 13)</h2>
+        <p>Under the Australian Privacy Act, you have the right to:</p>
         <ul>
-            <li>Access the personal information we hold about you</li>
-            <li>Request correction of inaccurate data</li>
-            <li>Request deletion of your data</li>
-            <li>Withdraw consent for data processing</li>
-            <li>Export your data in a portable format</li>
+            <li><strong>Access:</strong> Request access to the personal information we hold about you (APP 12)</li>
+            <li><strong>Correction:</strong> Request correction of inaccurate, out-of-date, incomplete, irrelevant, or misleading information (APP 13)</li>
+            <li><strong>Deletion:</strong> Request deletion of your account and associated data</li>
+            <li><strong>Complaint:</strong> Lodge a complaint with the Office of the Australian Information Commissioner (OAIC) if you believe we have breached the APPs</li>
         </ul>
-        <p>To exercise these rights, please contact us at the email below.</p>
+        <p>To exercise these rights, please contact us at the email below. We will respond within 30 days as required by law.</p>
 
         <h2>8. Children's Privacy</h2>
-        <p>Study Decoder is designed for students of all ages. For users under 13, we recommend parental supervision. We do not knowingly collect personal information from children under 13 without parental consent.</p>
+        <p>Study Decoder is designed for students including those under 18. We take extra care with data from minors:</p>
+        <ul>
+            <li>For users under 13, we recommend parental supervision</li>
+            <li>We collect only information necessary for the educational service</li>
+            <li>We do not knowingly collect sensitive information from children</li>
+            <li>Parents/guardians may request access to or deletion of their child's data</li>
+        </ul>
 
         <h2>9. Data Retention</h2>
-        <p>We retain your personal information for as long as your account is active or as needed to provide services. You may request deletion of your account and associated data at any time.</p>
+        <p>We retain your personal information for as long as your account is active or as needed to provide services. After account deletion:</p>
+        <ul>
+            <li>Account data is deleted within 30 days</li>
+            <li>Payment records are retained for 7 years (Australian tax law requirement)</li>
+            <li>Anonymized usage data may be retained for analytics</li>
+        </ul>
 
-        <h2>10. Changes to This Policy</h2>
+        <h2>10. Data Breach Notification</h2>
+        <p>In accordance with the Notifiable Data Breaches (NDB) scheme under the Privacy Act, we will notify you and the OAIC if a data breach is likely to result in serious harm to any individual whose personal information is involved.</p>
+
+        <h2>11. Changes to This Policy</h2>
         <p>We may update this Privacy Policy periodically. We will notify you of significant changes via email or through a notice on our platform. Continued use after changes constitutes acceptance.</p>
 
-        <h2>11. Contact Us</h2>
-        <p>If you have questions or concerns about this Privacy Policy, please contact us:</p>
+        <h2>12. Contact Us & Complaints</h2>
+        <p>If you have questions, concerns, or wish to make a complaint about this Privacy Policy or our handling of your personal information:</p>
         <p><strong>Email:</strong> <a href="mailto:studydecoder@gmail.com">studydecoder@gmail.com</a></p>
+        <p style="margin-top: 15px;">If you are not satisfied with our response, you may lodge a complaint with the <strong>Office of the Australian Information Commissioner (OAIC)</strong>:</p>
+        <ul>
+            <li>Website: <a href="https://www.oaic.gov.au" target="_blank">www.oaic.gov.au</a></li>
+            <li>Phone: 1300 363 992</li>
+        </ul>
     </section>
 
     <footer>

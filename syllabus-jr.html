@@ -151,7 +151,7 @@
             <div class="input-panel">
                 <form class="input-form" id="inputForm">
                     <div class="form-title">Decode Your Syllabus</div>
-                    <div class="form-grid">
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
                         <div class="form-group">
                             <label class="form-label">Subject</label>
                             <select class="form-select" id="subject" required>
@@ -170,10 +170,6 @@
                         <div class="form-group">
                             <label class="form-label">Topic</label>
                             <input type="text" class="form-input" id="topic" placeholder="e.g., Algebra, Cells, Persuasive Writing..." required>
-                        </div>
-                        <div class="form-group full-width">
-                            <label class="form-label">What do you need explained?</label>
-                            <textarea class="form-textarea" id="question" placeholder="Describe what you're trying to understand from the syllabus..." required></textarea>
                         </div>
                     </div>
                     <button type="submit" class="submit-btn" id="submitBtn">Decode</button>
@@ -195,9 +191,22 @@
         
         async function loadSubjects() {
             try {
-                const response = await fetch(`${API_BASE}/api/junior-subjects`);
+                const response = await fetch(`${API_BASE}/api/junior-subjects`, {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    console.error('Failed to load subjects:', response.status);
+                    subjectSelect.innerHTML = '<option value="">Error loading</option>';
+                    return;
+                }
                 const data = await response.json();
-                subjects = data.subjects;
+                subjects = data.subjects || [];
+                
+                if (subjects.length === 0) {
+                    subjectSelect.innerHTML = '<option value="">No subjects available</option>';
+                    return;
+                }
+                
                 subjectSelect.innerHTML = '<option value="">Select subject...</option>';
                 subjects.forEach(s => {
                     const opt = document.createElement('option');
@@ -282,10 +291,9 @@
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
             const yearLevel = document.getElementById('yearLevel').value;
             const topic = document.getElementById('topic').value;
-            const question = document.getElementById('question').value;
-            const message = `Subject: ${subjectName}\nYear Level: ${yearLevel}\nTopic: ${topic}\n\n${question}`;
+            const message = `Subject: ${subjectName}\nYear Level: ${yearLevel}\nTopic: ${topic}\n\nPlease explain this topic from the syllabus in simple terms. What do I need to know?`;
             sendMessage(message, subjectId);
-            document.getElementById('question').value = '';
+            document.getElementById('topic').value = '';
         });
 
         // =====================

@@ -214,9 +214,22 @@
         
         async function loadSubjects() {
             try {
-                const response = await fetch(`${API_BASE}/api/junior-subjects`);
+                const response = await fetch(`${API_BASE}/api/junior-subjects`, {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    console.error('Failed to load subjects:', response.status);
+                    subjectSelect.innerHTML = '<option value="">Error loading</option>';
+                    return;
+                }
                 const data = await response.json();
-                subjects = data.subjects;
+                subjects = data.subjects || [];
+                
+                if (subjects.length === 0) {
+                    subjectSelect.innerHTML = '<option value="">No subjects available</option>';
+                    return;
+                }
+                
                 subjectSelect.innerHTML = '<option value="">Select subject...</option>';
                 subjects.forEach(s => {
                     const opt = document.createElement('option');
@@ -226,6 +239,7 @@
                 });
             } catch (e) {
                 console.error('Failed to load subjects:', e);
+                subjectSelect.innerHTML = '<option value="">Error loading</option>';
             }
         }
         loadSubjects();

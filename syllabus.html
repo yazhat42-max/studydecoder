@@ -141,14 +141,14 @@
                 <div class="output-content" id="outputContent">
                     <div class="welcome-message">
                         <h2>Syllabus Decoder</h2>
-                        <p>Select your NSW HSC subject, enter a syllabus dot point, and get a clear breakdown of what you need to know and how it appears in exams.</p>
+                        <p>Select your subject and topic to get a clear breakdown of what you need to know and how it appears in exams.</p>
                     </div>
                 </div>
             </div>
             <div class="input-panel">
                 <form class="input-form" id="inputForm">
                     <div class="form-title">Decode a Syllabus</div>
-                    <div class="form-grid">
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
                         <div class="form-group">
                             <label class="form-label">📘 Subject</label>
                             <select class="form-select" id="subject" required>
@@ -158,10 +158,6 @@
                         <div class="form-group">
                             <label class="form-label">📚 Topic/Module</label>
                             <input type="text" class="form-input" id="topic" placeholder="e.g., Module 5: Heredity, Macbeth, Calculus..." required>
-                        </div>
-                        <div class="form-group full-width">
-                            <label class="form-label">📄 Paste Syllabus Dot Point</label>
-                            <textarea class="form-textarea" id="syllabusPoint" placeholder="Paste the exact syllabus dot point here (e.g., 'explain the relationship between the structure and function of...')" required></textarea>
                         </div>
                     </div>
                     <button type="submit" class="submit-btn" id="submitBtn">Decode Syllabus</button>
@@ -184,9 +180,21 @@
         // Load subjects from API
         async function loadSubjects() {
             try {
-                const response = await fetch(`${API_BASE}/api/subjects`);
+                const response = await fetch(`${API_BASE}/api/subjects`, {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    console.error('Failed to load subjects:', response.status);
+                    subjectSelect.innerHTML = '<option value="">Error loading subjects</option>';
+                    return;
+                }
                 const data = await response.json();
-                subjects = data.subjects;
+                subjects = data.subjects || [];
+                
+                if (subjects.length === 0) {
+                    subjectSelect.innerHTML = '<option value="">No subjects available</option>';
+                    return;
+                }
                 
                 // Group by category
                 const byCategory = {};
@@ -285,10 +293,9 @@
             const subjectId = document.getElementById('subject').value;
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
             const topic = document.getElementById('topic').value;
-            const syllabusPoint = document.getElementById('syllabusPoint').value;
-            const message = `Subject: ${subjectName}\nTopic: ${topic}\nSyllabus Dot Point: ${syllabusPoint}`;
+            const message = `Subject: ${subjectName}\nTopic: ${topic}\n\nPlease decode this topic from the syllabus. Explain what I need to know and how it appears in exams.`;
             sendMessage(message, subjectId);
-            document.getElementById('syllabusPoint').value = '';
+            document.getElementById('topic').value = '';
         });
 
         // =====================

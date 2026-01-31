@@ -326,9 +326,23 @@
         
         async function loadSubjects() {
             try {
-                const response = await fetch(`${API_BASE}/api/subjects`);
+                const response = await fetch(`${API_BASE}/api/subjects`, {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    console.error('Failed to load subjects:', response.status);
+                    return;
+                }
                 const data = await response.json();
-                subjects = data.subjects;
+                subjects = data.subjects || [];
+                
+                if (subjects.length === 0) {
+                    [subjectSelect, examSubjectSelect, feedbackSubjectSelect].forEach(sel => {
+                        sel.innerHTML = '<option value="">No subjects available</option>';
+                    });
+                    return;
+                }
+                
                 const byCategory = {};
                 subjects.forEach(s => {
                     if (!byCategory[s.category]) byCategory[s.category] = [];

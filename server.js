@@ -245,7 +245,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Security headers
+// Security headers (Australian Cyber Security Centre recommendations)
 app.use(helmet({
     contentSecurityPolicy: config.isDev ? false : {
         directives: {
@@ -256,10 +256,21 @@ app.use(helmet({
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
             imgSrc: ["'self'", "data:", "https:"],
             connectSrc: ["'self'", "https://accounts.google.com", "https://oauth2.googleapis.com", "https://api.stripe.com"],
-            frameSrc: ["https://accounts.google.com", "https://js.stripe.com"]
+            frameSrc: ["https://accounts.google.com", "https://js.stripe.com"],
+            upgradeInsecureRequests: [] // Force HTTPS
         }
     },
-    crossOriginEmbedderPolicy: false
+    crossOriginEmbedderPolicy: false,
+    // Additional security headers for Australian compliance
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    hsts: {
+        maxAge: 31536000, // 1 year
+        includeSubDomains: true,
+        preload: true
+    },
+    noSniff: true, // X-Content-Type-Options: nosniff
+    xssFilter: true, // X-XSS-Protection
+    frameguard: { action: 'deny' } // X-Frame-Options: DENY (prevent clickjacking)
 }));
 
 // Rate limiting
@@ -530,6 +541,19 @@ function requireAuth(req, res, next) {
  */
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+/**
+ * Sanitize user input to prevent XSS
+ * Strips HTML tags and encodes special characters
+ */
+function sanitizeInput(input) {
+    if (typeof input !== 'string') return input;
+    return input
+        .replace(/[<>]/g, '') // Remove angle brackets
+        .replace(/javascript:/gi, '') // Remove javascript: protocol
+        .replace(/on\w+=/gi, '') // Remove inline event handlers
+        .trim();
 }
 
 /**
@@ -1612,12 +1636,18 @@ const SUBJECTS_FILE = path.join(SYLLABUSES_PATH, 'subjects.json');
 const JUNIOR_SUBJECTS_FILE = path.join(SYLLABUSES_PATH, 'junior-subjects.json');
 const PAST_PAPERS_FILE = path.join(SYLLABUSES_PATH, 'past-papers.json');
 
+console.log(`📁 Looking for syllabuses in: ${SYLLABUSES_PATH}`);
+console.log(`📁 Subjects file: ${SUBJECTS_FILE}`);
+console.log(`📁 Subjects file exists: ${fs.existsSync(SUBJECTS_FILE)}`);
+
 // Load subjects configuration (Senior - HSC)
 let subjectsConfig = { subjects: [], categories: [] };
 try {
     if (fs.existsSync(SUBJECTS_FILE)) {
         subjectsConfig = JSON.parse(fs.readFileSync(SUBJECTS_FILE, 'utf8'));
         console.log(`📚 Loaded ${subjectsConfig.subjects.length} HSC subjects`);
+    } else {
+        console.error(`❌ Subjects file not found: ${SUBJECTS_FILE}`);
     }
 } catch (e) {
     console.error('Error loading HSC subjects config:', e.message);
@@ -1629,6 +1659,8 @@ try {
     if (fs.existsSync(JUNIOR_SUBJECTS_FILE)) {
         juniorSubjectsConfig = JSON.parse(fs.readFileSync(JUNIOR_SUBJECTS_FILE, 'utf8'));
         console.log(`📚 Loaded ${juniorSubjectsConfig.subjects.length} Junior subjects`);
+    } else {
+        console.error(`❌ Junior subjects file not found: ${JUNIOR_SUBJECTS_FILE}`);
     }
 } catch (e) {
     console.error('Error loading Junior subjects config:', e.message);
@@ -1759,7 +1791,7 @@ app.post('/api/reviews', (req, res) => {
         return res.status(400).json({ error: 'Review text is required' });
     }
 
-    const cleanText = text.trim();
+    const cleanText = sanitizeInput(text.trim());
     if (cleanText.length < 10) {
         return res.status(400).json({ error: 'Review must be at least 10 characters' });
     }
@@ -1767,7 +1799,7 @@ app.post('/api/reviews', (req, res) => {
         return res.status(400).json({ error: 'Review must be under 500 characters' });
     }
 
-    // Create anonymous review (no user info stored)
+    // Create anonymous review (no user info stored, sanitized text)
     const review = {
         id: crypto.randomUUID(),
         rating,
