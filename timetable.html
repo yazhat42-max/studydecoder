@@ -233,53 +233,76 @@
         const subjectChips = document.getElementById('subjectChips');
         const weakSubjectsDiv = document.getElementById('weakSubjects');
         
-        async function loadSubjects() {
-            try {
-                const response = await fetch(`${API_BASE}/api/subjects`, {
-                    credentials: 'include'
+        // Hardcoded HSC subjects (grouped by category)
+        allSubjects = [
+            { id: 'agriculture', name: 'Agriculture', category: 'TAS' },
+            { id: 'ancient-history', name: 'Ancient History', category: 'HSIE' },
+            { id: 'biology', name: 'Biology', category: 'Science' },
+            { id: 'business-studies', name: 'Business Studies', category: 'HSIE' },
+            { id: 'chemistry', name: 'Chemistry', category: 'Science' },
+            { id: 'construction', name: 'Construction', category: 'VET' },
+            { id: 'dance', name: 'Dance', category: 'Creative Arts' },
+            { id: 'design-technology', name: 'Design and Technology', category: 'TAS' },
+            { id: 'drama', name: 'Drama', category: 'Creative Arts' },
+            { id: 'earth-environmental-science', name: 'Earth and Environmental Science', category: 'Science' },
+            { id: 'economics', name: 'Economics', category: 'HSIE' },
+            { id: 'engineering-studies', name: 'Engineering Studies', category: 'TAS' },
+            { id: 'english-advanced', name: 'English Advanced', category: 'English' },
+            { id: 'english-eald', name: 'English EAL/D', category: 'English' },
+            { id: 'english-extension', name: 'English Extension', category: 'English' },
+            { id: 'english-standard', name: 'English Standard', category: 'English' },
+            { id: 'english-studies', name: 'English Studies', category: 'English' },
+            { id: 'enterprise-computing', name: 'Enterprise Computing', category: 'TAS' },
+            { id: 'food-technology', name: 'Food Technology', category: 'TAS' },
+            { id: 'geography', name: 'Geography', category: 'HSIE' },
+            { id: 'health-movement-science', name: 'Health and Movement Science', category: 'PDHPE' },
+            { id: 'history-extension', name: 'History Extension', category: 'HSIE' },
+            { id: 'hospitality', name: 'Hospitality', category: 'VET' },
+            { id: 'industrial-technology', name: 'Industrial Technology', category: 'TAS' },
+            { id: 'information-digital-technology', name: 'Information and Digital Technology', category: 'TAS' },
+            { id: 'investigating-science', name: 'Investigating Science', category: 'Science' },
+            { id: 'legal-studies', name: 'Legal Studies', category: 'HSIE' },
+            { id: 'mathematics-advanced', name: 'Mathematics Advanced', category: 'Mathematics' },
+            { id: 'mathematics-extension-1', name: 'Mathematics Extension 1', category: 'Mathematics' },
+            { id: 'mathematics-extension-2', name: 'Mathematics Extension 2', category: 'Mathematics' },
+            { id: 'mathematics-standard', name: 'Mathematics Standard', category: 'Mathematics' },
+            { id: 'modern-history', name: 'Modern History', category: 'HSIE' },
+            { id: 'music-1', name: 'Music 1', category: 'Creative Arts' },
+            { id: 'music-2', name: 'Music 2', category: 'Creative Arts' },
+            { id: 'physics', name: 'Physics', category: 'Science' },
+            { id: 'science-extension', name: 'Science Extension', category: 'Science' },
+            { id: 'society-culture', name: 'Society and Culture', category: 'HSIE' },
+            { id: 'software-engineering', name: 'Software Engineering', category: 'TAS' },
+            { id: 'studies-of-religion', name: 'Studies of Religion', category: 'HSIE' },
+            { id: 'visual-arts', name: 'Visual Arts', category: 'Creative Arts' }
+        ];
+        
+        // Populate subject chips
+        function loadSubjects() {
+            const byCategory = {};
+            allSubjects.forEach(s => {
+                if (!byCategory[s.category]) byCategory[s.category] = [];
+                byCategory[s.category].push(s);
+            });
+            
+            subjectChips.innerHTML = '';
+            Object.keys(byCategory).sort().forEach(cat => {
+                const catDiv = document.createElement('div');
+                catDiv.style = 'width:100%;margin-top:8px;';
+                catDiv.innerHTML = `<div style="color:#4f8cff;font-size:11px;font-weight:600;margin-bottom:4px;">${cat}</div>`;
+                const chipsDiv = document.createElement('div');
+                chipsDiv.style = 'display:flex;flex-wrap:wrap;gap:6px;';
+                byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                    const chip = document.createElement('span');
+                    chip.className = 'subject-chip';
+                    chip.dataset.id = s.id;
+                    chip.textContent = s.name;
+                    chip.onclick = () => toggleSubject(s.id, s.name, chip);
+                    chipsDiv.appendChild(chip);
                 });
-                if (!response.ok) {
-                    console.error('Failed to load subjects:', response.status);
-                    subjectChips.innerHTML = '<span style="color:#ff6b6b;">Error loading subjects</span>';
-                    return;
-                }
-                const data = await response.json();
-                allSubjects = data.subjects || [];
-                
-                if (allSubjects.length === 0) {
-                    subjectChips.innerHTML = '<span style="color:#ff6b6b;">No subjects available</span>';
-                    return;
-                }
-                
-                // Group by category
-                const byCategory = {};
-                allSubjects.forEach(s => {
-                    if (!byCategory[s.category]) byCategory[s.category] = [];
-                    byCategory[s.category].push(s);
-                });
-                
-                subjectChips.innerHTML = '';
-                Object.keys(byCategory).sort().forEach(cat => {
-                    const catDiv = document.createElement('div');
-                    catDiv.style = 'width:100%;margin-top:8px;';
-                    catDiv.innerHTML = `<div style="color:#4f8cff;font-size:11px;font-weight:600;margin-bottom:4px;">${cat}</div>`;
-                    const chipsDiv = document.createElement('div');
-                    chipsDiv.style = 'display:flex;flex-wrap:wrap;gap:6px;';
-                    byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
-                        const chip = document.createElement('span');
-                        chip.className = 'subject-chip';
-                        chip.dataset.id = s.id;
-                        chip.textContent = s.name;
-                        chip.onclick = () => toggleSubject(s.id, s.name, chip);
-                        chipsDiv.appendChild(chip);
-                    });
-                    catDiv.appendChild(chipsDiv);
-                    subjectChips.appendChild(catDiv);
-                });
-            } catch (e) {
-                console.error('Failed to load subjects:', e);
-                subjectChips.innerHTML = '<span style="color:#ff6b6b;">Error loading subjects</span>';
-            }
+                catDiv.appendChild(chipsDiv);
+                subjectChips.appendChild(catDiv);
+            });
         }
         loadSubjects();
         

@@ -324,48 +324,72 @@
         const examSubjectSelect = document.getElementById('examSubject');
         const feedbackSubjectSelect = document.getElementById('feedbackSubject');
         
-        async function loadSubjects() {
-            try {
-                const response = await fetch(`${API_BASE}/api/subjects`, {
-                    credentials: 'include'
-                });
-                if (!response.ok) {
-                    console.error('Failed to load subjects:', response.status);
-                    return;
-                }
-                const data = await response.json();
-                subjects = data.subjects || [];
-                
-                if (subjects.length === 0) {
-                    [subjectSelect, examSubjectSelect, feedbackSubjectSelect].forEach(sel => {
-                        sel.innerHTML = '<option value="">No subjects available</option>';
+        // Hardcoded HSC subjects (grouped by category)
+        subjects = [
+            { id: 'agriculture', name: 'Agriculture', category: 'TAS' },
+            { id: 'ancient-history', name: 'Ancient History', category: 'HSIE' },
+            { id: 'biology', name: 'Biology', category: 'Science' },
+            { id: 'business-studies', name: 'Business Studies', category: 'HSIE' },
+            { id: 'chemistry', name: 'Chemistry', category: 'Science' },
+            { id: 'construction', name: 'Construction', category: 'VET' },
+            { id: 'dance', name: 'Dance', category: 'Creative Arts' },
+            { id: 'design-technology', name: 'Design and Technology', category: 'TAS' },
+            { id: 'drama', name: 'Drama', category: 'Creative Arts' },
+            { id: 'earth-environmental-science', name: 'Earth and Environmental Science', category: 'Science' },
+            { id: 'economics', name: 'Economics', category: 'HSIE' },
+            { id: 'engineering-studies', name: 'Engineering Studies', category: 'TAS' },
+            { id: 'english-advanced', name: 'English Advanced', category: 'English' },
+            { id: 'english-eald', name: 'English EAL/D', category: 'English' },
+            { id: 'english-extension', name: 'English Extension', category: 'English' },
+            { id: 'english-standard', name: 'English Standard', category: 'English' },
+            { id: 'english-studies', name: 'English Studies', category: 'English' },
+            { id: 'enterprise-computing', name: 'Enterprise Computing', category: 'TAS' },
+            { id: 'food-technology', name: 'Food Technology', category: 'TAS' },
+            { id: 'geography', name: 'Geography', category: 'HSIE' },
+            { id: 'health-movement-science', name: 'Health and Movement Science', category: 'PDHPE' },
+            { id: 'history-extension', name: 'History Extension', category: 'HSIE' },
+            { id: 'hospitality', name: 'Hospitality', category: 'VET' },
+            { id: 'industrial-technology', name: 'Industrial Technology', category: 'TAS' },
+            { id: 'information-digital-technology', name: 'Information and Digital Technology', category: 'TAS' },
+            { id: 'investigating-science', name: 'Investigating Science', category: 'Science' },
+            { id: 'legal-studies', name: 'Legal Studies', category: 'HSIE' },
+            { id: 'mathematics-advanced', name: 'Mathematics Advanced', category: 'Mathematics' },
+            { id: 'mathematics-extension-1', name: 'Mathematics Extension 1', category: 'Mathematics' },
+            { id: 'mathematics-extension-2', name: 'Mathematics Extension 2', category: 'Mathematics' },
+            { id: 'mathematics-standard', name: 'Mathematics Standard', category: 'Mathematics' },
+            { id: 'modern-history', name: 'Modern History', category: 'HSIE' },
+            { id: 'music-1', name: 'Music 1', category: 'Creative Arts' },
+            { id: 'music-2', name: 'Music 2', category: 'Creative Arts' },
+            { id: 'physics', name: 'Physics', category: 'Science' },
+            { id: 'science-extension', name: 'Science Extension', category: 'Science' },
+            { id: 'society-culture', name: 'Society and Culture', category: 'HSIE' },
+            { id: 'software-engineering', name: 'Software Engineering', category: 'TAS' },
+            { id: 'studies-of-religion', name: 'Studies of Religion', category: 'HSIE' },
+            { id: 'visual-arts', name: 'Visual Arts', category: 'Creative Arts' }
+        ];
+        
+        // Populate subjects dropdowns
+        function loadSubjects() {
+            const byCategory = {};
+            subjects.forEach(s => {
+                if (!byCategory[s.category]) byCategory[s.category] = [];
+                byCategory[s.category].push(s);
+            });
+            
+            [subjectSelect, examSubjectSelect, feedbackSubjectSelect].forEach(sel => {
+                sel.innerHTML = '<option value="">Select your subject...</option>';
+                Object.keys(byCategory).sort().forEach(cat => {
+                    const group = document.createElement('optgroup');
+                    group.label = cat;
+                    byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s.id;
+                        opt.textContent = s.name;
+                        group.appendChild(opt);
                     });
-                    return;
-                }
-                
-                const byCategory = {};
-                subjects.forEach(s => {
-                    if (!byCategory[s.category]) byCategory[s.category] = [];
-                    byCategory[s.category].push(s);
+                    sel.appendChild(group);
                 });
-                
-                [subjectSelect, examSubjectSelect, feedbackSubjectSelect].forEach(sel => {
-                    sel.innerHTML = '<option value="">Select your subject...</option>';
-                    Object.keys(byCategory).sort().forEach(cat => {
-                        const group = document.createElement('optgroup');
-                        group.label = cat;
-                        byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
-                            const opt = document.createElement('option');
-                            opt.value = s.id;
-                            opt.textContent = s.name;
-                            group.appendChild(opt);
-                        });
-                        sel.appendChild(group);
-                    });
-                });
-            } catch (e) {
-                console.error('Failed to load subjects:', e);
-            }
+            });
         }
         loadSubjects();
         

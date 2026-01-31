@@ -152,12 +152,14 @@
                         <div class="form-group">
                             <label class="form-label">📘 Subject</label>
                             <select class="form-select" id="subject" required>
-                                <option value="">Loading subjects...</option>
+                                <option value="">Select your subject...</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="form-label">📚 Topic/Module</label>
-                            <input type="text" class="form-input" id="topic" placeholder="e.g., Module 5: Heredity, Macbeth, Calculus..." required>
+                            <select class="form-select" id="topic" required>
+                                <option value="">Select subject first...</option>
+                            </select>
                         </div>
                     </div>
                     <button type="submit" class="submit-btn" id="submitBtn">Decode Syllabus</button>
@@ -176,52 +178,374 @@
         const outputPanel = document.getElementById('outputPanel');
         const submitBtn = document.getElementById('submitBtn');
         const subjectSelect = document.getElementById('subject');
+        const topicSelect = document.getElementById('topic');
         
-        // Load subjects from API
-        async function loadSubjects() {
-            try {
-                const response = await fetch(`${API_BASE}/api/subjects`, {
-                    credentials: 'include'
+        // Hardcoded HSC subjects (grouped by category)
+        subjects = [
+            { id: 'agriculture', name: 'Agriculture', category: 'TAS' },
+            { id: 'ancient-history', name: 'Ancient History', category: 'HSIE' },
+            { id: 'biology', name: 'Biology', category: 'Science' },
+            { id: 'business-studies', name: 'Business Studies', category: 'HSIE' },
+            { id: 'chemistry', name: 'Chemistry', category: 'Science' },
+            { id: 'construction', name: 'Construction', category: 'VET' },
+            { id: 'dance', name: 'Dance', category: 'Creative Arts' },
+            { id: 'design-technology', name: 'Design and Technology', category: 'TAS' },
+            { id: 'drama', name: 'Drama', category: 'Creative Arts' },
+            { id: 'earth-environmental-science', name: 'Earth and Environmental Science', category: 'Science' },
+            { id: 'economics', name: 'Economics', category: 'HSIE' },
+            { id: 'engineering-studies', name: 'Engineering Studies', category: 'TAS' },
+            { id: 'english-advanced', name: 'English Advanced', category: 'English' },
+            { id: 'english-eald', name: 'English EAL/D', category: 'English' },
+            { id: 'english-extension', name: 'English Extension', category: 'English' },
+            { id: 'english-standard', name: 'English Standard', category: 'English' },
+            { id: 'english-studies', name: 'English Studies', category: 'English' },
+            { id: 'enterprise-computing', name: 'Enterprise Computing', category: 'TAS' },
+            { id: 'food-technology', name: 'Food Technology', category: 'TAS' },
+            { id: 'geography', name: 'Geography', category: 'HSIE' },
+            { id: 'health-movement-science', name: 'Health and Movement Science', category: 'PDHPE' },
+            { id: 'history-extension', name: 'History Extension', category: 'HSIE' },
+            { id: 'hospitality', name: 'Hospitality', category: 'VET' },
+            { id: 'industrial-technology', name: 'Industrial Technology', category: 'TAS' },
+            { id: 'information-digital-technology', name: 'Information and Digital Technology', category: 'TAS' },
+            { id: 'investigating-science', name: 'Investigating Science', category: 'Science' },
+            { id: 'legal-studies', name: 'Legal Studies', category: 'HSIE' },
+            { id: 'mathematics-advanced', name: 'Mathematics Advanced', category: 'Mathematics' },
+            { id: 'mathematics-extension-1', name: 'Mathematics Extension 1', category: 'Mathematics' },
+            { id: 'mathematics-extension-2', name: 'Mathematics Extension 2', category: 'Mathematics' },
+            { id: 'mathematics-standard', name: 'Mathematics Standard', category: 'Mathematics' },
+            { id: 'modern-history', name: 'Modern History', category: 'HSIE' },
+            { id: 'music-1', name: 'Music 1', category: 'Creative Arts' },
+            { id: 'music-2', name: 'Music 2', category: 'Creative Arts' },
+            { id: 'physics', name: 'Physics', category: 'Science' },
+            { id: 'science-extension', name: 'Science Extension', category: 'Science' },
+            { id: 'society-culture', name: 'Society and Culture', category: 'HSIE' },
+            { id: 'software-engineering', name: 'Software Engineering', category: 'TAS' },
+            { id: 'studies-of-religion', name: 'Studies of Religion', category: 'HSIE' },
+            { id: 'visual-arts', name: 'Visual Arts', category: 'Creative Arts' }
+        ];
+        
+        // Topics/Modules for each subject
+        const subjectTopics = {
+            'biology': [
+                'Module 1: Cells as the Basis of Life',
+                'Module 2: Organisation of Living Things',
+                'Module 3: Biological Diversity',
+                'Module 4: Ecosystem Dynamics',
+                'Module 5: Heredity',
+                'Module 6: Genetic Change',
+                'Module 7: Infectious Disease',
+                'Module 8: Non-Infectious Disease and Disorders'
+            ],
+            'chemistry': [
+                'Module 1: Properties and Structure of Matter',
+                'Module 2: Introduction to Quantitative Chemistry',
+                'Module 3: Reactive Chemistry',
+                'Module 4: Drivers of Reactions',
+                'Module 5: Equilibrium and Acid Reactions',
+                'Module 6: Acid/Base Reactions',
+                'Module 7: Organic Chemistry',
+                'Module 8: Applying Chemical Ideas'
+            ],
+            'physics': [
+                'Module 1: Kinematics',
+                'Module 2: Dynamics',
+                'Module 3: Waves and Thermodynamics',
+                'Module 4: Electricity and Magnetism',
+                'Module 5: Advanced Mechanics',
+                'Module 6: Electromagnetism',
+                'Module 7: The Nature of Light',
+                'Module 8: From the Universe to the Atom'
+            ],
+            'earth-environmental-science': [
+                'Module 1: Earth\'s Resources',
+                'Module 2: Plate Tectonics',
+                'Module 3: Energy Transformations',
+                'Module 4: Human Impacts',
+                'Module 5: Earth\'s Processes',
+                'Module 6: Hazards',
+                'Module 7: Climate Science',
+                'Module 8: Resource Management'
+            ],
+            'investigating-science': [
+                'Module 1: Cause and Effect - Observing',
+                'Module 2: Cause and Effect - Inferences and Generalisations',
+                'Module 3: Scientific Models',
+                'Module 4: Theories and Laws',
+                'Module 5: Scientific Investigations',
+                'Module 6: Technologies',
+                'Module 7: Fact or Fallacy',
+                'Module 8: Science and Society'
+            ],
+            'science-extension': [
+                'The Foundations of Scientific Thinking',
+                'The Scientific Research Proposal'
+            ],
+            'mathematics-advanced': [
+                'Functions',
+                'Trigonometric Functions',
+                'Calculus (Differentiation)',
+                'Calculus (Integration)',
+                'Exponential and Logarithmic Functions',
+                'Statistical Analysis'
+            ],
+            'mathematics-extension-1': [
+                'Functions (Further)',
+                'Trigonometric Functions (Further)',
+                'Calculus (Further Differentiation)',
+                'Calculus (Further Integration)',
+                'Combinatorics',
+                'Proof',
+                'Vectors'
+            ],
+            'mathematics-extension-2': [
+                'Proof',
+                'Vectors',
+                'Complex Numbers',
+                'Calculus',
+                'Mechanics'
+            ],
+            'mathematics-standard': [
+                'Algebra',
+                'Measurement',
+                'Financial Mathematics',
+                'Statistical Analysis',
+                'Networks'
+            ],
+            'english-advanced': [
+                'Common Module: Texts and Human Experiences',
+                'Module A: Textual Conversations',
+                'Module B: Critical Study of Literature',
+                'Module C: The Craft of Writing'
+            ],
+            'english-standard': [
+                'Common Module: Texts and Human Experiences',
+                'Module A: Language, Identity and Culture',
+                'Module B: Close Study of Literature',
+                'Module C: The Craft of Writing'
+            ],
+            'english-extension': [
+                'Module A: Literary Worlds',
+                'Module B: Critical Study (Elective 1)',
+                'Module C: Composition (Extension 2)'
+            ],
+            'english-eald': [
+                'Module A: Texts and Human Experiences',
+                'Module B: Language, Identity and Culture',
+                'Module C: Close Study of Text'
+            ],
+            'english-studies': [
+                'Mandatory Module: Achieving through English',
+                'Module A: We Are Australians',
+                'Module B: Telling Us All About It',
+                'Module C: On the Road',
+                'Module D: Digital Worlds',
+                'Module E: Playing the Game',
+                'Module F: Texts and Human Experiences'
+            ],
+            'ancient-history': [
+                'Core Study: Cities of Vesuvius - Pompeii and Herculaneum',
+                'Ancient Societies',
+                'Historical Period',
+                'Personalities in Their Times'
+            ],
+            'modern-history': [
+                'Core Study: Power and Authority in the Modern World 1919-1946',
+                'National Studies',
+                'Peace and Conflict',
+                'Change in the Modern World'
+            ],
+            'history-extension': [
+                'Constructing History',
+                'History Project'
+            ],
+            'economics': [
+                'The Global Economy',
+                'Australia\'s Place in the Global Economy',
+                'Economic Issues',
+                'Economic Policies and Management'
+            ],
+            'business-studies': [
+                'Operations',
+                'Marketing',
+                'Finance',
+                'Human Resources'
+            ],
+            'legal-studies': [
+                'The Legal System',
+                'Crime',
+                'Human Rights',
+                'Options (Family, Shelter, Workplace, World Order, etc.)'
+            ],
+            'geography': [
+                'Biophysical Interactions',
+                'Global Challenges',
+                'Urban Places',
+                'Ecosystems at Risk',
+                'People and Economic Activity'
+            ],
+            'society-culture': [
+                'The Social and Cultural World',
+                'Personal and Social Identity',
+                'Intercultural Communication',
+                'Belief Systems and Ideologies',
+                'Social Conformity and Nonconformity',
+                'Personal Interest Project (PIP)'
+            ],
+            'studies-of-religion': [
+                'Nature of Religion and Beliefs',
+                'Religious Tradition Depth Study I',
+                'Religious Tradition Depth Study II',
+                'Religion and Peace',
+                'Religion and Non-Religion'
+            ],
+            'visual-arts': [
+                'Art Criticism and Art History',
+                'Artmaking',
+                'Case Studies',
+                'Body of Work'
+            ],
+            'music-1': [
+                'Performance',
+                'Composition',
+                'Musicology',
+                'Aural Skills',
+                'Elective Topics'
+            ],
+            'music-2': [
+                'Core Performance',
+                'Core Composition',
+                'Musicology',
+                'Aural Skills',
+                'Elective Study'
+            ],
+            'drama': [
+                'Australian Drama and Theatre',
+                'Studies in Drama and Theatre',
+                'Group Performance',
+                'Individual Project'
+            ],
+            'dance': [
+                'Core Performance',
+                'Core Composition',
+                'Core Appreciation',
+                'Major Study'
+            ],
+            'design-technology': [
+                'Designing and Producing',
+                'Innovation and Emerging Technologies',
+                'Major Design Project'
+            ],
+            'engineering-studies': [
+                'Engineering Fundamentals',
+                'Engineering Application',
+                'Braking Systems',
+                'Biomedical Engineering',
+                'Aeronautical Engineering',
+                'Telecommunications Engineering'
+            ],
+            'food-technology': [
+                'Food Availability and Selection',
+                'Food Quality',
+                'Nutrition',
+                'Food Manufacture'
+            ],
+            'software-engineering': [
+                'Programming Fundamentals',
+                'Object-Oriented Programming',
+                'Programming Mechatronics',
+                'Secure Software Architecture',
+                'Software Engineering Project'
+            ],
+            'enterprise-computing': [
+                'Networking and Hardware',
+                'Software Development',
+                'Enterprise Systems',
+                'Project Management'
+            ],
+            'information-digital-technology': [
+                'Multimedia',
+                'Networks',
+                'Database',
+                'Transaction Processing'
+            ],
+            'industrial-technology': [
+                'Industry Study',
+                'Design, Management and Communication',
+                'Production',
+                'Industry Related Manufacturing Technology'
+            ],
+            'agriculture': [
+                'Plant Production',
+                'Animal Production',
+                'Farm Product Study',
+                'Elective'
+            ],
+            'construction': [
+                'Construction Fundamentals',
+                'Work Health and Safety',
+                'Construction Projects'
+            ],
+            'hospitality': [
+                'Kitchen Operations',
+                'Food and Beverage',
+                'Accommodation',
+                'Work Health and Safety'
+            ],
+            'health-movement-science': [
+                'The Body in Motion',
+                'Health and Wellbeing',
+                'Improving Performance',
+                'Health and Society'
+            ]
+        };
+        
+        // Populate subjects dropdown
+        function loadSubjects() {
+            const byCategory = {};
+            subjects.forEach(s => {
+                if (!byCategory[s.category]) byCategory[s.category] = [];
+                byCategory[s.category].push(s);
+            });
+            
+            subjectSelect.innerHTML = '<option value="">Select your subject...</option>';
+            Object.keys(byCategory).sort().forEach(cat => {
+                const group = document.createElement('optgroup');
+                group.label = cat;
+                byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    group.appendChild(opt);
                 });
-                if (!response.ok) {
-                    console.error('Failed to load subjects:', response.status);
-                    subjectSelect.innerHTML = '<option value="">Error loading subjects</option>';
-                    return;
-                }
-                const data = await response.json();
-                subjects = data.subjects || [];
-                
-                if (subjects.length === 0) {
-                    subjectSelect.innerHTML = '<option value="">No subjects available</option>';
-                    return;
-                }
-                
-                // Group by category
-                const byCategory = {};
-                subjects.forEach(s => {
-                    if (!byCategory[s.category]) byCategory[s.category] = [];
-                    byCategory[s.category].push(s);
-                });
-                
-                // Build options
-                subjectSelect.innerHTML = '<option value="">Select your subject...</option>';
-                Object.keys(byCategory).sort().forEach(cat => {
-                    const group = document.createElement('optgroup');
-                    group.label = cat;
-                    byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
-                        const opt = document.createElement('option');
-                        opt.value = s.id;
-                        opt.textContent = s.name;
-                        group.appendChild(opt);
-                    });
-                    subjectSelect.appendChild(group);
-                });
-            } catch (e) {
-                console.error('Failed to load subjects:', e);
-                subjectSelect.innerHTML = '<option value="">Error loading subjects</option>';
-            }
+                subjectSelect.appendChild(group);
+            });
         }
         loadSubjects();
+        
+        // Update topics when subject changes
+        subjectSelect.addEventListener('change', () => {
+            const subjectId = subjectSelect.value;
+            topicSelect.innerHTML = '';
+            
+            if (!subjectId) {
+                topicSelect.innerHTML = '<option value="">Select subject first...</option>';
+                return;
+            }
+            
+            const topics = subjectTopics[subjectId];
+            if (topics && topics.length > 0) {
+                topicSelect.innerHTML = '<option value="">Select a topic/module...</option>';
+                topics.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t;
+                    opt.textContent = t;
+                    topicSelect.appendChild(opt);
+                });
+            } else {
+                // Fallback for subjects without defined topics
+                topicSelect.innerHTML = '<option value="">All Topics (General)</option>';
+            }
+        });
         
         function formatResponse(text) {
             return text
@@ -292,10 +616,9 @@
             e.preventDefault();
             const subjectId = document.getElementById('subject').value;
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
-            const topic = document.getElementById('topic').value;
+            const topic = topicSelect.options[topicSelect.selectedIndex].text;
             const message = `Subject: ${subjectName}\nTopic: ${topic}\n\nPlease decode this topic from the syllabus. Explain what I need to know and how it appears in exams.`;
             sendMessage(message, subjectId);
-            document.getElementById('topic').value = '';
         });
 
         // =====================

@@ -212,35 +212,22 @@
         const submitBtn = document.getElementById('submitBtn');
         const subjectSelect = document.getElementById('subject');
         
-        async function loadSubjects() {
-            try {
-                const response = await fetch(`${API_BASE}/api/junior-subjects`, {
-                    credentials: 'include'
-                });
-                if (!response.ok) {
-                    console.error('Failed to load subjects:', response.status);
-                    subjectSelect.innerHTML = '<option value="">Error loading</option>';
-                    return;
-                }
-                const data = await response.json();
-                subjects = data.subjects || [];
-                
-                if (subjects.length === 0) {
-                    subjectSelect.innerHTML = '<option value="">No subjects available</option>';
-                    return;
-                }
-                
-                subjectSelect.innerHTML = '<option value="">Select subject...</option>';
-                subjects.forEach(s => {
-                    const opt = document.createElement('option');
-                    opt.value = s.id;
-                    opt.textContent = s.name;
-                    subjectSelect.appendChild(opt);
-                });
-            } catch (e) {
-                console.error('Failed to load subjects:', e);
-                subjectSelect.innerHTML = '<option value="">Error loading</option>';
-            }
+        // Hardcoded Junior subjects (Years 7-10)
+        subjects = [
+            { id: 'english-7-10', name: 'English (Years 7-10)', category: 'English' },
+            { id: 'mathematics-7-10', name: 'Mathematics (Years 7-10)', category: 'Mathematics' },
+            { id: 'science-7-10', name: 'Science (Years 7-10)', category: 'Science' }
+        ];
+        
+        // Populate subjects dropdown
+        function loadSubjects() {
+            subjectSelect.innerHTML = '<option value="">Select subject...</option>';
+            subjects.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name;
+                subjectSelect.appendChild(opt);
+            });
         }
         loadSubjects();
         

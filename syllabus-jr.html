@@ -155,7 +155,7 @@
                         <div class="form-group">
                             <label class="form-label">Subject</label>
                             <select class="form-select" id="subject" required>
-                                <option value="">Loading...</option>
+                                <option value="">Select subject...</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -169,7 +169,9 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Topic</label>
-                            <input type="text" class="form-input" id="topic" placeholder="e.g., Algebra, Cells, Persuasive Writing..." required>
+                            <select class="form-select" id="topic" required>
+                                <option value="">Select subject first...</option>
+                            </select>
                         </div>
                     </div>
                     <button type="submit" class="submit-btn" id="submitBtn">Decode</button>
@@ -188,38 +190,98 @@
         const outputPanel = document.getElementById('outputPanel');
         const submitBtn = document.getElementById('submitBtn');
         const subjectSelect = document.getElementById('subject');
+        const topicSelect = document.getElementById('topic');
         
-        async function loadSubjects() {
-            try {
-                const response = await fetch(`${API_BASE}/api/junior-subjects`, {
-                    credentials: 'include'
-                });
-                if (!response.ok) {
-                    console.error('Failed to load subjects:', response.status);
-                    subjectSelect.innerHTML = '<option value="">Error loading</option>';
-                    return;
-                }
-                const data = await response.json();
-                subjects = data.subjects || [];
-                
-                if (subjects.length === 0) {
-                    subjectSelect.innerHTML = '<option value="">No subjects available</option>';
-                    return;
-                }
-                
-                subjectSelect.innerHTML = '<option value="">Select subject...</option>';
-                subjects.forEach(s => {
-                    const opt = document.createElement('option');
-                    opt.value = s.id;
-                    opt.textContent = s.name;
-                    subjectSelect.appendChild(opt);
-                });
-            } catch (e) {
-                console.error('Failed to load subjects:', e);
-                subjectSelect.innerHTML = '<option value="">Error loading</option>';
-            }
+        // Hardcoded Junior subjects (Years 7-10)
+        subjects = [
+            { id: 'english-7-10', name: 'English (Years 7-10)', category: 'English' },
+            { id: 'mathematics-7-10', name: 'Mathematics (Years 7-10)', category: 'Mathematics' },
+            { id: 'science-7-10', name: 'Science (Years 7-10)', category: 'Science' }
+        ];
+        
+        // Topics for junior subjects
+        const subjectTopics = {
+            'english-7-10': [
+                'Reading and Comprehension',
+                'Creative Writing',
+                'Persuasive Writing',
+                'Essay Writing',
+                'Poetry Analysis',
+                'Novel Study',
+                'Film Study',
+                'Grammar and Punctuation',
+                'Vocabulary and Spelling',
+                'Speaking and Listening'
+            ],
+            'mathematics-7-10': [
+                'Number and Algebra - Integers',
+                'Number and Algebra - Fractions and Decimals',
+                'Number and Algebra - Ratios and Rates',
+                'Number and Algebra - Percentages',
+                'Algebra - Equations',
+                'Algebra - Linear Relationships',
+                'Measurement - Length, Area, Volume',
+                'Measurement - Time and Money',
+                'Geometry - Angles and Shapes',
+                'Geometry - Transformations',
+                'Statistics - Data Collection',
+                'Statistics - Graphs and Analysis',
+                'Probability',
+                'Trigonometry'
+            ],
+            'science-7-10': [
+                'Living World - Cells',
+                'Living World - Body Systems',
+                'Living World - Ecosystems',
+                'Living World - Classification',
+                'Physical World - Forces and Motion',
+                'Physical World - Energy',
+                'Physical World - Waves and Sound',
+                'Physical World - Electricity',
+                'Chemical World - Elements and Compounds',
+                'Chemical World - Chemical Reactions',
+                'Chemical World - Atoms and Particles',
+                'Earth and Space - Rocks and Minerals',
+                'Earth and Space - Earth\'s Systems',
+                'Earth and Space - Space and the Universe'
+            ]
+        };
+        
+        // Populate subjects dropdown
+        function loadSubjects() {
+            subjectSelect.innerHTML = '<option value="">Select subject...</option>';
+            subjects.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name;
+                subjectSelect.appendChild(opt);
+            });
         }
         loadSubjects();
+        
+        // Update topics when subject changes
+        subjectSelect.addEventListener('change', () => {
+            const subjectId = subjectSelect.value;
+            topicSelect.innerHTML = '';
+            
+            if (!subjectId) {
+                topicSelect.innerHTML = '<option value="">Select subject first...</option>';
+                return;
+            }
+            
+            const topics = subjectTopics[subjectId];
+            if (topics && topics.length > 0) {
+                topicSelect.innerHTML = '<option value="">Select a topic...</option>';
+                topics.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t;
+                    opt.textContent = t;
+                    topicSelect.appendChild(opt);
+                });
+            } else {
+                topicSelect.innerHTML = '<option value="">All Topics (General)</option>';
+            }
+        });
         
         function formatResponse(text) {
             return text
@@ -290,10 +352,9 @@
             const subjectId = document.getElementById('subject').value;
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
             const yearLevel = document.getElementById('yearLevel').value;
-            const topic = document.getElementById('topic').value;
+            const topic = topicSelect.options[topicSelect.selectedIndex].text;
             const message = `Subject: ${subjectName}\nYear Level: ${yearLevel}\nTopic: ${topic}\n\nPlease explain this topic from the syllabus in simple terms. What do I need to know?`;
             sendMessage(message, subjectId);
-            document.getElementById('topic').value = '';
         });
 
         // =====================
