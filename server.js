@@ -1090,6 +1090,7 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
 app.post('/api/verify-payment', requireAuth, async (req, res) => {
     try {
         const user = req.user;
+        console.log(`🔍 Verifying payment for: ${user.email}`);
         
         // First check if already subscribed
         if (user.subscribed && user.expiresAt && new Date(user.expiresAt) > new Date()) {
@@ -1106,20 +1107,24 @@ app.post('/api/verify-payment', requireAuth, async (req, res) => {
         }
         
         // Search for Stripe customer by email
+        console.log(`🔍 Searching Stripe for email: ${user.email}`);
         const customers = await stripe.customers.list({
             email: user.email,
             limit: 1
         });
         
+        console.log(`🔍 Found ${customers.data.length} customers`);
+        
         if (customers.data.length === 0) {
             return res.json({ 
                 success: false, 
                 subscribed: false,
-                message: 'No payment found for this email. Please complete payment first.' 
+                message: `No payment found for ${user.email}. Please complete payment first.` 
             });
         }
         
         const customer = customers.data[0];
+        console.log(`🔍 Customer found: ${customer.id}, email: ${customer.email}`);
         
         // Check for active subscriptions
         const subscriptions = await stripe.subscriptions.list({
@@ -1128,6 +1133,7 @@ app.post('/api/verify-payment', requireAuth, async (req, res) => {
             limit: 10
         });
         
+        console.log(`🔍 Found ${subscriptions.data.length} active subscriptions`);
         if (subscriptions.data.length > 0) {
             const sub = subscriptions.data[0];
             const plan = sub.items.data[0]?.price?.recurring?.interval === 'year' ? 'yearly' : 'monthly';
