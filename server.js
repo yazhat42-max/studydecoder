@@ -1106,10 +1106,11 @@ app.post('/api/verify-payment', requireAuth, async (req, res) => {
             return res.status(500).json({ error: 'Payment system unavailable' });
         }
         
-        // Search for Stripe customer by email
-        console.log(`🔍 Searching Stripe for email: ${user.email}`);
+        // Search for Stripe customer by email (lowercase for case-insensitive match)
+        const searchEmail = user.email.toLowerCase();
+        console.log(`🔍 Searching Stripe for email: ${searchEmail}`);
         const customers = await stripe.customers.list({
-            email: user.email,
+            email: searchEmail,
             limit: 1
         });
         
