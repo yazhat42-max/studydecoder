@@ -462,27 +462,6 @@
             console.log('[DEBUG] Calling sendMessage with message length:', message.length);
             sendMessage(message, subjectId);
         });
-        }
-        
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            console.log('[DEBUG] Submit handler triggered for syllabus');
-            const subjectId = document.getElementById('subject').value;
-            const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
-            const topic = topicSelect.options[topicSelect.selectedIndex].text;
-            
-            if (!subjectId) { alert('Please select a subject.'); return; }
-            if (!topic || topic === 'Select subject first...' || topic === 'Select a topic/module...') { alert('Please select a topic.'); return; }
-            
-            console.log('[DEBUG] Subject:', subjectName, 'Topic:', topic, 'SubjectId:', subjectId);
-            
-            // Clear conversation history for fresh decode
-            conversationHistory = [];
-            
-            const message = `Subject: ${subjectName}\nTopic: ${topic}\n\nDecode this topic now.`;
-            console.log('[DEBUG] Calling sendMessage with message length:', message.length);
-            sendMessage(message, subjectId);
-        });
 
         // =====================
         // AUTHENTICATION CHECK
