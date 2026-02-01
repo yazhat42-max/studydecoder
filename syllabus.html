@@ -148,7 +148,7 @@
             <div class="input-panel">
                 <form class="input-form" id="inputForm">
                     <div class="form-title">Decode a Syllabus</div>
-                    <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
                         <div class="form-group">
                             <label class="form-label">📘 Subject</label>
                             <select class="form-select" id="subject" required>
@@ -156,9 +156,15 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label class="form-label">📅 Year</label>
+                            <select class="form-select" id="year" required>
+                                <option value="">Select subject first...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label class="form-label">📚 Topic/Module</label>
                             <select class="form-select" id="topic" required>
-                                <option value="">Select subject first...</option>
+                                <option value="">Select year first...</option>
                             </select>
                         </div>
                     </div>
@@ -178,6 +184,7 @@
         const outputPanel = document.getElementById('outputPanel');
         const submitBtn = document.getElementById('submitBtn');
         const subjectSelect = document.getElementById('subject');
+        const yearSelect = document.getElementById('year');
         const topicSelect = document.getElementById('topic');
         
         // Disable HTML5 validation for custom logic
