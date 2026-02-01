@@ -689,6 +689,7 @@
             <li id="navSignIn"><a href="login.html" class="btn btn-primary">Sign In</a></li>
             <li id="navUserMenu" style="display: none;">
                 <span id="navUserName" style="color: var(--primary); font-weight: 600; margin-right: 12px;"></span>
+                <a href="#" onclick="showManageSubscription(); return false;" class="btn btn-secondary" id="manageSubNavBtn" style="display: none; background: #ef4444; margin-right: 8px;">⚙️ Manage Sub</a>
                 <a href="#" onclick="logout(); return false;" class="btn btn-secondary">Sign Out</a>
             </li>
         </ul>
@@ -817,6 +818,30 @@
         </div>
     </section>
 
+    <!-- Subscription Management Modal -->
+    <div class="sub-modal-overlay hidden" id="subModalOverlay" onclick="closeSubModal(event)" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 9999;">
+        <div class="sub-modal" onclick="event.stopPropagation()" style="background: white; border-radius: 12px; padding: 32px; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <h2 style="margin-bottom: 24px; font-size: 1.5rem; color: #2A2A2A;">⚙️ Manage Subscription</h2>
+            <div class="sub-info" id="subInfo" style="background: #f9f9fb; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                <div class="sub-info-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e0e0e0;">
+                    <span class="sub-info-label" style="color: #666;">Plan</span>
+                    <span class="sub-info-value" id="subPlan" style="font-weight: 600; color: #2A2A2A;">-</span>
+                </div>
+                <div class="sub-info-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e0e0e0;">
+                    <span class="sub-info-label" style="color: #666;">Status</span>
+                    <span class="sub-info-value" id="subStatus" style="font-weight: 600; color: #2A2A2A;">-</span>
+                </div>
+                <div class="sub-info-row" style="display: flex; justify-content: space-between; padding: 8px 0;">
+                    <span class="sub-info-label" style="color: #666;">Expires</span>
+                    <span class="sub-info-value" id="subExpires" style="font-weight: 600; color: #2A2A2A;">-</span>
+                </div>
+            </div>
+            <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">Cancelling will stop auto-renewal. You'll keep access until your current period ends.</p>
+            <button class="sub-modal-btn sub-modal-btn-cancel" id="cancelSubBtn" onclick="cancelSubscription()" style="width: 100%; padding: 12px; background: #ef4444; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 12px; transition: all 0.2s;">Cancel Subscription</button>
+            <button class="sub-modal-btn sub-modal-btn-close" onclick="closeSubModal()" style="width: 100%; padding: 12px; background: #e0e0e0; color: #2A2A2A; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Close</button>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <h3>Quick Links</h3>
@@ -880,6 +905,14 @@
         document.getElementById('navUserMenu').style.display = 'flex';
         document.getElementById('navUserName').textContent = user.name || user.email.split('@')[0];
         
+        // Show manage subscription button for subscribers (not owner)
+        if (user.subscribed && user.role !== 'owner') {
+            document.getElementById('manageSubNavBtn').style.display = 'inline-block';
+            window.currentUser = user;
+        } else {
+            document.getElementById('manageSubNavBtn').style.display = 'none';
+        }
+        
         // Show admin link only for owner
         if (user.role === 'owner') {
             document.getElementById('navAdminLink').style.display = 'list-item';
@@ -887,11 +920,10 @@
             document.getElementById('navAdminLink').style.display = 'none';
         }
         
-        // Hide demo link for subscribers
-        const demoLink = document.querySelector('a[href="demo.html"]');
-        if (demoLink) {
-            demoLink.style.display = user.subscribed ? 'none' : 'block';
-        }
+        // Hide demo links for subscribers
+        document.querySelectorAll('a[href="demo.html"]').forEach(link => {
+            link.style.display = user.subscribed ? 'none' : 'block';
+        });
         
         // Hero
         document.getElementById('heroSignInBtn').style.display = 'none';
@@ -942,6 +974,77 @@
         } catch (e) {}
         showLoggedOutUI();
         window.location.href = 'login.html';
+    }
+
+    // ========== SUBSCRIPTION MANAGEMENT ==========
+    function showManageSubscription() {
+        const modal = document.getElementById('subModalOverlay');
+        modal.style.display = 'flex';
+        modal.classList.remove('hidden');
+        
+        // Populate subscription info
+        if (currentUser) {
+            document.getElementById('subPlan').textContent = currentUser.plan === 'yearly' ? 'Yearly ($30/year)' : 'Monthly ($5/month)';
+            document.getElementById('subStatus').textContent = 'Active';
+            document.getElementById('subStatus').style.color = '#10b981';
+            
+            if (currentUser.expiresAt) {
+                const expDate = new Date(currentUser.expiresAt);
+                document.getElementById('subExpires').textContent = expDate.toLocaleDateString('en-AU', { 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric' 
+                });
+            } else {
+                document.getElementById('subExpires').textContent = 'N/A';
+            }
+        }
+    }
+    
+    function closeSubModal(event) {
+        if (!event || event.target === document.getElementById('subModalOverlay')) {
+            document.getElementById('subModalOverlay').style.display = 'none';
+            document.getElementById('subModalOverlay').classList.add('hidden');
+        }
+    }
+    
+    async function cancelSubscription() {
+        const btn = document.getElementById('cancelSubBtn');
+        
+        if (!confirm('Are you sure you want to cancel your subscription? You will keep access until your current billing period ends.')) {
+            return;
+        }
+        
+        btn.textContent = 'Cancelling...';
+        btn.disabled = true;
+        
+        try {
+            const res = await fetch(API_BASE + '/api/cancel', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            
+            const data = await res.json();
+            
+            if (data.success) {
+                btn.textContent = '✓ Cancelled';
+                btn.style.background = '#64748b';
+                document.getElementById('subStatus').textContent = 'Cancelled (access until period ends)';
+                document.getElementById('subStatus').style.color = '#f59e0b';
+                
+                setTimeout(() => {
+                    closeSubModal();
+                    alert('Your subscription has been cancelled. You will retain access until the end of your current billing period.');
+                }, 500);
+            } else {
+                throw new Error(data.error || 'Failed to cancel');
+            }
+        } catch (e) {
+            alert('Error cancelling subscription. Please try again or contact support.');
+            btn.textContent = 'Cancel Subscription';
+            btn.disabled = false;
+        }
     }
 
     // ========== REVIEWS SYSTEM ==========
