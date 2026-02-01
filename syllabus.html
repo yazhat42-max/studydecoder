@@ -465,7 +465,9 @@
             // Clear conversation history for fresh decode
             conversationHistory = [];
             
-            const message = `Subject: ${subjectName}\nTopic: ${topic}\n\nDecode this topic now.`;
+            const message = `DECODE NOW - Subject: ${subjectName} | Topic: ${topic}
+
+Output the complete decoded content for this topic. Do not ask any questions. Do not request additional information. Just decode the topic using the syllabus content you have.`;
             console.log('[DEBUG] Calling sendMessage with message length:', message.length);
             sendMessage(message, subjectId);
         });
