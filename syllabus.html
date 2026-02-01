@@ -419,17 +419,15 @@
                 
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
-            const topic = topicSelect.options[topicSelect.selectedIndex].text;
-            
-            if (!subjectId) { alert('Please select a subject.'); return; }
-            if (!topic || topic === 'Select subject first...' || topic === 'Select a topic/module...') { alert('Please select a topic.'); return; }
-            
-            console.log('[DEBUG] Subject:', subjectName, 'Topic:', topic, 'SubjectId:', subjectId);
-            
-            // Clear conversation history for fresh decode
-            conversationHistory = [];
-            
-            const message = `Subject: ${subjectName}\nTopic: ${topic}\n\nDecode this topic
+                    throw new Error(`API Error ${response.status}: ${errorData.error || 'Unknown error'}`);
+                }
+                
+                const data = await response.json();
+                console.log('[DEBUG] Received response:', data.reply.substring(0, 100));
+                
+                hideLoading();
+                conversationHistory.push({ role: 'assistant', content: data.reply });
+                addMessage(data.reply, false);
                 
                 // Clear history after response for independent topic decoding
                 console.log('[DEBUG] Response received and displayed. Clearing history for next independent decode.');
@@ -443,6 +441,27 @@
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Decode Syllabus';
             }
+        }
+        
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log('[DEBUG] Submit handler triggered for syllabus');
+            const subjectId = document.getElementById('subject').value;
+            const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
+            const topic = topicSelect.options[topicSelect.selectedIndex].text;
+            
+            if (!subjectId) { alert('Please select a subject.'); return; }
+            if (!topic || topic === 'Select subject first...' || topic === 'Select a topic/module...' || topic === 'Select year first...') { alert('Please select a topic.'); return; }
+            
+            console.log('[DEBUG] Subject:', subjectName, 'Topic:', topic, 'SubjectId:', subjectId);
+            
+            // Clear conversation history for fresh decode
+            conversationHistory = [];
+            
+            const message = `Subject: ${subjectName}\nTopic: ${topic}\n\nDecode this topic now.`;
+            console.log('[DEBUG] Calling sendMessage with message length:', message.length);
+            sendMessage(message, subjectId);
+        });
         }
         
         form.addEventListener('submit', (e) => {

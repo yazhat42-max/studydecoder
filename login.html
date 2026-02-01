@@ -1182,6 +1182,13 @@
             const urlParams = new URLSearchParams(window.location.search);
             const redirect = urlParams.get('redirect');
             
+            // If trying to go to a senior bot tool and not subscribed, go to index instead
+            const seniorBotPages = ['/practice.html', '/syllabus.html', '/timetable.html'];
+            if (redirect && seniorBotPages.some(page => redirect.includes(page)) && !data.subscribed) {
+                window.location.href = '/index.html';
+                return;
+            }
+            
             if (redirect) {
                 window.location.href = decodeURIComponent(redirect);
             } else if (data.role === 'owner') {
