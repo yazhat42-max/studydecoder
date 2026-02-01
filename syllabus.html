@@ -583,28 +583,49 @@
         }
         
         async function sendMessage(userMessage, subjectId) {
-            if (isLoading) return;
+            if (isLoading) {
+                console.warn('[DEBUG] Already loading, skipping duplicate request');
+                return;
+            }
             isLoading = true;
             submitBtn.disabled = true;
             submitBtn.textContent = 'Processing...';
-            conversationHistory.push({ role: 'user', content: userMessage });
-            addMessage(userMessage, true);
-            showLoading();
             
             try {
+                conversationHistory.push({ role: 'user', content: userMessage });
+                addMessage(userMessage, true);
+                showLoading();
+                
+                console.log('[DEBUG] Sending request to /api/chat/syllabus with:', { 
+                    messageCount: conversationHistory.length,
+                    subjectId,
+                    lastMessage: userMessage.substring(0, 100)
+                });
+                
                 const response = await fetch(`${API_BASE}/api/chat/syllabus`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({ messages: conversationHistory, subject: subjectId })
                 });
-                if (!response.ok) throw new Error('Failed to get response');
+                
+                console.log('[DEBUG] Response status:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(`API Error ${response.status}: ${errorData.error || 'Unknown error'}`);
+                }
+                
                 const data = await response.json();
+                console.log('[DEBUG] Received response:', data.reply.substring(0, 100));
+                
                 hideLoading();
                 conversationHistory.push({ role: 'assistant', content: data.reply });
                 addMessage(data.reply, false);
             } catch (error) {
+                console.error('[DEBUG] sendMessage error:', error);
                 hideLoading();
-                addMessage('Error: Unable to process your request. Please try again.', false);
+                addMessage(`Error: ${error.message || 'Unable to process your request. Please try again.'}`, false);
             } finally {
                 isLoading = false;
                 submitBtn.disabled = false;
@@ -614,11 +635,17 @@
         
         form.addEventListener('submit', (e) => {
             e.preventDefault();
+            console.log('[DEBUG] Submit handler triggered for syllabus');
             const subjectId = document.getElementById('subject').value;
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
             const topic = topicSelect.options[topicSelect.selectedIndex].text;
             
+            if (!subjectId) { alert('Please select a subject.'); return; }
+            if (!topic || topic === 'Select subject first...' || topic === 'Select a topic/module...') { alert('Please select a topic.'); return; }
+            
+            console.log('[DEBUG] Subject:', subjectName, 'Topic:', topic, 'SubjectId:', subjectId);
             const message = `Subject: ${subjectName}\nTopic: ${topic}\n\nDecode this topic now.`;
+            console.log('[DEBUG] Calling sendMessage with message length:', message.length);
             sendMessage(message, subjectId);
         });
 

@@ -887,6 +887,12 @@
             document.getElementById('navAdminLink').style.display = 'none';
         }
         
+        // Hide demo link for subscribers
+        const demoLink = document.querySelector('a[href="demo.html"]');
+        if (demoLink) {
+            demoLink.style.display = user.subscribed ? 'none' : 'block';
+        }
+        
         // Hero
         document.getElementById('heroSignInBtn').style.display = 'none';
         if (user.subscribed) {

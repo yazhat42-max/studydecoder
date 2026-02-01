@@ -195,7 +195,7 @@
             <div class="input-panel">
                 <form class="input-form" id="inputForm">
                     <div class="form-title">Generate Practice Questions</div>
-                    <div class="standard-panel" id="standardPanel">
+                    <div class="standard-panel" id="standardPanel" style="display: block;">
                         <div class="form-grid">
                             <div class="form-group">
                                 <label class="form-label">📘 Subject</label>
@@ -245,7 +245,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="exam-mode-panel" id="examPanel">
+                    <div class="exam-mode-panel" id="examPanel" style="display: none;">
                         <div class="exam-duration-info">
                             <strong>Full Exam Mode:</strong> Generate a complete HSC-style exam paper with multiple sections, varied question types, and proper mark allocations.
                         </div>
@@ -270,7 +270,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="feedback-panel" id="feedbackPanel">
+                    <div class="feedback-panel" id="feedbackPanel" style="display: none;">
                         <div class="feedback-note">
                             <strong>Feedback Mode:</strong> Paste a question and your answer below to receive detailed marking feedback based on official HSC marking criteria. I will NOT provide model answers — only feedback on YOUR response.
                         </div>
@@ -471,19 +471,19 @@
                 modeBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentMode = btn.dataset.mode;
-                
-                standardPanel.classList.add('hidden');
-                examPanel.classList.remove('active');
-                feedbackPanel.classList.remove('active');
-                
+                // Hide all panels
+                standardPanel.style.display = 'none';
+                examPanel.style.display = 'none';
+                feedbackPanel.style.display = 'none';
+                // Show the selected panel
                 if (currentMode === 'exam') {
-                    examPanel.classList.add('active');
+                    examPanel.style.display = 'block';
                     submitBtn.textContent = 'Generate Full Exam';
                 } else if (currentMode === 'feedback') {
-                    feedbackPanel.classList.add('active');
+                    feedbackPanel.style.display = 'block';
                     submitBtn.textContent = 'Get Feedback';
                 } else {
-                    standardPanel.classList.remove('hidden');
+                    standardPanel.style.display = 'block';
                     submitBtn.textContent = 'Generate Questions';
                 }
             });
@@ -522,28 +522,49 @@
         }
         
         async function sendMessage(userMessage, subjectId) {
-            if (isLoading) return;
+            if (isLoading) {
+                console.warn('[DEBUG] Already loading, skipping duplicate request');
+                return;
+            }
             isLoading = true;
             submitBtn.disabled = true;
             submitBtn.textContent = 'Generating...';
-            conversationHistory.push({ role: 'user', content: userMessage });
-            addMessage(userMessage, true);
-            showLoading();
             
             try {
+                conversationHistory.push({ role: 'user', content: userMessage });
+                addMessage(userMessage, true);
+                showLoading();
+                
+                console.log('[DEBUG] Sending request to /api/chat/practice with:', { 
+                    messageCount: conversationHistory.length,
+                    subjectId,
+                    lastMessage: userMessage.substring(0, 100)
+                });
+                
                 const response = await fetch(`${API_BASE}/api/chat/practice`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({ messages: conversationHistory, subject: subjectId })
                 });
-                if (!response.ok) throw new Error('Failed');
+                
+                console.log('[DEBUG] Response status:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(`API Error ${response.status}: ${errorData.error || 'Unknown error'}`);
+                }
+                
                 const data = await response.json();
+                console.log('[DEBUG] Received response:', data.reply.substring(0, 100));
+                
                 hideLoading();
                 conversationHistory.push({ role: 'assistant', content: data.reply });
                 addMessage(data.reply, false);
             } catch (error) {
+                console.error('[DEBUG] sendMessage error:', error);
                 hideLoading();
-                addMessage('Error: Unable to generate questions. Please try again.', false);
+                addMessage(`Error: ${error.message || 'Unable to generate questions. Please try again.'}`, false);
             } finally {
                 isLoading = false;
                 submitBtn.disabled = false;
@@ -554,25 +575,30 @@
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             let message, subjectId;
-            
+            console.log('[DEBUG] Submit handler triggered. Current mode:', currentMode);
             if (currentMode === 'exam') {
                 subjectId = examSubjectSelect.value;
+                console.log('[DEBUG] Exam subjectId:', subjectId);
                 if (!subjectId) { alert('Please select a subject.'); return; }
                 const subjectName = examSubjectSelect.options[examSubjectSelect.selectedIndex].text;
                 const topics = document.getElementById('examTopics').value;
                 const duration = document.getElementById('examDuration').value;
+                console.log('[DEBUG] Exam fields:', { subjectName, topics, duration });
                 message = `[FULL EXAM MODE]\nGenerate a complete ${duration} HSC EXAM PAPER:\nSubject: ${subjectName}\nTopics: ${topics || 'All Year 12 content'}\nDuration: ${duration}\n\nCreate a complete exam with multiple sections, varied question types matching HSC format, proper mark allocations, and reading time instructions. Structure it like a real HSC paper.`;
             } else if (currentMode === 'feedback') {
                 subjectId = feedbackSubjectSelect.value;
+                console.log('[DEBUG] Feedback subjectId:', subjectId);
                 if (!subjectId) { alert('Please select a subject.'); return; }
                 const subjectName = feedbackSubjectSelect.options[feedbackSubjectSelect.selectedIndex].text;
                 const marks = document.getElementById('feedbackMarks').value;
                 const question = document.getElementById('feedbackQuestion').value.trim();
                 const answer = document.getElementById('feedbackAnswer').value.trim();
+                console.log('[DEBUG] Feedback fields:', { subjectName, marks, question, answer });
                 if (!question || !answer) { alert('Please enter both the question and your answer.'); return; }
                 message = `[FEEDBACK MODE]\nSubject: ${subjectName}\nMark Value: ${marks} marks\n\nQUESTION:\n${question}\n\nSTUDENT'S ANSWER:\n${answer}\n\nProvide detailed marking feedback based on HSC marking criteria. Do NOT provide a model answer. Only assess the student's response.`;
             } else {
                 subjectId = subjectSelect.value;
+                console.log('[DEBUG] Standard subjectId:', subjectId);
                 if (!subjectId) { alert('Please select a subject.'); return; }
                 const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
                 const topic = topicSelect.options[topicSelect.selectedIndex]?.text || 'All Topics';
@@ -580,9 +606,11 @@
                 const questionType = document.getElementById('questionType').value;
                 const numQuestions = document.getElementById('numQuestions').value;
                 const includeAnswers = document.getElementById('includeAnswers').checked;
+                console.log('[DEBUG] Standard fields:', { subjectName, topic, difficulty, questionType, numQuestions, includeAnswers });
                 if (!topic || topic === 'Select subject first...' || topic === 'Select a topic/module...') { alert('Please select a topic.'); return; }
                 message = `[STANDARD MODE]\nSubject: ${subjectName}\nTopic: ${topic}\nDifficulty: ${difficulty}\nQuestion Type: ${questionType}\nNumber of Questions: ${numQuestions}\n${includeAnswers ? 'Include model answers with marking guidelines and band descriptors.' : 'Do not include answers.'}`;
             }
+            console.log('[DEBUG] Final message:', message, 'subjectId:', subjectId);
             sendMessage(message, subjectId);
         });
 
