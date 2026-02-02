@@ -1178,12 +1178,11 @@
         }
         
         function redirectAfterLogin(data) {
-            // ALWAYS go to home page after login, never to senior bot pages directly
+            // Go to admin for owner, senior-bot for everyone else
             if (data.role === 'owner') {
                 window.location.href = '/admin.html';
             } else {
-                // Always send to homepage - they can navigate to tools from there
-                window.location.href = '/index.html';
+                window.location.href = '/senior-bot.html';
             }
         }
         

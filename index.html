@@ -958,6 +958,8 @@
         document.getElementById('navAdminLink').style.display = 'none';
         document.getElementById('heroLoggedIn').style.display = 'none';
         document.getElementById('heroSignInBtn').style.display = 'inline-block';
+        document.getElementById('heroSignInBtn').textContent = 'Sign In to Access';
+        document.getElementById('heroSignInBtn').href = 'login.html';
         document.getElementById('ctaSignIn').style.display = 'inline-block';
         document.getElementById('ctaLoggedIn').style.display = 'none';
         document.querySelectorAll('.course-link-locked').forEach(el => el.style.display = 'inline-block');
