@@ -59,7 +59,7 @@
         .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
         .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
-        .input-panel { background: #16202a; border-top: 1px solid #2f3336; padding: 20px 24px; flex-shrink: 0; }
+        .input-panel { background: #16202a; border-top: 1px solid #2f3336; padding: 20px 24px; flex-shrink: 0; max-height: 45vh; overflow-y: auto; }
         .input-form { max-width: 1000px; margin: 0 auto; }
         .form-title { font-size: 16px; font-weight: 600; color: #e7e9ea; margin-bottom: 16px; text-align: center; }
         .form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
@@ -337,7 +337,11 @@
             messageDiv.className = `message ${isUser ? 'message-user' : 'message-assistant'}`;
             messageDiv.innerHTML = isUser ? content.replace(/\n/g, '<br>') : formatResponse(content);
             outputContent.appendChild(messageDiv);
-            outputPanel.scrollTop = outputPanel.scrollHeight;
+            // Scroll to show the response with a slight delay for rendering
+            setTimeout(() => {
+                outputPanel.scrollTop = outputPanel.scrollHeight;
+                messageDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
         }
         
         function showLoading() {
