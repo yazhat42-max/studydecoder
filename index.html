@@ -713,10 +713,6 @@
         if (user.subscribed) {
             document.getElementById('ctaLoggedIn').style.display = 'block';
         }
-
-        // Reviews - show write form
-        document.getElementById('writeReviewSection').style.display = 'block';
-        document.getElementById('signInToReview').style.display = 'none';
     }
 
     function showLoggedOutUI() {
@@ -731,10 +727,6 @@
         document.getElementById('ctaLoggedIn').style.display = 'none';
         document.querySelectorAll('.course-link-locked').forEach(el => el.style.display = 'inline-block');
         document.querySelectorAll('.course-link-unlocked').forEach(el => el.style.display = 'none');
-
-        // Reviews - show sign in prompt
-        document.getElementById('writeReviewSection').style.display = 'none';
-        document.getElementById('signInToReview').style.display = 'block';
     }
 
     async function logout() {
