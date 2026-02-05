@@ -406,185 +406,6 @@
         }
 
         /* ========== RESPONSIVE ========== */
-        /* ========== REVIEWS SECTION ========== */
-        .reviews {
-            padding: 5rem 5%;
-            background: var(--white);
-        }
-
-        .reviews-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .reviews-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .reviews-stats {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .avg-rating {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .avg-stars {
-            color: #ffc107;
-            font-size: 1.4rem;
-        }
-
-        .review-count {
-            color: #666;
-            font-size: 0.95rem;
-        }
-
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .review-card {
-            background: var(--light-bg);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            border: 1px solid rgba(0,0,0,0.04);
-            transition: var(--transition);
-        }
-
-        .review-card:hover {
-            box-shadow: var(--shadow);
-        }
-
-        .review-stars {
-            color: #ffc107;
-            font-size: 1.1rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .review-text {
-            color: #444;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 0.8rem;
-            font-style: italic;
-        }
-
-        .review-date {
-            color: #999;
-            font-size: 0.8rem;
-        }
-
-        /* Write Review Form */
-        .write-review-section {
-            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
-            border: 2px dashed var(--primary);
-            border-radius: var(--radius);
-            padding: 2rem;
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        .write-review-section.logged-out {
-            border-style: solid;
-            border-color: #ddd;
-            background: #fafafa;
-        }
-
-        .write-review-section h3 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .write-review-section p {
-            color: #666;
-            margin-bottom: 1.5rem;
-        }
-
-        .review-form {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .star-rating-input {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .star-rating-input .star {
-            font-size: 2rem;
-            color: #ddd;
-            cursor: pointer;
-            transition: color 0.2s, transform 0.2s;
-        }
-
-        .star-rating-input .star:hover,
-        .star-rating-input .star.active {
-            color: #ffc107;
-            transform: scale(1.1);
-        }
-
-        .review-textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
-            resize: vertical;
-            min-height: 100px;
-            margin-bottom: 1rem;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-
-        .review-textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .review-submit-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .review-submit-btn:hover {
-            background: #5a52e0;
-            transform: translateY(-2px);
-        }
-
-        .review-submit-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .review-success {
-            color: #10b981;
-            font-weight: 600;
-            margin-top: 1rem;
-            display: none;
-        }
-
         @media (max-width: 768px) {
             .navbar {
                 padding: 1rem 4%;
@@ -659,15 +480,6 @@
                 flex-direction: column;
                 gap: 1rem;
             }
-
-            .reviews-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .reviews-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
     </style>
@@ -730,50 +542,6 @@
                 <div class="feature-icon">📈</div>
                 <h3>Track Progress</h3>
                 <p>Monitor your learning journey with detailed insights and personalized recommendations for improvement.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Reviews Section -->
-    <section class="reviews" id="reviews">
-        <div class="reviews-container">
-            <h2 class="section-title">What Students Say</h2>
-            <div class="reviews-header">
-                <div class="reviews-stats">
-                    <span class="avg-rating" id="avgRating">4.9</span>
-                    <div>
-                        <div class="avg-stars" id="avgStars">★★★★★</div>
-                        <div class="review-count"><span id="reviewCount">6</span> reviews</div>
-                    </div>
-                </div>
-            </div>
-            <div class="reviews-grid" id="reviewsGrid">
-                <!-- Reviews loaded dynamically -->
-            </div>
-            
-            <!-- Write Review (logged in) -->
-            <div class="write-review-section" id="writeReviewSection" style="display: none;">
-                <h3>📝 Share Your Experience</h3>
-                <p>Your review is anonymous and helps other students!</p>
-                <form class="review-form" id="reviewForm">
-                    <div class="star-rating-input" id="starRatingInput" role="radiogroup" aria-label="Rating">
-                        <span class="star" data-rating="1" role="radio" aria-checked="false" aria-label="1 star" tabindex="0">★</span>
-                        <span class="star" data-rating="2" role="radio" aria-checked="false" aria-label="2 stars" tabindex="0">★</span>
-                        <span class="star" data-rating="3" role="radio" aria-checked="false" aria-label="3 stars" tabindex="0">★</span>
-                        <span class="star" data-rating="4" role="radio" aria-checked="false" aria-label="4 stars" tabindex="0">★</span>
-                        <span class="star" data-rating="5" role="radio" aria-checked="false" aria-label="5 stars" tabindex="0">★</span>
-                    </div>
-                    <textarea class="review-textarea" id="reviewText" placeholder="Share what you loved about Study Decoder..." maxlength="500" aria-label="Your review"></textarea>
-                    <button type="submit" class="review-submit-btn" id="submitReviewBtn">Submit Review</button>
-                    <p class="review-success" id="reviewSuccess" role="status" aria-live="polite">✓ Thanks for your review!</p>
-                </form>
-            </div>
-            
-            <!-- Sign in prompt (logged out) -->
-            <div class="write-review-section logged-out" id="signInToReview">
-                <h3>Want to leave a review?</h3>
-                <p>Sign in to share your anonymous feedback!</p>
-                <a href="login.html" class="btn btn-primary">Sign In</a>
             </div>
         </div>
     </section>
@@ -860,7 +628,6 @@
         : '';
 
     let currentUser = null;
-    let selectedRating = 0;
 
     // Mobile menu toggle
     document.getElementById('mobileMenuBtn').addEventListener('click', function() {
@@ -1049,139 +816,6 @@
         }
     }
 
-    // ========== REVIEWS SYSTEM ==========
-    async function loadReviews() {
-        try {
-            const res = await fetch(API_BASE + '/api/reviews');
-            if (res.ok) {
-                const data = await res.json();
-                renderReviews(data.reviews);
-                updateReviewStats(data.reviews);
-            }
-        } catch (e) {
-            console.error('Failed to load reviews:', e);
-        }
-    }
-
-    function renderReviews(reviews) {
-        const grid = document.getElementById('reviewsGrid');
-        if (!reviews || reviews.length === 0) {
-            grid.innerHTML = '<p style="text-align: center; color: #666;">No reviews yet. Be the first!</p>';
-            return;
-        }
-
-        grid.innerHTML = reviews.map(review => `
-            <div class="review-card">
-                <div class="review-stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
-                <p class="review-text">"${escapeHtml(review.text)}"</p>
-                <div class="review-date">${formatDate(review.createdAt)}</div>
-            </div>
-        `).join('');
-    }
-
-    function updateReviewStats(reviews) {
-        if (!reviews || reviews.length === 0) {
-            document.getElementById('avgRating').textContent = '0';
-            document.getElementById('avgStars').textContent = '☆☆☆☆☆';
-            document.getElementById('reviewCount').textContent = '0';
-            return;
-        }
-
-        const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
-        const rounded = Math.round(avg * 10) / 10;
-        const fullStars = Math.round(avg);
-
-        document.getElementById('avgRating').textContent = rounded.toFixed(1);
-        document.getElementById('avgStars').textContent = '★'.repeat(fullStars) + '☆'.repeat(5 - fullStars);
-        document.getElementById('reviewCount').textContent = reviews.length;
-    }
-
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
-    function formatDate(dateStr) {
-        const date = new Date(dateStr);
-        return date.toLocaleDateString('en-AU', { month: 'short', year: 'numeric' });
-    }
-
-    // Star rating input
-    function initStarRating() {
-        const stars = document.querySelectorAll('#starRatingInput .star');
-        stars.forEach(star => {
-            star.addEventListener('click', () => {
-                selectedRating = parseInt(star.dataset.rating);
-                updateStarDisplay();
-            });
-            star.addEventListener('mouseenter', () => {
-                const hoverRating = parseInt(star.dataset.rating);
-                stars.forEach((s, i) => {
-                    s.style.color = i < hoverRating ? '#ffc107' : '#ddd';
-                });
-            });
-        });
-
-        document.getElementById('starRatingInput').addEventListener('mouseleave', updateStarDisplay);
-    }
-
-    function updateStarDisplay() {
-        const stars = document.querySelectorAll('#starRatingInput .star');
-        stars.forEach((s, i) => {
-            s.classList.toggle('active', i < selectedRating);
-            s.style.color = i < selectedRating ? '#ffc107' : '#ddd';
-        });
-    }
-
-    // Submit review
-    document.getElementById('reviewForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const text = document.getElementById('reviewText').value.trim();
-        if (!selectedRating) {
-            alert('Please select a star rating');
-            return;
-        }
-        if (!text || text.length < 10) {
-            alert('Please write at least 10 characters');
-            return;
-        }
-
-        const btn = document.getElementById('submitReviewBtn');
-        btn.disabled = true;
-        btn.textContent = 'Submitting...';
-
-        try {
-            const res = await fetch(API_BASE + '/api/reviews', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ rating: selectedRating, text })
-            });
-
-            if (res.ok) {
-                document.getElementById('reviewSuccess').style.display = 'block';
-                document.getElementById('reviewText').value = '';
-                selectedRating = 0;
-                updateStarDisplay();
-                loadReviews();
-                
-                setTimeout(() => {
-                    document.getElementById('reviewSuccess').style.display = 'none';
-                }, 3000);
-            } else {
-                const data = await res.json();
-                alert(data.error || 'Failed to submit review');
-            }
-        } catch (e) {
-            alert('Failed to submit review');
-        }
-
-        btn.disabled = false;
-        btn.textContent = 'Submit Review';
-    });
-
     // Handle Stripe redirect after payment
     (function handleStripeReturn() {
         const params = new URLSearchParams(window.location.search);
@@ -1202,10 +836,6 @@
             checkAuthStatus();
         }
     })();
-
-    // Initialize
-    loadReviews();
-    initStarRating();
     </script>
 </body>
 </html>
