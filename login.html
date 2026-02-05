@@ -711,23 +711,6 @@
                 </button>
             </form>
             
-            <!-- OG Tester Section -->
-            <div class="og-section visible" id="ogSection">
-                <div class="og-toggle" id="ogToggle">
-                    <span class="og-badge">🌟 OG</span>
-                    <span>Have an early access code?</span>
-                </div>
-                <form class="og-form" id="ogForm">
-                    <div class="og-input-wrapper">
-                        <input type="text" class="form-input" id="ogCode" placeholder="ENTER CODE" maxlength="10" autocomplete="off">
-                        <button type="submit" class="og-submit" id="ogSubmitBtn">Redeem</button>
-                    </div>
-                    <p class="form-helper" style="text-align: center; margin-top: 10px;">
-                        Enter your exclusive OG tester code to unlock full access
-                    </p>
-                </form>
-            </div>
-            
             <div class="login-footer" id="loginFooter">
                 <p id="footerText">Don't have an account? <a href="#" id="switchToSignup">Sign up for free</a></p>
             </div>
@@ -761,9 +744,6 @@
         const signupForm = document.getElementById('signupForm');
         const alertError = document.getElementById('alertError');
         const alertSuccess = document.getElementById('alertSuccess');
-        const ogSection = document.getElementById('ogSection');
-        const ogToggle = document.getElementById('ogToggle');
-        const ogForm = document.getElementById('ogForm');
         
         // ==================== Initialization ====================
         document.addEventListener('DOMContentLoaded', async () => {
@@ -782,24 +762,9 @@
                 // User not logged in
             }
             
-            // Check if OG code section should be visible
-            await checkOGAvailability();
-            
             // Initialize Google Sign-In
             initializeGoogleSignIn();
         });
-        
-        async function checkOGAvailability() {
-            try {
-                const res = await fetch('/api/og-code/status');
-                const data = await res.json();
-                if (!data.available) {
-                    ogSection.classList.remove('visible');
-                }
-            } catch (e) {
-                // Keep section visible if can't check
-            }
-        }
         
         function initializeGoogleSignIn() {
             if (typeof google !== 'undefined' && google.accounts) {
@@ -1007,53 +972,6 @@
                 
                 showSuccess('Account created successfully! Redirecting...');
                 setTimeout(() => redirectAfterLogin(data), 1000);
-                
-            } catch (error) {
-                showError(error.message);
-            } finally {
-                setLoading(false);
-            }
-        });
-        
-        // ==================== OG Code Form ====================
-        ogToggle.addEventListener('click', () => {
-            ogForm.classList.toggle('visible');
-        });
-        
-        ogForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (isLoading) return;
-            
-            const code = document.getElementById('ogCode').value.trim().toUpperCase();
-            
-            if (!code) {
-                showError('Please enter a code');
-                return;
-            }
-            
-            setLoading(true);
-            hideAlerts();
-            
-            try {
-                const res = await fetch('/api/og-code/redeem', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ code })
-                });
-                
-                const data = await res.json();
-                
-                if (!res.ok) {
-                    throw new Error(data.error || 'Invalid code');
-                }
-                
-                showSuccess('🎉 OG Code redeemed! Creating your account...');
-                
-                // Redirect to complete profile
-                setTimeout(() => {
-                    window.location.href = '/og-setup.html?token=' + encodeURIComponent(data.token);
-                }, 1500);
                 
             } catch (error) {
                 showError(error.message);

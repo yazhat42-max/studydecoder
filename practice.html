@@ -271,10 +271,10 @@
                         </div>
                     </div>
                     <div class="feedback-panel" id="feedbackPanel" style="display: none;">
-                        <div class="feedback-note">
-                            <strong>Feedback Mode:</strong> Paste a question and your answer below to receive detailed marking feedback based on official HSC marking criteria. I will NOT provide model answers — only feedback on YOUR response.
+                        <div class="feedback-note" style="font-size: 0.85rem; padding: 10px; margin-bottom: 12px;">
+                            <strong>Feedback Mode:</strong> Paste a question and your answer to receive marking feedback.
                         </div>
-                        <div class="form-grid">
+                        <div class="form-grid" style="gap: 10px;">
                             <div class="form-group">
                                 <label class="form-label">📘 Subject</label>
                                 <select class="form-select" id="feedbackSubject">
@@ -284,23 +284,28 @@
                             <div class="form-group">
                                 <label class="form-label">🎯 Mark Value</label>
                                 <select class="form-select" id="feedbackMarks">
-                                    <option value="1-2">1-2 marks</option>
-                                    <option value="3-4">3-4 marks</option>
-                                    <option value="5-6" selected>5-6 marks</option>
-                                    <option value="7-8">7-8 marks</option>
-                                    <option value="9-10">9-10 marks</option>
-                                    <option value="15-20">15-20 marks (Extended)</option>
+                                    <option value="1">1 mark</option>
+                                    <option value="2">2 marks</option>
+                                    <option value="3">3 marks</option>
+                                    <option value="4">4 marks</option>
+                                    <option value="5">5 marks</option>
+                                    <option value="6">6 marks</option>
+                                    <option value="7">7 marks</option>
+                                    <option value="8">8 marks</option>
+                                    <option value="9">9 marks</option>
+                                    <option value="20">20 marks (Essay)</option>
                                 </select>
                             </div>
                             <div class="form-group full-width">
                                 <label class="form-label">❓ The Question</label>
-                                <textarea class="feedback-textarea" id="feedbackQuestion" rows="3" placeholder="Paste or type the exam question here..." required></textarea>
+                                <textarea class="feedback-textarea" id="feedbackQuestion" rows="2" placeholder="Paste the exam question here..." required></textarea>
                             </div>
                             <div class="form-group full-width">
                                 <label class="form-label">✍️ Your Answer</label>
-                                <textarea class="feedback-textarea" id="feedbackAnswer" rows="6" placeholder="Paste or type your answer here to receive feedback..." required></textarea>
+                                <textarea class="feedback-textarea" id="feedbackAnswer" rows="4" placeholder="Paste your answer here..." required></textarea>
                             </div>
                         </div>
+                        <button type="submit" class="submit-btn" style="margin-top: 12px;">Get Feedback</button>
                     </div>
                     <button type="submit" class="submit-btn" id="submitBtn">Generate Questions</button>
                 </form>
@@ -401,45 +406,45 @@
         // Topics/Modules for each subject
         const subjectTopics = {
             'agriculture': ['Farm case study', 'Plant production', 'Animal production', 'Plant/Animal production', 'Farm product study', 'Electives'],
-            'ancient-history': ['Investigating Ancient History', 'Features of Ancient Societies', 'Historical Investigation', 'Core Study: Cities of Vesuvius', 'Personalities in their Times', 'Historical Periods'],
+            'ancient-history': ['Investigating Ancient History - Tutankhamun\'s Tomb', 'Investigating Ancient History - Troy', 'Investigating Ancient History - Persepolis', 'Investigating Ancient History - Masada', 'Investigating Ancient History - Ancient Australia', 'Features of Ancient Societies', 'Historical Investigation', 'Core Study: Cities of Vesuvius - Pompeii and Herculaneum', 'Ancient Societies - New Kingdom Egypt to Amenhotep III', 'Ancient Societies - New Kingdom Egypt (Ramesside period)', 'Ancient Societies - Spartan society to Leuctra 371 BC', 'Ancient Societies - Athenian society in the time of Pericles', 'Ancient Societies - Persian society (Darius and Xerxes)', 'Ancient Societies - Minoan Crete', 'Ancient Societies - Han Dynasty China', 'Personalities - Hatshepsut', 'Personalities - Akhenaten', 'Personalities - Xerxes', 'Personalities - Agrippina the Younger', 'Personalities - Julius Caesar', 'Personalities - Pericles', 'Personalities - Alexander the Great', 'Historical Periods - New Kingdom Egypt to Thutmose IV', 'Historical Periods - Amenhotep III to Ramesses II', 'Historical Periods - Persia (Cyrus II to Darius III)', 'Historical Periods - Greek World 500-440 BC', 'Historical Periods - Fall of Roman Republic 78-31 BC', 'Historical Periods - The Augustan Age', 'Historical Periods - The Julio-Claudians'],
             'biology': ['Module 1: Cells as the Basis of Life', 'Module 2: Organisation of Living Things', 'Module 3: Biological Diversity', 'Module 4: Ecosystem Dynamics', 'Module 5: Heredity', 'Module 6: Genetic Change', 'Module 7: Infectious Disease', 'Module 8: Non-infectious Disease and Disorders'],
             'business-studies': ['Nature of business', 'Business management', 'Business planning', 'Operations', 'Marketing', 'Finance', 'Human resources'],
             'chemistry': ['Module 1: Properties and Structure of Matter', 'Module 2: Introduction to Quantitative Chemistry', 'Module 3: Reactive Chemistry', 'Module 4: Drivers of Reactions', 'Module 5: Equilibrium and Acid Reactions', 'Module 6: Acid/Base Reactions', 'Module 7: Organic Chemistry', 'Module 8: Applying Chemical Ideas'],
             'construction': ['Safety', 'Skills in construction', 'Tools of the trade', 'Working in the industry'],
-            'dance': ['Dance choreography and composition', 'Dance performance', 'Dance appreciation and analysis', 'Dance composition and performance', 'Dance studies'],
+            'dance': ['Performance - Dance Technique', 'Performance - Safe Dance Practice', 'Composition - Elements of Dance', 'Composition - Generating and Organising Movement', 'Appreciation - Development of Dance in Australia', 'Appreciation - Dance Analysis', 'Major Study - Performance', 'Major Study - Composition', 'Major Study - Appreciation', 'Major Study - Dance and Technology'],
             'design-technology': ['Designing and Producing', 'Innovation and Emerging Technologies', 'Project proposal and development', 'Project realisation', 'Project evaluation'],
-            'drama': ['Improvisation and Play-building', 'Elements of Drama', 'Performance', 'Elements of Drama and Theatrical Styles', 'Performance Texts'],
+            'drama': ['Improvisation, Playbuilding and Acting', 'Elements of Production in Performance', 'Theatrical Traditions and Performance Styles', 'Australian Drama and Theatre', 'Studies in Drama and Theatre', 'Group Performance', 'Individual Project - Critical Analysis', 'Individual Project - Design', 'Individual Project - Performance', 'Individual Project - Scriptwriting'],
             'earth-environmental-science': ['Module 1: Earth\'s Resources', 'Module 2: Plate Tectonics', 'Module 3: Energy Transformations', 'Module 4: Human Impacts', 'Module 5: Earth\'s Processes', 'Module 6: Hazards', 'Module 7: Climate Science', 'Module 8: Resource Management'],
             'economics': ['Introduction to Economics', 'Consumers and Business', 'Markets', 'Labour Markets', 'Financial Markets', 'Government and the Economy', 'The Global Economy', 'Australia\'s Place in the Global Economy', 'Economic Issues', 'Economic Policies and Management'],
-            'engineering-studies': ['Engineering Fundamentals', 'Braking Systems', 'Biomedical Engineering', 'Civil Structures', 'Personal and Public Transport', 'Aeronautical Engineering', 'Telecommunications Engineering'],
+            'engineering-studies': ['Engineering Fundamentals', 'Engineered Products', 'Braking Systems', 'Biomedical Engineering', 'Civil Structures', 'Personal and Public Transport', 'Aeronautical Engineering', 'Telecommunications Engineering'],
             'english-advanced': ['Reading to write: Transition to English Advanced', 'Narratives that shape our world', 'Critical study of literature', 'Texts and human experiences', 'Textual conversations', 'The craft of writing'],
             'english-eald': ['Texts and Communication', 'Language Variation and Change', 'Literature and Cultures', 'Communication, Meaning and Culture', 'Literature and Human Experience', 'Language and Text'],
             'english-extension': ['Extension Pathways', 'Extension Texts', 'Extension Standard'],
             'english-standard': ['Texts and Human Experiences', 'Communication Texts', 'Literature', 'Mandatory Texts – Common Study', 'Texts from Wider World', 'Individual Student Focus Area'],
             'english-studies': ['Communication in Texts', 'Reading and Creating Texts', 'Literature in Context', 'Mandatory: Australian texts', 'Individual Text Study', 'Text Creation'],
             'enterprise-computing': ['Interactive Media and the User Experience', 'Networking Systems and Social Computing', 'Principles of Cybersecurity', 'Data Science', 'Data Visualisation', 'Intelligent Systems', 'Enterprise Project'],
-            'food-technology': ['Food and Technology', 'Nutrition and Health', 'Food Preparation and Safety', 'Food Choice and Health', 'Food Product Development', 'Food Enterprise'],
+            'food-technology': ['Food Availability and Selection', 'Food Quality', 'Nutrition', 'The Australian Food Industry', 'Food Manufacture', 'Food Product Development', 'Contemporary Nutrition Issues'],
             'geography': ['Earth\'s natural systems', 'People, patterns and processes', 'Human-environment interactions', 'Geographical Investigation', 'Global sustainability', 'Rural and urban places', 'Ecosystems and global biodiversity'],
             'health-movement-science': ['Health for individuals and communities', 'The body and mind in motion', 'Collaborative Investigation', 'Health in an Australian and global context', 'Training for improved performance'],
             'history-extension': ['Extension History Topics', 'Research Projects'],
             'hospitality': ['Hospitality Operations', 'Food and Beverage Services', 'Hospitality and Tourism', 'Hospitality Businesses', 'Hospitality Services', 'Hospitality Industry'],
             'industrial-technology': ['Materials and Manufacturing Processes', 'Designing and Producing', 'Design and Production', 'Industrial Studies', 'Case Studies'],
             'information-digital-technology': ['Information Systems', 'Digital Systems', 'Data and Information', 'Networking and Cloud Computing', 'Digital Issues and Implications'],
-            'investigating-science': ['Module 1: Working Scientifically Skills', 'Module 2: Structures and Function (Biological)', 'Module 3: Structure and Function (Physical)', 'Module 4: Earth and Space', 'Module 5: Biochemistry', 'Module 6: Space and the Solar System', 'Module 7: Genetics and Heredity', 'Module 8: Infectious Diseases'],
-            'legal-studies': ['Crime', 'Civil Law', 'Law and Society', 'Workplace Law', 'Issues in Australian Law'],
+            'investigating-science': ['Module 1: Cause and Effect - Observing', 'Module 2: Cause and Effect - Inferences and Generalisations', 'Module 3: Scientific Models', 'Module 4: Theories and Laws', 'Module 5: Scientific Investigations', 'Module 6: Technologies', 'Module 7: Fact or Fallacy?', 'Module 8: Science and Society'],
+            'legal-studies': ['The Legal System', 'The Individual and the Law', 'Law in Practice', 'Crime', 'Human Rights', 'Options - Consumers', 'Options - Global Environmental Protection', 'Options - Family', 'Options - Indigenous Peoples', 'Options - Shelter', 'Options - Workplace', 'Options - World Order'],
             'mathematics-advanced': ['Functions', 'Trigonometric Functions', 'Calculus', 'Exponential and Logarithmic Functions', 'Statistical Analysis', 'Financial Mathematics'],
             'mathematics-extension-1': ['Further functions and complex numbers', 'Trigonometry, sequences and series', 'Complex numbers and polynomials', 'Further calculus', 'Further vectors and mechanics'],
-            'mathematics-extension-2': ['Complex numbers', 'Further calculus', 'Mechanics'],
+            'mathematics-extension-2': ['Proof (The Nature of Proof)', 'Vectors (Further Work with Vectors)', 'Complex Numbers', 'Further Integration', 'Mechanics'],
             'mathematics-standard': ['Data and Statistics', 'Financial Mathematics', 'Measurement', 'Algebra and Functions'],
-            'modern-history': ['Core Study: Power and Authority', 'Case Studies', 'Depth Studies', 'Core Study: Germany 1918-1939', 'Options Study', 'Historical Skills and Analysis'],
-            'music-1': ['Performance', 'Composition', 'Musicology'],
-            'music-2': ['Performance', 'Composition and Arranging', 'Musicology and History'],
+            'modern-history': ['Case Study - The Decline and Fall of the Romanov Dynasty', 'Case Study - The American Civil War', 'Case Study - The Meiji Restoration', 'Case Study - The Cuban Revolution', 'Case Study - The Trans-Atlantic Slave Trade', 'The Shaping of the Modern World - The French Revolution', 'The Shaping of the Modern World - World War I', 'The Shaping of the Modern World - The Age of Imperialism', 'Historical Investigation', 'Core Study: Power and Authority in the Modern World 1919-1946', 'National Studies - USA 1919-1941', 'National Studies - Russia and the Soviet Union 1917-1941', 'National Studies - China 1927-1949', 'National Studies - Japan 1904-1937', 'National Studies - India 1942-1984', 'National Studies - Indonesia 1945-2005', 'National Studies - Australia 1918-1949', 'Peace and Conflict - Conflict in Indochina 1954-1979', 'Peace and Conflict - Conflict in the Pacific 1937-1951', 'Peace and Conflict - Conflict in Europe 1935-1945', 'Peace and Conflict - The Cold War 1945-1991', 'Peace and Conflict - The Arab-Israeli Conflict 1948-1996', 'Change in the Modern World - Civil Rights in the USA 1945-1968', 'Change in the Modern World - Apartheid in South Africa 1960-1994', 'Change in the Modern World - The Nuclear Age 1945-2011', 'Change in the Modern World - Pro-democracy Movement in Burma'],
+            'music-1': ['Performance (Solo and Ensemble)', 'Composition', 'Musicology', 'Aural Skills', 'Topic - Australian Music', 'Topic - Jazz', 'Topic - Music for Film/TV/Multimedia', 'Topic - Popular Music', 'Topic - Rock Music', 'Topic - Theatre Music', 'Topic - Music of a Culture'],
+            'music-2': ['Performance', 'Composition', 'Musicology', 'Aural Skills', 'Music 1600-1900 (Baroque, Classical, Romantic)', 'Music of the Last 25 Years', 'Music of a Culture', 'Music 1900-1945', 'Music 1945 to 25 Years Ago'],
             'physics': ['Module 1: Kinematics', 'Module 2: Dynamics', 'Module 3: Waves and Thermodynamics', 'Module 4: Electricity and Magnetism', 'Module 5: Advanced Mechanics', 'Module 6: Electromagnetism', 'Module 7: The Nature of Light', 'Module 8: From the Universe to the Atom'],
             'science-extension': ['Science Inquiry and Innovation Project'],
-            'society-culture': ['Personal and Social Identity', 'Groups in Society', 'Institutions and Socialization', 'Globalisation', 'Power and Authority', 'Inequality'],
+            'society-culture': ['The Social and Cultural World', 'Personal and Social Identity', 'Intercultural Communication', 'Social and Cultural Continuity and Change', 'Personal Interest Project (PIP)', 'Depth Study - Popular Culture', 'Depth Study - Belief Systems and Ideologies', 'Depth Study - Social Inclusion and Exclusion', 'Depth Study - Social Conformity and Nonconformity'],
             'software-engineering': ['Programming Fundamentals', 'The Object-Oriented Paradigm', 'Programming Mechatronics', 'Secure Software Architecture', 'Programming for the Web', 'Software Automation', 'Software Engineering Project'],
-            'studies-of-religion': ['Beliefs, Teachings and Practices', 'Religious Traditions', 'Spirituality and Society', 'Ancient Religious Traditions', 'Religion and Ethics in the Modern World'],
-            'visual-arts': ['Art Making', 'Art Criticism and Appreciation', 'Art History and Culture', 'Art Making Project', 'Art Critical Study', 'Art History Study']
+            'studies-of-religion': ['Nature of Religion and Beliefs', 'Religious Tradition Study - Buddhism', 'Religious Tradition Study - Christianity', 'Religious Tradition Study - Hinduism', 'Religious Tradition Study - Islam', 'Religious Tradition Study - Judaism', 'Religion and Belief Systems in Australia post-1945', 'Religion and Peace', 'Religion and Non-Religion', 'Religions of Ancient Origin'],
+            'visual-arts': ['Artmaking Practice', 'Art Criticism and Art History', 'The Conceptual Framework', 'The Frames (Subjective, Cultural, Structural, Postmodern)', 'Body of Work Development', 'Case Studies']
         };
         
         // Topic dropdown

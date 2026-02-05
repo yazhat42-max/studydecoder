@@ -530,13 +530,13 @@
                 
                 const data = await res.json();
                 
-                if (data.role === 'owner' || data.role === 'og_tester' || data.subscribed) {
+                if (data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed) {
                     document.getElementById('loadingOverlay').classList.add('hidden');
                     document.getElementById('backBtnContainer').classList.remove('hidden');
                     document.getElementById('mainContent').classList.remove('hidden');
                     
-                    // Show manage subscription button for subscribed users (not owner/og_tester)
-                    if (data.subscribed && data.role !== 'owner' && data.role !== 'og_tester') {
+                    // Show manage subscription button for subscribed users (not owner/og_tester/lifetime)
+                    if (data.subscribed && data.role !== 'owner' && data.role !== 'og_tester' && data.role !== 'lifetime') {
                         document.getElementById('manageSubBtn').style.display = 'inline-block';
                         // Store subscription data for modal
                         window.currentSubData = {

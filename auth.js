@@ -109,6 +109,8 @@ const StudyDecoderAuth = {
         switch (role) {
             case 'owner':
                 return '<span class="sd-role-badge sd-role-owner">👑 Owner</span>';
+            case 'lifetime':
+                return '<span class="sd-role-badge sd-role-og">⭐ Lifetime</span>';
             case 'og_tester':
                 return '<span class="sd-role-badge sd-role-og">🌟 OG Tester</span>';
             default:

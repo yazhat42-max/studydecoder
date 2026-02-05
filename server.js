@@ -115,6 +115,14 @@ function saveDB(filePath, data) {
     }
 }
 
+// ==================== LIFETIME ACCESS EMAILS ====================
+// These emails get full lifetime access (like owner but without admin page)
+const LIFETIME_ACCESS_EMAILS = [
+    'ryanhatu@gmail.com',
+    'urameshiboi4@gmail.com',
+    'hatuahmad7@gmail.com'
+];
+
 // ==================== OG CODE SYSTEM ====================
 const OG_CODE_CONFIG = {
     code: process.env.OG_CODE || 'STDYOG', // Should be set in environment for production
@@ -190,6 +198,10 @@ function getUserRole(email) {
     if (email && email.toLowerCase() === config.ownerEmail.toLowerCase()) {
         return 'owner';
     }
+    // Check if user has lifetime access (hardcoded emails)
+    if (email && LIFETIME_ACCESS_EMAILS.some(e => e.toLowerCase() === email.toLowerCase())) {
+        return 'lifetime';
+    }
     // Check if user redeemed OG code
     const ogRedemption = ogCodesState.redemptions.find(r => 
         r.email && r.email.toLowerCase() === email.toLowerCase()
@@ -203,8 +215,8 @@ function getUserRole(email) {
 function hasFullAccess(user) {
     if (!user) return false;
     const role = getUserRole(user.email);
-    // Owner and OG testers get free access
-    if (role === 'owner' || role === 'og_tester') {
+    // Owner, lifetime access emails, and OG testers get free access
+    if (role === 'owner' || role === 'lifetime' || role === 'og_tester') {
         return true;
     }
     // Regular users need subscription
@@ -2526,6 +2538,55 @@ Before generating ANY question, you MUST:
 4. Use appropriate command terms for the difficulty level
 5. Cross-reference with past papers when available
 
+HSC MARK ALLOCATIONS (Based on actual 2025 HSC past papers):
+
+CRITICAL RULES:
+- NEVER generate questions worth more than 20 marks
+- NEVER generate multiple 20-mark questions in one set
+- Most questions should be 1-6 marks
+- Extended responses (7-9 marks) are RARE - max 1-2 per full exam
+- 20-mark essays ONLY appear in English and humanities subjects
+
+Mathematics Advanced/Extension:
+- Section I: Multiple choice, 1 mark each (10 questions = 10 marks)
+- Section II: Written response questions worth 1, 2, 3, or 4 marks ONLY
+- NO extended response questions in maths - max is 4 marks
+- Total: 100 marks in 3 hours
+
+Mathematics Extension 2:
+- Same as above: 1, 2, 3, or 4 marks per question part
+- More complex multi-part questions but individual parts still max 4 marks
+
+Mathematics Standard:
+- Section I: Multiple choice, 1 mark each
+- Section II: Written response worth 1, 2, 3, or 4 marks
+- Total: 100 marks
+
+English (All courses):
+- Paper 1: 40 marks total
+  - Section I: Short answer 3-6 marks each
+  - Section II: ONE extended response 20 marks
+- Paper 2: 60 marks total
+  - Module responses: 20 marks each (ONE per module)
+- NEVER more than one 20-mark question per section
+
+Science (Biology, Chemistry, Physics):
+- Section I: Multiple choice, 1 mark each (20 marks total)
+- Section II: Short answer - mostly 2-5 marks, some 6-7 marks
+- Extended response: 8-9 marks (MAX ONE per paper)
+- Total: 100 marks
+- NO 20-mark questions in science
+
+HSIE (History, Geography, Economics, Business, Legal, Society & Culture):
+- Short answer: 2-8 marks
+- Extended response: ONE 20-mark essay per section (if applicable)
+- NEVER multiple 20-markers in a single question set
+
+Creative Arts, TAS, VET subjects:
+- Mostly practical + theory
+- Written questions: 2-8 marks typical
+- Extended responses rare and max 15 marks
+
 FORMATTING (MANDATORY):
 Use clean, structured markdown:
 - **Bold** for key terms and labels
@@ -2533,6 +2594,39 @@ Use clean, structured markdown:
 - Clear mark allocations in brackets [X marks]
 - Proper spacing between questions
 - Use > blockquotes for stimulus material
+
+MATHEMATICS FORMATTING (CRITICAL - USE UNICODE SYMBOLS):
+For mathematics questions, use proper Unicode symbols for clean display:
+- Powers/exponents: Use superscript characters: x² x³ x⁴ x⁵ x⁶ x⁷ x⁸ x⁹ xⁿ
+- Fractions: Write as ½, ⅓, ¼, ⅕, ⅔, ¾, or use a/b format for complex fractions
+- Square root: √ (e.g., √2, √x, √(x+1))
+- Cube root: ∛
+- Pi: π
+- Theta: θ
+- Multiplication: × (not * or x)
+- Division: ÷
+- Plus/minus: ±
+- Not equal: ≠
+- Less/greater or equal: ≤ ≥
+- Infinity: ∞
+- Subscripts: x₁ x₂ x₃ (for sequences)
+- Integral: ∫
+- Sum: Σ
+- Delta: Δ
+- Degree: ° (e.g., 45°, 90°)
+
+Examples of CORRECT formatting:
+- "Find the derivative of f(x) = 3x² + 2x − 5"
+- "Solve x² − 4x + 3 = 0"
+- "Calculate √(x² + y²)"
+- "If sin θ = ½, find θ for 0° ≤ θ ≤ 360°"
+- "Evaluate ∫₀¹ x² dx"
+
+NEVER use:
+- x^2 (use x² instead)
+- sqrt(x) (use √x instead)
+- * for multiplication (use × or nothing)
+- \frac, \sqrt, or any LaTeX syntax
 
 ────────────────────────
 MODE 1: STANDARD MODE
