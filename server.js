@@ -120,7 +120,8 @@ function saveDB(filePath, data) {
 const LIFETIME_ACCESS_EMAILS = [
     'ryanhatu@gmail.com',
     'urameshiboi4@gmail.com',
-    'hatuahmad7@gmail.com'
+    'hatuahmad7@gmail.com',
+    'khaledsalt1945@gmail.com'
 ];
 
 // ==================== OG CODE SYSTEM ====================
