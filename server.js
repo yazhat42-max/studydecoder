@@ -7,6 +7,7 @@
  * - Stripe payment integration with webhooks
  * - Rate limiting & security headers
  * - Session management with secure cookies
+ * - Email sending for password reset
  * 
  * Environment Variables Required:
  * - NODE_ENV: 'production' or 'development'
@@ -16,6 +17,8 @@
  * - STRIPE_SECRET_KEY: Stripe secret key (sk_live_xxx or sk_test_xxx)
  * - STRIPE_WEBHOOK_SECRET: Stripe webhook signing secret (whsec_xxx)
  * - FRONTEND_URL: Your frontend domain (e.g., https://studydecoder.com.au)
+ * - EMAIL_USER: Gmail address for sending emails
+ * - EMAIL_APP_PASSWORD: Gmail App Password (16-char code from Google)
  */
 
 require('dotenv').config();
@@ -28,6 +31,7 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
@@ -123,6 +127,62 @@ const LIFETIME_ACCESS_EMAILS = [
     'hatuahmad7@gmail.com',
     'khaledsalt1945@gmail.com'
 ];
+
+// ==================== EMAIL CONFIGURATION ====================
+// Gmail transporter for sending password reset emails
+// Requires EMAIL_USER and EMAIL_APP_PASSWORD environment variables
+const emailTransporter = process.env.EMAIL_USER && process.env.EMAIL_APP_PASSWORD 
+    ? nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_APP_PASSWORD
+        }
+    })
+    : null;
+
+async function sendPasswordResetEmail(email, resetToken) {
+    if (!emailTransporter) {
+        console.log('⚠️ Email not configured. Reset token:', resetToken.substring(0, 8) + '...');
+        console.log(`   To enable emails, set EMAIL_USER and EMAIL_APP_PASSWORD environment variables`);
+        return false;
+    }
+    
+    const resetLink = `${config.frontendUrl}/reset-password.html?token=${resetToken}&email=${encodeURIComponent(email)}`;
+    
+    const mailOptions = {
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: 'Reset Your Study Decoder Password',
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h2 style="color: #6366f1;">Password Reset Request</h2>
+                <p>Hi,</p>
+                <p>We received a request to reset your password for your Study Decoder account.</p>
+                <p>Click the button below to reset your password. This link will expire in 1 hour.</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="${resetLink}" style="background-color: #6366f1; color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; display: inline-block;">Reset Password</a>
+                </div>
+                <p>If you didn't request this, you can safely ignore this email.</p>
+                <p style="color: #666; font-size: 12px; margin-top: 30px;">
+                    If the button doesn't work, copy and paste this link into your browser:<br>
+                    <a href="${resetLink}" style="color: #6366f1;">${resetLink}</a>
+                </p>
+                <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                <p style="color: #999; font-size: 11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
+            </div>
+        `
+    };
+    
+    try {
+        await emailTransporter.sendMail(mailOptions);
+        console.log(`📧 Password reset email sent to: ${email}`);
+        return true;
+    } catch (error) {
+        console.error('Failed to send email:', error.message);
+        return false;
+    }
+}
 
 // ==================== OG CODE SYSTEM ====================
 const OG_CODE_CONFIG = {
@@ -635,6 +695,64 @@ app.post('/api/auth/google', async (req, res) => {
 });
 
 /**
+ * POST /api/auth/google-oauth - Google OAuth Access Token Sign In
+ * Fallback for browsers that block One Tap (Brave, Firefox with strict privacy)
+ */
+app.post('/api/auth/google-oauth', async (req, res) => {
+    try {
+        const { accessToken } = req.body;
+        
+        if (!accessToken) {
+            return res.status(400).json({ error: 'Access token required' });
+        }
+        
+        // Verify the access token and get user info from Google
+        const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { 'Authorization': `Bearer ${accessToken}` }
+        });
+        
+        if (!userInfoResponse.ok) {
+            return res.status(401).json({ error: 'Invalid access token' });
+        }
+        
+        const userInfo = await userInfoResponse.json();
+        
+        if (!userInfo.email) {
+            return res.status(401).json({ error: 'Could not retrieve email from Google' });
+        }
+        
+        // Check if user exists with this email
+        let existingUser = getUserByEmail(userInfo.email);
+        let userId = existingUser ? existingUser.userId : `google:${userInfo.sub}`;
+        
+        const user = upsertUser(userId, {
+            email: userInfo.email,
+            name: userInfo.name || userInfo.email.split('@')[0],
+            provider: existingUser?.provider || 'google',
+            emailVerified: userInfo.email_verified !== false
+        });
+        
+        req.session.userId = userId;
+        const role = getUserRole(user.email);
+        
+        console.log(`✅ Google OAuth sign-in: ${user.email} (${role})`);
+        
+        res.json({
+            email: user.email,
+            name: user.name,
+            role: role,
+            subscribed: hasFullAccess(user),
+            plan: user.plan,
+            expiresAt: user.expiresAt
+        });
+        
+    } catch (error) {
+        console.error('Google OAuth error:', error);
+        res.status(500).json({ error: 'Authentication failed' });
+    }
+});
+
+/**
  * POST /api/auth/register - Email Registration
  */
 app.post('/api/auth/register', async (req, res) => {
@@ -769,20 +887,19 @@ app.post('/api/auth/forgot-password', async (req, res) => {
         // Always return success to prevent email enumeration
         console.log(`📧 Password reset requested for: ${email}`);
         
-        // In production, you would send an email here
-        // For now, we'll just log it
         const user = getUserByEmail(email);
-        if (user) {
-            // Generate reset token (would be sent via email)
+        if (user && user.provider !== 'google') {
+            // Only allow password reset for email accounts (Google accounts use Google auth)
             const resetToken = generateSecureToken();
             const resetExpiry = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
             
-            // Store reset token (in production, store in DB)
+            // Store reset token
             user.resetToken = resetToken;
             user.resetExpiry = resetExpiry;
             upsertUser(user.userId, user);
             
-            console.log(`🔑 Reset token for ${email}: ${resetToken.substring(0, 8)}...`);
+            // Send the reset email
+            await sendPasswordResetEmail(email, resetToken);
         }
         
         res.json({ 
@@ -793,6 +910,54 @@ app.post('/api/auth/forgot-password', async (req, res) => {
     } catch (error) {
         console.error('Forgot password error:', error);
         res.status(500).json({ error: 'Failed to process request' });
+    }
+});
+
+/**
+ * POST /api/auth/reset-password - Reset password with token
+ */
+app.post('/api/auth/reset-password', async (req, res) => {
+    try {
+        const { email, token, newPassword } = req.body;
+        
+        if (!email || !token || !newPassword) {
+            return res.status(400).json({ error: 'Email, token, and new password are required' });
+        }
+        
+        if (!isValidPassword(newPassword)) {
+            return res.status(400).json({ 
+                error: 'Password must be at least 8 characters with uppercase, lowercase, and number' 
+            });
+        }
+        
+        const user = getUserByEmail(email);
+        
+        if (!user || user.resetToken !== token) {
+            return res.status(401).json({ error: 'Invalid or expired reset link' });
+        }
+        
+        // Check if token has expired
+        if (new Date(user.resetExpiry) < new Date()) {
+            return res.status(401).json({ error: 'Reset link has expired. Please request a new one.' });
+        }
+        
+        // Update password and clear reset token
+        const passwordHash = await hashPassword(newPassword);
+        user.passwordHash = passwordHash;
+        user.resetToken = null;
+        user.resetExpiry = null;
+        upsertUser(user.userId, user);
+        
+        console.log(`✅ Password reset successful for: ${email}`);
+        
+        res.json({ 
+            success: true, 
+            message: 'Password has been reset successfully. You can now log in.' 
+        });
+        
+    } catch (error) {
+        console.error('Reset password error:', error);
+        res.status(500).json({ error: 'Failed to reset password' });
     }
 });
 

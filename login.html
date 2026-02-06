@@ -737,6 +737,8 @@
         // ==================== State ====================
         let isLoading = false;
         let googleInitialized = false;
+        let googleTokenClient = null;
+        let oneTapAvailable = false;
         
         // ==================== DOM Elements ====================
         const tabs = document.querySelectorAll('.auth-tab');
@@ -768,12 +770,28 @@
         
         function initializeGoogleSignIn() {
             if (typeof google !== 'undefined' && google.accounts) {
-                google.accounts.id.initialize({
-                    client_id: GOOGLE_CLIENT_ID,
-                    callback: handleGoogleResponse,
-                    auto_select: false,
-                    cancel_on_tap_outside: true
-                });
+                // Initialize One Tap (works well on Chrome/Edge)
+                try {
+                    google.accounts.id.initialize({
+                        client_id: GOOGLE_CLIENT_ID,
+                        callback: handleGoogleResponse,
+                        auto_select: false,
+                        cancel_on_tap_outside: true
+                    });
+                    oneTapAvailable = true;
+                } catch (e) {
+                    console.log('One Tap not available:', e);
+                }
+                
+                // Initialize OAuth2 Token Client as fallback (works on all browsers including Brave)
+                if (google.accounts.oauth2) {
+                    googleTokenClient = google.accounts.oauth2.initTokenClient({
+                        client_id: GOOGLE_CLIENT_ID,
+                        scope: 'email profile openid',
+                        callback: handleOAuthTokenResponse,
+                    });
+                }
+                
                 googleInitialized = true;
             } else {
                 // Retry after a delay
@@ -826,21 +844,73 @@
         bindFooterLinks();
         
         // ==================== Google Sign-In ====================
-        document.getElementById('googleSignInBtn').addEventListener('click', () => {
-            if (googleInitialized) {
-                google.accounts.id.prompt();
-            } else {
+        function triggerGoogleSignIn() {
+            if (!googleInitialized) {
                 showError('Google Sign-In is loading, please try again');
+                return;
             }
-        });
+            
+            // Try One Tap first if available (Chrome/Edge)
+            if (oneTapAvailable) {
+                try {
+                    google.accounts.id.prompt((notification) => {
+                        // If One Tap fails or user dismissed, fall back to OAuth popup
+                        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                            console.log('One Tap not available, using OAuth popup');
+                            if (googleTokenClient) {
+                                googleTokenClient.requestAccessToken();
+                            } else {
+                                showError('Google Sign-In is not available in this browser');
+                            }
+                        }
+                    });
+                } catch (e) {
+                    // Fall back to OAuth popup
+                    if (googleTokenClient) {
+                        googleTokenClient.requestAccessToken();
+                    }
+                }
+            } else if (googleTokenClient) {
+                // Use OAuth popup directly (Brave, Firefox with strict privacy)
+                googleTokenClient.requestAccessToken();
+            } else {
+                showError('Google Sign-In is not available');
+            }
+        }
         
-        document.getElementById('googleSignUpBtn').addEventListener('click', () => {
-            if (googleInitialized) {
-                google.accounts.id.prompt();
-            } else {
-                showError('Google Sign-In is loading, please try again');
+        document.getElementById('googleSignInBtn').addEventListener('click', triggerGoogleSignIn);
+        
+        document.getElementById('googleSignUpBtn').addEventListener('click', triggerGoogleSignIn);
+        
+        // Handle OAuth access token response (fallback for browsers that block One Tap)
+        async function handleOAuthTokenResponse(tokenResponse) {
+            if (isLoading || !tokenResponse.access_token) return;
+            setLoading(true);
+            hideAlerts();
+            
+            try {
+                const res = await fetch('/api/auth/google-oauth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ accessToken: tokenResponse.access_token })
+                });
+                
+                const data = await res.json();
+                
+                if (!res.ok) {
+                    throw new Error(data.error || 'Authentication failed');
+                }
+                
+                showSuccess('Sign in successful! Redirecting...');
+                setTimeout(() => redirectAfterLogin(data), 1000);
+                
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                setLoading(false);
             }
-        });
+        }
         
         async function handleGoogleResponse(response) {
             if (isLoading) return;
