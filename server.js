@@ -128,6 +128,104 @@ const LIFETIME_ACCESS_EMAILS = [
     'khaledsalt1945@gmail.com'
 ];
 
+// ==================== FREE TIER CONFIGURATION ====================
+const FREE_TIER_CONFIG = {
+    usesPerBotPerDay: 5,     // Uses per bot per day for free users
+    enabled: true            // Enable/disable free tier
+};
+
+// ==================== AI QUALITY TIERS ====================
+// Different quality settings based on user role (owner > lifetime > paid > free)
+const AI_QUALITY_TIERS = {
+    owner: {
+        maxTokens: 16000,     // Maximum output for detailed responses
+        temperature: 0.9,     // Most creative and nuanced responses
+        model: 'gpt-4o'       // Best available model
+    },
+    lifetime: {
+        maxTokens: 6000,      // Higher than paid
+        temperature: 0.75,    // More creative than paid
+        model: 'gpt-4o-mini'  // Same model, better settings
+    },
+    og_tester: {
+        maxTokens: 6000,      // Same as lifetime
+        temperature: 0.75,
+        model: 'gpt-4o-mini'
+    },
+    paid: {
+        maxTokens: 4000,      // Standard for subscribers
+        temperature: 0.7,
+        model: 'gpt-4o-mini'
+    },
+    free: {
+        maxTokens: 2000,      // Limited output
+        temperature: 0.6,     // Less creative
+        model: 'gpt-4o-mini'
+    }
+};
+
+// Get AI settings based on user role
+function getAISettings(user) {
+    if (!user) return AI_QUALITY_TIERS.free;
+    const role = getUserRole(user.email);
+    if (role === 'owner') return AI_QUALITY_TIERS.owner;
+    if (role === 'lifetime' || role === 'og_tester') return AI_QUALITY_TIERS.lifetime;
+    if (user.subscribed === true) return AI_QUALITY_TIERS.paid;
+    return AI_QUALITY_TIERS.free;
+}
+
+// Track daily usage for free tier PER BOT (resets at midnight UTC)
+const freeUsageTracker = new Map(); // Map<date_userId_botType, count>
+
+function getFreeTierUsageKey(userId, botType) {
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    return `${today}_${userId}_${botType}`;
+}
+
+function getFreeTierUsage(userId, botType) {
+    const key = getFreeTierUsageKey(userId, botType);
+    return freeUsageTracker.get(key) || 0;
+}
+
+function incrementFreeTierUsage(userId, botType) {
+    const key = getFreeTierUsageKey(userId, botType);
+    const current = freeUsageTracker.get(key) || 0;
+    freeUsageTracker.set(key, current + 1);
+    
+    // Clean up old entries (older than today)
+    const today = new Date().toISOString().split('T')[0];
+    for (const [k] of freeUsageTracker) {
+        if (!k.startsWith(today)) {
+            freeUsageTracker.delete(k);
+        }
+    }
+    
+    return current + 1;
+}
+
+function canUseFreeTier(userId, botType) {
+    if (!FREE_TIER_CONFIG.enabled) return false;
+    return getFreeTierUsage(userId, botType) < FREE_TIER_CONFIG.usesPerBotPerDay;
+}
+
+function getFreeTierRemaining(userId, botType) {
+    const used = getFreeTierUsage(userId, botType);
+    return Math.max(0, FREE_TIER_CONFIG.usesPerBotPerDay - used);
+}
+
+// Get all bot usage for a user (for status display)
+function getAllFreeTierUsage(userId) {
+    const today = new Date().toISOString().split('T')[0];
+    const usage = {};
+    for (const [key, count] of freeUsageTracker) {
+        if (key.startsWith(today + '_' + userId + '_')) {
+            const botType = key.split('_').slice(2).join('_');
+            usage[botType] = count;
+        }
+    }
+    return usage;
+}
+
 // ==================== EMAIL CONFIGURATION ====================
 // Gmail transporter for sending password reset emails
 // Requires EMAIL_USER and EMAIL_APP_PASSWORD environment variables
@@ -518,6 +616,99 @@ async function verifyPassword(password, hash) {
 }
 
 /**
+ * Auto-sync subscription status from Stripe on login
+ * This handles cases where the server restarts and loses user data
+ */
+async function autoSyncStripeSubscription(userId, email) {
+    if (!stripe || !email) return null;
+    
+    try {
+        // Search for Stripe customer by email
+        const searchEmail = email.toLowerCase();
+        const customers = await stripe.customers.list({
+            email: searchEmail,
+            limit: 1
+        });
+        
+        if (customers.data.length === 0) return null;
+        
+        const customer = customers.data[0];
+        
+        // Check for active subscriptions
+        const subscriptions = await stripe.subscriptions.list({
+            customer: customer.id,
+            status: 'active',
+            limit: 1
+        });
+        
+        if (subscriptions.data.length > 0) {
+            const sub = subscriptions.data[0];
+            const plan = sub.items.data[0]?.price?.recurring?.interval === 'year' ? 'yearly' : 'monthly';
+            const expiresAt = new Date(sub.current_period_end * 1000).toISOString();
+            
+            // Update user with subscription info
+            upsertUser(userId, {
+                subscribed: true,
+                plan: plan,
+                stripeCustomerId: customer.id,
+                stripeSubscriptionId: sub.id,
+                expiresAt: expiresAt
+            });
+            
+            console.log(`🔄 Auto-synced subscription for ${email} (${plan})`);
+            return { subscribed: true, plan, expiresAt };
+        }
+        
+        // Check for completed checkout sessions
+        const sessions = await stripe.checkout.sessions.list({
+            customer: customer.id,
+            limit: 5
+        });
+        
+        const completedSession = sessions.data.find(s => 
+            s.payment_status === 'paid' || s.payment_status === 'no_payment_required'
+        );
+        
+        if (completedSession) {
+            const plan = completedSession.metadata?.plan || 'monthly';
+            const existingUser = getUser(userId);
+            
+            // Check if we already have valid expiration
+            if (existingUser?.expiresAt && new Date(existingUser.expiresAt) > new Date()) {
+                return { subscribed: true, plan: existingUser.plan, expiresAt: existingUser.expiresAt };
+            }
+            
+            // Calculate new expiration from session creation
+            const sessionDate = new Date(completedSession.created * 1000);
+            const expiration = new Date(sessionDate);
+            if (plan === 'yearly') {
+                expiration.setFullYear(expiration.getFullYear() + 1);
+            } else {
+                expiration.setMonth(expiration.getMonth() + 1);
+            }
+            
+            // Only update if expiration is in the future
+            if (expiration > new Date()) {
+                upsertUser(userId, {
+                    subscribed: true,
+                    plan: plan,
+                    stripeCustomerId: customer.id,
+                    expiresAt: expiration.toISOString()
+                });
+                
+                console.log(`🔄 Auto-synced checkout payment for ${email} (${plan})`);
+                return { subscribed: true, plan, expiresAt: expiration.toISOString() };
+            }
+        }
+        
+        return null;
+    } catch (error) {
+        console.error('Auto-sync Stripe error:', error.message);
+        return null;
+    }
+}
+
+/**
  * Get user from database
  */
 function getUser(userId) {
@@ -674,18 +865,26 @@ app.post('/api/auth/google', async (req, res) => {
             emailVerified: true // Google emails are verified
         });
         
-        req.session.userId = userId;
-        const role = getUserRole(user.email);
+        // Auto-sync subscription status from Stripe (handles server restarts)
+        if (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date()) {
+            await autoSyncStripeSubscription(userId, verified.email);
+        }
         
-        console.log(`✅ Google sign-in: ${user.email} (${role})`);
+        // Get updated user after potential sync
+        const updatedUser = getUser(userId) || user;
+        
+        req.session.userId = userId;
+        const role = getUserRole(updatedUser.email);
+        
+        console.log(`✅ Google sign-in: ${updatedUser.email} (${role})`);
         
         res.json({
-            email: user.email,
-            name: user.name,
+            email: updatedUser.email,
+            name: updatedUser.name,
             role: role,
-            subscribed: hasFullAccess(user),
-            plan: user.plan,
-            expiresAt: user.expiresAt
+            subscribed: hasFullAccess(updatedUser),
+            plan: updatedUser.plan,
+            expiresAt: updatedUser.expiresAt
         });
         
     } catch (error) {
@@ -732,18 +931,26 @@ app.post('/api/auth/google-oauth', async (req, res) => {
             emailVerified: userInfo.email_verified !== false
         });
         
-        req.session.userId = userId;
-        const role = getUserRole(user.email);
+        // Auto-sync subscription status from Stripe (handles server restarts)
+        if (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date()) {
+            await autoSyncStripeSubscription(userId, userInfo.email);
+        }
         
-        console.log(`✅ Google OAuth sign-in: ${user.email} (${role})`);
+        // Get updated user after potential sync
+        const updatedUser = getUser(userId) || user;
+        
+        req.session.userId = userId;
+        const role = getUserRole(updatedUser.email);
+        
+        console.log(`✅ Google OAuth sign-in: ${updatedUser.email} (${role})`);
         
         res.json({
-            email: user.email,
-            name: user.name,
+            email: updatedUser.email,
+            name: updatedUser.name,
             role: role,
-            subscribed: hasFullAccess(user),
-            plan: user.plan,
-            expiresAt: user.expiresAt
+            subscribed: hasFullAccess(updatedUser),
+            plan: updatedUser.plan,
+            expiresAt: updatedUser.expiresAt
         });
         
     } catch (error) {
@@ -846,8 +1053,13 @@ app.post('/api/auth/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
         
-        // Update user role in case it changed
-        const updatedUser = upsertUser(user.userId, user);
+        // Auto-sync subscription status from Stripe (handles server restarts)
+        if (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date()) {
+            await autoSyncStripeSubscription(user.userId, user.email);
+        }
+        
+        // Get updated user after potential sync
+        const updatedUser = getUser(user.userId) || user;
         
         // Set session
         req.session.userId = user.userId;
@@ -855,8 +1067,8 @@ app.post('/api/auth/login', async (req, res) => {
             req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
         }
         
-        const role = getUserRole(user.email);
-        console.log(`✅ Login: ${user.email} (${role})`);
+        const role = getUserRole(updatedUser.email);
+        console.log(`✅ Login: ${updatedUser.email} (${role})`);
         
         res.json({
             email: updatedUser.email,
@@ -1131,6 +1343,12 @@ app.post('/api/login', async (req, res) => {
             });
             req.session.userId = verified.userId;
             
+            // Auto-sync subscription for Google users
+            if (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date()) {
+                await autoSyncStripeSubscription(verified.userId, verified.email);
+                user = getUser(verified.userId) || user;
+            }
+            
         } else if (email && password) {
             // Email/Password
             if (!isValidEmail(email)) {
@@ -1170,12 +1388,18 @@ app.post('/api/login', async (req, res) => {
             return res.status(400).json({ error: 'Email and password required' });
         }
 
+        // Auto-sync subscription status from Stripe (handles server restarts)
+        if (user && (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date())) {
+            await autoSyncStripeSubscription(user.userId, user.email);
+            user = getUser(user.userId) || user;
+        }
+        
         user = checkSubscriptionStatus(user);
 
         res.json({
             email: user.email,
             name: user.name,
-            subscribed: user.subscribed,
+            subscribed: hasFullAccess(user),
             plan: user.plan,
             expiresAt: user.expiresAt
         });
@@ -1211,14 +1435,20 @@ app.post('/api/logout', (req, res) => {
 app.get('/api/subscription', requireAuth, (req, res) => {
     const user = req.user;
     const role = getUserRole(user.email);
+    const hasFull = hasFullAccess(user);
     
     res.json({
         email: user.email,
         name: user.name,
         role: role,
-        subscribed: hasFullAccess(user),
+        subscribed: hasFull,
         plan: role === 'owner' ? 'owner' : (role === 'og_tester' ? 'og_lifetime' : user.plan),
-        expiresAt: (role === 'owner' || role === 'og_tester') ? null : user.expiresAt
+        expiresAt: (role === 'owner' || role === 'og_tester') ? null : user.expiresAt,
+        freeTier: !hasFull ? {
+            enabled: FREE_TIER_CONFIG.enabled,
+            usesPerBotPerDay: FREE_TIER_CONFIG.usesPerBotPerDay,
+            usage: getAllFreeTierUsage(req.session.userId)
+        } : null
     });
 });
 
@@ -2553,9 +2783,18 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
         return res.status(401).json({ error: 'User not found' });
     }
     
-    // Check subscription
-    if (!hasFullAccess(user)) {
-        return res.status(403).json({ error: 'Active subscription required' });
+    // Check subscription or free tier
+    const hasFull = hasFullAccess(user);
+    const canUseFree = canUseFreeTier(req.session.userId, 'subject-advisor');
+    
+    if (!hasFull && !canUseFree) {
+        return res.status(403).json({ 
+            error: 'Daily limit reached for subject advisor',
+            message: `You've used all ${FREE_TIER_CONFIG.usesPerBotPerDay} free questions for subject advisor today. Try another tool or subscribe for unlimited access!`,
+            freeTierExhausted: true,
+            remaining: 0,
+            botType: 'subject-advisor'
+        });
     }
     
     const OPENAI_API_KEY = config.openaiApiKey;
@@ -2575,6 +2814,9 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
     
     messages.push({ role: 'user', content: message });
     
+    // Get AI settings based on user tier
+    const aiSettings = getAISettings(user);
+    
     try {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -2583,10 +2825,10 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: 'gpt-4o-mini',
+                model: aiSettings.model,
                 messages,
-                max_tokens: 2000,
-                temperature: 0.7
+                max_tokens: Math.min(aiSettings.maxTokens, 3000), // Cap at 3000 for advisor
+                temperature: aiSettings.temperature
             })
         });
         
@@ -2598,7 +2840,15 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'Unable to generate response. Please try again.';
         
-        res.json({ reply });
+        // Increment free tier usage ONLY for free users
+        if (!hasFull) {
+            incrementFreeTierUsage(req.session.userId, 'subject-advisor');
+        }
+        
+        // Include remaining questions in response for free users only
+        const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'subject-advisor');
+        
+        res.json({ reply, freeTierRemaining: remaining });
     } catch (error) {
         console.error('Subject Advisor API error:', error);
         res.status(500).json({ error: 'Service unavailable' });
@@ -3127,7 +3377,7 @@ Ask for: subjects, year level, available hours, upcoming tests.
 Keep timetables simple and realistic for teenagers.`
 };
 
-// OpenAI Chat endpoint (secured - requires authentication and subscription)
+// OpenAI Chat endpoint (secured - requires authentication, allows free tier with limits)
 app.post('/api/chat/:botType', express.json(), async (req, res) => {
     // Require authentication
     if (!req.session?.userId) {
@@ -3139,18 +3389,28 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         return res.status(401).json({ error: 'User not found' });
     }
     
-    // Require subscription for AI features
-    if (!hasFullAccess(user)) {
-        return res.status(403).json({ error: 'Subscription required for AI features' });
-    }
-    
     const { botType } = req.params;
-    const { messages, subject } = req.body;
     
-    // Validate bot type
+    // Validate bot type first (need it for per-bot limit check)
     if (!BOT_PROMPTS[botType]) {
         return res.status(400).json({ error: 'Invalid bot type' });
     }
+    
+    // Check access: full subscribers OR free tier with per-bot daily limit
+    const hasFull = hasFullAccess(user);
+    const canUseFree = canUseFreeTier(req.session.userId, botType);
+    
+    if (!hasFull && !canUseFree) {
+        const remaining = getFreeTierRemaining(req.session.userId, botType);
+        return res.status(403).json({ 
+            error: 'Daily limit reached for this tool',
+            message: `You've used all ${FREE_TIER_CONFIG.usesPerBotPerDay} free questions for this tool today. Try another tool or subscribe for unlimited access!`,
+            freeTierExhausted: true,
+            remaining: 0,
+            botType: botType
+        });
+    }
+    const { messages, subject } = req.body;
     
     // Validate messages
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
@@ -3205,6 +3465,9 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         }
     }
     
+    // Get AI settings based on user tier
+    const aiSettings = getAISettings(user);
+    
     try {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -3213,7 +3476,7 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: 'gpt-4o-mini',
+                model: aiSettings.model,
                 messages: [
                     { role: 'system', content: systemPrompt },
                     ...messages.map(m => ({
@@ -3221,8 +3484,8 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
                         content: m.content
                     }))
                 ],
-                max_tokens: 4000,
-                temperature: 0.7
+                max_tokens: aiSettings.maxTokens,
+                temperature: aiSettings.temperature
             })
         });
         
@@ -3235,7 +3498,15 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'No response generated';
         
-        res.json({ reply });
+        // Increment free tier usage ONLY for free users (not paid, lifetime, or owner)
+        if (!hasFull) {
+            incrementFreeTierUsage(req.session.userId, botType);
+        }
+        
+        // Include remaining questions in response for free users only
+        const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, botType);
+        
+        res.json({ reply, freeTierRemaining: remaining });
     } catch (error) {
         console.error('Chat API error:', error);
         res.status(500).json({ error: 'Failed to process request' });

@@ -364,6 +364,60 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
+        /* ========== REVIEWS SECTION ========== */
+        .reviews {
+            padding: 5rem 5%;
+            background: var(--white);
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: var(--light-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .review-card::before {
+            content: '"';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 4rem;
+            color: var(--primary);
+            opacity: 0.15;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .review-content {
+            font-size: 1rem;
+            color: var(--secondary);
+            line-height: 1.7;
+            padding-top: 1rem;
+            font-style: italic;
+        }
+
+        .review-stars {
+            color: #ffc107;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
         /* ========== FOOTER ========== */
         footer {
             text-align: center;
@@ -609,6 +663,37 @@
             <button class="sub-modal-btn sub-modal-btn-close" onclick="closeSubModal()" style="width: 100%; padding: 12px; background: #e0e0e0; color: #2A2A2A; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Close</button>
         </div>
     </div>
+
+    <!-- Reviews Section -->
+    <section class="reviews" id="reviews">
+        <h2 class="section-title">What Students Say</h2>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-content">Study Decoder has completely changed how I approach my HSC subjects. The AI tutors explain concepts in a way that actually makes sense, and the practice questions are spot on with what we cover in class.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-content">I was struggling with Extension 1 Maths until I found this. The step-by-step explanations are exactly what I needed. It's like having a tutor available 24/7 without the expensive hourly rates.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-content">The syllabus breakdown feature is amazing! I finally understand what NESA actually wants us to learn. My English essays have improved so much since I started using the Senior Study Decoder.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-content">Finally something that breaks down the syllabus in a way that makes sense! My study sessions are so much more productive now.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★☆</div>
+                <p class="review-content">The practice questions are really helpful for exam prep. Saved me hours of trying to figure out what to focus on.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-content">Wish I had this earlier in Year 11! The syllabus breakdown alone is worth it. Makes studying way less stressful.</p>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer>
