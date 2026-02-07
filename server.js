@@ -92,7 +92,6 @@ const DB_PATH = path.join(__dirname, 'data');
 const USERS_FILE = path.join(DB_PATH, 'users.json');
 const PAYMENTS_FILE = path.join(DB_PATH, 'payments.json');
 const OG_CODES_FILE = path.join(DB_PATH, 'og-codes.json');
-const REVIEWS_FILE = path.join(DB_PATH, 'reviews.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DB_PATH)) {
@@ -123,7 +122,6 @@ function saveDB(filePath, data) {
 // These emails get full lifetime access (like owner but without admin page)
 const LIFETIME_ACCESS_EMAILS = [
     'ryanhatu@gmail.com',
-    'urameshiboi4@gmail.com',
     'hatuahmad7@gmail.com',
     'khaledsalt1945@gmail.com'
 ];
@@ -138,19 +136,19 @@ const FREE_TIER_CONFIG = {
 // Different quality settings based on user role (owner > lifetime > paid > free)
 const AI_QUALITY_TIERS = {
     owner: {
-        maxTokens: 16000,     // Maximum output for detailed responses
-        temperature: 0.9,     // Most creative and nuanced responses
-        model: 'gpt-4o'       // Best available model
+        maxTokens: 35000,     // GPT-5 mini supports up to 128k, but 35k is plenty
+        temperature: 1.0,     // Maximum creativity
+        model: 'gpt-5-mini'   // Latest flagship model
     },
     lifetime: {
-        maxTokens: 6000,      // Higher than paid
-        temperature: 0.75,    // More creative than paid
-        model: 'gpt-4o-mini'  // Same model, better settings
+        maxTokens: 16384,     // Same as old owner tier
+        temperature: 1.0,     // Same as old owner tier
+        model: 'gpt-4o'       // Upgraded to GPT-4o (old owner model)
     },
     og_tester: {
-        maxTokens: 6000,      // Same as lifetime
-        temperature: 0.75,
-        model: 'gpt-4o-mini'
+        maxTokens: 16384,     // Same as lifetime
+        temperature: 1.0,
+        model: 'gpt-4o'
     },
     paid: {
         maxTokens: 4000,      // Standard for subscribers
@@ -297,57 +295,6 @@ const ogCodesState = loadDB(OG_CODES_FILE, {
 
 function saveOGState() {
     saveDB(OG_CODES_FILE, ogCodesState);
-}
-
-// ==================== REVIEWS SYSTEM ====================
-const DEFAULT_REVIEWS = [
-    {
-        id: '1',
-        rating: 5,
-        text: "great study tool, helped me understand what to actually practice and study",
-        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-    },
-    {
-        id: '2',
-        rating: 5,
-        text: "Finally something that breaks down the syllabus in a way that makes sense! My study sessions are so much more productive now.",
-        createdAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString()
-    },
-    {
-        id: '3',
-        rating: 4,
-        text: "The practice questions are really helpful for exam prep. Saved me hours of trying to figure out what to focus on.",
-        createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString()
-    },
-    {
-        id: '4',
-        rating: 5,
-        text: "Love how it explains things simply. The AI tutor feels like having a smart friend who actually understands the HSC.",
-        createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString()
-    },
-    {
-        id: '5',
-        rating: 4,
-        text: "Really useful for organizing my study schedule. The timetable feature is a game changer for balancing multiple subjects.",
-        createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
-    },
-    {
-        id: '6',
-        rating: 5,
-        text: "Wish I had this earlier in Year 11! The syllabus breakdown alone is worth it. Makes studying way less stressful.",
-        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
-    }
-];
-
-// Load reviews (initialize with defaults if empty)
-let reviewsData = loadDB(REVIEWS_FILE, { reviews: [] });
-if (!reviewsData.reviews || reviewsData.reviews.length === 0) {
-    reviewsData.reviews = DEFAULT_REVIEWS;
-    saveDB(REVIEWS_FILE, reviewsData);
-}
-
-function saveReviews() {
-    saveDB(REVIEWS_FILE, reviewsData);
 }
 
 // ==================== OWNER & ROLE SYSTEM ====================
@@ -2163,97 +2110,6 @@ app.get('/api/junior-subjects', (req, res) => {
         })),
         categories: juniorSubjectsConfig.categories
     });
-});
-
-// ==================== REVIEWS API ====================
-
-/**
- * GET /api/reviews - Get all reviews (public)
- */
-app.get('/api/reviews', (req, res) => {
-    // Return reviews sorted by date (newest first)
-    const sortedReviews = [...reviewsData.reviews].sort((a, b) => 
-        new Date(b.createdAt) - new Date(a.createdAt)
-    );
-    res.json({ reviews: sortedReviews });
-});
-
-/**
- * POST /api/reviews - Submit anonymous review (requires auth)
- */
-app.post('/api/reviews', (req, res) => {
-    // Must be logged in
-    if (!req.session.userId) {
-        return res.status(401).json({ error: 'Please sign in to leave a review' });
-    }
-
-    const { rating, text } = req.body;
-
-    // Validate rating
-    if (!rating || rating < 1 || rating > 5 || !Number.isInteger(rating)) {
-        return res.status(400).json({ error: 'Rating must be 1-5 stars' });
-    }
-
-    // Validate text
-    if (!text || typeof text !== 'string') {
-        return res.status(400).json({ error: 'Review text is required' });
-    }
-
-    const cleanText = sanitizeInput(text.trim());
-    if (cleanText.length < 10) {
-        return res.status(400).json({ error: 'Review must be at least 10 characters' });
-    }
-    if (cleanText.length > 500) {
-        return res.status(400).json({ error: 'Review must be under 500 characters' });
-    }
-
-    // Create anonymous review (no user info stored, sanitized text)
-    const review = {
-        id: crypto.randomUUID(),
-        rating,
-        text: cleanText,
-        createdAt: new Date().toISOString()
-    };
-
-    reviewsData.reviews.push(review);
-    saveReviews();
-
-    console.log(`[Reviews] New ${rating}-star review submitted`);
-    res.json({ success: true, review });
-});
-
-/**
- * DELETE /api/reviews/:id - Delete a review (owner only)
- */
-app.delete('/api/reviews/:id', (req, res) => {
-    // Must be logged in
-    if (!req.session.userId) {
-        return res.status(401).json({ error: 'Not authenticated' });
-    }
-
-    const user = getUser(req.session.userId);
-    if (!user) {
-        return res.status(401).json({ error: 'User not found' });
-    }
-
-    // Only owner can delete reviews
-    const role = getUserRole(user.email);
-    if (role !== 'owner') {
-        return res.status(403).json({ error: 'Only the owner can delete reviews' });
-    }
-
-    const { id } = req.params;
-    const index = reviewsData.reviews.findIndex(r => r.id === id);
-    
-    if (index === -1) {
-        return res.status(404).json({ error: 'Review not found' });
-    }
-
-    reviewsData.reviews.splice(index, 1);
-    saveReviews();
-
-    console.log(`[Reviews] Review ${id} deleted by owner`);
-    res.json({ success: true });
 });
 
 // ==================== DEMO BOT API ====================
