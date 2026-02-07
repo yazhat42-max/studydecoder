@@ -2222,6 +2222,40 @@ app.post('/api/reviews', (req, res) => {
     res.json({ success: true, review });
 });
 
+/**
+ * DELETE /api/reviews/:id - Delete a review (owner only)
+ */
+app.delete('/api/reviews/:id', (req, res) => {
+    // Must be logged in
+    if (!req.session.userId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const user = getUser(req.session.userId);
+    if (!user) {
+        return res.status(401).json({ error: 'User not found' });
+    }
+
+    // Only owner can delete reviews
+    const role = getUserRole(user.email);
+    if (role !== 'owner') {
+        return res.status(403).json({ error: 'Only the owner can delete reviews' });
+    }
+
+    const { id } = req.params;
+    const index = reviewsData.reviews.findIndex(r => r.id === id);
+    
+    if (index === -1) {
+        return res.status(404).json({ error: 'Review not found' });
+    }
+
+    reviewsData.reviews.splice(index, 1);
+    saveReviews();
+
+    console.log(`[Reviews] Review ${id} deleted by owner`);
+    res.json({ success: true });
+});
+
 // ==================== DEMO BOT API ====================
 
 // Demo rate limiter (stricter - 10 requests per hour per IP)

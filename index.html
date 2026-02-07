@@ -364,58 +364,169 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
-        /* ========== REVIEWS SECTION ========== */
-        .reviews {
-            padding: 5rem 5%;
-            background: var(--white);
+        /* ========== REVIEW SECTION ========== */
+        .review-section {
+            padding: 4rem 5%;
+            background: var(--light-bg);
+            text-align: center;
         }
 
-        .reviews-grid {
+        .review-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .reviews-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 2rem auto;
         }
 
         .review-card {
-            background: var(--light-bg);
+            background: white;
             border-radius: var(--radius);
-            padding: 2rem;
+            padding: 1.5rem;
             box-shadow: var(--shadow);
-            transition: var(--transition);
+            text-align: left;
             position: relative;
         }
 
-        .review-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .review-card::before {
-            content: '"';
+        .review-delete-btn {
             position: absolute;
-            top: 15px;
-            left: 20px;
-            font-size: 4rem;
-            color: var(--primary);
-            opacity: 0.15;
-            font-family: Georgia, serif;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            font-size: 16px;
             line-height: 1;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
         }
 
-        .review-content {
-            font-size: 1rem;
-            color: var(--secondary);
-            line-height: 1.7;
-            padding-top: 1rem;
-            font-style: italic;
+        .review-delete-btn:hover {
+            opacity: 1;
         }
 
         .review-stars {
             color: #ffc107;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .review-text {
+            color: var(--secondary);
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .review-btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
             font-size: 1rem;
-            margin-bottom: 0.75rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1.5rem;
+        }
+
+        .review-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Review Modal */
+        .review-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .review-modal {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .review-modal h3 {
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .star-rating span {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #ddd;
+            transition: color 0.2s;
+        }
+
+        .star-rating span.active,
+        .star-rating span:hover {
+            color: #ffc107;
+        }
+
+        .review-modal textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+        }
+
+        .review-modal-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .review-modal-btns button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .review-submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .review-cancel-btn {
+            background: #e0e0e0;
+            color: #333;
         }
 
         /* ========== FOOTER ========== */
@@ -665,35 +776,33 @@
     </div>
 
     <!-- Reviews Section -->
-    <section class="reviews" id="reviews">
-        <h2 class="section-title">What Students Say</h2>
-        <div class="reviews-grid">
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-content">Study Decoder has completely changed how I approach my HSC subjects. The AI tutors explain concepts in a way that actually makes sense, and the practice questions are spot on with what we cover in class.</p>
+    <section class="review-section" id="reviews">
+        <h2>What Students Say</h2>
+        <div class="reviews-container" id="reviewsContainer">
+            <!-- Reviews loaded dynamically -->
+        </div>
+        <button class="review-btn" onclick="openReviewModal()">Leave a Review ⭐</button>
+    </section>
+
+    <!-- Review Modal -->
+    <div class="review-modal-overlay" id="reviewModalOverlay" onclick="closeReviewModal(event)">
+        <div class="review-modal" onclick="event.stopPropagation()">
+            <h3>Leave a Review</h3>
+            <p style="color: #666; margin-bottom: 1rem;">Your review helps other students!</p>
+            <div class="star-rating" id="starRating">
+                <span data-rating="1">★</span>
+                <span data-rating="2">★</span>
+                <span data-rating="3">★</span>
+                <span data-rating="4">★</span>
+                <span data-rating="5">★</span>
             </div>
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-content">I was struggling with Extension 1 Maths until I found this. The step-by-step explanations are exactly what I needed. It's like having a tutor available 24/7 without the expensive hourly rates.</p>
-            </div>
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-content">The syllabus breakdown feature is amazing! I finally understand what NESA actually wants us to learn. My English essays have improved so much since I started using the Senior Study Decoder.</p>
-            </div>
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-content">Finally something that breaks down the syllabus in a way that makes sense! My study sessions are so much more productive now.</p>
-            </div>
-            <div class="review-card">
-                <div class="review-stars">★★★★☆</div>
-                <p class="review-content">The practice questions are really helpful for exam prep. Saved me hours of trying to figure out what to focus on.</p>
-            </div>
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-content">Wish I had this earlier in Year 11! The syllabus breakdown alone is worth it. Makes studying way less stressful.</p>
+            <textarea id="reviewText" placeholder="Share your experience... (min 10 characters)" maxlength="500"></textarea>
+            <div class="review-modal-btns">
+                <button class="review-cancel-btn" onclick="closeReviewModal()">Cancel</button>
+                <button class="review-submit-btn" id="submitReviewBtn" onclick="submitReview()">Submit</button>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -913,6 +1022,151 @@
             checkAuthStatus();
         }
     })();
+
+    // ========== REVIEWS SYSTEM ==========
+    let selectedRating = 0;
+
+    // Load reviews on page load
+    async function loadReviews() {
+        try {
+            const res = await fetch(API_BASE + '/api/reviews');
+            const data = await res.json();
+            const container = document.getElementById('reviewsContainer');
+            const isOwner = currentUser && currentUser.role === 'owner';
+            
+            if (data.reviews && data.reviews.length > 0) {
+                // Show max 6 reviews
+                const displayReviews = data.reviews.slice(0, 6);
+                container.innerHTML = displayReviews.map(r => `
+                    <div class="review-card" data-review-id="${r.id}">
+                        ${isOwner ? `<button class="review-delete-btn" onclick="deleteReview('${r.id}')" title="Delete review">×</button>` : ''}
+                        <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+                        <p class="review-text">"${escapeHtml(r.text)}"</p>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<p style="color: #888;">No reviews yet. Be the first!</p>';
+            }
+        } catch (e) {
+            console.error('Failed to load reviews:', e);
+        }
+    }
+
+    async function deleteReview(id) {
+        if (!confirm('Delete this review?')) return;
+        
+        try {
+            const res = await fetch(API_BASE + '/api/reviews/' + id, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            
+            if (res.ok) {
+                loadReviews();
+            } else {
+                const data = await res.json();
+                alert(data.error || 'Failed to delete review');
+            }
+        } catch (e) {
+            alert('Error deleting review');
+        }
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function openReviewModal() {
+        if (!currentUser) {
+            alert('Please sign in to leave a review');
+            window.location.href = 'login.html';
+            return;
+        }
+        document.getElementById('reviewModalOverlay').style.display = 'flex';
+        selectedRating = 0;
+        updateStars();
+        document.getElementById('reviewText').value = '';
+    }
+
+    function closeReviewModal(e) {
+        if (!e || e.target === document.getElementById('reviewModalOverlay')) {
+            document.getElementById('reviewModalOverlay').style.display = 'none';
+        }
+    }
+
+    // Star rating interaction
+    document.getElementById('starRating').addEventListener('click', (e) => {
+        if (e.target.dataset.rating) {
+            selectedRating = parseInt(e.target.dataset.rating);
+            updateStars();
+        }
+    });
+
+    document.getElementById('starRating').addEventListener('mouseover', (e) => {
+        if (e.target.dataset.rating) {
+            highlightStars(parseInt(e.target.dataset.rating));
+        }
+    });
+
+    document.getElementById('starRating').addEventListener('mouseout', () => {
+        updateStars();
+    });
+
+    function updateStars() {
+        highlightStars(selectedRating);
+    }
+
+    function highlightStars(count) {
+        document.querySelectorAll('#starRating span').forEach((star, i) => {
+            star.classList.toggle('active', i < count);
+        });
+    }
+
+    async function submitReview() {
+        const text = document.getElementById('reviewText').value.trim();
+        
+        if (selectedRating === 0) {
+            alert('Please select a star rating');
+            return;
+        }
+        if (text.length < 10) {
+            alert('Review must be at least 10 characters');
+            return;
+        }
+
+        const btn = document.getElementById('submitReviewBtn');
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+
+        try {
+            const res = await fetch(API_BASE + '/api/reviews', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ rating: selectedRating, text })
+            });
+
+            const data = await res.json();
+            
+            if (res.ok) {
+                closeReviewModal();
+                alert('Thank you for your review!');
+                loadReviews();
+            } else {
+                alert(data.error || 'Failed to submit review');
+            }
+        } catch (e) {
+            alert('Error submitting review. Please try again.');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Submit';
+        }
+    }
+
+    // Load reviews on page load
+    loadReviews();
     </script>
 </body>
 </html>
