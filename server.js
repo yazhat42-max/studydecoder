@@ -237,10 +237,19 @@ const emailTransporter = process.env.EMAIL_USER && process.env.EMAIL_APP_PASSWOR
     })
     : null;
 
+// Log warning at startup if email not configured
+if (!emailTransporter) {
+    console.warn('⚠️ =====================================================');
+    console.warn('⚠️ EMAIL NOT CONFIGURED - Password reset will NOT work!');
+    console.warn('⚠️ Set EMAIL_USER and EMAIL_APP_PASSWORD in environment');
+    console.warn('⚠️ =====================================================');
+}
+
 async function sendPasswordResetEmail(email, resetToken) {
     if (!emailTransporter) {
-        console.log('⚠️ Email not configured. Reset token:', resetToken.substring(0, 8) + '...');
-        console.log(`   To enable emails, set EMAIL_USER and EMAIL_APP_PASSWORD environment variables`);
+        console.error('❌ EMAIL NOT CONFIGURED - Cannot send password reset to:', email);
+        console.error('   Reset token was generated:', resetToken.substring(0, 8) + '...');
+        console.error('   To fix: Add EMAIL_USER and EMAIL_APP_PASSWORD to Render environment variables');
         return false;
     }
     
@@ -271,11 +280,14 @@ async function sendPasswordResetEmail(email, resetToken) {
     };
     
     try {
+        console.log(`📧 Attempting to send password reset email to: ${email}`);
+        console.log(`   Using EMAIL_USER: ${process.env.EMAIL_USER?.substring(0, 5)}***`);
         await emailTransporter.sendMail(mailOptions);
-        console.log(`📧 Password reset email sent to: ${email}`);
+        console.log(`✅ Password reset email sent successfully to: ${email}`);
         return true;
     } catch (error) {
-        console.error('Failed to send email:', error.message);
+        console.error('❌ Failed to send email:', error.message);
+        console.error('   Full error:', error);
         return false;
     }
 }
@@ -1043,6 +1055,14 @@ app.post('/api/auth/forgot-password', async (req, res) => {
             return res.status(400).json({ error: 'Valid email required' });
         }
         
+        // Check if email system is configured
+        if (!emailTransporter) {
+            console.error(`❌ Password reset attempted but email not configured for: ${email}`);
+            return res.status(503).json({ 
+                error: 'Password reset is currently unavailable. Please contact support or use Google Sign-In.' 
+            });
+        }
+        
         // Always return success to prevent email enumeration
         console.log(`📧 Password reset requested for: ${email}`);
         
@@ -1058,7 +1078,10 @@ app.post('/api/auth/forgot-password', async (req, res) => {
             upsertUser(user.userId, user);
             
             // Send the reset email
-            await sendPasswordResetEmail(email, resetToken);
+            const sent = await sendPasswordResetEmail(email, resetToken);
+            if (!sent) {
+                console.error(`❌ Failed to send password reset email to: ${email}`);
+            }
         }
         
         res.json({ 

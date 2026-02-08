@@ -739,6 +739,8 @@
         let googleInitialized = false;
         let googleTokenClient = null;
         let oneTapAvailable = false;
+        let googleInitRetries = 0;
+        const MAX_GOOGLE_RETRIES = 6; // 3 seconds max
         
         // ==================== DOM Elements ====================
         const tabs = document.querySelectorAll('.auth-tab');
@@ -793,10 +795,38 @@
                 }
                 
                 googleInitialized = true;
+                // Hide any "Google blocked" messages
+                const blockedMsg = document.getElementById('googleBlockedMsg');
+                if (blockedMsg) blockedMsg.style.display = 'none';
             } else {
-                // Retry after a delay
-                setTimeout(initializeGoogleSignIn, 500);
+                googleInitRetries++;
+                if (googleInitRetries < MAX_GOOGLE_RETRIES) {
+                    // Retry after a delay
+                    setTimeout(initializeGoogleSignIn, 500);
+                } else {
+                    // Google script couldn't load - likely blocked by Brave Shields
+                    console.warn('Google Sign-In script blocked - likely by browser privacy settings');
+                    showGoogleBlockedMessage();
+                }
             }
+        }
+        
+        function showGoogleBlockedMessage() {
+            // Show message near Google buttons
+            const googleBtns = document.querySelectorAll('.social-btn');
+            googleBtns.forEach(btn => {
+                if (!document.getElementById('googleBlockedMsg')) {
+                    const msg = document.createElement('p');
+                    msg.id = 'googleBlockedMsg';
+                    msg.style.cssText = 'color: #f59e0b; font-size: 12px; margin-top: 8px; text-align: center;';
+                    msg.innerHTML = '⚠️ Google Sign-In blocked. <a href="#" onclick="showGoogleHelp(); return false;" style="color: #6C63FF;">How to enable?</a> Or use email/password below.';
+                    btn.parentNode.insertBefore(msg, btn.nextSibling);
+                }
+            });
+        }
+        
+        function showGoogleHelp() {
+            alert('Google Sign-In is blocked by your browser\'s privacy settings.\\n\\nTo enable it in Brave:\\n1. Click the Brave Shields icon (lion) in the address bar\\n2. Turn off Shields for this site, OR\\n3. Click "Advanced Controls" → Allow Google scripts\\n\\nAlternatively, use email/password sign-in below.');
         }
         
         // ==================== Tab Navigation ====================
@@ -846,7 +876,11 @@
         // ==================== Google Sign-In ====================
         function triggerGoogleSignIn() {
             if (!googleInitialized) {
-                showError('Google Sign-In is loading, please try again');
+                if (googleInitRetries >= MAX_GOOGLE_RETRIES) {
+                    showGoogleHelp();
+                } else {
+                    showError('Google Sign-In is loading, please try again in a moment');
+                }
                 return;
             }
             
