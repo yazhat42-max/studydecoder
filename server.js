@@ -123,7 +123,9 @@ function saveDB(filePath, data) {
 const LIFETIME_ACCESS_EMAILS = [
     'ryanhatu@gmail.com',
     'hatuahmad7@gmail.com',
-    'khaledsalt1945@gmail.com'
+    'khaledsalt1945@gmail.com',
+    'Quizzywolf@gmail.com',
+    'australiaball87@gmail.com'
 ];
 
 // ==================== FREE TIER CONFIGURATION ====================
