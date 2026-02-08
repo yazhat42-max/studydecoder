@@ -610,109 +610,22 @@
                 <span id="alertSuccessText">Success!</span>
             </div>
             
-            <div class="auth-tabs">
-                <button class="auth-tab active" data-tab="signin">Sign In</button>
-                <button class="auth-tab" data-tab="signup">Create Account</button>
-            </div>
-            
-            <!-- Sign In Form -->
-            <form class="auth-form active" id="signinForm">
+            <!-- Google Sign In Only -->
+            <div class="auth-form active" id="signinForm" style="display: block;">
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: 24px;">Sign in to access your study tools</p>
+                
                 <button type="button" class="google-btn-custom" id="googleSignInBtn">
                     <img src="https://www.google.com/favicon.ico" alt="Google">
                     Continue with Google
                 </button>
                 
-                <div class="divider"><span>or</span></div>
-                
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" class="form-input" id="signinEmail" placeholder="you@example.com" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <div class="password-wrapper">
-                        <input type="password" class="form-input" id="signinPassword" placeholder="Enter your password" required>
-                        <button type="button" class="password-toggle" data-target="signinPassword">👁️</button>
-                    </div>
-                </div>
-                
-                <div class="forgot-link">
-                    <a href="#" id="forgotPasswordLink">Forgot password?</a>
-                </div>
-                
-                <div class="checkbox-group">
-                    <input type="checkbox" class="checkbox-input" id="rememberMe">
-                    <label class="checkbox-label" for="rememberMe">Remember me for 30 days</label>
-                </div>
-                
-                <button type="submit" class="btn btn-primary" id="signinBtn">
-                    Sign In
-                </button>
-            </form>
-            
-            <!-- Sign Up Form -->
-            <form class="auth-form" id="signupForm">
-                <button type="button" class="google-btn-custom" id="googleSignUpBtn">
-                    <img src="https://www.google.com/favicon.ico" alt="Google">
-                    Continue with Google
-                </button>
-                
-                <div class="divider"><span>or</span></div>
-                
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="signupName" placeholder="John Smith" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" class="form-input" id="signupEmail" placeholder="you@example.com" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <div class="password-wrapper">
-                        <input type="password" class="form-input" id="signupPassword" placeholder="Create a strong password" required>
-                        <button type="button" class="password-toggle" data-target="signupPassword">👁️</button>
-                    </div>
-                    <div class="password-strength">
-                        <div class="password-strength-bar" id="passwordStrengthBar"></div>
-                    </div>
-                    <div class="password-requirements" id="passwordRequirements">
-                        <p>Password must have:</p>
-                        <ul>
-                            <li id="reqLength"><span class="req-icon">○</span> At least 8 characters</li>
-                            <li id="reqUpper"><span class="req-icon">○</span> One uppercase letter</li>
-                            <li id="reqLower"><span class="req-icon">○</span> One lowercase letter</li>
-                            <li id="reqNumber"><span class="req-icon">○</span> One number</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Confirm Password</label>
-                    <div class="password-wrapper">
-                        <input type="password" class="form-input" id="signupConfirmPassword" placeholder="Confirm your password" required>
-                        <button type="button" class="password-toggle" data-target="signupConfirmPassword">👁️</button>
-                    </div>
-                    <div class="form-error" id="confirmPasswordError">Passwords do not match</div>
-                </div>
-                
-                <div class="checkbox-group">
-                    <input type="checkbox" class="checkbox-input" id="agreeTerms" required>
-                    <label class="checkbox-label" for="agreeTerms">
-                        I agree to the <a href="terms.html" target="_blank">Terms of Service</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>
-                    </label>
-                </div>
-                
-                <button type="submit" class="btn btn-primary" id="signupBtn">
-                    Create Account
-                </button>
-            </form>
+                <p style="text-align: center; color: var(--text-secondary); font-size: 0.85rem; margin-top: 24px;">
+                    By signing in, you agree to our <a href="terms.html" target="_blank" style="color: var(--primary);">Terms of Service</a> and <a href="privacy.html" target="_blank" style="color: var(--primary);">Privacy Policy</a>
+                </p>
+            </div>
             
             <div class="login-footer" id="loginFooter">
-                <p id="footerText">Don't have an account? <a href="#" id="switchToSignup">Sign up for free</a></p>
+                <p id="footerText">Secure sign-in powered by Google</p>
             </div>
         </div>
         
@@ -743,9 +656,6 @@
         const MAX_GOOGLE_RETRIES = 6; // 3 seconds max
         
         // ==================== DOM Elements ====================
-        const tabs = document.querySelectorAll('.auth-tab');
-        const signinForm = document.getElementById('signinForm');
-        const signupForm = document.getElementById('signupForm');
         const alertError = document.getElementById('alertError');
         const alertSuccess = document.getElementById('alertSuccess');
         
@@ -812,66 +722,20 @@
         }
         
         function showGoogleBlockedMessage() {
-            // Show message near Google buttons
-            const googleBtns = document.querySelectorAll('.social-btn');
-            googleBtns.forEach(btn => {
-                if (!document.getElementById('googleBlockedMsg')) {
-                    const msg = document.createElement('p');
-                    msg.id = 'googleBlockedMsg';
-                    msg.style.cssText = 'color: #f59e0b; font-size: 12px; margin-top: 8px; text-align: center;';
-                    msg.innerHTML = '⚠️ Google Sign-In blocked. <a href="#" onclick="showGoogleHelp(); return false;" style="color: #6C63FF;">How to enable?</a> Or use email/password below.';
-                    btn.parentNode.insertBefore(msg, btn.nextSibling);
-                }
-            });
+            // Show message near Google button
+            const googleBtn = document.getElementById('googleSignInBtn');
+            if (googleBtn && !document.getElementById('googleBlockedMsg')) {
+                const msg = document.createElement('p');
+                msg.id = 'googleBlockedMsg';
+                msg.style.cssText = 'color: #f59e0b; font-size: 12px; margin-top: 12px; text-align: center;';
+                msg.innerHTML = '⚠️ Google Sign-In is blocked by your browser.<br><a href="#" onclick="showGoogleHelp(); return false;" style="color: #6C63FF;">Click here to learn how to enable it</a>';
+                googleBtn.parentNode.insertBefore(msg, googleBtn.nextSibling);
+            }
         }
         
         function showGoogleHelp() {
-            alert('Google Sign-In is blocked by your browser\'s privacy settings.\\n\\nTo enable it in Brave:\\n1. Click the Brave Shields icon (lion) in the address bar\\n2. Turn off Shields for this site, OR\\n3. Click "Advanced Controls" → Allow Google scripts\\n\\nAlternatively, use email/password sign-in below.');
+            alert('Google Sign-In is blocked by your browser\'s privacy settings.\n\nTo enable it in Brave:\n1. Click the Brave Shields icon (lion) in the address bar\n2. Turn off Shields for this site, OR\n3. Click "Advanced Controls" → Allow Google scripts\n\nIn Firefox:\n1. Check your Enhanced Tracking Protection settings\n2. Add this site as an exception');
         }
-        
-        // ==================== Tab Navigation ====================
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const targetTab = tab.dataset.tab;
-                
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                if (targetTab === 'signin') {
-                    signinForm.classList.add('active');
-                    signupForm.classList.remove('active');
-                    document.getElementById('footerText').innerHTML = 
-                        'Don\'t have an account? <a href="#" id="switchToSignup">Sign up for free</a>';
-                } else {
-                    signupForm.classList.add('active');
-                    signinForm.classList.remove('active');
-                    document.getElementById('footerText').innerHTML = 
-                        'Already have an account? <a href="#" id="switchToSignin">Sign in</a>';
-                }
-                
-                hideAlerts();
-                bindFooterLinks();
-            });
-        });
-        
-        function bindFooterLinks() {
-            const switchToSignup = document.getElementById('switchToSignup');
-            const switchToSignin = document.getElementById('switchToSignin');
-            
-            if (switchToSignup) {
-                switchToSignup.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    tabs[1].click();
-                });
-            }
-            if (switchToSignin) {
-                switchToSignin.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    tabs[0].click();
-                });
-            }
-        }
-        bindFooterLinks();
         
         // ==================== Google Sign-In ====================
         function triggerGoogleSignIn() {
@@ -913,8 +777,6 @@
         }
         
         document.getElementById('googleSignInBtn').addEventListener('click', triggerGoogleSignIn);
-        
-        document.getElementById('googleSignUpBtn').addEventListener('click', triggerGoogleSignIn);
         
         // Handle OAuth access token response (fallback for browsers that block One Tap)
         async function handleOAuthTokenResponse(tokenResponse) {
@@ -978,196 +840,6 @@
         // Make it global for Google callback
         window.handleGoogleResponse = handleGoogleResponse;
         
-        // ==================== Sign In Form ====================
-        signinForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (isLoading) return;
-            
-            const email = document.getElementById('signinEmail').value.trim();
-            const password = document.getElementById('signinPassword').value;
-            const remember = document.getElementById('rememberMe').checked;
-            
-            if (!email || !password) {
-                showError('Please fill in all fields');
-                return;
-            }
-            
-            setLoading(true);
-            hideAlerts();
-            
-            try {
-                const res = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ email, password, remember })
-                });
-                
-                const data = await res.json();
-                
-                if (!res.ok) {
-                    throw new Error(data.error || 'Invalid credentials');
-                }
-                
-                showSuccess('Sign in successful! Redirecting...');
-                setTimeout(() => redirectAfterLogin(data), 1000);
-                
-            } catch (error) {
-                showError(error.message);
-            } finally {
-                setLoading(false);
-            }
-        });
-        
-        // ==================== Sign Up Form ====================
-        signupForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (isLoading) return;
-            
-            const name = document.getElementById('signupName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('signupConfirmPassword').value;
-            const agreeTerms = document.getElementById('agreeTerms').checked;
-            
-            // Validation
-            if (!name || !email || !password || !confirmPassword) {
-                showError('Please fill in all fields');
-                return;
-            }
-            
-            if (!isValidEmail(email)) {
-                showError('Please enter a valid email address');
-                return;
-            }
-            
-            if (!isValidPassword(password)) {
-                showError('Password does not meet requirements');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                showError('Passwords do not match');
-                document.getElementById('confirmPasswordError').classList.add('visible');
-                return;
-            }
-            
-            if (!agreeTerms) {
-                showError('Please agree to the Terms of Service');
-                return;
-            }
-            
-            setLoading(true);
-            hideAlerts();
-            
-            try {
-                const res = await fetch('/api/auth/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ name, email, password })
-                });
-                
-                const data = await res.json();
-                
-                if (!res.ok) {
-                    throw new Error(data.error || 'Registration failed');
-                }
-                
-                showSuccess('Account created successfully! Redirecting...');
-                setTimeout(() => redirectAfterLogin(data), 1000);
-                
-            } catch (error) {
-                showError(error.message);
-            } finally {
-                setLoading(false);
-            }
-        });
-        
-        // ==================== Password Validation ====================
-        const signupPassword = document.getElementById('signupPassword');
-        const passwordStrengthBar = document.getElementById('passwordStrengthBar');
-        
-        signupPassword.addEventListener('input', () => {
-            const password = signupPassword.value;
-            updatePasswordStrength(password);
-            updatePasswordRequirements(password);
-        });
-        
-        function updatePasswordStrength(password) {
-            let strength = 0;
-            if (password.length >= 8) strength++;
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[a-z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^A-Za-z0-9]/.test(password)) strength++;
-            
-            passwordStrengthBar.className = 'password-strength-bar';
-            if (strength <= 2) passwordStrengthBar.classList.add('weak');
-            else if (strength <= 3) passwordStrengthBar.classList.add('medium');
-            else passwordStrengthBar.classList.add('strong');
-        }
-        
-        function updatePasswordRequirements(password) {
-            const reqs = {
-                reqLength: password.length >= 8,
-                reqUpper: /[A-Z]/.test(password),
-                reqLower: /[a-z]/.test(password),
-                reqNumber: /[0-9]/.test(password)
-            };
-            
-            for (const [id, valid] of Object.entries(reqs)) {
-                const el = document.getElementById(id);
-                if (valid) {
-                    el.classList.add('valid');
-                    el.querySelector('.req-icon').textContent = '✓';
-                } else {
-                    el.classList.remove('valid');
-                    el.querySelector('.req-icon').textContent = '○';
-                }
-            }
-        }
-        
-        function isValidPassword(password) {
-            return password.length >= 8 &&
-                   /[A-Z]/.test(password) &&
-                   /[a-z]/.test(password) &&
-                   /[0-9]/.test(password);
-        }
-        
-        function isValidEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-        
-        // Confirm password validation
-        document.getElementById('signupConfirmPassword').addEventListener('input', (e) => {
-            const password = document.getElementById('signupPassword').value;
-            const confirm = e.target.value;
-            const error = document.getElementById('confirmPasswordError');
-            
-            if (confirm && password !== confirm) {
-                error.classList.add('visible');
-            } else {
-                error.classList.remove('visible');
-            }
-        });
-        
-        // ==================== Password Toggle ====================
-        document.querySelectorAll('.password-toggle').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const targetId = btn.dataset.target;
-                const input = document.getElementById(targetId);
-                
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    btn.textContent = '🙈';
-                } else {
-                    input.type = 'password';
-                    btn.textContent = '👁️';
-                }
-            });
-        });
-        
         // ==================== Helpers ====================
         function showError(message) {
             alertError.classList.add('visible');
@@ -1188,7 +860,7 @@
         
         function setLoading(loading) {
             isLoading = loading;
-            const buttons = document.querySelectorAll('.btn-primary, .og-submit, .google-btn-custom');
+            const buttons = document.querySelectorAll('.btn-primary, .google-btn-custom');
             buttons.forEach(btn => {
                 btn.disabled = loading;
                 if (loading) {
@@ -1207,21 +879,6 @@
                 window.location.href = '/senior-bot.html';
             }
         }
-        
-        // Forgot password
-        document.getElementById('forgotPasswordLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('signinEmail').value.trim();
-            
-            if (!email) {
-                showError('Please enter your email address first');
-                document.getElementById('signinEmail').focus();
-                return;
-            }
-            
-            // Open forgot password flow
-            window.location.href = '/forgot-password.html?email=' + encodeURIComponent(email);
-        });
     </script>
 </body>
 </html>
