@@ -2746,6 +2746,8 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
     const aiSettings = getAISettings(user);
     
     try {
+        // GPT-5 models use max_completion_tokens instead of max_tokens
+        const tokenParam = aiSettings.model.startsWith('gpt-5') ? 'max_completion_tokens' : 'max_tokens';
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -2755,7 +2757,7 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
             body: JSON.stringify({
                 model: aiSettings.model,
                 messages,
-                max_tokens: Math.min(aiSettings.maxTokens, 3000), // Cap at 3000 for advisor
+                [tokenParam]: Math.min(aiSettings.maxTokens, 3000), // Cap at 3000 for advisor
                 temperature: aiSettings.temperature
             })
         });
@@ -3397,6 +3399,8 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     const aiSettings = getAISettings(user);
     
     try {
+        // GPT-5 models use max_completion_tokens instead of max_tokens
+        const tokenParam = aiSettings.model.startsWith('gpt-5') ? 'max_completion_tokens' : 'max_tokens';
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -3412,7 +3416,7 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
                         content: m.content
                     }))
                 ],
-                max_tokens: aiSettings.maxTokens,
+                [tokenParam]: aiSettings.maxTokens,
                 temperature: aiSettings.temperature
             })
         });
