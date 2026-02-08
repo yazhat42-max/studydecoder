@@ -502,6 +502,7 @@
             <li id="navUserMenu" style="display: none;">
                 <span id="navUserName" style="color: var(--primary); font-weight: 600; margin-right: 12px;"></span>
                 <a href="#" onclick="showManageSubscription(); return false;" class="btn btn-secondary" id="manageSubNavBtn" style="display: none; background: #ef4444; margin-right: 8px;">⚙️ Manage Sub</a>
+                <a href="#" onclick="showUpgradeModal(); return false;" class="btn btn-secondary" id="upgradeNavBtn" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-right: 8px;">⭐ Upgrade</a>
                 <a href="#" onclick="logout(); return false;" class="btn btn-secondary">Sign Out</a>
             </li>
         </ul>
@@ -610,6 +611,23 @@
         </div>
     </div>
 
+    <!-- Upgrade Modal for Free Users -->
+    <div class="upgrade-modal-overlay hidden" id="upgradeModalOverlay" onclick="closeUpgradeModal(event)" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 9999;">
+        <div class="upgrade-modal" onclick="event.stopPropagation()" style="background: white; border-radius: 12px; padding: 32px; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); text-align: center;">
+            <h2 style="margin-bottom: 12px; font-size: 1.5rem; color: #6C63FF;">⭐ Upgrade to Premium</h2>
+            <p style="color: #666; margin-bottom: 8px;">You're on the <strong>Free Plan</strong> (5 uses/tool/day)</p>
+            <p style="color: #888; font-size: 0.9rem; margin-bottom: 24px;">Upgrade for unlimited access!</p>
+            
+            <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display: block; width: 100%; padding: 14px; background: #6C63FF; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-bottom: 12px; transition: all 0.2s;">📅 Monthly - $5/month</a>
+            <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="display: block; width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-bottom: 8px; transition: all 0.2s;">⭐ Yearly - $30/year <span style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:6px;font-size:0.85rem;margin-left:6px;">Save 50%</span></a>
+            <p style="color: #888; font-size: 0.8rem; margin-bottom: 20px;">That's only $2.50/month - 6 months free!</p>
+            
+            <p style="color: #666; font-size: 0.9rem; margin-bottom: 12px;">After payment, click below to activate:</p>
+            <button onclick="verifyUpgradePayment()" id="upgradeActivateBtn" style="width: 100%; padding: 12px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 12px; transition: all 0.2s;">✓ I've Paid - Activate Now</button>
+            <button onclick="closeUpgradeModal()" style="width: 100%; padding: 12px; background: #e0e0e0; color: #2A2A2A; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Close</button>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <h3>Quick Links</h3>
@@ -673,11 +691,18 @@
         document.getElementById('navUserName').textContent = user.name || user.email.split('@')[0];
         
         // Show manage subscription button for subscribers (not owner)
-        if (user.subscribed && user.role !== 'owner') {
+        if (user.subscribed && user.role !== 'owner' && user.role !== 'lifetime' && user.role !== 'og_tester') {
             document.getElementById('manageSubNavBtn').style.display = 'inline-block';
+            document.getElementById('upgradeNavBtn').style.display = 'none';
+            window.currentUser = user;
+        } else if (!user.subscribed && user.role !== 'owner' && user.role !== 'lifetime' && user.role !== 'og_tester') {
+            // Show upgrade button for free users
+            document.getElementById('manageSubNavBtn').style.display = 'none';
+            document.getElementById('upgradeNavBtn').style.display = 'inline-block';
             window.currentUser = user;
         } else {
             document.getElementById('manageSubNavBtn').style.display = 'none';
+            document.getElementById('upgradeNavBtn').style.display = 'none';
         }
         
         // Show admin link only for owner
@@ -687,30 +712,34 @@
             document.getElementById('navAdminLink').style.display = 'none';
         }
         
-        // Hide demo links for subscribers
+        // Hide demo links for subscribed users (free users can still see demo)
         document.querySelectorAll('a[href="demo.html"]').forEach(link => {
             link.style.display = user.subscribed ? 'none' : 'block';
         });
         
+        // Check if user has any access (subscribed OR has acknowledged free tier)
+        const hasAccess = user.subscribed || user.freeAcknowledged;
+        
         // Hero
         document.getElementById('heroSignInBtn').style.display = 'none';
-        if (user.subscribed) {
+        if (hasAccess) {
             document.getElementById('heroLoggedIn').style.display = 'flex';
         } else {
-            document.getElementById('heroSignInBtn').textContent = 'Subscribe to Access';
+            // First time free user - show them to go to tools to see the welcome modal
+            document.getElementById('heroSignInBtn').textContent = 'Start Using Tools';
             document.getElementById('heroSignInBtn').href = 'senior-bot.html';
             document.getElementById('heroSignInBtn').style.display = 'inline-block';
         }
         
-        // Course cards
-        if (user.subscribed) {
+        // Course cards - unlock for anyone with access
+        if (hasAccess) {
             document.querySelectorAll('.course-link-locked').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.course-link-unlocked').forEach(el => el.style.display = 'inline-block');
         }
         
         // CTA
         document.getElementById('ctaSignIn').style.display = 'none';
-        if (user.subscribed) {
+        if (hasAccess) {
             document.getElementById('ctaLoggedIn').style.display = 'block';
         }
     }
@@ -808,6 +837,53 @@
         }
     }
 
+    // ========== UPGRADE MODAL FOR FREE USERS ==========
+    function showUpgradeModal() {
+        const modal = document.getElementById('upgradeModalOverlay');
+        modal.style.display = 'flex';
+        modal.classList.remove('hidden');
+    }
+    
+    function closeUpgradeModal(event) {
+        if (!event || event.target === document.getElementById('upgradeModalOverlay')) {
+            document.getElementById('upgradeModalOverlay').style.display = 'none';
+            document.getElementById('upgradeModalOverlay').classList.add('hidden');
+        }
+    }
+    
+    async function verifyUpgradePayment() {
+        const btn = document.getElementById('upgradeActivateBtn');
+        const originalText = btn.textContent;
+        btn.textContent = '⏳ Verifying...';
+        btn.disabled = true;
+        btn.style.background = '#9ca3af';
+        
+        try {
+            const res = await fetch(API_BASE + '/api/verify-payment', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            
+            const data = await res.json();
+            
+            if (data.success && data.subscribed) {
+                btn.textContent = '✅ Activated!';
+                btn.style.background = '#10b981';
+                setTimeout(() => window.location.reload(), 1000);
+            } else {
+                alert(data.message || 'No payment found. Please complete payment first, then click this button.');
+                btn.textContent = originalText;
+                btn.style.background = '#10b981';
+                btn.disabled = false;
+            }
+        } catch (e) {
+            alert('Error verifying payment. Please try again.');
+            btn.textContent = originalText;
+            btn.style.background = '#10b981';
+            btn.disabled = false;
+        }
+    }
     // Handle Stripe redirect after payment
     (function handleStripeReturn() {
         const params = new URLSearchParams(window.location.search);

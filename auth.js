@@ -30,7 +30,8 @@ const StudyDecoderAuth = {
             const user = await res.json();
             
             // Check subscription if required
-            if (requireSubscription && !user.subscribed) {
+            // Allow through if subscribed OR if free tier acknowledged
+            if (requireSubscription && !user.subscribed && !user.freeAcknowledged) {
                 if (onNoAccess) {
                     onNoAccess(user);
                 }
@@ -124,13 +125,15 @@ const StudyDecoderAuth = {
             <div class="sd-paywall-overlay">
                 <div class="sd-paywall-card">
                     <img src="logo.png" alt="Logo" class="sd-paywall-logo">
-                    <h2>Unlock Full Access</h2>
+                    <h2>Welcome to Study Decoder!</h2>
                     <p class="sd-paywall-greeting">Hey <strong>${user?.name || user?.email || 'there'}</strong>! 👋</p>
-                    <p class="sd-paywall-desc">Subscribe to access all Study Decoder tools.</p>
-                    <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="sd-paywall-btn sd-btn-primary">Monthly - $5/mo</a>
-                    <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" class="sd-paywall-btn sd-btn-secondary">Yearly - $30/yr (Save 50%)</a>
+                    <p class="sd-paywall-desc">You're on the <strong>Free Plan</strong> (5 uses/tool/day).</p>
+                    <button onclick="StudyDecoderAuth.closePaywall()" class="sd-paywall-btn sd-btn-success">✓ Continue with Free Plan</button>
+                    <p class="sd-paywall-divider">─── or upgrade for unlimited ───</p>
+                    <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="sd-paywall-btn sd-btn-primary">📅 Monthly - $5/month</a>
+                    <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" class="sd-paywall-btn sd-btn-secondary">⭐ Yearly - $30/year <span class="sd-save-badge">Save 50%</span></a>
                     <p class="sd-paywall-note">After payment, click below to activate:</p>
-                    <button onclick="StudyDecoderAuth.verifyPayment()" class="sd-paywall-btn sd-btn-success" id="sd-activate-btn">✓ I've Paid - Activate Now</button>
+                    <button onclick="StudyDecoderAuth.verifyPayment()" class="sd-paywall-btn sd-btn-activate" id="sd-activate-btn">✓ I've Paid - Activate Now</button>
                     <button onclick="StudyDecoderAuth.logout()" class="sd-paywall-btn sd-btn-outline">Sign Out</button>
                 </div>
             </div>
@@ -141,6 +144,20 @@ const StudyDecoderAuth = {
         } else {
             document.body.insertAdjacentHTML('beforeend', html);
         }
+    },
+    
+    // Close paywall (continue with free) - saves acknowledgment to backend
+    async closePaywall() {
+        try {
+            await fetch('/api/acknowledge-free', {
+                method: 'POST',
+                credentials: 'include'
+            });
+        } catch (e) {
+            console.error('Failed to save free acknowledgment:', e);
+        }
+        const overlay = document.querySelector('.sd-paywall-overlay');
+        if (overlay) overlay.remove();
     },
     
     // Inject auth styles
@@ -239,6 +256,10 @@ const StudyDecoderAuth = {
                 background: #10b981;
                 color: #fff;
             }
+            .sd-btn-activate {
+                background: #6366f1;
+                color: #fff;
+            }
             .sd-btn-outline {
                 background: #f1f5f9;
                 color: #64748b;
@@ -246,6 +267,18 @@ const StudyDecoderAuth = {
             .sd-paywall-btn:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+            .sd-paywall-divider {
+                color: #94a3b8;
+                font-size: 0.85rem;
+                margin: 16px 0;
+            }
+            .sd-save-badge {
+                background: rgba(255,255,255,0.2);
+                padding: 2px 8px;
+                border-radius: 10px;
+                font-size: 0.75rem;
+                margin-left: 6px;
             }
             .sd-loading-screen {
                 position: fixed;

@@ -530,7 +530,8 @@
                 
                 const data = await res.json();
                 
-                if (data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed) {
+                // Allow access if: owner, lifetime, og_tester, subscribed, OR acknowledged free tier
+                if (data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged) {
                     document.getElementById('loadingOverlay').classList.add('hidden');
                     document.getElementById('backBtnContainer').classList.remove('hidden');
                     document.getElementById('mainContent').classList.remove('hidden');
@@ -629,9 +630,13 @@
             paywall.innerHTML = `
                 <div class="paywall-card">
                     <img src="logo.png" alt="Logo">
-                    <h2>Unlock Full Access</h2>
+                    <h2>Welcome to Study Decoder!</h2>
                     <p style="font-size: 1rem; color: #444; margin-bottom: 8px;">Hey <strong>${user.name || user.email}</strong>! 👋</p>
-                    <p style="font-size: 1rem; color: #666; margin-bottom: 28px;">Subscribe to access all Study Decoder tools.</p>
+                    <p style="font-size: 1rem; color: #666; margin-bottom: 20px;">You're on the <strong>Free Plan</strong> (5 uses/tool/day).</p>
+                    
+                    <button id="continueFreeBtnPaywall" class="paywall-btn paywall-btn-activate" style="background: #10b981;">✓ Continue with Free Plan</button>
+                    
+                    <p style="color: #94a3b8; font-size: 0.85rem; margin: 16px 0;">─── or upgrade for unlimited ───</p>
                     
                     <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="paywall-btn paywall-btn-primary">
                         📅 Monthly - $5/month
@@ -662,6 +667,12 @@
                 </div>
             `;
             
+            document.getElementById('continueFreeBtnPaywall').addEventListener('click', async () => {
+                try {
+                    await fetch(API_BASE + '/api/acknowledge-free', { method: 'POST', credentials: 'include' });
+                } catch (e) {}
+                paywall.classList.add('hidden');
+            });
             document.getElementById('activateBtn').addEventListener('click', verifyAndActivate);
             document.getElementById('logoutBtn').addEventListener('click', logout);
         }

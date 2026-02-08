@@ -1389,6 +1389,7 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         name: user.name,
         role: role,
         subscribed: hasFull,
+        freeAcknowledged: user.freeAcknowledged || false,
         plan: role === 'owner' ? 'owner' : (role === 'og_tester' ? 'og_lifetime' : user.plan),
         expiresAt: (role === 'owner' || role === 'og_tester') ? null : user.expiresAt,
         freeTier: !hasFull ? {
@@ -1397,6 +1398,18 @@ app.get('/api/subscription', requireAuth, (req, res) => {
             usage: getAllFreeTierUsage(req.session.userId)
         } : null
     });
+});
+
+/**
+ * POST /api/acknowledge-free
+ * Mark that user has acknowledged the free tier (don't show paywall again)
+ */
+app.post('/api/acknowledge-free', requireAuth, (req, res) => {
+    const user = req.user;
+    user.freeAcknowledged = true;
+    saveUsers();
+    console.log(`[Free] User ${user.email} acknowledged free tier`);
+    res.json({ success: true });
 });
 
 /**
