@@ -1433,7 +1433,7 @@ app.get('/api/subscription', requireAuth, (req, res) => {
 app.post('/api/acknowledge-free', requireAuth, (req, res) => {
     const user = req.user;
     user.freeAcknowledged = true;
-    saveUsers();
+    saveDB(USERS_FILE, db.users);
     console.log(`[Free] User ${user.email} acknowledged free tier`);
     res.json({ success: true });
 });
