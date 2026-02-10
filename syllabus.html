@@ -489,8 +489,9 @@ Output the complete decoded content for this topic. Do not ask any questions. Do
                 
                 const data = await res.json();
                 
-                // Check if has access (subscription, owner, or OG tester)
-                if (!data.subscribed) {
+                // Check if has access (owner, lifetime, og_tester, subscribed, or free tier acknowledged)
+                const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
+                if (!hasAccess) {
                     // Show paywall or redirect
                     window.location.href = '/senior-bot.html';
                     return;

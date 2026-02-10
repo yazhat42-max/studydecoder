@@ -637,7 +637,9 @@
                 
                 const data = await res.json();
                 
-                if (!data.subscribed) {
+                // Check if has access (owner, lifetime, og_tester, subscribed, or free tier acknowledged)
+                const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
+                if (!hasAccess) {
                     window.location.href = '/senior-bot.html';
                     return;
                 }

@@ -125,7 +125,8 @@ const LIFETIME_ACCESS_EMAILS = [
     'hatuahmad7@gmail.com',
     'khaledsalt1945@gmail.com',
     'Quizzywolf@gmail.com',
-    'australiaball87@gmail.com'
+    'australiaball87@gmail.com',
+    'aydinhalim2008@gmail.com'
 ];
 
 // ==================== FREE TIER CONFIGURATION ====================

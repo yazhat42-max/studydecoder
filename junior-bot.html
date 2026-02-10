@@ -272,11 +272,13 @@
                 
                 const data = await response.json();
                 
-                if (data.subscribed) {
+                // Check if has access (owner, lifetime, og_tester, subscribed, or free tier acknowledged)
+                const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
+                if (hasAccess) {
                     document.getElementById('loadingOverlay').classList.add('hidden');
                     document.getElementById('mainContent').classList.remove('hidden');
                 } else {
-                    // Logged in but no subscription - redirect to login for payment
+                    // Logged in but no access - redirect to login
                     window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
                 }
             } catch (error) {
