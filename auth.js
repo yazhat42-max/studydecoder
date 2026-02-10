@@ -153,11 +153,13 @@ const StudyDecoderAuth = {
                 method: 'POST',
                 credentials: 'include'
             });
+            // Reload page so checkAuth runs again with freeAcknowledged = true
+            window.location.reload();
         } catch (e) {
             console.error('Failed to save free acknowledgment:', e);
+            // Still try to reload
+            window.location.reload();
         }
-        const overlay = document.querySelector('.sd-paywall-overlay');
-        if (overlay) overlay.remove();
     },
     
     // Inject auth styles
