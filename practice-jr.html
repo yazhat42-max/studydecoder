@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -86,40 +86,65 @@
         }
         .submit-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
         .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        /* Feedback textarea */
+        .feedback-panel { display: none; }
+        .feedback-panel.active { display: block; }
+        .feedback-textarea {
+            width: 100%; min-height: 120px; background: #0f1419; border: 1px solid #2f3336;
+            border-radius: 8px; padding: 12px; color: #e7e9ea; font-size: 14px;
+            font-family: inherit; resize: vertical; margin-bottom: 12px;
+        }
+        .feedback-textarea:focus { outline: none; border-color: #667eea; }
+        .feedback-note { font-size: 12px; color: #71767b; margin-bottom: 8px; }
+        
+        /* Mode landing cards */
+        .mode-card {
+            background: #16202a; border: 1px solid #2f3336; border-radius: 16px;
+            padding: 32px 24px; text-align: center; cursor: pointer;
+            transition: all 0.2s; position: relative; overflow: hidden;
+        }
+        .mode-card:hover {
+            border-color: #667eea; transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        }
+        .mode-card-icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .mode-card h2 {
+            font-size: 1.25rem; font-weight: 700; color: #e7e9ea;
+            margin-bottom: 8px;
+        }
+        .mode-card p {
+            font-size: 0.9rem; color: #71767b; line-height: 1.5;
+            margin-bottom: 16px;
+        }
+        .mode-card-cta {
+            display: inline-block; color: #667eea; font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr 1fr; }
             .header { padding: 12px 16px; }
             .header-title { font-size: 16px; }
+            #modeLanding div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
         }
         @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
+        
         /* Auth overlay styles */
         .auth-loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #0f1419;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #0f1419; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
         }
         .auth-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #2f3336;
-            border-top-color: #667eea;
-            border-radius: 50%;
+            width: 50px; height: 50px; border: 4px solid #2f3336;
+            border-top-color: #667eea; border-radius: 50%;
             animation: authSpin 1s linear infinite;
         }
         @keyframes authSpin { to { transform: rotate(360deg); } }
-        .auth-text {
-            margin-top: 16px;
-            color: #71767b;
-            font-size: 1rem;
-        }
+        .auth-text { margin-top: 16px; color: #71767b; font-size: 1rem; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -131,107 +156,203 @@
     </div>
 
     <div class="app-container hidden" id="mainContent">
-        <header class="header">
-            <div class="header-left">
-                <a href="junior-bot.html" class="back-btn">← Back</a>
-                <div>
-                    <div class="header-title">Practice Questions</div>
-                    <div class="header-subtitle">StudyDecoder Junior • Years 7-10</div>
-                </div>
+        <!-- MODE SELECTION LANDING (shown first) -->
+        <div id="modeLanding">
+            <div style="padding: 20px 24px;">
+                <a href="index.html" class="back-btn" style="background: rgba(102,126,234,0.15); color: #667eea;">â† Back to Home</a>
             </div>
-        </header>
-        <main class="main-content">
-            <div class="output-panel" id="outputPanel">
-                <div class="output-content" id="outputContent">
-                    <div class="welcome-message">
-                        <h2>Practice Questions</h2>
-                        <p>Generate practice questions matched to your year level and subject. Get ready for tests and exams with curriculum-aligned questions.</p>
+            <div style="max-width: 1100px; margin: 0 auto; padding: 0 24px 60px;">
+                <div style="text-align: center; padding: 30px 20px 40px;">
+                    <h1 style="font-size: 2.4rem; font-weight: 700; color: #e7e9ea; margin-bottom: 12px;">Practice Question Generator</h1>
+                    <p style="font-size: 1.1rem; color: #71767b; max-width: 550px; margin: 0 auto; line-height: 1.6;">Generate curriculum-aligned practice questions for Years 7â€“10. Choose a mode below.</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+                    <div class="mode-card" onclick="selectMode('standard')">
+                        <div class="mode-card-icon">âœï¸</div>
+                        <h2>Standard Questions</h2>
+                        <p>Generate individual practice questions by subject, topic, and difficulty.</p>
+                        <span class="mode-card-cta">Start â†’</span>
+                    </div>
+                    <div class="mode-card" onclick="selectMode('exam')">
+                        <div class="mode-card-icon">ðŸ“</div>
+                        <h2>Full Test Paper</h2>
+                        <p>Generate complete test-style papers matched to your year level.</p>
+                        <span class="mode-card-cta">Start â†’</span>
+                    </div>
+                    <div class="mode-card" onclick="selectMode('feedback')">
+                        <div class="mode-card-icon">ðŸ“Š</div>
+                        <h2>Get Feedback</h2>
+                        <p>Paste a question and your answer to get marking feedback.</p>
+                        <span class="mode-card-cta">Start â†’</span>
                     </div>
                 </div>
             </div>
-            <div class="input-panel">
-                <form class="input-form" id="inputForm">
-                    <div class="form-title">Generate Practice Questions</div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Subject</label>
-                            <select class="form-select" id="subject" required>
-                                <option value="">Select subject...</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Year Level</label>
-                            <select class="form-select" id="yearLevel" required>
-                                <option value="Year 7">Year 7</option>
-                                <option value="Year 8">Year 8</option>
-                                <option value="Year 9">Year 9</option>
-                                <option value="Year 10">Year 10</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Topic</label>
-                            <select class="form-select" id="topic" required>
-                                <option value="">Select subject first...</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Difficulty</label>
-                            <select class="form-select" id="difficulty" required>
-                                <option value="Easy">Easy</option>
-                                <option value="Medium" selected>Medium</option>
-                                <option value="Hard">Hard</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Number of Questions</label>
-                            <select class="form-select" id="numQuestions">
-                                <option value="3" selected>3</option>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="includeAnswers">
-                                <label for="includeAnswers">Include Answers</label>
+        </div>
+
+        <!-- ACTIVE MODE VIEW (shown after selecting a mode) -->
+        <div id="activeView" style="display: none; height: 100vh; flex-direction: column;">
+            <header class="header">
+                <div class="header-left">
+                    <a href="#" class="back-btn" onclick="backToModes(event)">â† Modes</a>
+                    <div>
+                        <div class="header-title" id="activeTitle">Practice Questions</div>
+                        <div class="header-subtitle">StudyDecoder Junior â€¢ Years 7â€“10</div>
+                    </div>
+                </div>
+            </header>
+            <main class="main-content" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+                <div class="output-panel" id="outputPanel">
+                    <div class="output-content" id="outputContent"></div>
+                </div>
+                <div class="input-panel">
+                    <form class="input-form" id="inputForm">
+                        <div class="form-title" id="formTitle">Generate Practice Questions</div>
+                        
+                        <!-- Standard Questions Panel -->
+                        <div id="standardPanel">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Subject</label>
+                                    <select class="form-select" id="subject" required>
+                                        <option value="">Select subject...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Year Level</label>
+                                    <select class="form-select" id="yearLevel" required>
+                                        <option value="Year 7">Year 7</option>
+                                        <option value="Year 8">Year 8</option>
+                                        <option value="Year 9">Year 9</option>
+                                        <option value="Year 10">Year 10</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Topic</label>
+                                    <select class="form-select" id="topic" required>
+                                        <option value="">Select subject first...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Difficulty</label>
+                                    <select class="form-select" id="difficulty" required>
+                                        <option value="Easy">Easy</option>
+                                        <option value="Medium" selected>Medium</option>
+                                        <option value="Hard">Hard</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Number of Questions</label>
+                                    <select class="form-select" id="numQuestions">
+                                        <option value="3" selected>3</option>
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="includeAnswers">
+                                        <label for="includeAnswers">Include Answers</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <button type="submit" class="submit-btn" id="submitBtn">Generate Questions</button>
-                </form>
-            </div>
-        </main>
+                        
+                        <!-- Full Test Panel -->
+                        <div id="examPanel" style="display:none;">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Subject</label>
+                                    <select class="form-select" id="examSubject" required>
+                                        <option value="">Select subject...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Year Level</label>
+                                    <select class="form-select" id="examYearLevel" required>
+                                        <option value="Year 7">Year 7</option>
+                                        <option value="Year 8">Year 8</option>
+                                        <option value="Year 9">Year 9</option>
+                                        <option value="Year 10">Year 10</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Duration</label>
+                                    <select class="form-select" id="examDuration" required>
+                                        <option value="30 minutes">30 minutes</option>
+                                        <option value="45 minutes" selected>45 minutes</option>
+                                        <option value="1 hour">1 hour</option>
+                                        <option value="1.5 hours">1.5 hours</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Feedback Panel -->
+                        <div id="feedbackPanel" style="display:none;">
+                            <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                                <div class="form-group">
+                                    <label class="form-label">Subject</label>
+                                    <select class="form-select" id="fbSubject" required>
+                                        <option value="">Select subject...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Year Level</label>
+                                    <select class="form-select" id="fbYearLevel" required>
+                                        <option value="Year 7">Year 7</option>
+                                        <option value="Year 8">Year 8</option>
+                                        <option value="Year 9">Year 9</option>
+                                        <option value="Year 10">Year 10</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <p class="feedback-note">Paste the question below, then your answer. AI will give feedback â€” not the answer.</p>
+                            <textarea class="feedback-textarea" id="feedbackQuestion" placeholder="Paste the question here..."></textarea>
+                            <textarea class="feedback-textarea" id="feedbackAnswer" placeholder="Paste your answer here..." style="min-height: 100px;"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn" id="submitBtn">Generate Questions</button>
+                    </form>
+                </div>
+            </main>
+        </div>
     </div>
+    
     <script>
         const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
         let conversationHistory = [];
         let isLoading = false;
+        let currentMode = 'standard';
         let subjects = [];
         
-        const form = document.getElementById('inputForm');
         const outputContent = document.getElementById('outputContent');
         const outputPanel = document.getElementById('outputPanel');
         const submitBtn = document.getElementById('submitBtn');
         const subjectSelect = document.getElementById('subject');
+        const standardPanel = document.getElementById('standardPanel');
+        const examPanel = document.getElementById('examPanel');
+        const feedbackPanel = document.getElementById('feedbackPanel');
         
-        // Hardcoded Junior subjects (Years 7-10)
+        // Junior subjects (Years 7-10)
         subjects = [
             { id: 'english-7-10', name: 'English (Years 7-10)', category: 'English' },
             { id: 'mathematics-7-10', name: 'Mathematics (Years 7-10)', category: 'Mathematics' },
             { id: 'science-7-10', name: 'Science (Years 7-10)', category: 'Science' }
         ];
         
-        // Populate subjects dropdown
-        function loadSubjects() {
-            subjectSelect.innerHTML = '<option value="">Select subject...</option>';
+        // Populate all subject dropdowns
+        function populateSubjects(selectEl) {
+            selectEl.innerHTML = '<option value="">Select subject...</option>';
             subjects.forEach(s => {
                 const opt = document.createElement('option');
                 opt.value = s.id;
                 opt.textContent = s.name;
-                subjectSelect.appendChild(opt);
+                selectEl.appendChild(opt);
             });
         }
-        loadSubjects();
+        populateSubjects(subjectSelect);
+        populateSubjects(document.getElementById('examSubject'));
+        populateSubjects(document.getElementById('fbSubject'));
         
         // Topics for junior subjects
         const subjectTopics = {
@@ -245,12 +366,10 @@
         subjectSelect.addEventListener('change', () => {
             const subjectId = subjectSelect.value;
             topicSelect.innerHTML = '';
-            
             if (!subjectId) {
                 topicSelect.innerHTML = '<option value="">Select subject first...</option>';
                 return;
             }
-            
             const topics = subjectTopics[subjectId];
             if (topics && topics.length > 0) {
                 topicSelect.innerHTML = '<option value="">Select a topic...</option>';
@@ -264,6 +383,44 @@
                 topicSelect.innerHTML = '<option value="All Topics">All Topics</option>';
             }
         });
+        
+        // Mode selection from landing page
+        function selectMode(mode) {
+            currentMode = mode;
+            conversationHistory = [];
+            outputContent.innerHTML = '';
+            
+            document.getElementById('modeLanding').style.display = 'none';
+            const activeView = document.getElementById('activeView');
+            activeView.style.display = 'flex';
+            
+            const titles = { standard: 'Standard Questions', exam: 'Full Test Paper', feedback: 'Get Feedback' };
+            document.getElementById('activeTitle').textContent = titles[mode] || 'Practice Questions';
+            document.getElementById('formTitle').textContent = titles[mode] || 'Practice Questions';
+            
+            standardPanel.style.display = 'none';
+            examPanel.style.display = 'none';
+            feedbackPanel.style.display = 'none';
+            
+            if (mode === 'exam') {
+                examPanel.style.display = 'block';
+                submitBtn.textContent = 'Generate Full Test';
+            } else if (mode === 'feedback') {
+                feedbackPanel.style.display = 'block';
+                submitBtn.textContent = 'Get Feedback';
+            } else {
+                standardPanel.style.display = 'block';
+                submitBtn.textContent = 'Generate Questions';
+            }
+        }
+        
+        function backToModes(e) {
+            e.preventDefault();
+            document.getElementById('activeView').style.display = 'none';
+            document.getElementById('modeLanding').style.display = 'block';
+            conversationHistory = [];
+            outputContent.innerHTML = '';
+        }
         
         function formatResponse(text) {
             return text
@@ -290,7 +447,7 @@
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'loading';
             loadingDiv.id = 'loadingIndicator';
-            loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Generating questions...</span>';
+            loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Generating...</span>';
             outputContent.appendChild(loadingDiv);
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
@@ -313,68 +470,92 @@
                 const response = await fetch(`${API_BASE}/api/junior-chat/practice`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({ messages: conversationHistory, subject: subjectId })
                 });
-                if (!response.ok) throw new Error('Failed');
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    if (errData.freeTierExhausted) {
+                        throw new Error(errData.message || 'Daily limit reached');
+                    }
+                    throw new Error(errData.error || 'Failed');
+                }
                 const data = await response.json();
                 hideLoading();
                 conversationHistory.push({ role: 'assistant', content: data.reply });
                 addMessage(data.reply, false);
             } catch (error) {
                 hideLoading();
-                addMessage('Error: Unable to generate questions. Please try again.', false);
+                addMessage(`Error: ${error.message || 'Unable to generate questions. Please try again.'}`, false);
             } finally {
                 isLoading = false;
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Generate Questions';
+                const btnTexts = { standard: 'Generate Questions', exam: 'Generate Full Test', feedback: 'Get Feedback' };
+                submitBtn.textContent = btnTexts[currentMode] || 'Generate Questions';
             }
         }
         
-        form.addEventListener('submit', (e) => {
+        document.getElementById('inputForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            const subjectId = document.getElementById('subject').value;
-            if (!subjectId) { alert('Please select a subject.'); return; }
-            const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
-            const yearLevel = document.getElementById('yearLevel').value;
-            const topic = topicSelect.options[topicSelect.selectedIndex]?.text || 'All Topics';
-            if (!topic || topic === 'Select subject first...' || topic === 'Select a topic...') { alert('Please select a topic.'); return; }
-            const difficulty = document.getElementById('difficulty').value;
-            const numQuestions = document.getElementById('numQuestions').value;
-            const includeAnswers = document.getElementById('includeAnswers').checked;
             
-            const message = `Subject: ${subjectName}\nYear Level: ${yearLevel}\nTopic: ${topic}\nDifficulty: ${difficulty}\nNumber of Questions: ${numQuestions}${includeAnswers ? '\n\nPlease include answers with step-by-step explanations.' : ''}`;
-            sendMessage(message, subjectId);
+            if (currentMode === 'standard') {
+                const subjectId = subjectSelect.value;
+                if (!subjectId) { alert('Please select a subject.'); return; }
+                const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
+                const yearLevel = document.getElementById('yearLevel').value;
+                const topic = topicSelect.options[topicSelect.selectedIndex]?.text || 'All Topics';
+                if (!topic || topic === 'Select subject first...' || topic === 'Select a topic...') { alert('Please select a topic.'); return; }
+                const difficulty = document.getElementById('difficulty').value;
+                const numQuestions = document.getElementById('numQuestions').value;
+                const includeAnswers = document.getElementById('includeAnswers').checked;
+                
+                const message = `[STANDARD MODE]\nSubject: ${subjectName}\nYear Level: ${yearLevel}\nTopic: ${topic}\nDifficulty: ${difficulty}\nNumber of Questions: ${numQuestions}${includeAnswers ? '\n\nPlease include answers with step-by-step explanations.' : ''}`;
+                sendMessage(message, subjectId);
+                
+            } else if (currentMode === 'exam') {
+                const subjectId = document.getElementById('examSubject').value;
+                if (!subjectId) { alert('Please select a subject.'); return; }
+                const subjectName = document.getElementById('examSubject').options[document.getElementById('examSubject').selectedIndex].text;
+                const yearLevel = document.getElementById('examYearLevel').value;
+                const duration = document.getElementById('examDuration').value;
+                
+                const message = `[FULL EXAM MODE]\nGenerate a complete ${duration} test paper.\nSubject: ${subjectName}\nYear Level: ${yearLevel}\nDuration: ${duration}\n\nInclude a mix of question types appropriate for ${yearLevel}. Include multiple choice, short answer, and extended response sections.`;
+                sendMessage(message, subjectId);
+                
+            } else if (currentMode === 'feedback') {
+                const subjectId = document.getElementById('fbSubject').value;
+                if (!subjectId) { alert('Please select a subject.'); return; }
+                const subjectName = document.getElementById('fbSubject').options[document.getElementById('fbSubject').selectedIndex].text;
+                const yearLevel = document.getElementById('fbYearLevel').value;
+                const question = document.getElementById('feedbackQuestion').value.trim();
+                const answer = document.getElementById('feedbackAnswer').value.trim();
+                if (!question) { alert('Please paste the question.'); return; }
+                if (!answer) { alert('Please paste your answer.'); return; }
+                
+                const message = `[FEEDBACK MODE]\nSubject: ${subjectName}\nYear Level: ${yearLevel}\n\nQuestion:\n${question}\n\nStudent's Answer:\n${answer}\n\nPlease provide marking feedback. Do NOT reveal the correct answer.`;
+                sendMessage(message, subjectId);
+            }
         });
 
-        // =====================
-        // AUTHENTICATION CHECK
-        // =====================
+        // Auth check
         async function checkAuth() {
             try {
-                const res = await fetch(`${API_BASE}/api/subscription`, {
-                    credentials: 'include'
-                });
-                
+                const res = await fetch(`${API_BASE}/api/subscription`, { credentials: 'include' });
                 if (!res.ok) {
-                    window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                    window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
                     return;
                 }
-                
                 const data = await res.json();
-                
-                // Check if has access (owner, lifetime, og_tester, subscribed, or free tier acknowledged)
                 const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
                 if (!hasAccess) {
-                    window.location.href = '/junior-bot.html';
+                    window.location.href = 'index.html';
                     return;
                 }
-                
                 document.getElementById('authOverlay').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
-                
             } catch (e) {
                 console.error('Auth check failed:', e);
-                window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
             }
         }
         

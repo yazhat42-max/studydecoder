@@ -129,7 +129,7 @@
     <div class="app-container hidden" id="mainContent">
         <header class="header">
             <div class="header-left">
-                <a href="senior-bot.html" class="back-btn">← Back</a>
+                <a href="index.html" class="back-btn">← Home</a>
                 <div>
                     <div class="header-title">Syllabus Decoder</div>
                     <div class="header-subtitle">Translate NSW HSC syllabus language into actionable study points</div>
@@ -215,7 +215,12 @@
             { id: 'health-movement-science', name: 'Health and Movement Science', category: 'PDHPE' },
             { id: 'history-extension', name: 'History Extension', category: 'HSIE' },
             { id: 'hospitality', name: 'Hospitality', category: 'VET' },
-            { id: 'industrial-technology', name: 'Industrial Technology', category: 'TAS' },
+            { id: 'industrial-tech-automotive', name: 'Industrial Technology - Automotive', category: 'TAS' },
+            { id: 'industrial-tech-electronics', name: 'Industrial Technology - Electronics', category: 'TAS' },
+            { id: 'industrial-tech-graphics', name: 'Industrial Technology - Graphics', category: 'TAS' },
+            { id: 'industrial-tech-metals', name: 'Industrial Technology - Metal and Engineering', category: 'TAS' },
+            { id: 'industrial-tech-multimedia', name: 'Industrial Technology - Multimedia', category: 'TAS' },
+            { id: 'industrial-tech-timber', name: 'Industrial Technology - Timber and Furniture', category: 'TAS' },
             { id: 'information-digital-technology', name: 'Information and Digital Technology', category: 'TAS' },
             { id: 'investigating-science', name: 'Investigating Science', category: 'Science' },
             { id: 'legal-studies', name: 'Legal Studies', category: 'HSIE' },
@@ -259,7 +264,12 @@
             'health-movement-science': { 'Year 11': ['Health for individuals and communities', 'The body and mind in motion', 'Collaborative Investigation', 'Depth studies (minimum 2)'], 'Year 12': ['Health in an Australian and global context', 'Training for improved performance', 'Depth studies (minimum 2)'] },
             'history-extension': { 'Year 11': ['Extension History Topics (Specialised Historical Studies)'], 'Year 12': ['Extension History Topics and Research Projects'] },
             'hospitality': { 'Year 11': ['Hospitality Operations', 'Food and Beverage Services', 'Hospitality and Tourism'], 'Year 12': ['Hospitality Businesses', 'Hospitality Services', 'Hospitality Industry'] },
-            'industrial-technology': { 'Year 11': ['Materials and Manufacturing Processes', 'Designing and Producing', 'Technology'], 'Year 12': ['Design and Production', 'Industrial Studies', 'Case Studies'] },
+            'industrial-tech-automotive': { 'Year 11': ['Industry Study', 'Design, Management and Communication', 'Production', 'Engine Types and Systems', 'Cooling and Fuel Systems', 'Transmission and Drivetrain', 'Braking, Suspension and Steering', 'Electrical and Body Systems', 'Tools and Equipment'], 'Year 12': ['Industry Study', 'Major Project', 'Industry Related Manufacturing Technology', 'Engine Types and Components', 'Cooling and Fuel Systems', 'Transmission and Drivetrain', 'Braking, Suspension and Steering', 'Electrical and Ignition Systems', 'Engine Management Systems', 'Body and Automotive Design', 'Tools and Equipment'] },
+            'industrial-tech-electronics': { 'Year 11': ['Industry Study', 'Design, Management and Communication', 'Production', 'Electrical Principles', 'Components and Materials', 'Circuitry', 'PCB Design and Construction', 'Graphical Communication'], 'Year 12': ['Industry Study', 'Major Project', 'Industry Related Manufacturing Technology', 'Electrical Principles', 'Digital Electronics', 'Components and Semiconductors', 'Input/Output Devices', 'Circuitry', 'PCB Design', 'Instruments and Test Equipment'] },
+            'industrial-tech-graphics': { 'Year 11': ['Industry Study', 'Design, Management and Communication', 'Production', 'Freehand and Pictorial Drawing', 'Engineering and Product Drawing', 'Architectural Drawing', 'Presentation Techniques', 'Principles and Standards'], 'Year 12': ['Industry Study', 'Major Project', 'Industry Related Manufacturing Technology', 'Freehand and Pictorial Drawing', 'Engineering and Product Drawing', 'Architectural Drawing', 'Presentation Techniques', 'Principles and Standards', 'CAD and Equipment'] },
+            'industrial-tech-metals': { 'Year 11': ['Industry Study', 'Design, Management and Communication', 'Production', 'Ferrous and Non-Ferrous Metals', 'Processes (Marking Out, Cutting, Joining)', 'Tools and Machinery', 'WHS'], 'Year 12': ['Industry Study', 'Major Project', 'Industry Related Manufacturing Technology', 'Properties and Modification of Metals', 'Machining and Forming', 'Joining (Welding, Brazing, Soldering)', 'Finishing and Surface Treatment', 'Tools and Machinery'] },
+            'industrial-tech-multimedia': { 'Year 11': ['Industry Study', 'Design, Management and Communication', 'Production', 'Multimedia Computer Systems', 'Multimedia Design and Storyboarding', 'Software and Authoring', 'WHS'], 'Year 12': ['Industry Study', 'Major Project', 'Industry Related Manufacturing Technology', 'Text and Graphics', 'Audio and Sound', 'Video Production', 'Animation (2D and 3D)', 'World Wide Web', 'Intellectual Property and Ethics'] },
+            'industrial-tech-timber': { 'Year 11': ['Industry Study', 'Design, Management and Communication', 'Production', 'Timber Structure and Properties', 'Manufactured Boards', 'Fittings and Materials', 'Joints and Construction', 'Finishing'], 'Year 12': ['Industry Study', 'Major Project', 'Industry Related Manufacturing Technology', 'Timber Recovery and Conversion', 'Timber Selection and Sustainability', 'Manufactured Boards', 'Joints (Widening, Framing, Carcase)', 'Construction and Assembly', 'Finishing', 'Tools and Machinery'] },
             'information-digital-technology': { 'Year 11': ['Information Systems', 'Digital Systems', 'Data and Information'], 'Year 12': ['Digital Systems and Data', 'Networking and Cloud Computing', 'Digital Issues and Implications'] },
             'investigating-science': { 'Year 11': ['Module 1: Cause and Effect - Observing', 'Module 2: Cause and Effect - Inferences and Generalisations', 'Module 3: Scientific Models', 'Module 4: Theories and Laws'], 'Year 12': ['Module 5: Scientific Investigations', 'Module 6: Technologies', 'Module 7: Fact or Fallacy?', 'Module 8: Science and Society'] },
             'legal-studies': { 'Year 11': ['The Legal System', 'The Individual and the Law', 'Law in Practice'], 'Year 12': ['Crime', 'Human Rights', 'Options (Consumers, Global Environmental Protection, Family, Indigenous Peoples, Shelter, Workplace, World Order)'] },
@@ -493,7 +503,7 @@ Output the complete decoded content for this topic. Do not ask any questions. Do
                 const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
                 if (!hasAccess) {
                     // Show paywall or redirect
-                    window.location.href = '/senior-bot.html';
+                    window.location.href = '/index.html';
                     return;
                 }
                 

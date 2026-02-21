@@ -260,6 +260,181 @@
             background: linear-gradient(180deg, #ffffff 0%, #f5f7ff 100%);
         }
 
+        /* ========== TOOLS GRID ========== */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem 1.8rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .tool-card.flagship {
+            border: 2px solid var(--primary);
+            background: linear-gradient(135deg, #f8f7ff 0%, #fff 100%);
+        }
+
+        .tool-card.flagship::before {
+            content: '⭐ FLAGSHIP';
+            position: absolute;
+            top: 12px;
+            right: -28px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 32px;
+            transform: rotate(45deg);
+            letter-spacing: 1px;
+        }
+
+        .tool-card-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            font-size: 2rem;
+        }
+
+        .tool-card.flagship .tool-card-icon {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+        }
+
+        .tool-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            color: var(--secondary);
+        }
+
+        .tool-card p {
+            color: #666;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+        }
+
+        .tool-card-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.6rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .tool-card.flagship .tool-card-cta {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+        }
+
+        .tool-card:hover .tool-card-cta {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.35);
+        }
+
+        .tools-section-locked .tool-card {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .tools-section-locked .tool-card-cta {
+            background: #ccc;
+        }
+
+        /* Level selector modal */
+        .level-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+        }
+
+        .level-modal {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .level-modal h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .level-modal p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .level-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .level-btn {
+            flex: 1;
+            padding: 1.2rem 1rem;
+            border-radius: 12px;
+            border: 2px solid #e8e8e8;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: block;
+        }
+
+        .level-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .level-btn h4 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .level-btn span {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
         .courses-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -519,8 +694,7 @@
             </div>
             <!-- Show these when logged in -->
             <div class="hero-buttons" id="heroLoggedIn" style="display: none;">
-                <a href="senior-bot.html" class="btn btn-primary">📚 Senior Study Tools</a>
-                <a href="junior-bot.html" class="btn btn-secondary">📖 Junior Study Tools</a>
+                <a href="#tools" class="btn btn-primary">🛠️ Explore Your Tools</a>
             </div>
         </div>
     </section>
@@ -547,43 +721,74 @@
         </div>
     </section>
 
-    <!-- Courses Section -->
-    <section class="courses" id="courses">
-        <h2 class="section-title">Our Study Decoders</h2>
-        <div class="courses-grid">
-            <div class="course-card">
-                <div class="course-header">
-                    <div class="course-badge">Year 7-10</div>
-                    <h3>Junior Study Decoder</h3>
-                </div>
-                <div class="course-body">
-                    <p>Summarizes core subjects and provides study advice and practice questions. Develop healthy study habits early on and get a competitive advantage.</p>
-                    <a href="login.html" class="btn btn-primary course-link-locked">Sign In to Access</a>
-                    <a href="junior-bot.html" class="btn btn-primary course-link-unlocked" style="display: none;">Open Tool</a>
-                </div>
-            </div>
-            <div class="course-card">
-                <div class="course-header">
-                    <div class="course-badge">Year 11-12</div>
-                    <h3>Senior Study Decoder</h3>
-                </div>
-                <div class="course-body">
-                    <p>Built on major NESA syllabuses. Break down complex topics, create custom timetables, and access practice questions for advanced studies.</p>
-                    <a href="login.html" class="btn btn-primary course-link-locked">Sign In to Access</a>
-                    <a href="senior-bot.html" class="btn btn-primary course-link-unlocked" style="display: none;">Open Tool</a>
-                </div>
-            </div>
+    <!-- AI Study Suite Section -->
+    <section class="courses" id="tools">
+        <h2 class="section-title">Your AI Study Suite</h2>
+        <div class="tools-grid" id="toolsGrid">
+            <a href="#" onclick="openTool('syllabus'); return false;" class="tool-card flagship">
+                <div class="tool-card-icon">📘</div>
+                <h3>Syllabus Decoder</h3>
+                <p>Break down complex syllabus points into clear, actionable study notes. Understand exactly what you need to learn.</p>
+                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
+                <a href="login.html" class="tool-card-cta tool-cta-locked">Sign In</a>
+            </a>
+            <a href="#" onclick="openTool('worksheet'); return false;" class="tool-card flagship">
+                <div class="tool-card-icon">📄</div>
+                <h3>Worksheet Decoder</h3>
+                <p>Upload a hard-to-read worksheet image and get a clean, readable version with optional hints and practice questions.</p>
+                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
+                <a href="login.html" class="tool-card-cta tool-cta-locked">Sign In</a>
+            </a>
+            <a href="#" onclick="openTool('practice'); return false;" class="tool-card">
+                <div class="tool-card-icon">✏️</div>
+                <h3>Practice Questions</h3>
+                <p>Generate exam-style questions, full papers, or get marking feedback on your answers. Three powerful modes in one.</p>
+                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
+                <a href="login.html" class="tool-card-cta tool-cta-locked">Sign In</a>
+            </a>
+            <a href="#" onclick="openTool('timetable'); return false;" class="tool-card">
+                <div class="tool-card-icon">📅</div>
+                <h3>Timetable Generator</h3>
+                <p>Create a personalised, sustainable study schedule that balances all your subjects and fits your life.</p>
+                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
+                <a href="login.html" class="tool-card-cta tool-cta-locked">Sign In</a>
+            </a>
+            <a href="subject-advisor.html" class="tool-card">
+                <div class="tool-card-icon">🎯</div>
+                <h3>Subject Advisor</h3>
+                <p>Get personalised subject recommendations for Years 11-12 based on your strengths, interests, and goals.</p>
+                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
+                <a href="login.html" class="tool-card-cta tool-cta-locked">Sign In</a>
+            </a>
         </div>
     </section>
+
+    <!-- Level Selector Modal -->
+    <div class="level-modal-overlay" id="levelModal" style="display:none;">
+        <div class="level-modal">
+            <h2 id="levelModalTitle">Choose Your Level</h2>
+            <p>Select your year level to get the right content.</p>
+            <div class="level-buttons">
+                <a href="#" class="level-btn" id="levelSenior" onclick="selectLevel('senior'); return false;">
+                    <h4>🎓 Senior</h4>
+                    <span>Years 11–12 (HSC)</span>
+                </a>
+                <a href="#" class="level-btn" id="levelJunior" onclick="selectLevel('junior'); return false;">
+                    <h4>📚 Junior</h4>
+                    <span>Years 7–10</span>
+                </a>
+            </div>
+            <button onclick="closeLevelModal()" style="margin-top:1rem; background:none; border:none; color:#888; cursor:pointer; font-size:0.9rem;">Cancel</button>
+        </div>
+    </div>
 
     <!-- CTA Section -->
     <section class="cta">
         <h2>Ready to Transform Your Study Experience?</h2>
-        <p>Study smarter, not harder. Sign in to get started today.</p>
+        <p>A professional academic AI suite — study smarter, not harder.</p>
         <a href="login.html" class="btn btn-primary" id="ctaSignIn">Get Started</a>
         <div id="ctaLoggedIn" style="display: none;">
-            <a href="senior-bot.html" class="btn btn-primary" style="margin-right: 12px;">Senior Tools</a>
-            <a href="junior-bot.html" class="btn btn-primary" style="background: rgba(255,255,255,0.2); border: 2px solid white;">Junior Tools</a>
+            <a href="#tools" class="btn btn-primary">Explore Your Tools</a>
         </div>
     </section>
 
@@ -725,16 +930,17 @@
         if (hasAccess) {
             document.getElementById('heroLoggedIn').style.display = 'flex';
         } else {
-            // First time free user - show them to go to tools to see the welcome modal
             document.getElementById('heroSignInBtn').textContent = 'Start Using Tools';
-            document.getElementById('heroSignInBtn').href = 'senior-bot.html';
+            document.getElementById('heroSignInBtn').href = '#tools';
             document.getElementById('heroSignInBtn').style.display = 'inline-block';
         }
         
-        // Course cards - unlock for anyone with access
+        // Tool cards - unlock for anyone with access
         if (hasAccess) {
-            document.querySelectorAll('.course-link-locked').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('.course-link-unlocked').forEach(el => el.style.display = 'inline-block');
+            document.querySelectorAll('.tool-cta-locked').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.tool-cta-unlocked').forEach(el => el.style.display = 'inline-block');
+            // Enable tool card clicks
+            document.querySelectorAll('.tool-card').forEach(el => el.style.pointerEvents = 'auto');
         }
         
         // CTA
@@ -884,6 +1090,50 @@
             btn.disabled = false;
         }
     }
+    // ========== LEVEL SELECTOR MODAL ==========
+    let pendingTool = null;
+    const toolRoutes = {
+        syllabus: { senior: 'syllabus.html', junior: 'syllabus-jr.html' },
+        practice: { senior: 'practice.html', junior: 'practice-jr.html' },
+        timetable: { senior: 'timetable.html', junior: 'timetable-jr.html' },
+        worksheet: { senior: 'worksheet-decoder.html', junior: 'worksheet-decoder.html' }
+    };
+
+    function openTool(tool) {
+        if (tool === 'subject-advisor') {
+            window.location.href = 'subject-advisor.html';
+            return;
+        }
+        pendingTool = tool;
+        const titles = {
+            syllabus: 'Syllabus Decoder',
+            worksheet: 'Worksheet Decoder',
+            practice: 'Practice Questions',
+            timetable: 'Timetable Generator'
+        };
+        document.getElementById('levelModalTitle').textContent = titles[tool] || 'Choose Your Level';
+        document.getElementById('levelModal').style.display = 'flex';
+    }
+
+    function selectLevel(level) {
+        if (!pendingTool) return;
+        const route = toolRoutes[pendingTool];
+        if (route) {
+            window.location.href = route[level] || route.senior;
+        }
+        closeLevelModal();
+    }
+
+    function closeLevelModal() {
+        document.getElementById('levelModal').style.display = 'none';
+        pendingTool = null;
+    }
+
+    // Close modal on overlay click
+    document.getElementById('levelModal').addEventListener('click', function(e) {
+        if (e.target === this) closeLevelModal();
+    });
+
     // Handle Stripe redirect after payment
     (function handleStripeReturn() {
         const params = new URLSearchParams(window.location.search);

@@ -148,7 +148,7 @@
     <div class="app-container hidden" id="mainContent">
         <header class="header">
             <div class="header-left">
-                <a href="senior-bot.html" class="back-btn">← Back</a>
+                <a href="index.html" class="back-btn">← Home</a>
                 <div>
                     <div class="header-title">Smart Timetable Generator</div>
                     <div class="header-subtitle">Create sustainable, personalised HSC study schedules</div>
@@ -257,7 +257,12 @@
             { id: 'health-movement-science', name: 'Health and Movement Science', category: 'PDHPE' },
             { id: 'history-extension', name: 'History Extension', category: 'HSIE' },
             { id: 'hospitality', name: 'Hospitality', category: 'VET' },
-            { id: 'industrial-technology', name: 'Industrial Technology', category: 'TAS' },
+            { id: 'industrial-tech-automotive', name: 'Industrial Technology - Automotive', category: 'TAS' },
+            { id: 'industrial-tech-electronics', name: 'Industrial Technology - Electronics', category: 'TAS' },
+            { id: 'industrial-tech-graphics', name: 'Industrial Technology - Graphics', category: 'TAS' },
+            { id: 'industrial-tech-metals', name: 'Industrial Technology - Metal and Engineering', category: 'TAS' },
+            { id: 'industrial-tech-multimedia', name: 'Industrial Technology - Multimedia', category: 'TAS' },
+            { id: 'industrial-tech-timber', name: 'Industrial Technology - Timber and Furniture', category: 'TAS' },
             { id: 'information-digital-technology', name: 'Information and Digital Technology', category: 'TAS' },
             { id: 'investigating-science', name: 'Investigating Science', category: 'Science' },
             { id: 'legal-studies', name: 'Legal Studies', category: 'HSIE' },
@@ -441,7 +446,7 @@ Please generate a detailed weekly study timetable in a clear table format with s
                 // Check if has access (owner, lifetime, og_tester, subscribed, or free tier acknowledged)
                 const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
                 if (!hasAccess) {
-                    window.location.href = '/senior-bot.html';
+                    window.location.href = '/index.html';
                     return;
                 }
                 

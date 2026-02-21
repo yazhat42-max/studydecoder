@@ -138,11 +138,56 @@
             font-size: 1rem;
         }
         .hidden { display: none !important; }
+
+        /* Mode landing cards */
+        .mode-card {
+            background: #16202a;
+            border: 2px solid #2f3336;
+            border-radius: 20px;
+            padding: 36px 28px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .mode-card:hover {
+            transform: translateY(-6px);
+            border-color: #4f8cff;
+            box-shadow: 0 12px 40px rgba(79, 140, 255, 0.15);
+        }
+        .mode-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        .mode-card h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #e7e9ea;
+            margin-bottom: 10px;
+        }
+        .mode-card p {
+            font-size: 0.92rem;
+            color: #71767b;
+            line-height: 1.55;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+        .mode-card-cta {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4f8cff;
+        }
+
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr 1fr; }
             .header { padding: 12px 16px; flex-direction: column; gap: 12px; align-items: flex-start; }
-            .mode-toggle { width: 100%; }
-            .mode-btn { flex: 1; }
+            #modeLanding div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+                max-width: 400px;
+                margin: 0 auto;
+            }
         }
         @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
     </style>
@@ -155,47 +200,58 @@
     </div>
 
     <div class="app-container hidden" id="mainContent">
-        <header class="header">
-            <div class="header-left">
-                <a href="senior-bot.html" class="back-btn">← Back</a>
-                <div>
-                    <div class="header-title">Practice Question Generator</div>
-                    <div class="header-subtitle">Generate real NSW HSC exam-style questions</div>
+        <!-- MODE SELECTION LANDING (shown first, like senior-bot.html grid) -->
+        <div id="modeLanding">
+            <div style="padding: 20px 24px;">
+                <a href="index.html" class="back-btn">← Back to Home</a>
+            </div>
+            <div style="max-width: 1100px; margin: 0 auto; padding: 0 24px 60px;">
+                <div style="text-align: center; padding: 30px 20px 40px;">
+                    <h1 style="font-size: 2.4rem; font-weight: 700; color: #e7e9ea; margin-bottom: 12px;">Practice Question Generator</h1>
+                    <p style="font-size: 1.1rem; color: #71767b; max-width: 550px; margin: 0 auto; line-height: 1.6;">Generate authentic HSC exam-style questions. Choose a mode below.</p>
                 </div>
-            </div>
-            <div class="mode-toggle">
-                <button type="button" class="mode-btn active" data-mode="standard">Standard</button>
-                <button type="button" class="mode-btn" data-mode="exam">Full Exam</button>
-                <button type="button" class="mode-btn" data-mode="feedback">Get Feedback</button>
-            </div>
-        </header>
-        <main class="main-content">
-            <div class="output-panel" id="outputPanel">
-                <div class="output-content" id="outputContent">
-                    <div class="welcome-message">
-                        <h2>Practice Question Generator</h2>
-                        <p>Generate authentic HSC exam-style questions based on official NSW NESA syllabuses and past papers.</p>
-                        <div class="welcome-features">
-                            <div class="welcome-feature">
-                                <h4>Standard Mode</h4>
-                                <p>Generate individual practice questions by topic</p>
-                            </div>
-                            <div class="welcome-feature">
-                                <h4>Full Exam Mode</h4>
-                                <p>Generate complete 1, 2, or 3 hour exam papers</p>
-                            </div>
-                            <div class="welcome-feature">
-                                <h4>Feedback Mode</h4>
-                                <p>Get marking feedback on your answers based on HSC criteria</p>
-                            </div>
-                        </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+                    <div class="mode-card" onclick="selectMode('standard')">
+                        <div class="mode-card-icon">✏️</div>
+                        <h2>Standard Questions</h2>
+                        <p>Generate individual practice questions by subject, topic, and difficulty.</p>
+                        <span class="mode-card-cta">Start →</span>
+                    </div>
+                    <div class="mode-card" onclick="selectMode('exam')">
+                        <div class="mode-card-icon">📝</div>
+                        <h2>Full Exam Paper</h2>
+                        <p>Generate complete 1, 2, or 3 hour HSC-style exam papers.</p>
+                        <span class="mode-card-cta">Start →</span>
+                    </div>
+                    <div class="mode-card" onclick="selectMode('feedback')">
+                        <div class="mode-card-icon">📊</div>
+                        <h2>Get Feedback</h2>
+                        <p>Paste a question and your answer to get HSC marking feedback.</p>
+                        <span class="mode-card-cta">Start →</span>
                     </div>
                 </div>
             </div>
-            <div class="input-panel">
-                <form class="input-form" id="inputForm">
-                    <div class="form-title">Generate Practice Questions</div>
-                    <div class="standard-panel" id="standardPanel" style="display: block;">
+        </div>
+
+        <!-- ACTIVE MODE VIEW (shown after selecting a mode) -->
+        <div id="activeView" style="display: none; height: 100vh; flex-direction: column;">
+            <header class="header">
+                <div class="header-left">
+                    <a href="#" class="back-btn" onclick="backToModes(event)">← Modes</a>
+                    <div>
+                        <div class="header-title" id="activeTitle">Practice Question Generator</div>
+                        <div class="header-subtitle">Generate real NSW HSC exam-style questions</div>
+                    </div>
+                </div>
+            </header>
+            <main class="main-content" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+                <div class="output-panel" id="outputPanel">
+                    <div class="output-content" id="outputContent"></div>
+                </div>
+                <div class="input-panel">
+                    <form class="input-form" id="inputForm">
+                        <div class="form-title" id="formTitle">Generate Practice Questions</div>
+                        <div class="standard-panel" id="standardPanel" style="display: none;">
                         <div class="form-grid">
                             <div class="form-group">
                                 <label class="form-label">📘 Subject</label>
@@ -310,6 +366,7 @@
                 </form>
             </div>
         </main>
+        </div><!-- end activeView -->
     </div>
     <script>
         const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
@@ -322,7 +379,6 @@
         const outputContent = document.getElementById('outputContent');
         const outputPanel = document.getElementById('outputPanel');
         const submitBtn = document.getElementById('submitBtn');
-        const modeBtns = document.querySelectorAll('.mode-btn');
         const standardPanel = document.getElementById('standardPanel');
         const examPanel = document.getElementById('examPanel');
         const feedbackPanel = document.getElementById('feedbackPanel');
@@ -358,7 +414,12 @@
             { id: 'health-movement-science', name: 'Health and Movement Science', category: 'PDHPE' },
             { id: 'history-extension', name: 'History Extension', category: 'HSIE' },
             { id: 'hospitality', name: 'Hospitality', category: 'VET' },
-            { id: 'industrial-technology', name: 'Industrial Technology', category: 'TAS' },
+            { id: 'industrial-tech-automotive', name: 'Industrial Technology - Automotive', category: 'TAS' },
+            { id: 'industrial-tech-electronics', name: 'Industrial Technology - Electronics', category: 'TAS' },
+            { id: 'industrial-tech-graphics', name: 'Industrial Technology - Graphics', category: 'TAS' },
+            { id: 'industrial-tech-metals', name: 'Industrial Technology - Metal and Engineering', category: 'TAS' },
+            { id: 'industrial-tech-multimedia', name: 'Industrial Technology - Multimedia', category: 'TAS' },
+            { id: 'industrial-tech-timber', name: 'Industrial Technology - Timber and Furniture', category: 'TAS' },
             { id: 'information-digital-technology', name: 'Information and Digital Technology', category: 'TAS' },
             { id: 'investigating-science', name: 'Investigating Science', category: 'Science' },
             { id: 'legal-studies', name: 'Legal Studies', category: 'HSIE' },
@@ -427,7 +488,12 @@
             'health-movement-science': ['Health for individuals and communities', 'The body and mind in motion', 'Collaborative Investigation', 'Health in an Australian and global context', 'Training for improved performance'],
             'history-extension': ['Extension History Topics', 'Research Projects'],
             'hospitality': ['Hospitality Operations', 'Food and Beverage Services', 'Hospitality and Tourism', 'Hospitality Businesses', 'Hospitality Services', 'Hospitality Industry'],
-            'industrial-technology': ['Materials and Manufacturing Processes', 'Designing and Producing', 'Design and Production', 'Industrial Studies', 'Case Studies'],
+            'industrial-tech-automotive': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Engine Types and Systems', 'Cooling, Fuel and Exhaust Systems', 'Transmission and Drivetrain', 'Braking, Suspension and Steering', 'Electrical and Ignition Systems', 'Body and Automotive Design', 'Tools and Equipment'],
+            'industrial-tech-electronics': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Electrical Principles', 'Components and Semiconductors', 'Digital Electronics', 'Circuitry and Circuit Design', 'PCB Design and Construction', 'Input/Output Devices', 'Instruments and Test Equipment'],
+            'industrial-tech-graphics': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Freehand and Pictorial Drawing', 'Engineering and Product Drawing', 'Architectural Drawing', 'CAD and Computer Graphics', 'Presentation Techniques', 'Principles and Standards (AS1100)'],
+            'industrial-tech-metals': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Ferrous and Non-Ferrous Metals', 'Properties and Modification of Metals', 'Marking Out, Cutting and Machining', 'Joining (Welding, Brazing, Soldering)', 'Finishing and Surface Treatment', 'Tools and Machinery'],
+            'industrial-tech-multimedia': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Multimedia Computer Systems', 'Multimedia Design and Storyboarding', 'Graphics and Digital Imaging', 'Audio and Sound', 'Video Production and Editing', 'Animation (2D and 3D)', 'World Wide Web', 'Intellectual Property and Ethics'],
+            'industrial-tech-timber': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Timber Structure and Properties', 'Manufactured Boards', 'Fittings and Allied Materials', 'Joints (Widening, Framing, Carcase)', 'Construction Techniques', 'Assembly and Finishing', 'Tools and Machinery'],
             'information-digital-technology': ['Information Systems', 'Digital Systems', 'Data and Information', 'Networking and Cloud Computing', 'Digital Issues and Implications'],
             'investigating-science': ['Module 1: Cause and Effect - Observing', 'Module 2: Cause and Effect - Inferences and Generalisations', 'Module 3: Scientific Models', 'Module 4: Theories and Laws', 'Module 5: Scientific Investigations', 'Module 6: Technologies', 'Module 7: Fact or Fallacy?', 'Module 8: Science and Society'],
             'legal-studies': ['The Legal System', 'The Individual and the Law', 'Law in Practice', 'Crime', 'Human Rights', 'Options - Consumers', 'Options - Global Environmental Protection', 'Options - Family', 'Options - Indigenous Peoples', 'Options - Shelter', 'Options - Workplace', 'Options - World Order'],
@@ -449,6 +515,180 @@
         // Topic dropdown
         const topicSelect = document.getElementById('topic');
         
+        // ==================== SUBJECT-SPECIFIC OPTIONS ====================
+        // Define which question types, difficulties, and feedback marks are valid per category
+        const categoryOptions = {
+            'Mathematics': {
+                questionTypes: [
+                    { value: 'Multiple Choice', label: 'Multiple Choice' },
+                    { value: 'Calculation', label: 'Calculation', selected: true },
+                    { value: 'Proof', label: 'Proof/Show That' },
+                    { value: 'Mixed', label: 'Mixed' }
+                ],
+                difficulties: [
+                    { value: 'Easy', label: 'Easy (1 mark)' },
+                    { value: 'Medium', label: 'Medium (2-3 marks)', selected: true },
+                    { value: 'Hard', label: 'Hard (4-5 marks)' }
+                ],
+                feedbackMarks: [1, 2, 3, 4, 5]
+            },
+            'Science': {
+                questionTypes: [
+                    { value: 'Multiple Choice', label: 'Multiple Choice' },
+                    { value: 'Short Answer', label: 'Short Answer', selected: true },
+                    { value: 'Calculation', label: 'Calculation' },
+                    { value: 'Extended Response', label: 'Extended Response' },
+                    { value: 'Data Analysis', label: 'Data/Graph Analysis' },
+                    { value: 'Mixed', label: 'Mixed' }
+                ],
+                difficulties: [
+                    { value: 'Easy', label: 'Easy (1-2 marks)' },
+                    { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
+                    { value: 'Hard', label: 'Hard (6-8 marks)' },
+                    { value: 'Extended', label: 'Extended (9-20 marks)' }
+                ],
+                feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20]
+            },
+            'English': {
+                questionTypes: [
+                    { value: 'Short Answer', label: 'Short Answer' },
+                    { value: 'Extended Response', label: 'Extended Response/Essay', selected: true },
+                    { value: 'Creative Writing', label: 'Creative Writing' },
+                    { value: 'Unseen Text Analysis', label: 'Unseen Text Analysis' },
+                    { value: 'Mixed', label: 'Mixed' }
+                ],
+                difficulties: [
+                    { value: 'Easy', label: 'Easy (2-4 marks)' },
+                    { value: 'Medium', label: 'Medium (5-8 marks)', selected: true },
+                    { value: 'Hard', label: 'Hard (10-15 marks)' },
+                    { value: 'Extended', label: 'Extended (20 marks - Essay)' }
+                ],
+                feedbackMarks: [2, 3, 4, 5, 6, 7, 8, 10, 15, 20]
+            },
+            'HSIE': {
+                questionTypes: [
+                    { value: 'Multiple Choice', label: 'Multiple Choice' },
+                    { value: 'Short Answer', label: 'Short Answer', selected: true },
+                    { value: 'Extended Response', label: 'Extended Response/Essay' },
+                    { value: 'Source-Based', label: 'Source-Based' },
+                    { value: 'Mixed', label: 'Mixed' }
+                ],
+                difficulties: [
+                    { value: 'Easy', label: 'Easy (1-2 marks)' },
+                    { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
+                    { value: 'Hard', label: 'Hard (6-8 marks)' },
+                    { value: 'Extended', label: 'Extended (9-20 marks)' }
+                ],
+                feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20]
+            },
+            'Creative Arts': {
+                questionTypes: [
+                    { value: 'Short Answer', label: 'Short Answer', selected: true },
+                    { value: 'Extended Response', label: 'Extended Response/Essay' },
+                    { value: 'Critical Analysis', label: 'Critical Analysis' },
+                    { value: 'Mixed', label: 'Mixed' }
+                ],
+                difficulties: [
+                    { value: 'Easy', label: 'Easy (2-4 marks)' },
+                    { value: 'Medium', label: 'Medium (5-8 marks)', selected: true },
+                    { value: 'Hard', label: 'Hard (9-15 marks)' },
+                    { value: 'Extended', label: 'Extended (20 marks)' }
+                ],
+                feedbackMarks: [2, 3, 4, 5, 6, 7, 8, 10, 15, 20]
+            },
+            'TAS': {
+                questionTypes: [
+                    { value: 'Multiple Choice', label: 'Multiple Choice' },
+                    { value: 'Short Answer', label: 'Short Answer', selected: true },
+                    { value: 'Extended Response', label: 'Extended Response' },
+                    { value: 'Mixed', label: 'Mixed' }
+                ],
+                difficulties: [
+                    { value: 'Easy', label: 'Easy (1-2 marks)' },
+                    { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
+                    { value: 'Hard', label: 'Hard (6-8 marks)' },
+                    { value: 'Extended', label: 'Extended (9-20 marks)' }
+                ],
+                feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20]
+            },
+            'PDHPE': {
+                questionTypes: [
+                    { value: 'Multiple Choice', label: 'Multiple Choice' },
+                    { value: 'Short Answer', label: 'Short Answer', selected: true },
+                    { value: 'Extended Response', label: 'Extended Response' },
+                    { value: 'Data Analysis', label: 'Data/Graph Analysis' },
+                    { value: 'Mixed', label: 'Mixed' }
+                ],
+                difficulties: [
+                    { value: 'Easy', label: 'Easy (1-2 marks)' },
+                    { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
+                    { value: 'Hard', label: 'Hard (6-8 marks)' },
+                    { value: 'Extended', label: 'Extended (9-20 marks)' }
+                ],
+                feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20]
+            },
+            'VET': {
+                questionTypes: [
+                    { value: 'Multiple Choice', label: 'Multiple Choice' },
+                    { value: 'Short Answer', label: 'Short Answer', selected: true },
+                    { value: 'Extended Response', label: 'Extended Response' },
+                    { value: 'Mixed', label: 'Mixed' }
+                ],
+                difficulties: [
+                    { value: 'Easy', label: 'Easy (1-2 marks)' },
+                    { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
+                    { value: 'Hard', label: 'Hard (6-8 marks)' }
+                ],
+                feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8]
+            }
+        };
+        
+        function getSubjectCategory(subjectId) {
+            const subj = subjects.find(s => s.id === subjectId);
+            return subj ? subj.category : null;
+        }
+        
+        function updateOptionsForSubject(subjectId) {
+            const category = getSubjectCategory(subjectId);
+            if (!category || !categoryOptions[category]) return;
+            
+            const opts = categoryOptions[category];
+            
+            // Update Question Type dropdown
+            const questionTypeSelect = document.getElementById('questionType');
+            questionTypeSelect.innerHTML = '';
+            opts.questionTypes.forEach(qt => {
+                const opt = document.createElement('option');
+                opt.value = qt.value;
+                opt.textContent = qt.label;
+                if (qt.selected) opt.selected = true;
+                questionTypeSelect.appendChild(opt);
+            });
+            
+            // Update Difficulty dropdown
+            const difficultySelect = document.getElementById('difficulty');
+            difficultySelect.innerHTML = '';
+            opts.difficulties.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d.value;
+                opt.textContent = d.label;
+                if (d.selected) opt.selected = true;
+                difficultySelect.appendChild(opt);
+            });
+            
+            // Update Feedback Marks dropdown
+            const feedbackMarksSelect = document.getElementById('feedbackMarks');
+            if (feedbackMarksSelect) {
+                feedbackMarksSelect.innerHTML = '';
+                opts.feedbackMarks.forEach(m => {
+                    const opt = document.createElement('option');
+                    opt.value = m;
+                    opt.textContent = m === 20 ? '20 marks (Essay)' : `${m} mark${m > 1 ? 's' : ''}`;
+                    feedbackMarksSelect.appendChild(opt);
+                });
+            }
+        }
+        
         // Update topics when subject changes
         subjectSelect.addEventListener('change', () => {
             const subjectId = subjectSelect.value;
@@ -458,6 +698,9 @@
                 topicSelect.innerHTML = '<option value="">Select subject first...</option>';
                 return;
             }
+            
+            // Update question types and difficulties for selected subject
+            updateOptionsForSubject(subjectId);
             
             const topics = subjectTopics[subjectId];
             if (topics && topics.length > 0) {
@@ -473,28 +716,68 @@
             }
         });
         
-        modeBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                modeBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentMode = btn.dataset.mode;
-                // Hide all panels
-                standardPanel.style.display = 'none';
-                examPanel.style.display = 'none';
-                feedbackPanel.style.display = 'none';
-                // Show the selected panel
-                if (currentMode === 'exam') {
-                    examPanel.style.display = 'block';
-                    submitBtn.textContent = 'Generate Full Exam';
-                } else if (currentMode === 'feedback') {
-                    feedbackPanel.style.display = 'block';
-                    submitBtn.textContent = 'Get Feedback';
-                } else {
-                    standardPanel.style.display = 'block';
-                    submitBtn.textContent = 'Generate Questions';
+        // Also update options when feedback subject changes
+        if (feedbackSubjectSelect) {
+            feedbackSubjectSelect.addEventListener('change', () => {
+                const subjectId = feedbackSubjectSelect.value;
+                if (subjectId) {
+                    const category = getSubjectCategory(subjectId);
+                    if (category && categoryOptions[category]) {
+                        const feedbackMarksSelect = document.getElementById('feedbackMarks');
+                        if (feedbackMarksSelect) {
+                            feedbackMarksSelect.innerHTML = '';
+                            categoryOptions[category].feedbackMarks.forEach(m => {
+                                const opt = document.createElement('option');
+                                opt.value = m;
+                                opt.textContent = m === 20 ? '20 marks (Essay)' : `${m} mark${m > 1 ? 's' : ''}`;
+                                feedbackMarksSelect.appendChild(opt);
+                            });
+                        }
+                    }
                 }
             });
-        });
+        }
+        
+        // Mode selection from landing page
+        function selectMode(mode) {
+            currentMode = mode;
+            conversationHistory = [];
+            outputContent.innerHTML = '';
+            
+            // Hide landing, show active view
+            document.getElementById('modeLanding').style.display = 'none';
+            const activeView = document.getElementById('activeView');
+            activeView.style.display = 'flex';
+            
+            // Update title
+            const titles = { standard: 'Standard Questions', exam: 'Full Exam Paper', feedback: 'Get Feedback' };
+            document.getElementById('activeTitle').textContent = titles[mode] || 'Practice Questions';
+            document.getElementById('formTitle').textContent = titles[mode] || 'Practice Questions';
+            
+            // Show correct panel
+            standardPanel.style.display = 'none';
+            examPanel.style.display = 'none';
+            feedbackPanel.style.display = 'none';
+            
+            if (mode === 'exam') {
+                examPanel.style.display = 'block';
+                submitBtn.textContent = 'Generate Full Exam';
+            } else if (mode === 'feedback') {
+                feedbackPanel.style.display = 'block';
+                submitBtn.textContent = 'Get Feedback';
+            } else {
+                standardPanel.style.display = 'block';
+                submitBtn.textContent = 'Generate Questions';
+            }
+        }
+        
+        function backToModes(e) {
+            e.preventDefault();
+            document.getElementById('activeView').style.display = 'none';
+            document.getElementById('modeLanding').style.display = 'block';
+            conversationHistory = [];
+            outputContent.innerHTML = '';
+        }
         
         function formatResponse(text) {
             return text
@@ -591,7 +874,12 @@
                 const topics = document.getElementById('examTopics').value;
                 const duration = document.getElementById('examDuration').value;
                 console.log('[DEBUG] Exam fields:', { subjectName, topics, duration });
-                message = `[FULL EXAM MODE]\nGenerate a complete ${duration} HSC EXAM PAPER:\nSubject: ${subjectName}\nTopics: ${topics || 'All Year 12 content'}\nDuration: ${duration}\n\nCreate a complete exam with multiple sections, varied question types matching HSC format, proper mark allocations, and reading time instructions. Structure it like a real HSC paper.`;
+                message = `Generate a complete ${duration} HSC EXAM PAPER.
+Subject: ${subjectName}
+Topics: ${topics || 'All Year 12 content'}
+Duration: ${duration}
+
+Create a complete exam with multiple sections, varied question types matching HSC format, proper mark allocations, and reading time instructions. Structure it like a real HSC paper. Start generating immediately.`;
             } else if (currentMode === 'feedback') {
                 subjectId = feedbackSubjectSelect.value;
                 console.log('[DEBUG] Feedback subjectId:', subjectId);
@@ -602,7 +890,17 @@
                 const answer = document.getElementById('feedbackAnswer').value.trim();
                 console.log('[DEBUG] Feedback fields:', { subjectName, marks, question, answer });
                 if (!question || !answer) { alert('Please enter both the question and your answer.'); return; }
-                message = `[FEEDBACK MODE]\nSubject: ${subjectName}\nMark Value: ${marks} marks\n\nQUESTION:\n${question}\n\nSTUDENT'S ANSWER:\n${answer}\n\nProvide detailed marking feedback based on HSC marking criteria. Do NOT provide a model answer. Only assess the student's response.`;
+                message = `Provide detailed marking feedback for this response.
+Subject: ${subjectName}
+Mark Value: ${marks} marks
+
+QUESTION:
+${question}
+
+STUDENT'S ANSWER:
+${answer}
+
+Assess the student's response using HSC marking criteria. Do NOT provide a model answer. Only give feedback on what was done well and what needs improvement.`;
             } else {
                 subjectId = subjectSelect.value;
                 console.log('[DEBUG] Standard subjectId:', subjectId);
@@ -615,7 +913,15 @@
                 const includeAnswers = document.getElementById('includeAnswers').checked;
                 console.log('[DEBUG] Standard fields:', { subjectName, topic, difficulty, questionType, numQuestions, includeAnswers });
                 if (!topic || topic === 'Select subject first...' || topic === 'Select a topic/module...') { alert('Please select a topic.'); return; }
-                message = `[STANDARD MODE]\nSubject: ${subjectName}\nTopic: ${topic}\nDifficulty: ${difficulty}\nQuestion Type: ${questionType}\nNumber of Questions: ${numQuestions}\n${includeAnswers ? 'Include model answers with marking guidelines and band descriptors.' : 'Do not include answers.'}`;
+                message = `Generate practice questions.
+Subject: ${subjectName}
+Topic: ${topic}
+Difficulty: ${difficulty}
+Question Type: ${questionType}
+Number of Questions: ${numQuestions}
+${includeAnswers ? 'Include model answers with marking guidelines and band descriptors.' : 'Do not include answers.'}
+
+Start generating immediately.`;
             }
             console.log('[DEBUG] Final message:', message, 'subjectId:', subjectId);
             sendMessage(message, subjectId);
@@ -640,7 +946,7 @@
                 // Check if has access (owner, lifetime, og_tester, subscribed, or free tier acknowledged)
                 const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
                 if (!hasAccess) {
-                    window.location.href = '/senior-bot.html';
+                    window.location.href = '/index.html';
                     return;
                 }
                 
