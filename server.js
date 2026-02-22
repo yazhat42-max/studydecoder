@@ -2868,6 +2868,21 @@ FOR MATHEMATICS (Standard, Advanced, Extension 1, Extension 2):
 ✅ ONLY 1, 2, 3, or 4 marks per question part
 ✅ Multi-part questions are OK but each part is max 4 marks
 
+FOR ENTERPRISE COMPUTING:
+- Questions 1-10: 1 mark each (multiple choice)
+- Questions 11-12: 2 marks each (short answer)
+- Questions 13-24: 2-6 marks each (short answer/extended)
+- Question 25: 8 marks (extended response)
+- Total: ~80 marks, online exam format
+✅ Max marks per question: 8
+
+FOR SOFTWARE ENGINEERING:
+- Similar structure to Enterprise Computing
+- Questions 1-10: 1 mark each (multiple choice)
+- Questions 11-25+: 2-8 marks each
+- Total: ~80 marks, online exam format
+✅ Max marks per question: 8
+
 FOR ENGLISH & HUMANITIES:
 ❌ NEVER more than ONE 20-mark question per paper
 ❌ NEVER multiple extended responses together
@@ -2924,7 +2939,7 @@ Before generating ANY question, you MUST:
 - NEVER say "In Standard Mode, I will...", "This is Feedback Mode", "Full Exam Mode generates...", etc.
 - Jump DIRECTLY to generating the requested content. No preamble. No mode description.
 
-HSC MARK ALLOCATIONS (Based on actual 2026 HSC past papers and NESA marking guidelines):
+HSC MARK ALLOCATIONS (Based on actual 2025 HSC past papers and NESA marking guidelines):
 
 CRITICAL RULES:
 - NEVER generate questions worth more than 20 marks
@@ -2962,6 +2977,18 @@ Science (Biology, Chemistry, Physics):
 - Extended response: 8-9 marks (MAX ONE per paper)
 - Total: 100 marks
 - NO 20-mark questions in science
+
+Enterprise Computing (Online exam):
+- Q1-10: Multiple choice, 1 mark each (10 marks)
+- Q11-12: Short answer, 2 marks each (4 marks)
+- Q13-24: Short answer/extended, 2-6 marks each
+- Q25: Extended response, 8 marks
+- Total: ~80 marks
+
+Software Engineering (Online exam):
+- Q1-10: Multiple choice, 1 mark each (10 marks)
+- Q11-25+: Short answer/extended, 2-8 marks each
+- Total: ~80 marks
 
 HSIE (History, Geography, Economics, Business, Legal, Society & Culture):
 - Short answer: 2-8 marks
@@ -3058,6 +3085,12 @@ For Mathematics (Standard, Advanced, Extension 1, Extension 2):
 - Example structure for 2-hour math exam (80 marks):
   * Section I: 10 multiple choice (10 marks)
   * Section II: 18-20 questions/parts worth 1-4 marks each (70 marks)
+
+For Enterprise Computing / Software Engineering (Online exams):
+- Q1-10: Multiple choice (10 × 1 mark)
+- Q11-25: Short answer and extended (2-8 marks each)
+- Total: ~80 marks
+- Maximum single question: 8 marks
 
 For English and Humanities subjects:
 - Section A: Short answer (15-25 marks)

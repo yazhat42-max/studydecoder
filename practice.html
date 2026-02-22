@@ -517,6 +517,7 @@
         
         // ==================== SUBJECT-SPECIFIC OPTIONS ====================
         // Define which question types, difficulties, and feedback marks are valid per category
+        // Subject-specific overrides take priority over category defaults
         const categoryOptions = {
             'Mathematics': {
                 questionTypes: [
@@ -528,9 +529,9 @@
                 difficulties: [
                     { value: 'Easy', label: 'Easy (1 mark)' },
                     { value: 'Medium', label: 'Medium (2-3 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (4-5 marks)' }
+                    { value: 'Hard', label: 'Hard (4 marks)' }
                 ],
-                feedbackMarks: [1, 2, 3, 4, 5]
+                feedbackMarks: [1, 2, 3, 4]
             },
             'Science': {
                 questionTypes: [
@@ -544,10 +545,10 @@
                 difficulties: [
                     { value: 'Easy', label: 'Easy (1-2 marks)' },
                     { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (6-8 marks)' },
-                    { value: 'Extended', label: 'Extended (9-20 marks)' }
+                    { value: 'Hard', label: 'Hard (6-7 marks)' },
+                    { value: 'Extended', label: 'Extended (8-9 marks)' }
                 ],
-                feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20]
+                feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9]
             },
             'English': {
                 questionTypes: [
@@ -606,10 +607,9 @@
                 difficulties: [
                     { value: 'Easy', label: 'Easy (1-2 marks)' },
                     { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (6-8 marks)' },
-                    { value: 'Extended', label: 'Extended (9-20 marks)' }
+                    { value: 'Hard', label: 'Hard (6-8 marks)' }
                 ],
-                feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20]
+                feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8]
             },
             'PDHPE': {
                 questionTypes: [
@@ -643,16 +643,72 @@
             }
         };
         
+        // Subject-specific overrides (takes priority over category defaults)
+        const subjectOverrides = {
+            'enterprise-computing': {
+                questionTypes: [
+                    { value: 'Multiple Choice', label: 'Multiple Choice' },
+                    { value: 'Short Answer', label: 'Short Answer', selected: true },
+                    { value: 'Extended Response', label: 'Extended Response' },
+                    { value: 'Mixed', label: 'Mixed' }
+                ],
+                difficulties: [
+                    { value: 'Easy', label: 'Easy (1 mark - MC)' },
+                    { value: 'Medium', label: 'Medium (2-4 marks)', selected: true },
+                    { value: 'Hard', label: 'Hard (5-6 marks)' },
+                    { value: 'Extended', label: 'Extended (8 marks)' }
+                ],
+                feedbackMarks: [1, 2, 3, 4, 5, 6, 8]
+            },
+            'software-engineering': {
+                questionTypes: [
+                    { value: 'Multiple Choice', label: 'Multiple Choice' },
+                    { value: 'Short Answer', label: 'Short Answer', selected: true },
+                    { value: 'Extended Response', label: 'Extended Response' },
+                    { value: 'Mixed', label: 'Mixed' }
+                ],
+                difficulties: [
+                    { value: 'Easy', label: 'Easy (1 mark - MC)' },
+                    { value: 'Medium', label: 'Medium (2-4 marks)', selected: true },
+                    { value: 'Hard', label: 'Hard (5-6 marks)' },
+                    { value: 'Extended', label: 'Extended (8 marks)' }
+                ],
+                feedbackMarks: [1, 2, 3, 4, 5, 6, 8]
+            },
+            'mathematics-advanced': {
+                feedbackMarks: [1, 2, 3, 4]
+            },
+            'mathematics-extension-1': {
+                feedbackMarks: [1, 2, 3, 4]
+            },
+            'mathematics-extension-2': {
+                feedbackMarks: [1, 2, 3, 4]
+            },
+            'mathematics-standard': {
+                feedbackMarks: [1, 2, 3, 4]
+            }
+        };
+        
         function getSubjectCategory(subjectId) {
             const subj = subjects.find(s => s.id === subjectId);
             return subj ? subj.category : null;
         }
         
-        function updateOptionsForSubject(subjectId) {
+        function getOptionsForSubject(subjectId) {
             const category = getSubjectCategory(subjectId);
-            if (!category || !categoryOptions[category]) return;
-            
-            const opts = categoryOptions[category];
+            const catOpts = category && categoryOptions[category] ? categoryOptions[category] : categoryOptions['TAS'];
+            const override = subjectOverrides[subjectId];
+            if (!override) return catOpts;
+            // Merge: override fields take priority
+            return {
+                questionTypes: override.questionTypes || catOpts.questionTypes,
+                difficulties: override.difficulties || catOpts.difficulties,
+                feedbackMarks: override.feedbackMarks || catOpts.feedbackMarks
+            };
+        }
+        
+        function updateOptionsForSubject(subjectId) {
+            const opts = getOptionsForSubject(subjectId);
             
             // Update Question Type dropdown
             const questionTypeSelect = document.getElementById('questionType');
@@ -721,18 +777,16 @@
             feedbackSubjectSelect.addEventListener('change', () => {
                 const subjectId = feedbackSubjectSelect.value;
                 if (subjectId) {
-                    const category = getSubjectCategory(subjectId);
-                    if (category && categoryOptions[category]) {
-                        const feedbackMarksSelect = document.getElementById('feedbackMarks');
-                        if (feedbackMarksSelect) {
-                            feedbackMarksSelect.innerHTML = '';
-                            categoryOptions[category].feedbackMarks.forEach(m => {
-                                const opt = document.createElement('option');
-                                opt.value = m;
-                                opt.textContent = m === 20 ? '20 marks (Essay)' : `${m} mark${m > 1 ? 's' : ''}`;
-                                feedbackMarksSelect.appendChild(opt);
-                            });
-                        }
+                    const opts = getOptionsForSubject(subjectId);
+                    const feedbackMarksSelect = document.getElementById('feedbackMarks');
+                    if (feedbackMarksSelect) {
+                        feedbackMarksSelect.innerHTML = '';
+                        opts.feedbackMarks.forEach(m => {
+                            const opt = document.createElement('option');
+                            opt.value = m;
+                            opt.textContent = m === 20 ? '20 marks (Essay)' : `${m} mark${m > 1 ? 's' : ''}`;
+                            feedbackMarksSelect.appendChild(opt);
+                        });
                     }
                 }
             });
@@ -874,7 +928,8 @@
                 const topics = document.getElementById('examTopics').value;
                 const duration = document.getElementById('examDuration').value;
                 console.log('[DEBUG] Exam fields:', { subjectName, topics, duration });
-                message = `Generate a complete ${duration} HSC EXAM PAPER.
+                message = `[FULL EXAM MODE]
+Generate a complete ${duration} HSC EXAM PAPER.
 Subject: ${subjectName}
 Topics: ${topics || 'All Year 12 content'}
 Duration: ${duration}
@@ -890,7 +945,8 @@ Create a complete exam with multiple sections, varied question types matching HS
                 const answer = document.getElementById('feedbackAnswer').value.trim();
                 console.log('[DEBUG] Feedback fields:', { subjectName, marks, question, answer });
                 if (!question || !answer) { alert('Please enter both the question and your answer.'); return; }
-                message = `Provide detailed marking feedback for this response.
+                message = `[FEEDBACK MODE]
+Provide detailed marking feedback for this response.
 Subject: ${subjectName}
 Mark Value: ${marks} marks
 
@@ -913,7 +969,8 @@ Assess the student's response using HSC marking criteria. Do NOT provide a model
                 const includeAnswers = document.getElementById('includeAnswers').checked;
                 console.log('[DEBUG] Standard fields:', { subjectName, topic, difficulty, questionType, numQuestions, includeAnswers });
                 if (!topic || topic === 'Select subject first...' || topic === 'Select a topic/module...') { alert('Please select a topic.'); return; }
-                message = `Generate practice questions.
+                message = `[STANDARD MODE]
+Generate practice questions.
 Subject: ${subjectName}
 Topic: ${topic}
 Difficulty: ${difficulty}

@@ -669,7 +669,7 @@
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
         <ul class="nav-links" id="navLinks">
             <li><a href="index.html">Home</a></li>
-            <li><a href="demo.html">Try Demo</a></li>
+            <!-- demo removed -->
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li id="navAdminLink" style="display: none;"><a href="admin.html" style="color: #f59e0b;">⚙️ Admin</a></li>
@@ -689,7 +689,6 @@
             <h1>Making Study <span class="highlight">Fun Again</span></h1>
             <p>Explore our AI-powered study assistance. Get a competitive advantage with smart learning tools designed to help you succeed.</p>
             <div class="hero-buttons" id="heroButtons">
-                <a href="demo.html" class="btn btn-primary">Try Free Demo</a>
                 <a href="login.html" class="btn btn-secondary" id="heroSignInBtn">Sign In to Access</a>
             </div>
             <!-- Show these when logged in -->
@@ -730,35 +729,35 @@
                 <h3>Syllabus Decoder</h3>
                 <p>Break down complex syllabus points into clear, actionable study notes. Understand exactly what you need to learn.</p>
                 <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <a href="login.html" class="tool-card-cta tool-cta-locked">Sign In</a>
+                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
             </a>
             <a href="#" onclick="openTool('worksheet'); return false;" class="tool-card flagship">
                 <div class="tool-card-icon">📄</div>
                 <h3>Worksheet Decoder</h3>
                 <p>Upload a hard-to-read worksheet image and get a clean, readable version with optional hints and practice questions.</p>
                 <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <a href="login.html" class="tool-card-cta tool-cta-locked">Sign In</a>
+                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
             </a>
             <a href="#" onclick="openTool('practice'); return false;" class="tool-card">
                 <div class="tool-card-icon">✏️</div>
                 <h3>Practice Questions</h3>
                 <p>Generate exam-style questions, full papers, or get marking feedback on your answers. Three powerful modes in one.</p>
                 <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <a href="login.html" class="tool-card-cta tool-cta-locked">Sign In</a>
+                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
             </a>
             <a href="#" onclick="openTool('timetable'); return false;" class="tool-card">
                 <div class="tool-card-icon">📅</div>
                 <h3>Timetable Generator</h3>
                 <p>Create a personalised, sustainable study schedule that balances all your subjects and fits your life.</p>
                 <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <a href="login.html" class="tool-card-cta tool-cta-locked">Sign In</a>
+                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
             </a>
             <a href="subject-advisor.html" class="tool-card">
                 <div class="tool-card-icon">🎯</div>
                 <h3>Subject Advisor</h3>
                 <p>Get personalised subject recommendations for Years 11-12 based on your strengths, interests, and goals.</p>
                 <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <a href="login.html" class="tool-card-cta tool-cta-locked">Sign In</a>
+                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
             </a>
         </div>
     </section>
@@ -917,10 +916,7 @@
             document.getElementById('navAdminLink').style.display = 'none';
         }
         
-        // Hide demo links for subscribed users (free users can still see demo)
-        document.querySelectorAll('a[href="demo.html"]').forEach(link => {
-            link.style.display = user.subscribed ? 'none' : 'block';
-        });
+        // demo removed from UI
         
         // Check if user has any access (subscribed OR has acknowledged free tier)
         const hasAccess = user.subscribed || user.freeAcknowledged;
