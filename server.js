@@ -2230,7 +2230,7 @@ function getSyllabusContent(subjectId, isJunior = false) {
         try {
             if (fs.existsSync(filePath)) {
                 const fileContent = fs.readFileSync(filePath, 'utf8');
-                content += fileContent.substring(0, 50000) + '\n\n';
+                content += fileContent.substring(0, 120000) + '\n\n';
             }
         } catch (e) {
             console.error(`Error reading syllabus file ${file}:`, e.message);
@@ -2918,18 +2918,18 @@ app.use('/api/junior-chat/*', aiLimiter);
 const BOT_PROMPTS = {
     syllabus: `You are an automated syllabus decoder. You do NOT have conversations. You do NOT ask questions. You ONLY output decoded syllabus content.
 
-IMPORTANT: The complete syllabus document is attached at the end of this prompt. You have ALL the information you need.
+IMPORTANT: The COMPLETE official syllabus content is included below in this prompt between the SYLLABUS CONTENT markers. You have ALL the information you need — do NOT say the syllabus is missing or not provided.
 
 YOUR ONLY FUNCTION:
 1. Receive: Subject name + Topic name
-2. Output: Complete decoded content for that topic
+2. Search the syllabus content below for that topic
+3. Output: Complete decoded content for that topic
 
-ACCURACY RULES (CRITICAL):
-- ONLY use information from the attached syllabus document below. Do NOT make up or hallucinate content.
-- Every dot point, learning outcome, and topic you mention MUST appear in the attached syllabus.
-- If a concept is NOT in the attached syllabus, do NOT include it.
-- After generating your response, mentally cross-check each point against the syllabus text. Remove anything that cannot be directly traced back to the attached document.
-- If the syllabus content is missing or incomplete for a topic, say so explicitly rather than inventing content.
+RULES:
+- The syllabus content IS provided below. Search through it thoroughly for the requested topic.
+- Topic names in the syllabus may use slightly different wording, capitalisation, or formatting — look for close matches.
+- Use the syllabus content as your primary source. You may add helpful context and explanations to make the content useful for students.
+- Do NOT say "the syllabus does not contain" or "no content found" unless you have genuinely searched the entire provided text and the topic truly does not exist.
 
 NEVER OUTPUT ANY OF THESE (automatic failure):
 - "Please provide..."
@@ -2941,7 +2941,7 @@ NEVER OUTPUT ANY OF THESE (automatic failure):
 - Any request for the user to provide anything
 
 YOU MUST IMMEDIATELY OUTPUT:
-When you receive "Subject: X, Topic: Y", you search the attached syllabus for topic Y and output:
+When you receive "Subject: X, Topic: Y", search the syllabus content below for topic Y and output:
 
 ## 📚 [Topic Name]
 
@@ -2949,7 +2949,7 @@ When you receive "Subject: X, Topic: Y", you search the attached syllabus for to
 [2-3 sentence overview of this topic based on the syllabus]
 
 ### Syllabus Content
-[List ALL dot points and learning outcomes EXACTLY as they appear in the syllabus for this topic. Quote them faithfully.]
+[List ALL dot points and learning outcomes for this topic as they appear in the syllabus. Quote them faithfully.]
 
 ### Key Concepts Explained
 [Explain each major concept from the syllabus dot points above]
@@ -2962,9 +2962,9 @@ When you receive "Subject: X, Topic: Y", you search the attached syllabus for to
 
 ---
 
-If you cannot find the exact topic, output what you found that's closest and explain what content IS available.
+If you cannot find the exact topic name, look for the closest matching section and decode that instead.
 
-REMEMBER: You are a content OUTPUT system, not a conversation system. Never ask for input. Every piece of content you output must be verifiable against the attached syllabus.`,
+REMEMBER: You are a content OUTPUT system, not a conversation system. Never ask for input.`,
 
     practice: `You are Study Decoder – Practice Question Generator.
 
@@ -3711,7 +3711,7 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             botType: botType
         });
     }
-    const { messages, subject, detailLevel, dotPoint } = req.body;
+    const { messages, subject, detailLevel } = req.body;
     
     // Validate messages
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
@@ -3742,8 +3742,47 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         const syllabusContent = getSyllabusContent(subjectId);
         if (syllabusContent) {
             const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
-            // Add truncated syllabus as context (limit to ~30k chars to fit in context window)
-            const truncatedSyllabus = syllabusContent.substring(0, 30000);
+            
+            // Smart syllabus extraction: prioritize the requested topic section
+            // All models (GPT-5-mini, GPT-4o, GPT-4o-mini) support 128k context
+            const SYLLABUS_CHAR_LIMIT = 100000;
+            let truncatedSyllabus;
+            
+            // Try to extract the requested topic from the user message
+            const lastUserMsg = messages.length > 0 ? messages[messages.length - 1].content : '';
+            const topicMatch = lastUserMsg.match(/Topic:\s*(.+?)(?:\n|$)/i);
+            const requestedTopic = topicMatch ? topicMatch[1].trim() : null;
+            
+            if (requestedTopic && syllabusContent.length > SYLLABUS_CHAR_LIMIT) {
+                // Find the topic section in the syllabus and prioritize it
+                const topicLower = requestedTopic.toLowerCase();
+                const contentLower = syllabusContent.toLowerCase();
+                const topicIdx = contentLower.indexOf(topicLower);
+                
+                if (topicIdx > -1) {
+                    // Find the start of the topic section (go back to find a heading)
+                    const sectionStart = Math.max(0, topicIdx - 500);
+                    // Take a generous chunk after the topic heading (15k chars should cover any topic)
+                    const sectionEnd = Math.min(syllabusContent.length, topicIdx + 15000);
+                    const topicSection = syllabusContent.substring(sectionStart, sectionEnd);
+                    
+                    // Combine: general syllabus context + focused topic section
+                    const generalContext = syllabusContent.substring(0, Math.min(syllabusContent.length, SYLLABUS_CHAR_LIMIT - topicSection.length));
+                    
+                    // If topic section is already within the general context, just use the full content
+                    if (topicIdx < SYLLABUS_CHAR_LIMIT) {
+                        truncatedSyllabus = syllabusContent.substring(0, SYLLABUS_CHAR_LIMIT);
+                    } else {
+                        truncatedSyllabus = generalContext + '\n\n========== TOPIC SECTION: ' + requestedTopic.toUpperCase() + ' ==========\n\n' + topicSection;
+                    }
+                    console.log(`[Syllabus] Smart extraction: found "${requestedTopic}" at char ${topicIdx}, total ${truncatedSyllabus.length} chars`);
+                } else {
+                    truncatedSyllabus = syllabusContent.substring(0, SYLLABUS_CHAR_LIMIT);
+                    console.log(`[Syllabus] Topic "${requestedTopic}" not found by index, using first ${SYLLABUS_CHAR_LIMIT} chars`);
+                }
+            } else {
+                truncatedSyllabus = syllabusContent.substring(0, SYLLABUS_CHAR_LIMIT);
+            }
             console.log(`[Syllabus] Loaded ${truncatedSyllabus.length} chars for ${subjectName}`);
             
             // For syllabus bot, add strong instruction with the content
@@ -3756,11 +3795,6 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
                     systemPrompt += `\n\nDETAIL LEVEL: BRIEF - Keep your response concise. Provide a short overview, list the key dot points, and give only the most important exam tips. Aim for a quick summary the student can scan in under 2 minutes.`;
                 } else if (level === 3) {
                     systemPrompt += `\n\nDETAIL LEVEL: DETAILED - Provide an extremely thorough breakdown. Explain every dot point in depth with examples, include detailed HSC exam analysis with past question references, provide extended study notes, and cover edge cases and common misunderstandings. Be as comprehensive as possible.`;
-                }
-                
-                // Inject optional dot point focus
-                if (dotPoint && dotPoint.trim()) {
-                    systemPrompt += `\n\nSPECIFIC FOCUS: The student wants to focus specifically on this dot point or section: "${dotPoint.trim()}". While still providing context from the broader topic, give EXTRA detail and emphasis on this specific area.`;
                 }
             } else {
                 systemPrompt += `\n\n=== OFFICIAL ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) ===\nThe following is the official syllabus content. Use this as your ONLY source of truth for content. All questions MUST be based on this syllabus.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
