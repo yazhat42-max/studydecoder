@@ -713,6 +713,7 @@ function upsertUser(userId, data) {
         subscribedAt: data.subscribedAt || existing.subscribedAt,
         expiresAt: data.expiresAt !== undefined ? data.expiresAt : existing.expiresAt,
         emailVerified: data.emailVerified !== undefined ? data.emailVerified : (existing.emailVerified || false),
+        preferences: data.preferences || existing.preferences || {},
         createdAt: existing.createdAt || new Date().toISOString(),
         updatedAt: new Date().toISOString()
     };
@@ -802,6 +803,32 @@ function generateSecureToken() {
     return crypto.randomBytes(32).toString('hex');
 }
 
+/**
+ * Check if user needs onboarding (preferences setup)
+ * Returns true for:
+ * - Users explicitly marked as not onboarded (onboarded === false)
+ * - Pre-preferences users who never set a level (signed up before the update)
+ */
+function needsOnboarding(user) {
+    if (!user) return false;
+    if (user.preferences?.onboarded === false) return true;
+    // Pre-preferences user: has no level set and wasn't explicitly onboarded
+    if (!user.preferences?.level && user.preferences?.onboarded === undefined) return true;
+    return false;
+}
+
+/**
+ * For existing users missing preferences, mark them as needing onboarding
+ * so they get prompted on next page load.
+ */
+function ensureOnboardingFlag(user) {
+    if (needsOnboarding(user) && user.preferences?.onboarded !== false) {
+        if (!user.preferences) user.preferences = {};
+        user.preferences.onboarded = false;
+        scheduleSave();
+    }
+}
+
 // ==================== ENTERPRISE AUTH ROUTES ====================
 
 /**
@@ -831,6 +858,15 @@ app.post('/api/auth/google', async (req, res) => {
             emailVerified: true // Google emails are verified
         });
         
+        // If brand new user, mark as not onboarded
+        if (!existingUser) {
+            user.preferences = { ...(user.preferences || {}), onboarded: false };
+            scheduleSave();
+        } else {
+            // Existing user: check if they signed up before preferences update
+            ensureOnboardingFlag(user);
+        }
+        
         // Auto-sync subscription status from Stripe (handles server restarts)
         if (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date()) {
             await autoSyncStripeSubscription(userId, verified.email);
@@ -850,7 +886,8 @@ app.post('/api/auth/google', async (req, res) => {
             role: role,
             subscribed: hasFullAccess(updatedUser),
             plan: updatedUser.plan,
-            expiresAt: updatedUser.expiresAt
+            expiresAt: updatedUser.expiresAt,
+            onboarded: !needsOnboarding(updatedUser)
         });
         
     } catch (error) {
@@ -897,6 +934,15 @@ app.post('/api/auth/google-oauth', async (req, res) => {
             emailVerified: userInfo.email_verified !== false
         });
         
+        // If brand new user, mark as not onboarded
+        if (!existingUser) {
+            user.preferences = { ...(user.preferences || {}), onboarded: false };
+            scheduleSave();
+        } else {
+            // Existing user: check if they signed up before preferences update
+            ensureOnboardingFlag(user);
+        }
+        
         // Auto-sync subscription status from Stripe (handles server restarts)
         if (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date()) {
             await autoSyncStripeSubscription(userId, userInfo.email);
@@ -916,7 +962,8 @@ app.post('/api/auth/google-oauth', async (req, res) => {
             role: role,
             subscribed: hasFullAccess(updatedUser),
             plan: updatedUser.plan,
-            expiresAt: updatedUser.expiresAt
+            expiresAt: updatedUser.expiresAt,
+            onboarded: !needsOnboarding(updatedUser)
         });
         
     } catch (error) {
@@ -964,6 +1011,10 @@ app.post('/api/auth/register', async (req, res) => {
             emailVerified: false
         });
         
+        // Mark new registration as not onboarded
+        user.preferences = { ...(user.preferences || {}), onboarded: false };
+        scheduleSave();
+        
         req.session.userId = userId;
         const role = getUserRole(user.email);
         
@@ -975,7 +1026,8 @@ app.post('/api/auth/register', async (req, res) => {
             role: role,
             subscribed: hasFullAccess(user),
             plan: user.plan,
-            expiresAt: user.expiresAt
+            expiresAt: user.expiresAt,
+            onboarded: false
         });
         
     } catch (error) {
@@ -1019,6 +1071,9 @@ app.post('/api/auth/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
         
+        // Check if user signed up before preferences update
+        ensureOnboardingFlag(user);
+        
         // Auto-sync subscription status from Stripe (handles server restarts)
         if (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date()) {
             await autoSyncStripeSubscription(user.userId, user.email);
@@ -1042,7 +1097,8 @@ app.post('/api/auth/login', async (req, res) => {
             role: role,
             subscribed: hasFullAccess(updatedUser),
             plan: updatedUser.plan,
-            expiresAt: updatedUser.expiresAt
+            expiresAt: updatedUser.expiresAt,
+            onboarded: !needsOnboarding(updatedUser)
         });
         
     } catch (error) {
@@ -1372,13 +1428,17 @@ app.post('/api/login', async (req, res) => {
         }
         
         user = checkSubscriptionStatus(user);
+        
+        // Check if user signed up before preferences update
+        ensureOnboardingFlag(user);
 
         res.json({
             email: user.email,
             name: user.name,
             subscribed: hasFullAccess(user),
             plan: user.plan,
-            expiresAt: user.expiresAt
+            expiresAt: user.expiresAt,
+            onboarded: !needsOnboarding(user)
         });
         
     } catch (error) {
@@ -1414,6 +1474,9 @@ app.get('/api/subscription', requireAuth, (req, res) => {
     const role = getUserRole(user.email);
     const hasFull = hasFullAccess(user);
     
+    // Ensure pre-preferences users get flagged for onboarding
+    ensureOnboardingFlag(user);
+    
     res.json({
         email: user.email,
         name: user.name,
@@ -1422,6 +1485,7 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         freeAcknowledged: user.freeAcknowledged || false,
         plan: role === 'owner' ? 'owner' : (role === 'og_tester' ? 'og_lifetime' : user.plan),
         expiresAt: (role === 'owner' || role === 'og_tester') ? null : user.expiresAt,
+        preferences: user.preferences || {},
         freeTier: !hasFull ? {
             enabled: FREE_TIER_CONFIG.enabled,
             usesPerBotPerDay: FREE_TIER_CONFIG.usesPerBotPerDay,
@@ -1440,6 +1504,52 @@ app.post('/api/acknowledge-free', requireAuth, (req, res) => {
     saveDB(USERS_FILE, db.users);
     console.log(`[Free] User ${user.email} acknowledged free tier`);
     res.json({ success: true });
+});
+
+/**
+ * GET /api/user/preferences
+ * Get user preferences (saved subjects, detail level, etc.)
+ */
+app.get('/api/user/preferences', requireAuth, (req, res) => {
+    const user = req.user;
+    res.json({
+        subjects: user.preferences?.subjects || [],
+        detailLevel: user.preferences?.detailLevel || 2,
+        level: user.preferences?.level || null,
+        onboarded: !needsOnboarding(user),
+    });
+});
+
+/**
+ * PUT /api/user/preferences
+ * Update user preferences
+ */
+app.put('/api/user/preferences', requireAuth, express.json(), (req, res) => {
+    const user = req.user;
+    const { subjects, detailLevel, level, onboarded } = req.body;
+
+    if (!user.preferences) user.preferences = {};
+
+    if (subjects !== undefined) {
+        if (!Array.isArray(subjects)) return res.status(400).json({ error: 'subjects must be an array' });
+        user.preferences.subjects = subjects.map(String).slice(0, 20);
+    }
+    if (detailLevel !== undefined) {
+        const dl = parseInt(detailLevel);
+        if (isNaN(dl) || dl < 1 || dl > 3) return res.status(400).json({ error: 'detailLevel must be 1, 2, or 3' });
+        user.preferences.detailLevel = dl;
+    }
+    if (level !== undefined) {
+        if (!['senior', 'junior'].includes(level)) return res.status(400).json({ error: 'level must be senior or junior' });
+        user.preferences.level = level;
+    }
+    if (onboarded !== undefined) {
+        user.preferences.onboarded = !!onboarded;
+    }
+
+    scheduleSave();
+    console.log(`[Prefs] Updated preferences for ${user.email}:`, user.preferences);
+    res.json({ success: true, preferences: user.preferences });
 });
 
 /**
@@ -3601,7 +3711,7 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             botType: botType
         });
     }
-    const { messages, subject } = req.body;
+    const { messages, subject, detailLevel, dotPoint } = req.body;
     
     // Validate messages
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
@@ -3639,6 +3749,19 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             // For syllabus bot, add strong instruction with the content
             if (botType === 'syllabus') {
                 systemPrompt += `\n\n========== SYLLABUS CONTENT FOR ${subjectName.toUpperCase()} ==========\nThis is the COMPLETE official syllabus. Search this content for the requested topic and decode it.\n\n${truncatedSyllabus}\n\n========== END SYLLABUS ==========\n\nNow decode the requested topic using the syllabus above. OUTPUT ONLY - no questions.`;
+                
+                // Inject detail level preference
+                const level = parseInt(detailLevel) || 2;
+                if (level === 1) {
+                    systemPrompt += `\n\nDETAIL LEVEL: BRIEF - Keep your response concise. Provide a short overview, list the key dot points, and give only the most important exam tips. Aim for a quick summary the student can scan in under 2 minutes.`;
+                } else if (level === 3) {
+                    systemPrompt += `\n\nDETAIL LEVEL: DETAILED - Provide an extremely thorough breakdown. Explain every dot point in depth with examples, include detailed HSC exam analysis with past question references, provide extended study notes, and cover edge cases and common misunderstandings. Be as comprehensive as possible.`;
+                }
+                
+                // Inject optional dot point focus
+                if (dotPoint && dotPoint.trim()) {
+                    systemPrompt += `\n\nSPECIFIC FOCUS: The student wants to focus specifically on this dot point or section: "${dotPoint.trim()}". While still providing context from the broader topic, give EXTRA detail and emphasis on this specific area.`;
+                }
             } else {
                 systemPrompt += `\n\n=== OFFICIAL ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) ===\nThe following is the official syllabus content. Use this as your ONLY source of truth for content. All questions MUST be based on this syllabus.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
             }

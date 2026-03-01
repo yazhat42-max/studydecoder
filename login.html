@@ -668,7 +668,7 @@
                 });
                 if (res.ok) {
                     const data = await res.json();
-                    // Redirect to dashboard or senior-bot
+                    // Redirect to homepage (or admin for owner)
                     redirectAfterLogin(data);
                     return;
                 }
@@ -872,11 +872,11 @@
         }
         
         function redirectAfterLogin(data) {
-            // Go to admin for owner, senior-bot for everyone else
+            // Go to admin for owner, homepage for everyone else (onboarding triggers there if needed)
             if (data.role === 'owner') {
                 window.location.href = '/admin.html';
             } else {
-                window.location.href = '/senior-bot.html';
+                window.location.href = '/index.html';
             }
         }
     </script>

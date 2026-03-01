@@ -435,6 +435,186 @@
             color: #666;
         }
 
+        /* ========== ONBOARDING MODAL ========== */
+        .onboarding-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(4px);
+        }
+
+        .onboarding-modal {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            max-width: 580px;
+            width: 92%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: onboardSlideIn 0.4s ease;
+        }
+
+        @keyframes onboardSlideIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .onboarding-modal h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.3rem;
+            color: var(--secondary);
+            text-align: center;
+        }
+
+        .onboarding-modal .onboard-subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 1.8rem;
+            font-size: 0.95rem;
+        }
+
+        .onboard-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .onboard-section label.section-label {
+            display: block;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+            color: var(--secondary);
+        }
+
+        .onboard-level-btns {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .onboard-level-btn {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .onboard-level-btn:hover {
+            border-color: var(--primary);
+            background: #f8f7ff;
+        }
+
+        .onboard-level-btn.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #f0eeff, #e8e5ff);
+            box-shadow: 0 2px 12px rgba(108, 99, 255, 0.15);
+        }
+
+        .onboard-level-btn h4 {
+            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 2px;
+        }
+
+        .onboard-level-btn span {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .onboard-subjects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.4rem 1rem;
+            max-height: 260px;
+            overflow-y: auto;
+            padding: 0.5rem;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+
+        .onboard-subject-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-size: 0.85rem;
+        }
+
+        .onboard-subject-item:hover {
+            background: #ede9ff;
+        }
+
+        .onboard-subject-item input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .onboard-subject-item label {
+            cursor: pointer;
+            color: #333;
+            font-size: 0.85rem;
+            line-height: 1.2;
+        }
+
+        .onboard-submit-btn {
+            display: block;
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--primary);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 0.5rem;
+        }
+
+        .onboard-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.35);
+        }
+
+        .onboard-submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .onboard-skip {
+            display: block;
+            text-align: center;
+            margin-top: 0.8rem;
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .onboard-skip:hover {
+            color: #666;
+        }
+
+        @media (max-width: 500px) {
+            .onboard-subjects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .courses-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -769,7 +949,7 @@
         </div>
     </section>
 
-    <!-- Level Selector Modal -->
+    <!-- Level Selector Modal (fallback) -->
     <div class="level-modal-overlay" id="levelModal" style="display:none;">
         <div class="level-modal">
             <h2 id="levelModalTitle">Choose Your Level</h2>
@@ -785,6 +965,38 @@
                 </a>
             </div>
             <button onclick="closeLevelModal()" style="margin-top:1rem; background:none; border:none; color:#888; cursor:pointer; font-size:0.9rem;">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Onboarding Modal (first-time users) -->
+    <div class="onboarding-overlay" id="onboardingModal" style="display:none;">
+        <div class="onboarding-modal">
+            <h2>👋 Welcome to Study Decoder!</h2>
+            <p class="onboard-subtitle">Let's set up your profile so we can personalise your experience.</p>
+
+            <div class="onboard-section">
+                <label class="section-label">1. What level are you?</label>
+                <div class="onboard-level-btns">
+                    <div class="onboard-level-btn" id="onboardSeniorBtn" onclick="selectOnboardLevel('senior')">
+                        <h4>🎓 Senior</h4>
+                        <span>Years 11–12 (HSC)</span>
+                    </div>
+                    <div class="onboard-level-btn" id="onboardJuniorBtn" onclick="selectOnboardLevel('junior')">
+                        <h4>📚 Junior</h4>
+                        <span>Years 7–10</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="onboard-section">
+                <label class="section-label">2. Select your subjects</label>
+                <div class="onboard-subjects-grid" id="onboardSubjectsGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <button class="onboard-submit-btn" id="onboardSubmitBtn" onclick="submitOnboarding()" disabled>Get Started 🚀</button>
+            <button class="onboard-skip" onclick="skipOnboarding()">Skip for now</button>
         </div>
     </div>
 
@@ -884,6 +1096,7 @@
                 if (data.email) {
                     currentUser = data;
                     showLoggedInUI(data);
+                    maybeShowOnboarding(data);
                     return;
                 }
             }
@@ -1093,7 +1306,7 @@
             btn.disabled = false;
         }
     }
-    // ========== LEVEL SELECTOR MODAL ==========
+// ========== LEVEL SELECTOR MODAL (fallback) ==========
     let pendingTool = null;
     const toolRoutes = {
         syllabus: { senior: 'syllabus.html', junior: 'syllabus-jr.html' },
@@ -1108,6 +1321,16 @@
             window.location.href = 'subject-advisor.html';
             return;
         }
+        // If user has a saved level, route directly without showing the modal
+        const savedLevel = currentUser?.preferences?.level;
+        if (savedLevel) {
+            const route = toolRoutes[tool];
+            if (route) {
+                window.location.href = route[savedLevel] || route.senior;
+            }
+            return;
+        }
+        // Fallback: show level selector modal if no saved level
         pendingTool = tool;
         const titles = {
             syllabus: 'Syllabus Decoder',
@@ -1138,6 +1361,164 @@
     document.getElementById('levelModal').addEventListener('click', function(e) {
         if (e.target === this) closeLevelModal();
     });
+
+    // ========== ONBOARDING SYSTEM ==========
+    const seniorSubjects = [
+        { id: 'agriculture', name: 'Agriculture' },
+        { id: 'ancient-history', name: 'Ancient History' },
+        { id: 'biology', name: 'Biology' },
+        { id: 'business-studies', name: 'Business Studies' },
+        { id: 'chemistry', name: 'Chemistry' },
+        { id: 'construction', name: 'Construction' },
+        { id: 'dance', name: 'Dance' },
+        { id: 'design-technology', name: 'Design and Technology' },
+        { id: 'drama', name: 'Drama' },
+        { id: 'earth-environmental-science', name: 'Earth and Environmental Science' },
+        { id: 'economics', name: 'Economics' },
+        { id: 'engineering-studies', name: 'Engineering Studies' },
+        { id: 'english-advanced', name: 'English Advanced' },
+        { id: 'english-eald', name: 'English EAL/D' },
+        { id: 'english-extension', name: 'English Extension' },
+        { id: 'english-standard', name: 'English Standard' },
+        { id: 'english-studies', name: 'English Studies' },
+        { id: 'enterprise-computing', name: 'Enterprise Computing' },
+        { id: 'food-technology', name: 'Food Technology' },
+        { id: 'geography', name: 'Geography' },
+        { id: 'health-movement-science', name: 'Health and Movement Science' },
+        { id: 'history-extension', name: 'History Extension' },
+        { id: 'hospitality', name: 'Hospitality' },
+        { id: 'industrial-tech-automotive', name: 'Industrial Tech - Automotive' },
+        { id: 'industrial-tech-electronics', name: 'Industrial Tech - Electronics' },
+        { id: 'industrial-tech-graphics', name: 'Industrial Tech - Graphics' },
+        { id: 'industrial-tech-metals', name: 'Industrial Tech - Metals' },
+        { id: 'industrial-tech-multimedia', name: 'Industrial Tech - Multimedia' },
+        { id: 'industrial-tech-timber', name: 'Industrial Tech - Timber' },
+        { id: 'information-digital-technology', name: 'Information and Digital Technology' },
+        { id: 'investigating-science', name: 'Investigating Science' },
+        { id: 'legal-studies', name: 'Legal Studies' },
+        { id: 'mathematics-advanced', name: 'Mathematics Advanced' },
+        { id: 'mathematics-extension-1', name: 'Mathematics Extension 1' },
+        { id: 'mathematics-extension-2', name: 'Mathematics Extension 2' },
+        { id: 'mathematics-standard', name: 'Mathematics Standard' },
+        { id: 'modern-history', name: 'Modern History' },
+        { id: 'music-1', name: 'Music 1' },
+        { id: 'music-2', name: 'Music 2' },
+        { id: 'physics', name: 'Physics' },
+        { id: 'science-extension', name: 'Science Extension' },
+        { id: 'society-culture', name: 'Society and Culture' },
+        { id: 'software-engineering', name: 'Software Engineering' },
+        { id: 'studies-of-religion', name: 'Studies of Religion' },
+        { id: 'visual-arts', name: 'Visual Arts' }
+    ];
+
+    const juniorSubjects = [
+        { id: 'english-7-10', name: 'English (Years 7-10)' },
+        { id: 'mathematics-7-10', name: 'Mathematics (Years 7-10)' },
+        { id: 'science-7-10', name: 'Science (Years 7-10)' }
+    ];
+
+    let onboardSelectedLevel = null;
+
+    function selectOnboardLevel(level) {
+        onboardSelectedLevel = level;
+        document.getElementById('onboardSeniorBtn').classList.toggle('selected', level === 'senior');
+        document.getElementById('onboardJuniorBtn').classList.toggle('selected', level === 'junior');
+        populateOnboardSubjects(level);
+        updateOnboardSubmitBtn();
+    }
+
+    function populateOnboardSubjects(level) {
+        const grid = document.getElementById('onboardSubjectsGrid');
+        const subjects = level === 'senior' ? seniorSubjects : juniorSubjects;
+        grid.innerHTML = '';
+        subjects.forEach(s => {
+            const item = document.createElement('div');
+            item.className = 'onboard-subject-item';
+            item.innerHTML = `<input type="checkbox" id="onboard-${s.id}" value="${s.id}" onchange="updateOnboardSubmitBtn()"><label for="onboard-${s.id}">${s.name}</label>`;
+            item.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'INPUT') {
+                    const cb = item.querySelector('input');
+                    cb.checked = !cb.checked;
+                    updateOnboardSubmitBtn();
+                }
+            });
+            grid.appendChild(item);
+        });
+    }
+
+    function updateOnboardSubmitBtn() {
+        const btn = document.getElementById('onboardSubmitBtn');
+        const hasLevel = !!onboardSelectedLevel;
+        btn.disabled = !hasLevel;
+        if (hasLevel) {
+            const checkedCount = document.querySelectorAll('#onboardSubjectsGrid input:checked').length;
+            btn.textContent = checkedCount > 0 ? `Get Started with ${checkedCount} subject${checkedCount > 1 ? 's' : ''} 🚀` : 'Get Started 🚀';
+        }
+    }
+
+    async function submitOnboarding() {
+        const btn = document.getElementById('onboardSubmitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Saving...';
+
+        const selectedSubjects = Array.from(document.querySelectorAll('#onboardSubjectsGrid input:checked')).map(cb => cb.value);
+
+        try {
+            await fetch(API_BASE + '/api/user/preferences', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({
+                    level: onboardSelectedLevel,
+                    subjects: selectedSubjects,
+                    onboarded: true
+                })
+            });
+
+            // Update local user data
+            if (currentUser) {
+                if (!currentUser.preferences) currentUser.preferences = {};
+                currentUser.preferences.level = onboardSelectedLevel;
+                currentUser.preferences.subjects = selectedSubjects;
+                currentUser.preferences.onboarded = true;
+            }
+
+            document.getElementById('onboardingModal').style.display = 'none';
+        } catch (e) {
+            console.error('Onboarding save error:', e);
+            btn.disabled = false;
+            btn.textContent = 'Get Started 🚀';
+            alert('Something went wrong. Please try again.');
+        }
+    }
+
+    async function skipOnboarding() {
+        try {
+            await fetch(API_BASE + '/api/user/preferences', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ onboarded: true })
+            });
+            if (currentUser) {
+                if (!currentUser.preferences) currentUser.preferences = {};
+                currentUser.preferences.onboarded = true;
+            }
+        } catch (e) { /* silent */ }
+        document.getElementById('onboardingModal').style.display = 'none';
+    }
+
+    function maybeShowOnboarding(data) {
+        // Show for users who haven't been onboarded:
+        // - Explicitly marked as not onboarded (onboarded === false)
+        // - Pre-preferences users who have no level set (signed up before the update)
+        const prefs = data.preferences || {};
+        if (prefs.onboarded === false || (!prefs.level && prefs.onboarded === undefined)) {
+            document.getElementById('onboardingModal').style.display = 'flex';
+            // Pre-populate senior by default
+            selectOnboardLevel('senior');
+        }
+    }
 
     // Handle Stripe redirect after payment
     (function handleStripeReturn() {

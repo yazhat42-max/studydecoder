@@ -439,7 +439,7 @@
         ];
         
         // Populate subjects dropdowns
-        function loadSubjects() {
+        function loadSubjects(savedSubjects) {
             const byCategory = {};
             subjects.forEach(s => {
                 if (!byCategory[s.category]) byCategory[s.category] = [];
@@ -448,6 +448,23 @@
             
             [subjectSelect, examSubjectSelect, feedbackSubjectSelect].forEach(sel => {
                 sel.innerHTML = '<option value="">Select your subject...</option>';
+                
+                // Add "Your Subjects" group at the top
+                if (savedSubjects && savedSubjects.length > 0) {
+                    const yourGroup = document.createElement('optgroup');
+                    yourGroup.label = '⭐ Your Subjects';
+                    savedSubjects.forEach(id => {
+                        const s = subjects.find(x => x.id === id);
+                        if (s) {
+                            const opt = document.createElement('option');
+                            opt.value = s.id;
+                            opt.textContent = s.name;
+                            yourGroup.appendChild(opt);
+                        }
+                    });
+                    if (yourGroup.children.length > 0) sel.appendChild(yourGroup);
+                }
+                
                 Object.keys(byCategory).sort().forEach(cat => {
                     const group = document.createElement('optgroup');
                     group.label = cat;
@@ -461,7 +478,7 @@
                 });
             });
         }
-        loadSubjects();
+        // loadSubjects is called in checkAuth() after preferences load
         
         // Topics/Modules for each subject
         const subjectTopics = {
@@ -755,6 +772,9 @@
                 return;
             }
             
+            // Save subject to preferences
+            saveSubjectPreference(subjectId);
+            
             // Update question types and difficulties for selected subject
             updateOptionsForSubject(subjectId);
             
@@ -777,6 +797,7 @@
             feedbackSubjectSelect.addEventListener('change', () => {
                 const subjectId = feedbackSubjectSelect.value;
                 if (subjectId) {
+                    saveSubjectPreference(subjectId);
                     const opts = getOptionsForSubject(subjectId);
                     const feedbackMarksSelect = document.getElementById('feedbackMarks');
                     if (feedbackMarksSelect) {
@@ -789,6 +810,13 @@
                         });
                     }
                 }
+            });
+        }
+        
+        // Save exam subject on change
+        if (examSubjectSelect) {
+            examSubjectSelect.addEventListener('change', () => {
+                if (examSubjectSelect.value) saveSubjectPreference(examSubjectSelect.value);
             });
         }
         
@@ -985,6 +1013,24 @@ Start generating immediately.`;
         });
 
         // =====================
+        // SAVE SUBJECT TO PREFERENCES
+        // =====================
+        let userSavedSubjects = [];
+        async function saveSubjectPreference(subjectId) {
+            if (!subjectId || userSavedSubjects.includes(subjectId)) return;
+            userSavedSubjects.push(subjectId);
+            if (userSavedSubjects.length > 10) userSavedSubjects = userSavedSubjects.slice(-10);
+            try {
+                await fetch(`${API_BASE}/api/user/preferences`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ subjects: userSavedSubjects })
+                });
+            } catch (e) { /* silent */ }
+        }
+
+        // =====================
         // AUTHENTICATION CHECK
         // =====================
         async function checkAuth() {
@@ -1006,6 +1052,10 @@ Start generating immediately.`;
                     window.location.href = '/index.html';
                     return;
                 }
+                
+                // Load saved subject preferences
+                userSavedSubjects = data.preferences?.subjects || [];
+                loadSubjects(userSavedSubjects);
                 
                 document.getElementById('authOverlay').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');

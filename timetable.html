@@ -282,7 +282,7 @@
         ];
         
         // Populate subject dropdowns
-        function loadSubjects() {
+        function loadSubjects(savedSubjects) {
             const byCategory = {};
             allSubjects.forEach(s => {
                 if (!byCategory[s.category]) byCategory[s.category] = [];
@@ -291,6 +291,24 @@
             
             // Populate main subject multi-select
             subjectSelect.innerHTML = '';
+            
+            // Add "Your Subjects" group at the top if user has saved subjects
+            if (savedSubjects && savedSubjects.length > 0) {
+                const yourGroup = document.createElement('optgroup');
+                yourGroup.label = '⭐ Your Subjects';
+                savedSubjects.forEach(id => {
+                    const s = allSubjects.find(x => x.id === id);
+                    if (s) {
+                        const opt = document.createElement('option');
+                        opt.value = s.id;
+                        opt.textContent = s.name;
+                        opt.selected = true; // Auto-select saved subjects
+                        yourGroup.appendChild(opt);
+                    }
+                });
+                if (yourGroup.children.length > 0) subjectSelect.appendChild(yourGroup);
+            }
+            
             Object.keys(byCategory).sort().forEach(cat => {
                 const group = document.createElement('optgroup');
                 group.label = cat;
@@ -298,6 +316,7 @@
                     const opt = document.createElement('option');
                     opt.value = s.id;
                     opt.textContent = s.name;
+                    // Don't duplicate-select if already in "Your Subjects"
                     group.appendChild(opt);
                 });
                 subjectSelect.appendChild(group);
@@ -305,6 +324,23 @@
             
             // Populate weak subject dropdown
             weakSubjectSelect.innerHTML = '<option value="">Select your weakest subject...</option>';
+            
+            // Add "Your Subjects" to weak subject too
+            if (savedSubjects && savedSubjects.length > 0) {
+                const yourGroup = document.createElement('optgroup');
+                yourGroup.label = '⭐ Your Subjects';
+                savedSubjects.forEach(id => {
+                    const s = allSubjects.find(x => x.id === id);
+                    if (s) {
+                        const opt = document.createElement('option');
+                        opt.value = s.id;
+                        opt.textContent = s.name;
+                        yourGroup.appendChild(opt);
+                    }
+                });
+                if (yourGroup.children.length > 0) weakSubjectSelect.appendChild(yourGroup);
+            }
+            
             Object.keys(byCategory).sort().forEach(cat => {
                 const group = document.createElement('optgroup');
                 group.label = cat;
@@ -317,7 +353,7 @@
                 weakSubjectSelect.appendChild(group);
             });
         }
-        loadSubjects();
+        // loadSubjects is called in checkAuth() after preferences load
         
         function formatResponse(text) {
             let formatted = text
@@ -393,6 +429,7 @@
             }
         }
         
+        // Save selected subjects to preferences on form submit
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             
@@ -402,6 +439,10 @@
                 alert('Please select at least one subject');
                 return;
             }
+            
+            // Save subjects to preferences
+            const selectedIds = selectedOptions.map(opt => opt.value).filter(Boolean);
+            saveSubjectsToPreferences(selectedIds);
             
             const subjectNames = selectedOptions.map(opt => opt.text);
             const weakSubject = weakSubjectSelect.options[weakSubjectSelect.selectedIndex]?.text;
@@ -428,6 +469,20 @@ Please generate a detailed weekly study timetable in a clear table format with s
         document.getElementById('startDate').valueAsDate = new Date();
 
         // =====================
+        // SAVE SUBJECTS TO PREFERENCES
+        // =====================
+        async function saveSubjectsToPreferences(subjectIds) {
+            try {
+                await fetch(`${API_BASE}/api/user/preferences`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ subjects: subjectIds.slice(0, 10) })
+                });
+            } catch (e) { /* silent */ }
+        }
+
+        // =====================
         // AUTHENTICATION CHECK
         // =====================
         async function checkAuth() {
@@ -449,6 +504,10 @@ Please generate a detailed weekly study timetable in a clear table format with s
                     window.location.href = '/index.html';
                     return;
                 }
+                
+                // Load saved subject preferences
+                const savedSubjects = data.preferences?.subjects || [];
+                loadSubjects(savedSubjects);
                 
                 document.getElementById('authOverlay').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
