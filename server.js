@@ -460,10 +460,12 @@ if (!config.isDev) {
     app.set('trust proxy', 1);
 }
 
-// Body parsing - raw for Stripe webhooks, JSON for everything else
+// Body parsing - raw for Stripe webhooks, large limit for image uploads, JSON for everything else
 app.use((req, res, next) => {
     if (req.originalUrl === '/api/stripe-webhook') {
         express.raw({ type: 'application/json' })(req, res, next);
+    } else if (req.originalUrl === '/api/chat/worksheet' || req.originalUrl === '/api/chat/notes-transcriber') {
+        express.json({ limit: '25mb' })(req, res, next);
     } else {
         express.json({ limit: '10kb' })(req, res, next);
     }
@@ -2812,6 +2814,13 @@ YOUR ONLY FUNCTION:
 1. Receive: Subject name + Topic name
 2. Output: Complete decoded content for that topic
 
+ACCURACY RULES (CRITICAL):
+- ONLY use information from the attached syllabus document below. Do NOT make up or hallucinate content.
+- Every dot point, learning outcome, and topic you mention MUST appear in the attached syllabus.
+- If a concept is NOT in the attached syllabus, do NOT include it.
+- After generating your response, mentally cross-check each point against the syllabus text. Remove anything that cannot be directly traced back to the attached document.
+- If the syllabus content is missing or incomplete for a topic, say so explicitly rather than inventing content.
+
 NEVER OUTPUT ANY OF THESE (automatic failure):
 - "Please provide..."
 - "Could you share..."
@@ -2827,13 +2836,13 @@ When you receive "Subject: X, Topic: Y", you search the attached syllabus for to
 ## 📚 [Topic Name]
 
 ### Overview
-[2-3 sentence overview of this topic]
+[2-3 sentence overview of this topic based on the syllabus]
 
 ### Syllabus Content
-[List ALL dot points and learning outcomes from the syllabus for this topic]
+[List ALL dot points and learning outcomes EXACTLY as they appear in the syllabus for this topic. Quote them faithfully.]
 
 ### Key Concepts Explained
-[Explain each major concept students need to understand]
+[Explain each major concept from the syllabus dot points above]
 
 ### HSC Exam Focus
 [How this topic appears in exams, question types, mark allocations]
@@ -2845,7 +2854,7 @@ When you receive "Subject: X, Topic: Y", you search the attached syllabus for to
 
 If you cannot find the exact topic, output what you found that's closest and explain what content IS available.
 
-REMEMBER: You are a content OUTPUT system, not a conversation system. Never ask for input.`,
+REMEMBER: You are a content OUTPUT system, not a conversation system. Never ask for input. Every piece of content you output must be verifiable against the attached syllabus.`,
 
     practice: `You are Study Decoder – Practice Question Generator.
 
@@ -3400,8 +3409,164 @@ FORMATTING:
 ---
 
 Ask for: subjects, year level, available hours, upcoming tests.
-Keep timetables simple and realistic for teenagers.`
+Keep timetables simple and realistic for teenagers.`,
+
+    'notes-transcriber': `You are StudyDecoder – Notes Transcriber.
+
+PURPOSE: Help students who have handwritten notes by:
+1. Reading and interpreting the uploaded image of handwritten notes
+2. Transcribing the content into clean, well-organised, professionally formatted text
+3. The output should be ready to paste directly into Google Docs or any word processor
+
+WORKFLOW (STRICT ORDER):
+Step 1: When you receive an image, carefully read ALL handwritten text.
+Step 2: Output the transcribed content in clean, professional formatting.
+Step 3: Organise the content logically - add headings, bullet points, numbering where appropriate.
+Step 4: If parts are unclear, note them with [unclear] and your best guess.
+Step 5: After transcription, ask: "Would you like me to reorganise these notes differently, or is there anything I misread?"
+
+TRANSCRIPTION RULES:
+- Transcribe EVERYTHING visible in the image
+- Fix obvious spelling mistakes but note them: corrected word [originally: misspelled]
+- Maintain the original structure and meaning
+- Add logical headings and subheadings if the notes lack them
+- Convert messy lists into clean bullet points or numbered lists
+- Preserve any diagrams by describing them in [brackets]
+- If there are multiple sections/topics, clearly separate them
+- Keep the student's own words and phrasing as much as possible
+
+FORMATTING OUTPUT:
+## 📝 Transcribed Notes
+
+**Subject:** [Detected subject if identifiable]
+**Topic:** [Detected topic if identifiable]
+**Date:** [If visible in notes]
+
+---
+
+[Clean, well-organised transcription of all handwritten content]
+[Use headings, subheadings, bullet points, numbered lists as appropriate]
+[Tables where the original had tabular data]
+
+---
+
+Would you like me to reorganise these notes differently, or is there anything I misread?
+
+MATHEMATICS FORMATTING:
+Use proper Unicode symbols: x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, °
+NEVER use LaTeX syntax.
+
+If the user sends a text message instead of an image, respond:
+"Please upload an image of your handwritten notes and I'll transcribe them into clean, organised text for you."
+
+You are StudyDecoder – Notes Transcriber.`
 };
+
+// Worksheet Decoder endpoint (dedicated route for large image payloads)
+app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res) => {
+    if (!req.session?.userId) {
+        return res.status(401).json({ error: 'Authentication required' });
+    }
+    const user = getUser(req.session.userId);
+    if (!user) {
+        return res.status(401).json({ error: 'User not found' });
+    }
+    const hasFull = hasFullAccess(user);
+    const canUseFree = canUseFreeTier(req.session.userId, 'worksheet');
+    if (!hasFull && !canUseFree) {
+        return res.status(403).json({ 
+            error: 'Daily limit reached for this tool',
+            message: `You've used all ${FREE_TIER_CONFIG.usesPerBotPerDay} free uses for Worksheet Decoder today. Try another tool or subscribe for unlimited access!`,
+            freeTierExhausted: true, remaining: 0, botType: 'worksheet'
+        });
+    }
+    const { messages } = req.body;
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+        return res.status(400).json({ error: 'Messages are required' });
+    }
+    const OPENAI_API_KEY = config.openaiApiKey;
+    const systemPrompt = BOT_PROMPTS.worksheet;
+    const aiSettings = getAISettings(user);
+    const worksheetMaxTokens = Math.max(aiSettings.maxTokens, 8000);
+    try {
+        const tokenParam = aiSettings.model.startsWith('gpt-5') ? 'max_completion_tokens' : 'max_tokens';
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
+            body: JSON.stringify({
+                model: aiSettings.model,
+                messages: [{ role: 'system', content: systemPrompt }, ...messages.map(m => ({ role: m.role, content: m.content }))],
+                [tokenParam]: worksheetMaxTokens, temperature: 0.3
+            })
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('OpenAI API error (worksheet):', error);
+            return res.status(500).json({ error: 'AI service unavailable' });
+        }
+        const data = await response.json();
+        const reply = data.choices?.[0]?.message?.content || 'No response generated';
+        if (!hasFull) incrementFreeTierUsage(req.session.userId, 'worksheet');
+        const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'worksheet');
+        res.json({ reply, freeTierRemaining: remaining });
+    } catch (error) {
+        console.error('Worksheet API error:', error);
+        res.status(500).json({ error: 'Failed to process worksheet' });
+    }
+});
+
+// Notes Transcriber endpoint (dedicated route for large image payloads)
+app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (req, res) => {
+    if (!req.session?.userId) {
+        return res.status(401).json({ error: 'Authentication required' });
+    }
+    const user = getUser(req.session.userId);
+    if (!user) {
+        return res.status(401).json({ error: 'User not found' });
+    }
+    const hasFull = hasFullAccess(user);
+    const canUseFree = canUseFreeTier(req.session.userId, 'notes-transcriber');
+    if (!hasFull && !canUseFree) {
+        return res.status(403).json({ 
+            error: 'Daily limit reached for this tool',
+            message: `You've used all ${FREE_TIER_CONFIG.usesPerBotPerDay} free uses for Notes Transcriber today. Try another tool or subscribe for unlimited access!`,
+            freeTierExhausted: true, remaining: 0, botType: 'notes-transcriber'
+        });
+    }
+    const { messages } = req.body;
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+        return res.status(400).json({ error: 'Messages are required' });
+    }
+    const OPENAI_API_KEY = config.openaiApiKey;
+    const systemPrompt = BOT_PROMPTS['notes-transcriber'];
+    const aiSettings = getAISettings(user);
+    const transcribeMaxTokens = Math.max(aiSettings.maxTokens, 8000);
+    try {
+        const tokenParam = aiSettings.model.startsWith('gpt-5') ? 'max_completion_tokens' : 'max_tokens';
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
+            body: JSON.stringify({
+                model: aiSettings.model,
+                messages: [{ role: 'system', content: systemPrompt }, ...messages.map(m => ({ role: m.role, content: m.content }))],
+                [tokenParam]: transcribeMaxTokens, temperature: 0.3
+            })
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('OpenAI API error (notes-transcriber):', error);
+            return res.status(500).json({ error: 'AI service unavailable' });
+        }
+        const data = await response.json();
+        const reply = data.choices?.[0]?.message?.content || 'No response generated';
+        if (!hasFull) incrementFreeTierUsage(req.session.userId, 'notes-transcriber');
+        const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'notes-transcriber');
+        res.json({ reply, freeTierRemaining: remaining });
+    } catch (error) {
+        console.error('Notes Transcriber API error:', error);
+        res.status(500).json({ error: 'Failed to transcribe notes' });
+    }
+});
 
 // OpenAI Chat endpoint (secured - requires authentication, allows free tier with limits)
 app.post('/api/chat/:botType', express.json(), async (req, res) => {
@@ -3469,7 +3634,16 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
             // Add truncated syllabus as context (limit to ~30k chars to fit in context window)
             const truncatedSyllabus = syllabusContent.substring(0, 30000);
-            systemPrompt += `\n\n=== OFFICIAL ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) ===\nThe following is the official syllabus content. Use this as your ONLY source of truth for content. All questions MUST be based on this syllabus.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
+            console.log(`[Syllabus] Loaded ${truncatedSyllabus.length} chars for ${subjectName}`);
+            
+            // For syllabus bot, add strong instruction with the content
+            if (botType === 'syllabus') {
+                systemPrompt += `\n\n========== SYLLABUS CONTENT FOR ${subjectName.toUpperCase()} ==========\nThis is the COMPLETE official syllabus. Search this content for the requested topic and decode it.\n\n${truncatedSyllabus}\n\n========== END SYLLABUS ==========\n\nNow decode the requested topic using the syllabus above. OUTPUT ONLY - no questions.`;
+            } else {
+                systemPrompt += `\n\n=== OFFICIAL ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) ===\nThe following is the official syllabus content. Use this as your ONLY source of truth for content. All questions MUST be based on this syllabus.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
+            }
+        } else {
+            console.log(`[Syllabus] WARNING: No syllabus content found for ${subjectId}`);
         }
     }
     

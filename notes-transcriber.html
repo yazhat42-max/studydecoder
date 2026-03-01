@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Transcriber | Study Decoder</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            height: 100%; width: 100%;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0f1419; color: #e7e9ea;
+        }
+        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100vw; }
+        .header {
+            background: #16202a; border-bottom: 1px solid #2f3336;
+            padding: 12px 24px; display: flex; align-items: center;
+            justify-content: space-between; flex-shrink: 0;
+        }
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        .back-btn {
+            color: #4f8cff; text-decoration: none; font-size: 14px; font-weight: 500;
+            padding: 8px 16px; border-radius: 8px; background: rgba(79, 140, 255, 0.1);
+            transition: all 0.2s;
+        }
+        .back-btn:hover { background: rgba(79, 140, 255, 0.2); }
+        .header-title { font-size: 20px; font-weight: 700; color: #e7e9ea; }
+        .header-subtitle { font-size: 12px; color: #71767b; margin-top: 2px; }
+        .flagship-badge {
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            color: #fff; font-size: 10px; font-weight: 700;
+            padding: 3px 10px; border-radius: 20px; margin-left: 12px;
+            letter-spacing: 0.5px;
+        }
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .output-panel { flex: 1; overflow-y: auto; padding: 24px; background: #0f1419; }
+        .output-content { max-width: 900px; margin: 0 auto; }
+
+        .welcome-message { text-align: center; padding: 50px 20px; color: #71767b; }
+        .welcome-message h2 { font-size: 28px; color: #e7e9ea; margin-bottom: 12px; font-weight: 700; }
+        .welcome-message p { font-size: 16px; line-height: 1.6; max-width: 550px; margin: 0 auto 24px; }
+        .welcome-steps {
+            display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 20px;
+        }
+        .welcome-step {
+            background: #16202a; border: 1px solid #2f3336; border-radius: 12px;
+            padding: 16px 20px; max-width: 180px; text-align: center;
+        }
+        .welcome-step .step-num {
+            width: 32px; height: 32px; background: linear-gradient(135deg, #10b981, #3b82f6);
+            border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 8px;
+        }
+        .welcome-step h4 { color: #10b981; font-size: 13px; margin-bottom: 4px; }
+        .welcome-step p { font-size: 12px; color: #71767b; margin: 0; }
+
+        .message { margin-bottom: 24px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .message-user {
+            background: #1d3a5f; border-radius: 16px 16px 4px 16px;
+            padding: 16px 20px; margin-left: auto; max-width: 80%; width: fit-content;
+        }
+        .message-user img {
+            max-width: 100%; border-radius: 8px; margin-top: 8px;
+        }
+        .message-assistant {
+            background: #16202a; border: 1px solid #2f3336;
+            border-radius: 4px 16px 16px 16px; padding: 20px 24px;
+        }
+        .message-assistant strong { color: #10b981; }
+        .message-assistant p { margin-bottom: 12px; line-height: 1.7; }
+        .message-assistant h2 { color: #10b981; font-size: 16px; margin: 16px 0 8px; }
+        .message-assistant h3 { color: #10b981; font-size: 14px; margin: 12px 0 6px; }
+        .message-assistant ul, .message-assistant ol { margin: 8px 0; padding-left: 24px; }
+        .message-assistant li { margin-bottom: 6px; line-height: 1.6; }
+        .message-assistant table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+        .message-assistant th, .message-assistant td { border: 1px solid #2f3336; padding: 8px 12px; text-align: left; }
+        .message-assistant th { background: #1a2634; color: #10b981; font-weight: 600; }
+
+        .loading { display: flex; align-items: center; gap: 8px; color: #71767b; padding: 16px; }
+        .loading-dots { display: flex; gap: 4px; }
+        .loading-dots span {
+            width: 8px; height: 8px; background: #10b981; border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        .input-panel {
+            background: #16202a; border-top: 1px solid #2f3336;
+            padding: 20px 24px; flex-shrink: 0;
+        }
+        .input-area { max-width: 900px; margin: 0 auto; }
+
+        /* Upload zone */
+        .upload-zone {
+            border: 2px dashed #2f3336; border-radius: 12px; padding: 32px 20px;
+            text-align: center; cursor: pointer; transition: all 0.2s;
+            background: rgba(16, 185, 129, 0.03);
+        }
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: #10b981; background: rgba(16, 185, 129, 0.08);
+        }
+        .upload-zone-icon { font-size: 2.5rem; margin-bottom: 8px; }
+        .upload-zone h3 { color: #e7e9ea; font-size: 1rem; margin-bottom: 4px; }
+        .upload-zone p { color: #71767b; font-size: 0.85rem; }
+        .upload-zone input { display: none; }
+
+        /* Preview */
+        .preview-container {
+            display: none; margin-top: 12px; position: relative;
+            background: #0f1419; border: 1px solid #2f3336; border-radius: 8px; padding: 12px;
+        }
+        .preview-container.active { display: flex; align-items: center; gap: 12px; }
+        .preview-img {
+            width: 80px; height: 80px; object-fit: cover; border-radius: 8px;
+            border: 1px solid #2f3336;
+        }
+        .preview-info { flex: 1; }
+        .preview-info h4 { color: #e7e9ea; font-size: 0.9rem; margin-bottom: 2px; }
+        .preview-info p { color: #71767b; font-size: 0.8rem; }
+        .preview-remove {
+            background: none; border: none; color: #ff6b6b; cursor: pointer;
+            font-size: 1.2rem; padding: 4px 8px;
+        }
+
+        /* Chat input for follow-up */
+        .chat-row { display: flex; gap: 12px; margin-top: 12px; }
+        .chat-input {
+            flex: 1; background: #0f1419; border: 1px solid #2f3336; border-radius: 8px;
+            padding: 12px 14px; color: #e7e9ea; font-size: 14px; font-family: inherit;
+            transition: border-color 0.2s; resize: none;
+        }
+        .chat-input:focus { outline: none; border-color: #10b981; }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #10b981, #3b82f6); color: #fff;
+            border: none; border-radius: 8px; padding: 12px 24px; font-size: 15px;
+            font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+        }
+        .submit-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Download buttons */
+        .download-bar {
+            display: none; gap: 12px; margin-top: 12px; flex-wrap: wrap;
+        }
+        .download-bar.active { display: flex; }
+        .download-btn {
+            background: #1a2634; border: 1px solid #2f3336; color: #e7e9ea;
+            border-radius: 8px; padding: 10px 18px; font-size: 14px; font-weight: 500;
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+        }
+        .download-btn:hover { background: #243447; border-color: #10b981; }
+        .download-btn .dl-icon { font-size: 16px; }
+
+        /* Auth overlay */
+        .auth-loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #0f1419; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
+        }
+        .auth-spinner {
+            width: 50px; height: 50px; border: 4px solid #2f3336;
+            border-top-color: #10b981; border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .auth-text { margin-top: 16px; color: #71767b; font-size: 1rem; }
+        .hidden { display: none !important; }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 8px; align-items: flex-start; padding: 12px 16px; }
+            .header-title { font-size: 16px; }
+            .output-panel { padding: 16px; }
+            .input-panel { padding: 16px; }
+            .welcome-steps { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth loading overlay -->
+    <div class="auth-loading-overlay" id="authOverlay">
+        <div class="auth-spinner"></div>
+        <div class="auth-text">Checking access...</div>
+    </div>
+
+    <div class="app-container hidden" id="mainContent">
+        <header class="header">
+            <div class="header-left">
+                <a href="index.html" class="back-btn">← Home</a>
+                <div>
+                    <div class="header-title">
+                        Notes Transcriber
+                        <span class="flagship-badge">NEW</span>
+                    </div>
+                    <div class="header-subtitle">Upload handwritten notes → Get clean, organised text ready to paste or download</div>
+                </div>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="output-panel" id="outputPanel">
+                <div class="output-content" id="outputContent">
+                    <div class="welcome-message" id="welcomeMsg">
+                        <h2>✍️ Notes Transcriber</h2>
+                        <p>Upload a photo of your handwritten notes and get clean, organised text — ready to paste into Google Docs or download as a Word document.</p>
+                        <div class="welcome-steps">
+                            <div class="welcome-step">
+                                <div class="step-num">1</div>
+                                <h4>Upload Photo</h4>
+                                <p>Take a photo of your handwritten notes</p>
+                            </div>
+                            <div class="welcome-step">
+                                <div class="step-num">2</div>
+                                <h4>Get Clean Text</h4>
+                                <p>AI transcribes into organised, formatted notes</p>
+                            </div>
+                            <div class="welcome-step">
+                                <div class="step-num">3</div>
+                                <h4>Copy or Download</h4>
+                                <p>Paste into Google Docs or download as .docx</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="input-panel">
+                <div class="input-area">
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="upload-zone-icon">✍️</div>
+                        <h3>Drop your handwritten notes here</h3>
+                        <p>or click to browse — supports JPG, PNG, WEBP (max 20MB)</p>
+                        <input type="file" id="fileInput" accept="image/*">
+                    </div>
+                    <div class="preview-container" id="previewContainer">
+                        <img class="preview-img" id="previewImg" src="" alt="Preview">
+                        <div class="preview-info">
+                            <h4 id="previewName">notes.jpg</h4>
+                            <p id="previewSize">1.2 MB</p>
+                        </div>
+                        <button class="preview-remove" onclick="removeFile()" title="Remove">✕</button>
+                        <button class="submit-btn" id="transcribeBtn" onclick="transcribeNotes()">Transcribe Notes</button>
+                    </div>
+                    <div class="download-bar" id="downloadBar">
+                        <button class="download-btn" onclick="copyToClipboard()" title="Copy to clipboard">
+                            <span class="dl-icon">📋</span> Copy to Clipboard
+                        </button>
+                        <button class="download-btn" onclick="downloadDocx()" title="Download as Word document">
+                            <span class="dl-icon">📄</span> Download .docx
+                        </button>
+                        <button class="download-btn" onclick="downloadTxt()" title="Download as text file">
+                            <span class="dl-icon">📝</span> Download .txt
+                        </button>
+                    </div>
+                    <div class="chat-row" id="chatRow" style="display: none;">
+                        <textarea class="chat-input" id="chatInput" rows="1" placeholder="Ask the AI to reorganise, fix something, or upload another image..."></textarea>
+                        <button class="submit-btn" id="sendBtn" onclick="sendReply()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
+        let conversationHistory = [];
+        let isLoading = false;
+        let selectedFile = null;
+        let selectedBase64 = null;
+        let lastTranscription = ''; // Store for download/copy
+
+        const outputContent = document.getElementById('outputContent');
+        const outputPanel = document.getElementById('outputPanel');
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImg = document.getElementById('previewImg');
+        const previewName = document.getElementById('previewName');
+        const previewSize = document.getElementById('previewSize');
+        const chatRow = document.getElementById('chatRow');
+        const chatInput = document.getElementById('chatInput');
+        const downloadBar = document.getElementById('downloadBar');
+
+        // ===== FILE HANDLING =====
+        uploadZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileSelect);
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        function handleFileSelect(e) {
+            if (e.target.files.length > 0) handleFile(e.target.files[0]);
+        }
+
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file (JPG, PNG, WEBP).');
+                return;
+            }
+            if (file.size > 20 * 1024 * 1024) {
+                alert('File too large. Maximum size is 20MB.');
+                return;
+            }
+            selectedFile = file;
+            previewName.textContent = file.name;
+            previewSize.textContent = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                selectedBase64 = e.target.result;
+                previewImg.src = selectedBase64;
+                uploadZone.style.display = 'none';
+                previewContainer.classList.add('active');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeFile() {
+            selectedFile = null;
+            selectedBase64 = null;
+            fileInput.value = '';
+            previewContainer.classList.remove('active');
+            uploadZone.style.display = 'block';
+        }
+
+        // ===== MESSAGING =====
+        function formatResponse(text) {
+            return text
+                .replace(/## (.*)/g, '<h2>$1</h2>')
+                .replace(/### (.*)/g, '<h3>$1</h3>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>')
+                .replace(/^\• (.*)/gm, '<li>$1</li>')
+                .replace(/^- (.*)/gm, '<li>$1</li>');
+        }
+
+        function addMessage(content, isUser = false, imageUrl = null) {
+            const welcome = document.getElementById('welcomeMsg');
+            if (welcome) welcome.remove();
+
+            const div = document.createElement('div');
+            div.className = `message ${isUser ? 'message-user' : 'message-assistant'}`;
+
+            if (isUser) {
+                let html = content.replace(/\n/g, '<br>');
+                if (imageUrl) {
+                    html += `<img src="${imageUrl}" alt="Uploaded notes">`;
+                }
+                div.innerHTML = html;
+            } else {
+                div.innerHTML = `<p>${formatResponse(content)}</p>`;
+            }
+            outputContent.appendChild(div);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
+
+        function showLoading() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'loading';
+            loadingDiv.id = 'loadingIndicator';
+            loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Transcribing notes...</span>';
+            outputContent.appendChild(loadingDiv);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
+
+        function hideLoading() {
+            const el = document.getElementById('loadingIndicator');
+            if (el) el.remove();
+        }
+
+        async function transcribeNotes() {
+            if (!selectedBase64 || isLoading) return;
+            isLoading = true;
+            const btn = document.getElementById('transcribeBtn');
+            btn.disabled = true;
+            btn.textContent = 'Transcribing...';
+
+            addMessage('Please transcribe these handwritten notes.', true, selectedBase64);
+            showLoading();
+
+            const userMessage = {
+                role: 'user',
+                content: [
+                    { type: 'text', text: 'Please transcribe these handwritten notes into clean, organised text.' },
+                    { type: 'image_url', image_url: { url: selectedBase64, detail: 'high' } }
+                ]
+            };
+            conversationHistory.push(userMessage);
+
+            try {
+                const response = await fetch(`${API_BASE}/api/chat/notes-transcriber`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ messages: conversationHistory })
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || `Error ${response.status}`);
+                }
+
+                const data = await response.json();
+                hideLoading();
+                lastTranscription = data.reply;
+                conversationHistory.push({ role: 'assistant', content: data.reply });
+                addMessage(data.reply, false);
+
+                // Show download bar and chat input
+                uploadZone.style.display = 'none';
+                previewContainer.classList.remove('active');
+                downloadBar.classList.add('active');
+                chatRow.style.display = 'flex';
+                chatInput.focus();
+            } catch (error) {
+                hideLoading();
+                addMessage(`Error: ${error.message || 'Failed to transcribe notes. Please try again.'}`, false);
+            } finally {
+                isLoading = false;
+                btn.disabled = false;
+                btn.textContent = 'Transcribe Notes';
+            }
+        }
+
+        async function sendReply() {
+            const msg = chatInput.value.trim();
+            if (!msg || isLoading) return;
+            isLoading = true;
+            const btn = document.getElementById('sendBtn');
+            btn.disabled = true;
+            chatInput.disabled = true;
+
+            addMessage(msg, true);
+            chatInput.value = '';
+            showLoading();
+
+            conversationHistory.push({ role: 'user', content: msg });
+
+            try {
+                const response = await fetch(`${API_BASE}/api/chat/notes-transcriber`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ messages: conversationHistory })
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || `Error ${response.status}`);
+                }
+
+                const data = await response.json();
+                hideLoading();
+                lastTranscription = data.reply; // Update with latest version
+                conversationHistory.push({ role: 'assistant', content: data.reply });
+                addMessage(data.reply, false);
+            } catch (error) {
+                hideLoading();
+                addMessage(`Error: ${error.message || 'Something went wrong. Please try again.'}`, false);
+            } finally {
+                isLoading = false;
+                btn.disabled = false;
+                chatInput.disabled = false;
+                chatInput.focus();
+            }
+        }
+
+        // Enter key to send
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendReply();
+            }
+        });
+
+        // ===== DOWNLOAD / COPY FUNCTIONS =====
+
+        function stripMarkdown(md) {
+            return md
+                .replace(/## /g, '')
+                .replace(/### /g, '')
+                .replace(/\*\*(.*?)\*\*/g, '$1')
+                .replace(/\*(.*?)\*/g, '$1')
+                .replace(/---/g, '')
+                .replace(/^\s*[-•] /gm, '  • ')
+                .trim();
+        }
+
+        async function copyToClipboard() {
+            if (!lastTranscription) return;
+            try {
+                await navigator.clipboard.writeText(stripMarkdown(lastTranscription));
+                const btn = event.target.closest('.download-btn');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<span class="dl-icon">✅</span> Copied!';
+                setTimeout(() => { btn.innerHTML = original; }, 2000);
+            } catch (e) {
+                // Fallback
+                const ta = document.createElement('textarea');
+                ta.value = stripMarkdown(lastTranscription);
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                alert('Copied to clipboard!');
+            }
+        }
+
+        function downloadTxt() {
+            if (!lastTranscription) return;
+            const text = stripMarkdown(lastTranscription);
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'transcribed-notes.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadDocx() {
+            if (!lastTranscription) return;
+            // Generate a simple .docx using Office Open XML
+            const text = lastTranscription;
+            const lines = text.split('\n');
+            let bodyXml = '';
+
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed || trimmed === '---') continue;
+
+                if (trimmed.startsWith('## ')) {
+                    // Heading 2
+                    const content = trimmed.replace(/^## /, '').replace(/\*\*/g, '');
+                    bodyXml += `<w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>${escapeXml(content)}</w:t></w:r></w:p>`;
+                } else if (trimmed.startsWith('### ')) {
+                    // Heading 3
+                    const content = trimmed.replace(/^### /, '').replace(/\*\*/g, '');
+                    bodyXml += `<w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>${escapeXml(content)}</w:t></w:r></w:p>`;
+                } else if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
+                    // Bullet point
+                    const content = trimmed.replace(/^[-•] /, '').replace(/\*\*(.*?)\*\*/g, '$1');
+                    bodyXml += `<w:p><w:pPr><w:pStyle w:val="ListBullet"/></w:pPr><w:r><w:t>${escapeXml(content)}</w:t></w:r></w:p>`;
+                } else if (/^\*\*(.+?)\*\*/.test(trimmed) && trimmed.endsWith('**')) {
+                    // Bold-only line (like "Subject: X")
+                    const content = trimmed.replace(/\*\*/g, '');
+                    bodyXml += `<w:p><w:r><w:rPr><w:b/></w:rPr><w:t>${escapeXml(content)}</w:t></w:r></w:p>`;
+                } else {
+                    // Normal paragraph - handle inline bold
+                    const parts = trimmed.split(/(\*\*.*?\*\*)/g);
+                    let runs = '';
+                    for (const part of parts) {
+                        if (part.startsWith('**') && part.endsWith('**')) {
+                            const boldText = part.slice(2, -2);
+                            runs += `<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">${escapeXml(boldText)}</w:t></w:r>`;
+                        } else if (part) {
+                            runs += `<w:r><w:t xml:space="preserve">${escapeXml(part)}</w:t></w:r>`;
+                        }
+                    }
+                    bodyXml += `<w:p>${runs}</w:p>`;
+                }
+            }
+
+            // Minimal .docx structure (Office Open XML)
+            const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+  <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
+</Types>`;
+
+            const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`;
+
+            const wordRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>`;
+
+            const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:style w:type="paragraph" w:styleId="Heading2">
+    <w:name w:val="heading 2"/>
+    <w:pPr><w:spacing w:before="240" w:after="120"/></w:pPr>
+    <w:rPr><w:b/><w:sz w:val="32"/><w:color w:val="2E74B5"/></w:rPr>
+  </w:style>
+  <w:style w:type="paragraph" w:styleId="Heading3">
+    <w:name w:val="heading 3"/>
+    <w:pPr><w:spacing w:before="200" w:after="80"/></w:pPr>
+    <w:rPr><w:b/><w:sz w:val="26"/><w:color w:val="2E74B5"/></w:rPr>
+  </w:style>
+  <w:style w:type="paragraph" w:styleId="ListBullet">
+    <w:name w:val="List Bullet"/>
+    <w:pPr><w:ind w:left="720"/><w:spacing w:after="60"/></w:pPr>
+  </w:style>
+</w:styles>`;
+
+            const document_xml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>${bodyXml}</w:body>
+</w:document>`;
+
+            // Build the zip using JSZip-like manual approach (minimal zip)
+            // We'll use a simple approach: create the docx as a zip in the browser
+            buildAndDownloadDocx({
+                '[Content_Types].xml': contentTypes,
+                '_rels/.rels': rels,
+                'word/_rels/document.xml.rels': wordRels,
+                'word/document.xml': document_xml,
+                'word/styles.xml': styles
+            });
+        }
+
+        function escapeXml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+        }
+
+        // Minimal zip builder for .docx (no external deps)
+        function buildAndDownloadDocx(files) {
+            const encoder = new TextEncoder();
+            const entries = [];
+            let offset = 0;
+
+            // Build local file entries
+            for (const [name, content] of Object.entries(files)) {
+                const nameBytes = encoder.encode(name);
+                const contentBytes = encoder.encode(content);
+
+                // Local file header
+                const header = new Uint8Array(30 + nameBytes.length);
+                const view = new DataView(header.buffer);
+                view.setUint32(0, 0x04034b50, true); // signature
+                view.setUint16(4, 20, true); // version needed
+                view.setUint16(6, 0, true); // flags
+                view.setUint16(8, 0, true); // compression (store)
+                view.setUint16(10, 0, true); // mod time
+                view.setUint16(12, 0, true); // mod date
+                view.setUint32(14, crc32(contentBytes), true); // crc32
+                view.setUint32(18, contentBytes.length, true); // compressed size
+                view.setUint32(22, contentBytes.length, true); // uncompressed size
+                view.setUint16(26, nameBytes.length, true); // name length
+                view.setUint16(28, 0, true); // extra length
+                header.set(nameBytes, 30);
+
+                entries.push({ name: nameBytes, content: contentBytes, header, offset });
+                offset += header.length + contentBytes.length;
+            }
+
+            // Build central directory
+            const centralDir = [];
+            let cdSize = 0;
+            for (const entry of entries) {
+                const cd = new Uint8Array(46 + entry.name.length);
+                const cdView = new DataView(cd.buffer);
+                cdView.setUint32(0, 0x02014b50, true); // signature
+                cdView.setUint16(4, 20, true); // version made by
+                cdView.setUint16(6, 20, true); // version needed
+                cdView.setUint16(8, 0, true); // flags
+                cdView.setUint16(10, 0, true); // compression
+                cdView.setUint16(12, 0, true); // mod time
+                cdView.setUint16(14, 0, true); // mod date
+                cdView.setUint32(16, crc32(entry.content), true); // crc32
+                cdView.setUint32(20, entry.content.length, true); // compressed size
+                cdView.setUint32(24, entry.content.length, true); // uncompressed size
+                cdView.setUint16(28, entry.name.length, true); // name length
+                cdView.setUint16(30, 0, true); // extra length
+                cdView.setUint16(32, 0, true); // comment length
+                cdView.setUint16(34, 0, true); // disk number
+                cdView.setUint16(36, 0, true); // internal attrs
+                cdView.setUint32(38, 0, true); // external attrs
+                cdView.setUint32(42, entry.offset, true); // local header offset
+                cd.set(entry.name, 46);
+                centralDir.push(cd);
+                cdSize += cd.length;
+            }
+
+            // End of central directory
+            const eocd = new Uint8Array(22);
+            const eocdView = new DataView(eocd.buffer);
+            eocdView.setUint32(0, 0x06054b50, true); // signature
+            eocdView.setUint16(4, 0, true); // disk number
+            eocdView.setUint16(6, 0, true); // cd disk number
+            eocdView.setUint16(8, entries.length, true); // entries on this disk
+            eocdView.setUint16(10, entries.length, true); // total entries
+            eocdView.setUint32(12, cdSize, true); // cd size
+            eocdView.setUint32(16, offset, true); // cd offset
+            eocdView.setUint16(20, 0, true); // comment length
+
+            // Combine everything
+            const totalSize = offset + cdSize + 22;
+            const result = new Uint8Array(totalSize);
+            let pos = 0;
+            for (const entry of entries) {
+                result.set(entry.header, pos);
+                pos += entry.header.length;
+                result.set(entry.content, pos);
+                pos += entry.content.length;
+            }
+            for (const cd of centralDir) {
+                result.set(cd, pos);
+                pos += cd.length;
+            }
+            result.set(eocd, pos);
+
+            const blob = new Blob([result], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'transcribed-notes.docx';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // CRC32 implementation
+        function crc32(bytes) {
+            let crc = 0xFFFFFFFF;
+            const table = crc32Table();
+            for (let i = 0; i < bytes.length; i++) {
+                crc = (crc >>> 8) ^ table[(crc ^ bytes[i]) & 0xFF];
+            }
+            return (crc ^ 0xFFFFFFFF) >>> 0;
+        }
+
+        let _crc32Table = null;
+        function crc32Table() {
+            if (_crc32Table) return _crc32Table;
+            _crc32Table = new Uint32Array(256);
+            for (let i = 0; i < 256; i++) {
+                let c = i;
+                for (let j = 0; j < 8; j++) {
+                    c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+                }
+                _crc32Table[i] = c;
+            }
+            return _crc32Table;
+        }
+
+        // ===== AUTH CHECK =====
+        async function checkAuth() {
+            try {
+                const res = await fetch(`${API_BASE}/api/subscription`, { credentials: 'include' });
+                if (!res.ok) {
+                    window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                    return;
+                }
+                const data = await res.json();
+                const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
+                if (!hasAccess) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                document.getElementById('authOverlay').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+            } catch (e) {
+                console.error('Auth check failed:', e);
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+            }
+        }
+
+        checkAuth();
+    </script>
+</body>
+</html>
