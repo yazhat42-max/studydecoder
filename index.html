@@ -738,7 +738,7 @@
                 <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
                 <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
             </a>
-            <a href="notes-transcriber.html" class="tool-card flagship">
+            <a href="#" onclick="openTool('notes-transcriber'); return false;" class="tool-card flagship">
                 <div class="tool-card-icon">✍️</div>
                 <h3>Notes Transcriber</h3>
                 <p>Upload handwritten notes and get clean, organised text — ready to paste into Google Docs or download as a Word document.</p>
@@ -1099,7 +1099,8 @@
         syllabus: { senior: 'syllabus.html', junior: 'syllabus-jr.html' },
         practice: { senior: 'practice.html', junior: 'practice-jr.html' },
         timetable: { senior: 'timetable.html', junior: 'timetable-jr.html' },
-        worksheet: { senior: 'worksheet-decoder.html', junior: 'worksheet-decoder.html' }
+        worksheet: { senior: 'worksheet-decoder.html', junior: 'worksheet-decoder.html' },
+        'notes-transcriber': { senior: 'notes-transcriber.html', junior: 'notes-transcriber.html' }
     };
 
     function openTool(tool) {
@@ -1111,6 +1112,7 @@
         const titles = {
             syllabus: 'Syllabus Decoder',
             worksheet: 'Worksheet Decoder',
+            'notes-transcriber': 'Notes Transcriber',
             practice: 'Practice Questions',
             timetable: 'Timetable Generator'
         };
