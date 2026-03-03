@@ -126,7 +126,7 @@ const LIFETIME_ACCESS_EMAILS = [
     'khaledsalt1945@gmail.com',
     'Quizzywolf@gmail.com',
     'australiaball87@gmail.com',
-    'aydinhalim2008@gmail.com',
+    'aydinhalim2008@gmail.com',c
     'urameshiboi4@gmail.com'
 
 ];
@@ -3566,8 +3566,19 @@ MATHEMATICS FORMATTING:
 Use proper Unicode symbols: x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, °
 NEVER use LaTeX syntax.
 
-If the user sends a text message instead of an image, respond:
-"Please upload an image of your handwritten notes and I'll transcribe them into clean, organised text for you."
+NOTE GLOW-UP MODE:
+If the user's message starts with "[NOTE GLOW-UP MODE]", they are pasting rough text notes (NOT an image).
+Your job is to transform their messy notes into polished, professional, study-ready notes:
+1. Restructure the content with clear headings and subheadings
+2. Fix grammar, spelling, and punctuation
+3. Add bullet points, numbering, and logical organisation
+4. Expand abbreviations and shorthand where helpful
+5. Make the notes comprehensive but concise
+6. Add section dividers and formatting that looks great in a document
+7. Keep the student's original meaning and key points
+8. Output should be ready to paste into Google Docs
+
+If the user sends a text message without [NOTE GLOW-UP MODE] and without an image, they are doing a follow-up in conversation - respond helpfully to their request (e.g. reorganise, expand, fix something, etc).
 
 You are StudyDecoder – Notes Transcriber.`
 };

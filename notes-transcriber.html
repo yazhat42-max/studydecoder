@@ -33,9 +33,29 @@
             padding: 3px 10px; border-radius: 20px; margin-left: 12px;
             letter-spacing: 0.5px;
         }
+        .header-actions { display: flex; gap: 8px; }
+        .header-action-btn {
+            color: #10b981; text-decoration: none; font-size: 14px; font-weight: 500;
+            padding: 8px 16px; border-radius: 8px; background: rgba(16, 185, 129, 0.1);
+            transition: all 0.2s; cursor: pointer; border: none;
+        }
+        .header-action-btn:hover { background: rgba(16, 185, 129, 0.2); }
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .output-panel { flex: 1; overflow-y: auto; padding: 24px; background: #0f1419; }
         .output-content { max-width: 900px; margin: 0 auto; }
+
+        /* Mode toggle */
+        .mode-tabs {
+            display: flex; gap: 4px; background: #0f1419; border-radius: 10px;
+            padding: 4px; margin-bottom: 16px; max-width: 900px; margin: 0 auto 16px;
+        }
+        .mode-tab {
+            flex: 1; padding: 10px 16px; border: none; background: transparent; color: #71767b;
+            font-size: 13px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+            text-align: center;
+        }
+        .mode-tab.active { background: linear-gradient(135deg, #10b981, #3b82f6); color: #fff; }
+        .mode-tab:hover:not(.active) { background: rgba(16, 185, 129, 0.1); color: #e7e9ea; }
 
         .welcome-message { text-align: center; padding: 50px 20px; color: #71767b; }
         .welcome-message h2 { font-size: 28px; color: #e7e9ea; margin-bottom: 12px; font-weight: 700; }
@@ -77,6 +97,8 @@
         .message-assistant table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
         .message-assistant th, .message-assistant td { border: 1px solid #2f3336; padding: 8px 12px; text-align: left; }
         .message-assistant th { background: #1a2634; color: #10b981; font-weight: 600; }
+        .message-assistant sub { font-size: 0.75em; vertical-align: sub; }
+        .message-assistant sup { font-size: 0.75em; vertical-align: super; }
 
         .loading { display: flex; align-items: center; gap: 8px; color: #71767b; padding: 16px; }
         .loading-dots { display: flex; gap: 4px; }
@@ -126,6 +148,19 @@
             font-size: 1.2rem; padding: 4px 8px;
         }
 
+        /* Note Glow-Up textarea input */
+        .glowup-zone {
+            display: none; flex-direction: column; gap: 12px;
+        }
+        .glowup-zone.active { display: flex; }
+        .glowup-textarea {
+            width: 100%; background: #0f1419; border: 1px solid #2f3336; border-radius: 10px;
+            padding: 14px 16px; color: #e7e9ea; font-size: 14px; font-family: inherit;
+            resize: vertical; min-height: 120px; transition: border-color 0.2s;
+        }
+        .glowup-textarea:focus { outline: none; border-color: #10b981; }
+        .glowup-textarea::placeholder { color: #71767b; }
+
         /* Chat input for follow-up */
         .chat-row { display: flex; gap: 12px; margin-top: 12px; }
         .chat-input {
@@ -156,6 +191,45 @@
         .download-btn:hover { background: #243447; border-color: #10b981; }
         .download-btn .dl-icon { font-size: 16px; }
 
+        /* Chat history sidebar */
+        .history-btn {
+            color: #10b981; text-decoration: none; font-size: 14px; font-weight: 500;
+            padding: 8px 16px; border-radius: 8px; background: rgba(16, 185, 129, 0.1);
+            transition: all 0.2s; cursor: pointer; border: none;
+        }
+        .history-btn:hover { background: rgba(16, 185, 129, 0.2); }
+        .history-panel {
+            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh;
+            background: #16202a; border-left: 1px solid #2f3336; z-index: 1000;
+            transition: right 0.3s ease; display: flex; flex-direction: column;
+        }
+        .history-panel.open { right: 0; }
+        .history-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.5); z-index: 999; display: none;
+        }
+        .history-overlay.open { display: block; }
+        .history-header {
+            padding: 16px 20px; border-bottom: 1px solid #2f3336;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .history-header h3 { color: #e7e9ea; font-size: 16px; margin: 0; }
+        .history-close { background: none; border: none; color: #71767b; font-size: 20px; cursor: pointer; padding: 4px 8px; }
+        .history-close:hover { color: #e7e9ea; }
+        .history-list { flex: 1; overflow-y: auto; padding: 12px; }
+        .history-item {
+            background: #0f1419; border: 1px solid #2f3336; border-radius: 10px;
+            padding: 12px 16px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .history-item:hover { border-color: #10b981; background: rgba(16, 185, 129, 0.05); }
+        .history-item-title { color: #e7e9ea; font-size: 13px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .history-item-date { color: #71767b; font-size: 11px; }
+        .history-item-preview { color: #8b949e; font-size: 12px; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .history-item-actions { display: flex; justify-content: flex-end; margin-top: 6px; }
+        .history-delete { background: none; border: none; color: #ff6b6b; font-size: 11px; cursor: pointer; padding: 2px 6px; }
+        .history-delete:hover { text-decoration: underline; }
+        .history-empty { text-align: center; padding: 40px 20px; color: #71767b; font-size: 14px; }
+
         /* Auth overlay */
         .auth-loading-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -170,12 +244,22 @@
         .auth-text { margin-top: 16px; color: #71767b; font-size: 1rem; }
         .hidden { display: none !important; }
 
+        /* Upload attach button in chat row */
+        .attach-btn {
+            background: rgba(16, 185, 129, 0.1); border: 1px solid #2f3336; color: #10b981;
+            border-radius: 8px; padding: 10px 14px; font-size: 18px; cursor: pointer;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+        }
+        .attach-btn:hover { background: rgba(16, 185, 129, 0.2); border-color: #10b981; }
+
         @media (max-width: 768px) {
             .header { flex-direction: column; gap: 8px; align-items: flex-start; padding: 12px 16px; }
             .header-title { font-size: 16px; }
             .output-panel { padding: 16px; }
             .input-panel { padding: 16px; }
             .welcome-steps { flex-direction: column; align-items: center; }
+            .mode-tabs { flex-direction: column; }
+            .header-actions { width: 100%; justify-content: flex-end; }
         }
     </style>
 </head>
@@ -187,6 +271,17 @@
     </div>
 
     <div class="app-container hidden" id="mainContent">
+        <!-- History overlay -->
+        <div class="history-overlay" id="historyOverlay" onclick="closeHistory()"></div>
+        <!-- History sidebar -->
+        <div class="history-panel" id="historyPanel">
+            <div class="history-header">
+                <h3>📝 Past Sessions</h3>
+                <button class="history-close" onclick="closeHistory()">✕</button>
+            </div>
+            <div class="history-list" id="historyList"></div>
+        </div>
+
         <header class="header">
             <div class="header-left">
                 <a href="index.html" class="back-btn">← Home</a>
@@ -195,17 +290,25 @@
                         Notes Transcriber
                         <span class="flagship-badge">NEW</span>
                     </div>
-                    <div class="header-subtitle">Upload handwritten notes → Get clean, organised text ready to paste or download</div>
+                    <div class="header-subtitle">Upload handwritten notes → Get clean text, or paste notes to polish them up</div>
                 </div>
+            </div>
+            <div class="header-actions">
+                <button class="history-btn" onclick="openHistory()">📋 History</button>
             </div>
         </header>
         <main class="main-content">
             <div class="output-panel" id="outputPanel">
                 <div class="output-content" id="outputContent">
+                    <!-- Mode tabs -->
+                    <div class="mode-tabs" id="modeTabs">
+                        <button class="mode-tab active" onclick="switchMode('transcribe')">✍️ Transcribe Notes</button>
+                        <button class="mode-tab" onclick="switchMode('glowup')">✨ Note Glow-Up</button>
+                    </div>
                     <div class="welcome-message" id="welcomeMsg">
-                        <h2>✍️ Notes Transcriber</h2>
-                        <p>Upload a photo of your handwritten notes and get clean, organised text — ready to paste into Google Docs or download as a Word document.</p>
-                        <div class="welcome-steps">
+                        <h2 id="welcomeTitle">✍️ Notes Transcriber</h2>
+                        <p id="welcomeDesc">Upload a photo of your handwritten notes and get clean, organised text — ready to paste into Google Docs or download as a Word document.</p>
+                        <div class="welcome-steps" id="welcomeSteps">
                             <div class="welcome-step">
                                 <div class="step-num">1</div>
                                 <h4>Upload Photo</h4>
@@ -227,21 +330,33 @@
             </div>
             <div class="input-panel">
                 <div class="input-area">
-                    <div class="upload-zone" id="uploadZone">
-                        <div class="upload-zone-icon">✍️</div>
-                        <h3>Drop your handwritten notes here</h3>
-                        <p>or click to browse — supports JPG, PNG, WEBP (max 20MB)</p>
-                        <input type="file" id="fileInput" accept="image/*">
-                    </div>
-                    <div class="preview-container" id="previewContainer">
-                        <img class="preview-img" id="previewImg" src="" alt="Preview">
-                        <div class="preview-info">
-                            <h4 id="previewName">notes.jpg</h4>
-                            <p id="previewSize">1.2 MB</p>
+                    <!-- Transcribe mode: upload zone -->
+                    <div id="transcribeInputs">
+                        <div class="upload-zone" id="uploadZone">
+                            <div class="upload-zone-icon">✍️</div>
+                            <h3>Drop your handwritten notes here</h3>
+                            <p>or click to browse — supports JPG, PNG, WEBP (max 20MB)</p>
+                            <input type="file" id="fileInput" accept="image/*">
                         </div>
-                        <button class="preview-remove" onclick="removeFile()" title="Remove">✕</button>
-                        <button class="submit-btn" id="transcribeBtn" onclick="transcribeNotes()">Transcribe Notes</button>
+                        <div class="preview-container" id="previewContainer">
+                            <img class="preview-img" id="previewImg" src="" alt="Preview">
+                            <div class="preview-info">
+                                <h4 id="previewName">notes.jpg</h4>
+                                <p id="previewSize">1.2 MB</p>
+                            </div>
+                            <button class="preview-remove" onclick="removeFile()" title="Remove">✕</button>
+                            <button class="submit-btn" id="transcribeBtn" onclick="transcribeNotes()">Transcribe Notes</button>
+                        </div>
                     </div>
+
+                    <!-- Glow-Up mode: text area -->
+                    <div class="glowup-zone" id="glowupInputs">
+                        <textarea class="glowup-textarea" id="glowupTextarea" placeholder="Paste your messy notes, bullet points, or rough text here...
+
+The AI will transform them into polished, professional-looking notes with proper formatting, structure, and organisation."></textarea>
+                        <button class="submit-btn" id="glowupBtn" onclick="glowUpNotes()">✨ Glow Up My Notes</button>
+                    </div>
+
                     <div class="download-bar" id="downloadBar">
                         <button class="download-btn" onclick="copyToClipboard()" title="Copy to clipboard">
                             <span class="dl-icon">📋</span> Copy to Clipboard
@@ -254,7 +369,9 @@
                         </button>
                     </div>
                     <div class="chat-row" id="chatRow" style="display: none;">
-                        <textarea class="chat-input" id="chatInput" rows="1" placeholder="Ask the AI to reorganise, fix something, or upload another image..."></textarea>
+                        <button class="attach-btn" id="attachBtn" onclick="triggerAttach()" title="Upload another image">📎</button>
+                        <input type="file" id="chatFileInput" accept="image/*" style="display:none;">
+                        <textarea class="chat-input" id="chatInput" rows="1" placeholder="Ask the AI to reorganise, fix something, or paste more notes to polish..."></textarea>
                         <button class="submit-btn" id="sendBtn" onclick="sendReply()">Send</button>
                     </div>
                 </div>
@@ -268,7 +385,9 @@
         let isLoading = false;
         let selectedFile = null;
         let selectedBase64 = null;
-        let lastTranscription = ''; // Store for download/copy
+        let lastTranscription = '';
+        let allTranscriptions = [];
+        let currentMode = 'transcribe';
 
         const outputContent = document.getElementById('outputContent');
         const outputPanel = document.getElementById('outputPanel');
@@ -281,6 +400,38 @@
         const chatRow = document.getElementById('chatRow');
         const chatInput = document.getElementById('chatInput');
         const downloadBar = document.getElementById('downloadBar');
+        const chatFileInput = document.getElementById('chatFileInput');
+
+        // ===== MODE SWITCHING =====
+        function switchMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.mode-tab')[mode === 'transcribe' ? 0 : 1].classList.add('active');
+
+            const transcribeInputs = document.getElementById('transcribeInputs');
+            const glowupInputs = document.getElementById('glowupInputs');
+            const welcomeTitle = document.getElementById('welcomeTitle');
+            const welcomeDesc = document.getElementById('welcomeDesc');
+            const welcomeSteps = document.getElementById('welcomeSteps');
+
+            if (mode === 'transcribe') {
+                transcribeInputs.style.display = 'block';
+                glowupInputs.classList.remove('active');
+                if (welcomeTitle) {
+                    welcomeTitle.textContent = '\u270d\ufe0f Notes Transcriber';
+                    welcomeDesc.textContent = 'Upload a photo of your handwritten notes and get clean, organised text \u2014 ready to paste into Google Docs or download as a Word document.';
+                    welcomeSteps.innerHTML = '<div class="welcome-step"><div class="step-num">1</div><h4>Upload Photo</h4><p>Take a photo of your handwritten notes</p></div><div class="welcome-step"><div class="step-num">2</div><h4>Get Clean Text</h4><p>AI transcribes into organised, formatted notes</p></div><div class="welcome-step"><div class="step-num">3</div><h4>Copy or Download</h4><p>Paste into Google Docs or download as .docx</p></div>';
+                }
+            } else {
+                transcribeInputs.style.display = 'none';
+                glowupInputs.classList.add('active');
+                if (welcomeTitle) {
+                    welcomeTitle.textContent = '\u2728 Note Glow-Up';
+                    welcomeDesc.textContent = 'Paste in your rough notes, messy bullet points, or any text \u2014 and the AI will transform them into polished, professional, study-ready notes.';
+                    welcomeSteps.innerHTML = '<div class="welcome-step"><div class="step-num">1</div><h4>Paste Notes</h4><p>Drop in your rough notes or bullet points</p></div><div class="welcome-step"><div class="step-num">2</div><h4>AI Polishes</h4><p>Gets restructured, formatted, and enhanced</p></div><div class="welcome-step"><div class="step-num">3</div><h4>Export Ready</h4><p>Copy or download your pro-looking notes</p></div>';
+                }
+            }
+        }
 
         // ===== FILE HANDLING =====
         uploadZone.addEventListener('click', () => fileInput.click());
@@ -334,63 +485,156 @@
             uploadZone.style.display = 'block';
         }
 
+        // ===== ATTACH IN CHAT MODE =====
+        function triggerAttach() {
+            chatFileInput.click();
+        }
+        chatFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                if (!file.type.startsWith('image/')) {
+                    alert('Please upload an image file (JPG, PNG, WEBP).');
+                    return;
+                }
+                if (file.size > 20 * 1024 * 1024) {
+                    alert('File too large. Maximum size is 20MB.');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    selectedBase64 = ev.target.result;
+                    selectedFile = file;
+                    sendImageInChat(selectedBase64, file.name);
+                    chatFileInput.value = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        async function sendImageInChat(base64, fileName) {
+            if (isLoading) return;
+            isLoading = true;
+            const btn = document.getElementById('sendBtn');
+            btn.disabled = true;
+            chatInput.disabled = true;
+
+            addMessage('Transcribe this image: ' + fileName, true, base64);
+            showLoading();
+
+            const userMessage = {
+                role: 'user',
+                content: [
+                    { type: 'text', text: 'Please transcribe these handwritten notes into clean, organised text.' },
+                    { type: 'image_url', image_url: { url: base64, detail: 'high' } }
+                ]
+            };
+            conversationHistory.push(userMessage);
+
+            try {
+                const response = await fetch(API_BASE + '/api/chat/notes-transcriber', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ messages: conversationHistory })
+                });
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || 'Error ' + response.status);
+                }
+                const data = await response.json();
+                hideLoading();
+                lastTranscription = data.reply;
+                allTranscriptions.push(data.reply);
+                conversationHistory.push({ role: 'assistant', content: data.reply });
+                addMessage(data.reply, false);
+                saveCurrentSession();
+                downloadBar.classList.add('active');
+            } catch (error) {
+                hideLoading();
+                addMessage('Error: ' + (error.message || 'Failed to transcribe notes. Please try again.'), false);
+            } finally {
+                isLoading = false;
+                btn.disabled = false;
+                chatInput.disabled = false;
+                chatInput.focus();
+            }
+        }
+
         // ===== MESSAGING =====
         function formatResponse(text) {
-            return text
+            let html = text
                 .replace(/## (.*)/g, '<h2>$1</h2>')
                 .replace(/### (.*)/g, '<h3>$1</h3>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\n\n/g, '</p><p>')
                 .replace(/\n/g, '<br>')
-                .replace(/^\• (.*)/gm, '<li>$1</li>')
+                .replace(/^\u2022 (.*)/gm, '<li>$1</li>')
                 .replace(/^- (.*)/gm, '<li>$1</li>');
+
+            html = renderMathSymbols(html);
+            return html;
         }
 
-        function addMessage(content, isUser = false, imageUrl = null) {
-            const welcome = document.getElementById('welcomeMsg');
-            if (welcome) welcome.remove();
+        function renderMathSymbols(html) {
+            html = html.replace(/(\w)\^(\d+)/g, function(m, base, exp) {
+                var supMap = {'0':'\u2070','1':'\u00b9','2':'\u00b2','3':'\u00b3','4':'\u2074','5':'\u2075','6':'\u2076','7':'\u2077','8':'\u2078','9':'\u2079'};
+                var sup = exp.split('').map(function(c) { return supMap[c] || c; }).join('');
+                return base + sup;
+            });
+            html = html.replace(/sqrt\(([^)]+)\)/gi, '\u221a($1)');
+            return html;
+        }
 
-            const div = document.createElement('div');
-            div.className = `message ${isUser ? 'message-user' : 'message-assistant'}`;
+        function addMessage(content, isUser, imageUrl) {
+            isUser = isUser || false;
+            imageUrl = imageUrl || null;
+            var welcome = document.getElementById('welcomeMsg');
+            if (welcome) welcome.remove();
+            var modeTabs = document.getElementById('modeTabs');
+            if (modeTabs) modeTabs.style.display = 'none';
+
+            var div = document.createElement('div');
+            div.className = 'message ' + (isUser ? 'message-user' : 'message-assistant');
 
             if (isUser) {
-                let html = content.replace(/\n/g, '<br>');
+                var html = content.replace(/\n/g, '<br>');
                 if (imageUrl) {
-                    html += `<img src="${imageUrl}" alt="Uploaded notes">`;
+                    html += '<img src="' + imageUrl + '" alt="Uploaded notes">';
                 }
                 div.innerHTML = html;
             } else {
-                div.innerHTML = `<p>${formatResponse(content)}</p>`;
+                div.innerHTML = '<p>' + formatResponse(content) + '</p>';
             }
             outputContent.appendChild(div);
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
 
         function showLoading() {
-            const loadingDiv = document.createElement('div');
+            var loadingDiv = document.createElement('div');
             loadingDiv.className = 'loading';
             loadingDiv.id = 'loadingIndicator';
-            loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Transcribing notes...</span>';
+            loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Processing notes...</span>';
             outputContent.appendChild(loadingDiv);
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
 
         function hideLoading() {
-            const el = document.getElementById('loadingIndicator');
+            var el = document.getElementById('loadingIndicator');
             if (el) el.remove();
         }
 
+        // ===== TRANSCRIBE MODE =====
         async function transcribeNotes() {
             if (!selectedBase64 || isLoading) return;
             isLoading = true;
-            const btn = document.getElementById('transcribeBtn');
+            var btn = document.getElementById('transcribeBtn');
             btn.disabled = true;
             btn.textContent = 'Transcribing...';
 
             addMessage('Please transcribe these handwritten notes.', true, selectedBase64);
             showLoading();
 
-            const userMessage = {
+            var userMessage = {
                 role: 'user',
                 content: [
                     { type: 'text', text: 'Please transcribe these handwritten notes into clean, organised text.' },
@@ -400,7 +644,7 @@
             conversationHistory.push(userMessage);
 
             try {
-                const response = await fetch(`${API_BASE}/api/chat/notes-transcriber`, {
+                var response = await fetch(API_BASE + '/api/chat/notes-transcriber', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
@@ -408,25 +652,28 @@
                 });
 
                 if (!response.ok) {
-                    const errData = await response.json().catch(() => ({}));
-                    throw new Error(errData.error || `Error ${response.status}`);
+                    var errData = await response.json().catch(function() { return {}; });
+                    throw new Error(errData.error || 'Error ' + response.status);
                 }
 
-                const data = await response.json();
+                var data = await response.json();
                 hideLoading();
                 lastTranscription = data.reply;
+                allTranscriptions.push(data.reply);
                 conversationHistory.push({ role: 'assistant', content: data.reply });
                 addMessage(data.reply, false);
+                saveCurrentSession();
 
-                // Show download bar and chat input
                 uploadZone.style.display = 'none';
                 previewContainer.classList.remove('active');
+                document.getElementById('transcribeInputs').style.display = 'none';
+                document.getElementById('glowupInputs').classList.remove('active');
                 downloadBar.classList.add('active');
                 chatRow.style.display = 'flex';
                 chatInput.focus();
             } catch (error) {
                 hideLoading();
-                addMessage(`Error: ${error.message || 'Failed to transcribe notes. Please try again.'}`, false);
+                addMessage('Error: ' + (error.message || 'Failed to transcribe notes. Please try again.'), false);
             } finally {
                 isLoading = false;
                 btn.disabled = false;
@@ -434,11 +681,67 @@
             }
         }
 
+        // ===== GLOW-UP MODE =====
+        async function glowUpNotes() {
+            var text = document.getElementById('glowupTextarea').value.trim();
+            if (!text || isLoading) return;
+            isLoading = true;
+            var btn = document.getElementById('glowupBtn');
+            btn.disabled = true;
+            btn.textContent = 'Polishing...';
+
+            addMessage(text, true);
+            showLoading();
+
+            var userMessage = {
+                role: 'user',
+                content: '[NOTE GLOW-UP MODE] Please take these rough notes and transform them into polished, professional, study-ready notes with proper structure, formatting, headings, and organisation:\n\n' + text
+            };
+            conversationHistory.push(userMessage);
+
+            try {
+                var response = await fetch(API_BASE + '/api/chat/notes-transcriber', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ messages: conversationHistory })
+                });
+
+                if (!response.ok) {
+                    var errData = await response.json().catch(function() { return {}; });
+                    throw new Error(errData.error || 'Error ' + response.status);
+                }
+
+                var data = await response.json();
+                hideLoading();
+                lastTranscription = data.reply;
+                allTranscriptions.push(data.reply);
+                conversationHistory.push({ role: 'assistant', content: data.reply });
+                addMessage(data.reply, false);
+                saveCurrentSession();
+
+                document.getElementById('glowupInputs').classList.remove('active');
+                document.getElementById('transcribeInputs').style.display = 'none';
+                downloadBar.classList.add('active');
+                chatRow.style.display = 'flex';
+                chatInput.focus();
+                document.getElementById('glowupTextarea').value = '';
+            } catch (error) {
+                hideLoading();
+                addMessage('Error: ' + (error.message || 'Something went wrong. Please try again.'), false);
+            } finally {
+                isLoading = false;
+                btn.disabled = false;
+                btn.textContent = '\u2728 Glow Up My Notes';
+            }
+        }
+
+        // ===== FOLLOW-UP CHAT =====
         async function sendReply() {
-            const msg = chatInput.value.trim();
+            var msg = chatInput.value.trim();
             if (!msg || isLoading) return;
             isLoading = true;
-            const btn = document.getElementById('sendBtn');
+            var btn = document.getElementById('sendBtn');
             btn.disabled = true;
             chatInput.disabled = true;
 
@@ -449,7 +752,7 @@
             conversationHistory.push({ role: 'user', content: msg });
 
             try {
-                const response = await fetch(`${API_BASE}/api/chat/notes-transcriber`, {
+                var response = await fetch(API_BASE + '/api/chat/notes-transcriber', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
@@ -457,18 +760,20 @@
                 });
 
                 if (!response.ok) {
-                    const errData = await response.json().catch(() => ({}));
-                    throw new Error(errData.error || `Error ${response.status}`);
+                    var errData = await response.json().catch(function() { return {}; });
+                    throw new Error(errData.error || 'Error ' + response.status);
                 }
 
-                const data = await response.json();
+                var data = await response.json();
                 hideLoading();
-                lastTranscription = data.reply; // Update with latest version
+                lastTranscription = data.reply;
+                allTranscriptions.push(data.reply);
                 conversationHistory.push({ role: 'assistant', content: data.reply });
                 addMessage(data.reply, false);
+                saveCurrentSession();
             } catch (error) {
                 hideLoading();
-                addMessage(`Error: ${error.message || 'Something went wrong. Please try again.'}`, false);
+                addMessage('Error: ' + (error.message || 'Something went wrong. Please try again.'), false);
             } finally {
                 isLoading = false;
                 btn.disabled = false;
@@ -477,13 +782,121 @@
             }
         }
 
-        // Enter key to send
-        chatInput.addEventListener('keydown', (e) => {
+        chatInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 sendReply();
             }
         });
+
+        // ===== CHAT HISTORY (localStorage) =====
+        var HISTORY_KEY = 'sd_notes_history';
+        var currentSessionId = null;
+
+        function getHistory() {
+            try {
+                return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+            } catch(e) { return []; }
+        }
+
+        function saveCurrentSession() {
+            if (!conversationHistory.length) return;
+            var history = getHistory();
+            var firstAssistant = conversationHistory.find(function(m) { return m.role === 'assistant'; });
+            var preview = firstAssistant ? (typeof firstAssistant.content === 'string' ? firstAssistant.content.substring(0, 120) : 'Transcribed notes') : 'Transcribed notes';
+
+            if (currentSessionId) {
+                var idx = history.findIndex(function(h) { return h.id === currentSessionId; });
+                if (idx !== -1) {
+                    history[idx].messages = conversationHistory.map(function(m) {
+                        return { role: m.role, content: typeof m.content === 'string' ? m.content : '[Image + text]' };
+                    });
+                    history[idx].preview = preview;
+                }
+            } else {
+                currentSessionId = Date.now().toString();
+                var title = selectedFile ? selectedFile.name : (currentMode === 'glowup' ? 'Note Glow-Up' : 'Notes Session');
+                history.unshift({
+                    id: currentSessionId,
+                    title: title,
+                    date: new Date().toISOString(),
+                    preview: preview,
+                    messages: conversationHistory.map(function(m) {
+                        return { role: m.role, content: typeof m.content === 'string' ? m.content : '[Image + text]' };
+                    })
+                });
+            }
+
+            while (history.length > 20) history.pop();
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        }
+
+        function openHistory() {
+            renderHistoryList();
+            document.getElementById('historyPanel').classList.add('open');
+            document.getElementById('historyOverlay').classList.add('open');
+        }
+
+        function closeHistory() {
+            document.getElementById('historyPanel').classList.remove('open');
+            document.getElementById('historyOverlay').classList.remove('open');
+        }
+
+        function renderHistoryList() {
+            var list = document.getElementById('historyList');
+            var history = getHistory();
+
+            if (history.length === 0) {
+                list.innerHTML = '<div class="history-empty">No notes sessions yet.<br>Transcribe or glow up some notes to get started!</div>';
+                return;
+            }
+
+            list.innerHTML = history.map(function(h) {
+                return '<div class="history-item" onclick="loadSession(\'' + h.id + '\')">' +
+                    '<div class="history-item-title">\ud83d\udcdd ' + h.title + '</div>' +
+                    '<div class="history-item-date">' + new Date(h.date).toLocaleDateString() + ' ' + new Date(h.date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) + '</div>' +
+                    '<div class="history-item-preview">' + h.preview + '</div>' +
+                    '<div class="history-item-actions"><button class="history-delete" onclick="event.stopPropagation(); deleteSession(\'' + h.id + '\')">Delete</button></div>' +
+                    '</div>';
+            }).join('');
+        }
+
+        function loadSession(sessionId) {
+            var history = getHistory();
+            var session = history.find(function(h) { return h.id === sessionId; });
+            if (!session) return;
+
+            closeHistory();
+            currentSessionId = sessionId;
+            conversationHistory = session.messages.map(function(m) { return { role: m.role, content: m.content }; });
+
+            outputContent.innerHTML = '';
+            session.messages.forEach(function(m) {
+                addMessage(m.content, m.role === 'user');
+            });
+
+            var reversed = session.messages.slice().reverse();
+            var lastAssistant = reversed.find(function(m) { return m.role === 'assistant'; });
+            if (lastAssistant) lastTranscription = lastAssistant.content;
+
+            document.getElementById('transcribeInputs').style.display = 'none';
+            document.getElementById('glowupInputs').classList.remove('active');
+            downloadBar.classList.add('active');
+            chatRow.style.display = 'flex';
+            chatInput.focus();
+        }
+
+        function deleteSession(sessionId) {
+            var history = getHistory();
+            history = history.filter(function(h) { return h.id !== sessionId; });
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            if (currentSessionId === sessionId) {
+                currentSessionId = null;
+                conversationHistory = [];
+                location.reload();
+            }
+            renderHistoryList();
+        }
 
         // ===== DOWNLOAD / COPY FUNCTIONS =====
 
@@ -494,22 +907,26 @@
                 .replace(/\*\*(.*?)\*\*/g, '$1')
                 .replace(/\*(.*?)\*/g, '$1')
                 .replace(/---/g, '')
-                .replace(/^\s*[-•] /gm, '  • ')
+                .replace(/^\s*[-\u2022] /gm, '  \u2022 ')
                 .trim();
+        }
+
+        function getCombinedNotes() {
+            if (allTranscriptions.length === 0) return lastTranscription;
+            return allTranscriptions.join('\n\n---\n\n');
         }
 
         async function copyToClipboard() {
             if (!lastTranscription) return;
             try {
-                await navigator.clipboard.writeText(stripMarkdown(lastTranscription));
-                const btn = event.target.closest('.download-btn');
-                const original = btn.innerHTML;
-                btn.innerHTML = '<span class="dl-icon">✅</span> Copied!';
-                setTimeout(() => { btn.innerHTML = original; }, 2000);
+                await navigator.clipboard.writeText(stripMarkdown(getCombinedNotes()));
+                var btn = event.target.closest('.download-btn');
+                var original = btn.innerHTML;
+                btn.innerHTML = '<span class="dl-icon">\u2705</span> Copied!';
+                setTimeout(function() { btn.innerHTML = original; }, 2000);
             } catch (e) {
-                // Fallback
-                const ta = document.createElement('textarea');
-                ta.value = stripMarkdown(lastTranscription);
+                var ta = document.createElement('textarea');
+                ta.value = stripMarkdown(getCombinedNotes());
                 document.body.appendChild(ta);
                 ta.select();
                 document.execCommand('copy');
@@ -520,12 +937,12 @@
 
         function downloadTxt() {
             if (!lastTranscription) return;
-            const text = stripMarkdown(lastTranscription);
-            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
+            var text = stripMarkdown(getCombinedNotes());
+            var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
             a.href = url;
-            a.download = 'transcribed-notes.txt';
+            a.download = 'notes.txt';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -534,91 +951,48 @@
 
         function downloadDocx() {
             if (!lastTranscription) return;
-            // Generate a simple .docx using Office Open XML
-            const text = lastTranscription;
-            const lines = text.split('\n');
-            let bodyXml = '';
+            var text = getCombinedNotes();
+            var lines = text.split('\n');
+            var bodyXml = '';
 
-            for (const line of lines) {
-                const trimmed = line.trim();
+            for (var i = 0; i < lines.length; i++) {
+                var trimmed = lines[i].trim();
                 if (!trimmed || trimmed === '---') continue;
 
                 if (trimmed.startsWith('## ')) {
-                    // Heading 2
-                    const content = trimmed.replace(/^## /, '').replace(/\*\*/g, '');
-                    bodyXml += `<w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>${escapeXml(content)}</w:t></w:r></w:p>`;
+                    var content = trimmed.replace(/^## /, '').replace(/\*\*/g, '');
+                    bodyXml += '<w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>' + escapeXml(content) + '</w:t></w:r></w:p>';
                 } else if (trimmed.startsWith('### ')) {
-                    // Heading 3
-                    const content = trimmed.replace(/^### /, '').replace(/\*\*/g, '');
-                    bodyXml += `<w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>${escapeXml(content)}</w:t></w:r></w:p>`;
-                } else if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
-                    // Bullet point
-                    const content = trimmed.replace(/^[-•] /, '').replace(/\*\*(.*?)\*\*/g, '$1');
-                    bodyXml += `<w:p><w:pPr><w:pStyle w:val="ListBullet"/></w:pPr><w:r><w:t>${escapeXml(content)}</w:t></w:r></w:p>`;
+                    var content = trimmed.replace(/^### /, '').replace(/\*\*/g, '');
+                    bodyXml += '<w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>' + escapeXml(content) + '</w:t></w:r></w:p>';
+                } else if (trimmed.startsWith('- ') || trimmed.startsWith('\u2022 ')) {
+                    var content = trimmed.replace(/^[-\u2022] /, '').replace(/\*\*(.*?)\*\*/g, '$1');
+                    bodyXml += '<w:p><w:pPr><w:pStyle w:val="ListBullet"/></w:pPr><w:r><w:t>' + escapeXml(content) + '</w:t></w:r></w:p>';
                 } else if (/^\*\*(.+?)\*\*/.test(trimmed) && trimmed.endsWith('**')) {
-                    // Bold-only line (like "Subject: X")
-                    const content = trimmed.replace(/\*\*/g, '');
-                    bodyXml += `<w:p><w:r><w:rPr><w:b/></w:rPr><w:t>${escapeXml(content)}</w:t></w:r></w:p>`;
+                    var content = trimmed.replace(/\*\*/g, '');
+                    bodyXml += '<w:p><w:r><w:rPr><w:b/></w:rPr><w:t>' + escapeXml(content) + '</w:t></w:r></w:p>';
                 } else {
-                    // Normal paragraph - handle inline bold
-                    const parts = trimmed.split(/(\*\*.*?\*\*)/g);
-                    let runs = '';
-                    for (const part of parts) {
+                    var parts = trimmed.split(/(\*\*.*?\*\*)/g);
+                    var runs = '';
+                    for (var j = 0; j < parts.length; j++) {
+                        var part = parts[j];
                         if (part.startsWith('**') && part.endsWith('**')) {
-                            const boldText = part.slice(2, -2);
-                            runs += `<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">${escapeXml(boldText)}</w:t></w:r>`;
+                            var boldText = part.slice(2, -2);
+                            runs += '<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">' + escapeXml(boldText) + '</w:t></w:r>';
                         } else if (part) {
-                            runs += `<w:r><w:t xml:space="preserve">${escapeXml(part)}</w:t></w:r>`;
+                            runs += '<w:r><w:t xml:space="preserve">' + escapeXml(part) + '</w:t></w:r>';
                         }
                     }
-                    bodyXml += `<w:p>${runs}</w:p>`;
+                    bodyXml += '<w:p>' + runs + '</w:p>';
                 }
             }
 
-            // Minimal .docx structure (Office Open XML)
-            const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
-  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
-  <Default Extension="xml" ContentType="application/xml"/>
-  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
-  <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
-</Types>`;
+            var contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>';
+            var rels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
+            var wordRels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>';
+            var styles = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:pPr><w:spacing w:before="240" w:after="120"/></w:pPr><w:rPr><w:b/><w:sz w:val="32"/><w:color w:val="2E74B5"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading3"><w:name w:val="heading 3"/><w:pPr><w:spacing w:before="200" w:after="80"/></w:pPr><w:rPr><w:b/><w:sz w:val="26"/><w:color w:val="2E74B5"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="ListBullet"><w:name w:val="List Bullet"/><w:pPr><w:ind w:left="720"/><w:spacing w:after="60"/></w:pPr></w:style></w:styles>';
+            var document_xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' + bodyXml + '</w:body></w:document>';
 
-            const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
-</Relationships>`;
-
-            const wordRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
-</Relationships>`;
-
-            const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-  <w:style w:type="paragraph" w:styleId="Heading2">
-    <w:name w:val="heading 2"/>
-    <w:pPr><w:spacing w:before="240" w:after="120"/></w:pPr>
-    <w:rPr><w:b/><w:sz w:val="32"/><w:color w:val="2E74B5"/></w:rPr>
-  </w:style>
-  <w:style w:type="paragraph" w:styleId="Heading3">
-    <w:name w:val="heading 3"/>
-    <w:pPr><w:spacing w:before="200" w:after="80"/></w:pPr>
-    <w:rPr><w:b/><w:sz w:val="26"/><w:color w:val="2E74B5"/></w:rPr>
-  </w:style>
-  <w:style w:type="paragraph" w:styleId="ListBullet">
-    <w:name w:val="List Bullet"/>
-    <w:pPr><w:ind w:left="720"/><w:spacing w:after="60"/></w:pPr>
-  </w:style>
-</w:styles>`;
-
-            const document_xml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-  <w:body>${bodyXml}</w:body>
-</w:document>`;
-
-            // Build the zip using JSZip-like manual approach (minimal zip)
-            // We'll use a simple approach: create the docx as a zip in the browser
             buildAndDownloadDocx({
                 '[Content_Types].xml': contentTypes,
                 '_rels/.rels': rels,
@@ -632,121 +1006,108 @@
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
         }
 
-        // Minimal zip builder for .docx (no external deps)
         function buildAndDownloadDocx(files) {
-            const encoder = new TextEncoder();
-            const entries = [];
-            let offset = 0;
+            var encoder = new TextEncoder();
+            var entries = [];
+            var offset = 0;
 
-            // Build local file entries
-            for (const [name, content] of Object.entries(files)) {
-                const nameBytes = encoder.encode(name);
-                const contentBytes = encoder.encode(content);
-
-                // Local file header
-                const header = new Uint8Array(30 + nameBytes.length);
-                const view = new DataView(header.buffer);
-                view.setUint32(0, 0x04034b50, true); // signature
-                view.setUint16(4, 20, true); // version needed
-                view.setUint16(6, 0, true); // flags
-                view.setUint16(8, 0, true); // compression (store)
-                view.setUint16(10, 0, true); // mod time
-                view.setUint16(12, 0, true); // mod date
-                view.setUint32(14, crc32(contentBytes), true); // crc32
-                view.setUint32(18, contentBytes.length, true); // compressed size
-                view.setUint32(22, contentBytes.length, true); // uncompressed size
-                view.setUint16(26, nameBytes.length, true); // name length
-                view.setUint16(28, 0, true); // extra length
+            var keys = Object.keys(files);
+            for (var k = 0; k < keys.length; k++) {
+                var name = keys[k];
+                var content = files[name];
+                var nameBytes = encoder.encode(name);
+                var contentBytes = encoder.encode(content);
+                var header = new Uint8Array(30 + nameBytes.length);
+                var view = new DataView(header.buffer);
+                view.setUint32(0, 0x04034b50, true);
+                view.setUint16(4, 20, true); view.setUint16(6, 0, true);
+                view.setUint16(8, 0, true); view.setUint16(10, 0, true);
+                view.setUint16(12, 0, true);
+                view.setUint32(14, crc32(contentBytes), true);
+                view.setUint32(18, contentBytes.length, true);
+                view.setUint32(22, contentBytes.length, true);
+                view.setUint16(26, nameBytes.length, true);
+                view.setUint16(28, 0, true);
                 header.set(nameBytes, 30);
-
-                entries.push({ name: nameBytes, content: contentBytes, header, offset });
+                entries.push({ name: nameBytes, content: contentBytes, header: header, offset: offset });
                 offset += header.length + contentBytes.length;
             }
 
-            // Build central directory
-            const centralDir = [];
-            let cdSize = 0;
-            for (const entry of entries) {
-                const cd = new Uint8Array(46 + entry.name.length);
-                const cdView = new DataView(cd.buffer);
-                cdView.setUint32(0, 0x02014b50, true); // signature
-                cdView.setUint16(4, 20, true); // version made by
-                cdView.setUint16(6, 20, true); // version needed
-                cdView.setUint16(8, 0, true); // flags
-                cdView.setUint16(10, 0, true); // compression
-                cdView.setUint16(12, 0, true); // mod time
-                cdView.setUint16(14, 0, true); // mod date
-                cdView.setUint32(16, crc32(entry.content), true); // crc32
-                cdView.setUint32(20, entry.content.length, true); // compressed size
-                cdView.setUint32(24, entry.content.length, true); // uncompressed size
-                cdView.setUint16(28, entry.name.length, true); // name length
-                cdView.setUint16(30, 0, true); // extra length
-                cdView.setUint16(32, 0, true); // comment length
-                cdView.setUint16(34, 0, true); // disk number
-                cdView.setUint16(36, 0, true); // internal attrs
-                cdView.setUint32(38, 0, true); // external attrs
-                cdView.setUint32(42, entry.offset, true); // local header offset
+            var centralDir = [];
+            var cdSize = 0;
+            for (var i = 0; i < entries.length; i++) {
+                var entry = entries[i];
+                var cd = new Uint8Array(46 + entry.name.length);
+                var cdView = new DataView(cd.buffer);
+                cdView.setUint32(0, 0x02014b50, true);
+                cdView.setUint16(4, 20, true); cdView.setUint16(6, 20, true);
+                cdView.setUint16(8, 0, true); cdView.setUint16(10, 0, true);
+                cdView.setUint16(12, 0, true); cdView.setUint16(14, 0, true);
+                cdView.setUint32(16, crc32(entry.content), true);
+                cdView.setUint32(20, entry.content.length, true);
+                cdView.setUint32(24, entry.content.length, true);
+                cdView.setUint16(28, entry.name.length, true);
+                cdView.setUint16(30, 0, true); cdView.setUint16(32, 0, true);
+                cdView.setUint16(34, 0, true); cdView.setUint16(36, 0, true);
+                cdView.setUint32(38, 0, true);
+                cdView.setUint32(42, entry.offset, true);
                 cd.set(entry.name, 46);
                 centralDir.push(cd);
                 cdSize += cd.length;
             }
 
-            // End of central directory
-            const eocd = new Uint8Array(22);
-            const eocdView = new DataView(eocd.buffer);
-            eocdView.setUint32(0, 0x06054b50, true); // signature
-            eocdView.setUint16(4, 0, true); // disk number
-            eocdView.setUint16(6, 0, true); // cd disk number
-            eocdView.setUint16(8, entries.length, true); // entries on this disk
-            eocdView.setUint16(10, entries.length, true); // total entries
-            eocdView.setUint32(12, cdSize, true); // cd size
-            eocdView.setUint32(16, offset, true); // cd offset
-            eocdView.setUint16(20, 0, true); // comment length
+            var eocd = new Uint8Array(22);
+            var eocdView = new DataView(eocd.buffer);
+            eocdView.setUint32(0, 0x06054b50, true);
+            eocdView.setUint16(4, 0, true); eocdView.setUint16(6, 0, true);
+            eocdView.setUint16(8, entries.length, true);
+            eocdView.setUint16(10, entries.length, true);
+            eocdView.setUint32(12, cdSize, true);
+            eocdView.setUint32(16, offset, true);
+            eocdView.setUint16(20, 0, true);
 
-            // Combine everything
-            const totalSize = offset + cdSize + 22;
-            const result = new Uint8Array(totalSize);
-            let pos = 0;
-            for (const entry of entries) {
-                result.set(entry.header, pos);
-                pos += entry.header.length;
-                result.set(entry.content, pos);
-                pos += entry.content.length;
+            var totalSize = offset + cdSize + 22;
+            var result = new Uint8Array(totalSize);
+            var pos = 0;
+            for (var i = 0; i < entries.length; i++) {
+                result.set(entries[i].header, pos);
+                pos += entries[i].header.length;
+                result.set(entries[i].content, pos);
+                pos += entries[i].content.length;
             }
-            for (const cd of centralDir) {
-                result.set(cd, pos);
-                pos += cd.length;
+            for (var i = 0; i < centralDir.length; i++) {
+                result.set(centralDir[i], pos);
+                pos += centralDir[i].length;
             }
             result.set(eocd, pos);
 
-            const blob = new Blob([result], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
+            var blob = new Blob([result], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
             a.href = url;
-            a.download = 'transcribed-notes.docx';
+            a.download = 'notes.docx';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
 
-        // CRC32 implementation
         function crc32(bytes) {
-            let crc = 0xFFFFFFFF;
-            const table = crc32Table();
-            for (let i = 0; i < bytes.length; i++) {
+            var crc = 0xFFFFFFFF;
+            var table = crc32Table();
+            for (var i = 0; i < bytes.length; i++) {
                 crc = (crc >>> 8) ^ table[(crc ^ bytes[i]) & 0xFF];
             }
             return (crc ^ 0xFFFFFFFF) >>> 0;
         }
 
-        let _crc32Table = null;
+        var _crc32Table = null;
         function crc32Table() {
             if (_crc32Table) return _crc32Table;
             _crc32Table = new Uint32Array(256);
-            for (let i = 0; i < 256; i++) {
-                let c = i;
-                for (let j = 0; j < 8; j++) {
+            for (var i = 0; i < 256; i++) {
+                var c = i;
+                for (var j = 0; j < 8; j++) {
                     c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
                 }
                 _crc32Table[i] = c;
@@ -757,13 +1118,13 @@
         // ===== AUTH CHECK =====
         async function checkAuth() {
             try {
-                const res = await fetch(`${API_BASE}/api/subscription`, { credentials: 'include' });
+                var res = await fetch(API_BASE + '/api/subscription', { credentials: 'include' });
                 if (!res.ok) {
                     window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
                     return;
                 }
-                const data = await res.json();
-                const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
+                var data = await res.json();
+                var hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
                 if (!hasAccess) {
                     window.location.href = 'index.html';
                     return;

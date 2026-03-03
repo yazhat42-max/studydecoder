@@ -77,6 +77,8 @@
         .message-assistant table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
         .message-assistant th, .message-assistant td { border: 1px solid #2f3336; padding: 8px 12px; text-align: left; }
         .message-assistant th { background: #1a2634; color: #4f8cff; font-weight: 600; }
+        .message-assistant sub { font-size: 0.75em; vertical-align: sub; }
+        .message-assistant sup { font-size: 0.75em; vertical-align: super; }
 
         .loading { display: flex; align-items: center; gap: 8px; color: #71767b; padding: 16px; }
         .loading-dots { display: flex; gap: 4px; }
@@ -361,7 +363,7 @@
 
         // ===== MESSAGING =====
         function formatResponse(text) {
-            return text
+            let html = text
                 .replace(/## (.*)/g, '<h2>$1</h2>')
                 .replace(/### (.*)/g, '<h3>$1</h3>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -369,6 +371,20 @@
                 .replace(/\n/g, '<br>')
                 .replace(/^\• (.*)/gm, '<li>$1</li>')
                 .replace(/^- (.*)/gm, '<li>$1</li>');
+            html = renderMathSymbols(html);
+            return html;
+        }
+
+        function renderMathSymbols(html) {
+            // Convert x^2 style to Unicode superscripts
+            html = html.replace(/(\w)\^(\d+)/g, function(m, base, exp) {
+                var supMap = {'0':'\u2070','1':'\u00b9','2':'\u00b2','3':'\u00b3','4':'\u2074','5':'\u2075','6':'\u2076','7':'\u2077','8':'\u2078','9':'\u2079'};
+                var sup = exp.split('').map(function(c) { return supMap[c] || c; }).join('');
+                return base + sup;
+            });
+            // Convert sqrt() to √
+            html = html.replace(/sqrt\(([^)]+)\)/gi, '\u221a($1)');
+            return html;
         }
 
         function addMessage(content, isUser = false, imageUrl = null) {
