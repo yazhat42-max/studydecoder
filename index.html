@@ -1140,8 +1140,8 @@
         
         // demo removed from UI
         
-        // Check if user has any access (subscribed OR has acknowledged free tier)
-        const hasAccess = user.subscribed || user.freeAcknowledged;
+        // Check if user has any access (subscribed OR has acknowledged free tier OR completed onboarding)
+        const hasAccess = user.subscribed || user.freeAcknowledged || user.preferences?.onboarded;
         
         // Hero
         document.getElementById('heroSignInBtn').style.display = 'none';
@@ -1498,8 +1498,8 @@
                 currentUser.preferences.onboarded = true;
             }
 
-            // Cache to localStorage for surviving server restarts
-            try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: currentUser?.email, name: currentUser?.name, preferences: { level: onboardSelectedLevel, subjects: selectedSubjects, onboarded: true }, freeAcknowledged: currentUser?.freeAcknowledged || false, cachedAt: Date.now() })); } catch(e) {}
+            // Cache to localStorage for surviving server restarts (onboarding = free plan acknowledgment)
+            try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: currentUser?.email, name: currentUser?.name, preferences: { level: onboardSelectedLevel, subjects: selectedSubjects, onboarded: true }, freeAcknowledged: true, cachedAt: Date.now() })); } catch(e) {}
 
             document.getElementById('onboardingModal').style.display = 'none';
         } catch (e) {
@@ -1522,8 +1522,8 @@
                 if (!currentUser.preferences) currentUser.preferences = {};
                 currentUser.preferences.onboarded = true;
             }
-            // Cache to localStorage
-            try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: currentUser?.email, name: currentUser?.name, preferences: { ...(currentUser?.preferences || {}), onboarded: true }, freeAcknowledged: currentUser?.freeAcknowledged || false, cachedAt: Date.now() })); } catch(e) {}
+            // Cache to localStorage (onboarding = free plan acknowledgment)
+            try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: currentUser?.email, name: currentUser?.name, preferences: { ...(currentUser?.preferences || {}), onboarded: true }, freeAcknowledged: true, cachedAt: Date.now() })); } catch(e) {}
         } catch (e) { /* silent */ }
         document.getElementById('onboardingModal').style.display = 'none';
     }

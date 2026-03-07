@@ -1180,7 +1180,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 const data = await res.json();
                 
                 // Check if has access (owner, lifetime, og_tester, subscribed, or free tier acknowledged)
-                const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
+                const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged || data.preferences?.onboarded;
                 if (!hasAccess) {
                     window.location.href = '/index.html';
                     return;

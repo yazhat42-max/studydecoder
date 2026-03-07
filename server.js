@@ -1585,6 +1585,10 @@ app.put('/api/user/preferences', requireAuth, express.json(), (req, res) => {
     }
     if (onboarded !== undefined) {
         user.preferences.onboarded = !!onboarded;
+        // Completing onboarding counts as acknowledging the free tier
+        if (user.preferences.onboarded) {
+            user.freeAcknowledged = true;
+        }
     }
 
     scheduleSave();

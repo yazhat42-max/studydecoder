@@ -540,7 +540,7 @@
                 const data = await res.json();
                 
                 // Allow access if: owner, lifetime, og_tester, subscribed, OR acknowledged free tier
-                if (data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged) {
+                if (data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged || data.preferences?.onboarded) {
                     document.getElementById('loadingOverlay').classList.add('hidden');
                     document.getElementById('backBtnContainer').classList.remove('hidden');
                     document.getElementById('mainContent').classList.remove('hidden');

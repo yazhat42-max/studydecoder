@@ -86,8 +86,8 @@ const StudyDecoderAuth = {
             this.cacheUserData(user);
             
             // Check subscription if required
-            // Allow through if subscribed OR if free tier acknowledged
-            if (requireSubscription && !user.subscribed && !user.freeAcknowledged) {
+            // Allow through if subscribed OR if free tier acknowledged OR if onboarded
+            if (requireSubscription && !user.subscribed && !user.freeAcknowledged && !user.preferences?.onboarded) {
                 if (onNoAccess) {
                     onNoAccess(user);
                 }

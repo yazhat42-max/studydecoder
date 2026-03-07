@@ -1155,7 +1155,7 @@ The AI will transform them into polished, professional-looking notes with proper
                     return;
                 }
                 var data = await res.json();
-                var hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged;
+                var hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged || (data.preferences && data.preferences.onboarded);
                 if (!hasAccess) {
                     window.location.href = 'index.html';
                     return;
