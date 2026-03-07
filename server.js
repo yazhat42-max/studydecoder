@@ -133,8 +133,12 @@ const LIFETIME_ACCESS_EMAILS = [
 
 // ==================== FREE TIER CONFIGURATION ====================
 const FREE_TIER_CONFIG = {
-    usesPerBotPerDay: 5,     // Uses per bot per day for free users
-    enabled: true            // Enable/disable free tier
+    totalUsesPerDay: 10,         // Total uses across ALL bots per day
+    specialLimits: {
+        'worksheet': 1,          // 1 worksheet decode per day
+        'notes-transcriber': 1   // 1 notes transcription per day
+    },
+    enabled: true
 };
 
 // ==================== AI QUALITY TIERS ====================
@@ -161,8 +165,8 @@ const AI_QUALITY_TIERS = {
         model: 'gpt-4o-mini'
     },
     free: {
-        maxTokens: 2000,      // Limited output
-        temperature: 0.6,     // Less creative
+        maxTokens: 1500,      // Limited output
+        temperature: 0.5,     // Less creative
         model: 'gpt-4o-mini'
     }
 };
@@ -177,48 +181,81 @@ function getAISettings(user) {
     return AI_QUALITY_TIERS.free;
 }
 
-// Track daily usage for free tier PER BOT (resets at midnight UTC)
-const freeUsageTracker = new Map(); // Map<date_userId_botType, count>
+// Track daily usage for free tier — GLOBAL total + per-bot specials (resets at midnight UTC)
+const freeUsageTracker = new Map();
 
-function getFreeTierUsageKey(userId, botType) {
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-    return `${today}_${userId}_${botType}`;
+function _getToday() {
+    return new Date().toISOString().split('T')[0];
 }
 
-function getFreeTierUsage(userId, botType) {
-    const key = getFreeTierUsageKey(userId, botType);
+function _getKey(userId, suffix) {
+    return `${_getToday()}_${userId}_${suffix}`;
+}
+
+function _getCount(key) {
     return freeUsageTracker.get(key) || 0;
 }
 
+function getFreeTierUsage(userId, botType) {
+    return _getCount(_getKey(userId, botType));
+}
+
+function getTotalFreeTierUsage(userId) {
+    return _getCount(_getKey(userId, '_total'));
+}
+
 function incrementFreeTierUsage(userId, botType) {
-    const key = getFreeTierUsageKey(userId, botType);
-    const current = freeUsageTracker.get(key) || 0;
-    freeUsageTracker.set(key, current + 1);
+    const today = _getToday();
+    // Increment per-bot counter
+    const botKey = _getKey(userId, botType);
+    freeUsageTracker.set(botKey, _getCount(botKey) + 1);
+    // Increment global total counter
+    const totalKey = _getKey(userId, '_total');
+    freeUsageTracker.set(totalKey, _getCount(totalKey) + 1);
     
-    // Clean up old entries (older than today)
-    const today = new Date().toISOString().split('T')[0];
+    // Clean up old entries
     for (const [k] of freeUsageTracker) {
-        if (!k.startsWith(today)) {
-            freeUsageTracker.delete(k);
-        }
+        if (!k.startsWith(today)) freeUsageTracker.delete(k);
     }
     
-    return current + 1;
+    return _getCount(totalKey);
 }
 
 function canUseFreeTier(userId, botType) {
     if (!FREE_TIER_CONFIG.enabled) return false;
-    return getFreeTierUsage(userId, botType) < FREE_TIER_CONFIG.usesPerBotPerDay;
+    // Check special per-bot limit (worksheet, notes-transcriber)
+    const specialLimit = FREE_TIER_CONFIG.specialLimits[botType];
+    if (specialLimit !== undefined) {
+        if (getFreeTierUsage(userId, botType) >= specialLimit) return false;
+    }
+    // Check global total
+    return getTotalFreeTierUsage(userId) < FREE_TIER_CONFIG.totalUsesPerDay;
 }
 
 function getFreeTierRemaining(userId, botType) {
-    const used = getFreeTierUsage(userId, botType);
-    return Math.max(0, FREE_TIER_CONFIG.usesPerBotPerDay - used);
+    const totalUsed = getTotalFreeTierUsage(userId);
+    return Math.max(0, FREE_TIER_CONFIG.totalUsesPerDay - totalUsed);
+}
+
+function getFreeTierStatus(userId, botType) {
+    const totalUsed = getTotalFreeTierUsage(userId);
+    const totalRemaining = Math.max(0, FREE_TIER_CONFIG.totalUsesPerDay - totalUsed);
+    const specialLimit = FREE_TIER_CONFIG.specialLimits[botType];
+    const botUsed = getFreeTierUsage(userId, botType);
+    
+    let hitSpecialLimit = false;
+    let specialRemaining = null;
+    if (specialLimit !== undefined) {
+        hitSpecialLimit = botUsed >= specialLimit;
+        specialRemaining = Math.max(0, specialLimit - botUsed);
+    }
+    
+    return { totalUsed, totalRemaining, botUsed, hitSpecialLimit, specialRemaining };
 }
 
 // Get all bot usage for a user (for status display)
 function getAllFreeTierUsage(userId) {
-    const today = new Date().toISOString().split('T')[0];
+    const today = _getToday();
     const usage = {};
     for (const [key, count] of freeUsageTracker) {
         if (key.startsWith(today + '_' + userId + '_')) {
@@ -1488,8 +1525,11 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         preferences: user.preferences || {},
         freeTier: !hasFull ? {
             enabled: FREE_TIER_CONFIG.enabled,
-            usesPerBotPerDay: FREE_TIER_CONFIG.usesPerBotPerDay,
-            usage: getAllFreeTierUsage(req.session.userId)
+            totalUsesPerDay: FREE_TIER_CONFIG.totalUsesPerDay,
+            specialLimits: FREE_TIER_CONFIG.specialLimits,
+            usage: getAllFreeTierUsage(req.session.userId),
+            totalUsed: getTotalFreeTierUsage(req.session.userId),
+            totalRemaining: Math.max(0, FREE_TIER_CONFIG.totalUsesPerDay - getTotalFreeTierUsage(req.session.userId))
         } : null
     });
 });
@@ -2834,11 +2874,11 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
     
     if (!hasFull && !canUseFree) {
         return res.status(403).json({ 
-            error: 'Daily limit reached for subject advisor',
-            message: `You've used all ${FREE_TIER_CONFIG.usesPerBotPerDay} free questions for subject advisor today. Try another tool or subscribe for unlimited access!`,
+            error: 'Daily limit reached',
             freeTierExhausted: true,
             remaining: 0,
-            botType: 'subject-advisor'
+            botType: 'subject-advisor',
+            limitType: 'global'
         });
     }
     
@@ -2864,19 +2904,21 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
     
     try {
         // GPT-5 models use max_completion_tokens instead of max_tokens
-        const tokenParam = aiSettings.model.startsWith('gpt-5') ? 'max_completion_tokens' : 'max_tokens';
+        const isGpt5 = aiSettings.model.startsWith('gpt-5');
+        const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+        const requestBody = {
+            model: aiSettings.model,
+            messages,
+            [tokenParam]: Math.min(aiSettings.maxTokens, 3000)
+        };
+        if (!isGpt5) requestBody.temperature = aiSettings.temperature;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
-            body: JSON.stringify({
-                model: aiSettings.model,
-                messages,
-                [tokenParam]: Math.min(aiSettings.maxTokens, 3000), // Cap at 3000 for advisor
-                temperature: aiSettings.temperature
-            })
+            body: JSON.stringify(requestBody)
         });
         
         if (!response.ok) {
@@ -3015,6 +3057,42 @@ FOR SCIENCE:
 ✅ Most questions are 2-5 marks
 
 You are an expert HSC examination question writer with deep knowledge of NSW NESA marking criteria.
+
+🚨 CRITICAL: USE ACTUAL HSC EXAM LANGUAGE 🚨
+Your questions MUST read like they were copied from a real HSC past paper. Follow these rules:
+
+1. **Use NESA command/directive verbs precisely** — each verb has a specific meaning:
+   - 1-2 marks: identify, state, define, name, outline, describe (briefly)
+   - 3-4 marks: describe, explain, outline, compare, contrast, calculate (with working)
+   - 5-6 marks: explain, analyse, assess, discuss, compare and contrast
+   - 7-9 marks: evaluate, assess, analyse, discuss, justify
+   - 20 marks: evaluate, to what extent, analyse, critically assess
+
+2. **Match the EXACT phrasing style of real HSC papers:**
+   ❌ WRONG (textbook): "Explain how molecular clocks are used to estimate divergence times between species."
+   ✅ RIGHT (HSC): "Using a named example, explain how the use of molecular clocks has contributed to understanding evolutionary relationships." [4 marks]
+   
+   ❌ WRONG: "Outline the sequence of events that can lead to speciation by allopatric mechanisms."
+   ✅ RIGHT: "With reference to a named example, outline the role of isolation in the process of speciation." [4 marks]
+
+   ❌ WRONG: "Describe two assumptions underlying molecular clock analyses."
+   ✅ RIGHT: "Assess the reliability of molecular clocks as a tool for determining evolutionary relationships." [6 marks]
+
+3. **HSC question patterns to USE:**
+   - "With reference to..." / "Using a named example..."
+   - "Account for..." / "Justify..."
+   - "Assess the impact of..." / "Evaluate the effectiveness of..."
+   - "Using the information provided, explain..." (for stimulus-based)
+   - "Compare and contrast..." / "Distinguish between..."
+   - Multi-part questions with (a), (b), (c) sub-parts at higher marks
+
+4. **Include stimulus material where appropriate** (like real HSC papers do):
+   - Data tables, graphs descriptions, diagrams, quotes, source extracts
+   - Use > blockquote for stimulus material
+   - Reference the stimulus in the question: "Using the data in the table above..."
+
+5. **NEVER write questions that sound like a textbook review exercise.** 
+   HSC questions test APPLICATION and ANALYSIS, not just recall (except 1-mark questions).
 
 ABSOLUTE NON-NEGOTIABLE RULES:
 🚫 You NEVER answer exam questions
@@ -3168,11 +3246,19 @@ MODE 1: STANDARD MODE
 When user sends [STANDARD MODE]:
 Generate practice questions based on specified parameters.
 
+⚠️ EVERY question MUST sound like it came from an actual HSC exam paper.
+- Use proper NESA directive verbs matching the mark value
+- Include stimulus material (data, quotes, diagrams described) for 4+ mark questions where appropriate
+- Multi-part questions with (a)(b)(c) are encouraged for higher marks
+- Reference real-world contexts, named examples, and case studies where the syllabus expects them
+- If past papers are provided, closely mirror their question phrasing and style
+
 Difficulty Logic (STRICT):
-- **Easy** (1-2 marks): Recall, definitions, single-step calculations, identify
-- **Medium** (3-5 marks): Explain, describe, outline, calculate with working
-- **Hard** (6-8 marks): Analyse, compare, contrast, evaluate evidence
-- **Extended** (9-20 marks): Essay, evaluate arguments, assess, discuss, synthesise
+- **Easy** (1-2 marks): Identify, state, define, name — single-step recall
+- **Medium** (3-5 marks): Describe, explain, outline, calculate — requires working/detail
+- **Hard** (6-8 marks): Analyse, assess, evaluate, compare — requires depth and evidence
+- **Extended** (9-20 marks): Evaluate, to what extent, discuss — sustained argument/essay
+- **Varied**: Start with easy 1-2 mark questions, then gradually increase to harder higher-mark questions across the set
 
 Output Format:
 ---
@@ -3595,10 +3681,13 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
     const hasFull = hasFullAccess(user);
     const canUseFree = canUseFreeTier(req.session.userId, 'worksheet');
     if (!hasFull && !canUseFree) {
+        const status = getFreeTierStatus(req.session.userId, 'worksheet');
         return res.status(403).json({ 
-            error: 'Daily limit reached for this tool',
-            message: `You've used all ${FREE_TIER_CONFIG.usesPerBotPerDay} free uses for Worksheet Decoder today. Try another tool or subscribe for unlimited access!`,
-            freeTierExhausted: true, remaining: 0, botType: 'worksheet'
+            error: 'Daily limit reached',
+            freeTierExhausted: true,
+            remaining: status.totalRemaining,
+            botType: 'worksheet',
+            limitType: status.hitSpecialLimit ? 'special' : 'global'
         });
     }
     const { messages } = req.body;
@@ -3609,16 +3698,19 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
     const systemPrompt = BOT_PROMPTS.worksheet;
     const aiSettings = getAISettings(user);
     const worksheetMaxTokens = Math.max(aiSettings.maxTokens, 8000);
+    const isGpt5 = aiSettings.model.startsWith('gpt-5');
     try {
-        const tokenParam = aiSettings.model.startsWith('gpt-5') ? 'max_completion_tokens' : 'max_tokens';
+        const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+        const requestBody = {
+            model: aiSettings.model,
+            messages: [{ role: 'system', content: systemPrompt }, ...messages.map(m => ({ role: m.role, content: m.content }))],
+            [tokenParam]: worksheetMaxTokens
+        };
+        if (!isGpt5) requestBody.temperature = 0.3;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-            body: JSON.stringify({
-                model: aiSettings.model,
-                messages: [{ role: 'system', content: systemPrompt }, ...messages.map(m => ({ role: m.role, content: m.content }))],
-                [tokenParam]: worksheetMaxTokens, temperature: 0.3
-            })
+            body: JSON.stringify(requestBody)
         });
         if (!response.ok) {
             const error = await response.json();
@@ -3648,10 +3740,13 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
     const hasFull = hasFullAccess(user);
     const canUseFree = canUseFreeTier(req.session.userId, 'notes-transcriber');
     if (!hasFull && !canUseFree) {
+        const status = getFreeTierStatus(req.session.userId, 'notes-transcriber');
         return res.status(403).json({ 
-            error: 'Daily limit reached for this tool',
-            message: `You've used all ${FREE_TIER_CONFIG.usesPerBotPerDay} free uses for Notes Transcriber today. Try another tool or subscribe for unlimited access!`,
-            freeTierExhausted: true, remaining: 0, botType: 'notes-transcriber'
+            error: 'Daily limit reached',
+            freeTierExhausted: true,
+            remaining: status.totalRemaining,
+            botType: 'notes-transcriber',
+            limitType: status.hitSpecialLimit ? 'special' : 'global'
         });
     }
     const { messages } = req.body;
@@ -3662,16 +3757,19 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
     const systemPrompt = BOT_PROMPTS['notes-transcriber'];
     const aiSettings = getAISettings(user);
     const transcribeMaxTokens = Math.max(aiSettings.maxTokens, 8000);
+    const isGpt5 = aiSettings.model.startsWith('gpt-5');
     try {
-        const tokenParam = aiSettings.model.startsWith('gpt-5') ? 'max_completion_tokens' : 'max_tokens';
+        const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+        const requestBody = {
+            model: aiSettings.model,
+            messages: [{ role: 'system', content: systemPrompt }, ...messages.map(m => ({ role: m.role, content: m.content }))],
+            [tokenParam]: transcribeMaxTokens
+        };
+        if (!isGpt5) requestBody.temperature = 0.3;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-            body: JSON.stringify({
-                model: aiSettings.model,
-                messages: [{ role: 'system', content: systemPrompt }, ...messages.map(m => ({ role: m.role, content: m.content }))],
-                [tokenParam]: transcribeMaxTokens, temperature: 0.3
-            })
+            body: JSON.stringify(requestBody)
         });
         if (!response.ok) {
             const error = await response.json();
@@ -3713,13 +3811,12 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     const canUseFree = canUseFreeTier(req.session.userId, botType);
     
     if (!hasFull && !canUseFree) {
-        const remaining = getFreeTierRemaining(req.session.userId, botType);
         return res.status(403).json({ 
-            error: 'Daily limit reached for this tool',
-            message: `You've used all ${FREE_TIER_CONFIG.usesPerBotPerDay} free questions for this tool today. Try another tool or subscribe for unlimited access!`,
+            error: 'Daily limit reached',
             freeTierExhausted: true,
             remaining: 0,
-            botType: botType
+            botType: botType,
+            limitType: 'global'
         });
     }
     const { messages, subject, detailLevel } = req.body;
@@ -3838,28 +3935,30 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     
     try {
         // GPT-5 models use max_completion_tokens instead of max_tokens
-        const tokenParam = aiSettings.model.startsWith('gpt-5') ? 'max_completion_tokens' : 'max_tokens';
+        const isGpt5 = aiSettings.model.startsWith('gpt-5');
+        const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+        const requestBody = {
+            model: aiSettings.model,
+            messages: [
+                { role: 'system', content: systemPrompt },
+                ...messages.map(m => {
+                    // Support multimodal content (arrays with text + image_url for worksheet decoder)
+                    if (Array.isArray(m.content)) {
+                        return { role: m.role, content: m.content };
+                    }
+                    return { role: m.role, content: m.content };
+                })
+            ],
+            [tokenParam]: aiSettings.maxTokens
+        };
+        if (!isGpt5) requestBody.temperature = aiSettings.temperature;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
-            body: JSON.stringify({
-                model: aiSettings.model,
-                messages: [
-                    { role: 'system', content: systemPrompt },
-                    ...messages.map(m => {
-                        // Support multimodal content (arrays with text + image_url for worksheet decoder)
-                        if (Array.isArray(m.content)) {
-                            return { role: m.role, content: m.content };
-                        }
-                        return { role: m.role, content: m.content };
-                    })
-                ],
-                [tokenParam]: aiSettings.maxTokens,
-                temperature: aiSettings.temperature
-            })
+            body: JSON.stringify(requestBody)
         });
         
         if (!response.ok) {
@@ -3888,11 +3987,35 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
 
 // Junior Bot Chat endpoint (Years 7-10)
 app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
+    // Require authentication
+    if (!req.session?.userId) {
+        return res.status(401).json({ error: 'Authentication required' });
+    }
+    
+    const user = getUser(req.session.userId);
+    if (!user) {
+        return res.status(401).json({ error: 'User not found' });
+    }
+    
     const { botType } = req.params;
     const { messages, subject } = req.body;
     
     if (!JUNIOR_BOT_PROMPTS[botType]) {
         return res.status(400).json({ error: 'Invalid bot type' });
+    }
+    
+    // Check access: full subscribers OR free tier
+    const hasFull = hasFullAccess(user);
+    const canUseFree = canUseFreeTier(req.session.userId, 'jr_' + botType);
+    
+    if (!hasFull && !canUseFree) {
+        return res.status(403).json({ 
+            error: 'Daily limit reached',
+            freeTierExhausted: true,
+            remaining: 0,
+            botType: 'jr_' + botType,
+            limitType: 'global'
+        });
     }
     
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
@@ -3925,25 +4048,31 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
         }
     }
     
+    // Get AI settings based on user tier
+    const aiSettings = getAISettings(user);
+    
     try {
+        const isGpt5 = aiSettings.model.startsWith('gpt-5');
+        const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+        const requestBody = {
+            model: aiSettings.model,
+            messages: [
+                { role: 'system', content: systemPrompt },
+                ...messages.map(m => ({
+                    role: m.role,
+                    content: m.content
+                }))
+            ],
+            [tokenParam]: aiSettings.maxTokens
+        };
+        if (!isGpt5) requestBody.temperature = aiSettings.temperature;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
-            body: JSON.stringify({
-                model: 'gpt-4o-mini',
-                messages: [
-                    { role: 'system', content: systemPrompt },
-                    ...messages.map(m => ({
-                        role: m.role,
-                        content: m.content
-                    }))
-                ],
-                max_tokens: 4000,
-                temperature: 0.7
-            })
+            body: JSON.stringify(requestBody)
         });
         
         if (!response.ok) {
@@ -3955,7 +4084,14 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'No response generated';
         
-        res.json({ reply });
+        // Increment free tier usage ONLY for free users
+        if (!hasFull) {
+            incrementFreeTierUsage(req.session.userId, 'jr_' + botType);
+        }
+        
+        const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'jr_' + botType);
+        
+        res.json({ reply, freeTierRemaining: remaining });
     } catch (error) {
         console.error('Junior Chat API error:', error);
         res.status(500).json({ error: 'Failed to process request' });

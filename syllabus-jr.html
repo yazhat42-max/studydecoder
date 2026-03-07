@@ -293,6 +293,17 @@
                 .replace(/\n/g, '<br>');
         }
         
+        function showFreeTierUpsell(botType, limitType) {
+            const welcome = outputContent.querySelector('.welcome-message');
+            if (welcome) welcome.remove();
+            const heading = `You've used all 10 free uses for today.`;
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message message-assistant';
+            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $5/mo</a> <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Yearly — $30/yr (Save 50%)</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+            outputContent.appendChild(messageDiv);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
+
         function addMessage(content, isUser = false) {
             const welcome = outputContent.querySelector('.welcome-message');
             if (welcome) welcome.remove();
@@ -332,7 +343,15 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ messages: conversationHistory, subject: subjectId })
                 });
-                if (!response.ok) throw new Error('Failed');
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    if (errData.freeTierExhausted) {
+                        hideLoading();
+                        showFreeTierUpsell(errData.botType, errData.limitType);
+                        return;
+                    }
+                    throw new Error('Failed');
+                }
                 const data = await response.json();
                 hideLoading();
                 conversationHistory.push({ role: 'assistant', content: data.reply });
@@ -382,6 +401,17 @@
                 
                 document.getElementById('authOverlay').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
+                
+                if (!data.subscribed && data.role !== 'owner' && data.role !== 'lifetime' && data.role !== 'og_tester') {
+                    const upgradeBtn = document.createElement('a');
+                    upgradeBtn.href = 'https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02';
+                    upgradeBtn.target = '_blank';
+                    upgradeBtn.innerHTML = '⚡ Upgrade';
+                    upgradeBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9rem;z-index:9999;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.2s,box-shadow 0.2s;';
+                    upgradeBtn.onmouseenter = () => { upgradeBtn.style.transform = 'scale(1.05)'; upgradeBtn.style.boxShadow = '0 6px 20px rgba(102,126,234,0.6)'; };
+                    upgradeBtn.onmouseleave = () => { upgradeBtn.style.transform = 'scale(1)'; upgradeBtn.style.boxShadow = '0 4px 15px rgba(102,126,234,0.4)'; };
+                    document.body.appendChild(upgradeBtn);
+                }
                 
             } catch (e) {
                 console.error('Auth check failed:', e);

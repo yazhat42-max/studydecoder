@@ -988,7 +988,7 @@
                 </div>
             </div>
 
-            <div class="onboard-section">
+            <div class="onboard-section" id="onboardSubjectsSection">
                 <label class="section-label">2. Select your subjects</label>
                 <div class="onboard-subjects-grid" id="onboardSubjectsGrid">
                     <!-- Populated dynamically -->
@@ -1038,8 +1038,8 @@
     <div class="upgrade-modal-overlay hidden" id="upgradeModalOverlay" onclick="closeUpgradeModal(event)" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 9999;">
         <div class="upgrade-modal" onclick="event.stopPropagation()" style="background: white; border-radius: 12px; padding: 32px; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); text-align: center;">
             <h2 style="margin-bottom: 12px; font-size: 1.5rem; color: #6C63FF;">⭐ Upgrade to Premium</h2>
-            <p style="color: #666; margin-bottom: 8px;">You're on the <strong>Free Plan</strong> (5 uses/tool/day)</p>
-            <p style="color: #888; font-size: 0.9rem; margin-bottom: 24px;">Upgrade for unlimited access!</p>
+            <p style="color: #666; margin-bottom: 8px;">You're on the <strong>Free Plan</strong> — 10 uses/day, 1 worksheet decode &amp; 1 notes transcription per day.</p>
+            <p style="color: #888; font-size: 0.9rem; margin-bottom: 24px;">Premium = <strong>unlimited uses</strong>, longer responses &amp; better quality answers.</p>
             
             <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display: block; width: 100%; padding: 14px; background: #6C63FF; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-bottom: 12px; transition: all 0.2s;">📅 Monthly - $5/month</a>
             <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="display: block; width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-bottom: 8px; transition: all 0.2s;">⭐ Yearly - $30/year <span style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:6px;font-size:0.85rem;margin-left:6px;">Save 50%</span></a>
@@ -1095,6 +1095,8 @@
                 
                 if (data.email) {
                     currentUser = data;
+                    // Cache user data to localStorage for surviving server restarts
+                    try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: data.email, name: data.name, preferences: data.preferences || {}, freeAcknowledged: data.freeAcknowledged || false, cachedAt: Date.now() })); } catch(e) {}
                     showLoggedInUI(data);
                     maybeShowOnboarding(data);
                     return;
@@ -1423,7 +1425,16 @@
         onboardSelectedLevel = level;
         document.getElementById('onboardSeniorBtn').classList.toggle('selected', level === 'senior');
         document.getElementById('onboardJuniorBtn').classList.toggle('selected', level === 'junior');
-        populateOnboardSubjects(level);
+        
+        // Junior = core subjects only, no need to pick
+        const subjectsSection = document.getElementById('onboardSubjectsSection');
+        if (level === 'junior') {
+            subjectsSection.style.display = 'none';
+            document.getElementById('onboardSubjectsGrid').innerHTML = '';
+        } else {
+            subjectsSection.style.display = '';
+            populateOnboardSubjects(level);
+        }
         updateOnboardSubmitBtn();
     }
 
@@ -1451,8 +1462,12 @@
         const hasLevel = !!onboardSelectedLevel;
         btn.disabled = !hasLevel;
         if (hasLevel) {
-            const checkedCount = document.querySelectorAll('#onboardSubjectsGrid input:checked').length;
-            btn.textContent = checkedCount > 0 ? `Get Started with ${checkedCount} subject${checkedCount > 1 ? 's' : ''} 🚀` : 'Get Started 🚀';
+            if (onboardSelectedLevel === 'junior') {
+                btn.textContent = 'Get Started 🚀';
+            } else {
+                const checkedCount = document.querySelectorAll('#onboardSubjectsGrid input:checked').length;
+                btn.textContent = checkedCount > 0 ? `Get Started with ${checkedCount} subject${checkedCount > 1 ? 's' : ''} 🚀` : 'Get Started 🚀';
+            }
         }
     }
 
@@ -1483,6 +1498,9 @@
                 currentUser.preferences.onboarded = true;
             }
 
+            // Cache to localStorage for surviving server restarts
+            try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: currentUser?.email, name: currentUser?.name, preferences: { level: onboardSelectedLevel, subjects: selectedSubjects, onboarded: true }, freeAcknowledged: currentUser?.freeAcknowledged || false, cachedAt: Date.now() })); } catch(e) {}
+
             document.getElementById('onboardingModal').style.display = 'none';
         } catch (e) {
             console.error('Onboarding save error:', e);
@@ -1504,6 +1522,8 @@
                 if (!currentUser.preferences) currentUser.preferences = {};
                 currentUser.preferences.onboarded = true;
             }
+            // Cache to localStorage
+            try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: currentUser?.email, name: currentUser?.name, preferences: { ...(currentUser?.preferences || {}), onboarded: true }, freeAcknowledged: currentUser?.freeAcknowledged || false, cachedAt: Date.now() })); } catch(e) {}
         } catch (e) { /* silent */ }
         document.getElementById('onboardingModal').style.display = 'none';
     }

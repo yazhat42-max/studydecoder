@@ -871,7 +871,27 @@
             });
         }
         
-        function redirectAfterLogin(data) {
+        async function redirectAfterLogin(data) {
+            // Restore cached preferences/freeAcknowledged from localStorage
+            // (handles Render restarts that wipe server-side data)
+            try {
+                const raw = localStorage.getItem('sd_user_cache');
+                if (raw) {
+                    const cached = JSON.parse(raw);
+                    const prefs = cached.preferences;
+                    if (prefs && (prefs.level || (prefs.subjects && prefs.subjects.length > 0) || prefs.onboarded)) {
+                        await fetch('/api/user/preferences', {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include',
+                            body: JSON.stringify(prefs)
+                        });
+                    }
+                    if (cached.freeAcknowledged) {
+                        await fetch('/api/acknowledge-free', { method: 'POST', credentials: 'include' });
+                    }
+                }
+            } catch (e) { /* silent - best effort restore */ }
             // Go to admin for owner, homepage for everyone else (onboarding triggers there if needed)
             if (data.role === 'owner') {
                 window.location.href = '/admin.html';

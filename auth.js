@@ -6,6 +6,59 @@
  */
 
 const StudyDecoderAuth = {
+    // ===== LocalStorage caching for surviving server restarts =====
+    _CACHE_KEY: 'sd_user_cache',
+
+    cacheUserData(user) {
+        try {
+            const cached = {
+                email: user.email,
+                name: user.name,
+                preferences: user.preferences || {},
+                freeAcknowledged: user.freeAcknowledged || false,
+                cachedAt: Date.now()
+            };
+            localStorage.setItem(this._CACHE_KEY, JSON.stringify(cached));
+        } catch (e) { /* localStorage full or disabled */ }
+    },
+
+    getCachedUserData() {
+        try {
+            const raw = localStorage.getItem(this._CACHE_KEY);
+            if (!raw) return null;
+            const cached = JSON.parse(raw);
+            // Expire cache after 90 days
+            if (Date.now() - cached.cachedAt > 90 * 24 * 60 * 60 * 1000) {
+                localStorage.removeItem(this._CACHE_KEY);
+                return null;
+            }
+            return cached;
+        } catch (e) { return null; }
+    },
+
+    // Restore cached preferences to server after re-login (server data was wiped)
+    async restoreCachedData() {
+        const cached = this.getCachedUserData();
+        if (!cached) return;
+        const prefs = cached.preferences;
+        const hasPrefs = prefs && (prefs.level || (prefs.subjects && prefs.subjects.length > 0) || prefs.onboarded);
+        if (hasPrefs) {
+            try {
+                await fetch('/api/user/preferences', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(prefs)
+                });
+            } catch (e) { /* silent */ }
+        }
+        if (cached.freeAcknowledged) {
+            try {
+                await fetch('/api/acknowledge-free', { method: 'POST', credentials: 'include' });
+            } catch (e) { /* silent */ }
+        }
+    },
+
     // Check if user is authenticated and has access
     async checkAuth(options = {}) {
         const { 
@@ -28,6 +81,9 @@ const StudyDecoderAuth = {
             }
             
             const user = await res.json();
+
+            // Cache user data to localStorage for surviving server restarts
+            this.cacheUserData(user);
             
             // Check subscription if required
             // Allow through if subscribed OR if free tier acknowledged
@@ -127,7 +183,8 @@ const StudyDecoderAuth = {
                     <img src="logo.png" alt="Logo" class="sd-paywall-logo">
                     <h2>Welcome to Study Decoder!</h2>
                     <p class="sd-paywall-greeting">Hey <strong>${user?.name || user?.email || 'there'}</strong>! 👋</p>
-                    <p class="sd-paywall-desc">You're on the <strong>Free Plan</strong> (5 uses/tool/day).</p>
+                    <p class="sd-paywall-desc">You're on the <strong>Free Plan</strong> — 10 uses/day across all tools, plus 1 worksheet decode and 1 notes transcription per day.</p>
+                    <p class="sd-paywall-desc" style="font-size:0.9rem;color:#aaa;">Premium gets you <strong>unlimited uses</strong>, longer & higher-quality responses.</p>
                     <button onclick="StudyDecoderAuth.closePaywall()" class="sd-paywall-btn sd-btn-success">✓ Continue with Free Plan</button>
                     <p class="sd-paywall-divider">─── or upgrade for unlimited ───</p>
                     <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="sd-paywall-btn sd-btn-primary">📅 Monthly - $5/month</a>
@@ -153,6 +210,15 @@ const StudyDecoderAuth = {
                 method: 'POST',
                 credentials: 'include'
             });
+            // Update localStorage cache with freeAcknowledged = true
+            try {
+                const raw = localStorage.getItem(this._CACHE_KEY);
+                if (raw) {
+                    const cached = JSON.parse(raw);
+                    cached.freeAcknowledged = true;
+                    localStorage.setItem(this._CACHE_KEY, JSON.stringify(cached));
+                }
+            } catch (e) { /* silent */ }
             // Reload page so checkAuth runs again with freeAcknowledged = true
             window.location.reload();
         } catch (e) {

@@ -322,20 +322,21 @@
                             <div class="form-group">
                                 <label class="form-label">🎯 Difficulty</label>
                                 <select class="form-select" id="difficulty" required>
-                                    <option value="Easy">Easy (1-2 marks)</option>
-                                    <option value="Medium" selected>Medium (3-5 marks)</option>
-                                    <option value="Hard">Hard (6-8 marks)</option>
-                                    <option value="Extended">Extended (9-20 marks)</option>
+                                    <option value="Easy">Easy</option>
+                                    <option value="Medium" selected>Medium</option>
+                                    <option value="Hard">Hard</option>
+                                    <option value="Varied">Varied (Easy → Hard)</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">📝 Question Type</label>
-                                <select class="form-select" id="questionType" required>
-                                    <option value="Multiple Choice">Multiple Choice</option>
-                                    <option value="Short Answer" selected>Short Answer</option>
-                                    <option value="Extended Response">Extended Response</option>
-                                    <option value="Source-Based">Source-Based</option>
-                                    <option value="Mixed">Mixed</option>
+                                <label class="form-label">📝 Mark Value</label>
+                                <select class="form-select" id="markValue" required>
+                                    <option value="1">1 mark</option>
+                                    <option value="2">2 marks</option>
+                                    <option value="3" selected>3 marks</option>
+                                    <option value="4">4 marks</option>
+                                    <option value="5">5 marks</option>
+                                    <option value="6">6 marks</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -591,124 +592,90 @@
         // Subject-specific overrides take priority over category defaults
         const categoryOptions = {
             'Mathematics': {
-                questionTypes: [
-                    { value: 'Multiple Choice', label: 'Multiple Choice' },
-                    { value: 'Calculation', label: 'Calculation', selected: true },
-                    { value: 'Proof', label: 'Proof/Show That' },
-                    { value: 'Mixed', label: 'Mixed' }
-                ],
+                markValues: [1, 2, 3, 4],
+                defaultMark: 2,
                 difficulties: [
-                    { value: 'Easy', label: 'Easy (1 mark)' },
-                    { value: 'Medium', label: 'Medium (2-3 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (4 marks)' }
+                    { value: 'Easy', label: 'Easy' },
+                    { value: 'Medium', label: 'Medium', selected: true },
+                    { value: 'Hard', label: 'Hard' },
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4]
             },
             'Science': {
-                questionTypes: [
-                    { value: 'Multiple Choice', label: 'Multiple Choice' },
-                    { value: 'Short Answer', label: 'Short Answer', selected: true },
-                    { value: 'Calculation', label: 'Calculation' },
-                    { value: 'Extended Response', label: 'Extended Response' },
-                    { value: 'Data Analysis', label: 'Data/Graph Analysis' },
-                    { value: 'Mixed', label: 'Mixed' }
-                ],
+                markValues: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                defaultMark: 3,
                 difficulties: [
-                    { value: 'Easy', label: 'Easy (1-2 marks)' },
-                    { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (6-7 marks)' },
-                    { value: 'Extended', label: 'Extended (8-9 marks)' }
+                    { value: 'Easy', label: 'Easy' },
+                    { value: 'Medium', label: 'Medium', selected: true },
+                    { value: 'Hard', label: 'Hard' },
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9]
             },
             'English': {
-                questionTypes: [
-                    { value: 'Short Answer', label: 'Short Answer' },
-                    { value: 'Extended Response', label: 'Extended Response/Essay', selected: true },
-                    { value: 'Creative Writing', label: 'Creative Writing' },
-                    { value: 'Unseen Text Analysis', label: 'Unseen Text Analysis' },
-                    { value: 'Mixed', label: 'Mixed' }
-                ],
+                markValues: [2, 3, 4, 5, 6, 7, 8, 10, 15, 20],
+                defaultMark: 5,
                 difficulties: [
-                    { value: 'Easy', label: 'Easy (2-4 marks)' },
-                    { value: 'Medium', label: 'Medium (5-8 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (10-15 marks)' },
-                    { value: 'Extended', label: 'Extended (20 marks - Essay)' }
+                    { value: 'Easy', label: 'Easy' },
+                    { value: 'Medium', label: 'Medium', selected: true },
+                    { value: 'Hard', label: 'Hard' },
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [2, 3, 4, 5, 6, 7, 8, 10, 15, 20]
             },
             'HSIE': {
-                questionTypes: [
-                    { value: 'Multiple Choice', label: 'Multiple Choice' },
-                    { value: 'Short Answer', label: 'Short Answer', selected: true },
-                    { value: 'Extended Response', label: 'Extended Response/Essay' },
-                    { value: 'Source-Based', label: 'Source-Based' },
-                    { value: 'Mixed', label: 'Mixed' }
-                ],
+                markValues: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20],
+                defaultMark: 4,
                 difficulties: [
-                    { value: 'Easy', label: 'Easy (1-2 marks)' },
-                    { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (6-8 marks)' },
-                    { value: 'Extended', label: 'Extended (9-20 marks)' }
+                    { value: 'Easy', label: 'Easy' },
+                    { value: 'Medium', label: 'Medium', selected: true },
+                    { value: 'Hard', label: 'Hard' },
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20]
             },
             'Creative Arts': {
-                questionTypes: [
-                    { value: 'Short Answer', label: 'Short Answer', selected: true },
-                    { value: 'Extended Response', label: 'Extended Response/Essay' },
-                    { value: 'Critical Analysis', label: 'Critical Analysis' },
-                    { value: 'Mixed', label: 'Mixed' }
-                ],
+                markValues: [2, 3, 4, 5, 6, 7, 8, 10, 15, 20],
+                defaultMark: 5,
                 difficulties: [
-                    { value: 'Easy', label: 'Easy (2-4 marks)' },
-                    { value: 'Medium', label: 'Medium (5-8 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (9-15 marks)' },
-                    { value: 'Extended', label: 'Extended (20 marks)' }
+                    { value: 'Easy', label: 'Easy' },
+                    { value: 'Medium', label: 'Medium', selected: true },
+                    { value: 'Hard', label: 'Hard' },
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [2, 3, 4, 5, 6, 7, 8, 10, 15, 20]
             },
             'TAS': {
-                questionTypes: [
-                    { value: 'Multiple Choice', label: 'Multiple Choice' },
-                    { value: 'Short Answer', label: 'Short Answer', selected: true },
-                    { value: 'Extended Response', label: 'Extended Response' },
-                    { value: 'Mixed', label: 'Mixed' }
-                ],
+                markValues: [1, 2, 3, 4, 5, 6, 7, 8],
+                defaultMark: 3,
                 difficulties: [
-                    { value: 'Easy', label: 'Easy (1-2 marks)' },
-                    { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (6-8 marks)' }
+                    { value: 'Easy', label: 'Easy' },
+                    { value: 'Medium', label: 'Medium', selected: true },
+                    { value: 'Hard', label: 'Hard' },
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8]
             },
             'PDHPE': {
-                questionTypes: [
-                    { value: 'Multiple Choice', label: 'Multiple Choice' },
-                    { value: 'Short Answer', label: 'Short Answer', selected: true },
-                    { value: 'Extended Response', label: 'Extended Response' },
-                    { value: 'Data Analysis', label: 'Data/Graph Analysis' },
-                    { value: 'Mixed', label: 'Mixed' }
-                ],
+                markValues: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20],
+                defaultMark: 4,
                 difficulties: [
-                    { value: 'Easy', label: 'Easy (1-2 marks)' },
-                    { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (6-8 marks)' },
-                    { value: 'Extended', label: 'Extended (9-20 marks)' }
+                    { value: 'Easy', label: 'Easy' },
+                    { value: 'Medium', label: 'Medium', selected: true },
+                    { value: 'Hard', label: 'Hard' },
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20]
             },
             'VET': {
-                questionTypes: [
-                    { value: 'Multiple Choice', label: 'Multiple Choice' },
-                    { value: 'Short Answer', label: 'Short Answer', selected: true },
-                    { value: 'Extended Response', label: 'Extended Response' },
-                    { value: 'Mixed', label: 'Mixed' }
-                ],
+                markValues: [1, 2, 3, 4, 5, 6, 7, 8],
+                defaultMark: 3,
                 difficulties: [
-                    { value: 'Easy', label: 'Easy (1-2 marks)' },
-                    { value: 'Medium', label: 'Medium (3-5 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (6-8 marks)' }
+                    { value: 'Easy', label: 'Easy' },
+                    { value: 'Medium', label: 'Medium', selected: true },
+                    { value: 'Hard', label: 'Hard' },
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8]
             }
@@ -717,33 +684,13 @@
         // Subject-specific overrides (takes priority over category defaults)
         const subjectOverrides = {
             'enterprise-computing': {
-                questionTypes: [
-                    { value: 'Multiple Choice', label: 'Multiple Choice' },
-                    { value: 'Short Answer', label: 'Short Answer', selected: true },
-                    { value: 'Extended Response', label: 'Extended Response' },
-                    { value: 'Mixed', label: 'Mixed' }
-                ],
-                difficulties: [
-                    { value: 'Easy', label: 'Easy (1 mark - MC)' },
-                    { value: 'Medium', label: 'Medium (2-4 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (5-6 marks)' },
-                    { value: 'Extended', label: 'Extended (8 marks)' }
-                ],
+                markValues: [1, 2, 3, 4, 5, 6, 8],
+                defaultMark: 3,
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 8]
             },
             'software-engineering': {
-                questionTypes: [
-                    { value: 'Multiple Choice', label: 'Multiple Choice' },
-                    { value: 'Short Answer', label: 'Short Answer', selected: true },
-                    { value: 'Extended Response', label: 'Extended Response' },
-                    { value: 'Mixed', label: 'Mixed' }
-                ],
-                difficulties: [
-                    { value: 'Easy', label: 'Easy (1 mark - MC)' },
-                    { value: 'Medium', label: 'Medium (2-4 marks)', selected: true },
-                    { value: 'Hard', label: 'Hard (5-6 marks)' },
-                    { value: 'Extended', label: 'Extended (8 marks)' }
-                ],
+                markValues: [1, 2, 3, 4, 5, 6, 8],
+                defaultMark: 3,
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 8]
             },
             'mathematics-advanced': {
@@ -772,7 +719,8 @@
             if (!override) return catOpts;
             // Merge: override fields take priority
             return {
-                questionTypes: override.questionTypes || catOpts.questionTypes,
+                markValues: override.markValues || catOpts.markValues,
+                defaultMark: override.defaultMark || catOpts.defaultMark,
                 difficulties: override.difficulties || catOpts.difficulties,
                 feedbackMarks: override.feedbackMarks || catOpts.feedbackMarks
             };
@@ -781,15 +729,15 @@
         function updateOptionsForSubject(subjectId) {
             const opts = getOptionsForSubject(subjectId);
             
-            // Update Question Type dropdown
-            const questionTypeSelect = document.getElementById('questionType');
-            questionTypeSelect.innerHTML = '';
-            opts.questionTypes.forEach(qt => {
+            // Update Mark Value dropdown
+            const markValueSelect = document.getElementById('markValue');
+            markValueSelect.innerHTML = '';
+            opts.markValues.forEach(m => {
                 const opt = document.createElement('option');
-                opt.value = qt.value;
-                opt.textContent = qt.label;
-                if (qt.selected) opt.selected = true;
-                questionTypeSelect.appendChild(opt);
+                opt.value = m;
+                opt.textContent = m === 20 ? '20 marks (Essay)' : `${m} mark${m > 1 ? 's' : ''}`;
+                if (m === opts.defaultMark) opt.selected = true;
+                markValueSelect.appendChild(opt);
             });
             
             // Update Difficulty dropdown
@@ -923,6 +871,19 @@
                 .replace(/\n/g, '<br>');
         }
         
+        function showFreeTierUpsell(botType, limitType) {
+            const welcome = outputContent.querySelector('.welcome-message');
+            if (welcome) welcome.remove();
+            const isSpecial = limitType === 'special';
+            const toolName = botType === 'worksheet' ? 'worksheet decode' : botType === 'notes-transcriber' ? 'notes transcription' : 'free use';
+            const heading = isSpecial ? `You've used your 1 daily ${toolName}.` : `You've used all 10 free uses for today.`;
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message message-assistant';
+            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $5/mo</a> <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Yearly — $30/yr (Save 50%)</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+            outputContent.appendChild(messageDiv);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
+
         function addMessage(content, isUser = false) {
             const welcome = outputContent.querySelector('.welcome-message');
             if (welcome) welcome.remove();
@@ -978,6 +939,11 @@
                 
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
+                    if (errorData.freeTierExhausted) {
+                        hideLoading();
+                        showFreeTierUpsell(errorData.botType, errorData.limitType);
+                        return;
+                    }
                     throw new Error(`API Error ${response.status}: ${errorData.error || 'Unknown error'}`);
                 }
                 
@@ -1047,21 +1013,24 @@ Assess the student's response using HSC marking criteria. Do NOT provide a model
                 const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
                 const topic = topicSelect.options[topicSelect.selectedIndex]?.text || 'All Topics';
                 const difficulty = document.getElementById('difficulty').value;
-                const questionType = document.getElementById('questionType').value;
+                const markValue = document.getElementById('markValue').value;
                 const numQuestions = document.getElementById('numQuestions').value;
                 const includeAnswers = document.getElementById('includeAnswers').checked;
-                console.log('[DEBUG] Standard fields:', { subjectName, topic, difficulty, questionType, numQuestions, includeAnswers });
+                console.log('[DEBUG] Standard fields:', { subjectName, topic, difficulty, markValue, numQuestions, includeAnswers });
                 if (!topic || topic === 'Select subject first...' || topic === 'Select a topic/module...') { alert('Please select a topic.'); return; }
+                const difficultyInstruction = difficulty === 'Varied' 
+                    ? `Difficulty: Varied — start with easier questions and gradually increase in complexity and difficulty across the set.`
+                    : `Difficulty: ${difficulty}`;
                 message = `[STANDARD MODE]
-Generate practice questions.
+Generate practice questions based on real HSC past paper style and format.
 Subject: ${subjectName}
 Topic: ${topic}
-Difficulty: ${difficulty}
-Question Type: ${questionType}
+${difficultyInstruction}
+Mark Value: ${markValue} marks per question
 Number of Questions: ${numQuestions}
 ${includeAnswers ? 'Include model answers with marking guidelines and band descriptors.' : 'Do not include answers.'}
 
-Start generating immediately.`;
+Base these questions on the style, format, and difficulty of actual HSC past papers. Use appropriate question types for the mark value (e.g. 1 mark = MC or single-step, 2-4 marks = short answer with working, 5+ marks = extended response). Start generating immediately.`;
             }
             console.log('[DEBUG] Final message:', message, 'subjectId:', subjectId);
             sendMessage(message, subjectId);
@@ -1223,6 +1192,19 @@ Start generating immediately.`;
                 
                 document.getElementById('authOverlay').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
+                
+                // Show upgrade button for free users
+                if (!data.subscribed && data.role !== 'owner' && data.role !== 'lifetime' && data.role !== 'og_tester') {
+                    const upgradeBtn = document.createElement('a');
+                    upgradeBtn.href = 'https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02';
+                    upgradeBtn.target = '_blank';
+                    upgradeBtn.className = 'sd-upgrade-float';
+                    upgradeBtn.innerHTML = '⚡ Upgrade';
+                    upgradeBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9rem;z-index:9999;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.2s,box-shadow 0.2s;';
+                    upgradeBtn.onmouseenter = () => { upgradeBtn.style.transform = 'scale(1.05)'; upgradeBtn.style.boxShadow = '0 6px 20px rgba(102,126,234,0.6)'; };
+                    upgradeBtn.onmouseleave = () => { upgradeBtn.style.transform = 'scale(1)'; upgradeBtn.style.boxShadow = '0 4px 15px rgba(102,126,234,0.4)'; };
+                    document.body.appendChild(upgradeBtn);
+                }
                 
             } catch (e) {
                 console.error('Auth check failed:', e);
