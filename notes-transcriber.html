@@ -579,7 +579,6 @@ The AI will transform them into polished, professional-looking notes with proper
                 .replace(/^\u2022 (.*)/gm, '<li>$1</li>')
                 .replace(/^- (.*)/gm, '<li>$1</li>');
 
-            html = renderMathSymbols(html);
             return html;
         }
 

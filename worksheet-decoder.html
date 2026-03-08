@@ -374,7 +374,6 @@
                 .replace(/\n/g, '<br>')
                 .replace(/^\• (.*)/gm, '<li>$1</li>')
                 .replace(/^- (.*)/gm, '<li>$1</li>');
-            html = renderMathSymbols(html);
             return html;
         }
 
