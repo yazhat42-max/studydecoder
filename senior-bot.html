@@ -571,7 +571,7 @@
             
             // Populate subscription info
             if (window.currentSubData) {
-                document.getElementById('subPlan').textContent = window.currentSubData.plan === 'yearly' ? 'Yearly ($30/year)' : 'Monthly ($5/month)';
+                document.getElementById('subPlan').textContent = window.currentSubData.plan === 'yearly' ? 'Yearly ($75/year)' : 'Monthly ($7.50/month)';
                 document.getElementById('subStatus').textContent = 'Active';
                 document.getElementById('subStatus').style.color = '#10b981';
                 
@@ -641,19 +641,19 @@
                     <img src="logo.png" alt="Logo">
                     <h2>Welcome to Study Decoder!</h2>
                     <p style="font-size: 1rem; color: #444; margin-bottom: 8px;">Hey <strong>${user.name || user.email}</strong>! 👋</p>
-                    <p style="font-size: 1rem; color: #666; margin-bottom: 20px;">You're on the <strong>Free Plan</strong> (5 uses/tool/day).</p>
+                    <p style="font-size: 1rem; color: #666; margin-bottom: 20px;">You're on the <strong>Free Plan</strong> (10 uses/day).</p>
                     
                     <button id="continueFreeBtnPaywall" class="paywall-btn paywall-btn-activate" style="background: #10b981;">✓ Continue with Free Plan</button>
                     
                     <p style="color: #94a3b8; font-size: 0.85rem; margin: 16px 0;">─── or upgrade for unlimited ───</p>
                     
                     <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="paywall-btn paywall-btn-primary">
-                        📅 Monthly - $5/month
+                        📅 Monthly - $7.50/month
                     </a>
-                    <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" class="paywall-btn paywall-btn-yearly">
-                        ⭐ Yearly - $30/year <span style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:6px;font-size:0.85rem;margin-left:8px;">Save 50%</span>
+                    <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" class="paywall-btn paywall-btn-yearly" id="seniorYearlyBtn">
+                        ⭐ Yearly - $75/year
                     </a>
-                    <p style="font-size: 0.8rem; color: #888; margin-bottom: 20px;">That's only $2.50/month - 6 months free!</p>
+                    <p style="font-size: 0.8rem; color: #888; margin-bottom: 20px;">That's only $6.25/month!</p>
                     
                     <div class="trust-badges">
                         <div class="trust-badge">
@@ -684,6 +684,11 @@
                     window.location.reload();
                 }
             });
+            // Study Break sale: before April 20 2026
+            const yearlyBtn = document.getElementById('seniorYearlyBtn');
+            if (yearlyBtn && new Date() < new Date('2026-04-20T00:00:00')) {
+                yearlyBtn.innerHTML = '🔥 Study Break Sale - $37.50 for life';
+            }
             document.getElementById('activateBtn').addEventListener('click', verifyAndActivate);
             document.getElementById('logoutBtn').addEventListener('click', logout);
         }

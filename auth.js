@@ -187,8 +187,8 @@ const StudyDecoderAuth = {
                     <p class="sd-paywall-desc" style="font-size:0.9rem;color:#aaa;">Premium gets you <strong>unlimited uses</strong>, longer & higher-quality responses.</p>
                     <button onclick="StudyDecoderAuth.closePaywall()" class="sd-paywall-btn sd-btn-success">✓ Continue with Free Plan</button>
                     <p class="sd-paywall-divider">─── or upgrade for unlimited ───</p>
-                    <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="sd-paywall-btn sd-btn-primary">📅 Monthly - $5/month</a>
-                    <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" class="sd-paywall-btn sd-btn-secondary">⭐ Yearly - $30/year <span class="sd-save-badge">Save 50%</span></a>
+                    <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="sd-paywall-btn sd-btn-primary">📅 Monthly - $7.50/month</a>
+                    <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" class="sd-paywall-btn sd-btn-secondary" id="sd-yearly-btn">⭐ Yearly - $75/year</a>
                     <p class="sd-paywall-note">After payment, click below to activate:</p>
                     <button onclick="StudyDecoderAuth.verifyPayment()" class="sd-paywall-btn sd-btn-activate" id="sd-activate-btn">✓ I've Paid - Activate Now</button>
                     <button onclick="StudyDecoderAuth.logout()" class="sd-paywall-btn sd-btn-outline">Sign Out</button>
@@ -200,6 +200,11 @@ const StudyDecoderAuth = {
             document.getElementById(containerId).innerHTML = html;
         } else {
             document.body.insertAdjacentHTML('beforeend', html);
+        }
+        // Study Break sale: before April 20 2026
+        var yearlyBtn = document.getElementById('sd-yearly-btn');
+        if (yearlyBtn && new Date() < new Date('2026-04-20T00:00:00')) {
+            yearlyBtn.innerHTML = '\ud83d\udd25 Study Break Sale - $37.50 for life';
         }
     },
     
