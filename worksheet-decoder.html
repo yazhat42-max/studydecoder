@@ -206,6 +206,9 @@
             .welcome-steps { flex-direction: column; align-items: center; }
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <!-- Auth loading overlay -->
@@ -376,15 +379,28 @@
         }
 
         function renderMathSymbols(html) {
-            // Convert x^2 style to Unicode superscripts
+            // Basic fallbacks for simple notation
             html = html.replace(/(\w)\^(\d+)/g, function(m, base, exp) {
                 var supMap = {'0':'\u2070','1':'\u00b9','2':'\u00b2','3':'\u00b3','4':'\u2074','5':'\u2075','6':'\u2076','7':'\u2077','8':'\u2078','9':'\u2079'};
                 var sup = exp.split('').map(function(c) { return supMap[c] || c; }).join('');
                 return base + sup;
             });
-            // Convert sqrt() to √
             html = html.replace(/sqrt\(([^)]+)\)/gi, '\u221a($1)');
             return html;
+        }
+
+        function renderKaTeX(el) {
+            if (window.renderMathInElement) {
+                window.renderMathInElement(el, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
         }
 
         function showFreeTierUpsell(botType, limitType) {
@@ -415,6 +431,7 @@
                 div.innerHTML = `<p>${formatResponse(content)}</p>`;
             }
             outputContent.appendChild(div);
+            if (!isUser) renderKaTeX(div);
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
 

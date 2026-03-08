@@ -147,6 +147,9 @@
         .auth-text { margin-top: 16px; color: #71767b; font-size: 1rem; }
         .hidden { display: none !important; }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <!-- Auth loading overlay -->
@@ -432,6 +435,20 @@
                 .replace(/\n\n/g, '</p><p>')
                 .replace(/\n/g, '<br>');
         }
+
+        function renderKaTeX(el) {
+            if (window.renderMathInElement) {
+                window.renderMathInElement(el, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
         
         function showFreeTierUpsell(botType, limitType) {
             const welcome = outputContent.querySelector('.welcome-message');
@@ -451,6 +468,7 @@
             messageDiv.className = `message ${isUser ? 'message-user' : 'message-assistant'}`;
             messageDiv.innerHTML = isUser ? content.replace(/\n/g, '<br>') : `<p>${formatResponse(content)}</p>`;
             outputContent.appendChild(messageDiv);
+            if (!isUser) renderKaTeX(messageDiv);
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
         
