@@ -840,19 +840,49 @@ The AI will transform them into polished, professional-looking notes with proper
             }
         });
 
-        // ===== CHAT HISTORY (localStorage) =====
+        // ===== CHAT HISTORY (Server-synced with localStorage cache) =====
         var HISTORY_KEY = 'sd_notes_history';
+        var BOT_TYPE = 'notes-transcriber';
         var currentSessionId = null;
+        var historyCache = null;
 
-        function getHistory() {
+        function getHistoryFromCache() {
+            if (historyCache) return historyCache;
             try {
                 return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
             } catch(e) { return []; }
         }
 
+        async function getHistory() {
+            try {
+                var res = await fetch(API_BASE + '/api/user/history/' + BOT_TYPE, { credentials: 'include' });
+                if (res.ok) {
+                    var data = await res.json();
+                    // One-time migration: push local history to server if server is empty
+                    if (data.length === 0) {
+                        var local = getHistoryFromCache();
+                        if (local.length > 0) {
+                            await fetch(API_BASE + '/api/user/history/' + BOT_TYPE, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                credentials: 'include',
+                                body: JSON.stringify({ history: local })
+                            });
+                            historyCache = local;
+                            return local;
+                        }
+                    }
+                    historyCache = data;
+                    localStorage.setItem(HISTORY_KEY, JSON.stringify(data));
+                    return data;
+                }
+            } catch(e) {}
+            return getHistoryFromCache();
+        }
+
         function saveCurrentSession() {
             if (!conversationHistory.length) return;
-            var history = getHistory();
+            var history = getHistoryFromCache();
             var firstAssistant = conversationHistory.find(function(m) { return m.role === 'assistant'; });
             var preview = firstAssistant ? (typeof firstAssistant.content === 'string' ? firstAssistant.content.substring(0, 120) : 'Transcribed notes') : 'Transcribed notes';
 
@@ -879,11 +909,19 @@ The AI will transform them into polished, professional-looking notes with proper
             }
 
             while (history.length > 20) history.pop();
+            historyCache = history;
             localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            // Sync to server in background
+            fetch(API_BASE + '/api/user/history/' + BOT_TYPE, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ history: history })
+            }).catch(function() {});
         }
 
-        function openHistory() {
-            renderHistoryList();
+        async function openHistory() {
+            await renderHistoryList();
             document.getElementById('historyPanel').classList.add('open');
             document.getElementById('historyOverlay').classList.add('open');
         }
@@ -893,9 +931,10 @@ The AI will transform them into polished, professional-looking notes with proper
             document.getElementById('historyOverlay').classList.remove('open');
         }
 
-        function renderHistoryList() {
+        async function renderHistoryList() {
             var list = document.getElementById('historyList');
-            var history = getHistory();
+            list.innerHTML = '<div class="history-empty">Loading...</div>';
+            var history = await getHistory();
 
             if (history.length === 0) {
                 list.innerHTML = '<div class="history-empty">No notes sessions yet.<br>Transcribe or glow up some notes to get started!</div>';
@@ -913,7 +952,7 @@ The AI will transform them into polished, professional-looking notes with proper
         }
 
         function loadSession(sessionId) {
-            var history = getHistory();
+            var history = getHistoryFromCache();
             var session = history.find(function(h) { return h.id === sessionId; });
             if (!session) return;
 
@@ -938,9 +977,15 @@ The AI will transform them into polished, professional-looking notes with proper
         }
 
         function deleteSession(sessionId) {
-            var history = getHistory();
+            var history = getHistoryFromCache();
             history = history.filter(function(h) { return h.id !== sessionId; });
+            historyCache = history;
             localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            // Sync deletion to server
+            fetch(API_BASE + '/api/user/history/' + BOT_TYPE + '/' + sessionId, {
+                method: 'DELETE',
+                credentials: 'include'
+            }).catch(function() {});
             if (currentSessionId === sessionId) {
                 currentSessionId = null;
                 conversationHistory = [];

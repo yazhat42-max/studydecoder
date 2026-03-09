@@ -544,19 +544,47 @@ Please generate a detailed weekly study timetable in a clear table format with s
         
         document.getElementById('startDate').valueAsDate = new Date();
 
-        // ===== CHAT HISTORY (localStorage) =====
+        // ===== CHAT HISTORY (Server-synced with localStorage cache) =====
         const HISTORY_KEY = 'sd_timetable_history';
+        const BOT_TYPE = 'timetable';
         let currentSessionId = null;
+        let historyCache = null;
 
-        function getHistory() {
+        function getHistoryFromCache() {
+            if (historyCache) return historyCache;
+            try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+            catch { return []; }
+        }
+
+        async function getHistory() {
             try {
-                return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
-            } catch { return []; }
+                const res = await fetch(`${API_BASE}/api/user/history/${BOT_TYPE}`, { credentials: 'include' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.length === 0) {
+                        const local = getHistoryFromCache();
+                        if (local.length > 0) {
+                            await fetch(`${API_BASE}/api/user/history/${BOT_TYPE}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                credentials: 'include',
+                                body: JSON.stringify({ history: local })
+                            });
+                            historyCache = local;
+                            return local;
+                        }
+                    }
+                    historyCache = data;
+                    localStorage.setItem(HISTORY_KEY, JSON.stringify(data));
+                    return data;
+                }
+            } catch {}
+            return getHistoryFromCache();
         }
 
         function saveCurrentSession() {
             if (!conversationHistory.length) return;
-            const history = getHistory();
+            const history = getHistoryFromCache();
             const firstUser = conversationHistory.find(m => m.role === 'user');
             const firstAssistant = conversationHistory.find(m => m.role === 'assistant');
             const preview = firstAssistant ? firstAssistant.content.substring(0, 120) : 'Timetable';
@@ -584,11 +612,18 @@ Please generate a detailed weekly study timetable in a clear table format with s
             }
 
             while (history.length > 20) history.pop();
+            historyCache = history;
             localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            fetch(`${API_BASE}/api/user/history/${BOT_TYPE}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ history })
+            }).catch(() => {});
         }
 
-        function openHistory() {
-            renderHistoryList();
+        async function openHistory() {
+            await renderHistoryList();
             document.getElementById('historyPanel').classList.add('open');
             document.getElementById('historyOverlay').classList.add('open');
         }
@@ -598,9 +633,10 @@ Please generate a detailed weekly study timetable in a clear table format with s
             document.getElementById('historyOverlay').classList.remove('open');
         }
 
-        function renderHistoryList() {
+        async function renderHistoryList() {
             const list = document.getElementById('historyList');
-            const history = getHistory();
+            list.innerHTML = '<div class="history-empty">Loading...</div>';
+            const history = await getHistory();
 
             if (history.length === 0) {
                 list.innerHTML = '<div class="history-empty">No timetables yet.<br>Generate a timetable to get started!</div>';
@@ -620,7 +656,7 @@ Please generate a detailed weekly study timetable in a clear table format with s
         }
 
         function loadSession(sessionId) {
-            const history = getHistory();
+            const history = getHistoryFromCache();
             const session = history.find(h => h.id === sessionId);
             if (!session) return;
 
@@ -635,9 +671,14 @@ Please generate a detailed weekly study timetable in a clear table format with s
         }
 
         function deleteSession(sessionId) {
-            let history = getHistory();
+            let history = getHistoryFromCache();
             history = history.filter(h => h.id !== sessionId);
+            historyCache = history;
             localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            fetch(`${API_BASE}/api/user/history/${BOT_TYPE}/${sessionId}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            }).catch(() => {});
             if (currentSessionId === sessionId) {
                 currentSessionId = null;
                 conversationHistory = [];

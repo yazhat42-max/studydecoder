@@ -88,7 +88,7 @@ if (config.stripe.secretKey) {
 }
 
 // ==================== DATABASE (JSON File-Based) ====================
-const DB_PATH = path.join(__dirname, 'data');
+const DB_PATH = config.isDev ? path.join(__dirname, 'data') : '/var/data';
 const USERS_FILE = path.join(DB_PATH, 'users.json');
 const PAYMENTS_FILE = path.join(DB_PATH, 'payments.json');
 const OG_CODES_FILE = path.join(DB_PATH, 'og-codes.json');
@@ -1605,6 +1605,72 @@ app.post('/api/set-pending-plan', requireAuth, (req, res) => {
         return res.status(400).json({ error: 'Invalid plan' });
     }
     req.session.pendingPlan = plan;
+    res.json({ success: true });
+});
+
+// ==================== CHAT HISTORY (Server-side) ====================
+const VALID_BOT_TYPES = ['notes-transcriber', 'worksheet-decoder', 'practice', 'timetable'];
+const MAX_SESSIONS_PER_BOT = 20;
+
+/**
+ * GET /api/user/history/:botType
+ * Get chat history for a specific bot
+ */
+app.get('/api/user/history/:botType', requireAuth, (req, res) => {
+    const { botType } = req.params;
+    if (!VALID_BOT_TYPES.includes(botType)) {
+        return res.status(400).json({ error: 'Invalid bot type' });
+    }
+    const user = req.user;
+    const history = user.chatHistory?.[botType] || [];
+    res.json(history);
+});
+
+/**
+ * PUT /api/user/history/:botType
+ * Save/update chat history for a specific bot (full replacement)
+ */
+app.put('/api/user/history/:botType', requireAuth, express.json({ limit: '2mb' }), (req, res) => {
+    const { botType } = req.params;
+    if (!VALID_BOT_TYPES.includes(botType)) {
+        return res.status(400).json({ error: 'Invalid bot type' });
+    }
+    const { history } = req.body;
+    if (!Array.isArray(history)) {
+        return res.status(400).json({ error: 'history must be an array' });
+    }
+    const user = req.user;
+    if (!user.chatHistory) user.chatHistory = {};
+    // Enforce max sessions and sanitise
+    user.chatHistory[botType] = history.slice(0, MAX_SESSIONS_PER_BOT).map(session => ({
+        id: String(session.id || ''),
+        title: String(session.title || '').substring(0, 100),
+        date: String(session.date || ''),
+        preview: String(session.preview || '').substring(0, 150),
+        messages: Array.isArray(session.messages) ? session.messages.slice(0, 200).map(m => ({
+            role: m.role === 'assistant' ? 'assistant' : 'user',
+            content: String(m.content || '').substring(0, 50000)
+        })) : []
+    }));
+    scheduleSave();
+    res.json({ success: true });
+});
+
+/**
+ * DELETE /api/user/history/:botType/:sessionId
+ * Delete a specific chat session
+ */
+app.delete('/api/user/history/:botType/:sessionId', requireAuth, (req, res) => {
+    const { botType, sessionId } = req.params;
+    if (!VALID_BOT_TYPES.includes(botType)) {
+        return res.status(400).json({ error: 'Invalid bot type' });
+    }
+    const user = req.user;
+    if (!user.chatHistory?.[botType]) {
+        return res.json({ success: true });
+    }
+    user.chatHistory[botType] = user.chatHistory[botType].filter(s => s.id !== sessionId);
+    scheduleSave();
     res.json({ success: true });
 });
 
