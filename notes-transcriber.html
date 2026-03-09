@@ -962,9 +962,23 @@ The AI will transform them into polished, professional-looking notes with proper
                 .trim();
         }
 
+        function stripFollowUp(text) {
+            if (!text) return text;
+            var marker = '\ud83d\udccc **What next?**';
+            var idx = text.lastIndexOf(marker);
+            if (idx !== -1) {
+                text = text.substring(0, idx).replace(/\n---\s*$/, '');
+            }
+            text = text.replace(/Would you like me to reorganise these notes differently[^\n]*/gi, '');
+            return text.replace(/\n---\s*$/, '').trim();
+        }
+
         function getCombinedNotes() {
-            if (allTranscriptions.length === 0) return lastTranscription;
-            return allTranscriptions.join('\n\n---\n\n');
+            var source;
+            if (allTranscriptions.length === 0) {
+                return stripFollowUp(lastTranscription);
+            }
+            return allTranscriptions.map(stripFollowUp).join('\n\n---\n\n');
         }
 
         async function copyToClipboard() {
