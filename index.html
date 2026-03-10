@@ -1158,6 +1158,12 @@
         document.getElementById('navUserMenu').style.display = 'flex';
         document.getElementById('navUserName').textContent = user.name || user.email.split('@')[0];
         
+        // Hide sale banner for paid/OG/owner/lifetime users
+        if (user.subscribed || user.role === 'owner' || user.role === 'lifetime' || user.role === 'og_tester') {
+            var banner = document.getElementById('saleBanner');
+            if (banner) banner.style.display = 'none';
+        }
+        
         // Show manage subscription button for subscribers (not owner)
         if (user.subscribed && user.role !== 'owner' && user.role !== 'lifetime' && user.role !== 'og_tester') {
             document.getElementById('manageSubNavBtn').style.display = 'inline-block';
@@ -1611,7 +1617,7 @@
             checkAuthStatus();
         }
 
-        // Show sale banner if before April 20, 2026
+        // Show sale banner if before April 20, 2026 (hidden for paid/OG/owner in checkAuthStatus)
         if (new Date() < new Date('2026-04-20T00:00:00')) {
             document.getElementById('saleBanner').style.display = 'block';
         }
