@@ -1,0 +1,1096 @@
+NSW Syllabus
+for the Australian
+Curriculum
+Mathematics
+Extension 1
+Stage 6
+Syllabus
+
+
+Original 2017 published version updated:
+January 2018 - NESA Official Notice 29 January 2018 (NESA 3/18)
+January 2018 - NESA Official Notice 29 January 2018 (NESA 4/18)
+February 2019 - NESA Official Notice 8 February 2019 (NESA 03/19)
+November 2019 - NESA Official Notice 18 November 2019 (NESA 48/19)
+
+View the online version log for all syllabus updates.
+
+(c) 2019 NSW Education Standards Authority (NESA) for and on behalf of the Crown in right of the State of New South Wales.
+
+The NESA website holds the ONLY official and up-to-date versions of these documents available on the internet. ANY other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are NOT authorised. You CANNOT rely on copies from any other source.
+
+The documents on this website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright.
+
+All rights reserved. No part of the Material may be reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form, or transmitted to any other person or stored electronically in any form without the prior written permission of NESA, except as permitted by the Copyright Act 1968.
+
+When you access the material you agree:
+* to use the material for information purposes only
+* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the prior permission of NESA
+* to acknowledge that the material is provided by NESA
+* to include this copyright notice in any copy made
+* not to modify the material or any part of the material without the express prior written permission of NESA.
+The material may contain third-party copyright materials such as photos, diagrams, quotations, cartoons and artworks. These materials are protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's specific permission. Unauthorised reproduction, transmission or commercial use of such copyright materials may result in prosecution.
+
+NESA has made all reasonable attempts to locate owners of third-party copyright material and invites anyone from whom permission has not been sought to contact the Copyright Officer.
+
+Phone: (02) 9367 8289
+Fax: (02) 9279 1482
+Email: copyright@nesa.nsw.edu.au
+
+Published by
+NSW Education Standards Authority
+GPO Box 5300
+Sydney NSW 2001
+Australia
+
+www.educationstandards.nsw.edu.au
+
+PAF17/482
+D2017/35786
+
+Contents
+Introduction	4
+Mathematics Extension 1 Key	7
+Rationale	10
+Mathematics in Stage 6	11
+The Place of the Mathematics Extension 1 Stage 6 Syllabus in the K-12 Curriculum	13
+Building on Mathematics Learning in Stage 5	14
+Aim	15
+Objectives	16
+Outcomes	17
+Year 11 Course Structure and Requirements	20
+Year 12 Course Structure and Requirements	21
+Assessment and Reporting	22
+Content	23
+Mathematics Extension 1 Year 11 Course Content	29
+Mathematics Extension 1 Year 12 Course Content	46
+Glossary	62
+
+
+Introduction
+Stage 6 Curriculum
+NSW Education Standards Authority (NESA) Stage 6 syllabuses have been developed to provide students with opportunities to further develop skills which will assist in the next stage of their lives.
+
+The purpose of Stage 6 syllabuses is to:
+? develop a solid foundation of literacy and numeracy
+? provide a curriculum structure which encourages students to complete secondary education at their highest possible level
+? foster the intellectual, creative, ethical and social development of students, in particular relating to:
+- application of knowledge, understanding, skills, values and attitudes in the fields of study they choose
+- capacity to manage their own learning and to become flexible, independent thinkers, problem-solvers and decision-makers
+- capacity to work collaboratively with others
+- respect for the cultural diversity of Australian society
+- desire to continue learning in formal or informal settings after school
+? provide a flexible structure within which students can meet the challenges of and prepare for:
+- further academic study, vocational training and employment
+- changing workplaces, including an increasingly STEM-focused (Science, Technology, Engineering and Mathematics) workforce
+- full and active participation as global citizens
+? provide formal assessment and certification of students' achievements
+? promote the development of students' values, identity and self-respect.
+
+The Stage 6 syllabuses reflect the principles of the NESA K-10 Curriculum Framework and Statement of Equity Principles, the reforms of the NSW Government Stronger HSC Standards (2016), and nationally agreed educational goals. These syllabuses build on the continuum of learning developed in the K-10 syllabuses.
+
+The syllabuses provide a set of broad learning outcomes that summarise the knowledge, understanding, skills, values and attitudes important for students to succeed in and beyond their schooling. In particular, the attainment of skills in literacy and numeracy needed for further study, employment and active participation in society are provided in the syllabuses in alignment with the Australian Core Skills Framework.
+
+The Stage 6 syllabuses include the content of the Australian Curriculum and additional descriptions that clarify the scope and depth of learning in each subject.
+
+NESA syllabuses support a standards-referenced approach to assessment by detailing the important knowledge, understanding, skills, values and attitudes students will develop and outlining clear standards of what students are expected to know and be able to do. The syllabuses take into account the diverse needs of all students and provide structures and processes by which teachers can provide continuity of study for all students.
+
+
+Diversity of Learners
+NSW Stage 6 syllabuses are inclusive of the learning needs of all students. Syllabuses accommodate teaching approaches that support student diversity including students with disability, gifted and talented students, and students learning English as an additional language or dialect (EAL/D). Students may have more than one learning need.
+Students with Disability
+All students are entitled to participate in and progress through the curriculum. Schools are required to provide additional support or adjustments to teaching, learning and assessment activities for some students with disability. Adjustments are measures or actions taken in relation to teaching, learning and assessment that enable a student with disability to access syllabus outcomes and content, and demonstrate achievement of outcomes.
+
+Students with disability  can access the outcomes and content from Stage 6 syllabuses in a range of ways. Students may engage with:
+? Stage 6 syllabus outcomes and content with adjustments to teaching, learning and/or assessment activities; or
+? selected Stage 6 Life Skills outcomes and content from one or more Stage 6 Life Skills syllabuses.
+
+Decisions regarding curriculum options, including adjustments, should be made in the context of collaborative curriculum planning with the student, parent/carer and other significant individuals to ensure that decisions are appropriate for the learning needs and priorities of individual students.
+
+Further information can be found in support materials for:
+? Mathematics Extension 1
+? Special Education
+? Life Skills.
+Gifted and Talented Students
+Gifted students have specific learning needs that may require adjustments to the pace, level and content of the curriculum. Differentiated educational opportunities assist in meeting the needs of gifted students.
+
+Generally, gifted students demonstrate the following characteristics:
+? the capacity to learn at faster rates
+? the capacity to find and solve problems
+? the capacity to make connections and manipulate abstract ideas.
+
+There are different kinds and levels of giftedness. Gifted and talented students may also possess learning difficulties and/or disabilities that should be addressed when planning appropriate teaching, learning and assessment activities.
+
+
+Curriculum strategies for gifted and talented students may include:
+? differentiation: modifying the pace, level and content of teaching, learning and assessment activities
+? acceleration: promoting a student to a level of study beyond their age group
+? curriculum compacting: assessing a student's current level of learning and addressing aspects of the curriculum that have not yet been mastered.
+
+School decisions about appropriate strategies are generally collaborative and involve teachers, parents and students, with reference to documents and advice available from NESA and the education sectors.
+
+Gifted and talented students may also benefit from individual planning to determine the curriculum options, as well as teaching, learning and assessment strategies, most suited to their needs and abilities.
+Students Learning English as an Additional Language or Dialect (EAL/D)
+Many students in Australian schools are learning English as an additional language or dialect (EAL/D). EAL/D students are those whose first language is a language or dialect other than Standard Australian English and who require additional support to assist them to develop English language proficiency.
+
+EAL/D students come from diverse backgrounds and may include:
+? overseas and Australian-born students whose first language is a language other than English, including creoles and related varieties
+? Aboriginal and Torres Strait Islander students whose first language is Aboriginal English, including Kriol and related varieties.
+
+EAL/D students enter Australian schools at different ages and stages of schooling and at different stages of English language learning. They have diverse talents and capabilities and a range of prior learning experiences and levels of literacy in their first language and in English. EAL/D students represent a significant and growing percentage of learners in NSW schools. For some, school is the only place they use Standard Australian English.
+
+EAL/D students are simultaneously learning a new language and the knowledge, understanding and skills of the Mathematics Extension 1 Stage 6 Syllabus through that new language. They may require additional support, along with informed teaching that explicitly addresses their language needs.
+
+The ESL scales and the English as an Additional Language or Dialect: Teacher Resource provide information about the English language development phases of EAL/D students. These materials and other resources can be used to support the specific needs of English language learners and to assist students to access syllabus outcomes and content.
+
+
+Mathematics Extension 1 Key
+The following codes and icons are used in the Mathematics Extension 1 Stage 6 Syllabus.
+Outcome Coding
+Syllabus outcomes have been coded in a consistent way. The code identifies the subject, Year and outcome number. For example:
+
+
+
+Outcome codeInterpretationME11-1Mathematics Extension, Year 11 - Outcome number 1ME12-4Mathematics Extension 1, Year 12 - Outcome number 4Coding of Australian Curriculum Content
+Australian Curriculum content descriptions included in the syllabus are identified by an Australian Curriculum code which appears in brackets at the end of each content description, for example:
+
+Define and use the inverse trigonometric functions (ACMSM119)
+
+
+
+Where a number of content descriptions are jointly represented, all description codes are included, eg (ACMMM001, ACMGM002, ACMSM003).
+
+
+Coding of Applications and Modelling
+The syllabus provides many opportunities for students to apply and further develop the knowledge, skills and understanding initially described in the topics.
+
+In considering various applications of mathematics, students will be required to construct and use mathematical models. Mathematical modelling gives structure to what we perceive and how we perceive it. In following a modelling process, students view a problem through their past experience, prior knowledge and areas of confidence. As a model emerges, it extends their thinking in new ways as well as enhancing what they have observed.
+
+Modelling opportunities will involve a wide variety of approaches such as generating equations or formulae that describe the behaviour of an object, or alternatively displaying, analysing and interpreting data values from a real-life situation.
+
+In the process of modelling, teachers should provide students with opportunities to make choices, state and question assumptions and make generalisations. Teachers can draw upon problems from a wide variety of sources to reinforce the skills developed, enhance students' appreciation of mathematics and where appropriate, expand their use of technology.
+
+Explicit application and modelling opportunities are identified within the syllabus by the code AAM.
+
+For example: apply knowledge of graphical relationships to solve problems in practical and abstract contexts AAM  
+
+
+Learning Across the Curriculum Icons
+Learning across the curriculum content, including cross-curriculum priorities, general capabilities and other areas identified as important learning for all students, is incorporated and identified by icons in the syllabus.
+
+Cross-curriculum priorities
+ 	Aboriginal and Torres Strait Islander histories and cultures
+ 	Asia and Australia's engagement with Asia
+ 	Sustainability
+
+General capabilities
+ 	Critical and creative thinking
+ 	Ethical understanding
+ 	Information and communication technology capability
+ 	Intercultural understanding
+ 	Literacy
+ 	Numeracy
+ 	Personal and social capability
+
+Other learning across the curriculum areas
+ 	Civics and citizenship
+ 	Difference and diversity
+ 	Work and enterprise
+
+
+Rationale
+Mathematics is the study of order, relation, pattern, uncertainty and generality and is underpinned by observation, logical reasoning and deduction. From its origin in counting and measuring, its development throughout history has been catalysed by its utility in explaining real-world phenomena and its inherent beauty. It has evolved in highly sophisticated ways to become the language now used to describe many aspects of the modern world.
+Mathematics is an interconnected subject that involves understanding and reasoning about concepts and the relationships between those concepts. It provides a framework for thinking and a means of communication that is powerful, logical, concise and precise.
+The Mathematics Stage 6 syllabuses are designed to offer opportunities for students to think mathematically. Mathematical thinking is supported by an atmosphere of questioning, communicating, reasoning and reflecting and is engendered by opportunities to generalise, challenge, find connections and think critically and creatively.
+
+All Mathematics Stage 6 syllabuses provide opportunities for students to develop 21st-century knowledge, skills, understanding, values and attitudes. As part of this, in all courses students are encouraged to learn with the use of appropriate technology and make appropriate choices when selecting technologies as a support for mathematical activity.
+The Mathematics Stage 6 courses, in particular Mathematics Advanced, Mathematics Extension 1 and Mathematics Extension 2, form a continuum to provide opportunities at progressively higher levels for students to acquire knowledge, skills and understanding in relation to concepts within the area of mathematics that have applications in an increasing number of contexts. These concepts and applications are appropriate to the students' continued experience of mathematics as a coherent, interrelated, interesting and intrinsically valuable study that forms the basis for future learning. The introductory concepts and techniques of differential and integral calculus form a strong basis of the courses, and are developed and used across the courses, through a range of applications.
+Mathematics Extension 1 is focused on enabling students to develop a thorough understanding of and competence in further aspects of mathematics. The course provides opportunities to develop rigorous mathematical arguments and proofs, and to use mathematical models more extensively. Students of Mathematics Extension 1 will be able to develop an appreciation of the interconnected nature of mathematics, its beauty and its functionality.
+Mathematics Extension 1 provides a basis for progression to further study in mathematics or related disciplines in which mathematics has a vital role at a tertiary level. An understanding and exploration of Mathematics Extension 1 is also advantageous for further studies in such areas as science, engineering, finance and economics.
+
+Mathematics in Stage 6
+There are six Board-developed Mathematics courses of study for the Higher School Certificate: Mathematics Standard 1, Mathematics Standard 2, Mathematics Advanced, Mathematics 
+Extension 1, Mathematics Extension 2 and Mathematics Life Skills.
+
+Students studying the Mathematics Standard syllabus undertake a common course in Year 11. For the Year 12 course students can elect to study either Mathematics Standard 1 or Mathematics Standard 2.
+
+Students who intend to study the Mathematics Standard 2 course in Year 12 must study all Mathematics Standard Year 11 course content.
+
+Students who intend to study the Mathematics Standard 1 course in Year 12 must have studied the content identified by the symbol ? which forms the foundation of course. This content is important for the development and consolidation of numeracy skills.
+
+Mathematics Advanced consists of the courses Mathematics Advanced Year 11 and Mathematics Advanced Year 12. Students studying one or both Extension courses must study both Mathematics Advanced Year 11 and Mathematics Extension Year 11 courses before undertaking the study of Mathematics Extension 1 Year 12, or both Mathematics Extension 1 Year 12 and Mathematics Extension 2 Year 12. An alternative approach is for students to study both Mathematics Advanced Year 11 and Mathematics Advanced Year 12 before undertaking the study of Mathematics Extension Year 11 and Mathematics Extension 1 Year 12, or both Mathematics Extension 1 Year 12 and Mathematics Extension 2 Year 12.
+
+The Year 11 and Year 12 course components undertaken by students who study Mathematics Standard 1, Mathematics Standard 2, or Mathematics Advanced, Mathematics Extension 1 or Mathematics Extension 2 are illustrated below.
+
+
+Mathematics Standard 1 - Year 11 and Year 12 course components
+
+Mathematics Standard 1 or 2 - Year 11 and Year 12 course components
+
+Mathematics Advanced - Year 11 and Year 12 course components
+
+Mathematics Extension 1 - Co-requisites + Year 11 and Year 12 course components
+
+Mathematics Extension 2 - Co-requisites (Year 11 and Year 12 courses) + Year 12 course components
+
+
+The Place of the Mathematics Extension 1 Stage 6 Syllabus in the K-12 Curriculum
+
+
+
+
+Building on Mathematics Learning in Stage 5
+The outcomes and content in the Mathematics Extension 1 Stage 6 course are written with the assumption that students studying this course will have engaged with all substrands of Stage 5.1, Stage 5.2 and Stage 5.3, including the optional substrands of Polynomials, Logarithms, Functions and Other Graphs and Circle Geometry. Content in the NSW Mathematics K-10 Syllabus up to and including this level is also implicit in this syllabus. In a number of cases where content from Stage 5 is included it is in the context of review for clarity and completeness. Schools have the opportunity to review other areas of Stage 5 content as appropriate to meet the needs of students.
+
+
+Aim
+The study of Mathematics Extension 1 in Stage 6 enables students to extend their knowledge and understanding of what it means to work mathematically, develop their skills to reason logically, generalise and make connections, and enhance their understanding of how to communicate in a concise and systematic manner.
+
+
+Objectives
+Knowledge, Skills and Understanding
+Students:
+? develop efficient strategies to solve problems using pattern recognition, generalisation, proof and modelling techniques
+? develop the ability to use concepts and skills and apply complex techniques to the solution of problems and modelling in the areas of trigonometry, functions, calculus, proof, vectors and statistical analysis
+? use technology effectively and apply critical thinking to recognise appropriate times for such use
+? develop the ability to interpret, justify and communicate mathematics in a variety of forms.
+Values and Attitudes
+Students value and appreciate:
+? mathematics as an essential and relevant part of life, recognising that its development and use has been largely in response to human needs by societies all around the globe
+? the importance of resilience and self-motivation in undertaking mathematical challenges and the importance of taking responsibility for their own learning and evaluation of their mathematical development.
+
+
+Outcomes
+Table of Objectives and Outcomes - Continuum of Learning
+All aspects of Working Mathematically, as described in this syllabus, are integral to the outcomes of the Mathematics Extension 1 Stage 6 course, in particular outcomes ME11-6, ME11-7, ME12-6 and ME12-7.
+
+Objective
+Students:
+* develop efficient strategies to solve problems using pattern recognition, generalisation, proof and modelling techniquesYear 11 Mathematics Extension 1 outcomes
+A student:Year 12 Mathematics Extension 1 outcomes
+A student:ME11-1
+uses algebraic and graphical concepts in the modelling and solving of problems involving functions and their inversesME12-1
+applies techniques involving proof or calculus to model and solve problems
+
+Objective
+Students:
+* develop the ability to use concepts and skills and apply complex techniques to the solution of problems and modelling in the areas of trigonometry, functions, calculus, proof, vectors and statistical analysisYear 11 Mathematics Extension 1 outcomes
+A student:Year 12 Mathematics Extension 1 outcomes
+A student:ME11-2
+manipulates algebraic expressions and graphical functions to solve problemsME12-2
+applies concepts and techniques involving vectors and projectiles to solve problemsME11-3
+applies concepts and techniques of inverse trigonometric functions and simplifying expressions involving compound angles in the solution of problemsME12-3
+applies advanced concepts and techniques in simplifying expressions involving compound angles and solving trigonometric equationsME11-4
+applies understanding of the concept of a derivative in the solution of problems, including rates of change, exponential growth and decay and related rates of changeME12-4
+uses calculus in the solution of applied problems, including differential equations and volumes of solids of revolution ME11-5
+uses concepts of permutations and combinations to solve problems involving counting or orderingME12-5
+applies appropriate statistical processes to present, analyse and interpret data
+Objective
+Students:
+* use technology effectively and apply critical thinking to recognise appropriate times for such useYear 11 Mathematics Extension 1 outcomes
+A student:Year 12 Mathematics Extension 1 outcomes
+A student:ME11-6
+uses appropriate technology to investigate, organise and interpret information to solve problems in a range of contextsME12-6
+chooses and uses appropriate technology to solve problems in a range of contexts
+
+Objective
+Students:
+* develop the ability to interpret, justify and communicate mathematics in a variety of formsYear 11 Mathematics Extension 1 outcomes
+A student:Year 12 Mathematics Extension 1 outcomes
+A student:ME11-7
+communicates making comprehensive use of mathematical language, notation, diagrams and graphsME12-7
+evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms
+
+Year 11 Course Structure and Requirements
+The course is organised in topics, with the topics divided into subtopics.
+
+Year 11 course
+(60 hours)Mathematics ExtensionTopicsSubtopicsFunctionsME-F1 Further Work with Functions
+ME-F2 PolynomialsTrigonometric FunctionsME-T1 Inverse Trigonometric Functions
+ME-T2 Further Trigonometric IdentitiesCalculusME-C1 Rates of ChangeCombinatoricsME-A1 Working with Combinatorics
+For the Year 11 course:
+? The Mathematics Advanced Year 11 course should be taught prior to or concurrently with this course.
+? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
+? Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
+
+
+Year 12 Course Structure and Requirements
+The course is organised in topics, with the topics divided into subtopics.
+
+Year 12 course
+(60 hours)Mathematics Extension 1TopicsSubtopicsProofME-P1 Proof by Mathematical InductionVectorsME-V1 Introduction to VectorsTrigonometric FunctionsME-T3 Trigonometric EquationsCalculusME-C2 Further Calculus Skills
+ME-C3 Applications of CalculusStatistical AnalysisME-S1 The Binomial Distribution
+For the Year 12 course:
+? The Mathematics Advanced Year 12 course should be taught prior to or concurrently with this course.
+? The Mathematics Advanced Year 11 course is a prerequisite.
+? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
+? Students should be provided with regular opportunities involving the integration of technology.
+
+Assessment and Reporting
+Information about assessment in relation to the Mathematics Extension 1 syllabus is contained in Assessment and Reporting in Mathematics Extension 1 Stage 6. It outlines course-specific advice and requirements regarding:
+? Year 11 and Year 12 school-based assessment requirements
+? Year 11 and Year 12 mandatory components and weightings
+? External assessment requirements including HSC examination specifications.
+
+This information should be read in conjunction with requirements on the Assessment Certification Examination (ACE) website.
+
+Additional advice is available in the Principles of Assessment for Stage 6.
+
+
+Content
+Content defines what students are expected to know and do as they work towards syllabus outcomes. It provides the foundations for students to successfully progress to the next stage of schooling or post-school opportunities.
+Teachers will make decisions about content regarding the sequence, emphasis and any adjustments required based on the needs, interests, abilities and prior learning of students.
+Content in Stage 6 syllabuses defines learning expectations that may be assessed in Higher School Certificate examinations.
+Organisation of Content
+The following diagram provides an illustrative representation of elements of the course and their relationship. The Mathematics Extension 1 course includes all of the Mathematics Advanced content.
+
+
+
+Working Mathematically
+Working Mathematically is integral to the learning process in mathematics. It provides students with the opportunity to engage in genuine mathematical activity and develop the skills to become flexible, critical and creative users of mathematics. In this syllabus, Working Mathematically builds on the skills developed in Stage 5, and encompasses six interrelated aspects which form the focus of the syllabus:
+
+These six aspects of Working Mathematically are embedded across the range of syllabus objectives, outcomes and topics. Teachers can extend students' level of proficiency in Working Mathematically by creating opportunities for development through a range of teaching and learning activities.
+
+The two key components of assessment are created from these aspects:
+* Understanding, Fluency and Communicating
+* Problem Solving, Reasoning and Justification
+
+Learning Across the Curriculum
+Learning across the curriculum content, including the cross-curriculum priorities and general capabilities, assists students to achieve the broad learning outcomes defined in the NESA Statement of Equity Principles, the Melbourne Declaration on Educational Goals for Young Australians (December 2008) and in the Australian Government's Core Skills for Work Developmental Framework (2013).
+
+Cross-curriculum priorities enable students to develop understanding about and address the contemporary issues they face.
+
+The cross-curriculum priorities are:
+? Aboriginal and Torres Strait Islander histories and cultures 
+? Asia and Australia's engagement with Asia 
+? Sustainability 
+
+General capabilities encompass the knowledge, skills, attitudes and behaviours to assist students to live and work successfully in the 21st century.
+
+The general capabilities are:
+? Critical and creative thinking 
+? Ethical understanding 
+? Information and communication technology capability 
+? Intercultural understanding 
+? Literacy 
+? Numeracy 
+? Personal and social capability 
+
+NESA syllabuses include other areas identified as important learning for all students:
+? Civics and citizenship 
+? Difference and diversity 
+? Work and enterprise 
+
+Learning across the curriculum content is incorporated, and identified by icons, in the content of the Mathematics Extension 1 Stage 6 Syllabus in the following ways.
+
+
+Aboriginal and Torres Strait Islander Histories and Cultures 
+Through application and modelling across the topics of the syllabus, students have the opportunity to experience the significance of mathematics in Aboriginal and Torres Strait Islander histories and cultures. Opportunities are provided to connect mathematics with Aboriginal and Torres Strait Islander Peoples' cultural, linguistic and historical experiences. The narrative of the development of mathematics and its integration with cultural development can be explored in the context of some topics. Through the evaluation of statistical data where appropriate, students can deepen their understanding of the lives of Aboriginal and Torres Strait Islander Peoples.
+
+When planning and programming content relating to Aboriginal and Torres Strait Islander histories and cultures teachers are encouraged to:
+? involve local Aboriginal communities and/or appropriate knowledge holders in determining suitable resources, or to use Aboriginal or Torres Strait Islander authored or endorsed publications
+? read the Principles and Protocols relating to teaching and learning about Aboriginal and Torres Strait Islander histories and cultures and the involvement of local Aboriginal communities.
+Asia and Australia's Engagement with Asia 
+Students have the opportunity to learn about the understandings and applications of mathematics
+in Asia and the way mathematicians from Asia continue to contribute to the ongoing development 
+of mathematics. By drawing on knowledge of and examples from the Asia region, such as calculation, money, art, architecture, design and travel, students have the opportunity to develop mathematical understanding in fields such as numbers, patterns, measurement, symmetry and statistics. Through the evaluation of statistical data, students have the opportunity to examine issues pertinent to the 
+Asia region.
+Sustainability 
+Mathematics provides a foundation for the exploration of issues of sustainability. Students have the opportunity to learn about the mathematics underlying topics in sustainability such as energy use and how to reduce consumption, alternative energy using solar cells and wind turbines, climate science and mathematical modelling. Through measurement and the reasoned use of data, students have the opportunity to measure and evaluate sustainability changes over time and develop a deeper appreciation of the world around them. Mathematical knowledge, skills and understanding are necessary to monitor and quantify both the impact of human activity on ecosystems and changes to conditions in the biosphere.
+Critical and Creative Thinking 
+Critical and creative thinking are key to the development of mathematical understanding. Mathematical reasoning and logical thought are fundamental elements of critical and creative thinking. Students are encouraged to be critical thinkers when justifying their choice of a calculation strategy or identifying relevant questions during an investigation. They are encouraged to look for alternative ways to approach mathematical problems; for example identifying when a problem is similar to a previous one, drawing diagrams or simplifying a problem to control some variables. Students are encouraged to be creative in their approach to solving new problems, combining the skills and knowledge they have acquired in their study of a number of different topics, within a new context.
+
+
+Ethical Understanding 
+Mathematics makes a clear distinction between the deductions made from basic principles and their consequences in different circumstances. Students have opportunities to explore, develop and apply ethical understanding to mathematics in a range of contexts. Examples include: collecting, displaying and interpreting data; examining selective use of data by individuals and organisations; detecting and eliminating bias in the reporting of information; exploring the importance of fair comparison; and interrogating financial claims and sources.
+Information and Communication Technology Capability 
+Mathematics provides opportunities for students to develop their information and communication technology (ICT) capability when they investigate, create and communicate mathematical ideas and concepts using fast, automated, interactive and multimodal technologies. Students can use their ICT capability to perform calculations; draw graphs; collect, manage, analyse and interpret data; share and exchange information and ideas; and investigate and model concepts and relationships. Digital technologies, such as calculators, spreadsheets, dynamic geometry software, graphing software and computer algebra software, can engage students and promote understanding of key concepts.
+Intercultural Understanding 
+Students have opportunities to understand that mathematical expressions use universal 
+symbols, while mathematical knowledge has its origin in many cultures. Students are provided 
+with opportunities to realise that proficiencies such as understanding, fluency, reasoning and problem solving are not culture or language-specific, but that mathematical reasoning and understanding 
+can find different expression in different cultures and languages. The curriculum provides contexts 
+for exploring mathematical problems from a range of cultural perspectives and within diverse cultural contexts. Students can apply mathematical thinking to identify and resolve issues related to living 
+with diversity.
+Literacy 
+Literacy is used throughout mathematics to understand and interpret word problems and instructions containing particular language featured in mathematics. Students have the opportunity to learn the vocabulary associated with mathematics, including synonyms, technical terminology, passive voice and common words with specific meanings in a mathematical context. Literacy is used to pose and answer questions, engage in mathematical problem solving and to discuss, produce and explain solutions. There are opportunities for students to develop the ability to create and interpret a range of media typical of mathematics, ranging from graphs to complex data displays.
+Numeracy 
+Numeracy is embedded throughout the Mathematics Stage 6 syllabuses. It relates to a high proportion of the content descriptions across Years 11 and 12. Consequently, this particular general capability is not tagged in this syllabus.
+
+Numeracy involves drawing on knowledge of particular contexts and circumstances in deciding when to use mathematics, choosing the mathematics to use and critically evaluating its use. To be numerate is to use mathematics effectively to meet the general demands of life at home, at work, and for participation in community and civic life. It is therefore important that the mathematics curriculum provides the opportunity to apply mathematical understanding and skills in context, in other learning areas and in real-world scenarios.
+
+Personal and Social Capability 
+Students are provided with opportunities to develop personal and social competence as they learn to understand and manage themselves, their relationships and their lives more effectively. Mathematics enhances the development of students' personal and social capabilities by providing opportunities for initiative-taking, decision-making, communicating their processes and findings, and working independently and collaboratively in the mathematics classroom. Students have the opportunity to apply mathematical skills in a range of personal and social contexts. This may be through activities that relate learning to their own lives and communities, such as time management, budgeting and financial management, and understanding statistics in everyday contexts.
+Civics and Citizenship 
+Mathematics has an important role in civics and citizenship education because it has the potential to help us understand our society and our role in shaping it. The role of mathematics in society has expanded significantly in recent decades as almost all aspects of modern-day life are now quantified. Through modelling reality using mathematics and then manipulating the mathematics in order to understand and/or predict reality, students have the opportunity to learn mathematical knowledge, skills and understanding that are essential for active participation in the world in which we live.
+Difference and Diversity 
+Students make sense of and construct mathematical ideas in different ways, drawing upon their own unique experiences in life and prior learning. By valuing students' diversity of ideas, teachers foster students' efficacy in learning mathematics.
+Work and Enterprise 
+Students have the opportunity to develop work and enterprise knowledge, skills and understanding through their study of mathematics in a work-related context. Students are encouraged to select and apply appropriate mathematical techniques and problem solving strategies through work-related experiences in the Statistical Analysis topics. This allows them to make informed financial decisions by selecting and analysing relevant information.
+Mathematics Extension 1 Year 11 Course Content
+Year 11 Course Structure and Requirements
+The course is organised in topics, with the topics divided into subtopics.
+
+Year 11 course
+(60 hours)Mathematics ExtensionTopicsSubtopicsFunctionsME-F1 Further Work with Functions
+ME-F2 PolynomialsTrigonometric FunctionsME-T1 Inverse Trigonometric Functions
+ME-T2 Further Trigonometric IdentitiesCalculusME-C1 Rates of ChangeCombinatoricsME-A1 Working with Combinatorics
+For the Year 11 course:
+? The Mathematics Advanced Year 11 course should be taught prior to or concurrently with this course.
+? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
+? Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
+
+
+Topic: Functions
+Outcomes
+A student:
+› uses algebraic and graphical concepts in the modelling and solving of problems involving functions and their inverses ME11-1
+› manipulates algebraic expressions and graphical functions to solve problems ME11-2
+› uses appropriate technology to investigate, organise and interpret information to solve problems in a range of contexts ME11-6
+› communicates making comprehensive use of mathematical language, notation, diagrams and graphs ME11-7
+Topic Focus
+The topic Functions involves the use of both algebraic and graphical conventions and terminology to describe, interpret and model relationships of and between changing quantities. This topic provides the means to more fully understand the behaviour of functions, extending to include inequalities, absolute values and inverse functions.
+
+A knowledge of functions enables students to discover connections between algebraic and graphical representations, to determine solutions of equations and to model theoretical or real-life situations involving algebra.
+
+The study of functions is important in developing students' ability to find, recognise and use connections, to communicate concisely and precisely, to use algebraic techniques and manipulations to describe and solve problems, and to predict future outcomes in areas such as finance, economics and weather.
+Subtopics
+ME-F1 Further Work with Functions
+ME-F2 Polynomials
+
+
+Functions
+ME-F1 Further Work with Functions
+Outcomes
+A student:
+› uses algebraic and graphical concepts in the modelling and solving of problems involving functions and their inverses ME11-1
+› manipulates algebraic expressions and graphical functions to solve problems ME11-2
+› uses appropriate technology to investigate, organise and interpret information to solve problems in a range of contexts ME11-6
+› communicates making comprehensive use of mathematical language, notation, diagrams and graphs ME11-7
+Subtopic Focus
+The principal focus of this subtopic is to further explore functions in a variety of contexts including: reciprocal and inverse functions, manipulating graphs of functions, and parametric representation of functions. The study of inequalities is an application of functions and enables students to express domains and ranges as inequalities.
+
+Students develop proficiency in methods to identify solutions to equations both algebraically and graphically. The study of inverse functions is important in higher Mathematics and the calculus of these is studied later in the course. The study of parameters sets foundations for later work on projectiles.
+Content
+F1.1: Graphical relationships
+Students:
+? examine the relationship between the graph of y=f(x) and the graph of y=1/(f(x)) and hence sketch the graphs (ACMSM099)  
+? examine the relationship between the graph of y=f(x) and the graphs of y^2=f(x) and 
+y= v(f(x)) and hence sketch the graphs  
+? examine the relationship between the graph of y=f(x) and the graphs of y=|f(x)| and y=f(|x|) and hence sketch the graphs (ACMSM099)  
+? examine the relationship between the graphs of y=f(x) and y=g(x) and the graphs of y=f(x)+g(x) and y=f(x)g(x) and hence sketch the graphs  
+? apply knowledge of graphical relationships to solve problems in practical and abstract contexts AAM  
+
+F1.2: Inequalities
+Students:
+? solve quadratic inequalities using both algebraic and graphical techniques 
+? solve inequalities involving rational expressions, including those with the unknown in the denominator 
+? solve absolute value inequalities of the form |ax+b|=k, |ax+b|=k, |ax+b|<k and 
+|ax+b|>k
+F1.3: Inverse functions
+Students:
+? define the inverse relation of a function y=f(x) to be the relation obtained by reversing all the ordered pairs of the function
+? examine and use the reflection property of the graph of a function and the graph of its inverse (ACMSM096)  
+- understand why the graph of the inverse relation is obtained by reflecting the graph of the function in the line y=x
+- using the fact that this reflection exchanges horizontal and vertical lines, recognise that the horizontal line test can be used to determine whether the inverse relation of a function is again a function
+? write the rule or rules for the inverse relation by exchanging x and y in the function rules, including any restrictions, and solve for y, if possible
+? when the inverse relation is a function, use the notation f^(-1) (x) and identify the relationships between the domains and ranges of f(x) and f^(-1) (x)
+? when the inverse relation is not a function, restrict the domain to obtain new functions that are one-to-one, and compare the effectiveness of different restrictions 
+? solve problems based on the relationship between a function and its inverse function using algebraic or graphical techniques AAM  
+
+F1.4: Parametric form of a function or relation
+Students:
+? understand the concept of parametric representation and examine lines, parabolas and circles expressed in parametric form  
+- understand that linear and quadratic functions, and circles can be expressed in either parametric form or Cartesian form
+- convert linear and quadratic functions, and circles from parametric form to Cartesian form and vice versa
+- sketch linear and quadratic functions, and circles expressed in parametric form
+
+
+Functions
+ME-F2 Polynomials
+Outcomes
+A student:
+› uses algebraic and graphical concepts in the modelling and solving of problems involving functions and their inverses ME11-1
+› manipulates algebraic expressions and graphical functions to solve problems ME11-2
+› uses appropriate technology to investigate, organise and interpret information to solve problems in a range of contexts ME11-6
+› communicates making comprehensive use of mathematical language, notation, diagrams and graphs ME11-7
+Subtopic Focus
+The principal focus of this subtopic is to explore the behaviour of polynomials algebraically, including the remainder and factor theorems, and sums and products of roots.
+
+Students develop knowledge, skills and understanding to manipulate, analyse and solve polynomial equations. Polynomials are of fundamental importance in algebra and have many applications in higher mathematics. They are also significant in many other fields of study, including the sciences, engineering, finance and economics.
+Content
+F2.1: Remainder and factor theorems
+Students:
+? define a general polynomial in one variable, x, of degree n with real coefficients to be the expression: a_n x^n+a_(n-1) x^(n-1)+...+a_2 x^2+a_1 x+a_0, where a_n?0
+- understand and use terminology relating to polynomials including degree, leading term, leading coefficient and constant term
+? use division of polynomials to express P(x) in the form P(x)=A(x).Q(x)+R(x) where deg R(x)<deg A(x) and A(x) is a linear or quadratic divisor, Q(x) the quotient and R(x) the remainder
+- review the process of division with remainders for integers
+- describe the process of division using the terms: dividend, divisor, quotient, remainder 
+? prove and apply the factor theorem and the remainder theorem for polynomials and hence solve simple polynomial equations (ACMSM089, ACMSM091) 
+
+
+F2.2: Sums and products of roots of polynomials
+Students:
+? solve problems using the relationships between the roots and coefficients of quadratic, cubic and quartic equations AAM 
+- consider quadratic, cubic and quartic equations, and derive formulae as appropriate for the sums and products of roots in terms of the coefficients
+? determine the multiplicity of a root of a polynomial equation 
+- prove that if a polynomial equation of the form P(x)=0 has a root of multiplicity r>1, then P' (x)=0 has a root of multiplicity r-1
+? graph a variety of polynomials and investigate the link between the root of a polynomial equation and the zero on the graph of the related polynomial function   
+- examine the sign change of the function and shape of the graph either side of roots of varying multiplicity
+
+Topic: Trigonometric Functions
+Outcomes
+A student:
+› uses algebraic and graphical concepts in the modelling and solving of problems involving functions and their inverses ME11-1
+› applies concepts and techniques of inverse trigonometric functions and simplifying expressions involving compound angles in the solution of problems ME11-3
+› uses appropriate technology to investigate, organise and interpret information to solve problems in a range of contexts ME11-6
+› communicates making comprehensive use of mathematical language, notation, diagrams and graphs ME11-7
+Topic Focus
+The topic Trigonometric Functions involves the study of periodic functions in geometric, algebraic, numerical and graphical representations. It extends to exploration and understanding of inverse trigonometric functions over restricted domains and their behaviour in both algebraic and graphical form.
+
+A knowledge of trigonometric functions enables the solving of problems involving inverse trigonometric functions, and the modelling of the behaviour of naturally occurring periodic phenomena such as waves and signals to solve problems and to predict future outcomes.
+
+The study of the graphs of trigonometric functions is important in developing students' understanding of the connections between algebraic and graphical representations and how this can be applied to solve problems from theoretical or real-life scenarios and situations.
+Subtopics
+ME-T1 Inverse Trigonometric Functions
+ME-T2 Further Trigonometric Identities
+
+
+Trigonometric Functions
+ME-T1 Inverse Trigonometric Functions
+Outcomes
+A student:
+› uses algebraic and graphical concepts in the modelling and solving of problems involving functions and their inverses ME11-1
+› applies concepts and techniques of inverse trigonometric functions and simplifying expressions involving compound angles in the solution of problems ME11-3
+› uses appropriate technology to investigate, organise and interpret information to solve problems in a range of contexts ME11-6
+› communicates making comprehensive use of mathematical language, notation, diagrams and graphs ME11-7
+Subtopic Focus
+The principal focus of this subtopic is for students to determine and to work with the inverse trigonometric functions.
+
+Students explore inverse trigonometric functions which are important examples of inverse functions. They sketch the graphs of these functions and apply a range of properties to extend their knowledge and understanding of the connections between algebraic and geometrical representations of functions. This enables a deeper understanding of the nature of periodic functions, which are used as powerful modelling tools for any quantity that varies in a cyclical way.
+Content
+Students:
+? define and use the inverse trigonometric functions (ACMSM119)
+- understand and use the notation arcsin?x and sin^(-1) x for the inverse function of sin?x when -p/2=x=p/2 (and similarly for cos?x and tan?x) and understand when each notation might be appropriate to avoid confusion with the reciprocal functions
+- use the convention of restricting the domain of sin?x to -p/2=x=p/2, so the inverse function exists. The inverse of this restricted sine function is defined by: ?y=sin?^(-1) x, -1=x=1 and -p/2=y=p/2
+- use the convention of restricting the domain of cos?x  to 0=x=p , so the inverse function exists. The inverse of this restricted cosine function is defined by: ?y=cos?^(-1) x,  -1=x=1 and 0=y=p
+- use the convention of restricting the domain of tan?x to -p/2<x<p/2 , so the inverse function exists. The inverse of this restricted tangent function is defined by: y=tan^(-1) x, x is a real number and -p/2<y<p/2
+- classify inverse trigonometric functions as odd, even or neither odd nor even
+
+
+? sketch graphs of the inverse trigonometric functions  
+? use the relationships ?sin ???(sin^(-1)??x)? ?=x and sin^(-1)??(sin??x)? ?=x,  ?cos ???(cos^(-1)??x)? ?=x and
+cos^(-1)??(cos??x)? ?=x, and ?tan ???(tan^(-1)??x)? ?=x and tan^(-1)??(tan??x)? ?=x where appropriate, and state the values of x for which these relationships are valid
+? prove and use the properties: sin^(-1) (-x)=-sin^(-1)?x, cos^(-1)?(-x)=p-cos^(-1)?x,
+tan^(-1)?(-x)=-tan^(-1)?x and cos^(-1) x+sin^(-1) x=p/2
+? solve problems involving inverse trigonometric functions in a variety of abstract and practical situations AAM 
+
+Trigonometric Functions
+ME-T2 Further Trigonometric Identities
+Outcomes
+A student:
+› uses algebraic and graphical concepts in the modelling and solving of problems involving functions and their inverses ME11-1
+› applies concepts and techniques of inverse trigonometric functions and simplifying expressions involving compound angles in the solution of problems ME11-3
+› uses appropriate technology to investigate, organise and interpret information to solve problems in a range of contexts ME11-6
+› communicates making comprehensive use of mathematical language, notation, diagrams and graphs ME11-7
+Subtopic Focus
+The principal focus of this subtopic is for students to define and work with trigonometric identities to both prove results and manipulate expressions.
+
+Students develop knowledge of how to manipulate trigonometric expressions to solve equations and to prove results. Trigonometric expressions and equations provide a powerful tool for modelling quantities that vary in a cyclical way such as tides, seasons, demand for resources, and alternating current. The solution of trigonometric equations may require the use of trigonometric identities.
+Content
+Students:
+? derive and use the sum and difference expansions for the trigonometric functions ?sin ???(A±B)?, ?cos ???(A±B)? and tan?? (A±B)? (ACMSM044)
+- sin?? (A±B)?=sin A cos B±cos?A sin B
+- ?cos ???(A±B)?=cos A cos B±sin A sin B
+- tan?? (A±B)?=(tan A ± tan B)/(1 ± tan A tan B)
+? derive and use the double angle formulae for sin??2A ?, cos?2A and tan?2A  (ACMSM044) 
+- sin?? 2A?  	=2 sin A cos?A
+- ?cos ??2A	=cos^2 A-sin^2 A
+		=2 cos^2 A-1
+		=1-2 sin^2 A
+- tan 2A 	=  (2 tan A)/(1 - tan^2 A)
+? derive and use expressions for sin?A, cos?A and tan?A in terms of t where t=tan??A/2? (the t-formulae)
+- sin?A=2t/(1+t^2 )
+- cos??A=?  (1-t^2)/(1+t^2 )
+- tan?A=2t/(1-t^2 )
+
+
+? derive and use the formulae for trigonometric products as sums and differences for cos?A  cos?B, sin??A sin?B ?, sin?A  cos?B and cos?A  sin?B (ACMSM047) 
+- cos?A  cos?B=?(1/2) [cos?(A-B)+cos?(A+B) ]
+- sin??A sin?B ?=?(1/2) [cos?(A-B)-cos?(A+B) ]
+- sin??A cos?B ?=?(1/2) [sin??(A+B)+sin?(A-B) ? ]
+- cos??A sin?B ?= ?(1/2) [sin??(A+B)-sin?(A-B) ? ]
+    - 
+
+Topic: Calculus
+Outcomes
+A student:
+› uses algebraic and graphical concepts in the modelling and solving of problems involving functions and their inverses ME11-1
+› applies understanding of the concept of a derivative in the solution of problems, including rates of change, exponential growth and decay and related rates of change ME11-4
+› uses appropriate technology to investigate, organise and interpret information to solve problems in a range of contexts ME11-6
+› communicates making comprehensive use of mathematical language, notation, diagrams and graphs ME11-7
+Topic Focus
+The topic Calculus involves the study of how things change and provides a framework for developing quantitative models of change and deducing their consequences. It involves the development of the connections between rates of change and related rates of change, the derivatives of functions and the manipulative skills necessary for the effective use of differential calculus.
+
+The study of calculus is important in developing students' knowledge and understanding of related rates of change and developing the capacity to operate with and model situations involving change, using algebraic and graphical techniques to describe and solve problems and to predict outcomes with relevance to, for example the physical, natural and medical sciences, commerce and the construction industry.
+Subtopics
+ME-C1 Rates of Change
+
+
+Calculus
+ME-C1 Rates of Change
+Outcomes
+A student:
+› uses algebraic and graphical concepts in the modelling and solving of problems involving functions and their inverses ME11-1
+› applies understanding of the concept of a derivative in the solution of problems, including rates of change, exponential growth and decay and related rates of change ME11-4
+› uses appropriate technology to investigate, organise and interpret information to solve problems in a range of contexts ME11-6
+› communicates making comprehensive use of mathematical language, notation, diagrams and graphs ME11-7
+Subtopic Focus
+The principal focus of this subtopic is for students to solve problems involving the chain rule and differentiation of the exponential function, and understand how these concepts can be applied to the physical and natural sciences.
+
+Students develop the ability to study motion problems in an abstract situation, which may in later studies be applied to large and small mechanical systems, from aeroplanes and satellites to miniature robotics. Students also study the mathematics of exponential growth and decay, two fundamental processes in the natural environment.
+Content
+C1.1: Rates of change with respect to time
+Students:
+? describe the rate of change of a physical quantity with respect to time as a derivative 
+- investigate examples where the rate of change of some aspect of a given object with respect to time can be modelled using derivatives AAM
+- use appropriate language to describe rates of change, for example 'at rest', 'initially', 'change of direction' and 'increasing at an increasing rate'
+? find and interpret the derivative dQ/dt, given a function in the form Q=f(t), for the amount of a physical quantity present at time t
+? describe the rate of change with respect to time of the displacement of a particle moving along the x-axis as a derivative dx/dt or x ?
+? describe the rate of change with respect to time of the velocity of a particle moving along the 
+x-axis as a derivative (d^2 x)/(dt^2 ) or x ¨
+
+
+C1.2: Exponential growth and decay
+Students:
+? construct, analyse and manipulate an exponential model of the form N(t)=Ae^kt to solve a practical growth or decay problem in various contexts (for example population growth, radioactive decay or depreciation) AAM   
+- establish the simple growth model, dN/dt=kN, where N is the size of the physical quantity, N=N(t) at time t and k is the growth constant
+- verify (by substitution) that the function N(t)=Ae^kt satisfies the relationship dN/dt=kN, with A being the initial value of N
+- sketch the curve N(t)=Ae^kt for positive and negative values of k
+- recognise that this model states that the rate of change of a quantity varies directly with the size of the quantity at any instant
+? establish the modified exponential model, dN/dt=k(N-P), for dealing with problems such as 'Newton's Law of Cooling' or an ecosystem with a natural 'carrying capacity' AAM   
+- verify (by substitution) that a solution to the differential equation dN/dt=k(N-P) is
+N(t)=P+Ae^kt, for an arbitrary constant A, and P a fixed quantity, and that the solution is N=P in the case when A=0
+- sketch the curve N(t)=P+Ae^kt for positive and negative values of k
+- note that whenever k<0, the quantity N tends to the limit P as t?8, irrespective of the initial conditions
+- recognise that this model states that the rate of change of a quantity varies directly with the difference in the size of the quantity and a fixed quantity at any instant
+? solve problems involving situations that can be modelled using the exponential model or the modified exponential model and sketch graphs appropriate to such problems AAM 
+
+C1.3: Related rates of change
+Students:
+? solve problems involving related rates of change as instances of the chain rule (ACMSM129) AAM 
+? develop models of contexts where a rate of change of a function can be expressed as a rate of change of a composition of two functions, and to which the chain rule can be applied 
+
+
+Topic: Combinatorics
+Outcomes
+A student:
+› uses concepts of permutations and combinations to solve problems involving counting or ordering ME11-5
+› uses appropriate technology to investigate, organise and interpret information to solve problems in a range of contexts ME11-6
+› communicates making comprehensive use of mathematical language, notation, diagrams and graphs ME11-7
+Topic Focus
+The topic Combinatorics involves counting and ordering as well as exploring arrangements, patterns, symmetry and other methods to generalise and predict outcomes. The consideration of the expansion of (x+y)^n, where n is a positive integer, draws together aspects of number theory and probability theory.
+
+A knowledge of combinatorics is useful when considering situations and solving problems involving counting, sorting and arranging. Efficient counting methods have many applications and are used in the study of probability.
+
+The study of combinatorics is important in developing students' ability to generalise situations, to explore patterns and to ensure the consideration of all outcomes in situations such as the placement of people or objects, setting-up of surveys, jury or committee selection and design.
+Subtopics
+ME-A1 Working with Combinatorics
+
+
+Combinatorics
+ME-A1 Working with Combinatorics
+Outcomes
+A student:
+› uses concepts of permutations and combinations to solve problems involving counting or ordering ME11-5
+› uses appropriate technology to investigate, organise and interpret information to solve problems in a range of contexts ME11-6
+› communicates making comprehensive use of mathematical language, notation, diagrams and graphs ME11-7
+Subtopic Focus
+The principal focus of this subtopic is to develop students' understanding and proficiency with permutations and combinations and their relevance to the binomial coefficients.
+
+Students develop proficiency in ordering and counting techniques in both restricted and unrestricted situations. The binomial expansion is introduced, Pascal's triangle is constructed and related identities are proved. The material studied provides the basis for more advanced work, where the binomial expansion is extended to cases for rational values of n, and applications in calculus are explored.
+Content
+A1.1: Permutations and combinations
+Students:
+? list and count the number of ways an event can occur
+? use the fundamental counting principle (also known as the multiplication principle)
+? use factorial notation to describe and determine the number of ways n different items can be arranged in a line or a circle
+- solve problems involving cases where some items are not distinct (excluding arrangements in a circle)
+? solve simple problems and prove results using the pigeonhole principle (ACMSM006)
+- understand that if there are n pigeonholes and n+1 pigeons to go into them, then at least one pigeonhole must hold 2 or more pigeons
+- generalise to: If n pigeons are sitting in k pigeonholes, where n>k, then there is at least one pigeonhole with at least   n/k pigeons in it
+- prove the pigeonhole principle
+? understand and use permutations to solve problems (ACMSM001) 
+- understand and use the notation ^n P_r and the formula  ^n P_r=n!/(n-r)!
+? solve problems involving permutations and restrictions with or without repeated objects (ACMSM004)
+? understand and use combinations to solve problems (ACMSM007)
+- understand and use the notations (¦(n@r)) and  ^n C_r and the formula  ^n C_r=n!/(r!(n-r)!) 
+(ACMMM045, ACMSM008)
+? solve practical problems involving permutations and combinations, including those involving simple probability situations AAM 
+
+A1.2: The binomial expansion and Pascal's triangle
+Students:
+? expand ?(x+y)?^n for small positive integers n (ACMMM046)
+- note the pattern formed by the coefficients of x in the expansion of (1+x)^n and recognise links to Pascal's triangle
+- recognise the numbers (¦(n@r)) (also denoted ^n C_r) as binomial coefficients (ACMMM047)
+? derive and use simple identities associated with Pascal's triangle (ACMSM009)
+- establish combinatorial proofs of the Pascal's triangle relations ^n C_0=1,  ^n C_n=1;
+ ^n C_r= ^(n-1) C_(r-1)+ ^(n-1) C_r for 1=r=n-1; and  ^n C_r= ^n C_(n-r)
+
+Mathematics Extension 1 Year 12 Course Content
+Year 12 Course Structure and Requirements
+The course is organised in topics, with the topics divided into subtopics.
+
+Year 12 course
+(60 hours)Mathematics Extension 1TopicsSubtopicsProofME-P1 Proof by Mathematical InductionVectorsME-V1 Introduction to VectorsTrigonometric FunctionsME-T3 Trigonometric EquationsCalculusME-C2 Further Calculus Skills
+ME-C3 Applications of CalculusStatistical AnalysisME-S1 The Binomial Distribution
+For the Year 12 course:
+? The Mathematics Advanced Year 12 course should be taught prior to or concurrently with this course.
+? The Mathematics Advanced Year 11 course is a prerequisite.
+? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
+? Students should be provided with regular opportunities involving the integration of technology.
+
+
+Topic: Proof
+Outcomes
+A student:
+› applies techniques involving proof or calculus to model and solve problems ME12-1
+› chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+› evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Topic Focus
+The topic Proof involves the communication and justification of an argument for a mathematical statement in a clear, concise and precise manner.
+
+A knowledge of proof enables a level of reasoning, justification and communication that is accurate, concise and precise.
+
+The study of proof is important in developing students' ability to reason, justify, communicate and critique mathematical arguments and statements necessary for problem solving and generalising patterns.
+Subtopics
+ME-P1 Proof by Mathematical Induction
+
+
+Proof
+ME-P1 Proof by Mathematical Induction
+Outcomes
+A student:
+› applies techniques involving proof or calculus to model and solve problems ME12-1
+› chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+› evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Subtopic Focus
+The principal focus of this subtopic is to explore and to develop the use of the technique of proof by mathematical induction to prove results. Students are introduced to mathematical induction for a limited range of applications so that they have time to develop confidence in its use.
+
+Students develop the use of formal mathematical language and argument to prove the validity of given situations using inductive reasoning. The logical sequence of steps in the proof technique needs to be understood and carefully justified, thus encouraging clear and concise communication which is useful both in further study of mathematics and in life.
+Content
+Students:
+? understand the nature of inductive proof, including the 'initial statement' and the inductive step (ACMSM064)
+? prove results using mathematical induction 
+- prove results for sums, for example 1+4+9+...+n^2=(n(n+1)(2n+1))/6 for any positive integer n (ACMSM065)
+- prove divisibility results, for example 3^2n-1 is divisible by 8 for any positive integer n (ACMSM066)
+? identify errors in false 'proofs by induction', such as cases where only one of the required two steps of a proof by induction is true, and understand that this means that the statement has not been proved
+? recognise situations where proof by mathematical induction is not appropriate 
+
+
+Topic: Vectors
+Outcomes
+A student:
+› applies concepts and techniques involving vectors and projectiles to solve problems ME12-2
+› chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+› evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Topic Focus
+The topic Vectors involves mathematical representation of a quantity with magnitude and direction and its geometrical depiction. This topic provides a modern language and approach to explore and explain a range of object behaviours in a variety of contexts from theoretical or real-life scenarios.
+
+A knowledge of vectors enables the understanding of the behaviour of objects in two dimensions and ways in which this behaviour can be expressed, including the consideration of position, displacement and movement.
+
+The study of vectors is important in developing students' understanding of an object's representation and behaviour in two dimensions using a variety of notations, and how to use these notations effectively to explore the geometry of a situation. Vectors are used in many fields of study, including engineering, structural analysis and navigation.
+Subtopics
+ME-V1 Introduction to Vectors
+
+
+Vectors
+ME-V1 Introduction to Vectors
+Outcomes
+A student:
+› applies concepts and techniques involving vectors and projectiles to solve problems ME12-2
+› chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+› evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Subtopic Focus
+The principal focus of this subtopic is to introduce the concept of vectors in two dimensions, use them to represent quantities with magnitude and direction, and understand that this representation can allow for the exploration of situations such as geometrical proofs.
+
+Students develop an understanding of vector notations and how to manipulate vectors to allow geometrical situations to be explored further. The example of projectile motion as an application of vectors is then introduced. These concepts are explored further in the Mathematics Extension 2 course.
+Content
+V1.1: Introduction to vectors
+Students:
+? define a vector as a quantity having both magnitude and direction, and examine examples of vectors, including displacement and velocity (ACMSM010)
+- explain the distinction between a position vector and a displacement (relative) vector  
+* define and use a variety of notations and representations for vectors in two dimensions (ACMSM014)
+- use standard notations for vectors, for example: , (AB) ? and a
+- represent vectors graphically in two dimensions as directed line segments
+- define unit vectors as vectors of magnitude 1, and the standard two-dimensional perpendicular unit vectors  and 
+- express and use vectors in two dimensions in a variety of forms, including component form, ordered pairs and column vector notation
+? perform addition and subtraction of vectors and multiplication of a vector by a scalar algebraically and geometrically, and interpret these operations in geometric terms AAM  
+- graphically represent a scalar multiple of a vector (ACMSM012)
+- use the triangle law and the parallelogram law to find the sum and difference of two vectors
+- define and use addition and subtraction of vectors in component form (ACMSM017) 
+- define and use multiplication by a scalar of a vector in component form (ACMSM018)  
+
+
+V1.2: Further operations with vectors
+Students:
+? define, calculate and use the magnitude of a vector in two dimensions and use the notation  for the magnitude of a vector  
+- prove that the magnitude of a vector, , can be found using: 
+- identify the magnitude of a displacement vector (AB) ? as being the distance between the points A and B
+- convert a non-zero vector  into a unit vector  by dividing by its length: 
+? define and use the direction of a vector in two dimensions
+? define, calculate and use the scalar (dot) product of two vectors  and  AAM
+- apply the scalar product, , to vectors expressed in component form, where
+- use the expression for the scalar (dot) product,  where ? is the angle between vectors  and  to solve problems
+- demonstrate the equivalence,  and use this relationship to solve problems
+- establish and use the formula 
+- calculate the angle between two vectors using the scalar (dot) product of two vectors in two dimensions
+? examine properties of parallel and perpendicular vectors and determine if two vectors are parallel or perpendicular (ACMSM021)  
+? define and use the projection of one vector onto another (ACMSM022)
+? solve problems involving displacement, force and velocity involving vector concepts in two dimensions (ACMSM023) AAM
+? prove geometric results and construct proofs involving vectors in two dimensions including to proving that: AAM 
+- the diagonals of a parallelogram meet at right angles if and only if it is a rhombus (ACMSM039)
+- the midpoints of the sides of a quadrilateral join to form a parallelogram (ACMSM040)
+- the sum of the squares of the lengths of the diagonals of a parallelogram is equal to the sum of the squares of the lengths of the sides (ACMSM041)
+
+
+V1.3: Projectile motion
+Students:
+? understand the concept of projectile motion, and model and analyse a projectile's path assuming that:
+- the projectile is a point
+- the force due to air resistance is negligible
+- the only force acting on the projectile is the constant force due to gravity, assuming that the projectile is moving close to the Earth's surface
+? model the motion of a projectile as a particle moving with constant acceleration due to gravity and derive the equations of motion of a projectile AAM
+- represent the motion of a projectile using vectors
+- recognise that the horizontal and vertical components of the motion of a projectile can be represented by horizontal and vertical vectors
+- derive the horizontal and vertical equations of motion of a projectile
+- understand and explain the limitations of this projectile model
+? use equations for horizontal and vertical components of velocity and displacement to solve problems on projectiles
+? apply calculus to the equations of motion to solve problems involving projectiles (ACMSM115) AAM 
+
+
+Topic: Trigonometric Functions
+Outcomes
+A student:
+› applies advanced concepts and techniques in simplifying expressions involving compound angles and solving trigonometric equations ME12-3
+› chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+› evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Topic Focus
+The topic Trigonometric Functions involves the study of periodic functions in geometric, algebraic, numerical and graphical representations. It extends to include the exploration of both algebraic and geometric methods to solve trigonometric problems.
+
+A knowledge of trigonometric functions enables students to manipulate trigonometric expressions to prove identities and solve equations.
+
+The study of trigonometric functions is important in developing students' understanding of the connections between algebraic and graphical representations and how this can be applied to solve problems from theoretical or real-life scenarios, for example involving waves and signals.
+Subtopics
+ME-T3 Trigonometric Equations
+
+
+Trigonometric Functions
+ME-T3 Trigonometric Equations
+Outcomes
+A student:
+› applies advanced concepts and techniques in simplifying expressions involving compound angles and solving trigonometric equations ME12-3
+› chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+› evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Subtopic Focus
+The principal focus of this subtopic is to consolidate and extend students' knowledge in relation to solving trigonometric equations and to apply this knowledge to practical situations.
+
+Students develop complex algebraic manipulative skills and fluency in applying trigonometric knowledge to a variety of situations. Trigonometric expressions and equations provide a powerful tool for modelling quantities that vary in a cyclical way such as tides, seasons, demand for resources, and alternating current.
+Content
+Students:
+? convert expressions of the form ?a cos??x+b sin?x to R cos??(x±a)? or R sin??(x±a)? and apply these to solve equations of the form a cos?x+b sin?x=c, sketch graphs and solve related problems (ACMSM048) 
+? solve trigonometric equations requiring factorising and/or the application of compound angle, double angle formulae or the t-formulae
+? prove and apply other trigonometric identities, for example cos??3x=4cos^3 ? x-3 cos?x (ACMSM049)
+? solve trigonometric equations and interpret solutions in context using technology or otherwise 
+? 
+
+Topic: Calculus
+Outcomes
+A student:
+› applies techniques involving proof or calculus to model and solve problems ME12-1
+› uses calculus in the solution of applied problems, including differential equations and volumes of solids of revolution ME12-4
+› chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+› evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Topic Focus
+The topic Calculus involves the study of how things change and provides a framework for developing quantitative models of change and deducing their consequences. It involves the development of analytic and numeric integration techniques and the use of these techniques in solving problems.
+
+The study of calculus is important in developing students' knowledge, understanding and capacity to operate with and model situations involving change, and to use algebraic and graphical techniques to describe and solve problems and to predict future outcomes with relevance to, for example science, engineering, finance, economics and the construction industry.
+Subtopics
+ME-C2 Further Calculus Skills
+ME-C3 Applications of Calculus
+
+
+Calculus
+ME-C2 Further Calculus Skills
+Outcomes
+A student:
+› applies techniques involving proof or calculus to model and solve problems ME12-1
+› uses calculus in the solution of applied problems, including differential equations and volumes of solids of revolution ME12-4
+› chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+› evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Subtopic Focus
+The principal focus of this subtopic is to further develop students' knowledge, skills and understanding relating to differentiation and integration techniques.
+
+Students develop an awareness and understanding of the interconnectedness of topics across the syllabus, and the fluency that can be obtained in the use of calculus techniques. Later studies in mathematics place prime importance on familiarity and confidence in a variety of calculus techniques as these are used in many different fields.
+Content
+Students:
+? find and evaluate indefinite and definite integrals using the method of integration by substitution, using a given substitution 
+- change an integrand into an appropriate form using algebra
+? prove and use the identities sin^2 nx=?(1/2)(1-cos??2nx)? and cos^2 nx=?(1/2)(1+cos??2nx)? to solve problems
+? solve problems involving ??sin ?^2 nx dx and ?cos^2 nx dx 
+? find derivatives of inverse functions by using the relationship dy/dx=1/(dx/dy)  
+? solve problems involving the derivatives of inverse trigonometric functions
+? integrate expressions of the form 1/v(a^2-x^2 ) or a/(a^2+x^2 ) (ACMSM121)
+
+
+Calculus
+ME-C3 Applications of Calculus
+Outcomes
+A student:
+› applies techniques involving proof or calculus to model and solve problems ME12-1
+› uses calculus in the solution of applied problems, including differential equations and volumes of solids of revolution ME12-4
+› chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+› evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Subtopic Focus
+The principal focus of this subtopic is to develop an understanding of applications of calculus in a practical context, including the more accessible kinds of differential equations and volumes of solids of revolution, to solve problems.
+
+Students develop an awareness and understanding of the use of differential equations which arise when the rate of change in one quantity with respect to another can be expressed in mathematical form. The study of differential equations has important applications in science, engineering, finance, economics and broader applications in mathematics.
+Content
+C3.1: Further area and volumes of solids of revolution
+Students:
+? calculate area of regions between curves determined by functions (ACMSM124)
+? sketch, with and without the use of technology, the graph of a solid of revolution whose boundary is formed by rotating an arc of a function about the x-axis or y-axis AAM  
+? calculate the volume of a solid of revolution formed by rotating a region in the plane about the
+x-axis or y-axis, with and without the use of technology (ACMSM125) AAM  
+? determine the volumes of solids of revolution that are formed by rotating the region between two curves about either the x-axis or y-axis in both real-life and abstract contexts AAM 
+
+C3.2: Differential equations
+Students:
+? recognise that an equation involving a derivative is called a differential equation
+? recognise that solutions to differential equations are functions and that these solutions may not be unique
+? sketch the graph of a particular solution given a direction field and initial conditions
+- form a direction field (slope field) from simple first-order differential equations
+- recognise the shape of a direction field from several alternatives given the form of a differential equation, and vice versa
+- sketch several possible solution curves on a given direction field
+
+
+? solve simple first-order differential equations (ACMSM130)
+- solve differential equations of the form dy/dx=f(x)
+- solve differential equations of the form dy/dx=g(y)
+- solve differential equations of the form dy/dx=f(x)g(y) using separation of variables
+? recognise the features of a first-order linear differential equation and that exponential growth and decay models are first-order linear differential equations, with known solutions
+? model and solve differential equations including to the logistic equation that will arise in situations where rates are involved, for example in chemistry, biology and economics (ACMSM132) AAM 
+
+
+Topic: Statistical Analysis
+Outcomes
+A student:
+› applies appropriate statistical processes to present, analyse and interpret data ME12-5
+› chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+› evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Topic Focus
+The topic Statistical Analysis involves the exploration, display and interpretation of data via modelling to identify and communicate key information.
+
+A knowledge of statistical analysis enables careful interpretation of situations and an awareness of the contributing factors when presented with information by third parties, including its possible misrepresentation.
+
+The study of statistical analysis is important in developing students' ability to consider the level of reliability that can be applied to the analysis of current situations and to predict future outcomes. It supports the development of understanding of how conclusions drawn from data can be used to inform decisions made by groups such as scientific investigators, business people and policy-makers.
+Subtopics
+ME-S1 The Binomial Distribution
+
+
+Statistical Analysis
+ME-S1 The Binomial Distribution
+Outcomes
+A student:
+› applies appropriate statistical processes to present, analyse and interpret data ME12-5
+› chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+› evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Subtopic Focus
+The principal focus of this subtopic is to develop an understanding of binomial random variables and their uses in modelling random processes involving chance and variation.
+
+Students develop an understanding of binomial distributions and associated statistical analysis methods and their use in modelling binomial events. Binomial probabilities and the binomial distribution are used to model situations where only two outcomes are possible. The use of the binomial distribution and binomial probability has many applications, including medicine and genetics.
+Content
+S1.1: Bernoulli and binomial distributions
+Students:
+? use a Bernoulli random variable as a model for two-outcome situations (ACMMM143)
+- identify contexts suitable for modelling by Bernoulli random variables (ACMMM144)
+? use Bernoulli random variables and their associated probabilities to solve practical problems (ACMMM146) AAM
+- understand and apply the formulae for the mean, E(X)=x ¯=p, and variance,
+Var(X)=p(1-p), of the Bernoulli distribution with parameter p, and X defined as the number of successes (ACMMM145)
+? understand the concepts of Bernoulli trials and the concept of a binomial random variable as the number of 'successes' in n independent Bernoulli trials, with the same probability of success p in each trial (ACMMM147)
+- calculate the expected frequencies of the various possible outcomes from a series of Bernoulli trials
+? use binomial distributions and their associated probabilities to solve practical problems (ACMMM150) AAM 
+- identify contexts suitable for modelling by binomial random variables (ACMMM148)
+- identify the binomial parameter p as the probability of success
+- understand and use the notation X~Bin(n,p) to indicate that the random variable X is distributed binomially with parameters n and p
+- apply the formulae for probabilities P(X=r)= ^n C_r p^r ?(1-p)?^(n-r) associated with the binomial distribution with parameters n and p and understand the meaning of  ^n C_r as the number of ways in which an outcome with r successes can occur 
+- understand and apply the formulae for the mean, E(X)=x ¯=np, and the variance,
+ Var(X)=np(1-p), of a binomial distribution with parameters n and p
+
+
+S1.2: Normal approximation for the sample proportion
+Students:
+? use appropriate graphs to explore the behaviour of the sample proportion on collected or supplied data AAM
+- understand the concept of the sample proportion p ^ as a random variable whose value varies between samples (ACMMM174)
+? explore the behaviour of the sample proportion using simulated data AAM
+- examine the approximate normality of the distribution of p ^ for large samples (ACMMM175)
+? understand and use the normal approximation to the distribution of the sample proportion and its limitations AAM
+
+
+Glossary
+Glossary termElaborationAboriginal and Torres Strait Islander PeoplesAboriginal Peoples are the first peoples of Australia and are represented by over 250 language groups each associated with a particular Country or territory. Torres Strait Islander Peoples whose island territories to the north east of Australia were annexed by Queensland in 1879 are also Indigenous Australians and are represented by five cultural groups.
+
+An Aboriginal and/or Torres Strait Islander person is someone who:
+* is of Aboriginal and/or Torres Strait Islander descent
+* identifies as an Aboriginal person and/or Torres Strait Islander person, and
+* is accepted as such by the Aboriginal and/or Torres Strait Islander community in which they live.Bernoulli distributionThe Bernoulli distribution is the probability distribution of a random variable which takes the value 1 with 'success' probability p, and the value 0 with 'failure' probability q=1-p. The Bernoulli distribution is a special case of the binomial distribution, where n=1.Bernoulli random variableA Bernoulli random variable has two possible values, namely 0 representing failure and 1 representing success. The parameter associated with such a random variable is the probability p of obtaining a 1.Bernoulli trialA Bernoulli trial is an experiment with only two possible outcomes, labelled 'success' and 'failure'.binomial coefficientThe coefficient of the term x^(n-r) y^r in the expansion of ?(x+y)?^n is called a binomial coefficient. It is written as  ^n C_r or (¦(n@r)) where r=0, 1, ..., n and is given by:   n!/(r!(n-r)!)binomial distributionThe binomial distribution with parameters n and p is the discrete probability distribution of the number of successes in a sequence of n independent Bernoulli trials, each of which yields success with probability p.binomial expansionA binomial expansion describes the algebraic expansion of powers of a binomial expression.binomial random variableA binomial random variable X represents the number of successes in n independent Bernoulli trials. In each Bernoulli trial, the probability of success is p and the probability of failure is: q=1-pcolumn vector notationA vector, , in two dimensions can be represented in column vector notation. For example the ordered pair  can be represented in column vector notation as: combinationA combination is a selection of r distinct objects from n distinct objects, where order is not important. The number of such combinations is denoted by ^n C_r or  (¦(n@r)), and is given by:   n!/(r!(n-r)!)component form of a vectorThe component form of a vector, , expresses the vector in terms of unit vectors , a unit vector in the x-direction, and , a unit vector in the 
+y-direction. For example the ordered vector pair  can be represented as: differential equationA differential equation is any equation containing the derivative of an unknown function.direction fieldA direction field (or slope field) is a graphical representation of the tangent lines to the solutions of a first-order differential equation.displacement vectorA displacement vector represents the displacement from one point to another.factor theoremThe factor theorem states that a polynomial P(x) has a factor (x-k) if and only if P(k)=0, ie k is a root of the equation P(x)=0.
+
+The factor theorem links the factors and zeros of a polynomial.factorialThe product of the first n positive integers is called the factorial of n and is denoted by n!.
+	n!=n(n-1)(n-2)(n-3)×...×3×2×1
+
+By definition: 0!=1fundamental counting principleThe fundamental counting principle states that if one event has m possible outcomes and a second independent event has n possible outcomes, then there are a total of m×n possible outcomes for the two combined events.integrandAn integrand is a function that is to be integrated.logistic equationThe logistic equation is the differential equation dN/dt=kN(P-N) where k, P are constants. Thus: if N=0 or N=P,  dN/dt=0mathematical inductionMathematical induction is a method of mathematical proof used to prove statements involving the natural numbers.
+
+Also known as proof by induction or inductive proof.
+
+The principle of induction is an axiom and so cannot itself be proven.multiplicity of a rootGiven a polynomial P(x), if P(x)=(x-a)^r Q(x) ,  Q(a)?0 and r is a positive integer, then the root x=a has multiplicity r.parameter1. A parameter is a quantity that defines certain characteristics of a function or system. For example ? is a parameter in y=x cos??
+2. A parameter can be a characteristic value of a situation. For example the time taken for a machine to produce a certain product.permutationA permutation is an arrangement of r distinct objects taken from n distinct objects where order is important.
+
+The number of such permutations is denoted by ^n P_r and is equal to:
+	 ^n P_r=n(n-1)...(n-r+1)=n!/((n-r)!)
+
+The number of permutations of n objects is n!. position vectorThe position vector of a point P in the plane is the vector joining the origin to P.remainder theoremThe remainder theorem states that if a polynomial P(x) is divided by
+(x-k), the remainder is equal to P(k).sample proportionThe sample proportion (p ^) is the fraction of samples out of n Bernoulli trials which were successes (x), that is: p ^=x/n
+
+For large n, p ^ has an approximately normal distribution.scalarA scalar is a quantity with magnitude but no direction.statementA statement is an assertion that can be true or false but not both.
+
+
+
+
+Mathematics Extension 1 Stage 6 Syllabus (2017)		21
+
+
+
+
+
+Year 11
+
+
+
+
+
+
+*****
+
+
+
+Year 12
+
+
+
+
+
+
+
+
+

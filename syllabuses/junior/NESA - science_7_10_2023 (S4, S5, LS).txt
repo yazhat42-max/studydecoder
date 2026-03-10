@@ -1,0 +1,2042 @@
+NSW Education Standards AuthorityScience 7-10 (2023)
+curriculum.nsw.edu.au
+Generated Dec 2025
+
+Downloaded December 2025
+(c) 2025 NSW Education Standards Authority 
+NESA acknowledges Traditional Owners and Custodians of Country throughout NSW, and pays respect to Elders past and present. NESA recognises Aboriginal Peoples' continuing Cultures and Connections to lands, waters, skies and Community.
+The documents on the NSW Education Standards Authority (NESA) website and the NSW Curriculum website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright. 
+These websites hold the only official and up-to-date versions of the documents available on the internet. Any other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are not authorised. You cannot rely on copies from any other source. 
+All rights are reserved. No part of the material may be: 
+* reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form 
+* transmitted to any other person or stored electronically in any form without the written permission of NESA except as permitted by the Copyright Act 1968 (Cth). 
+When you access the material, you agree: 
+* to use the material for research or study, criticism or review, reporting news and parody or satire 
+* to use the material for information purposes only 
+* not to modify the material or any part of the material without the written permission of NESA 
+* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the permission of NESA 
+* to include this copyright notice in any copy made 
+* to acknowledge that NESA is the source of the material. 
+The documents may include third-party copyright material such as photos, diagrams, quotations, cartoons and artworks. This material is protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's permission. Unauthorised reproduction, transmission or commercial use of such copyright material may result in prosecution. 
+NESA has made all reasonable attempts to locate the owners of third-party copyright material. NESA invites anyone from whom permission has not been sought to contact the Copyright Officer.
+Special arrangements applying to the NSW Curriculum Reform 
+As part of the NSW Curriculum Reform process, NESA grants a limited non-exclusive licence to: 
+* teachers employed in NSW government schools and registered non-government schools 
+* representatives from peak school education bodies, such as the NSW Department of Education, Catholic Schools NSW, the Association of Independent Schools of NSW and TAFE NSW
+* parents of children registered for home schooling 
+to use, modify and adapt the NSW syllabuses for non-commercial educational use only. The adaptation must not have the effect of bringing NESA into disrepute. 
+Note: The above arrangements do not apply to private/home tutoring companies, professional learning service providers, publishers, and other organisations.
+For more information on the above or for commercial use or any other purpose, please contact the Copyright Officer for permission. 
+Email: copyright@nesa.nsw.edu.au
+Table of contents
+Table of contents	4
+Science 7-10 (2023)	6
+Implementation from 2026	6
+Overview	6
+Syllabus overview	6
+Course description	8
+Rationale	12
+Aim	13
+Table of outcomes	14
+Secondary (7-10)	14
+Outcomes and content for Stage 4	26
+Working scientifically	26
+Observing the Universe	28
+Forces	30
+Cells and classification	32
+Solutions and mixtures	34
+Living systems	36
+Periodic table and atomic structure	38
+Change	39
+Data science 1	41
+Outcomes and content for Stage 5	43
+Working scientifically	43
+Energy	45
+Disease	47
+Materials	48
+Environmental sustainability	50
+Genetics and evolutionary change	52
+Reactions	54
+Waves and motion	56
+Data science 2	58
+Life Skills for Stages 4/5	60
+Life Skills table of outcomes	60
+Life Skills outcomes and content for Stage 4/5	66
+Working scientifically	66
+Observing the Universe	68
+Forces	70
+Cells and classification	71
+Solutions and mixtures	72
+Living systems	73
+Properties of matter	75
+Change	76
+Data science	78
+Energy	80
+Disease	81
+Materials	82
+Environmental sustainability	83
+Personal genetics and evolutionary change	84
+Reactions	85
+Waves and motion	86
+
+Science 7-10 (2023)
+Implementation from 2026
+The new Science 7-10 Syllabus (2023) is to be implemented from 2026 and will replace the Science 7-10 Syllabus (2018).
+2025 - Plan and prepare to teach the new syllabus
+2026 - Start teaching the new syllabus
+School sectors are responsible for implementing syllabuses and are best placed to provide schools with specific guidance and information on implementation given their understanding of their individual contexts. Schools may choose to implement the new syllabus during the planning and preparation phase.
+Overview
+Syllabus overview
+Organisation of Science 7-10
+Figure 1 shows the organisation of the Science 7-10 Syllabus.
+The organisation of the syllabus illustrates the important role Working scientifically plays across all areas of Science and the connection to scientific knowledge and concepts.
+Content has been included in focus areas which represent the interdisciplinary nature of science.
+
+Figure 1: The organisation of focus areas for Science 7-10
+
+Image long description: The 16 focus areas of Science 7-10 are split into 2 sets of columns for Stage 4 and Stage 5. The focus areas for Stage 4 include: Observing the Universe; Forces; Cells and classification; Solutions and mixtures; Living systems; Periodic table and atomic structure; Change; and Data science 1. The focus areas for Stage 5 include: Energy; Disease; Materials; Environmental sustainability; Genetics and evolutionary change; Reactions; Waves and motion; and Data science 2. A rectangle at the bottom of the image, extending across Stage 4 and 5, states that a depth study is to be conducted from one or more focus areas. All these items are enveloped by a box labelled Working scientifically.
+Life Skills outcomes and content
+Students with disability can access the syllabus outcomes and content in a range of ways. Decisions regarding curriculum options should be made in the context of collaborative curriculum planning.
+Some students with intellectual disability may find the Years 7-10 Life Skills outcomes and content the most appropriate option to follow in Stage 4 and/or Stage 5. Before determining whether a student is eligible to undertake a course based on Life Skills outcomes and content, consideration should be given to other ways of assisting the student to engage with the Stage 4 and/or Stage 5 outcomes, or prior stage outcomes if appropriate. This assistance may include a range of adjustments to teaching, learning and assessment activities.
+Life Skills outcomes cannot be taught in combination with other outcomes from the same subject. Teachers select specific Life Skills outcomes to teach based on the needs, strengths, goals, interests and prior learning of each student. Students are required to demonstrate achievement of one or more Life Skills outcomes.
+Protocols for collaborating with Aboriginal and Torres Strait Islander Communities and engaging with Cultural works
+NESA is committed to working in partnership with Aboriginal Communities and supporting teachers, schools and schooling sectors to improve educational outcomes for young people.
+It is important to respect appropriate ways of interacting with Aboriginal Communities and Cultural material when teachers plan, program and implement learning experiences that focus on Aboriginal and Torres Strait Islander Priorities.
+Indigenous Cultural and Intellectual Property (ICIP) protocols need to be followed. Aboriginal and Torres Strait Islander Peoples' ICIP protocols include Cultural Knowledges, Cultural Expression and Cultural Property and documentation of Aboriginal and Torres Strait Islander Peoples' Identities and lived experiences. It is important to recognise the diversity and complexity of different Cultural groups in NSW, as protocols may differ between local Aboriginal Communities.
+Teachers should work in partnership with Elders, parents, Community members, Cultural Knowledge Holders, or a local, regional or state Aboriginal Education Consultative Group. It is important to respect Elders and the roles of men and women. Local Aboriginal Peoples should be invited to share their Cultural Knowledges with students and staff when engaging with Aboriginal histories and Cultural Practices.
+Creating written texts supports learning
+The development of the Science 7-10 Syllabus follows Recommendation 2: 'Clarify and strengthen writing content in syllabus documents' from Teaching Writing: Report of the Thematic Review of Writing (NESA 2018).
+Creating written texts facilitates learning as it promotes explicitness, encourages the integration of ideas, supports reflection, fosters personal engagement and aids learners to think about the significance and implication of ideas. Each subject has particular and specific writing demands relevant for communicating within and about the discipline. Writing about content enhances understanding across subjects and stages.
+The secondary curriculum includes:
+* systematic development of expectations for creating written texts which align with the English K-10 Syllabus (2022)
+* explicit writing content to support students to become fluent creators of texts and to deepen their understanding of the subject area
+* opportunities to practise the process of creating written texts to develop and communicate knowledge, understanding and ideas
+* a focus on development of word consciousness and precise use of subject-specific terminology.
+Creating written texts refers to the act of composing and constructing a text for a particular purpose, audience and context.
+Various methods of transcription may be employed, and a student's preferred communication form(s) should be considered when teaching.
+Balance of content
+The amount of content associated with a given outcome is not necessarily indicative of the amount of time spent engaging with the respective outcome. Teachers use formative and summative assessment to determine instructional priorities and the time needed for students to demonstrate expected outcomes.
+The knowledge, understanding and skills described in the outcomes and content of each focus area provide a basis for students to successfully progress to the next stage of learning. Focus areas may be reordered if required in line with instructional priorities and learner needs.
+The 'in context' content groups are designed to provide students with opportunities to apply their learning in context. This content group could provide the basis for depth studies.
+
+Course description
+The Science 7-10 Syllabus includes 2 courses:
+* Science 7-10
+* Science Life Skills 7-10.
+The focus of learning in the Science 7-10 Syllabus is described below.
+The Science 7-10 Syllabus develops students' curiosity about, and interest in, science and the natural world. Students are supported to develop scientific literacy through the Working scientifically processes and are provided with the scientific knowledge required to investigate phenomena, make predictions and solve problems. Students generate and analyse data and evaluate results to develop the ability to make ethical, evidence-based decisions, as informed, reflective and scientifically literate citizens.
+What students learn
+Students develop knowledge and understanding of the natural and physical world through observation, experimentation and critical analysis. They investigate phenomena, make predictions and solve problems using scientific knowledge and Working scientifically processes.
+The study of science explores the rich Cultural and scientific ways of Knowing, Being and Doing of Aboriginal and Torres Strait Islander Peoples. Students engage with these evolving Knowledges to understand their application to sustainability and innovation.
+Students connect scientific disciplines and apply their knowledge to address real-world challenges. Through authentic learning experiences, they engage with traditional and innovative practices, exploring the impact of science on society and the environment.
+By studying science, students develop critical thinking, ethical decision-making and problem-solving skills. They are inspired to find solutions to local and global challenges, explore science-related careers and contribute to society as informed and scientifically literate citizens.
+Course requirements
+To meet the mandatory curriculum requirements for the RoSA by the end of Year 10, schools must timetable 400 hours of Science to be studied substantially throughout each of Years 7 to 10.
+Requirements for investigations
+Scientific investigations include both practical investigations and secondary-source investigations. At least 50% of the course time should be allocated to scientific investigations, including time allocated to investigations during depth studies.
+Practical investigations
+These include:
+* undertaking laboratory experiments, including fair tests and controlled experiments that involve the use of appropriate digital technologies
+* undertaking fieldwork
+* models and simulations.
+Some students with disability may require adjustments and/or additional support to engage in practical investigations.
+Secondary-source investigations
+These include:
+* locating and accessing a wide range of secondary data and information
+* analysing, using and reorganising secondary data and information.
+Depth studies
+A depth study is any type of scientific investigation that provides students with an opportunity to pursue their interests and deepen their scientific understanding of one or more focus areas. Depth studies may be completed individually or collaboratively. Students are encouraged to reflect on their learning by developing a portfolio of work to demonstrate their Working scientifically processes.
+Students are required to undertake at least one depth study every year across Stage 4 and Stage 5.
+Guidelines for depth studies are listed below:
+* 5 hours of class time is recommended per year
+* at least one practical depth study per stage
+* at least 2 Working scientifically processes should be covered.
+A depth study may include:
+* a practical investigation or series of practical investigations
+* a secondary-source investigation or series of secondary-source investigations
+* presentations, research assignments or fieldwork reports.
+Working scientifically processes
+The Working scientifically processes are an integral component of the Science 7-10 Syllabus and are embedded in outcomes and content.
+The Working scientifically processes present in the syllabus are:
+* observing
+* questioning and predicting
+* planning investigations
+* conducting investigations
+* processing data and information
+* analysing data and information
+* problem-solving
+* communicating.
+Students learn to work scientifically by using these processes in an interconnected way through regular participation in a range of practical experiences.
+Through Working scientifically, students extend their understanding of the nature of science and how scientific ideas, explanations and concepts develop through the processes of scientific inquiry. They understand the unique interdisciplinary nature of science and the importance of scientific evidence in making informed decisions.
+Teachers may choose to include additional Working scientifically processes as appropriate.
+Data Book
+A Data Book (PDF, 1.67MB, 20 pages) has been published to support the implementation of the Science 7-10 Syllabus.
+Data Book guide
+A Data Book guide (PDF, 571.32KB, 3 pages) has been published to support teachers in using the Science 7-10 Data Book.
+Life Skills
+For Science Life Skills 7-10:
+* Students are required to demonstrate achievement of one or more Science Life Skills 7-10 outcomes.
+* Outcomes and content should be selected to meet the particular needs of individual students.
+* The focus areas provide possible frameworks for addressing the Science Life Skills 7-10 outcomes and content and are suggestions only. Teachers have the flexibility to select, group and sequence outcomes and content to meet the needs, strengths, goals, interests and prior learning of their students.
+* Investigations are an essential part of the study of science. All students should have the opportunity to participate in investigations to develop their understanding and demonstrate achievement of Science Life Skills 7-10 outcomes.
+* Depth studies may be undertaken if appropriate to the needs, interests and abilities of students. Depth studies may be completed individually or collaboratively.
+* Students with disability may require adjustments and/or additional support in order to engage with inquiry skills and tools, including fieldwork.
+Safety, risk management and animal welfare
+Schools are required to ensure they follow safety and risk management, including the welfare of animals, in delivering the Science 7-10 Syllabus.
+
+Science 7-10
+* Course number: 350
+* Course hours: 400
+* Enrolment type: Mandatory
+* Endorsement type: Board developed
+* Study via self-tuition: No
+Exclusions
+Students may not access Life Skills outcomes and other outcomes from the same subject.
+Science Life Skills 7-10
+* Course number: 352
+* Course hours: 400
+* Enrolment type: Mandatory
+* Endorsement type: Board developed
+* Study via self-tuition: No
+Exclusions
+Students may not access Life Skills outcomes and other outcomes from the same subject.
+RoSA information
+To meet the mandatory curriculum requirements for the RoSA by the end of Year 10, schools must timetable:
+* 400 hours of mandatory Science throughout Years 7-10.
+
+
+Rationale
+The study of science in Years 7-10 is a dynamic, collaborative and creative human endeavour. It encourages, inspires and enables students to develop knowledge and understanding of the world through observation, questioning, experimentation, discussion, critical analysis and creative thinking.
+The Science 7-10 Syllabus supports the development of scientific literacy through the Working scientifically processes, and provides students with the scientific knowledge required to investigate phenomena, make predictions and solve problems.
+As the oldest living continuous Cultures in the world, Aboriginal and Torres Strait Islander Peoples have developed their Cultural Knowledges over millennia. These Knowledges are not static and continue to develop. Through the study of science, students have the opportunity to develop their knowledge and understanding of Aboriginal and Torres Strait Islander Peoples' Cultural and Scientific Ways of Knowing, Being and Doing.
+Making connections across scientific disciplines and other subject areas develops students' conceptual understanding of science and its relationship with the world. This enables students to recognise the role of science in solving existing and emerging real-world problems. Students learn to apply their knowledge and understanding to solve familiar and unfamiliar problems.
+The Science 7-10 Syllabus provides opportunities for students to participate in experiences that develop their scientific knowledge and capabilities, and that engage them as scientifically literate citizens.
+By studying science, students develop an understanding of the social and cultural contexts of science. This provides a basis for students to make reasoned, evidence-based and ethical decisions. The Science 7-10 Syllabus encourages students to find innovative solutions to science-related, social and global issues, including sustainable futures.
+
+Aim
+The aim of the Science 7-10 Syllabus is to:
+* develop students' curiosity about, and interest in, science and the natural world
+* increase students' knowledge and understanding of the nature and practice of science, and the Working scientifically processes
+* encourage students to generate and analyse data, evaluate results, and make ethical, evidence-based decisions, as informed, reflective and scientifically literate citizens.
+ 
+Table of outcomes
+The table below displays the Science 7-10 focus areas and their associated outcomes. The relationship between Stage 4 and 5 and Life Skills outcomes is shown in the Related Life Skills column. Life Skills focus areas and their associated outcomes are listed in full in the Life Skills section of the syllabus.
+Secondary (7-10)
+Focus areaStage 4Stage 5Related Life Skills for Stages 4/5Working scientifically
+SC4-WS-01 Working scientifically Observing
+uses scientific tools and instruments for observations
+
+SC4-WS-02 Working scientifically Questioning and predicting
+identifies questions and makes predictions to guide scientific investigations
+
+SC4-WS-03 Working scientifically Planning investigations
+plans safe and valid investigations
+
+SC4-WS-04 Working scientifically Conducting investigations
+follows a planned procedure to undertake safe and valid investigations
+
+SC4-WS-05 Working scientifically Processing data and information
+uses a variety of ways to process and represent data
+
+SC4-WS-06 Working scientifically Analysing data and information
+uses data to identify trends, patterns and relationships, and draw conclusions
+
+SC4-WS-07 Working scientifically Problem-solving
+identifies problem-solving strategies and proposes solutions
+
+SC4-WS-08 Working scientifically Communicating
+communicates scientific concepts and ideas using a range of communication formsSC5-WS-01 Working scientifically Observing
+selects and uses scientific tools and instruments for accurate observations
+
+SC5-WS-02 Working scientifically Questioning and predicting
+develops questions and hypotheses for scientific investigation
+
+SC5-WS-03 Working scientifically Planning investigations
+designs safe, ethical, valid and reliable investigations
+
+SC5-WS-04 Working scientifically Conducting investigations
+follows a planned procedure to undertake safe, ethical, valid and reliable investigations
+
+SC5-WS-05 Working scientifically Processing data and information
+selects and uses a range of tools to process and represent data
+
+SC5-WS-06 Working scientifically Analysing data and information
+analyses data from investigations to identify trends, patterns and relationships, and draws conclusions
+
+SC5-WS-07 Working scientifically Problem-solving
+selects suitable problem-solving strategies and evaluates proposed solutions to identified problems
+
+SC5-WS-08 Working scientifically Communicating
+communicates scientific arguments with evidence, using scientific language and terminology in a range of communication formsSCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-02 Working scientifically Questioning and predicting
+asks questions or makes predictions using observations
+
+SCLS-WS-03 Working scientifically Planning investigations
+participates in planning safe investigations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequence
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and information
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and information
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve them
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationObserving the Universe
+SC4-OTU-01 
+explains how observations are used by scientists to increase knowledge and understanding of the Universe
+
+SC4-WS-01 Working scientifically Observing
+uses scientific tools and instruments for observations
+
+SC4-WS-04 Working scientifically Conducting investigations
+follows a planned procedure to undertake safe and valid investigationsNo Stage 5 outcomesSCLS-OTU-01 
+makes observations about the Universe
+
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequenceForces
+SC4-FOR-01 
+describes the effects of forces in everyday contexts
+
+SC4-WS-02 Working scientifically Questioning and predicting
+identifies questions and makes predictions to guide scientific investigations
+
+SC4-WS-05 Working scientifically Processing data and information
+uses a variety of ways to process and represent data
+
+SC4-WS-06 Working scientifically Analysing data and information
+uses data to identify trends, patterns and relationships, and draw conclusions
+
+SC4-WS-07 Working scientifically Problem-solving
+identifies problem-solving strategies and proposes solutionsNo Stage 5 outcomesSCLS-FOR-01 
+recognises forces in everyday contexts
+
+SCLS-WS-02 Working scientifically Questioning and predicting
+asks questions or makes predictions using observations
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and information
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and information
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve themCells and classification
+SC4-CLS-01 
+describes the unique features of cells in living things and how structural features can be used to classify organisms
+
+SC4-WS-01 Working scientifically Observing
+uses scientific tools and instruments for observations
+
+SC4-WS-04 Working scientifically Conducting investigations
+follows a planned procedure to undertake safe and valid investigations
+
+SC4-WS-08 Working scientifically Communicating
+communicates scientific concepts and ideas using a range of communication formsNo Stage 5 outcomesSCLS-FNS-01 
+identifies features of living and non-living things
+
+SCLS-FNS-02 
+describes ways to sustain a variety of living things
+
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequence
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationSolutions and mixtures
+SC4-SOL-01 
+explains how the properties of substances enable separation in a range of techniques
+
+SC4-WS-03 Working scientifically Planning investigations
+plans safe and valid investigations
+
+SC4-WS-04 Working scientifically Conducting investigations
+follows a planned procedure to undertake safe and valid investigations
+
+SC4-WS-07 Working scientifically Problem-solving
+identifies problem-solving strategies and proposes solutionsNo Stage 5 outcomesSCLS-SOL-01 
+describes the properties of familiar substances and materials
+
+SCLS-WS-03 Working scientifically Planning investigations
+participates in planning safe investigations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequence
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve themLiving systems
+SC4-LIV-01 
+describes the role, structure and function of a range of living systems and their components
+
+SC4-WS-02 Working scientifically Questioning and predicting
+identifies questions and makes predictions to guide scientific investigations
+
+SC4-WS-05 Working scientifically Processing data and information
+uses a variety of ways to process and represent data
+
+SC4-WS-08 Working scientifically Communicating
+communicates scientific concepts and ideas using a range of communication formsNo Stage 5 outcomesSCLS-FNS-01 
+identifies features of living and non-living things
+
+SCLS-FNS-02 
+describes ways to sustain a variety of living things
+
+SCLS-WS-02 Working scientifically Questioning and predicting
+asks questions or makes predictions using observations
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and information
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationPeriodic table and atomic structure
+SC4-PRT-01 
+explains how uses of elements and compounds are influenced by scientific understanding and discoveries relating to their properties
+
+SC4-WS-05 Working scientifically Processing data and information
+uses a variety of ways to process and represent data
+
+SC4-WS-06 Working scientifically Analysing data and information
+uses data to identify trends, patterns and relationships, and draw conclusionsNo Stage 5 outcomesSCLS-SOL-01 
+describes the properties of familiar substances and materials
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and information
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and informationChange
+SC4-CHG-01 
+explains how energy causes geological and chemical change
+
+SC4-WS-01 Working scientifically Observing
+uses scientific tools and instruments for observations
+
+SC4-WS-03 Working scientifically Planning investigations
+plans safe and valid investigations
+
+SC4-WS-04 Working scientifically Conducting investigations
+follows a planned procedure to undertake safe and valid investigationsNo Stage 5 outcomesSCLS-CHG-01 
+observes chemical and geological changes
+
+SCLS-EGU-01 
+describes the use of energy in familiar contexts
+
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-03 Working scientifically Planning investigations
+participates in planning safe investigations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequenceData science
+
+Includes:
+
+Stage 4: Data science 1
+
+Stage 5: Data science 2
+
+SC4-DA1-01 
+explains how data is used by scientists to model and predict scientific phenomena
+
+SC4-WS-06 Working scientifically Analysing data and information
+uses data to identify trends, patterns and relationships, and draw conclusions
+
+SC4-WS-07 Working scientifically Problem-solving
+identifies problem-solving strategies and proposes solutionsSC5-DA2-01 
+assesses the use of scientific knowledge and data in evidence-based decisions and when verifying the legitimacy of claims
+
+SC5-WS-06 Working scientifically Analysing data and information
+analyses data from investigations to identify trends, patterns and relationships, and draws conclusions
+
+SC5-WS-07 Working scientifically Problem-solving
+selects suitable problem-solving strategies and evaluates proposed solutions to identified problems
+
+SC5-WS-08 Working scientifically Communicating
+communicates scientific arguments with evidence, using scientific language and terminology in a range of communication formsSCLS-DAS-01 
+uses data or evidence to make decisions
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and information
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve them
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationEnergy
+No Stage 4 outcomesSC5-EGY-01 
+evaluates current and alternative energy use based on ethical and sustainability considerations
+
+SC5-WS-01 Working scientifically Observing
+selects and uses scientific tools and instruments for accurate observations
+
+SC5-WS-04 Working scientifically Conducting investigations
+follows a planned procedure to undertake safe, ethical, valid and reliable investigations
+
+SC5-WS-07 Working scientifically Problem-solving
+selects suitable problem-solving strategies and evaluates proposed solutions to identified problemsSCLS-EGU-01 
+describes the use of energy in familiar contexts
+
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequence
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve themDisease
+No Stage 4 outcomesSC5-DIS-01 
+explains how an understanding of the causes of disease can be used to prevent and manage the spread of disease
+
+SC5-WS-06 Working scientifically Analysing data and information
+analyses data from investigations to identify trends, patterns and relationships, and draws conclusions
+
+SC5-WS-08 Working scientifically Communicating
+communicates scientific arguments with evidence, using scientific language and terminology in a range of communication formsSCLS-DIS-01 
+demonstrates practices to prevent the spread of disease
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and information
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationMaterials
+No Stage 4 outcomesSC5-MAT-01 
+assesses the uses of materials based on their physical and chemical properties
+
+SC5-WS-03 Working scientifically Planning investigations
+designs safe, ethical, valid and reliable investigations
+
+SC5-WS-07 Working scientifically Problem-solving
+selects suitable problem-solving strategies and evaluates proposed solutions to identified problems
+
+SC5-WS-08 Working scientifically Communicating
+communicates scientific arguments with evidence, using scientific language and terminology in a range of communication formsSCLS-RES-01 
+manages personal resources
+
+SCLS-RES-02 
+contributes to sustainable practices in the community
+
+SCLS-WS-03 Working scientifically Planning investigations
+participates in planning safe investigations
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve them
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationEnvironmental sustainability
+No Stage 4 outcomesSC5-ENV-01 
+analyses the impact of human activity on the natural world
+
+SC5-WS-06 Working scientifically Analysing data and information
+analyses data from investigations to identify trends, patterns and relationships, and draws conclusions
+
+SC5-WS-07 Working scientifically Problem-solving
+selects suitable problem-solving strategies and evaluates proposed solutions to identified problemsSCLS-RES-01 
+manages personal resources
+
+SCLS-RES-02 
+contributes to sustainable practices in the community
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and information
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve themGenetics and evolutionary change
+No Stage 4 outcomesSC5-GEV-01 
+describes the relationship between the diversity of living things and the theory of evolution
+
+SC5-GEV-02 
+explains how DNA is responsible for the transmission of heritable characteristics and can be manipulated through genetic technologies
+
+SC5-WS-05 Working scientifically Processing data and information
+selects and uses a range of tools to process and represent data
+
+SC5-WS-08 Working scientifically Communicating
+communicates scientific arguments with evidence, using scientific language and terminology in a range of communication formsSCLS-GEV-01 
+identifies personal genetic traits
+
+SCLS-FNS-01 
+identifies features of living and non-living things
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and information
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationReactions
+No Stage 4 outcomesSC5-RXN-01 
+describes a range of reaction types
+
+SC5-RXN-02 
+explains the factors that affect the rate of chemical reactions
+
+SC5-WS-01 Working scientifically Observing
+selects and uses scientific tools and instruments for accurate observations
+
+SC5-WS-02 Working scientifically Questioning and predicting
+develops questions and hypotheses for scientific investigation
+
+SC5-WS-03 Working scientifically Planning investigations
+designs safe, ethical, valid and reliable investigations
+
+SC5-WS-04 Working scientifically Conducting investigations
+follows a planned procedure to undertake safe, ethical, valid and reliable investigationsSCLS-RXN-01 
+describes chemical reactions
+
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-02 Working scientifically Questioning and predicting
+asks questions or makes predictions using observations
+
+SCLS-WS-03 Working scientifically Planning investigations
+participates in planning safe investigations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequenceWaves and motion
+No Stage 4 outcomesSC5-WAM-01 
+describes the features and applications of different forms of waves
+
+SC5-WAM-02 
+explains the motion of objects using Newton's laws of motion
+
+SC5-WS-04 Working scientifically Conducting investigations
+follows a planned procedure to undertake safe, ethical, valid and reliable investigations
+
+SC5-WS-05 Working scientifically Processing data and information
+selects and uses a range of tools to process and represent dataSCLS-WAM-01 
+describes the motion of waves or objects
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequence
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and informationBefore deciding that a student should undertake a course based on Life Skills outcomes and content, consideration should be given to other ways of assisting the student to engage with the Stage 4 or Stage 5 outcomes. Further information in relation to planning, implementing and assessing Life Skills outcomes and content can be found on the NESA website.
+
+Outcomes and content for Stage 4
+Working scientifically
+Outcomes
+A student:
+* uses scientific tools and instruments for observations SC4-WS-01
+* identifies questions and makes predictions to guide scientific investigations SC4-WS-02
+* plans safe and valid investigations SC4-WS-03
+* follows a planned procedure to undertake safe and valid investigations SC4-WS-04
+* uses a variety of ways to process and represent data SC4-WS-05
+* uses data to identify trends, patterns and relationships, and draw conclusions SC4-WS-06
+* identifies problem-solving strategies and proposes solutions SC4-WS-07
+* communicates scientific concepts and ideas using a range of communication forms SC4-WS-08
+Related Life Skills outcomes: SCLS-WS-01, SCLS-WS-02, SCLS-WS-03, SCLS-WS-04, SCLS-WS-05, SCLS-WS-06, SCLS-WS-07, SCLS-WS-08
+Content
+Observing
+* Make observations using the senses to compare properties of objects, living things and events
+* Demonstrate competency when using scientific equipment to make observations
+* Make relevant observations and measure quantities, including length, mass, temperature and volume
+* Make a series of observations and measurements that are appropriate to answer a question that has been posed
+Questioning and predicting
+* Identify questions and problems that can be investigated scientifically
+* Make predictions based on scientific knowledge and observations
+Planning investigations
+* Identify the purpose of an investigation
+* Identify the independent, dependent and controlled variable(s)
+* Identify the type of data that needs to be collected in a range of investigations
+* Outline the method and equipment needed to undertake an investigation
+* Outline steps to manage safety risks before, during and after an investigation
+Conducting investigations
+* Employ safe work practices and manage risks using work health and safety (WHS) practices
+* Assemble and use appropriate equipment and resources to perform an investigation
+* Follow the planned procedure, including the measurement and control of variables
+* Record observations and measurements accurately, using correct units for physical quantities
+* Use a wide range of reliable secondary sources and acknowledge their sources
+Processing data and information
+* Extract information from texts, diagrams, flow charts, tables, databases, graphs and multimedia resources
+* Use a range of representations to organise data, including graphs, keys, models, diagrams, tables and spreadsheets
+* Include sources, titles, labels and scales when displaying data in a graph
+* Select the type of graph best suited to represent various single datasets and justify this choice
+* Calculate the mean and range of a dataset
+* Convert between units of measurement
+Analysing data and information
+* Assess the reliability of gathered data and information by comparing it to observations and information from other sources, including published scientific writing
+* Identify patterns and relationships in graphs, keys, models, diagrams, tables and spreadsheets
+* Identify data which supports or refutes a testable statement being investigated or a proposed solution to a problem
+* Use scientific understanding to identify relationships and draw conclusions based on students' data and secondary sources
+* Propose inferences based on presented information and observations
+* Evaluate the method used to investigate a question or solve a problem, including evaluating the quality of the data collected and identifying possible improvements to the investigation
+Problem-solving
+* Identify problems and devise possible strategies or solutions
+* Use identified strategies to suggest possible solutions to a familiar problem
+* Use given evaluation criteria to select optimal solutions to problems
+* Identify cause-and-effect relationships and develop models to explain phenomena
+* Evaluate the suitability of different strategies for solving an identified problem using given criteria
+Communicating
+* Present findings and ideas in a range of communication forms, including using relevant scientific terms, diagrams and graphical representations, as appropriate to audience and purpose
+* Create written texts to communicate scientific concepts, ideas or investigations using conventional scientific text structures
+
+Observing the Universe
+Outcomes
+A student:
+* explains how observations are used by scientists to increase knowledge and understanding of the Universe SC4-OTU-01
+* uses scientific tools and instruments for observations SC4-WS-01
+* follows a planned procedure to undertake safe and valid investigations SC4-WS-04
+Related Life Skills outcomes: SCLS-OTU-01, SCLS-WS-01, SCLS-WS-04
+Content
+Working scientifically
+In this focus area, students develop skills in making observations, using scientific tools to observe, and using a sequence of instructions to safely undertake a range of investigations. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Observing, Conducting investigations
+Nature of science
+* Discuss that the purpose of science is to build knowledge and understanding of the world and the Universe through observation, experimentation and analysis
+* Recognise how scientific knowledge can be represented in branches of biology, chemistry, physics and geology, and consider how modern scientific knowledge is interdisciplinary and transdisciplinary
+* Explore why scientific research is usually collaborative and builds on the work of others
+* Identify that scientific theories and laws are based on repeated experiments and observations that describe or predict a range of natural phenomena
+Practice of science
+* Identify that the practice of science involves using the Working scientifically processes
+* Use a variety of analog and digital measuring devices in scientific investigations to compare the range, sensitivity and accuracy of observations provided by those instruments
+* Compare and contrast the accuracy and reliability of observations made using the senses with those obtained using measuring equipment
+* Explain how observations of natural phenomena can be used to make inferences and testable predictions
+* Explore the different approaches scientists use in scientific research, including systematic observations and controlled experiments
+* Follow a sequence of instructions to safely conduct an investigation, and use scientific tools and instruments to observe how changing the independent variable of the investigation can cause a change in its dependent variable
+* Conduct an investigation using scientific tools and instruments to make a series of observations over time
+* Tabulate and graph data from an investigation to identify trends, patterns and relationships, and draw conclusions
+Space science
+* Compare historical and current solar system models to show how models are modified or rejected due to new scientific evidence
+* Explain that predictable and observable phenomena on the Earth are caused by the relative positions of the Sun, the Earth and the Moon
+* Use physical models or virtual simulations to explain the cyclic patterns of lunar phases and eclipses of the Sun and Moon
+Aboriginal and Torres Strait Islander Peoples' Cultural Knowledges of astronomy
+* Investigate the similarities between Aboriginal and Torres Strait Islander accounts and mainstream scientific explanations about the phases of the Moon and how the phases affect tides
+* Explain how Aboriginal and Torres Strait Islander Peoples use stars to identify specific weather phenomena
+* Describe how Aboriginal and/or Torres Strait Islander Peoples predicted seasonal phenomena based on their observations of the stars and phases of the Moon to predict animal behaviour, plant cycles and tidal changes
+Observing the Universe in context
+* Investigate how a recent advancement in science has increased knowledge of the world and the Universe
+
+Forces
+Outcomes
+A student:
+* describes the effects of forces in everyday contexts SC4-FOR-01
+* identifies questions and makes predictions to guide scientific investigations SC4-WS-02
+* uses a variety of ways to process and represent data SC4-WS-05
+* uses data to identify trends, patterns and relationships, and draw conclusions SC4-WS-06
+* identifies problem-solving strategies and proposes solutions SC4-WS-07
+Related Life Skills outcomes: SCLS-FOR-01, SCLS-WS-02, SCLS-WS-05, SCLS-WS-06, SCLS-WS-07
+Content
+Working scientifically
+In this focus area, students develop skills in identifying and developing questions for investigation, as well as processing and representing data, and identifying trends, patterns and relationships in data. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Questioning and predicting, Processing data and information, Analysing data and information, Problem-solving
+Forces in action
+* Explain forces as either direct (contact) or indirect (non-contact)
+* Conduct a practical investigation on the effects of a range of direct and indirect forces
+* Use force diagrams to model balanced and unbalanced forces
+* Analyse force diagrams to make predictions
+* Examine the relationship between force and energy
+* Describe the electrostatic and gravitational forces exerted between objects
+* Use the concept of forces to describe the motion of objects in orbit
+* Define weight force as the mass × the acceleration due to gravity (g) (F=mg)
+* Perform calculations using the equation F=mg to solve for unknowns
+Magnets in everyday life
+* Describe how magnets attract or repel each other based on their polarity
+* Conduct a practical investigation to test the effect of distance on the action of a magnet
+* Observe and map the magnetic fields of magnets
+* Conduct a practical investigation to construct electromagnets and compare their strength
+Simple machines in everyday life
+* Explore the role of simple machines, from now and in the past, as used in everyday life
+* Conduct a series of practical investigations using simple machines to investigate the action of forces
+* Investigate how simple machines, such as levers and pulleys, are used to change the magnitude of force needed when performing a task
+* Identify examples of Aboriginal and Torres Strait Islander Peoples' application of Knowledge about forces
+* Investigate how simple machines can solve everyday issues
+Forces in context
+* Investigate examples of forces and magnetism in familiar contexts
+
+Cells and classification
+Outcomes
+A student:
+* describes the unique features of cells in living things and how structural features can be used to classify organisms SC4-CLS-01
+* uses scientific tools and instruments for observations SC4-WS-01
+* follows a planned procedure to undertake safe and valid investigations SC4-WS-04
+* communicates scientific concepts and ideas using a range of communication forms SC4-WS-08
+Related Life Skills outcomes: SCLS-FNS-01, SCLS-FNS-02, SCLS-WS-01, SCLS-WS-04, SCLS-WS-08
+Content
+Working scientifically
+In this focus area, students develop skills in using scientific tools and instruments for observations, as well as conducting investigations and communicating scientific ideas and concepts. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Observing, Conducting investigations, Communicating
+Classification of living things
+* Describe the characteristics of living things
+* Discuss the role and importance of classification in ordering and organising the diversity of life on Earth
+* Classify species using scientific conventions from the binomial system of classification, including kingdom, phylum, class, order, family, genus and species
+* Conduct an investigation to observe and identify the similarities and differences of structural features within and between groups of organisms
+* Investigate how organisms in an Australian habitat are adapted to their environment and document findings in a written scientific report
+* Interpret dichotomous keys to identify organisms surveyed in an Australian habitat
+* Explain how plants and animals are classified in Aboriginal and Torres Strait Islander Cultures based on their uses, forms and functions
+Cells
+* Outline cell theory
+* Identify which cell structures and organelles are common in plant and animal cells
+* Describe the functions of the cell membrane, cytoplasm, nucleus containing DNA, mitochondria and chloroplasts
+* Compare the structure of plant and animal cells to identify similarities and differences
+* Conduct an investigation to observe and record the similarities and differences between different cells, including fungi, bacteria, plant and animal cells, using microscopes and/or images obtained from microscopes
+* Identify cellular respiration via mitochondria, and photosynthesis via chloroplasts, as examples of important processes that take place in specialised organelles
+* Draw single-celled organisms observed under a microscope
+* Describe the role of specialised cells in multicellular organisms and explain why they are needed
+* Represent the arrangement of specialised cells in tissues and in organs
+* Examine the relationship between structure and function for a range of specialised cells
+* Conduct a practical investigation to observe and compare prepared slides of specialised cells
+Cells and classification in context
+* Research an organism to explain its classification and describe how it embodies all the characteristics shared by living things
+
+Solutions and mixtures
+Outcomes
+A student:
+* explains how the properties of substances enable separation in a range of techniques SC4-SOL-01
+* plans safe and valid investigations SC4-WS-03
+* follows a planned procedure to undertake safe and valid investigations SC4-WS-04
+* identifies problem-solving strategies and proposes solutions SC4-WS-07
+Related Life Skills outcomes: SCLS-SOL-01, SCLS-WS-03, SCLS-WS-04, SCLS-WS-07
+Content
+Working scientifically
+In this focus area, students develop skills in planning and conducting investigations, as well as identifying problem-solving strategies and proposing solutions to problems. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Planning investigations, Conducting investigations, Problem-solving
+Properties of matter
+* Identify the 3 main states of matter and how they are represented in the movement of water on earth
+* Conduct an investigation to measure and graph the temperature of water to identify the changes of state as heated over time
+* Represent changes in the state of matter in terms of particle arrangement and movement
+* Compare the properties of matter in different states, including the relative strength of attractive forces between solid, liquid and gas particles, to explain differences in the behaviours of the 3 states of matter
+Properties of water
+* Investigate the other physical properties of water, such as density, buoyancy and surface tension
+* Conduct a practical investigation and select appropriate equipment to measure the density of water and other substances, and record the results in a table to compare the calculated density with SI data
+* Determine the volume and mass of regular-shaped and irregular-shaped objects to calculate their density using the formula ?=m/V
+Solutions
+* Investigate what substances dissolve in water and discuss findings using key terms, including soluble, insoluble, solubility, solute, solvent and solution
+* Conduct and document a practical investigation to measure solubility of different solutes in water, and present data using tables and relevant graphs
+* Qualitatively investigate the effect of temperature on solubility
+* Describe how solutions can be modelled using particle theory
+* Compare the properties of dilute, concentrated, saturated and supersaturated solutions
+Separating mixtures
+* Distinguish between atoms, mixtures and compounds and explain their properties using particle theory
+* Classify matter as pure substances, including elements and compounds, and impure substances, including mixtures based on their particle composition
+* Explain how the physical properties of substances are used to separate mixtures
+* Conduct a series of practical investigations to explore common techniques to separate mixtures
+* Investigate techniques used by Aboriginal and/or Torres Strait Islander Peoples to separate mixtures
+* Investigate an industrial separation technique
+Solutions and mixtures in context
+* Model how a body of water can become polluted, and plan and conduct a practical investigation that attempts to remove the pollutants
+
+Living systems
+Outcomes
+A student:
+* describes the role, structure and function of a range of living systems and their components SC4-LIV-01
+* identifies questions and makes predictions to guide scientific investigations SC4-WS-02
+* uses a variety of ways to process and represent data SC4-WS-05
+* communicates scientific concepts and ideas using a range of communication forms SC4-WS-08
+Related Life Skills outcomes: SCLS-FNS-01, SCLS-FNS-02, SCLS-WS-02, SCLS-WS-05, SCLS-WS-08
+Content
+Working scientifically
+In this focus area, students develop skills in questioning and predicting, processing data and information, and communicating scientific ideas and concepts. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Questioning and predicting, Processing data and information, Communicating
+Body systems
+* Explain the interrelationship among cells, tissues and organs
+* Identify the role of the digestive, circulatory, respiratory and excretory systems of humans, and name the major organs
+* Draw or annotate representations of models of organ systems to describe their processes and functions
+* Describe how the structures of organ systems, and the specialised cells within these systems, enable them to carry out their functions
+* Explain how a disorder or disease affecting the components of a body system, or the removal of any component in the body system, impacts on the overall functioning of the system and the organism as a whole
+* Describe how the components of each body system interact to allow the efficient functioning of an organism
+Plant systems
+* Determine the role, structure and function of the components of a plant, including the xylem and phloem, in maintaining plants as multicellular organisms
+* Use scientific tools and instruments to observe the specialised cells and tissues involved in the structure and function of plants
+Ecosystems
+* Identify the components that make up an ecosystem
+* Investigate the interactions of biotic and abiotic factors in an ecosystem
+* Identify how matter and energy are cycled through an ecosystem
+* Create a food web and ecological energy pyramid based on local area observations to describe how matter and energy move through an ecosystem
+* Create written texts to explain how energy pyramids show the amount of energy or matter at each trophic level
+* Examine secondary-source data on the factors that change populations, including the introduction of a new species to an ecosystem, to identify trends, patterns and relationships, and draw conclusions
+Living systems in context
+* Investigate factors that lead to a species becoming endangered or extinct to explain why Australia has some of the world's highest rates of species population decline and extinction
+
+Periodic table and atomic structure
+Outcomes
+A student:
+* explains how uses of elements and compounds are influenced by scientific understanding and discoveries relating to their properties SC4-PRT-01
+* uses a variety of ways to process and represent data SC4-WS-05
+* uses data to identify trends, patterns and relationships, and draw conclusions SC4-WS-06
+Related Life Skills outcomes: SCLS-SOL-01, SCLS-WS-05, SCLS-WS-06
+Content
+Working scientifically
+In this focus area, students develop skills in processing and analysing data and information. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Processing data and information, Analysing data and information
+Classification of matter
+* Identify some common elements in everyday objects
+* Conduct a series of investigations to identify and compare the physical properties of metals, non-metals and metalloids
+* Explain how the properties of some common elements, compounds and alloys relate to their use(s)
+Atomic structure
+* Identify the atom as the smallest unit of an element that retains the properties of that element
+* Identify protons, neutrons and electrons as subatomic particles
+* Describe the location, relative charge and mass of protons, neutrons and electrons using the planetary atomic model
+* Outline how models of atomic structure have changed over time
+* Explain how observations made possible by new technologies have led to a more detailed understanding of atomic structure
+Periodic table
+* Outline patterns and relationships found in the periodic table, including reactivity
+* Predict the properties of elements based on their position and location on the periodic table
+* Identify the unique symbol of a range of elements
+* Use the periodic table to identify the elements in some common compounds
+* Investigate some tests that could be used to identify metal and non-metal elements
+* Model the atomic structure of the first 18 elements to identify that atomic structure changes with increasing atomic number
+* Describe how the historical development of the periodic table demonstrated understanding of the chemical and physical properties of elements
+Periodic table and atomic structure in context
+* Investigate how the properties and availability of materials, including metals, alloys and compounds, influence their uses
+
+Change
+Outcomes
+A student:
+* explains how energy causes geological and chemical change SC4-CHG-01
+* uses scientific tools and instruments for observations SC4-WS-01
+* plans safe and valid investigations SC4-WS-03
+* follows a planned procedure to undertake safe and valid investigations SC4-WS-04
+Related Life Skills outcomes: SCLS-CHG-01, SCLS-EGU-01, SCLS-WS-01, SCLS-WS-03, SCLS-WS-04
+Content
+Working scientifically
+In this focus area, students develop skills in observation, as well as planning and conducting investigations. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Observing, Planning investigations, Conducting investigations
+Energy transfers
+* Identify conduction, convection and radiation as different ways that energy can be transferred, and distinguish between these forms
+* Describe, using the terms 'potential energy' (PE) or 'kinetic energy' (KE), how systems can store different forms of energy, including thermal, elastic, chemical and gravitational energy
+* Identify examples of how energy can change from one form into another
+* Use practical investigations and representations to illustrate energy transformations in a system
+* Define open and closed systems to describe how energy is transferred into and out of systems, and how it cycles within a system
+* Apply the law of conservation of energy to familiar examples
+* Use representations to illustrate energy transformations, including how radiant energy from the Sun can be transformed into a different form of energy
+Chemical change
+* Undertake experiments to identify the indicators of physical and chemical changes
+* Describe the initial and final changes that are observed in a chemical reaction, including writing a word equation to represent a chemical reaction
+* Investigate and observe energy changes in different chemical reactions
+* Conduct a practical investigation to model cellular processes, including respiration and photosynthesis, and document findings in a written report
+Geological change
+* Describe the processes associated with the movement of tectonic plates
+* Identify the evidence used to develop the theory of plate tectonics
+* Identify that earthquakes and volcanoes are natural phenomena that provide evidence of geological changes in the Earth's crust and surface
+* Describe how Aboriginal and/or Aboriginal and Torres Strait Islander Cultural accounts provide evidence of earthquakes and volcanoes on-Country or under the sea
+* Conduct investigations or simulations to compare the observable properties of different types of minerals and rocks
+* Use the rock cycle to explain the geological processes that lead to the formation and transformation of different types of rocks
+* Model the formation of fossils and explain how fossils show evidence that different organisms existed at different times in the past
+* Recognise that the law of superposition allows scientists to determine the relative age of rock strata
+* Describe the elemental composition of the Earth and one or more other planets
+Change in context
+* Observe or design a chain reaction machine to represent energy stores and explain the transfers in the system
+
+Data science 1
+Outcomes
+A student:
+* explains how data is used by scientists to model and predict scientific phenomena SC4-DA1-01
+* uses data to identify trends, patterns and relationships, and draw conclusions SC4-WS-06
+* identifies problem-solving strategies and proposes solutions SC4-WS-07
+Related Life Skills outcomes: SCLS-DAS-01, SCLS-WS-06, SCLS-WS-07
+Content
+Working scientifically
+In this focus area, students develop skills in analysing data and information, as well as identifying problem-solving strategies and proposing solutions to problems. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Analysing data and information, Problem-solving
+Data science context
+The Data science focus area can be taught alongside other focus areas, or aligned to students' interests, local context or school environment.
+Data
+* Examine a range of sources of data and their applications
+* Examine the digital footprint created by different online activities to recognise the importance of engaging safely with digital systems
+* Recognise that data science is an interdisciplinary field that uses statistics, scientific methods and processes, algorithms and systems to develop knowledge by extracting or extrapolating insights from data
+Scientific models
+* Compare and contrast scientific inquiries of natural phenomena with nonscientific approaches
+* Identify that a scientific model is a representation based on data and observations of real-world phenomena
+* Identify examples of the types of models used by scientists
+* Analyse a model to identify data and trends, and generate predictions
+* Identify that computer-based models enable phenomena to be simulated, and variables can be easily changed to investigate their effect
+Applications of models
+* Identify data and observations used by scientists for the development of a model
+* Outline how scientists develop workable theories from models
+Collecting, using and analysing datasets
+* Formulate and investigate scientific questions that can be addressed with data
+* Conduct repeated experimental trials to calculate and compare the mean and range of data collected by different groups to discuss the accuracy and reliability of experimental data
+* Analyse data collected from a range of student investigations to look for patterns and test whether data is consistent with an initial prediction
+Data science 1 in context
+* Create a model that can be used to explain an observable phenomenon
+
+Outcomes and content for Stage 5
+Working scientifically
+Outcomes
+A student:
+* selects and uses scientific tools and instruments for accurate observations SC5-WS-01
+* develops questions and hypotheses for scientific investigation SC5-WS-02
+* designs safe, ethical, valid and reliable investigations SC5-WS-03
+* follows a planned procedure to undertake safe, ethical, valid and reliable investigations SC5-WS-04
+* selects and uses a range of tools to process and represent data SC5-WS-05
+* analyses data from investigations to identify trends, patterns and relationships, and draws conclusions SC5-WS-06
+* selects suitable problem-solving strategies and evaluates proposed solutions to identified problems SC5-WS-07
+* communicates scientific arguments with evidence, using scientific language and terminology in a range of communication forms SC5-WS-08
+Related Life Skills outcomes: SCLS-WS-01, SCLS-WS-02, SCLS-WS-03, SCLS-WS-04, SCLS-WS-05, SCLS-WS-06, SCLS-WS-07, SCLS-WS-08
+Content
+Observing
+* Select and use equipment correctly, including digital technologies, to make observations to increase the accuracy of measurements appropriate to the task
+* Make a series of observations with precision
+Questioning and predicting
+* Formulate questions or hypotheses that can be investigated scientifically
+* Predict outcomes based on observations and scientific knowledge
+Planning investigations
+* Describe the purpose of an investigation
+* Explain the use of variables and experimental controls in a valid scientific investigation
+* Assess the types of data that need to be collected in a range of investigation types
+* Select and explain investigation methods, including fieldwork and laboratory experimentation, to collect reliable data
+* Identify risks, consider ethical issues and select suitable materials and technologies for a range of investigations
+* Modify an investigation in response to new evidence
+Conducting investigations
+* Implement safe work practices and manage risks
+* Assemble, construct and manipulate identified equipment to perform the investigation
+* Follow the planned procedure and identify and respond to errors if they occur
+* Systematically and accurately collect and record data, information, evidence and findings
+* Extract information from a wide range of reliable secondary sources and acknowledge these sources using an accepted referencing style
+Processing data and information
+* Select and use a range of representations to organise data and information, including graphs, keys, models, diagrams, tables and spreadsheets
+* Select and extract information from texts, diagrams, flow charts, tables, databases, graphs and multimedia resources
+* Calculate a range of descriptive statistics using SI units
+* Identify data which supports or refutes questions, hypotheses and proposed solutions to problems
+* Describe specific ways to improve the quality of data collected in an investigation
+Analysing data and information
+* Describe patterns and trends, including inconsistencies in data and information
+* Describe relationships between variables
+* Assess the validity and reliability of first-hand data
+* Use graphed data from investigations to extrapolate or interpolate information to make predictions
+* Use knowledge of scientific concepts to draw conclusions that are consistent with evidence
+* Synthesise data and information to develop evidence-based arguments
+* Evaluate conclusions and evidence, including identifying sources of uncertainty and possible alternative explanations
+* Analyse the validity of information from secondary sources
+Problem-solving
+* Select suitable strategies and implement them to solve an identified problem
+* Develop evaluation criteria relevant to identified problems
+* Assess the solutions proposed based on the relevant evaluation criteria
+* Use cause-and-effect relationships and models to explain ideas and make predictions
+* Evaluate different approaches used to solve problems
+* Evaluate claims using scientific knowledge and findings from investigations
+Communicating
+* Present scientific arguments using evidence, correct scientific language and terminology, as appropriate to audience and purpose
+* Create written texts to communicate scientific investigations, explain scientific theories and principles, structure a scientific argument, and evaluate findings in light of scientific knowledge
+* Recognise that scientific texts develop arguments by encouraging the reader to adopt a specific perspective and positioning them to accept the authority of a text
+
+Energy
+Outcomes
+A student:
+* evaluates current and alternative energy use based on ethical and sustainability considerations SC5-EGY-01
+* selects and uses scientific tools and instruments for accurate observations SC5-WS-01
+* follows a planned procedure to undertake safe, ethical, valid and reliable investigations SC5-WS-04
+* selects suitable problem-solving strategies and evaluates proposed solutions to identified problems SC5-WS-07
+Related Life Skills outcomes: SCLS-EGU-01, SCLS-WS-01, SCLS-WS-04, SCLS-WS-07
+Content
+Working scientifically
+In this focus area, students develop skills in selecting and using scientific tools for accurate observations, as well as conducting investigations and problem-solving. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Observing, Conducting investigations, Problem-solving
+Law of conservation of energy
+* Use the law of conservation of energy, and calculations, to explain that total energy is maintained in energy transfers and transformations in a closed system
+* Explain efficiency in relation to energy transfers
+* Explain how to improve energy efficiency in energy transfers and transformations
+Sources of energy
+* Identify different types of energy sources
+* Describe how electrical energy can be produced from different types of sources
+* Evaluate the advantages and disadvantages of using renewable and non-renewable sources of energy to generate electricity, including efficiency, economical and technological considerations
+Electrical energy
+* Identify the elements of a complete circuit
+* Construct circuits and draw circuit diagrams that contain several components to show the flow of electricity through a complete circuit
+* Measure and compare voltage and current at different points in series and parallel circuits
+* Conduct an investigation to determine the relationship between voltage (V), 
+current (I), and resistance (R), as described by Ohm's law (V=IR)
+* Conduct an investigation to compare the energy transformed over time in model circuits or appliances
+* Investigate the energy star ratings of a range of appliances and explain the criteria used to determine these ratings
+Global future energy needs
+* Evaluate ways to optimise current energy use
+* Examine data to identify past trends in energy use, and predict possible future demands, at a state, national and global level
+* Explain reasons for the development of alternative sources of energy
+Energy in context
+* Use data, evidence and research to evaluate the development of alternative energy sources to meet and reduce global energy demand
+
+Disease
+Outcomes
+A student:
+* explains how an understanding of the causes of disease can be used to prevent and manage the spread of disease SC5-DIS-01
+* analyses data from investigations to identify trends, patterns and relationships, and draws conclusions SC5-WS-06
+* communicates scientific arguments with evidence, using scientific language and terminology in a range of communication forms SC5-WS-08
+Related Life Skills outcomes: SCLS-DIS-01, SCLS-WS-06, SCLS-WS-08
+Content
+Working scientifically
+In this focus area, students develop skills in analysing data and information, as well as communicating scientific arguments with evidence. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Analysing data and information, Communicating
+Homeostasis
+* Identify the importance of maintaining stable internal conditions in the body
+* Investigate examples of an organism's observable response to a stimuli
+* Identify the role of feedback loops in maintaining homeostasis
+* Compare and contrast the responses of the nervous and endocrine systems
+* Describe how the nervous and endocrine systems coordinate the body's response to stimuli
+Infectious and non-infectious diseases
+* Distinguish between infectious and non-infectious diseases
+* Identify causes of non-infectious and infectious diseases
+* Compare the features and incidences of epidemics, endemics and pandemics
+* Investigate data relating to a common non-infectious disease affecting Australians today
+* Use modelling to investigate how infectious diseases can be spread
+* Identify how the body prevents the entry of pathogens and describe how it responds to pathogens that enter the body
+* Outline how a vaccination stimulates the body to produce antibodies to fight infection
+Disease control and prevention
+* Describe ways to reduce the incidence of non-infectious diseases
+* Assess ways to reduce the incidence and spread of infectious diseases
+* Investigate Aboriginal and/or Torres Strait Islander Peoples' use of plants to prevent or control disease
+* Analyse data about immunisation programs and the occurrence of infectious diseases to identify trends, patterns and relationships, and document conclusions in a written text
+Disease in context
+* Investigate technological advances developed in Australia to address disease, disorders or physical trauma in the human body
+
+Materials
+Outcomes
+A student:
+* assesses the uses of materials based on their physical and chemical properties SC5-MAT-01
+* designs safe, ethical, valid and reliable investigations SC5-WS-03
+* selects suitable problem-solving strategies and evaluates proposed solutions to identified problems SC5-WS-07
+* communicates scientific arguments with evidence, using scientific language and terminology in a range of communication forms SC5-WS-08
+Related Life Skills outcomes: SCLS-RES-01, SCLS-RES-02, SCLS-WS-03, SCLS-WS-07, SCLS-WS-08
+Content
+Working scientifically
+In this focus area, students develop skills in planning investigations, problem-solving and communication skills. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Planning investigations, Problem-solving, Communicating
+Resources
+* Identify the finite nature of the minerals and resources extracted in Australia
+* Investigate the products produced from Australian minerals and resources
+* Explain how Aboriginal and Torres Strait Islander Peoples used minerals and resources for a wide range of purposes
+* Evaluate the environmental impact of extracting and using a named resource and document findings in a written scientific report
+Bonding
+* Use valency to describe the number of electrons an atom needs to gain, lose or share to achieve a stable electron configuration
+* Explain noble gas configuration and identify that it occurs during chemical bonding
+* Describe types of chemical bonds, including ionic, covalent and metallic bonds
+* Use models to describe the formation of cations and anions
+* Recognise that some elements exist as diatomic molecules
+* Construct chemical formulas of some common ionic compounds and covalent molecules
+* Conduct an investigation to observe and compare the physical and chemical properties of ionic, covalent and metallic substances, and explain how these relate to their uses
+Chemistry of organic compounds
+* Distinguish between organic and inorganic compounds
+* Describe how hydrocarbons can be separated from crude oil and identify the uses of these products
+* Use International Union of Pure and Applied Chemistry (IUPAC) nomenclature to name simple organic compounds
+* Identify and reproduce the structure of simple alkanes C1-C8
+* Describe the differences between complete and incomplete combustion reactions of hydrocarbons, and use examples from everyday applications to compare the products of the chemical reaction and amount of energy released
+* Research the uses of hydrocarbon compounds and how this has changed over time
+Polymers
+* Identify the raw materials used to make polymers
+* Investigate and describe the properties of a range of polymers
+* Determine the quantity and types of polymers found in the environment by undertaking a physical survey of the local area
+* Conduct an investigation to determine the biodegradability of different packaging materials
+* Investigate case studies to explain the effect of bioaccumulation of microplastics in the environment
+Materials in context
+* Assess the environmental impacts of materials that are used as alternatives to those derived from crude oil
+
+Environmental sustainability
+Outcomes
+A student:
+* analyses the impact of human activity on the natural world SC5-ENV-01
+* analyses data from investigations to identify trends, patterns and relationships, and draws conclusions SC5-WS-06
+* selects suitable problem-solving strategies and evaluates proposed solutions to identified problems SC5-WS-07
+Related Life Skills outcomes: SCLS-RES-01, SCLS-RES-02, SCLS-WS-06, SCLS-WS-07
+Content
+Working scientifically
+In this focus area, students develop skills in analysing data and information, and problem-solving. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Analysing data and information, Problem-solving
+Sustainability
+* Identify the principles and goals of sustainability
+* Apply scientific understanding to propose valid solutions to identified problems relating to sustainability
+Climate science
+* Distinguish between climate and weather
+* Investigate data to determine what trends are evident in the world's climate
+* Explain how the natural greenhouse effect influences global climate
+* Analyse data on global emissions and atmospheric temperatures to explain the enhanced greenhouse effect and its impact on climate and ecosystems
+* Identify the advantages and limitations of methods used to reduce greenhouse gas emissions
+* Analyse data that shows the relationship between industrialisation and the rise in global temperatures
+Impacts of present-day climate change
+* Identify the characteristics of climate change
+* Investigate and report on the consequences of climate change
+* Investigate the effects of climate change on the water cycle and ecosystems
+* Investigate how satellites collect global data, including data on ocean temperatures, sea levels, and forest and ice cover, and examine how this data is used to evaluate the impact of climate change
+Alternative resource use and recycling
+* Describe the causes of environmental pollution and discuss its implications
+* Research how Aboriginal and Torres Strait Islander Peoples have developed sustainable harvesting practices and Cultural protocols based on deep ecological understandings
+* Discuss alternatives to the current resource use, including how to reduce, reuse and recycle
+* Describe current processes for recycling materials
+* Investigate how scientists have developed innovative ways to recycle materials
+Environmental sustainability in context
+* Discuss the link between human activity and one specific environmental pollution concern
+
+Genetics and evolutionary change
+Outcomes
+A student:
+* describes the relationship between the diversity of living things and the theory of evolution SC5-GEV-01
+* explains how DNA is responsible for the transmission of heritable characteristics and can be manipulated through genetic technologies SC5-GEV-02
+* selects and uses a range of tools to process and represent data SC5-WS-05
+* communicates scientific arguments with evidence, using scientific language and terminology in a range of communication forms SC5-WS-08
+Related Life Skills outcomes: SCLS-GEV-01, SCLS-FNS-01, SCLS-WS-05, SCLS-WS-08
+Content
+Working scientifically
+In this focus area, students develop skills in processing data and information, as well as developing communication skills. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Processing data and information, Communicating
+DNA structure and function
+* Identify that all organisms have information coded in genetic material
+* Observe and model the arrangement of genetic information in an organism to define and compare the terms DNA, gene, chromosome and genome
+* Relate the structure of the DNA double helix to its functions
+* Discuss the nature of scientific discovery by comparing the contributions of scientists involved in the discovery of the double helix structure of DNA
+Variation and inheritance
+* Outline how genetic information is passed on to offspring by sexual and asexual reproduction
+* Identify that multiple genes and multiple environmental factors interact in the development of most traits
+* Explain how DNA mutation can result in genetic variation with beneficial, harmful or minimal effects on the functioning of an organism
+* Outline the connection between genotypes and phenotypes, using Mendelian inheritance for both plants and animals
+* Use pedigrees and Punnett squares to model monogenic gene-trait relationships and make predictions about patterns of inheritance
+Genetic technologies
+* Identify examples of current and emerging genetic technologies
+* Discuss applications of genetic technologies in conservation, agriculture, industry and medicine
+* Discuss the applications of genetic testing and its associated social, economic and ethical implications
+The theory of evolution and evidence of natural selection
+* Explain how the processes of natural selection and isolation can lead to changes within and between species
+* Investigate, using evidence, how the complexity and diversity of organisms have changed over geological timescales
+* Identify and discuss Aboriginal and/or Torres Strait Islander Peoples' artwork that indicate changes in plants and animals, including megafauna
+* Discuss how scientists developed and refined the theory of evolution, and explain why an understanding of the origins of species is important
+Genetics and evolutionary change in context
+* Use an ethical framework to construct evidence-based written arguments about the implications of a genetic technology, including the ethical implications of the continued use of the immortal HeLa cell line
+
+Reactions
+Outcomes
+A student:
+* describes a range of reaction types SC5-RXN-01
+* explains the factors that affect the rate of chemical reactions SC5-RXN-02
+* selects and uses scientific tools and instruments for accurate observations SC5-WS-01
+* develops questions and hypotheses for scientific investigation SC5-WS-02
+* designs safe, ethical, valid and reliable investigations SC5-WS-03
+* follows a planned procedure to undertake safe, ethical, valid and reliable investigations SC5-WS-04
+Related Life Skills outcomes: SCLS-RXN-01, SCLS-WS-01, SCLS-WS-02, SCLS-WS-03, SCLS-WS-04
+Content
+Working scientifically
+In this focus area, students develop skills in observation, as well as questioning and predicting, and planning investigations. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Observing, Questioning and predicting, Planning investigations, Conducting investigations
+Law of conservation of mass
+* Explain the meaning of the law of conservation of mass
+* Conduct a practical investigation to demonstrate the law of conservation of mass in a chemical reaction
+* Investigate and explain how mass is conserved in closed systems
+Chemical reactions
+* Use IUPAC naming conventions to construct the chemical formula for common ionic and covalent compounds
+* Represent chemical reactions, by predicting products and writing word and balanced chemical equations with states, as they are encountered
+* Model simple chemical reactions to show that atoms are rearranged and mass is conserved during a reaction
+* Determine the features of reactions by conducting synthesis, decomposition, displacement and neutralisation reactions
+* Identify pH as the measure of acidity and compare the pH of a range of common substances to the pH of pure water
+* Use pH indicators or meters to measure the pH change of neutralisation reactions
+Rate of chemical reactions
+* Investigate and explain how concentration, surface area, temperature and catalysts affect the rate of reactions
+* Conduct a practical investigation to test a measurable hypothesis, with a cause-and-effect relationship, that predicts changes to the rate of a chemical reaction, and graph data that communicates the investigation findings in a scientific report
+Nuclear reactions
+* Outline how the first elements were formed after the Big Bang
+* Describe the conditions that cause a nucleus to be unstable
+* Represent alpha and beta reactions as nuclear reactions
+* Identify that the half-life of a radioactive isotope is the time taken for half of the atoms in a sample to undergo radioactive decay
+* Evaluate the societal benefits and considerations of using radioisotopes in medicine, industry and environmental monitoring
+* Describe nuclear fission and nuclear fusion
+* Outline the impacts on the environment of nuclear reactions, including the raw materials used, the various stages of production and nuclear waste
+Reactions in context
+* Investigate a chemical or nuclear reaction used in industry to produce an important product
+
+Waves and motion
+Outcomes
+A student:
+* describes the features and applications of different forms of waves SC5-WAM-01
+* explains the motion of objects using Newton's laws of motion SC5-WAM-02
+* follows a planned procedure to undertake safe, ethical, valid and reliable investigations SC5-WS-04
+* selects and uses a range of tools to process and represent data SC5-WS-05
+Related Life Skills outcomes: SCLS-WAM-01, SCLS-WS-04, SCLS-WS-05
+Content
+Working scientifically
+In this focus area, students develop skills in conducting investigations, as well as processing data and information. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Conducting investigations, Processing data and information
+Common properties of waves
+* Demonstrate that a mechanical wave requires a medium to travel through, while an electromagnetic (EM) wave does not
+* Use the wave model to explain how energy is transferred without the net transfer of particles
+* Use models to compare and describe the features of transverse and longitudinal waves
+* Compare the different wave regions of the electromagnetic spectrum
+* Investigate the features of waves, including amplitude, frequency, speed and wavelength by exploring a range of wave types
+* Use the formula ? =  v/f to explain the relationship between a wave's frequency, speed and wavelength
+* Analyse data from secondary sources to compare the uses of different EM waves based on their properties
+Sound waves
+* Model the transfer of sound energy as compressions and rarefactions in waves
+* Investigate and describe how amplitude and frequency affect the pitch and volume of sound
+* Investigate the Doppler effect of waves
+* Describe how the ear responds to sound waves
+* Investigate and outline the impact of material selection on the transfer of sound energy in Aboriginal and/or Torres Strait Islander Peoples' traditional musical and communication instruments
+* Describe how sound waves are used in medical diagnosis
+Light waves
+* Describe how the eye responds to light
+* Investigate the properties of light, including absorption, reflection, refraction and scattering
+* Investigate applications of absorption, reflection and refraction in everyday life
+* Explain how the electromagnetic spectrum is used to learn about stars
+Motion
+* Conduct an investigation to analyse the relationships between distance, time, speed, displacement and velocity
+* Investigate the motion of objects and represent them using motion diagrams
+* Conduct investigations to analyse the relationship between distance, time and speed, and draw and analyse a line graph of the results
+* Conduct an investigation to analyse the relationships between force, mass and acceleration
+* Investigate applications of Newton's laws of motion
+* Determine, using vector analysis, the net force on an object in one dimension
+* Use mathematical representations, including graphs and the algebraic formulas F=ma, v_av=?s/?t and a=?v/?t, to quantitatively relate force, distance, time, speed, displacement, acceleration, velocity and mass
+Waves and motion in context
+* Structure an argument to analyse how waves and motion have changed society
+
+Data science 2
+Outcomes
+A student:
+* assesses the use of scientific knowledge and data in evidence-based decisions and when verifying the legitimacy of claims SC5-DA2-01
+* analyses data from investigations to identify trends, patterns and relationships, and draws conclusions SC5-WS-06
+* selects suitable problem-solving strategies and evaluates proposed solutions to identified problems SC5-WS-07
+* communicates scientific arguments with evidence, using scientific language and terminology in a range of communication forms SC5-WS-08
+Related Life Skills outcomes: SCLS-DAS-01, SCLS-WS-06, SCLS-WS-07, SCLS-WS-08
+Content
+Working scientifically
+In this focus area, students develop skills in analysing data and information, problem-solving and communicating scientific arguments with evidence. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Analysing data and information, Problem-solving, Communicating
+Data science context
+The Data science focus area can be taught alongside other focus areas, or aligned to students' interests, local context or school environment.
+Investigating questions and claims
+* Discuss the features of investigable and non-investigable questions, including considerations of available resources
+* Investigate how scientific knowledge is verified and refined by scientists through hypothesis testing and peer review
+* Develop criteria and use them to evaluate whether online content is valid and reliable
+* Identify a claim that can be scientifically tested with an investigation, or series of investigations, to test the claim
+* Explain the evidence and reasoning used to support conclusions about claims, using data from investigations
+* Conduct a written scientific argument showing how a range of evidence supports a claim
+Pseudoscience
+* Explain the distinction between science and pseudoscience using examples
+* Identify examples of pseudoscientific claims
+* Investigate incidences of pseudoscience in popular media
+* Investigate how data, or its analysis and interpretation, can be distorted to manipulate findings that support specific viewpoints
+* Determine if an assertion of a claim or theory is pseudoscientific
+Large datasets and scientific argumentation
+* Outline the features, collection, uses and applications of large datasets
+* Use available large datasets to develop and test a question
+* Conduct a descriptive analysis of a large dataset
+* Identify and outline the benefits of using descriptive statistical analysis techniques to assist in recognising or communicating patterns
+* Conduct a univariate analysis and a bivariate analysis using large datasets
+* Recognise the difference between causal and correlational relationships
+* Explore the role of large datasets and statistical analysis in validating scientific findings
+Data science 2 in context
+* Use data to make evidence-based decisions about a familiar issue and assess the implications of these decisions
+
+Life Skills for Stages 4/5
+Life Skills table of outcomes
+Focus areaLife Skills for Stages 4/5Working scientifically
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-02 Working scientifically Questioning and predicting
+asks questions or makes predictions using observations
+
+SCLS-WS-03 Working scientifically Planning investigations
+participates in planning safe investigations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequence
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and information
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and information
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve them
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationObserving the Universe
+SCLS-OTU-01 
+makes observations about the Universe
+
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequence
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and informationForces
+SCLS-FOR-01 
+recognises forces in everyday contexts
+
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-02 Working scientifically Questioning and predicting
+asks questions or makes predictions using observationsCells and classification
+SCLS-FNS-01 
+identifies features of living and non-living things
+
+SCLS-FNS-02 
+describes ways to sustain a variety of living things
+
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationSolutions and mixtures
+SCLS-SOL-01 
+describes the properties of familiar substances and materials
+
+SCLS-WS-03 Working scientifically Planning investigations
+participates in planning safe investigations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequence
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve themLiving systems
+SCLS-FNS-01 
+identifies features of living and non-living things
+
+SCLS-FNS-02 
+describes ways to sustain a variety of living things
+
+SCLS-WS-02 Working scientifically Questioning and predicting
+asks questions or makes predictions using observations
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and information
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationProperties of matter
+SCLS-SOL-01 
+describes the properties of familiar substances and materials
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and information
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and informationChange
+SCLS-CHG-01 
+observes chemical and geological changes
+
+SCLS-EGU-01 
+describes the use of energy in familiar contexts
+
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-03 Working scientifically Planning investigations
+participates in planning safe investigations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequenceData science
+SCLS-DAS-01 
+uses data or evidence to make decisions
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and information
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and information
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationEnergy
+SCLS-EGU-01 
+describes the use of energy in familiar contexts
+
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequence
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and informationDisease
+SCLS-DIS-01 
+demonstrates practices to prevent the spread of disease
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and information
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationMaterials
+SCLS-RES-01 
+manages personal resources
+
+SCLS-RES-02 
+contributes to sustainable practices in the community
+
+SCLS-WS-03 Working scientifically Planning investigations
+participates in planning safe investigations
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve themEnvironmental sustainability
+SCLS-RES-01 
+manages personal resources
+
+SCLS-RES-02 
+contributes to sustainable practices in the community
+
+SCLS-WS-02 Working scientifically Questioning and predicting
+asks questions or makes predictions using observations
+
+SCLS-WS-06 Working scientifically Analysing data and information
+interprets data and information
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve themPersonal genetics and evolutionary change
+SCLS-GEV-01 
+identifies personal genetic traits
+
+SCLS-FNS-01 
+identifies features of living and non-living things
+
+SCLS-WS-01 Working scientifically Observing
+uses senses and scientific tools to make observations
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and information
+
+SCLS-WS-08 Working scientifically Communicating
+communicates scientific informationReactions
+SCLS-RXN-01 
+describes chemical reactions
+
+SCLS-WS-03 Working scientifically Planning investigations
+participates in planning safe investigations
+
+SCLS-WS-07 Working scientifically Problem-solving
+identifies problems and strategies that can be used to solve themWaves and motion
+SCLS-WAM-01 
+describes the motion of waves or objects
+
+SCLS-WS-04 Working scientifically Conducting investigations
+safely participates in an investigation by following a sequence
+
+SCLS-WS-05 Working scientifically Processing data and information
+records data and information
+Life Skills outcomes and content for Stage 4/5
+Working scientifically
+Outcomes
+A student:
+* uses senses and scientific tools to make observations SCLS-WS-01
+* asks questions or makes predictions using observations SCLS-WS-02
+* participates in planning safe investigations SCLS-WS-03
+* safely participates in an investigation by following a sequence SCLS-WS-04
+* records data and information SCLS-WS-05
+* interprets data and information SCLS-WS-06
+* identifies problems and strategies that can be used to solve them SCLS-WS-07
+* communicates scientific information SCLS-WS-08
+Related Stage 4/5 outcomes: SC4-WS-01, SC4-WS-02, SC4-WS-03, SC4-WS-04, SC4-WS-05, SC4-WS-06, SC4-WS-07, SC4-WS-08, SC5-WS-01, SC5-WS-02, SC5-WS-03, SC5-WS-04, SC5-WS-05, SC5-WS-06, SC5-WS-07, SC5-WS-08
+Content
+Observing
+* Use senses to make observations
+* Identify scientific tools and equipment, and their purposes
+* Demonstrate the competency required to use scientific equipment
+* Use scientific equipment to make observations
+* Follow safety rules when using scientific tools and equipment
+Questioning and predicting
+* Ask questions about familiar objects and events based on observations
+* Make predictions based on observations
+Planning investigations
+* Recognise the purpose of, or question related to, a scientific investigation
+* Recognise which variables are to be changed, kept the same and measured in an investigation
+* Participate in making decisions about how to conduct an investigation
+* Participate in making decisions about the equipment to use for a scientific investigation
+* Participate in sequencing the steps in an investigation and documenting the sequence in an appropriate format
+* Identify practices to improve safety in a scientific investigation
+Conducting investigations
+* Gain consent from others to work collaboratively or share scientific equipment
+* Follow a plan to participate in an investigation
+* Implement identified safe practices and follow safety rules
+* Participate in collecting data
+* Engage safely with digital technologies
+Processing data and information
+* Record observations and measurements, using appropriate units and abbreviations
+* Select the most appropriate form to organise and represent data and information
+* Extract information from a range of sources, such as direct observations, images, tables, flow diagrams, texts, audiovisual resources and graphs
+* Sort collected data into groups and use appropriate strategies to construct data displays, with or without technology
+* Relate the gathered data and information to questions and predictions
+Analysing data and information
+* Identify secondary information sources that can be used in an investigation
+* Recognise patterns or trends in data
+* Interpret data and information gathered
+* Draw conclusions from data and information
+* Reflect on the strengths and limitations of an investigation
+Problem-solving
+* Identify problems that can be investigated scientifically
+* Identify strategies that could be used to solve a problem
+* Participate in developing solutions to identified problems
+Communicating
+* Recognise scientific language
+* Present ideas and information in a variety of forms, using digital technologies as appropriate
+* Communicate using language appropriate to purpose and audience
+
+Observing the Universe
+Outcomes
+A student:
+* makes observations about the Universe SCLS-OTU-01
+* uses senses and scientific tools to make observations SCLS-WS-01
+* safely participates in an investigation by following a sequence SCLS-WS-04
+* records data and information SCLS-WS-05
+Related Stage 4/5 outcomes: SC4-OTU-01, SC4-WS-01, SC4-WS-04, SC4-WS-05, SC5-WS-01, SC5-WS-04, SC5-WS-05
+Content
+Working scientifically
+In this focus area, students develop skills in making observations, using scientific tools and instruments safely, participating in scientific investigations, and recording data and information. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Observing, Conducting investigations, Processing data and information
+Nature and practice of science
+* Identify some uses of science in everyday life
+* Identify how observations can be made using our senses and scientific tools
+* Identify common scientific equipment used in experiments
+* Identify hazards in everyday life
+* Identify safety rules in a laboratory and explain why they are needed
+* Demonstrate how to use common scientific equipment
+* Identify and sequence the Working scientifically processes
+* Explore scientists from diverse contexts and experiences
+* Describe how people can work effectively in teams
+* Work collaboratively to make observations in the local community
+* Participate in collecting data related to scientific questions
+* Record data from observations using objects, pictures, audio recordings, numbers, words or symbols
+* Participate in an experiment using the Working scientifically processes
+* Record data from experiments using pictures and drawings, a table, a graph and/or written text
+Space science
+* Identify some components of the Solar System
+* Record and compare the sizes of the Earth, Sun and Moon
+* Describe the motion of the Earth around the Sun
+* Identify that the Earth rotates on its axis every 24 hours, causing day and night
+Aboriginal and Torres Strait Islander Peoples' Cultural Knowledges of astronomy
+* Engage with Aboriginal Communities to learn about how astronomical observations are made by Aboriginal Peoples
+* Describe how Aboriginal Peoples developed Knowledge of the Solar System
+* Explore cyclic seasonal changes used by Aboriginal and Torres Strait Islander Peoples
+Observing the Universe in context
+* Use scientific tools to improve observations of surroundings
+* Identify how data is displayed in everyday contexts
+
+Forces
+Outcomes
+A student:
+* recognises forces in everyday contexts SCLS-FOR-01
+* uses senses and scientific tools to make observations SCLS-WS-01
+* asks questions or makes predictions using observations SCLS-WS-02
+Related Stage 4/5 outcomes: SC4-FOR-01, SC4-WS-01, SC4-WS-02, SC5-WS-01, SC5-WS-02
+Content
+Working scientifically
+In this focus area, students develop skills in making observations, and asking questions or making predictions. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Observing, Questioning and predicting
+Forces
+* Identify forces that are around us as pushes or pulls
+* Interact with objects and predict what will happen when they are pushed, pulled, twisted or stretched
+* Identify tools used by Aboriginal and Torres Strait Islander Peoples that apply forces
+* Identify that friction produces heat and can damage surfaces in contact
+* Identify factors that influence the size of frictional forces
+* Describe the effects of gravity
+* Observe and ask questions about the properties of magnets
+* Discuss the strengths and limitations of investigations of forces
+Forces in context
+* Predict what will happen when frictional force is reduced or increased
+* Investigate how technological developments have reduced the harmful impact of forces in everyday life
+* Identify and use a variety of information sources to investigate how force is used in a simple machine to make it work
+* Participate in designing or creating a functioning model using knowledge of simple machines or forces
+
+Cells and classification
+Outcomes
+A student:
+* identifies features of living and non-living things SCLS-FNS-01
+* describes ways to sustain a variety of living things SCLS-FNS-02
+* uses senses and scientific tools to make observations SCLS-WS-01
+* communicates scientific information SCLS-WS-08
+Related Stage 4/5 outcomes: SC4-CLS-01, SC4-LIV-01, SC5-GEV-01, SC5-GEV-02, SC4-WS-01, SC4-WS-08, SC5-WS-01, SC5-WS-08
+Content
+Working scientifically
+In this focus area, students develop skills in using scientific tools and instruments safely, and communicating scientific information. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Observing, Communicating
+Living things
+* Observe features of familiar living things
+* Identify the purpose of some features of living things
+* Describe how Aboriginal and Torres Strait Islander Peoples have used their Knowledge of the features of plants and animals
+* Recognise ways to observe the detail of plants and animals
+* Engage with tools and models to observe features of living things more closely
+* Describe the features of plants and animals through written texts, using language appropriate to purpose and audience
+Cells and classification
+* Recognise the features of a cell
+* Recognise scientific terms used when grouping animals with similar features
+* Classify a variety of living things according to their observable features
+* Explore ways in which Aboriginal and Torres Strait Islander Peoples classify plants or animals
+* Use tables, diagrams or symbols to communicate the classifications of living things
+Cells and classification in context
+* Communicate how classification is used in everyday life
+
+Solutions and mixtures
+Outcomes
+A student:
+* describes the properties of familiar substances and materials SCLS-SOL-01
+* participates in planning safe investigations SCLS-WS-03
+* safely participates in an investigation by following a sequence SCLS-WS-04
+* identifies problems and strategies that can be used to solve them SCLS-WS-07
+Related Stage 4/5 outcomes: SC4-SOL-01, SC4-PRT-01, SC4-WS-03, SC4-WS-04, SC4-WS-07, SC5-WS-03, SC5-WS-04, SC5-WS-07
+Content
+Working scientifically
+In this focus area, students develop skills in planning and conducting investigations, and identifying problems and strategies that can be used to solve them. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Planning investigations, Conducting investigations, Problem-solving
+Water
+* Recognise uses of water in everyday life
+* Describe innovative ways in which Aboriginal and/or Torres Strait Islander Peoples use water in the natural environment
+* Identify the different states of water
+* Describe the effect of temperature on the state of water
+* Outline some properties of water
+What is a solution?
+* Recognise solutions in everyday life
+* Participate in planning and selecting the equipment for an investigation to observe the effect of water on some soluble and insoluble substances
+* Participate in modelling the different amounts of solute in dilute and concentrated solutions
+* Participate in an experiment to collect data about what substances can be dissolved in water
+Separating mixtures
+* Recognise common mixtures in everyday life
+* Identify that water needs to be clean to be safe for drinking, swimming, bathing and other uses
+* Identify ways to remove substances from dirty water, such as filtration, decantation and evaporation
+* Use separation techniques to separate water from common mixtures and solutions
+Solutions and mixtures in context
+* Compare water obtained from different sources
+* Participate in an investigation into how boats float
+* Identify strategies that could be used to solve a problem using separation techniques
+
+Living systems
+Outcomes
+A student:
+* identifies features of living and non-living things SCLS-FNS-01
+* describes ways to sustain a variety of living things SCLS-FNS-02
+* asks questions or makes predictions using observations SCLS-WS-02
+* interprets data and information SCLS-WS-06
+* communicates scientific information SCLS-WS-08
+Related Stage 4/5 outcomes: SC4-CLS-01, SC4-LIV-01, SC5-GEV-01, SC5-GEV-02, SC4-WS-02, SC4-WS-06, SC4-WS-08, SC5-WS-02, SC5-WS-06, SC5-WS-08
+Content
+Working scientifically
+In this focus area, students develop skills in asking questions or making predictions, interpreting data and information, and communicating scientific information. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Questioning and predicting, Analysing data and information, Communicating
+Body systems
+* Recognise parts of the human body
+* Indicate parts of the human body in everyday contexts
+* Describe the function of basic structures of the human body
+* Identify parts of the human body related to basic needs
+* Predict what will happen without the function of a body part
+* Recognise scientific terms for major organs in the human body
+* Describe how humans can look after their bodies to stay healthy
+Plant systems
+* Recognise parts of a plant
+* Describe how parts of a plant help it survive
+Ecosystems
+* Observe living and non-living things in the local area
+* Identify that living things grow and change; use food, water and air; respond to changes; and reproduce
+* Use data and information to group things according to whether they are living or non-living
+* Identify a variety of plants and animals in the local environment
+* Compare the needs of plants and animals for survival
+* Identify the roles of plants as producers, animals as consumers, and fungi as decomposers, in an identified ecosystem
+* Interpret a food chain or food web to identify consumers and how they get energy
+* Predict what will happen to living things when their environment changes
+* Identify the different living and non-living things that work together as parts of an ecosystem
+* Represent food chains in a variety of ways
+Living systems in context
+* Demonstrate ways to care for pets or plants
+* Investigate an ecosystem in the local environment to identify the interdependency of living things
+* Communicate ideas about systems through written texts, using language appropriate to purpose and audience
+
+Properties of matter
+Outcomes
+A student:
+* describes the properties of familiar substances and materials SCLS-SOL-01
+* records data and information SCLS-WS-05
+* interprets data and information SCLS-WS-06
+Related Stage 4/5 outcomes: SC4-SOL-01, SC4-PRT-01, SC4-WS-05, SC4-WS-06, SC5-WS-05, SC5-WS-06
+Content
+Working scientifically
+In this focus area, students develop skills in recording and interpreting data and information. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Processing data and information, Analysing data and information
+What is matter?
+* Recognise common objects, materials and substances
+* Record familiar objects as solids, liquids or gases
+* Observe and describe the properties of metals and non-metals
+* Record some everyday uses of metals
+Safety and hazardous materials
+* Identify familiar household chemicals
+* Identify warning labels on household chemicals to help with safe use
+* Interpret chemical safety or hazard symbols and relate them to the chemical property
+* Identify and classify household chemicals as flammable, combustible, toxic or corrosive
+* Describe how to safely transport and store hazardous materials
+* Demonstrate first aid for hazardous chemical exposure
+* Describe how Aboriginal and/or Torres Strait Islander Peoples use available materials in the natural environment to administer first aid
+Properties of matter in context
+* Investigate the consequences of incorrectly storing a household chemical
+* Record toxic chemicals found in the home
+* Investigate the impact of repeated exposure to toxic chemicals
+
+Change
+Outcomes
+A student:
+* observes chemical and geological changes SCLS-CHG-01
+* describes the use of energy in familiar contexts SCLS-EGU-01
+* uses senses and scientific tools to make observations SCLS-WS-01
+* participates in planning safe investigations SCLS-WS-03
+* safely participates in an investigation by following a sequence SCLS-WS-04
+Related Stage 4/5 outcomes: SC4-CHG-01, SC5-EGY-01, SC4-WS-01, SC4-WS-03, SC4-WS-04, SC5-WS-01, SC5-WS-03, SC5-WS-04
+Content
+Working scientifically
+In this focus area, students develop skills in making observations, using scientific tools and instruments safely, and planning and conducting scientific investigations. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Observing, Planning investigations, Conducting investigations
+Energy transfer
+* Experience energy through the senses
+* Participate in planning and conducting a safe investigation to determine the effect of heat energy on a solid and liquid
+* Recognise the role of energy in melting, boiling and evaporation
+* Recognise how heat energy moves through a solid, liquid or gas by conduction, convection or radiation
+* Participate in an investigation to show that a metal heats up more quickly than a non-metal
+* Use knowledge of energy transfer to identify ways to be safe during a fire
+Chemical change
+* Observe chemical changes that occur in everyday life
+* Participate in planning and conducting an experiment to observe a chemical change using the senses and/or tools
+* Identify signs of a chemical change
+Geological change
+* Observe natural and human-made features of the local area
+* Participate in planning an investigation to determine how natural features of the local area are used
+* Describe how landforms have changed due to natural processes
+* Participate in investigations to observe the effects of droughts and floods on the local landscape
+* Engage with Aboriginal and/or Torres Strait Islander Cultural accounts of earthquakes and volcanoes
+Change in context
+* Identify changes that occur in everyday life
+* Describe some ways to observe change
+* Sequence events to show change over time
+* Participate in a secondary investigation to investigate change in the local area, using digital technology and acknowledging information sources
+
+Data science
+Outcomes
+A student:
+* uses data or evidence to make decisions SCLS-DAS-01
+* records data and information SCLS-WS-05
+* interprets data and information SCLS-WS-06
+* communicates scientific information SCLS-WS-08
+Related Stage 4/5 outcomes: SC4-DA1-01, SC5-DA2-01, SC4-WS-05, SC4-WS-06, SC4-WS-08, SC5-WS-05, SC5-WS-06, SC5-WS-08
+Content
+Working scientifically
+In this focus area, students develop skills in recording and interpreting data and information, and communicating scientific information. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Processing data and information, Analysing data and information, Communicating
+What is data?
+* Identify that information is what is known about something or someone
+* Identify new information that may be collected
+* Recognise privacy considerations when collecting or sharing personal information for an investigation
+* Identify some ways to collect data
+* Participate in an investigation to collect and record data
+* Organise information and data in a variety of ways
+* Describe how scientists collect data, including the use of technology to obtain large datasets
+How scientists use data
+* Observe patterns in data
+* Make a prediction about what will happen based on a trend or pattern
+* Identify trends in data over a period of time
+* Explore how scientists use trends and patterns in data to make predictions or answer questions
+* Relate data or evidence to questions or claims
+* Identify digital or non-digital sources of information that are based on data or evidence
+Data science in context
+* Use nutritional information to make informed decisions about what to eat
+* Use weather data to make informed decisions about what to wear
+* Use data and information to decide when to leave to arrive somewhere on time
+* Explore data and information about different industries to determine areas of post-secondary school interest
+* Investigate a recent claim, including who made it and what data they used, to determine if the claim can be trusted
+* Explore the consequences of making or publishing false claims
+* Practise ways to engage respectfully with people who have different views about science
+* Present an argument for something you have decided, using data or evidence to support your decision
+
+Energy
+Outcomes
+A student:
+* describes the use of energy in familiar contexts SCLS-EGU-01
+* uses senses and scientific tools to make observations SCLS-WS-01
+* safely participates in an investigation by following a sequence SCLS-WS-04
+* records data and information SCLS-WS-05
+Related Stage 4/5 outcomes: SC4-CHG-01, SC5-EGY-01, SC4-WS-01, SC4-WS-04, SC4-WS-05, SC5-WS-01, SC5-WS-04, SC5-WS-05
+Content
+Working scientifically
+In this focus area, students develop skills in using scientific tools and instruments safely, conducting scientific investigations, and recording data and information. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Observing, Conducting investigations, Processing data and information
+Sources of energy
+* Identify energy sources in everyday life
+* Observe a combustion reaction and identify the source of energy
+* Identify the use of fossil fuels as sources for household energy, such as crude oil, natural gas and coal
+* Identify that energy sources are limited
+* Outline the reasons why there is a need to reduce energy usage
+* Investigate alternative energy sources
+Electrical energy
+* Identify personal uses of electrical energy
+* Recognise that electrical appliances use electricity from power points or batteries
+* Describe and demonstrate how to use electrical appliances and equipment safely
+* Identify energy transformations in everyday life
+* Identify examples of wasted energy
+* Construct a simple electrical circuit
+* Participate in an investigation that uses scientific instruments to measure and record readings of voltage and current in an electrical circuit
+* Participate in an investigation to select an appliance based on price and energy efficiency
+Energy in context
+* Participate in an investigation to record the rate of energy usage (kW) of individual appliances around the home or school
+* Explore ways to reduce personal energy usage
+* Investigate new technologies to reduce energy consumption in everyday life
+
+Disease
+Outcomes
+A student:
+* demonstrates practices to prevent the spread of disease SCLS-DIS-01
+* interprets data and information SCLS-WS-06
+* communicates scientific information SCLS-WS-08
+Related Stage 4/5 outcomes: SC5-DIS-01, SC4-WS-06, SC4-WS-08, SC5-WS-06, SC5-WS-08
+Content
+Working scientifically
+In this focus area, students develop skills in interpreting data and information, and communicating scientific information. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Analysing data and information, Communicating
+What is disease?
+* Identify some symptoms of diseases
+* Identify some infectious and non-infectious diseases
+* Recognise that some bacteria and viruses can cause infectious disease
+Disease control and prevention
+* Identify features of the human body that protect it from disease
+* Outline ways to protect the body from disease, including vaccinations
+* Identify the importance of preventing the spread of disease
+* Interpret the message being communicated in a disease-related advertisement
+* Identify sources of reliable and locally available information about health-related issues
+* Identify personal hygiene practices that prevent the spread of disease
+* Outline ways food can be safely prepared and stored to prevent harmful bacteria growth
+Disease in context
+* Investigate common non-infectious diseases
+* Communicate to a local audience about how to prevent the spread of disease
+
+Materials
+Outcomes
+A student:
+* manages personal resources SCLS-RES-01
+* contributes to sustainable practices in the community SCLS-RES-02
+* participates in planning safe investigations SCLS-WS-03
+* identifies problems and strategies that can be used to solve them SCLS-WS-07
+Related Stage 4/5 outcomes: SC5-MAT-01, SC5-ENV-01, SC4-WS-03, SC4-WS-07, SC5-WS-03, SC5-WS-07
+Content
+Working scientifically
+In this focus area, students develop skills in planning scientific investigations, and identifying problems and strategies that can be used to solve them. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Planning investigations, Problem-solving
+Renewable and non-renewable resources
+* Identify everyday items that are resources
+* Record some resources used in everyday life
+* Classify resources as renewable or non-renewable
+* Identify uses of renewable and non-renewable resources
+* Describe Aboriginal and Torres Strait Islander Peoples' usage of renewable and non-renewable resources to make and carry tools
+Plastics
+* Identify uses of plastics
+* Describe the environmental impact of using plastics
+Materials in context
+* Identify strategies or possible solutions to reduce the impacts of plastic litter in the local area
+* Participate in planning and conducting a physical survey of the local area to determine the quantity and types of plastics found in the environment
+
+Environmental sustainability
+Outcomes
+A student:
+* manages personal resources SCLS-RES-01
+* contributes to sustainable practices in the community SCLS-RES-02
+* asks questions or makes predictions using observations SCLS-WS-02
+* interprets data and information SCLS-WS-06
+* identifies problems and strategies that can be used to solve them SCLS-WS-07
+Related Stage 4/5 outcomes: SC5-MAT-01, SC5-ENV-01, SC4-WS-02, SC4-WS-06, SC4-WS-07, SC5-WS-02, SC5-WS-06, SC5-WS-07
+Content
+Working scientifically
+In this focus area, students develop skills in asking questions or making predictions, interpreting data and information, and identifying problems and strategies that can be used to solve them. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Questioning and predicting, Analysing data and information, Problem-solving
+Sustainability
+* Identify that resources can be limited
+* Predict what would happen if there were no resources left
+* Identify strategies to manage different resources in everyday life
+* Participate in producing and using vegetables or other salad ingredients, including composting any waste vegetable matter
+Human impact on the environment
+* Identify the impacts of human activity on the environment
+* Describe the impact that changes in the environment can have on people in the future
+* Recognise that pollution can have an impact on changes to the climate
+* Describe Aboriginal and Torres Strait Islander Peoples' practices in the management of their Country and Land
+Alternative resource use and recycling
+* Identify different materials used to make everyday items
+* Describe the impact of different materials on the environment
+* Find recycling options in the local area
+* Interpret the symbols on containers and packaging to identify materials that can be recycled
+* Identify ways to reduce human impact on the environment
+* Engage with Aboriginal Communities to identify sustainable practices
+* Participate in recycling
+Environmental sustainability in context
+* Create useful objects from discarded materials
+* Participate in science and sustainability activities conducted in the local area
+
+Personal genetics and evolutionary change
+Outcomes
+A student:
+* identifies personal genetic traits SCLS-GEV-01
+* identifies features of living and non-living things SCLS-FNS-01
+* uses senses and scientific tools to make observations SCLS-WS-01
+* records data and information SCLS-WS-05
+* communicates scientific information SCLS-WS-08
+Related Stage 4/5 outcomes: SC4-CLS-01, SC4-LIV-01, SC5-GEV-01, SC5-GEV-02, SC4-WS-01, SC4-WS-05, SC4-WS-08, SC5-WS-01, SC5-WS-05, SC5-WS-08
+Content
+Working scientifically
+In this focus area, students develop skills in using scientific tools and instruments safely, recording data and information, and communicating scientific information. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Observing, Processing data and information, Communicating
+Genetic traits
+* Identify physical traits humans have that describe their appearance
+* Identify acquired traits that humans gain through experience
+* Observe the features of animals and new plants to identify similar features to their parents
+Evolutionary change
+* Identify that plants and animals had different features in the distant past
+* Identify features of plants and animals that help them survive
+* Identify changes within a species that occur as a result of their environment
+* Engage with fossil evidence of plants and animals that lived in the past
+Personal genetics and evolutionary change in context
+* Observe and record, with consent, the eye or hair colour of familiar people
+* Measure and record the height of familiar people, or other living things, using appropriate tools
+* Recount how you learnt to do something
+
+Reactions
+Outcomes
+A student:
+* describes chemical reactions SCLS-RXN-01
+* participates in planning safe investigations SCLS-WS-03
+* identifies problems and strategies that can be used to solve them SCLS-WS-07
+Related Stage 4/5 outcomes: SC5-RXN-01, SC5-RXN-02, SC4-WS-03, SC4-WS-07, SC5-WS-03, SC5-WS-07
+Content
+Working scientifically
+In this focus area, students develop skills in planning safe investigations, and identifying problems and strategies that can be used to solve them. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Planning investigations, Problem-solving
+Chemical reactions
+* Recognise everyday chemical reactions
+* Recognise changes to a material as it undergoes a chemical reaction
+* Recognise that chemical reactions can be fast or slow
+* Recognise the effect of temperature on a chemical reaction
+* Identify dangerous chemical reactions
+* Participate in planning an experiment to compare a fast and slow reaction, and identify what data should be collected
+Reactions in context
+* Investigate ways to prevent a metal from rusting
+* Investigate the effect of particle size on the time it takes for a solid to dissolve
+* Communicate ideas about chemical reactions through written texts, using language appropriate to purpose and audience
+
+Waves and motion
+Outcomes
+A student:
+* describes the motion of waves or objects SCLS-WAM-01
+* safely participates in an investigation by following a sequence SCLS-WS-04
+* records data and information SCLS-WS-05
+Related Stage 4/5 outcomes: SC5-WAM-01, SC5-WAM-02, SC4-WS-04, SC4-WS-05, SC5-WS-04, SC5-WS-05
+Content
+Working scientifically
+In this focus area, students develop skills in conducting scientific investigations, and recording data and information. Additional Working scientifically outcomes and skills may be integrated with this content.
+Related: Conducting investigations, Processing data and information
+Waves
+* Observe the movement of waves
+* Participate in modelling waves
+Sound waves
+* Identify a range of everyday sounds
+* Record sounds in the local area
+* Identify that sound is a vibration and can cause objects to vibrate
+* Engage with sounds produced by Aboriginal and/or Torres Strait Islander Peoples' musical instruments
+Light waves
+* Identify common sources of light
+* Participate in modelling the reflection of light
+Motion
+* Recognise the different ways people and objects move
+* Describe the motion of a person or object
+* Participate in an investigation to measure and record the distance and time travelled by a person in motion
+* Describe how speed changes for different types of motion
+Waves and motion in context
+* Participate in an investigation to model the laws of motion
+ 
+Science 7-10 (2023)	Page 13 of 87
+
+Science 7-10 (2023)	Page 25 of 87
+
+Science 7-10 (2023)	Page 87 of 87
+

@@ -1,0 +1,737 @@
+ 
+ 
+        
+  
+  
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  NSW  Education  Standards  Authority  
+2025 HSC Physics
+Marking Guidelines 
+Section I  
+Multiple- choice Answer Key 
+Question Answer 
+1 B 
+2 A 
+3 B 
+4 D 
+5 D 
+6 A 
+7 B 
+8 A 
+9 A 
+10 C 
+11 D 
+12 A 
+13 C 
+14 B 
+15 C 
+16 A 
+17 C 
+18 D 
+19 B 
+20 C 
+Page 1 of 19 
+
+      
+        
+  
+       
+  
+     
+ 
+      
+      
+ 
+ 
+ 
+  
+  
+     
+   
+       
+      
+    
+ 
+    
+      
+  
+               
+             
+   
+ 
+ 
+ 
+  NESA 2025 HSC Physics Marking Guidelines 
+Section II  
+Question 21 
+Criteria Marks 
+• Outlines TWO methods and subsequent observations that could be used 
+to identify each source as either alpha or beta emitters 3 
+• Outlines a method that could be used to distinguish the sources 
+OR 
+• Identifies TWO methods that could be used to identify each source 2 
+• Provides some relevant information 1 
+Sample  answer:  
+Pass  the  radiation  through  a  thin  material  to  a  detector.  Observe  any  changes  in  counts.  The  
+beta source count  will  be reduced by an amount  less than the alpha source count.  
+ 
+Pass  each  type  of  radiation  through  a  magnetic  field  and  observe  any  differences  in  
+deflection  and observe deflection in opposite directions.  
+Answers  could include:  
+•  Ma
+gnetic  field  
+•  Electric  field  
+•  Cloud  chamber  
+Question 22 
+Criteria Marks 
+• Describes energy transformations in the transformers and in the 
+transmission line 4 
+• Describes an energy transformation in the transformer or transmission 
+line AND identifies another energy transformation 3 
+• Describes an energy transformation that occurs 
+OR 
+• Identifies energy transformations 2 
+• Provides some relevant information 1 
+Sample answer: 
+The energy output of both transformer A and transformer B is less than the energy input. 
+These transformers produce heat energy in their cores due to resistive losses, magnetic 
+effects and mechanical vibrations. 
+In the transmission line, heat energy is produced due to the resistance of the wires. 
+Page 2 of 19 
+
+      
+        
+ 
+ 
+ 
+  
+       
+  
+  NESA 2025 HSC Physics Marking Guidelines 
+Question  23  (a)  
+ Criteria  Marks 
+ •         Determines the torque produced on the wire loop by the motor effect  3 
+•  Determines  the  magnitude  of  the  torque  produced  
+OR  
+•  Determines  the  magnitude  of  the force  produced   2 
+ •      An appropriate step is performed  1 
+Sample answer: 
+  F =  BIL  
+ =  
+3 ×  10−2  ×  2 ×  0.05  
+ =  0.003 N  
+  τ  =  Fd  
+ =  0.003 ×   0.2  
+     10−4 = 6 ×  Nm c lockwise  viewed  from t he  side  B  
+Question  23  (b)  
+ Criteria  Marks 
+ •        States BOTH changes required to produce the results  2 
+ •       States ONE change required to produce the result   1 
+Sample answer: 
+The magnetic field was quadrupled and the current was halved. 
+Page 3 of 19 
+
+      
+       NESA 2025 HSC Physics Marking Guidelines 
+Question  24  
+ Criteria  Marks 
+ •          Shows all relevant steps to determine the mass ratio  3 
+ •      Makes progress towards determining mass ratio    2 
+ •   Provides some relevant information   1 
+Sample  answer:  
+ F = C  FG  
+mv2GMm   =    r r 2
+GMm  mv2 =    r 
+1 2 GMm   mv  =   2 2 r 
+GMmA GMmB ∴   =   2rA 2rB 
+mA mB mA rA Or   =    ⇒	   =  	rA rB  mB rB 
+3rB mA Substitute  r= A   3rB   =   =  3   rB mB 
+∴  m = A   3 mB  
+ 
+Page 4 of 19 
+
+      
+        
+ 
+ 
+ 
+ 
+  NESA 2025 HSC Physics Marking Guidelines 
+Question  25  (a)  
+ Criteria  Marks 
+ • 
+ •    Correctly plots all data   
+           Draws appropriate line of best fit to determine the threshold frequency  3 
+ •        Correctly plots data and determines an x -intercept 
+ OR 
+ •            Correctly plots data and draws an appropriate line of best fit  2 
+ •     Correctly plots some data  
+OR  
+ •       Draws a line of best fit  1 
+Sample answer: 
+Threshold  frequency  of  potassium:  0.7  ×  1015  Hz  or  7  ×  1014  Hz  
+ 
+Page 5 of 19 
+
+      
+        
+ 
+ 
+ 
+   
+ 
+ NESA 2025 HSC Physics Marking Guidelines 
+Question  25  (b)  
+ Criteria  Marks 
+ •      Shows how the features shown in the experiment are explained by the 
+    particle model of light  3 
+ •          Relates a feature shown to an aspect of the particle model of light  2 
+ •     Provides some relevant information  1 
+Sample answer: 
+The  p hoton  model  of  light  explains  the  trend  by  stating  that  light  consists  of  discrete  packets  
+of  energy called photons.  The energy of  a photon is directly proportional  to its frequency  
+ (E  =  hf). When photons strike the metal, they transfer energy to electrons. If the photon  
+energy exceeds the work function of  the metal,  the threshold frequency is exceeded and  
+electrons are ejected with kinetic energy proportional  to the excess energy  
+(KE  =  hf  –  ϕ).  
+ 
+As  the  frequency  of  light  increases,  the  photon  energy  increases,  resulting  in  higher  kinetic  
+energy for  the ejected electrons.  This is observed as a higher  stopping voltage,  which is 
+required to halt the more energetic electrons.  
+Question  26  (a)  
+ Criteria  Marks 
+ •        Calculates the magnitude of the average emf during the rotation  2 
+ • Provides one correct step in the calculation   1 
+Sample  answer:  
+Δϕ ϕ  =  BA  and ε  =    Δt 
+Δ(BA) BΔA∴  ε  =  =    Δt  Δt 
+0.5  ×  0.4 ×  0.3  ε  =   0.1 
+ ε  =  0.6 V  
+Page 6 of 19 
+
+      
+        
+ 
+ 
+  
+  
+  
+          
+     
+           
+    
+ 
+       
+       
+  
+   NESA 2025 HSC Physics Marking Guidelines 
+Question  26  (b)  
+ Criteria  Marks 
+ •           Sketches an appropriate graph of how the voltage varies with time  3 
+ •        Sketches some relevant aspects of the graph  2 
+ •     Provides some relevant information  1 
+Sample answer: 
+Question 27 
+Criteria Marks 
+• Outlines TWO ways in which Schrödinger’s model differs from those of Rutherford and Bohr 3 
+• Outline s ONE way in which Schrödinger’s model differs from those of 
+Rutherford and Bohr 
+OR 
+• Outlines TWO features of Schrödinger’s model 2 
+• Provides some relevant information 1 
+Sample answer: 
+In contrast to Bohr’s idea of fixed orbits, Sc hrödinger  described orbitals as probabilities of  
+electrons as being in particular  locations.  
+ 
+Unlike  Rutherford’s  model  in  which  electrons  were  imagined  as  particles  orbiting  the  nucleus,  
+Schrödinger  described the electrons as waves,  based on the work of  de Broglie.  
+Page 7 of 19 
+
+      
+       
+ 
+ 
+ 
+  NESA 2025 HSC Physics Marking Guidelines 
+Question  28  
+ Criteria  Marks 
+ •    Calculates the minimum speed required for the rider to land on the 
+ second ramp  4 
+ •         Provides substantial working to calculate the minimum speed  3 
+ •      Makes progress towards determining the minimum speed  2 
+ •     Provides some relevant information  1 
+Sample  answer:  
+To  calculate  u:  
+sx In the horizontal direction,  s = = = x  ux  t  with  u x   ucos(θ ) , so  t     u cos(θ ) 
+1 −ayt 
+In the vertical direction,  0   u t  +  a t2 = = y  y  with  u y   usin(θ ), so  u  =   2 2 sin( θ ) 
+Substituting  into  the  equation  for  u  gives,  u2  =   or  u  =  	
+For  a  =  −9.8,  s  = = y x 16  and  θ   20  
+u  =  15.6 m  s−1  
+Question  29  (a)  
+ Criteria  Marks 
+ •        Shows steps required to derive the equation  2 
+ •     Shows a relevant step  1 
+Sample  answer:  
+mv2
+At  the  top  of  the  circle ,   =  mg r 
+so,  with simplification  
+v  =   
+Page 8 of 19 
+
+      
+        
+ 
+ 
+ 
+  
+  NESA 2025 HSC Physics Marking Guidelines 
+Question  29  (b)  
+ Criteria  Marks 
+•  Compares  the  speed  of  the  mass  at  each  point ,  using  the  law of   
+conservation of  energy  
+•  Uses  appropriate  mathematical  relationships    3 
+ •            Compares the speed of the mass , using the law of conservation of 
+ energy  2 
+ •     Provides some relevant information  1 
+Sample answer: 
+The  s peed  of  the  ball  at  point  A  will  be  greater  than  v  from  part  (a).  
+ 
+Total  mechanical  energy =  E+ k   GPE  
+ 
+At  point  B:  
+1 Total  mechanical  energy  =   ×  m  ×  gr  +  mg(2r)  =  total mechanical energy at A  2
+1At  A  the gravitational potential energy  =  mgr  and thus  ×  m  ×  gr  +  2mgr  =  mgr  +  E2 kA  
+1 Simplifying  gives  E  mgr    m2=  
+kA = 1.5 vA   2
+And  finally   
+Question  30  (a)  
+ Criteria  Marks 
+ •         Shows the wavelength is equal to 182 nm  2 
+ •         Substitutes one correct value into the appropriate equation  1 
+Sample answer: 
+h λ  =    with  the  mass  of  an  electron  9.109 ×  10−31   kg mv 
+ 
+6.626 ×   10−34 
+λ  =  9.109  10−31  ×   ×  4 × 3  10
+λ  1. =  82  ×  10–7 m  
+λ  =  182  nm  
+Page 9 of 19 
+
+      
+       
+ 
+  
+ 
+ NESA 2025 HSC Physics Marking Guidelines 
+Question  30  (b)  
+ Criteria  Marks 
+ •   Calculates the required distance  2 
+ •        Makes one correct substitution into an appropriate formula   1 
+Sample  answer:  
+ λ  mL Distance  between the central  bright  spot  and the centre of  the next  interference fringe =   d 
+(m  =  1)   
+ 
+182  ×  10–9  ×  1 ×  0.5  Distance  =   1 ×  10–6 
+ 
+Distance  =  0.091 m  
+ =  9.1 cm  
+ 
+Question  30  (c)  
+ Criteria  Marks 
+ •   Calculates the required potential difference  2 
+ •        Makes one correct substitution into an appropriate formula   1 
+Sample  answer:  
+1Using  the  work -energy relationship, qV  2=   mv   2 
+mv 29.109 ×   10−31   3 2   × (4  ×  10)V    −5 = =  = × 2q 2  1.602   10−19   4.5  10 V × × 
+ 
+Page 10 of 
+19 
+
+      
+        
+  
+ 
+ 
+ 
+  NESA 2025 HSC Physics Marking Guidelines 
+Question  31  
+ Criteria  Marks 
+ • 
+ •        Provides a comprehensive assessment of the experimental results 
+          Relates the results to both existence and properties of electrons  5 
+ • 
+ •         Provides a sound assessment of the experimental results 
+         Relates the results to the properties and/or existence of electrons  4 
+ • 
+ •     Outlines an experiment and/or results  
+         Relates experimental results to the existence and/or properties of 
+ electrons  3 
+ •       Outlines a relevant experiment or result 
+ OR 
+ •            Relates an experimental result to the existence or property of electrons  2 
+ •    Provides some relevant information  1 
+Sample answer: 
+Experimental  re sults  and  their  interpretation  have  played  an  essential  role  in  developing  and  
+understanding of  both the existence and properties of  electrons.  
+ 
+It was  demonstrated that  cathode rays could be deflected by an electric field in a manner  
+consistent  with negatively charged particles.  This  experiment  also  allowed  the deduction  that 
+the cathode rays were not electromagnetic waves because the latter would not be deflected  
+by an electric field.  
+ 
+The  combined effect  of  changing the magnitudes of  electric and magnetic fields through 
+which  the  electrons  passed  was  measured  and from t  his the charge -to-mass  ratio  of  the  
+electron  was  calculated .  
+Answe
+rs could include: 
+By  using  e lectrodes  made  of  different  materials,  Thomson  was  able  to  deduce  that  the  
+cathode rays’  properties were independent  of  the source of  the electrons and hence that  they 
+were  a  constituent  of  atoms  themselves  rather  than  being  a  product  of  the  cathode ray.  
+ 
+Cathode  rays  were  passed  through  thin  metal  foils  and  the  analysis  of  this  behaviour  allowed  
+scientists (Lenard/Hertz)  to deduce that  the electrons had mass.  
+ 
+Crookes’  observation  that  cathode  rays  travelled  in  straight  lines  and  cast  sharp  shadows  
+from which he deduced that the rays were particles and not waves (which would have shown  
+diffraction effects).  
+Page 11 of 19 
+
+      
+       
+  
+ 
+ NESA 2025 HSC Physics Marking Guidelines 
+Question  32  
+ Criteria  Marks 
+ • 
+ •      Provides a comprehensive analysis of the consequences of special 
+  relativity on time, length and motion 
+     Refers to applicable experimental evidence  8 
+ • 
+ •            Provides a thorough analysis of the consequences of special relativity on 
+ time, length and motion  
+     Refers to applicable experimental evidence  6–7 
+ • 
+ •           Provides analysis of the consequences of special relativity on time 
+    and/or length and/or motion 
+      Refers to some relevant experimental evidence  4–5 
+ •          Makes some reference to special relativity and/or related experimental 
+ evidence   2–3 
+ •    Provides s ome relevant information  1 
+Sample  answer:  
+The  two  postulates  of  special  relativity  are:  the  speed  of  light  in  a  vacuum i  s  an  absolute  
+constant,  and all  inertial  frames of  reference are equivalent.  
+ 
+The  consequences  of  these  postulates  are  time  dilation,  length  contraction  and  relativistic  
+momentum dilation.  Time  dilation  means  that  the  measured  time  between  events  increases  
+as the speed of  an observer  increases.  Length contraction means that  the leng th of an object 
+decreases as the speed of  an observer  increases,  and relativistic momentum di  lation means 
+that objects (with mass) cannot travel at c as it takes increasing amounts of energy to  
+accelerate objects as they approach the speed of  light.   
+ 
+Length contraction and time dilation can both be seen in observations of  muons at  Earth’s 
+surface.  The short  half-life  of  muons  suggests  that  there  should  be  very  few  of  them  that  
+arrive at  Earth’s surface from t  heir  point  of  origin high in Earth’s atmosphere,  but  the muon 
+flux is greater than suggested by half -life  and  distance  travelled  alone.  However,  when  the  
+distance travelled is considered from t  he muon’s frame of  reference,  it  is length -contracted  
+ 
+according to ,  giving an effective shorter  distance for  them t  o travel.  From t  he 
+perspective of  an observer  on Earth’s surface,  the time taken for  them t  o decay is dilated,  
+giving an effective greater  amount  of  time for  them t  o travel  before decaying.   
+ 
+The  effects  of  relativistic  momentum c  an  be  seen  in  particle  accelerators  in  terms  of  the  
+increasing  amounts  of  energy  to  required  to  accelerate  the  particles  as  they  approach  the  
+speed of  light  –  it  is  though  the  objects  are  much  more  massive  than  they  are.   
+Page 12 of 19 
+
+      
+       
+  NESA 2025 HSC Physics Marking Guidelines 
+Question  33  
+ Criteria  Marks 
+ •         Provides a detailed analysis of how experimental evidence and 
+ theoretical ideas contributed to the development of the Standard Model 
+  of matter  6 
+ •          Provides an analysis of how experimental evidence and theoretical ideas 
+     contributed to the development of the Standard Model of matter  5 
+ •     Describes experiment (s) and idea(s) relating to fundamental particles 
+ and/or forces AND links these to the Standard Model of matter   3–4 
+ •          Outlines experiments and/or ideas relating to fundamental particles or 
+ forces  2 
+ •     Provides some relevant information   1 
+Sample  answer:  
+Experiments  and  theoretical  ideas  have  both  been  critical  in  the  development  of  the  Standard  
+Model  of  matter.   
+ Particle  accelerators  have  been  used  to  verify  key  ideas  about  fundamental  particles  and  the  
+structure of  matter.  Particle accelerators allow f  or  small  wavelength  ‘matter  probes’ at  high  
+energies,  giving high resolution for  probing the structure of  matter.  
+ 
+Examples  of  particle  accelerator  use  in  the  development  of  the  Standard  Model  include:   
+•  Verification  of  the  electroweak  theory,  which  says  that  the  electromagnetic  and  weak  
+nuclear  forces are a result  of  the same interaction.   
+•  The  discovery  of  a  Higgs  Boson,  many  decades  after  it  was  first  proposed  as  necessary  in  
+explaining the mass of  particles.   
+•  Verification  of  the  existence  of  quarks  by  showing  the  protons  and  neutrons  have  internal  
+structure.   
+ 
+Earlier  experiments  used  simpler  equipment  such  as  the  cloud  chamber  which  was  used  to  
+discover  antimatter  following its earlier  theoretical  prediction.   
+ 
+Many  experiments  have  verified  earlier  theoretical  ideas,  and  these  confirmations  have  then  
+in  turn  allowed  the  proposal of  further  ideas,  which  have  in  turn  later  been  verified  by  
+experiments.   
+Page 13 of 19 
+
+      
+        
+ 
+ 
+  
+  
+       
+  NESA 2025 HSC Physics Marking Guidelines 
+Question  34  (a)  
+ Criteria  Marks 
+ •  Calculates the speed using relevant calculations and the provided 
+ measurement s  2 
+ •   Makes a valid step in the calculation  1 
+Sample answer: 
+d  =  2  ×  1.471  ×  1011  
+ = 2.942  11 × 10 m  
+ 
+d v  =    t 
+2.942   1011 ×   =  3    1  ×  10
+  2.942    −1 =  108 × m s  
+ 
+Question  34  (b)  
+ Criteria  Marks 
+ •            Relates an effect to the calculation of the speed of light  3 
+•  Describes  the  effect  of  the  ellipticity  on  the  distance  
+OR  
+•  Relates  a  change  in  distance  to  the  corresponding  change  in  light  travel  
+time   2 
+ •     Provides some relevant information  1 
+Sample answer: 
+If light  travels  a long  the  long  axis of  the ellipse,  then the distance travelled by the light across  
+Earth’s  orbit  is  greater  than  2.942  8 ×  10 m.  The  effect  of  this  would  be  to  increase  the  
+calculated speed of  light.   
+Answ e
+rs could include: 
+Reduced speed of light due to measurement of distance along the short axis of the ellipse. 
+Page 14 of 19 
+
+      
+       
+ 
+  NESA 2025 HSC Physics Marking Guidelines 
+Question  35  
+ Criteria  Marks 
+ •   Relates the measurements on the balance to the motion of the magnet 
+ and its interactions with the pipe  4 
+ •      Relates a measurement on the balance to the motion of the magnet and 
+  aspects of its interactions with the pipe   3 
+•  Describes  some  aspects  of  the  motion  of  the  magnet  and  relates  this  to  a  
+measurement  on the balance  
+OR  
+•  Describes  the  motion  of  the  magnet  and/or  interactions with the pipe   2 
+ •     Provides some relevant information  1 
+Sample  answer:  
+The  reading  on  the  scale  has  two  phases.  
+1.   The  magnet  accelerates  to  a  maximum s  peed.  This  results  in  an  increasing  change  in  
+magnetic  flux  causing  the  creation  of  an  increasing  electromagnetic  force  that  opposes  
+the constant gravitational force acting on the magnet. The force on the magnet due to  this  
+interaction  produces  an  equal and  opposite  force  on  the  pipe,  which  results  in  an  increase  
+in  the  downward  force  on  the  scale.   
+2.   The  magnet  reaches  a  constant  speed  when  the  upward  electromagnetic  force  is  equal  
+and opposite to the weight  force of  the magnet.  The force of  the magnet  on the pipe will  
+be equal  to the weight  of  the magnet.  The reading on the scale will  then be the weight  of  
+the pipe and magnet, shown in grams.  
+Page 15 of 19 
+
+      
+       NESA 2025 HSC Physics Marking Guidelines 
+Question  36  
+ Criteria  Marks 
+ •   Comprehensively analyses the motion of both pieces with reference to 
+relevant conservation laws and formulae   8 
+ •      Analyses features of the motion of both pieces with reference to relevant 
+  conservation laws and formulae  6–7 
+ • 
+ •             Describes a feature of the motion of each piece OR describes features of  
+ the motion of one piece 
+     Applies a conservation law and a relevant formula  4–5 
+ • 
+ •        Describes a feature of the motion of a piece 
+  Identifies a relevant conservation law and/or refers to a relevant equation   2–3 
+ •     Provides some relevant information   1 
+Sample  answer:  
+By  t
+he  law of  conservation  of  momentum,  the  momentum c  hanges  of  m a  and mb  resulting  
+from the force produced by the explosion must be equal but opposite.  
+ 
+Since  they  are  of  equal  mass,  the  velocity  change  of  both  pieces, must be the same, but in  
+opposite directions.  Since the velocity of  m a  increases  by  v  in  the  direction  in  which  it  was  
+travelling, the velocity of mb, is also  v, but in the opposite direction to which it was travelling.  
+ 
+Hence,  relative  to  the  Earth,  the  velocity  of  mb  must  become  zero  at  that  instant.   
+ 
+The  orbital  velocity  of  the  satellite  prior  to  the  explosion  is  given  by  
+ 
+v = orbital     
+ 
+Hence  the  instantaneous  velocity  of  m a  as a result  of  the explosion is double the orbital  
+velocity before the explosion  
+ 
+because  2v  =  2  > the escape velocity  v = esc    the velocity of m a  after  the 
+explosion is greater  than the escape velocity.   
+ 
+After  the  explosion,  the  pieces  m a  will  continue  travel  away  from Ea rth  at  a  decreasing  
+velocity,  however  because its initial  velocity exceeds the escape velocity from t  he explosion 
+point,  it  will  never  stop or  return to Earth.  Its total  energy (kinetic + potential)  remains 
+constant  and will always  be  positive.   
+ 
+Consequently,  mb  will  begin  to  accelerate,  from a n  initial  velocity  of  zero,  towards  the  centre  
+of  Earth.  Its acceleration is initially less than 9.8 m  s−2  because it  is not  at  Earth’s  surface.   
+ 
+As  the  force  due  to  gravity  on  mb  increases,  its  acceleration  increases  and  so  its  velocity  
+towards the centre of Earth increases at an increasing rate until it reaches Earth’s  
+atmosphere.   
+Page 16 of 19 
+
+      
+      NESA 2025 HSC Physics Marking Guidelines 
+Consistent  with  the  law of  conservation  of  energy,  until  mb  reaches Earth’s atmosphere, the  
+sum of   its kinetic and potential  energy must  remain constant  and equal  to its initial  potential  
+energy at  the instant  after  the explosion.   
+Page 17 of 19 
+
+      
+        
+  
+ 
+  
+    
+ 
+       
+        
+           
+           
+         
+         
+    
+         
+        
+        
+          
+           
+        
+        
+         
+    
+          
+          
+        
+          
+         
+         
+  NESA 2025 HSC Physics Marking Guidelines 
+2025 HSC Physics
+Mapping Grid 
+Section I 
+Question Marks Content Syllabus 
+outcomes 
+1 1 Mod 7 Electromagnetic Spectrum PH12 -14 
+2 1 Mod 6 Electromagnetic Induction PH12 -5, PH12 -13 
+3 1 Mod 8 Quantum Mechanical Nature of the Atom PH12 -15 
+4 1 Mod 8 Quantum Mechanical Nature of the Atom PH12 -15 
+5 1 Mod 5 Motion in Gravitational Fields PH12 -12 
+6 1 Mod 6 Charged Particles, Conductors and Electric 
+and Magnetic Fields PH12 -4, PH12 -13 
+7 1 Mod 5 Motion in Gravitational Fields PH12 -12 
+8 1 Mod 5 Projectile Motion PH12 -4, PH12 -12 
+9 1 Mod 7 Electromagnetic Spectrum PH12 -5, PH12 -14 
+10 1 Mod 8 Properties of the Nucleus PH12 -5, PH12 -15 
+11 1 Mod 6 Applications of the Motor Effect PH12 -5, PH12 -13 
+12 1 Mod 7 Light: Wave Model PH12 -5, PH12 -14 
+13 1 Mod 5 Circular Motion PH12 -6, PH12 -12 
+14 1 Mod 6 Charged Particles, Conductors and Electric 
+and Magnetic Fields PH12 -4, PH12 -13 
+15 1 Mod 8 Origins of the Elements PH12 -5, PH12 -15 
+16 1 Mod 8 Properties of the Nucleus PH12 -5, PH12 -15 
+17 1 Mod 6 Electromagnetic Induction PH12 -6, PH12 -13 
+18 1 Mod 5 Motion in Gravitational Fields PH12 -6, PH12 -12 
+19 1 Mod 7 Light and Special Relativity PH12 -6, PH12 -14 
+20 1 Mod 8 Deep inside the Atom PH12 -15 
+Section II 
+Page 18 of 19  Question Marks   Content  Syllabus 
+ outcomes 
+ 21  3       Mod 8 Properties of the Nucleus  PH12 -6, PH12 -15 
+ 22  4     Mod 6 Electromagnetic Induction  PH12 -7, PH12 -13 
+ 23 (a)  3     Mod 6 The Motor Effect   PH12 -5, PH12 -13 
+ 23 (b)  2     Mod 6 The Motor Effect   PH12 -5, PH12 -13 
+ 24  3       Mod 5 Motion in Gravitational Fields   PH12 -6, PH12 -12 
+ 25 (a)  3      Mod 7 Light: Quantum Model  PH12 -4, PH12 -12 
+ 25 (b)  3      Mod 7 Light: Quantum Model  PH12 -7, PH12 -12 
+ 26 (a)  2     Mod 6 Electromagnetic Induction  PH12 -5, PH12 -13 
+ 26 (b)  3     Mod 6 Electromagnetic Induction  PH12 -4, PH12 -13 
+ 27  3         Mod 8 Quantum Mechanical Model of the Atom  PH12 -15 
+ 28  4     Mod 5 Projectile Motion  PH12 -6, PH12 -12 
+
+      
+          
+ 
+       
+       
+           
+       
+         
+   
+         
+        
+         
+       
+       
+          
+         
+ 
+ 
+ NESA 2025 HSC Physics Marking Guidelines 
+Question Marks Content Syllabus 
+outcomes 
+29 (a) 2 Mod 5 Circular Motion PH12 -7, PH12 -12 
+29 (b) 3 Mod 5 Circular Motion PH12 -7, PH12 -12 
+30 (a) 2 Mod 8 Quantum Mechanical Model of the Atom PH12 -7, PH12 -15 
+30 (b) 2 Mod 7 Light: Wave Model PH12 -4, PH12 -14 
+30 (c) 2 Mod 6 Charged Particles, Conductors and Electric 
+and Magnetic Fields PH12 -4, PH12 -13 
+31 5 Mod 8 Structure of the Atom PH12 -7, PH12 -15 
+32 8 Mod 7 Light and Special Relativity PH12 -7, PH12 -14 
+33 6 Mod 8 Deep inside the Atom PH12 -7, PH12 -15 
+34 (a) 2 Mod 7 Electromagnetic Spectrum PH12 -4, PH12 -14 
+34 (b) 3 Mod 7 Electromagnetic Spectrum PH12 -7, PH12 -14 
+35 4 Mod 6 Applications of the Motor Effect PH12 -5, PH12 -13 
+36 8 Mod 5 Motion in Gravitational Fields PH12 -5, PH12 -7, 
+PH12 -12 
+Page 19 of 19 
+

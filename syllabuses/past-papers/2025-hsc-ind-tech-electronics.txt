@@ -1,0 +1,159 @@
+ NSW Education Standards Authority 
+2025 HIGHER SCHOOL CERTIFICATE EXAMINATION 
+Industrial Technology  
+Electronics Technologies Centre Number 
+Student Number 
+General 
+Instructions • Reading time – 5 minutes 
+• Working time – 1 hour and 30 minutes 
+• Write using black pen 
+• Draw diagrams using pencil 
+• Calculators approved by NESA may be used 
+• Write your Centre Number and Student Number at the top of thispage and page 5 
+Total marks: 40 Section I – 10 marks
+ (pages 2–4) 
+• Attempt Questions 1–10 
+• Allow about 20 minutes for this section 
+Section II – 15 marks (pages 5–7) 
+• Attempt Questions 11–15 
+• Allow about 35 minutes for this section 
+Section III – 15 marks (page 9) 
+• Attempt Question 16 
+• Allow about 35 minutes for this section 
+2350 
+
+ 
+ Section I 
+10 marks 
+Attempt Questions 1–10Allow about 20 minutes for this section 
+Use the multiple-choice answer sheet for Questions 1–10. 
+1  Which of the following is a common application of field effect transistors (FETs)? 
+A. Amplifying audio systems 
+B. Storing data in computer memory C. Converting digital signals to analogue signals D. Generating alternating current in electrical grids 
+2  What is the purpose of grounding (earthing) in an electrical circuit? 
+A. To provide a safe path for excess electricity 
+B. To increase the flow of electricity in the circuit C. To prevent electricity from leaking into the ground D. To ensure that the circuit uses only direct current (DC) 
+3  Which semiconductor specialises in current flowing in reverse? 
+A. Signal diode 
+B. Zener diode C. Schottky diode D. Light emitting diode (LED) 
+4  Using a multimeter, 0 volts is measured across a resistor in a circuit that should be 
+receiving 5 V. 
+What might be the cause of this issue? A. The resistor is incorrectly rated for the circuit. 
+B. The power supply is providing too much voltage. C. There is a break in the circuit or a loose connection. D. The resistor is too large for the circuit and is limiting current flow. 
+– 2 – 
+
+ 
+ 
+ 5  What is the resistance of an electric toaster rated at 8 amps on a domestic 240 V supply? 
+A. 30 Ω
+ 
+B. 60 Ω 
+C. 120 Ω 
+D. 240 Ω 
+6  What is a common practical use of a solenoid in everyday applications? 
+A. Storing electrical energy for long periods 
+B. Measuring the speed of rotating machinery 
+C. Converting electrical energy directly into light 
+D. Controlling the flow of fluid in an automated switch 
+7  Components in a PCB are not functioning correctly. Upon inspection, a solder bridge is
+observed between two adjacent pins. 
+What action should be taken? 
+A. Insulate the solder bridge with heat shrink 
+B. Cut the component pins to remove the solder bridge 
+C. Use a desoldering pump to remove the solder bridge 
+D. Reheat the solder joint to melt the bridge and let it cool 
+8  A circuit was designed that required a voltage regulator to ensure consistent voltage
+output. When tested, the circuit had fluctuating voltage output. 
+What could be the cause of this issue? 
+A. The input voltage was too high for the regulator. 
+B. The ground connection was not properly connected. 
+C. The regulator was installed in the wrong orientation. 
+D. The regulator’s output capacitor was missing or incorrect. 
+– 3 – 
+
+ 
+ 
+ 
+ 9 A microcontroller power supply works well when powered through a USB, but fails to
+operate when connected to an external power source. 
+What could be the likely cause? A. The microcontroller board is faulty. 
+B. The power supply circuit is incorrectly soldered. C. The USB port provides too much power for the circuit. D. The external power source provides incorrect voltage or current. 
+10  An LED connected to a circuit is not lighting up, despite the power supply being on. The
+resistor value was checked and appeared correct. 
+What should be checked next? 
+A. The colour of the LED 
+B. The orientation of the LED 
+C. The power rating of the resistor 
+D. The type of wire used for the connections 
+– 4 – 
+© 2025 NSW Education Standards Authority 
+
+ 
+ 2351 15200 8543310116 
+2025 HIGHER SCHOOL CERTIFICATE EXAMINATION 
+Centre NumberIndustrial Technology 
+Electronics Technologies 
+Student NumberSection II 
+15 marks 
+Attempt Questions 11–15Allow about 35 minutes for this section 
+Answer the questions in the spaces provided. These spaces provide guidance for the expected
+length of response. 
+Show all relevant working in questions involving calculations. 
+Question 11 (2 marks) 
+Outline the use of diodes in the rectification of AC current. 
+...............................................................................................................................
+........................ 
+....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... 
+Question 12 (2 marks) 
+Distinguish between a NOR gate and a NAND gate in a circuit. ...............................................................................................................................
+........................ 
+....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... 
+– 5 – 
+
+– 6 –Question 13 (2 marks)
+Sketch the TWO missing component symbols to complete the circuit diagram below. 
+BatteryResistor Switch
+LED light
+Question 14 (4 marks)A kitchen has three appliances connected in a 240 V circuit with an 8 A circuit breaker:
+• a 1200 W microwave
+• a 800 W toaster• a 900 W coffee machine.
+Which combination of TWO appliances can be operated simultaneously without causing the 
+circuit breaker to trip? Justify your answer with calculations.
+......................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+
+5123310117 
+Question 15 (5 marks) 
+Discuss factors that need to be considered when choosing insulation material suitable for high
+voltage applications. 
+...............................................................................................................................
+........................ 
+....................................................................................................................................................... 
+....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... 
+– 7 – 
+
+ BLANK PAGE 
+– 8 – 
+© 2025 NSW Education Standards Authority 
+
+ 
+ 2025 HIGHER SCHOOL CERTIFICATE EXAMINATION 
+Industrial Technology 
+Electronics Technologies 
+Section III 
+15 marks 
+Attempt Question 16Allow about 35 minutes for this section 
+Answer the question in the Section III Writing Booklet. Extra writing booklets are available. 
+Question 16 (15 marks) 
+(a) 
+Describe the effects of legislative requirements on the sustainable practices and
+environmental impacts of the electronics industry. 5 
+(b) Analyse how historical developments and advancements in manufacturing
+processes have affected the electronics industry. Support your answer with
+relevant examples. 10 
+End of paper 
+2352 – 9 – 
+
+ BLANK PAGE 
+– 10 – 
+© 2025 NSW Education Standards Authority 
+

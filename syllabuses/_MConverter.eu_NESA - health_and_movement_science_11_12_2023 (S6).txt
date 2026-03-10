@@ -1,0 +1,927 @@
+﻿NSW Education Standards Authority
+
+Health and Movement Science 11–12 (2023)
+curriculum.nsw.edu.au
+Generated Dec 2025
+Downloaded December 2025
+© 2025 NSW Education Standards Authority 
+NESA acknowledges Traditional Owners and Custodians of Country throughout NSW, and pays respect to Elders past and present. NESA recognises Aboriginal Peoples’ continuing Cultures and Connections to lands, waters, skies and Community.
+The documents on the NSW Education Standards Authority (NESA) website and the NSW Curriculum website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright. 
+These websites hold the only official and up-to-date versions of the documents available on the internet. Any other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are not authorised. You cannot rely on copies from any other source. 
+All rights are reserved. No part of the material may be: 
+    • reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form 
+    • transmitted to any other person or stored electronically in any form without the written permission of NESA except as permitted by the Copyright Act 1968 (Cth). 
+When you access the material, you agree: 
+    • to use the material for research or study, criticism or review, reporting news and parody or satire 
+    • to use the material for information purposes only 
+    • not to modify the material or any part of the material without the written permission of NESA 
+    • to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the permission of NESA 
+    • to include this copyright notice in any copy made 
+    • to acknowledge that NESA is the source of the material. 
+The documents may include third-party copyright material such as photos, diagrams, quotations, cartoons and artworks. This material is protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner’s permission. Unauthorised reproduction, transmission or commercial use of such copyright material may result in prosecution. 
+NESA has made all reasonable attempts to locate the owners of third-party copyright material. NESA invites anyone from whom permission has not been sought to contact the Copyright Officer.
+Special arrangements applying to the NSW Curriculum Reform 
+As part of the NSW Curriculum Reform process, NESA grants a limited non-exclusive licence to: 
+    • teachers employed in NSW government schools and registered non-government schools 
+    • representatives from peak school education bodies, such as the NSW Department of Education, Catholic Schools NSW, the Association of Independent Schools of NSW and TAFE NSW
+    • parents of children registered for home schooling 
+to use, modify and adapt the NSW syllabuses for non-commercial educational use only. The adaptation must not have the effect of bringing NESA into disrepute. 
+Note: The above arrangements do not apply to private/home tutoring companies, professional learning service providers, publishers, and other organisations.
+For more information on the above or for commercial use or any other purpose, please contact the Copyright Officer for permission. 
+Email: copyright@nesa.nsw.edu.au
+Table of contents
+Table of contents	4
+Health and Movement Science 11–12 (2023)	5
+Implementation from 2025	5
+Overview	5
+Syllabus overview	5
+Course description	7
+Rationale	12
+Aim	13
+Table of outcomes	14
+Outcomes and content for Year 11	15
+Health for individuals and communities	15
+The body and mind in motion	19
+Collaborative Investigation	24
+Outcomes and content for Year 12	26
+Health in an Australian and global context	26
+Training for improved performance	31
+Assessment	35
+Course standards	35
+School-based assessment	36
+HSC examinations	38
+
+Health and Movement Science 11–12 (2023)
+Implementation from 2025
+The new Health and Movement Science 11–12 Syllabus (2023) is to be implemented from 2025 and replaces the Personal Development, Health and Physical Education Stage 6 Syllabus (2012).
+2025, Term 1
+    • Start teaching the new syllabus for Year 11
+    • Start implementing the new Year 11 school-based assessment requirements
+    • Continue to teach the Personal Development, Health and Physical Education Stage 6 Syllabus (2012) for Year 12
+2025, Term 4
+    • Start teaching the new syllabus for Year 12
+    • Start implementing the new Year 12 school-based assessment requirements
+2026
+    • First HSC examination for the new syllabus
+Overview
+Syllabus overview
+The Health and Movement Science 11–12 Syllabus aligns with the Health and Movement Science Life Skills 11–12 Syllabus to provide opportunities for integrated delivery.
+Through collaborative curriculum planning, it may be decided that Life Skills outcomes and content are the most appropriate option for some students with intellectual disability.
+Organisation of Health and Movement Science 11–12
+The Year 11 and 12 course is structured to provide students with opportunities to develop and apply their knowledge, understanding and skills of health and movement concepts.
+The following diagram provides an illustrative representation of elements of the course and their relationship.
+
+Figure 1: The organisation of content for Health and Movement Science 11–12 Syllabus
+
+Image long description: The Health and Movement Science 11–12 Syllabus is shaped by the 5 propositions. Year 11 is organised into 2 focus areas: Health for individuals and communities; and The body and mind in motion. Year 12 is organised into 2 focus areas: Health in an Australian and global context; and Training for improved performance. Depth studies are also to be embedded in Years 11 and 12, and a Collaborative Investigation embedded in Year 11. The skills of collaboration, analysis, communication, creative thinking, problem-solving and research underpin the syllabus content. These skills encircle the syllabus structure along with the propositions ‘Focus on educative purpose, take a strengths-based approach, value movement, develop health literacy and include a critical inquiry approach.’
+Protocols for collaborating with Aboriginal and Torres Strait Islander Communities and engaging with Cultural works
+NESA is committed to working in partnership with Aboriginal Communities and supporting teachers, schools and schooling sectors to improve educational outcomes for young people.
+It is important to respect appropriate ways of interacting with Aboriginal Communities and Cultural material when teachers plan, program and implement learning experiences that focus on Aboriginal and Torres Strait Islander Priorities.
+Indigenous Cultural and Intellectual Property (ICIP) protocols need to be followed. Aboriginal and Torres Strait Islander Peoples’ ICIP protocols include Cultural Knowledges, Cultural Expression and Cultural Property and documentation of Aboriginal and Torres Strait Islander Peoples’ identities and lived experiences. It is important to recognise the diversity and complexity of different Cultural groups in NSW, as protocols may differ between local Aboriginal Communities.
+Teachers should work in partnership with Elders, parents, Community members, Cultural Knowledge Holders, or a local, regional or state Aboriginal Education Consultative Group. It is important to respect Elders and the roles of men and women. Local Aboriginal Peoples should be invited to share their Cultural Knowledges with students and staff when engaging with Aboriginal histories and Cultural Practices.
+
+Course description
+The Health and Movement Science 11–12 Syllabus draws on a multitude of fields and the application of health science concepts to actively engage students in learning about the factors that influence health and movement.
+What students learn
+Through the study of Health and Movement Science 11–12, students:
+    • analyse the health status of Australians within an Australian and global context, and evaluate actions that can promote and improve the health of Australians
+    • apply their understanding of the principles and factors that influence efficient movement, participation, and improved performance for different physical activities, athletes, and complex movement issues and scenarios
+    • develop skills of collaboration, analysis, communication, creative thinking, problem-solving, and research to explore areas of interest and apply health and movement concepts to various contexts and groups.
+Course structure and requirements
+Year 11 course structure and requirements 
+Year 11 course (120 hours)
+The Year 11 course comprises 4 components. Students are required to study all 4 components of the course.
+Year 11 focus areas
+Indicative hours
+Health for individuals and communities
+40
+The body and mind in motion
+40
+Collaborative Investigation
+20
+Depth studies (a minimum of 2)
+20
+Where appropriate, case studies, practical application and research skills are to be integrated throughout student learning in Health for Individuals and Communities, The Body and Mind in Motion, the Collaborative Investigation and the Depth Studies.
+Health for individuals and communities
+This focus area explores the meanings of health from different perspectives. Students investigate the interplay of the determinants influencing health and the indicators used to measure and evaluate health status.
+Health for Individuals and Communities has a focus on the health of young people, with students having the opportunity to research a selected health issue of interest. They analyse the skills needed to protect and enhance the health and wellbeing of themselves and others.
+Students explore how government and non-government organisations can advocate and support the health of young people. They explore health promotion as a way to improve health and are introduced to the United Nations Sustainable Development Goals (SDGs) as a framework that demonstrates the complexity and interconnectedness of strategies needed to improve the health of Australians.
+Teachers are advised to be sensitive in their representation of data on the health status of Aboriginal and Torres Strait Islander young people, particularly for Aboriginal and/or Torres Strait Islander students studying this course.
+The body and mind in motion
+This focus area enables students to investigate how body systems influence and respond to movement, and understand the interrelationships between these systems for efficient movement. Students develop an understanding of the role energy systems and types of training and training methods play and how the body physiologically adapts to training.
+Students consider how movement skills are acquired, developed and improved, by exploring the characteristics of learners, the acquisition of skill, practice methods, performance elements and feedback. They investigate the relationship between performance and psychological factors, including motivational strategies, and the impact communities of exercise can have on participation and performance.
+Collaborative Investigation
+The Collaborative Investigation provides opportunities for students to develop knowledge and skills to support their own and others’ health and movement. It allows students to manage their own learning and to become flexible, critical thinkers, problem-solvers and decision-makers.
+Throughout the Collaborative Investigation, students are provided with opportunities to positively interact with others and work collaboratively to reach agreements and decisions. They develop skills to negotiate plans and tasks, distribute leadership, create and maintain a positive group environment, and give and receive feedback.
+The Collaborative Investigation provides students with the opportunity to adopt an informed point of view when responding, by speculating, critiquing, analysing, interpreting and constructing possible meanings for their own and others’ health, physical activity levels and performance.
+Depth studies
+Year 11
+The requirements for the Depth Studies include:
+    • a total of 20 hours of in-class time allocated in Health for Individuals and Communities and/or The Body and Mind in Motion
+    • a minimum of 2 Depth Studies
+    • knowledge and understanding, and skill outcomes, to be addressed in each depth study.
+Some students with disability may require adjustments and/or additional support in order to engage with the depth studies.
+Year 12 course structure and requirements 
+Year 12 course (120 hours)
+The Year 12 course comprises 3 components. Students are required to study all 3 components of the course.
+Year 12 focus areas
+Indicative hours
+Health in an Australian and global context
+45
+Training for improved performance
+45
+Depth studies (a minimum of 2)
+30
+Where appropriate, case studies and practical application are to be integrated throughout student learning in Health in an Australian and Global Context, Training for Improved Performance, and the Depth Studies.
+Health in an Australian and global context
+In this focus area, students explore how healthy Australians are by comparing the health status of Australians within and across population groups. They evaluate the health status of Australians relative to other Organisation for Economic Co-operation and Development (OECD) countries and draw conclusions that could be applied to enhance the health of Australians.
+Students examine major chronic conditions, diseases and injury, and the impact these conditions can have on the healthcare system. They explore the impact of a growing and ageing population. Students evaluate the healthcare system in Australia and explore the roles government and non-government organisations play in improving health. Students investigate changes and challenges to the health system, including the impact of emerging technologies and treatments, digital health and big data.
+Students investigate actions needed to promote and improve the health of Australians by investigating how the SDGs can inform strategies to improve the health status of a community.
+Some aspects of the Year 11 Health for Individuals and Communities content will be further investigated in this focus area, in particular the current health status of Australians, groups experiencing inequities in health and the SDGs.
+Teachers are advised to be sensitive in their representation of data on the health status of Aboriginal and Torres Strait Islander young people, particularly for Aboriginal and/or Torres Strait Islander students studying this course.
+Training for improved performance
+In this focus area, students investigate the significance of Training for Improved Performance. This includes recognising the importance of personalised exercise assessment and prescription, and exploring how various training types and methods can be used to positively affect physiological adaptations.
+Students compare training plans and programs for recreational or elite individuals and groups, applying their understanding of biomechanics, injury prevention, training methods and technology to analyse how athletes can train for sustained movement and performance. Students explore the importance of nutrition, and how nutrition and supplementation affect an individual’s performance. They compare the dietary requirements of athletes from different sports.
+Depth studies
+Year 12
+The requirements for the Depth Studies include:
+    • a total of 30 hours of in-class time allocated in Health in an Australian and Global Context and/or Training for Improved Performance
+    • a minimum of 2 Depth Studies
+    • knowledge and understanding, and skill outcomes, to be addressed in each depth study.
+Some students with disability may require adjustments and/or additional support in order to engage with the depth studies.
+Safety and risk management
+Schools are required to ensure they follow safety and risk management in delivering the Health and Movement Science 11–12 Syllabus.
+Course enrolment details
+
+Health and Movement Science Year 11
+    • Course number: 11390
+    • Course hours: 120
+    • Course units: 2
+    • Enrolment type: Elective
+    • Endorsement type: Board developed
+Exclusions
+    • Health and Movement Science Life Skills (Year 11, 2 units): 16622
+Prerequisites
+    • Nil
+Corequisites
+    • Nil
+Health and Movement Science Year 12
+    • Course number: 15410
+    • Course hours: 120
+    • Course units: 2
+    • Enrolment type: Elective
+    • Endorsement type: Board developed
+Exclusions
+    • Health and Movement Science Life Skills (Year 12, 2 units): 16622
+Prerequisites
+    • Health and Movement Science (Year 11, 2 units): 11390
+Corequisites
+    • Nil
+HSC information
+Information about curriculum requirements for the HSC are available on Assessment Certification Examination (ACE).
+
+Rationale
+Health and Movement Science draws on a multitude of fields and the application of scientific concepts to actively engage students in learning about the factors that influence health and movement. While there is tremendous opportunity for good health, there are numerous conflicting influences on lifestyle, which are impacting health outcomes. In this syllabus, students investigate the health status of Australians and the interrelated factors that affect the health of individuals and communities. Students explore the factors that influence movement and performance, and develop the skills to enhance movement for themselves and others throughout their lifetime.
+The study of health sciences draws on epidemiology, dimensions and determinants of health, and social justice principles. This enables students to think critically about the equity, access and sustainability of health and wellbeing for individuals and communities. Health promotion is explored as a way to improve health for individuals and communities. Students investigate the United Nations Sustainable Development Goals (SDGs), which represent an ambitious vision of a healthier, more prosperous, inclusive and resilient world. The World Health Organization (WHO) views health promotion as a means to achieving the SDGs.
+Participation in physical activity plays a significant role in improving the health and wellbeing of individuals and communities. Learning in, through and about the movement sciences involves exploring and thinking critically about the interrelationships between anatomy, physiology, biomechanics, psychology, sociology, nutrition, skill acquisition, injury prevention and rehabilitation. Acquiring the knowledge and skills to be physically active can optimise individual and team performance and develop positive movement habits across the lifespan.
+Health and Movement Science builds on the foundational knowledge, understanding and skills developed in the PDHPE K–10 course. This syllabus is underpinned by the 5 propositions.
+The course provides opportunities to explore areas of interest in greater depth and apply health and movement concepts to various contexts and groups. To equip students to navigate the dynamic nature of health and movement, emphasis is given to developing skills of collaboration, analysis, communication, creative thinking, problem-solving and research.
+Aim
+The aim of Health and Movement Science is to develop in each student a capacity to think about and act critically in regard to key issues related to health and movement. This enables them to make informed decisions that contribute to healthy and active lifestyles for individuals and communities, and support wellbeing.
+Table of outcomes
+Year 11
+Year 12
+HM-11-01 
+interprets meanings, measures and patterns of health experienced by Australians
+HM-12-01 
+analyses the health status of Australians at a national and international level
+HM-11-02 
+analyses methods and resources to improve and advocate for the health of young Australians
+HM-12-02 
+examines how technology and data can achieve better health for all Australians
+HM-11-03 
+analyses the systems of the body in relation to movement
+HM-12-03 
+evaluates how the Sustainable Development Goals can be used to improve the health of a community
+HM-11-04 
+investigates movement skills and psychology to improve participation and performance
+HM-12-04 
+investigates factors that impact movement and performance
+HM-11-05 
+Collaboration: demonstrates strategies to positively interact with others to develop an understanding of health and movement concepts
+HM-12-05 
+analyses individual and group training programs to improve performance
+HM-11-06 
+Analysis: analyses the relationships and implications of health and movement concepts
+HM-12-06 
+Analysis: critically analyses the relationships and implications of health and movement concepts
+HM-11-07 
+Communication: communicates health and movement concepts to audiences and contexts, using a variety of modes
+HM-12-07 
+Communication: communicates health and movement concepts using modes appropriate to a range of audiences and contexts
+HM-11-08 
+Creative thinking: generates new ideas that are meaningful and relevant to health and movement contexts
+HM-12-08 
+Creative thinking: generates and assesses new ideas that are meaningful and relevant to health and movement contexts
+HM-11-09 
+Problem-solving: proposes and evaluates solutions to health and movement issues
+HM-12-09 
+Problem-solving: proposes and evaluates solutions to complex health and movement issues
+HM-11-10 
+Research: analyses a range of sources to make conclusions about health and movement concepts
+HM-12-10 
+Research: analyses a range of sources to make conclusions and judgements about health and movement concepts
+Outcomes and content for Year 11
+Health for individuals and communities
+Outcomes
+A student:
+    • interprets meanings, measures and patterns of health experienced by Australians HM-11-01
+    • analyses methods and resources to improve and advocate for the health of young Australians HM-11-02
+    • Collaboration: demonstrates strategies to positively interact with others to develop an understanding of health and movement concepts HM-11-05
+    • Analysis: analyses the relationships and implications of health and movement concepts HM-11-06
+    • Communication: communicates health and movement concepts to audiences and contexts, using a variety of modes HM-11-07
+    • Creative thinking: generates new ideas that are meaningful and relevant to health and movement contexts HM-11-08
+    • Problem-solving: proposes and evaluates solutions to health and movement issues HM-11-09
+    • Research: analyses a range of sources to make conclusions about health and movement concepts HM-11-10
+Related Life Skills outcomes: HM-LS-03, HM-LS-04, HM-LS-09, HM-LS-10, HM-LS-16, HM-LS-17, HM-LS-18, HM-LS-19, HM-LS-20, HM-LS-21
+Content
+How do we understand and measure Australia’s health?
+    • Compare meanings of health, using various sources, including the World Health Organization’s (WHO) definition, and explain why people give different meanings to health
+    • Explain the dynamic nature of health by exploring the interactions between the dimensions of health, the concept of good health, the health continuum, how health changes over time, and how an individual’s circumstances affect their health
+    • Discuss the use of epidemiology, mortality, infant mortality, morbidity, incidence and prevalence to explain the health status of Australians using tables and graphs from Australia’s Health and other health reports
+    • Investigate the role of social justice principles, participation, equity, access and rights, in promoting an individual and community’s health status
+    • Discuss the range of determinants (broad features of society, environmental factors, socioeconomic characteristics, health behaviours and biomedical factors), that influence the health and wellbeing of Australians
+Including:
+    • how do the determinants interact to affect the health of population groups?
+    • what are the sociological causes of risky health behaviours?
+    • where do inequities exist and what can we do about them?
+What are young people’s meanings of health?
+    • Explore across generations aspects of young people’s lives that make them similar and different to the young people of previous generations
+Example(s):
+Developmental stages.
+
+Influence of family, peers culture, technology and global events.
+
+    • Investigate the meanings of health for young people
+Including:
+    • creating a research question
+    • developing a method(s) to collect data
+    • considering how the determinants of health impact on a young person’s meaning of health
+    • analysing the different ways young people define what is important to their own health
+    • discussing ethical considerations
+    • discussing validity, reliability and credibility of data collection
+    • presenting findings and drawing conclusions
+    • identifying further research questions that could be explored
+
+Example(s):
+Developing a method(s) to collect data:
+Survey.
+Interview questions.
+Focus groups.
+
+What key issues affect the health of young people and how can they protect and promote good health?
+    • Examine the health status of young people, including Aboriginal and Torres Strait Islander young people, using Australia’s Health and other health reports, graphs and tables
+Including:
+    • what are the trends in key health issues?
+    • what are the causes and protective factors of key health issues?
+    • how do the determinants of health affect health-related behaviours?
+    • Research ONE health-related issue for young people
+Including:
+    • what is the nature of the issue?
+    • what does the data tell us?
+    • why is this an issue?
+    • what are the protective factors to prevent the issue?
+    • what strategies are currently in place to improve the health of young people?
+    • what new strategies would be most effective to improve young people’s health?
+    • what further research questions could be explored to build understanding and advocacy?
+    • Analyse how the skills for strengthening the individual can protect and enhance the health and wellbeing of themselves and others using the health issue researched
+Including:
+    • self-efficacy
+    • health literacy
+    • help-seeking behaviours
+    • problem-solving
+    • resilience
+    • coping strategies
+    • sense of purpose
+    • ethical behaviour
+    • connectedness
+    • Reflect on their own personal health and health behaviours and indicate courses of action for improved health and wellbeing
+What are the opportunities for improving and promoting young people’s health?
+    • Examine how young people advocate for their own and others’ health using various sources considering past, current and future advocacy and the role of individuals within their communities
+    • Discuss how organisations and communities advocate for the health of young people
+Including:
+    • the role government and non-government organisations and communities have in promoting the health of young people, including Aboriginal and/or Torres Strait Islander young people
+    • the impact of organisations and communities on the health of young people
+
+Example(s):
+The role of government and non-government organisations and communities:
+Office of the Advocate for Children and Young People (ACYP).
+National Aboriginal Community Controlled Health Organisation (NACCHO).
+Children and Young People with Disability Australia (CYDA).
+
+    • Explain the nature of health promotion in Australia
+Including:
+    • how have various approaches to health influenced health promotion?
+    • what global health policies have impacted health promotion in Australia?
+    • how has the Ottawa Charter been used to improve Australia’s health?
+    • how does health promotion in partnerships with communities strengthen the health of individuals and communities across a range of cultural groups including Aboriginal and Torres Strait Islander Peoples?
+
+Example(s):
+How various approaches to health influenced health promotion:
+Aboriginal and Torres Strait Islander approaches to health.
+Biomedical model.
+Sociocultural model.
+Salutogenic model.
+Ecological model.
+
+Global health policies that have impacted health promotion in Australia:
+UNESCO.
+WHO.
+
+    • Examine how the United Nations Sustainable Development Goals (SDGs) are being used to improve health
+Including:
+    • what are the SDGs?
+    • how has the World Health Organization applied a health lens to the SDGs?
+    • how are the SDGs being used in Australia?
+    • how could the SDGs be used to promote the health of young people in a local community?
+The body and mind in motion
+Outcomes
+A student:
+    • analyses the systems of the body in relation to movement HM-11-03
+    • investigates movement skills and psychology to improve participation and performance HM-11-04
+    • Collaboration: demonstrates strategies to positively interact with others to develop an understanding of health and movement concepts HM-11-05
+    • Analysis: analyses the relationships and implications of health and movement concepts HM-11-06
+    • Communication: communicates health and movement concepts to audiences and contexts, using a variety of modes HM-11-07
+    • Creative thinking: generates new ideas that are meaningful and relevant to health and movement contexts HM-11-08
+    • Problem-solving: proposes and evaluates solutions to health and movement issues HM-11-09
+    • Research: analyses a range of sources to make conclusions about health and movement concepts HM-11-10
+Related Life Skills outcomes: HM-LS-12, HM-LS-13, HM-LS-14, HM-LS-15, HM-LS-16, HM-LS-17, HM-LS-18, HM-LS-19, HM-LS-20, HM-LS-21
+Content
+How do the systems of the body influence and respond to movement?
+    • Explain the interrelationship between the skeletal and muscular systems and movement
+Including:
+    • structure and function
+    • major bones and synovial joints
+    • joint actions
+    • major muscles
+    • characteristics and functions of muscle fibres
+    • types of muscle contractions
+    • muscle relationship
+
+Example(s):
+Joint actions:
+Flexion and extension.
+
+Characteristics and functions of muscle fibres:
+Slow versus fast twitch muscle fibres.
+
+Types of muscle contractions:
+Isotonic concentric.
+Isotonic eccentric.
+Isometric contractions.
+
+Muscle relationship:
+Agonist/antagonist/stabiliser relationship.
+
+    • Outline the interrelationship between biomechanical principles and the muscles, bones and joints of the body for safe movement
+Including:
+    • how biomechanical principles are applied to human movement, including motion, balance and stability, fluid mechanics and force
+    • how biomechanical principles can be used to enhance safe movements
+    • how biomechanical principles can be used to increase movement efficiency
+
+Example(s):
+How biomechanical principles can be used to enhance safe movements:
+Walking.
+Squatting.
+Lifting.
+
+How biomechanical principles can be used to increase movement efficiency:
+Movements to reduce injury.
+People with specific needs such as disability.
+
+    • Explain the interrelationship between the respiratory and circulatory systems and movement
+Including:
+    • structure and function
+    • pulmonary and systemic blood circulation and gaseous exchange
+    • factors that impact on the efficiency of the cardiovascular system
+
+Example(s):
+Factors that impact on the efficiency of the cardiovascular system:
+Altitude.
+Haemoglobin levels.
+Vascular disease.
+
+    • Explain the interrelationship between the digestive and endocrine systems and movement, including structure and function and factors that impact on the efficiency of the systems
+Example(s):
+Macronutrients and micronutrients to support healthy body functioning.
+
+Stress.
+
+    • Explain the interrelationship between the nervous system and movement, including structure and function
+    • Demonstrate and analyse how the systems of the body work together in a variety of movements
+    • Discuss the role first aid plays in response to movement
+Example(s):
+Inefficient movement.
+
+Dehydration.
+
+Undue stress on the body.
+
+What factors influence movement and performance?
+    • Analyse the ATP-PCr, Glycolytic (Lactic Acid) and Aerobic energy systems of the body including fuel source and efficiency of ATP production, duration, intensity and rate of recovery, causes of fatigue and interplay of the energy systems
+    • Explain the role nutrition plays in enabling the energy systems to function efficiently, including macronutrient and micronutrient requirements of active people
+Example(s):
+Predominantly anaerobic versus predominantly aerobic activities.
+
+    • Compare the difference between aerobic and anaerobic training for individuals and group sports, including differentiated training programs and contemporary methods of training
+Example(s):
+Aerobic training: continuous.
+
+Anaerobic training: anerobic interval.
+
+Contemporary methods of training: High Intensity Interval Training (HIIT) and Sprint Interval Training (SIT).
+
+    • Design an aerobic or anaerobic training program based on the FITT principle
+    • Explain the immediate physiological responses to training, heart rate, ventilation rate, stroke volume, cardiac output and lactate levels
+    • Investigate the physiological responses in relation to aerobic training
+Including:
+    • creating a research question
+    • selecting a method to collect data
+    • discussing the ethical considerations of the methods chosen
+    • discussing the validity, reliability and credibility of data collection
+    • presenting findings and drawing conclusions
+    • identifying further research questions that could be explored
+
+Example(s):
+Selecting a method to collect data:
+Observation.
+Survey.
+Interview.
+
+    • Debate the purpose and outcomes of testing physical fitness for different groups in the population
+How are movement skills acquired, developed and improved?
+    • Apply an understanding of how movement skills are acquired, developed and improved for recreational and elite athletes
+Including:
+    • characteristics of learners
+    • stages of learning/skill acquisition
+    • characteristics of motor skills, including gross and fine, continuous, discrete and serial, open and closed, self-paced and externally paced
+    • practice methods for the different stages of learning, including massed, distributed, whole, part, blocked and random
+    • performance elements, including decision-making, strategic and tactical development
+    • types of feedback for different stages of learning, including task-intrinsic, augmented, concurrent, delayed, knowledge of results, knowledge of performance
+
+Example(s):
+Stages of learning/skill acquisition:
+Cognitive, associative and autonomous stages.
+
+    • Research how movement skills are acquired, developed and improved in a sport of choice
+Including:
+    • what does the research tell us about acquiring, developing and improving the movement skill?
+    • how is this applied in practice?
+    • what further research questions can be proposed to further understand skill development?
+What is the relationship between psychology, movement and performance?
+    • Analyse the relationship between psychology, movement and performance for individuals and groups
+Including:
+    • how does personal identity affect an individual’s participation and performance in sport?
+    • how does motivation support participation, including positive and negative, intrinsic and extrinsic motivation?
+    • why is self-regulation essential for sports performance and exercise behaviour change?
+    • Investigate how communities of exercise motivate individuals and groups to participate in and improve performance
+Including:
+    • what are contemporary forms of exercise?
+    • how do contemporary forms of exercise encourage group dynamics, group cohesion, social interaction and a sense of belonging?
+Collaborative Investigation
+Outcomes
+A student:
+    • interprets meanings, measures and patterns of health experienced by Australians HM-11-01
+    • analyses methods and resources to improve and advocate for the health of young Australians HM-11-02
+    • analyses the systems of the body in relation to movement HM-11-03
+    • investigates movement skills and psychology to improve participation and performance HM-11-04
+    • Collaboration: demonstrates strategies to positively interact with others to develop an understanding of health and movement concepts HM-11-05
+    • Analysis: analyses the relationships and implications of health and movement concepts HM-11-06
+    • Communication: communicates health and movement concepts to audiences and contexts, using a variety of modes HM-11-07
+    • Creative thinking: generates new ideas that are meaningful and relevant to health and movement contexts HM-11-08
+    • Problem-solving: proposes and evaluates solutions to health and movement issues HM-11-09
+    • Research: analyses a range of sources to make conclusions about health and movement concepts HM-11-10
+Related Life Skills outcomes: HM-LS-03, HM-LS-04, HM-LS-09, HM-LS-10, HM-LS-12, HM-LS-13, HM-LS-14, HM-LS-15, HM-LS-16, HM-LS-17, HM-LS-18, HM-LS-19, HM-LS-20, HM-LS-21
+Content
+Outcome HM-11-05 must be addressed. Outcomes are selected based on the group’s investigation topic.
+Overview of the Year 11 Collaborative Investigation
+The Collaborative Investigation provides opportunities for students to develop knowledge and skills to support their own and others’ health and movement. It allows students to manage their own learning and to become flexible, critical thinkers, problem-solvers and decision-makers.
+Throughout the Collaborative Investigation, students are provided with opportunities to positively interact with others and work collaboratively to reach agreements and decisions. They develop skills to negotiate plans and tasks, distribute leadership, create and maintain a positive group environment, and give and receive feedback.
+The Collaborative Investigation provides students with the opportunity to adopt an informed point of view when responding by speculating, critiquing, analysing, interpreting and constructing possible meanings for their own and others’ health, physical activity levels and performance.
+Requirements for the Collaborative Investigation
+The Collaborative Investigation must:
+    • link the group research question to a concept taught in Health for Individuals and Communities or The Body and Mind in Motion in Year 11
+    • address knowledge, understanding and skill outcomes in the investigation, including HM-11-05
+In partnership with the students, teachers determine the knowledge and understanding outcome(s) to be assessed based on the nature of their investigation. Outcome HM-11-05 must be addressed. Other skill outcomes may also be addressed in the investigation.
+The Collaborative Investigation will include the research design, documentation, presentation of the findings and reference list.
+Some students with disability may require adjustments and/or additional support in order to engage with the Collaborative Investigation.
+Outcomes and content for Year 12
+Health in an Australian and global context
+Outcomes
+A student:
+    • analyses the health status of Australians at a national and international level HM-12-01
+    • examines how technology and data can achieve better health for all Australians HM-12-02
+    • evaluates how the Sustainable Development Goals can be used to improve the health of a community HM-12-03
+    • Analysis: critically analyses the relationships and implications of health and movement concepts HM-12-06
+    • Communication: communicates health and movement concepts using modes appropriate to a range of audiences and contexts HM-12-07
+    • Creative thinking: generates and assesses new ideas that are meaningful and relevant to health and movement contexts HM-12-08
+    • Problem-solving: proposes and evaluates solutions to complex health and movement issues HM-12-09
+    • Research: analyses a range of sources to make conclusions and judgements about health and movement concepts HM-12-10
+Related Life Skills outcomes: HM-LS-08, HM-LS-09, HM-LS-10, HM-LS-11, HM-LS-17, HM-LS-18, HM-LS-19, HM-LS-20, HM-LS-21
+Content
+How healthy are Australians?
+Students do not need to know the latest statistics on the rates of illness and death. It is only important that they develop an understanding of the trends.
+    • Analyse the current health status of Australians from Australia’s Health and other health reports, tables and graphs
+Including:
+    • what does the data tell us?
+    • what are the major causes of morbidity and mortality, and the life expectancy for males, females and the general population?
+    • what are the sociological causes of risky health behaviours?
+    • where do inequities exist and what can we do about them?
+    • Analyse groups experiencing inequities in health, including Aboriginal and Torres Strait Islander Peoples and one other group (socioeconomically disadvantaged people, rural and remote, culturally and linguistically diverse populations, people with disability or older people)
+Including:
+    • what does the data tell us?
+    • how do the determinants interact to affect the health of population groups?
+    • what are some of the causes that underpin the inequities in health?
+    • what actions can be implemented to improve the health status of these groups?
+
+Example(s):
+Causes that underpin the inequities in health:
+Impacts of colonisation on Aboriginal and Torres Strait Islander Peoples.
+
+    • Compare the health status of Australia with that of other OECD countries
+Including:
+    • where does Australia rank in relation to other OECD countries?
+    • why might this be the case?
+    • why do some countries rank higher or lower than Australia?
+    • what can we learn from other countries that may be applied to the Australian context?
+    • Examine cardiovascular disease, cancer and ONE other condition in Australia using Australia’s Health and other health reports
+Including:
+    • what does the data tell us about the mortality and morbidity, prevalence and incidence rates of these conditions?
+    • what are the risk and protective factors for these conditions?
+    • where and for whom are these conditions changing?
+    • Investigate the impact of an ageing population on Australia’s health
+Including:
+    • what does the data tell us?
+    • what is healthy ageing?
+    • what are the opportunities and challenges for an ageing population?
+    • what are current and future strategies to support healthy ageing?
+    • what do government and non-government agencies need to consider to address the future needs of a growing and ageing population?
+How does Australia’s healthcare system work towards achieving better health for all Australians?
+    • Assess the effectiveness of the healthcare system in Australia
+Including:
+    • the role of the healthcare system
+    • equity of access to the healthcare system
+    • future opportunities for the healthcare system
+
+Example(s):
+Future opportunities for the healthcare system:
+In rural and remote locations. 
+For Aboriginal and Torres Strait Islander Peoples. 
+For individuals with disability.
+
+    • Explain how government and non-government organisations share responsibility for the health system
+Including:
+    • federal, state and territory and local government
+    • non-government sector – private and not-for-profit
+    • Outline how government and non-government organisations collaborate to provide person-centred healthcare
+    • Discuss health expenditure and its impact on current and future populations
+Including:
+    • healthcare versus prevention
+    • sustainability, access and equity
+    • Medicare, private health insurance and related Commonwealth-funded programs
+
+Example(s):
+Medicare, private health insurance and related Commonwealth-funded programs: 
+National Disability Insurance Scheme (NDIS). 
+My Aged Care.
+
+    • Explain complementary healthcare approaches
+Including:
+    • products and services available
+    • as a preventative measure
+    • treating the health issue
+    • as a supplement to other medical treatments
+
+Example(s):
+Products and services available: 
+Health apps and websites. 
+Naturopathy.
+
+    • Explain the importance of being a critical health consumer
+Including:
+    • how do you know whom to believe?
+    • what do you need to know to make informed decisions?
+    • how do you assess the accuracy and credibility of health information, products and services?
+    • Investigate the current and emerging changes and challenges to the healthcare system
+Example(s):
+Privatisation.
+
+Function of hospitals.
+
+How is the growing and changing use of technology and data impacting Australia’s healthcare system?
+    • Discuss the relationship between technology and health
+Example(s):
+Measuring.
+
+Monitoring.
+
+Early diagnosis.
+
+Precision surgery.
+
+    • Investigate new technologies and treatments in the healthcare system
+Example(s):
+Health apps.
+
+Artificial intelligence.
+
+Assistive technology.
+
+    • Evaluate the impact of digital health on the healthcare system
+Including:
+    • what is digital heath?
+    • what services exist?
+    • to what extent has digital health been successful in connecting health information?
+    • what challenges and opportunities does digital health provide for individuals and organisations?
+    • Examine how big data is shaping the health of Australians
+Including:
+    • how is it being used?
+    • how is it reducing healthcare spending?
+    • how is it being used to cure and manage diseases?
+    • what measures need to be taken to ensure privacy and confidentiality of personal information?
+What actions are needed to promote and improve the health of Australians?
+    • Describe the key features of Sustainable Development Goals (SDGs)
+Including:
+    • SDG 3: Good Health and Wellbeing
+    • SDG 4: Quality Education
+    • SDG 10: Reduced Inequalities
+    • SDG 11: Sustainable Cities and Communities
+    • Evaluate the application of SDGs 3, 4, 10 and 11 to inform strategies to improve the health status of a community
+Including:
+    • how have these goals been applied in other communities?
+    • what lessons can be drawn from other communities and applied to their own community context?
+    • what are the major health issues for a community?
+    • what strategies are needed to advocate and improve a community’s health status?
+    • how do you know these strategies may be effective?
+
+Example(s):
+How these goals have been applied in other communities:
+Healthy Cities Illawarra.
+
+Training for improved performance
+Outcomes
+A student:
+    • investigates factors that impact movement and performance HM-12-04
+    • analyses individual and group training programs to improve performance HM-12-05
+    • Analysis: critically analyses the relationships and implications of health and movement concepts HM-12-06
+    • Communication: communicates health and movement concepts using modes appropriate to a range of audiences and contexts HM-12-07
+    • Creative thinking: generates and assesses new ideas that are meaningful and relevant to health and movement contexts HM-12-08
+    • Problem-solving: proposes and evaluates solutions to complex health and movement issues HM-12-09
+    • Research: analyses a range of sources to make conclusions and judgements about health and movement concepts HM-12-10
+Related Life Skills outcomes: HM-LS-12, HM-LS-13, HM-LS-14, HM-LS-15, HM-LS-17, HM-LS-18, HM-LS-19, HM-LS-20, HM-LS-21
+Content
+How can exercise assessment and prescription be personalised?
+    • Explain the importance of using a pre-exercise questionnaire and undertaking relevant health screening by exercise and fitness professionals
+    • Discuss the use of performance/fitness testing for recreational participants and elite athletes to improve their health, participation and performance
+Example(s):
+Yo yo test.
+
+Wingate test.
+
+    • Explain how exercise assessment can assist in developing training programs
+How does training influence movement and performance?
+    • Assess the types of training and training methods and their relevance for a variety of sports
+Including:
+    • anaerobic training, including anaerobic interval, High Intensity Interval Training (HIIT), Sprint Interval Training (SIT), plyometric, and resistance training
+    • aerobic training, including continuous, fartlek, aerobic interval, and circuit training
+    • flexibility training, including static, dynamic, ballistic, and Proprioceptive Neuromuscular Facilitation (PNF)
+    • strength training, including free/fixed weights, body weight exercises and elastics
+    • skill and tactical development, including drills, modified games and games for specific outcomes
+    • Evaluate the application of the principles of training to both aerobic and strength training
+Including:
+    • progressive overload
+    • training thresholds
+    • reversibility
+    • specificity
+    • variety
+    • warm-up and cool-down
+    • Examine the relationship between the principles of training, physiological adaptations and improved performance
+Including:
+    • heart rate
+    • stroke volume and cardiac output
+    • oxygen uptake and lung capacity
+    • haemoglobin level
+    • muscle hypertrophy
+    • fast/slow twitch muscle fibres
+How does training differ for individual and group sports?
+    • Compare aspects that need to be considered when designing a training session for individual and group sports
+Including:
+    • health and safety considerations
+    • overview/aim of the session (goal specific)
+    • warm-up and cool-down
+    • skill instruction and practice
+    • conditioning
+    • strategies and tactics
+    • athlete reflection and/or coach evaluation
+    • Compare a yearly training program for an individual and a group sport
+Including:
+    • phases of competition: pre-season, in-season and off-season
+    • sub-phases
+    • peaking and tapering
+    • sport-specific attributes: fitness components, skill requirements
+    • Investigate how individual and group sports apply psychological strategies, optimising arousal and management of stress and anxiety, to improve participation and performance
+    • Discuss the factors that influence how strategies and tactics are applied to individual and group sports
+Example(s):
+Environmental conditions.
+
+Group strengths and weaknesses.
+
+What impact does sleep, nutrition and supplementation have on movement and performance?
+    • Using research, analyse the dietary requirements, pre, during and post performance needed and fluid intake requirements of athletes from different sports
+    • Explain how sleep, nutrition and hydration can be used to reduce fatigue and positively influence movement and injury prevention
+Including:
+    • guidelines
+    • planning
+    • routines
+    • monitoring
+    • Discuss the use of supplements, micronutrients, protein, caffeine and creatine products for improved performance
+How do individuals train for sustained movement and performance?
+    • Explain how biomechanics can be used to develop efficient movements for sustained movement and improved performance
+Example(s):
+Physical activity.
+
+Sport-specific movements.
+
+Functional movements.
+
+    • Justify recovery strategies used for sustained movement and performance
+Including:
+    • physiological, including cool-down, hydrotherapy
+    • psychological, including relaxation
+    • Examine the role technology can play to improve performance
+Including:
+    • training innovations
+    • equipment advances
+    • recording and monitoring training and performance
+    • Explain the management and prevention of sporting injuries
+Including:
+    • classification of sports injuries, including direct and indirect, soft and hard tissue or overuse
+    • assessment of injuries, including the Talk, Observe, Touch, Active movement, Passive movement, Skill (TOTAPS) test
+    • management of injuries
+    • rehabilitation procedures, including progressive mobilisation, graduated exercise, training, use of heat and cold
+    • return-to-play policy and procedures, including application to different sports, responsibility
+    • Discuss the impact of drug use on injury management and improving performance
+Including:
+    • health implications
+    • ethical considerations
+    • drug testing
+Assessment
+Course standards
+Course standards are comprised of syllabus standards and performance standards. Syllabus outcomes and content form the syllabus standards that describe what students are expected to know, understand and do. Performance standards, including the Common Grade Scale for Preliminary courses, HSC Performance Band Descriptions and Achievement Level Descriptions (for HSC courses with grades only) describe how well students have achieved in relation to syllabus standards. Performance standards are used to report student achievement on NESA credentials.
+Common Grade Scale for Preliminary courses
+Stage 6 – Year 11
+The Common Grade Scale for Preliminary courses provides generic, holistic descriptions for performance at each of the 5 grade levels. It is used to report student achievement in Year 11 courses in all NSW schools.
+Performance Band Descriptions for Health and Movement Science
+Stage 6 – Year 12
+HSC performance band descriptions summarise the knowledge, understanding and skills typically demonstrated by students at each band level in a particular course. NESA uses these holistic descriptions to report a student's overall level of achievement in an HSC course.
+Band 6
+A student who performs at this level typically:
+    • demonstrates extensive knowledge and understanding of health and movement science concepts
+    • applies extensive knowledge, understanding and skills effectively to familiar and unfamiliar issues and scenarios
+    • analyses and evaluates theoretical principles to improve health, movement participation and performance
+    • generates and evaluates ideas about, and solutions for, complex health and movement issues and scenarios
+    • critically analyses information from a range of relevant sources to make judgements about health and movement science concepts
+    • communicates logically and effectively using appropriate health and movement science concepts and terms for a range of audiences and contexts.
+Band 5
+A student who performs at this level typically:
+    • demonstrates thorough knowledge and understanding of health and movement science concepts
+    • applies thorough knowledge, understanding and skills to familiar and unfamiliar issues and scenarios
+    • analyses theoretical principles to improve health, movement participation and performance
+    • generates and explains ideas about, and solutions for, complex health and movement issues and scenarios
+    • explains information from a range of relevant sources to make judgements about health and movement science concepts
+    • communicates logically and clearly using appropriate health and movement science concepts and terms for a range of audiences and contexts.
+Band 4
+A student who performs at this level typically:
+    • demonstrates sound knowledge and understanding of health and movement science concepts
+    • applies sound knowledge, understanding and skills to familiar issues and scenarios
+    • explains theoretical principles to improve health, movement participation and performance
+    • generates and describes ideas about, and solutions for, health and movement issues and/or scenarios
+    • uses information from relevant sources to describe health and movement science concepts
+    • communicates clearly using relevant health and movement science concepts and terms.
+Band 3
+A student who performs at this level typically:
+    • demonstrates basic knowledge and understanding of health and movement science concepts
+    • applies basic knowledge, understanding and/or skills to familiar issues and scenarios
+    • describes principles to improve health, movement participation and performance
+    • describes ideas about health and movement issues and/or scenarios
+    • uses information from sources to outline health and movement science concepts
+    • communicates using basic health and movement science concepts and/or terms.
+Band 2
+A student who performs at this level typically:
+    • demonstrates limited knowledge and understanding of health and/or movement science concepts
+    • applies limited knowledge, understanding and/or skills to issues and/or scenarios
+    • outlines principles for health and/or movement participation and/or performance
+    • identifies ideas about health and/or movement issues and/or scenarios
+    • uses information from sources to identify health and/or movement science concepts
+    • communicates with limited use of health and/or movement science terms.
+Band 1
+Performance reported as Band 1 indicates that the minimum standard expected was not demonstrated.
+School-based assessment
+Schools are required to develop an assessment program for each Year 11 and Year 12 course. NESA provides information about the responsibilities of schools in developing assessment programs in course-specific assessment requirements and in the Assessment Certification Examination (ACE) rules and requirements.
+Year 11 Health and Movement Science school-based assessment
+Stage 6 – Year 11
+Schools are required to submit to NESA a grade for each student based on their achievement at the end of the course.
+Teachers use professional, on-balance judgement to allocate grades based on the Common Grade Scale for Preliminary courses.
+Teachers consider all available assessment information, including formal and informal assessment, to determine the grade that best matches each student’s achievement at the end of the course.
+See Assessment Certification Examination (ACE) rules and requirements for further information.
+Assessment programs must reflect course components and weightings
+The course components and component weightings for Year 11 are mandatory.
+Course component
+Weighting %
+Knowledge and understanding of course content
+40
+Skills in collaboration, analysis, communication, creative thinking, problem-solving and research
+60
+Schools may determine specific elements of their assessment program
+Schools have authority to determine the number, type of task and the weighting allocated to an assessment task. Schools may also follow the sample assessment programs provided by NESA.
+Sample assessment program
+NESA's sample Year 11 formal school-based assessment program for Health and Movement Science is:
+    • 3 assessment tasks, including: 
+        ◦ a formal assessment of the Collaborative Investigation, which could be an individual or a group assessment
+        ◦ a formal written examination
+        ◦ a weighting for any individual task of 20% to 40%.
+Some students with disability may require adjustments in order to access assessment opportunities and demonstrate achievement of outcomes.
+Year 12 Health and Movement Science school-based assessment
+Stage 6 – Year 12
+NESA requires schools to submit a school-based assessment mark for each Year 12 student who completes this course. Formal school-based assessment tasks should reflect the syllabus outcomes and content. The mark submitted by the school provides a summation of each student’s achievement measured at several points throughout the course. A school’s program of school-based assessment includes both mandatory and non-mandatory elements.
+See Assessment Certification Examination (ACE) rules and requirements for further information.
+Assessment programs must reflect course components and weightings
+The course components and component weightings for Year 12 are mandatory.
+Course component
+Weighting %
+Knowledge and understanding of course content
+40
+Skills in analysis, communication, creative thinking, problem-solving and research
+60
+Schools may determine specific elements of their assessment program
+Schools have authority to determine the number, type of task and the weighting allocated to an assessment task. Schools may also follow the sample assessment programs provided by NESA.
+Sample assessment program
+NESA's sample Year 12 formal school-based assessment program for Health and Movement Science is:
+    • 4 assessment tasks, including: 
+        ◦ a Depth Study worth 20–30%
+        ◦ a formal written examination
+        ◦ a weighting for any individual task of 10% to 40%.
+Some students with disability may require adjustments in order to access assessment opportunities and demonstrate achievement of outcomes.
+Sample assessment schedules
+Stage 6
+    • Sample assessment schedule Year 11: A
+    • Sample assessment schedule Year 11: B
+    • Sample assessment schedule Year 11: C
+    • Sample assessment schedule Year 11: D
+    • Sample assessment schedule Year 12: A
+    • Sample assessment schedule Year 12: B
+Sample assessment task notifications
+Stage 6
+    • Sample formal assessment task notification: Year 11 (Collaborative Investigation)
+    • Sample formal assessment task notification: Year 11 (Health for individuals and communities)
+    • Sample formal assessment task notification: Year 12 (Depth Study – Sports injury)
+HSC examinations
+The external HSC examination measures student achievement in a range of syllabus outcomes.
+The external examination and its marking relate to the syllabus by:
+    • providing clear links to syllabus outcomes
+    • enabling students to demonstrate the levels of achievement outlined in the Performance Band Descriptions
+    • applying marking guidelines based on criteria that relate to the quality of the response
+    • aligning performance in the examination each year to the standards established for the course.
+Examination questions may require students to integrate knowledge, understanding and skills developed through studying the course.
+The Year 11 course is assumed knowledge for the Year 12 course.
+Some students with disability may be eligible for disability provisions when completing the HSC examinations.
+Written examination
+The examination will consist of a written paper worth 100 marks.
+Time allowed: 3 hours plus 10 minutes reading time.
+Questions relating to Health and Movement Science skill outcomes will be integrated throughout the examination.
+The paper will consist of three sections.
+There will be approximately equal weighting given to the two focus areas: Health in an Australian and Global Context and Training for Improved Performance.
+Health and Movement Science HSC examination specifications 
+Stage 6 – Year 12
+Section I (20 marks)
+    • There will be objective response questions to the value of 20 marks.
+Section II (56 marks)
+    • This section will contain short-answer questions.
+    • Questions may contain parts.
+    • There will be 9 to 12 items in total.
+    • At least 3 items will be worth 6 to 8 marks.
+Section III (24 marks)
+There will be 2 extended-response questions worth 12 marks each – one question based on each focus area: Health in an Australian and Global Context, Training for Improved Performance.
+HSC Health and Movement Science – annotated sample examination materials
+Stage 6 – Year 12
+    • HSC Health and Movement Science – annotated sample examination materials
+Further information
+Stage 6 – Year 12
+    • Assessment in Stage 6
+    • Principles of effective assessment
+    • Assessment in practice
+    • School-based assessment requirements
+    • Adjustments to assessment for students with disability
+    • Life Skills
+    • Assessment Certification Examination (ACE) website
+ 

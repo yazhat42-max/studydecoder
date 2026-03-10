@@ -2249,58 +2249,14 @@ app.post('/api/admin/revoke-access', requireOwner, (req, res) => {
 
 // ==================== SYLLABUS DATA ====================
 
-// Source syllabuses ship with the repo; on production we copy them to persistent disk.
-const SYLLABUSES_SOURCE = path.join(__dirname, 'api', 'syllabuses');
-const PERSISTENT_SYLLABUS_PATH = path.join('/var/data', 'syllabuses');
-
-// Determine actual syllabuses path
-let SYLLABUSES_PATH;
-if (config.isDev) {
-    SYLLABUSES_PATH = SYLLABUSES_SOURCE;
-} else {
-    // Try to copy to persistent disk; fall back to source if disk unavailable
-    console.log(`📁 Source syllabuses: ${SYLLABUSES_SOURCE} (exists: ${fs.existsSync(SYLLABUSES_SOURCE)})`);
-    console.log(`📁 Persistent disk /var/data exists: ${fs.existsSync('/var/data')}`);
-    const copyRecursive = (src, dest) => {
-        if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
-        for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-            const srcPath = path.join(src, entry.name);
-            const destPath = path.join(dest, entry.name);
-            if (entry.isDirectory()) {
-                copyRecursive(srcPath, destPath);
-            } else {
-                fs.copyFileSync(srcPath, destPath);
-            }
-        }
-    };
-    if (fs.existsSync(SYLLABUSES_SOURCE)) {
-        try {
-            copyRecursive(SYLLABUSES_SOURCE, PERSISTENT_SYLLABUS_PATH);
-            SYLLABUSES_PATH = PERSISTENT_SYLLABUS_PATH;
-            const fileCount = fs.readdirSync(PERSISTENT_SYLLABUS_PATH).length;
-            console.log(`📁 ✅ Syllabuses copied to persistent disk: ${PERSISTENT_SYLLABUS_PATH} (${fileCount} items)`);
-        } catch (e) {
-            console.error('❌ Failed to copy to persistent disk, using source:', e.message);
-            SYLLABUSES_PATH = SYLLABUSES_SOURCE;
-        }
-    } else {
-        // Source missing (shouldn't happen) — check if persistent disk already has them
-        if (fs.existsSync(PERSISTENT_SYLLABUS_PATH)) {
-            SYLLABUSES_PATH = PERSISTENT_SYLLABUS_PATH;
-            console.log('📁 Using existing persistent disk syllabuses (source not found)');
-        } else {
-            SYLLABUSES_PATH = SYLLABUSES_SOURCE;
-            console.error('❌ No syllabuses found anywhere!');
-        }
-    }
-}
+// Syllabuses live at project root — static read-only files, no need for persistent disk.
+const SYLLABUSES_PATH = path.join(__dirname, 'syllabuses');
+console.log(`📁 Syllabuses path: ${SYLLABUSES_PATH} (exists: ${fs.existsSync(SYLLABUSES_PATH)})`);
 
 const SUBJECTS_FILE = path.join(SYLLABUSES_PATH, 'subjects.json');
 const JUNIOR_SUBJECTS_FILE = path.join(SYLLABUSES_PATH, 'junior-subjects.json');
 const PAST_PAPERS_FILE = path.join(SYLLABUSES_PATH, 'past-papers.json');
 
-console.log(`📁 Looking for syllabuses in: ${SYLLABUSES_PATH}`);
-console.log(`📁 Subjects file: ${SUBJECTS_FILE}`);
 console.log(`📁 Subjects file exists: ${fs.existsSync(SUBJECTS_FILE)}`);
 
 // Load subjects configuration (Senior - HSC)
@@ -3412,12 +3368,20 @@ MODE 1: STANDARD MODE
 When user sends [STANDARD MODE]:
 Generate practice questions based on specified parameters.
 
-⚠️ EVERY question MUST sound like it came from an actual HSC exam paper.
-- Use proper NESA directive verbs matching the mark value
-- Include stimulus material (data, quotes, diagrams described) for 4+ mark questions where appropriate
-- Multi-part questions with (a)(b)(c) are encouraged for higher marks
-- Reference real-world contexts, named examples, and case studies where the syllabus expects them
-- If past papers are provided, closely mirror their question phrasing and style
+⚠️ EVERY question MUST be indistinguishable from a real HSC exam question.
+
+ACCURACY RULES (non-negotiable):
+- Study the past papers provided below CAREFULLY. Your questions must match them in phrasing, structure, mark weighting, and command verb usage.
+- Use the EXACT same question formats you see in the past papers (e.g., if Biology papers use "Describe ONE example of...", generate questions with that same phrasing pattern).
+- Use proper NESA directive verbs matching the mark value — check the past papers for which verbs appear at which mark levels.
+- Include stimulus material (data tables, graphs described, source extracts, quotes) for 4+ mark questions where the past papers do so.
+- For Science subjects: include practical/experimental contexts and first-hand investigation references just like real HSC papers.
+- For English: use the same essay prompt structures ("To what extent...", "How does the composer...") seen in real papers.
+- For Mathematics: structure working-out style questions with the same sub-part patterns (a)(b)(c)(d) as real papers.
+- Multi-part questions with (a)(b)(c) are encouraged for higher marks.
+- Reference real-world contexts, named examples, and case studies where the syllabus expects them.
+- If past papers reference specific named phenomena, laws, case studies, or texts — use similarly specific references (not generic ones).
+- NEVER produce a question that looks like a textbook exercise. It must read like it was written by NESA.
 
 Difficulty Logic (STRICT):
 - **Easy** (1-2 marks): Identify, state, define, name — single-step recall
@@ -4092,11 +4056,19 @@ Use this seed to ensure you generate completely unique questions every time. Nev
 CRITICAL RULES:
 1. Questions must be ORIGINAL — inspired by past paper style/format but NEVER copied from them. Do NOT reproduce any question from the past papers provided.
 2. Questions must NEVER repeat across exams. Always use fresh contexts, scenarios, names, data, and stimulus material unique to this generation.
-3. Use exact NESA directive verbs matching mark values.
-4. Follow proper HSC exam structure for ${subjectName}.
-5. Include stimulus material (data tables, quotes, sources) where HSC papers typically have them.
+3. Use exact NESA directive verbs matching mark values — check the past papers to see which verbs appear at which mark levels.
+4. Follow proper HSC exam structure for ${subjectName}. Study the section layout, mark distribution, and question ordering in the real past papers provided.
+5. Include stimulus material (data tables, quotes, sources, diagrams described in text) wherever the past papers include them — match the SAME style of stimulus presentation.
 6. Base marking criteria on the official NESA marking guidelines provided, but write original questions.
 7. Vary question topics across different syllabus areas — do not cluster questions in one topic.
+
+ACCURACY REQUIREMENTS:
+- Your exam must be INDISTINGUISHABLE in format and quality from a real HSC paper.
+- Match the phrasing patterns from the past papers (e.g., if Biology papers say "Describe ONE example of…", use that phrasing style).
+- For Science: include practical/experimental contexts and first-hand investigation references like real papers.
+- For English: use essay prompt structures seen in real papers ("To what extent…", "How does the composer…").
+- For Mathematics: structure sub-parts (a)(b)(c)(d) with max 4 marks each, matching real paper patterns.
+- Use specific named references (phenomena, case studies, organisms, historical events) — NEVER generic placeholders.
 
 MATHEMATICS (Standard/Advanced/Extension): Max 4 marks per question part. NO 5+ mark questions.
 SCIENCE (Biology/Chemistry/Physics): Max 8-9 marks extended response. NO 20-mark questions.
@@ -4565,17 +4537,17 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
                 systemPrompt += `\n\n=== HSC PAST EXAM PAPERS (for question context) ===\n${truncatedPapers}\n=== END ===`;
             }
         } else {
-            // STANDARD / question generation mode: past papers for style reference
+            // STANDARD / question generation mode: past papers as the gold standard for format
             const examPapers = getExamPaperContent(subjectId);
             if (examPapers) {
                 const truncated = examPapers.substring(0, 25000);
-                systemPrompt += `\n\n=== HSC PAST EXAM PAPERS FOR ${subjectName.toUpperCase()} ===\nUse these past papers as REFERENCE for question style, format, and difficulty. Base your generated questions on these real exam patterns. Do NOT copy questions verbatim — create original questions inspired by these patterns.\n\n${truncated}\n\n=== END OF PAST PAPERS ===`;
+                systemPrompt += `\n\n=== REAL HSC PAST EXAM PAPERS FOR ${subjectName.toUpperCase()} ===\n⚠️ STUDY THESE CAREFULLY. Your generated questions MUST match the style, phrasing, structure, mark allocation, and command verbs used in these REAL papers. Do NOT copy questions — but your questions must be indistinguishable in format and quality from these. Pay attention to: how stimulus material is presented, how marks are allocated to sub-parts, which directive verbs appear at which mark levels, and how questions reference syllabus content.\n\n${truncated}\n\n=== END OF PAST PAPERS ===`;
             }
-            // Include marking guidelines so generated questions have accurate mark criteria
+            // Include marking guidelines for mark allocation accuracy
             const mgContent = getMarkingGuidelineContent(subjectId);
             if (mgContent) {
                 const truncatedMG = mgContent.substring(0, 15000);
-                systemPrompt += `\n\n=== MARKING GUIDELINES (for mark allocation accuracy) ===\n${truncatedMG}\n=== END ===`;
+                systemPrompt += `\n\n=== OFFICIAL MARKING GUIDELINES ===\nUse these to ensure your generated questions have accurate mark allocations that match real NESA standards. Reference the band descriptors to calibrate difficulty.\n${truncatedMG}\n=== END ===`;
             }
         }
     }

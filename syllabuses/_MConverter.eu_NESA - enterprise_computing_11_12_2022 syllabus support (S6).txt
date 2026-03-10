@@ -1,0 +1,382 @@
+﻿NSW Education Standards Authority
+
+Enterprise Computing 11–12 (2022)
+Syllabus Support
+curriculum.nsw.edu.au
+Generated Dec 2025
+Downloaded December 2025
+© 2025 NSW Education Standards Authority 
+NESA acknowledges Traditional Owners and Custodians of Country throughout NSW, and pays respect to Elders past and present. NESA recognises Aboriginal Peoples’ continuing Cultures and Connections to lands, waters, skies and Community.
+The documents on the NSW Education Standards Authority (NESA) website and the NSW Curriculum website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright. 
+These websites hold the only official and up-to-date versions of the documents available on the internet. Any other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are not authorised. You cannot rely on copies from any other source. 
+All rights are reserved. No part of the material may be: 
+    • reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form 
+    • transmitted to any other person or stored electronically in any form without the written permission of NESA except as permitted by the Copyright Act 1968 (Cth). 
+When you access the material, you agree: 
+    • to use the material for research or study, criticism or review, reporting news and parody or satire 
+    • to use the material for information purposes only 
+    • not to modify the material or any part of the material without the written permission of NESA 
+    • to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the permission of NESA 
+    • to include this copyright notice in any copy made 
+    • to acknowledge that NESA is the source of the material. 
+The documents may include third-party copyright material such as photos, diagrams, quotations, cartoons and artworks. This material is protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner’s permission. Unauthorised reproduction, transmission or commercial use of such copyright material may result in prosecution. 
+NESA has made all reasonable attempts to locate the owners of third-party copyright material. NESA invites anyone from whom permission has not been sought to contact the Copyright Officer.
+Special arrangements applying to the NSW Curriculum Reform 
+As part of the NSW Curriculum Reform process, NESA grants a limited non-exclusive licence to: 
+    • teachers employed in NSW government schools and registered non-government schools 
+    • representatives from peak school education bodies, such as the NSW Department of Education, Catholic Schools NSW, the Association of Independent Schools of NSW and TAFE NSW
+    • parents of children registered for home schooling 
+to use, modify and adapt the NSW syllabuses for non-commercial educational use only. The adaptation must not have the effect of bringing NESA into disrepute. 
+Note: The above arrangements do not apply to private/home tutoring companies, professional learning service providers, publishers, and other organisations.
+For more information on the above or for commercial use or any other purpose, please contact the Copyright Officer for permission. 
+Email: copyright@nesa.nsw.edu.au
+Table of contents
+Table of contents	4
+Enterprise Computing 11–12 (2022)	5
+Teaching advice for Stage 6	5
+Teaching advice for Interactive media and the user experience	5
+Teaching advice for Networking systems and social computing	6
+Teaching advice for Principles of cybersecurity	7
+Teaching advice for Data science	8
+Teaching advice for Data visualisation	9
+Teaching advice for Intelligent systems	10
+Teaching advice for Enterprise project	11
+Glossary	12
+Enterprise Computing 11–12 (2022) Terms	12
+Global Terms	20
+
+Enterprise Computing 11–12 (2022)
+Teaching advice for Stage 6
+Teaching advice for Interactive media and the user experience
+Content
+    § Interactive media and the user experience
+Teaching advice
+Practical experiences and project work are an essential component of the Enterprise Computing Stage 6 course. Practical experiences provide opportunities for students to apply their knowledge and skills in authentic contexts. Project work develops student’s skills and capabilities in planning, designing and developing a digital solution.
+Practical experiences and project work should be accessible for and inclusive of all students. Flexible approaches to using a range of tools and providing opportunity for student choice help to ensure meaningful participation for every student. Students should also be encouraged to present their project work using a variety of modes, including reports, digital presentations, oral presentations, data visualisations or multimodal presentations.
+Why is it important?
+In this focus area students investigate the effectiveness of a range of applications when communicating information, including the need to design for user experience (UX) and related social, ethical and legal issues. Students explore the capture, creation, transmission, storage, analysis, integration, presentation and sharing of interactive media files. They investigate hardware and software including storage, distributed computing, security protocols, the use of intellectual property and the importance of user interfaces (UI).
+Project work advice
+Students apply knowledge and skills to develop digital products that demonstrate the value of digital design and promote interactive media as a communication tool. Projects should demonstrate the safe and ethical use of online tools and use contemporary and innovative software. Projects may include the use of collected and/or curated media files to create a system for information delivery, a presentation using animations or an interactive learning system.
+Teaching advice for Networking systems and social computing
+Content
+    § Networking systems and social computing
+Teaching advice
+Practical experiences and project work are an essential component of the Enterprise Computing Stage 6 course. Practical experiences provide opportunities for students to apply their knowledge and skills in authentic contexts. Project work develops student’s skills and capabilities in planning, designing and developing a digital solution.
+Practical experiences and project work should be accessible for and inclusive of all students. Flexible approaches to using a range of tools and providing opportunity for student choice help to ensure meaningful participation for every student. Students should also be encouraged to present their project work using a variety of modes, including reports, digital presentations, oral presentations, data visualisations or multimodal presentations.
+Why is it important?
+This focus area enables students to learn about human-centric computing and networking infrastructure by exploring network architecture, resources and communication media. Students investigate workflows used by enterprises, and how networks support collaborative work practices and social interactions. They explore the impact of disruptive technologies on enterprise and social networks, and explore the importance of personal and network security including cybersecurity. Students are introduced to technologies that underpin Enterprise Computing including the Internet of Things (IoT) and cloud computing.
+Project work advice
+Students apply knowledge and skills to develop one or more projects that leverage their understanding of networks using communication media. Projects should demonstrate the safe and ethical use of online tools, and leverage available contemporary and innovative software and hardware. Suitable projects may include building and configuring actual or simulated networks incorporating a range of devices or a simulated or functioning IoT solution for a given purpose.
+Teaching advice for Principles of cybersecurity
+Content
+    § Principles of cybersecurity
+Teaching advice
+Practical experiences and project work are an essential component of the Enterprise Computing Stage 6 course. Practical experiences provide opportunities for students to apply their knowledge and skills in authentic contexts. Project work develops student’s skills and capabilities in planning, designing and developing a digital solution.
+Practical experiences and project work should be accessible for and inclusive of all students. Flexible approaches to using a range of tools and providing opportunity for student choice help to ensure meaningful participation for every student. Students should also be encouraged to present their project work using a variety of modes, including reports, digital presentations, oral presentations, data visualisations or multimodal presentations.
+Why is it important?
+This focus area enables students to learn about data and information security and its importance to an enterprise. Students investigate security strategies used by an enterprise to manage the storage, communication and disposal of data and information in their networked environment. They explore threats to data and information, evaluate methods used by an enterprise to protect data and information, and consider potential consequences. Students apply systems thinking skills when investigating and recommending strategies to reduce threats to data and information, considering legal requirements and ethical issues faced by the enterprise.
+Project work advice
+Students investigate the current data and information security strategies of an enterprise, examine real and potential threats to the security of data and information, and recommend strategies to improve current practices. Teachers should consider a variety of presentation methods.
+Teaching advice for Data science
+Content
+    § Data science 
+Teaching advice
+The teaching advice below demonstrates a summary of the intent of the content presented in Year 12 in each focus area and additional advice regarding the planning and delivery of the content to maximise student synthesis.
+Why is it important?
+The Data Science focus area provides students with the opportunity to focus on the collection, storage and analysis of data. Students assess the quality of data while analysing the types of data required to support the production of meaningful information. They develop their skills in analysing, processing and presenting data using software tools that are commonly used in enterprises. Students investigate social and ethical issues associated with collecting, securing, using and visualising data. They also explore patterns that may emerge as a result of processing and analysing data. This topic may be integrated with the Data Visualisation topic to support the development of skills through practical activities.
+Additional advice
+This topic may be integrated with the Data Visualisation topic to support the development of skills through practical activities. The learning experiences, projects and tasks may highlight opportunities for students to incorporate data science into their Enterprise Computing project.
+Teaching advice for Data visualisation
+Content
+    § Data visualisation
+Teaching advice
+The teaching advice below demonstrates a summary of the intent of the content presented in Year 12 in each focus area and additional advice regarding the planning and delivery of the content to maximise student synthesis.
+Why is it important?
+The Data Visualisation focus area complements and extends the learning experience in the Year 12 focus area: Data Science and Year 11 focus area: Interactive Media and the User Experience. This extends the understanding of data and information by exploring the importance of user interfaces (UI) and user experience (UX) in the effective communication of key messages. Students use data analysis and interrogate data to create visualisations that inform decisions. They interrogate data to support insights, evaluate data bias and the creation of new conclusions and/or improved decisions.
+Additional advice
+Activities in Data Visualisation should incorporate the use of spreadsheets, databases, data analysis modelling and simulation software to present and communicate data stories. The learning activities may highlight opportunities for students to incorporate Data Visualisation into their Enterprise Computing project.
+Teaching advice for Intelligent systems
+Content
+    § Intelligent systems
+Teaching advice
+The teaching advice below demonstrates a summary of the intent of the content presented in Year 12 in each focus area and additional advice regarding the planning and delivery of the content to maximise student synthesis.
+Why is it important?
+In this focus area students learn about the design and evolution of intelligent systems, and investigate how they support people and real-world enterprises. Students study the knowledge, understanding and skills used to support expert systems and explore the data, patterns and processing power of intelligent systems.
+Additional advice
+Activities in Intelligent Systems should incorporate the use of text-based or block-based tools when engaging with practical experiences to exercise computational thinking. Modelling and simulating decision support an intelligent and/or automated systems could be used as activities and may highlight opportunities for students to incorporate intelligent systems into their enterprise computing project.
+Teaching advice for Enterprise project
+Content
+    § Enterprise project
+Teaching advice
+The teaching advice below demonstrates a summary of the intent of the content presented in Year 12 in each focus area and additional advice regarding the planning and delivery of the content to maximise student synthesis.
+Why is it important?
+The Enterprise Project is to be completed in Year 12 and will require students to develop a project of their choice based on the knowledge and skills developed during the course.
+Students have an opportunity to develop deeper knowledge, understanding and skills in an area of interest as they engage in an Enterprise Project that addresses an identified real-world problem. Students refine and apply project management skills as they develop, document, implement and evaluate their project solution. Learning in this focus area emphasises project management and development using digital design tools and explores the concept of delivering solutions for a client.
+Teachers are encouraged to integrate the learning content of this focus area within all other Year 12 focus areas.
+Glossary
+Enterprise Computing 11–12 (2022) Terms
+abstraction
+The process by which data and programs are defined with a representation similar in form to its meaning while hiding away the implementation details. Abstraction tries to temporarily ignore details so that the programmer can focus on a few concepts at a time. Algorithms must ultimately be broken down into simple instructions for a digital system to execute.
+algorithm
+A step-by-step procedure required to solve a problem. Algorithms may be presented in many ways, e.g. written instructions, flow charts or using a computer programming language.
+app
+A software program designed for a specific purpose to run on mobile devices or on a personal computer. An abbreviation of the word ‘application’.
+artificial intelligence (AI)
+Intelligence demonstrated by machines. Sometimes called machine intelligence.
+assets
+Assets are the digital elements that can be used or incorporated into a multimedia presentation or production. They include graphics, photographs, videos, audio, animations or other artistic data.
+augmented reality (AR)
+A technology that replicates, enhances or overlays extra information about the real-world environment, using computer-generated data such as global positioning systems (GPS), sound, videos and images. Common examples include a car windshield with a heads-up display (HUD) that projects three-dimensional navigation information and virtual lanes, or a swimming telecast using a line to indicate the position of the record holder in relation to the actual swimmers in the race.
+automate
+The process of transforming and manipulating data that does not require user intervention. For example, through the use of formulae in a spreadsheet, new sets of data can be processed and the results recalculated automatically, or a webcam can be turned on as a result of movement sensor input.
+backward chaining
+A technique used by inference engines that determines reasoning from the knowledge base to understand how a decision was made. In backward chaining, the goal or output is used to track back to establish the steps taken.
+
+See forward chaining
+big data
+Extremely large datasets that may be analysed computationally to reveal patterns, trends and associations.
+biometric
+A term that describes the source of data being human or biological.
+blockchain
+A growing list of records, known as blocks, which are linked using cryptography. It can be used to record transactions between 2 parties efficiently and in a verifiable and permanent way.
+calculate
+Ascertain/determine from given facts, figures or information.
+CAPTCHA
+Completely Automatic Public Turing Test to Tell Computers and Humans Apart.
+clarify
+Make clear or plain.
+classify
+Arrange or include in classes/categories.
+cloud computing
+Distributing computing over a network where storage of files, processing of data and/or access to software occurs automatically on interconnected server computers to which the user’s device is connected. The term refers to accessing files, software and services over the internet.
+collaborate
+Working with others towards a shared goal, through a variety of modes of communication. This may be achieved using a range of technologies, tools and processes.
+computational thinking
+A process in which a problem is analysed and solved so that a human, machine or computer can effectively implement the solution. It involves using strategies to organise data logically, break down problems into parts, interpret patterns and design, and implement algorithms to solve problems.
+Creative Commons
+Is a non-profit organisation that enables the sharing of creative content without the need to seek legal approval.
+
+See copyright
+critically analyse/evaluate
+Add a degree or level of accuracy, depth, knowledge and understanding, logic, questioning, reflection and quality to (analyse/evaluate).
+cyber safety
+A term that refers to behaviour and the precautions that may be exercised when providing personal information in an online or digital environment.
+cybersecurity
+The protection of information technology elements, including hardware and software, data or network services.
+data
+A discrete representation of information using number codes. Data may include characters (e.g. alphabetic letters, numbers and symbols), images, sounds and/or instructions that, when represented by number codes, can be manipulated, stored and communicated by digital systems. For example, characters may be represented using ASCII code or images may be represented by a bitmap of numbers representing each ‘dot’ or pixel.
+data compression
+A reduction in the number of bits needed to represent data.
+data sampling
+The practice of analysing a subset of a larger dataset in order to determine meaningful information such as patterns and trends.
+data sovereignty
+This is a global movement that refers to the right of Indigenous Peoples to determine the creation, collection, ownership and application of data that is for and about Indigenous Peoples. The term also refers to transnational data flow and a range of issues arising from the flow of data between nations.
+data types
+Data types used in computing are expressed as either:
+    • string/text
+    • character
+    • integer
+    • floating point or real
+    • date and time
+    • Boolean.
+database
+A collection of data organised by records and fields that can be easily stored, accessed, managed and updated.
+dataset
+A collection of data combined for a specific purpose.
+design thinking
+A process where a need or opportunity is identified and a design solution is developed. The consideration of economic, environmental and social impacts that result from designed solutions are core to design thinking. Design thinking methods can be used when trying to understand a problem, generate ideas and refine a design based on evaluation and testing.
+digital citizenship
+An acceptance and upholding of the norms of appropriate, responsible behaviour with regard to the use of digital technologies.
+digital footprint
+Traces of data left behind by a person using a digital system. A person’s digital footprint includes all information actively provided by that person, such as interactions on social networks, online purchases, emails and instant messages. It also includes passive information, such as logs of software installed and used on a computer, metadata associated with files, a user’s internet protocol (IP) address, a device being used to access a webpage, and a user’s browsing history stored as cookies or by internet service providers.
+digital technologies
+Refers to electronic tools, systems, devices and resources that generate, process or store data, and may include applications, games, microcontrollers, mobile devices, multimedia, networks, robotics.
+edge computing
+A computing framework that allows for the distribution of processing capabilities and hardware so that applications can be closer to their data source.
+encryption
+A process in cryptography of encoding (converting) data, using mathematical formulas, into a form that only an intended recipient can decode, often including a personal digital signature.
+enterprise
+An activity that produces goods and/or services. Enterprises are run for the benefit of an individual or a group of individuals. They can range in scale from a transnational corporation to home-based economic activities.
+enterprise computing
+Refers to business-oriented information technology that is critical to a company’s operations. Enterprise computing encompasses types of information technology tools that businesses use for resource management, efficient production operations, relationship management and back office support.
+enterprise system
+The combination of digital systems, people and processes that collect, manage and analyse data.
+evaluate
+Make a judgement based on criteria; determine the value of.
+firmware
+Is the software that is installed on a small chip in almost all hardware devices that makes the hardware function as the manufacturer intended it to.
+forward chaining
+A technique used by inference engines that applies reasoning to the knowledge base to get the information to make a decision. In forward chaining, the inference engine evaluates existing data to develop new data to make a decision.
+See backward chaining
+function
+A term used in programming to describe a self-contained sequence of instructions that performs a specific task or tasks and is designed to be able to be reused throughout the program. Functions often accept some kind of input, perform some process on that input, and return a result that can be used by other parts of a program. Most programming languages allow for user-defined functions, but will also provide pre-defined functions.
+gamification
+The adjustment of a task using digital technologies into a computer game in an attempt to make it more appealing.
+haptic
+Refers to the sense of touch. Often used to describe a method of output from a device that can be measured by feel or touch.
+hardware
+The collection of physical components that constitute a computer system, all of which are tangible objects. Hardware includes both internal and external components of the system, as well as any peripheral devices that can be connected.
+informatics
+The science of processing data for storage and retrieval.
+information
+The presentation of data in a manner that is readily understood.
+information system
+The combination of digital systems, people and processes that collect, manage and analyse data.
+intelligent system
+A collective term for enterprise-based information systems that have the capacity to gather and/or analyse data and communicate with other systems, learn and produce targeted output to respond to the world around them.
+interactive media systems
+Where there is facility for a user to interact with multimedia, the term ‘interactive media’ may be used. The use of digital technologies to present combinations of text, graphics, video, animation and/or sound in an integrated way. For example, interactive games, media-rich websites and electronic books (e-books).
+Internet of Me (IoMe)
+The internet of me (IoMe) loosely refers to technology which connects our minds and bodies with the online world. It transforms our biological and cognitive life into streams of data which can be monitored, shared and shaped.
+Internet of Things (IoT)
+Internet of Things (IoT) encompasses smart devices and smart objects that send and receive information using the internet and communication infrastructure.
+lossless compression
+A type of compression algorithm that retains sufficient information to allow the original data to be perfectly reconstructed from the compressed data. It is used when it is important for the original data to be accurately preserved, e.g. in text documents, programming source code, application files or for archival purposes.
+lossy compression
+A type of compression algorithm that compresses data by discarding information that is not necessary to reproduce the original data with sufficient detail for the user not to notice the difference. It is used primarily for reducing the size of multimedia assets such as video, audio and photographs, especially when streaming or transmitting the data over the internet.
+malware
+Malicious software designed to interfere with the regular operation of a computer system. Often used to gain access to computers, it is usually hidden in other software to avoid user detection.
+metadata
+A set of data that describes and gives information about other data. For example, the metadata of a photograph is the set of data providing information about copyright.
+microcontroller
+A small computer built for the purpose of dealing with specific tasks, such as managing the engine in a car, displaying information in a microwave control panel or receiving information from a television remote control. Microcontrollers process data inputted by users (e.g. keypad) or sensors (e.g. light).
+model
+A mathematical, conceptual or physical representation that describes, simplifies, clarifies or provides an explanation of the structure, workings or relationships within an object, system or idea. Models can provide a means of testing and predicting behaviour within limited conditions. Models may be physical or exist in digital form.
+object-oriented programming (OOP)
+A paradigm based on the concept of ‘objects’ that can contain data and code in the form of procedures. OOP language is a language based on the principles of ‘C’.
+Object-Relational Mapping (ORM)
+A technique used in object-oriented programming to query and manipulate data from a database.
+Open Systems Interconnection (OSI)
+This conceptual model standardises communications between all of the elements within an information or computer system.
+producing
+Actively realising (making) designed solutions, using appropriate resources and means of production.
+product
+The tangible end results of natural, human, mechanical, manufacturing, electronic or digital production and processes.
+project
+An individual or collaborative problem-solving activity undertaken by students that is planned to achieve an articulated aim.
+project management
+The process of planning, organising, controlling resources, monitoring timelines and activities, and completing a project to achieve a goal that meets identified criteria.
+protocols
+A set of generally accepted standards or 'rules' that govern relationships and interactions between and within information systems. In communication systems including the internet, specific protocols allow for the successful transmission of data.
+See Open Systems Interconnection (OSI)
+prototype
+A trial product or model built to test an idea or process to inform further design development. Its purpose is to see if and how well the design works and is tested by users and systems analysts. A prototype can be either a physical object or exist in digital form.
+See model
+sandbox gaming
+A virtual world where players can build their playscapes, invite other players to play and test game play.
+sensor
+A device that detects and responds to some type of input from the physical environment.
+social network
+A structure that describes the relationships that exist between individuals and/or organisations. Social networking services and tools provide a mechanism for people who share common interests or personal ties to communicate, share and interact using a range of media such as text, images and video.
+structured data
+Data with a high degree of organisation, such that it can easily be analysed and processed using algorithms. The organisation of the data takes on a form that captures the properties and behaviours of the source the data represents.
+structured query language (SQL)
+Specialist programming language used to manage data and access data in relational database management systems.
+system implementation
+The implementation method applied when introducing a new or redesigned enterprise system. Typically methods include: direct, parallel, phased or pilot.
+systems thinking
+An understanding of how related objects or components interact to influence how systems function. Students are provided with opportunities to recognise the connectedness of, and interactions between phenomena, people, places and events in local and wider contexts and consider the impact of their decisions. Understanding the complexity of systems and the interdependence of components is important for scientific research and for the creation of solutions to technical, economic and social issues.
+threat actor
+An individual or group that poses a security threat to an individual or organisation.
+transmission media
+The means through which data is sent from one system to another on a network.
+user experience (UX)
+The usability, ease of use, and enjoyment provided in the interaction between the customer and the product.
+user interface (UI)
+The means by which users interact with computer hardware or software. In software, this usually comprises fields for text and number entry, mouse pointers, buttons and other graphical elements. In hardware, switches, dials and light-emitting diodes (LEDs) provide information about the interactions between a user and a machine.
+virtual reality (VR)
+The use of computing technology to create a simulated environment. Unlike traditional user interfaces, VR places the user inside an experience. Instead of viewing a screen in front of them, users are immersed and able to interact with three-dimensional worlds.
+visualisation
+The presentation of data or information through pictures or graphics to help the intended audience understand its significance.
+workflow
+A sequence of processes and/or activities that a document or artefact transitions through in order to reach completion.
+Global Terms
+Aboriginal and Torres Strait Islander Peoples
+Aboriginal Peoples are the first peoples of Australia and are represented by more than 250 language groups, each associated with a particular Country or territory. Torres Strait Islander Peoples are represented by 5 major island groups, and are associated with island territories to the north of Australia’s Cape York which were annexed by Queensland in 1879. 
+An Aboriginal and/or Torres Strait Islander person is someone who: 
+    • is of Aboriginal and/or Torres Strait Islander descent 
+    • identifies as an Aboriginal person and/or Torres Strait Islander person, and 
+    • is accepted as such by the Aboriginal and/or Torres Strait Islander community(ies) in which they live.
+Aboriginal English
+A recognised dialect of English which is the first, or home language, of many Aboriginal people. It differs from other dialects of English, such as Standard Australian English, in systematic ways including sounds, grammar, words and their meanings, and language use. Aboriginal English is a powerful vehicle for the expression of Aboriginal identity. Aboriginal English is not a target language study option for NSW Aboriginal Languages syllabuses.
+Aboriginal Songline(s)
+Texts that describe landscapes and directions of the tracks forged in lands, waters and skies by Creator Spirits during the Dreaming.
+accessibility
+The extent to which a system, environment or object may be used irrespective of a user’s capabilities or abilities. For example, the use of assistive technologies (AT) to allow people with disability to use computer systems, or the use of icons in place of words to allow young children to use a system.
+assistive technology (AT)
+A device or system whose primary purpose is to maintain or improve an individual's functioning and independence to facilitate participation and enhance overall wellbeing. This includes technologies specifically designed to meet an individual's needs, eg eye gaze technology, as well as more general technologies that can be used by anyone, eg speech-to-text applications. Assistive technology can also be referred to as inclusive technology.
+augmentative and alternative communication (AAC)
+An umbrella term that encompasses the communication methods used to supplement or replace speech or writing. AAC can be unaided, such as gestures, body language and sign language, or aided such as pictures, symbols, objects or speech generating devices.
+See communication systems
+communication forms
+The ways people communicate and the communicative behaviours they use. Communication forms can be non-symbolic and/or symbolic. Non-symbolic forms include sounds, gestures, facial expressions and eye movements. Symbolic forms can be aided or non-aided. Aided forms of symbolic communication include objects, symbols, photographs and drawings. Aided forms can be digital. Non-aided forms of symbolic communication include formal gestures; speech; and signs, such as Key Word Sign.
+copyright
+The protection provided to the creators of original works and makers of sound recordings and films, that offers a legal framework for the control and reproduction or transmission of their literary, dramatic, artistic or musical works.
+Country/Place
+Country is used to describe a specific area of a nation or clan including physical, linguistic and spiritual features. Aboriginal communities’ cultural associations with their Country may include or relate to languages, cultural practices, knowledge, songs, stories, art, paths, landforms, flora, fauna and minerals. These cultural associations may include custodial relationships with particular landscapes such as land, sea, sky, rivers as well as the intangible places associated with the Dreaming(s). Custodial relationships are extremely important in determining who may have the capacity to authentically speak for their Country. 
+Place is a space mapped out by physical or intangible boundaries that individuals or groups of Torres Strait Islander Peoples occupy and regard as their own. It is a space with varying degrees of spirituality.
+culture
+The customs, habits, beliefs/spirituality, social organisation and ways of life that characterise different groups and communities. Cultural characteristics give a group or individual a sense of who they are and help them make sense of the world in which they live. Culture is a shared system but inherently diverse – there can be individual and group differences within cultures. Everyone has culture – it is a lens through which we see the world.
+custodians
+In Aboriginal communities, an individual charged with maintaining and passing on particular elements of cultural significance, eg language, stories, songs, rituals and imagery.
+See owners
+d/Deaf
+When referring to deaf people who belong to a linguistic and cultural minority known as the Deaf community, the 'D' may be capitalised in reference to the individual, the group, or the culture in order to accord respect and deference, for example, the Deaf community. When referring simply to audiological status or when cultural affiliation is not known, as in the case of a person with a hearing loss in general, the lowercase 'd', as in 'deaf' is the more common usage.
+Deaf
+A cultural identity for people with hearing loss who share a common culture and who usually have a shared sign language.
+disability
+An umbrella term for any or all of the following components: 
+    • impairments: challenges in body function or structure
+    • activity limitations: difficulties in executing activities
+    • participation restrictions: challenges an individual may experience in involvement in life situations. (World Health Organization)
+diversity
+Differences that exist within a group, for example, age, sex, gender, gender expression, sexuality, ethnicity, ability/disability, body shape and composition, culture, religion/spirituality, learning differences, socioeconomic background, values and experiences.
+Dreaming
+The Dreaming has different meanings for different Aboriginal groups. The Dreaming can be seen as the embodiment of Aboriginal creation which gives meaning to everything; the essence of Aboriginal beliefs about creation and spiritual and physical existence. It establishes the rules governing relationships between the people, the land and all things for Aboriginal Peoples. The Dreaming is linked to the past, the present and the future. Where appropriate, refer to Aboriginal names for the Dreaming.
+Elders
+The custodians of knowledge and lore. They are chosen and accepted by their own communities as people who have the permission to disclose cultural knowledge and beliefs. Recognised Elders are highly respected people within Aboriginal communities. Proper consultation with local Aboriginal communities will often direct schools to recognised Elders.
+first language(s)
+The first language(s) that a person learns to speak.
+Indigenous
+An internationally recognised term for the first peoples of a land. In NSW the term Aboriginal person/Peoples is preferred.
+See Aboriginal and Torres Strait Islander Peoples
+Indigenous cultural and intellectual property (ICIP)
+Includes, but is not limited to, objects, sites, cultural knowledge, cultural expression and the arts, that have been transmitted or continue to be transmitted through generations as belonging to a particular Indigenous group or Indigenous people as a whole or their territory. 
+See intellectual property
+intellectual property
+Non-material assets such as forms of cultural expression that belong to a particular individual or community. Intellectual property rights refer to the rights that the law grants to individuals for the protection of creative, intellectual, scientific and industrial activity, such as inventions. 
+See Indigenous cultural and intellectual property (ICIP), and copyright
+Key Word Sign
+A communication strategy that incorporates signing with speech. It is used to support language development for people with communication difficulties. Although Key Word Sign uses a simplified form of manual signing, it is different to Auslan, as it is not a signed language.
+kinship
+A key aspect of Aboriginal cultures and values. It includes the importance of all relationships and of being related to and belonging to the land.
+language group
+An Aboriginal community identified with a common language, both verbal and nonverbal, and with a particular territory. Used in preference to the term ‘tribe’.
+language revival
+The process and range of strategies for increasing knowledge and use of a language that is no longer spoken fluently across all generations in the context of language loss or language dispossession caused by colonisation. Aboriginal Languages and Torres Strait Islander Languages are being revived through community initiatives, linguistic research and school programs. ‘Language revival’ may be used as an overarching term that could also include ‘reclamation’, ‘revitalisation’, ‘renewal’ and ‘reawakening’.
+local Aboriginal community
+A local Aboriginal community is constituted by those people who are Aboriginal and who reside in the near locality. Aboriginal communities will have a rich and diverse history that has been seriously affected by dispossession and relations, which sees families with spiritual connection to Country residing beside those who have been forced to move from other locations. The notion of locality is complex and multilayered: schools should seek advice from a range of people and/or organisations representing local interests. 
+See community(ies)
+off-Country
+Taking place away from Aboriginal land or Country of origin. 
+See Country/Place
+on-Country
+Taking place on Aboriginal land or Country of origin.
+See Country/Place
+owners
+Each Aboriginal Language is recognised as belonging to a particular geographical area and thus to the people who can claim a connection to that area. Aboriginal community members acquire ownership of their language(s) at birth. Language proficiency is not essential for ownership.
+See custodians
+protocols
+The appropriate ways of behaving, communicating and showing respect for diversity of history and culture. This involves appreciation of the knowledge, standing and status of people within the local Aboriginal community and the school community. Protocols inevitably vary between communities, and between people within a community. In establishing a partnership between schools and Aboriginal communities, it is especially important that protocols are acknowledged and respected.
+respect
+A term used commonly in NSW Aboriginal communities to refer to the way an individual treats others. Showing respect occurs in many ways, such as waiting to speak, listening and demonstrating understanding, not asking too many direct questions, ensuring that people are not made to feel uncomfortable or uneasy, and generally showing regard for others’ ideas, beliefs and culture.
+sign
+Hand signs (or hand talk) used to supplement or replace oral language. Signs form part of nonverbal communication for Aboriginal and Torres Strait Islander Peoples and may be used by people who are hearing, or d/Deaf or hard of hearing. Aboriginal and Torres Strait Islander Sign Languages may be used in some areas. Some Sign Languages may be associated with sacred ceremonial practices.
+signage
+The use of words, graphic designs and/or symbols used to communicate a message, eg information signs, plaques, warning signs, road signs, signs that show direction.
+switch
+A type of assistive technology that enables people with cognitive and/or physical disability to access a range of devices, including computers and communication devices. Switches can be activated by touch, or triggered without contact, such as through eye gaze, sound or blowing.
+See assistive technology (AT)
+yarning circle
+Yarning circles are an important cultural practice for Aboriginal and Torres Strait Islander Peoples to learn within the collective group. Knowledge and information are shared in harmony and respect with all individuals.
+

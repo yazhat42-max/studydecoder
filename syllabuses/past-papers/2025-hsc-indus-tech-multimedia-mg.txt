@@ -1,0 +1,322 @@
+    
+ 
+ 
+        
+  
+  
+ 
+  
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  NSW Education Standards Authority 
+2025 HSC Industrial Technology
+Multimedia Technologies
+Marking Guidelines 
+Section I 
+Multiple- choice Answer Key 
+Question Answer 
+1 C 
+2 C 
+3 D 
+4 D 
+5 A 
+6 B 
+7 C 
+8 B 
+9 C 
+10 C 
+Page 1 of 7 
+
+         
+       
+  
+  
+              
+      
+ 
+ 
+  
+  
+          
+      
+ 
+ 
+  
+  
+       
+      
+  NESA 2025 HSC Industrial Technology – Multimedia Technologies Marking Guidelines 
+Section II 
+Question 11 
+Criteria Marks 
+• Outlines why a PNG file format would be used instead of JPEG 2 
+• Provides some relevant information 1 
+Sample  answer:  
+PNG f  ile  format  is  used  instead  of  JPEG  because  PNG  supports  lossless  compression,  
+which  ensures  that  image  quality  is  not  compromised  during  file  compression.   
+Answers  could include:  
+PNG s  upports  transparent  backgrounds,  which  is  particularly  useful  for  web  design  and  
+graphics that  require layering or  complex backgrounds.  
+Question 12 
+Criteria Marks 
+• Outlines steps required to manipulate the banner image 2 
+• Provides some relevant information 1 
+Sample  answer:  
+Adjust  the  image’s  colours,  saturation  and  overlays  to  match  the  brand  aesthetic.  Ensure  the  
+banner  is of  a suitable aspect  ratio.  
+Answers  could include:  
+•  Ensure  text  readability  with  contrast  adjustments   
+•  Optimise  the  image  for  fast  loading  
+•  Test  responsiveness  across  devices  and  refine  based  on  feedback  
+Question 13 
+Criteria Marks 
+• Describes how analogue and digital video types differ 2 
+• Provides some relevant information 1 
+Sample  answer:  
+Analogue  video  types  use  continuous  signals  to  represent  video,  resulting  in  smooth  and  
+natural  transitions.  Digital video  types  use  discrete  signals , allowing  better  quality,  easier  
+editing and correction.  
+Page 2 of 7 
+
+         
+        
+  
+       
+   
+       
+   
+        
+   
+      
+ 
+ 
+  
+  
+   
+  
+       
+    
+    
+   
+  
+      
+ 
+  NESA 2025 HSC Industrial Technology – Multimedia Technologies Marking Guidelines 
+Question 14 
+Criteria Marks 
+• Explains the potential advantages of using motion capture technology in 
+a short, animated film 4 
+• Describes potential advantages of using motion capture technology in a 
+short, animated film 3 
+• Outlines potential advantages of using motion capture technology in a 
+short, animated film 2 
+• Provides some relevant information 1 
+Sample  answer:  
+Motion  capture  (MoCap ) enhances animation by creating realistic, fluid movements while  
+reducing the need for labour -intensive  keyframing.  It  improves  efficiency,  captures  subtle  
+emotions and makes characters more expressive.  MoCap data is reusable,  adding long -term  
+value.  Selectively using MoCap for  complex scenes balances cost  and quality,  making the 
+film more engaging and marketable.  
+Question 15 
+Criteria Marks 
+• Describes the ethical implications of image manipulation and 
+enhancement 5 
+• Describes some aspects of the ethical implications of image 
+manipulation and enhancement 4 
+• Outlines the ethical implications of image manipulation and enhancement 3 
+• Identifies the ethical implications of image manipulation and 
+enhancement 2 
+• Provides some relevant information 1 
+Sample  answer:  
+Image manipulation and enhancement in the multimedia industry raise ethical concerns  
+regarding authenticity, misinformation and consumer deception. Over -editing can create 
+unrealistic beauty standards,  impacting mental  health and self- perception.  In journa lism,  
+altered images can mislead the public,  distorting facts and eroding trust.  Alternatively,  a  
+positive ethical  example could be a newsworthy image of  a traumatic scene that  is pixelated 
+or  blurred to protect  privacy.  Copyright  and  ownership  issues  arise when modifying images 
+without  proper  attribution  or  consent.  Ethical  editing  should  balance  creativity  with  honesty,  
+ensuring transparency in advertising and media.  
+Page 3 of 7 
+
+         
+       
+   Section III 
+Question 16 (a) 
+ Criteria  Marks 
+ •       Describes in detail how legislative requirements have affected  
+   sustainable practices and environmental impacts of the industry  5 
+ •      Describes how legislative requirements have affected sustainable  
+    practices and/or environmental impacts of the industry  4 
+ •          Outlines the effects of legislative requirements on the sustainable 
+    practices and/or environmental impacts of the industry  3 
+ •        Demonstrates some understanding of legislative requirement s or 
+    sustainable practices or environmental impacts  2 
+ •     Provides some relevant information  1 
+ 
+ 
+  NESA 2025 HSC Industrial Technology – Multimedia Technologies Marking Guidelines 
+Sample  answer:  
+Legislation mandates that  electronic waste,  including multimedia equipment,  must  be 
+collected and recycled responsibly.  It  has led to a reduction in the amount  of  e-waste  being  
+sent  to landfills,  thus minimi sing  the  environmental footprint  of  the  industry.  Companies  are  
+now m ore committed to designing products that  are easier  to recycle and contain fewer  
+hazardous materials.  For  example,  many multimedia companies have started using 
+recyclable materials in their products and have set up take -back programs to ensur  e proper  
+recycling. Regulation has significantly improved the industry’ s sustainable practices by 
+promoting responsible disposal  and recycling of  electronic waste.  
+Page 4 of 7 
+
+         
+       Question  16  (b)
+ Criteria  Marks 
+ • 
+ •        Provides a comprehensive analysis of how historical developments and 
+      advancements in manufacturing processes have affected the multimedia 
+ industry 
+Integrates relevant industry examples to support response   9–10 
+ • 
+ •        Provides a sound analysis of how historical developments and 
+      advancements in manufacturing processes have affected the multimedia 
+ industry 
+       Makes reference to industry examples to support response   7–8 
+ •       Provides an analysis of how historical developments and/or  
+ advancements in manufacturing processes have affected the multimedia 
+ industry  
+OR  
+ •      Provides a description of how historical developments and 
+      advancements in manufacturing processes have affected the multimedia 
+   industry with some reference to industry examples  5–6 
+ •        Demonstrates some understanding of historical developments and/or 
+      advancements in manufacturing processes and/or effects on industry  3–4 
+ •     Provides some relevant information  1–2 NESA 2025 HSC Industrial Technology – Multimedia Technologies Marking Guidelines 
+ 
+Sample  answer:  
+The  multimedia  industry  has  been  significantly  affected by  various historical  developments in 
+manufacturing  processes.  During  the  late  20th  century,  the introduction of  digital  technology 
+revolutioni sed the production and distribution of  multimedia content.  This shift  from  analogue  
+to digital allowed for higher quality production, easier editing and faster distribution.  
+ 
+In the 21st  century,  advancements in microprocessor  technology have further  transformed 
+the industry. These developments have led to the creation of more powerful and compact 
+devices,  such as smartphones and tablets,  which have become primary tools for  consuming 
+multimedia  content.  The  miniaturi sation of  components has also allowed for  the integration of  
+multiple  functions  into  single  devices,  enhancing  user  experience.  
+ 
+The  rise  of  cloud  computing  has  had  a  profound  impact  on  the  multimedia  industry  as  well.  
+Cloud  technology  enables  the  storage  and  streaming  of  vast  amounts  of  content,  making  it  
+easily accessible to users worldwide.  This has led to the growth of  streaming  services like 
+Netflix  and  Spotify,  which  have  revolutioni sed how m  ultimedia content  is consumed and 
+distributed.  
+ 
+These  historical  advancements  have  collectively  enhanced  the  efficiency,  accessibility  and  
+quality of  multimedia production and distribution.  They have also opened up new possi  bilities 
+for innovation and creativity, shaping the industry into what it is tod ay.  
+Answers  could include:  
+•  Mechanisation  and  automation  revolutionised  production,  increasing  efficiency  and  
+reducing labour costs.  
+•  Mass  production  methods  enabled  affordability  and  wider  accessibility  of  products.  
+•  Digital  and  computer -aided technologies enhanced precision,  consistency and design 
+flexibility.  
+•  Miniaturisation  of  components  improved  functionality,  portability  and  material  efficiency.  
+Page 5 of 7 
+
+         
+        NESA 2025 HSC Industrial Technology – Multimedia Technologies Marking Guidelines 
+•  Robotics,  AI,  CNC and  the  like  systems  optimised  manufacturing  processes,  reducing  
+waste  and  errors.   
+•  CAD,  CAM,  modelling  and  authoring  software  led  to  improved  designs,  customisation  and  
+manufacturing  processes  and  improved  precision  and  automation .  
+•  Standardisation  of  materials  and  components  ensured  quality  control  and  interoperability.  
+•  Cloud  computing  and  digital  storage  transformed  data  accessibility,  distribution  and  
+collaboration.  
+•  Adoption  of  sustainable  manufacturing  practices  minimised  environmental  impact  and  
+waste.  
+•  Increased use of recycled, biodegradable and eco -friendly materials across industries.  
+•  Energy -efficient  production methods reduced resource consumption and carbon 
+emissions.  
+•  Circular  economy  principles  promoted  waste  reduction,  material  reuse  and sustainability.  
+•  Integration of renewable energy sources reduced reliance on fossil fuels in industrial  
+operations.  
+•  Digital  solutions  such  as  cloud  storage  and  on-demand production minimised material  
+waste.  
+•  Green  technologies  advanced  the  creation  of  environmentally  friendly  and  energy -efficient  
+products.  
+•  Ethical  and  sustainable  sourcing  practices  ensured  responsible  use  of  resources.  
+•  Ongoing  research  and  technological  innovation  continue  to  shape  modern  industry  and  
+sustainability efforts.  
+Page 6 of 7 
+
+         
+         
+  
+  
+ 
+  
+     
+        
+           
+            
+         
+        
+      
+        
+          
+       
+         
+  
+     
+       
+        
+        
+      
+     
+  
+     
+    
+   
+   
+    
+   
+   
+ NESA 2025 HSC Industrial Technology – Multimedia Technologies Marking Guidelines 
+2025 HSC Industrial Technology
+Multimedia Technologies
+Mapping Grid 
+Section I 
+Question Marks Content Syllabus outcomes 
+1 1 Multimedia elements – text – formatting paragraphs H1.2 
+2 1 Graphics – importing images – screen capture H1.2, H 6.2 
+3 1 World Wide Web (www) – sound – sound quality H6.2 
+4 1 Video editing – filters – contrast H1.2 
+5 1 Video editing – special effects H1.2 
+6 1 Animation – 3D H1.2 
+7 1 Video – video players H1.2, H 6.1 
+8 1 World Wide Web (www) – PDF H1.2, H 6.2 
+9 1 Multimedia elements – animation H1.2 
+10 1 World Wide Web (www) – age controls H1.3, H6 .2 
+Section II 
+Question Marks Content Syllabus outcomes 
+11 2 Graphics – file formats H6.1, H6.2 
+12 2 Graphics – image manipulation H1.2, H4.3 
+13 2 Video – video types H1.2, H4. 3 
+14 4 Animation – motion capture H6.1, H6.2 
+15 5 Intellectual property and ethics H4.3, H7.2 
+Section III 
+Question Marks Content Syllabus outcomes 
+16 (a) 5 Historical developments 
+Environmental and sociological considerations – 
+legislative requirements H1.3, H7.1 
+16 (b) 10 Historical developments 
+Environmental and sociological considerations – 
+sustainable developments H1.3 
+Page 7 of 7 
+

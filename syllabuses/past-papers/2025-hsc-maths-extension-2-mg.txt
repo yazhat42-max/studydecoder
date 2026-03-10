@@ -1,0 +1,3075 @@
+﻿
+NSW Education Standards Authority 
+
+
+
+
+
+
+
+2025 HSC Mathematics Extension 2 Marking Guidelines 
+
+
+
+
+
+Section I 
+
+
+Multiple-choice Answer Key 
+
+
+Question 
+
+1 2 3 4 5 6 7 8 9 
+10 
+
+Answer 
+
+D B C B A B D A C 
+D 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 1 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Section II 
+
+
+Question 11 (a) 
+
+Criteria 	Marks 
+z 
+z 
+z 
+ 
+• Indicates the locations of ¯ and i¯ 	2 
+• Indicates the location of ¯, or equivalent merit 	1 
+
+Sample answer: 
+
+y 
+ 
+z 
+¯ 
+a 	iz 
+
+
+
+
+b 	z 
+b 	a¯ x
+
+
+
+
+
+
+
+
+Let z = a + ib ¯ = a − ib 
+z 
+
+i¯ = i(a − ib) = −i2b + ia = b + ia 
+z 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 2 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 11 (b) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	2 
+
+• Provides the modulus or argument 	1 
+
+Sample answer: 
+
+ip 	ip 
+w = 2e , z = 3e  
+6	6 
+1 1
++ 
+( 
+) 
+i 
+` wz = 2 × 3 e p 6 6 
+ip 
+wz = 6e 
+3 
+
+` Modulus = 6 Argument = 3 
+p 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 3 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 11 (c) (i) 
+
+Criteria 	Marks 
+
+• Provides correct answer 	1 
+
+Sample answer: 
+z  = (x + iy)(x + iy) = x2 + 2ixy − y 
+2 
+2 
+(	) 
+= x2 − y2 + 2xyi 
+
+
+
+
+Question 11 (c) (ii) 
+
+Criteria 	Marks 
+ 1 
+
+• Provides correct solution 	2 
+
+• Attempts to realise the denominator of x + iy 	1 
+
+Sample answer: 
+1	 1  
+= 
+z	x + iy 
+x − iy
+= 
+(	)(	) 
+x + iy x − iy
+x − iy
+= 
+2 
+x2 + y 
+	x	    	y    
+2 
+= x2 + y2 − x2 + y  i
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 4 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 11 (d) (i) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	1 
+
+Sample answer: 
+
+| 2 − 2  + k | = 22 + (−2)2 + 12 = 3 | F1 |= 12
+j 
+i 
+ 
+ 
+ 
+(	) 
+i	i 
+ 	 
+ 
+` 	F1 = 4 2 − 2j + k = 8 − 8j + 4k
+ 
+
+
+
+
+Question 11 (d) (ii) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	1 
+
+Sample answer: 
+
+ 3 =  1 +  2 
+F	F	F 
+= (8−6 i + (−8 +12  j + (4+4 k
+) 
+) 
+ 
+) 
+ 	 
+= 2 + 4  + 8k
+j 
+i 
+ 
+
+
+
+
+Question 11 (d) (iii) 
+
+Criteria 	Marks 
+
+• Provides correct answer 	1 
+
+Sample answer: 
+
+ 3= (2 + 4  + 8k) · ( + j + 2k) = (2 ×1) + (4 ×1) + (8 × 2) 
+· 
+ 
+F	d 
+ 
+j 
+i	i 
+ 
+ 	 
+= 22 
+
+
+
+
+
+
+
+
+
+
+
+Page 5 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+5 
+5 
+5 
+
+Question 11 (e) 
+
+Criteria 	Marks 
+
+• Provides correct proof 	2 
+
+• Assumes negation is true 	1 
+
+Sample answer: 
+
+Assume 
+3 + 5 ≤ 11 
+
+Squaring,  5)2 ≤ ( 11)2 8 + 2 15 ≤ 11 
+( 
+3 
++ 
+2 15 ≤ 3 
+
+Squaring, 60 ≤ 9 
+which is not true, contradicting the assumption. ` 	3 + 5 > 11 
+
+
+
+Question 11 (f) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	2 
+
+• Completes the square 	1 
+
+
+Sample answer: 
+
+7 − x2 − 6x dx = 
+
+=
+
+
+
+− x2 + 6x − 7 dx 
+
+− (x + 3)2 − 16 dx 
+
+
+= 	16 − (x + 3)2 dx = 5 sin−1 x + 3 + C
+4 
+5 
+
+
+
+
+
+
+
+Page 6 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+p 
+2 
+0 
+p 
+2 
+p 
+2 
+
+Question 12 (a) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	3 
+
+• Uses integration by parts 	2 
+
+• Attempts to use integration by parts 	1 
+
+Sample answer: 
+p 
+2 x sin x dx 0 
+
+Using integration by parts Let u = x, 	u′ = 1 
+Let v′ = sin x, v = −cos x 
+
+p 
+` 	2 x sin x dx = 8−x cos xB + 
+0
+
+p
+2 cos x dx 0 
+
+
+
+= −  · cos
+
+p
+2 
+
+
++ 0 · cos 0) + 8sin xB0 
+( 
+
+
+= (0 + 0) + sin 2 − sin 0) = 1 
+p 
+( 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 7 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 12 (b) 
+
+Criteria 	Marks 
+k 
+ 
+d 	y 
+k 
+dx 
+ 
+= P	x 
+( ) 
+
+
+• Provides correct proof 
+• Establishes that d y = P (x) 
+k 
+
+3 
+k + 1
+dxk + 1 	k +1 , or equivalent merit 	2 
+
+• Establishes initial statement, or equivalent merit 	1 
+
+Sample answer: 
+Let P (x) = (2nx + n2n − 1 )e x. 
+ 
+2 
+n 
+The first derivative is dy = 2xe2x + e x = (2x + 1 × 20 e x = P (x). So the statement is true for n = 1. 
+2	2 
+) 
+1 
+dx 
+
+If the statement is true for n = k, that is dx  = P (x),
+d 
+k 
+y 
+k 
+( 
+x 
+) 
+then 	x k2 
+(	) 	(	) 
+=	= 	P 
+= 	2	+ 	e 
+k + 1 	k 
+k 
+ 	2 
+ 
+ 	) 
+ 
+ 	) 
+k 
+dk + 1y	 d	dky	 d 	 d 	k 	k − 1 	2x
+dx 	dx dx 	dx 	dx 
+= 2(2kx + k2k − 1 )e2x + 2ke x = (2(k + 1)x + k2k + 2k e x
+2 
+= (2(k + 1)x + (k + 1)2k e x = P +1(x). 
+2 
+k 
+
+
+So the statement is also true for n = k + 1. 
+
+Hence the statement is true for all positive integers by mathematical induction. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 8 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 12 (c) 
+
+Criteria 	Marks 
+
+• Provides correct sketch 	3 
+
+• Sketches the perpendicular bisector, or equivalent merit 	2 
+• Plots the point (−5, 1) or (3, −3), or equivalent merit 	1 
+
+Sample answer: 
+The region is to the right of the perpendicular bisector of the line joining (−5, 1) and (3, −3), 
+as shown. 
+
+
+y 
+–2 
+
+4 
+
+
+(−5, 1) 	2 
+
+
+–6 	–4
+
+
+O (−1, −1) 
+–2 
+
+
+–4 
+
+2 	4 	6 x 
+
+
+
+(3, −3) 
+
+
+
+
+
+
+Answers could include: 
+
+| z + 5 − i > | z − 3 + 3i  
+|	| 
+ 
+
+| (x + 5) + i(y − 1)| > | (x − 3) + i(y + 3)  
+| 
+
+(x + 5)2 + (y − 1)2 > (x − 3)2 + (y + 3)2 y < 2x + 1 
+
+
+
+
+
+
+
+
+
+
+
+Page 9 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 12 (d) 
+
+Criteria 	Marks 
+2 
+ 1  	 2 
+2 
+2 
+)( 
+4  x x + 1 
+
+• Provides correct solution 	4 
+
+• Obtains one anti-derivative 	3 
+• Shows ( x−− 2x + 9 ) = 4 − x + x + 1 , or equivalent merit 	2 
+• Attempts to use partial fractions, or equivalent merit 	1 
+
+Sample answer: 
+
+( x−− (x +   ) dx 
+2 
+2	9 
+4  x 
+) 
+x + 
+2 
+1 
+
+For partial fractions, let 
+ A  	Bx + C	x2 − 2x + 9 
++ 	= 
+(	)( 	) 
+4 − x 	x2 + 1 	4 − x x2 + 1 A(x2 + 1) + (Bx + C)(4 − x) = x2 − 2x + 9 
+
+Put x = 4 
+17A = 16 − 8 + 9 A = 1 
+
+Put x = 0 
+A + 4C = 9 4C = 8 
+C = 2 
+
+Compare coefficients of x A − B = 1 
+2 
+B = 0 
+ 2 
++ 
+
+
+
+dx 
+4 − x
+
+
+x2 + 1 dx
+
+= −ln  4 − x + 2 tan−1x + c 
+|	| 
+
+
+
+
+
+
+
+
+
+Page 10 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 12 (e) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	3 
+• Integrates to find an expression in x 	2 
+• Obtains force equation, or equivalent merit 	1 
+
+Sample answer: 
+
+The total force on the particle is −mk − mv 
+2 
+m·· = −mk − mv ·· = − k + v2
+2 
+(	) 
+x 
+x 
+dv 
+v dx = −(k + v2)
+
+k + v = − dx 2 ln(k + v2) = −x + C
+ v dv 
+2 
+1 
+
+
+When x = 0, v = V0 ` 2 ln(k + V02) = C
+1 
+1 
+` 	1 ln(k + v2) = −x + 2 ln(k + V02)
+k + V 
+2 
+0 
+2 
+1 
+
+x = 2 ln k + v2  
+
+When v = 0 
+
+1 	k + V 2 
+ln 
+0 
+x = 
+2 	k 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 11 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 12 (e) (continued) Alternative solution 
+The total force on the particle is −mk − mv2 newtons. 
+` 	m·· = −mk − mv 
+2 
+(	) 
+x 
+x 
+·· = − k + v2
+2 dx(v2) = −(k + v2) −2 k + v = 1 dx
+1  d 
+ 
+1 
+d 
+v 
+2 
+( ) 
+2 
+Since v2 goes from V02 to 0 while x goes from 0 to X: 
+d v 
+2 
+( ) 
+0 	X
+1 
+2 
+V 
+0 
+−2 	 k + v2 = 	1 dx 0 
+−  9ln(k + v2)C0     = 6x@X 	Using v2 as the variable of integration 
+1 
+2 
+0 
+2 
+V 
+0 
+−  9ln(k) − ln(k + V02)C = X − 0
+1 
+2 
+
+` 	X = 2 9ln(k + V0 ) − ln(k)C = 2 ln k +k 02 
+V 
+ 
+1 
+2 
+1 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 12 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+( 
+−1 
+) 
+du 
+e 
+u 
+ 
+− 
+
+Question 13 (a) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	3 
+
+• Obtains correct integral after substitution 	2 
+
+• Attempts to integrate by substitution 	1 
+
+Sample answer: 
+
+m−2 
+e 
+−x 
+1 
+ 
+I = m −4 x − m +  dx 
+
+Let 	u = m − x 
+
+
+When x = m − 2 then u = 2, when x = m − 4 then u = 4, 
+du 
+dx = −1. 
+
+So 
+
+
+
+I = 
+
+2 eu − m 
+4 1 − u 
+
+
+
+
+= −e−m 
+
+
+
+= −e m
+
+2 eudu 
+4 1 − u
+
+4 
+2 u − 1 du 
+
+= −Ae−m 
+− 
+= kA where k = −e m. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 13 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+c 
+c 
+a 
+b 
+
+Question 13 (b) 
+
+Criteria 	Marks 
+a	b 
+c	c 
+
+• Provides correct solution 	4 
+• Finds one value of c	3 
+ 
+• Obtains a relationship between x and y or z, or equivalent merit 	2 
+• Evaluates  ·  = 0 or  ·  = 0, or equivalent merit 	1 
+
+Sample answer: 
+
+Since c is perpendicular to both a and b, 
+ 
+
+
+ ·  = 0: 
+ ·  = 0: 
+
+2x + 4y − 3z = 0          1 −4x − 5y + 3z = 0          2 
+
+
+1 + 2 : −2x − y = 0 	y = −2x
+
+Substitute this into equation 1 . 2x − 8x − 3z = 0 	z = −2x 
+2 
+Since c is a unit vector, x2 + y2 + z = 1 	3 
+
+Substituting into equation 3 : 
+x2 + (−2x)2 + (−2x)2 = 1 
+2 
+9x = 1 
+x2 = 1 
+9 
+1 
+3 
+
+x = ±  
+
+y = z = −2x = ∓  
+2 
+3 
+
+
+ = ± 3 − 3 j − 3 k
+1	2 	2 
+i 
+ 
+c 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 14 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+< 
+
+Question 13 (c) (i) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	2 
+• Begins proof with (a − b)2 ≥ 0, or equivalent merit 	1 
+
+Sample answer: 
+(a − b)2 ≥ 0 a2 − 2ab + b2 ≥ 0 a2 + 2ab + b2 ≥ 4ab 
+(a + b)2 ≥ 4ab 
+a + b ≥ 2 ab 	ignore negative root 
+since a, b positive 
+a + b ≥ ab
+2 
+
+
+
+
+
+Question 13 (c) (ii) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	2 
+
+• Attempts to use AM−GM inequality, or equivalent merit 	1 
+
+Sample answer: 
+
+Apply AM−GM inequality 
+ab ≤ a + b 	with a = 2n + 1, b = 2n + 3.
+2 
+
+Since a ≠ b, this becomes ab < a + b
+2 
+
+(2n + 1)(2n + 3) < (2n + ) + (2n + 3) 
+1 
+2 
+
+(2n + 1)(2n + 3) 2n + 2
+< 
+2n + 1	2n + 1 
+2n + 3	2n + 2 
+< 
+2n + 1	2n + 1 
+
+
+` 
+
+2n + 1	2n + 1
+2n + 2	2n + 3 
+
+
+as required.
+
+
+
+
+
+
+Page 15 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+2 
+	x            
+p 
+2 
+	u           
+− 
+2 
+	u           
+ 
+p 
+2 
+	u           
+p 
+p 
+2 
+	u           
+ 
+p 
+2 
+p 
+	2           
+
+Question 13 (d) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	4 
+• Attempts to use t-substitution, or equivalent merit 	3 
+• Obtains two times original integral, or equivalent merit 	2 
+
+• Uses given substitution 	1 
+
+Sample answer: 
+
+Let u = 2 − x. When u = 2 then x = 0, when u = 0 then x = 2 and dx = (−1).
+p	p	du 
+p 
+Hence, 
+
+
+
+
+p
+0  1+ sin u + cos u du = 
+
+
+
+
+= 
+
+0 	2 − x 
+p 1  sin p − x + cos 2 
+2 
++ 
+
+p 	p − x
+2 
+1 + cos x + sin x dx 0 
+
+
+
+(−1)dx 2 − x
+ 
+
+
+
+
+2 	p 
+= 	 1 + cos x + sin x dx − 0 
+
+
+p
+0 1 + cos x + sin x dx
+
+
+
+
+
+= 2
+
+p 
+2	dx 	
+0 1 + cos x + sin x
+
+p
+0 1 + cos u + sin u du 
+
+
+
+p 
+` 2 0  1+ sin u + cos u du = 2
+
+p
+2 	dx	
+0 1 + cos x + sin x
+
+
+
+p 
+` 	0  1 + sin u + cos u du = 4
+
+p
+2 	dx	
+0 1  cos x + sin x
++ 
+
+
+
+
+
+
+
+
+
+
+Page 16 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+= 
+2 
+	u           
+ 	1 t 
+2 
+− 
+2 
++ 
+= 	. 
+p 
+ 
+1 + t 
+(	) 
+ 2t 
+2 
+
+Question 13 (d) sample answer (continued) 
+
+
+Putting t = tan x, cos(x) = 1 + t2, sin(x) = 1 + t , When x = 2, t = 1, and when x = 0, t = 0. 
+
+dt 1  t2 
+dx 	2 
+
+
+
+
+
+p 
+0  1 + sin u + cos u du =
+
+
+
+
+p 
+4
+
+1 	 2dt  
+2
+(1 + t2) + (1 − t2) + 2t 0 	1  t2
++ 
+(	) 
+
+
+
+
+= 4
+
+1 2dt  	p
+0 2 + 2t 	4
+
+
+0  1 + t = 4 ln 1 + t  1 
+| 
+| 
+0 
+
+
+= 4 ln2 
+1 
+p 
+ dt 
+p 
+p 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 17 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+p 
+2 
+ 	 
+
+Question 14 (a) (i) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	3 
+• Replaces integral with In − 1 	2 
+• Uses the Pythagorean identity, or equivalent merit 	1 
+
+Sample answer: 
+
+
+In = 
+
+
+
+
+= 
+
+
+
+
+= 
+
+p 
+2 cot2nq dq 
+p 4 
+
+p 
+2 cot2(n − 1)q cot2q dq 
+p 4 
+
+p  cot2(n − 1)q (cosec2q − 1)dq 4 
+
+
+
+p 
+= 2 cot2(n − 1)q cosec2q dq − 
+p 4 
+
+p 
+2 cot2(n − 1)q dq 
+p 4 
+
+
+p 
+2 
+= p  cot2(n − 1)q cosec2q dq − In − 1 4 
+
+= − p  (−cosec q cot2(n −1)q dq − In − 1 4 
+p 
+2 
+ 	) 
+2 
+
+= − = ot2n  11  1 qG 4 − In − 1 
+c 
+ 
+− 
+p 
+0 − 1 
+ 
+p 
+2 
+2 
+( 
+n − 
+) 
++ 
+
+= − 2n − 1 − In − 1 
+
+
+= 2n − 1 − In − 1 
+	1  
+
+
+
+
+
+
+
+
+Page 18 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 14 (a) (ii) 
+
+Criteria 	Marks 
+
+• Provides correct answer 	1 
+
+Sample answer: 
+
+Since I0 = 4, using the recurrence relation we have I1 = 1 − I0 = 1 − 4 
+p 
+1	2 
+ 
+I 
+p 
+. 
+p 
+ 
+I2 = 3 − 1 = − 3 + 4  
+
+
+
+
+Question 14 (b) (i) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	2 
+• Integrates to get an expression for v2 in terms of x 	1 
+
+Sample answer: 
+
+Since v x = 32x(x2 + 3) we have v dv = 32x(x2 + 3)dx. Hence, 
+dv 
+d 
+ 
+
+2 = 8(x2 + 3)2 + C. Since the initial velocity is −12, we have 
+v 
+2 
+144 = 72 + C and so C = 0.
+2 
+
+Hence v2 = 16(x2 + 3)2 and v = ±4(x2 + 3). 
+ 
+Since the initial velocity is negative, v = −4(x2 + 3). 
+
+
+
+
+
+
+
+
+
+
+
+
+Page 19 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+= 
+1 
+
+Question 14 (b) (ii) 
+
+Criteria 	Marks 
+
+
+• Provides correct solution 
+
+• Integrates to find a relation between time and displacement, or equivalent merit 
+
+2 
+
+1 
+
+
+
+Sample answer: 
+Given dt = −4(x2 + 3) we have
+dx 
+dx 
+x2 + 3 
+
+
+
+
+
+
+−4 dt . 
+
+
+
+Hence  3 tan–1  3 = −4t + C 
+x 
+1 
+
+Using initial conditions, C = 0. 
+
+Since x < 0 at all times we let x = −3. Then 
+
+
+ 3 tan–1 
+
+−3
+3 
+
+
+= −4t 
+
+
+
+ 3 · − 3 = −4t
+1 
+p 
+
+
+and t = 12 3 seconds.
+p 
+
+
+
+
+Question 14 (c) (i) 
+Criteria 	Marks 
+
+• Provides correct solution 	1 
+
+
+Sample answer: 
+
+1 + w + w2 + ··· + w6 = 0 
+(	)(	) 
++ 
+(	) 
+` 	1 − w 1 + w + w2 + ··· + w6 = 0 
+1  w + w2 + ··· + w6 − w + w2 + w3 + ··· + w7 = 0 1− w = 0 
+7 
+ 
+7 
+` 	w = 1 
+
+
+
+Page 20 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+w	w 
+( ) ( ) 
+1 
+w 
+a 
+= 
+w 
++ w 
++ w 
+) 
+( 
+w 
+1 
+w 
+ 
+
+Question 14 (c) (ii) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	2 
+• Recognises that the complex conjugate of w + w2 + w4 is the other root 	1 
+
+
+Sample answer: 
+
+
+w is a 7th root of unity, 
+
+
+
+2ipk 
+w = e 7	k ! 
+
+
+
+
+` 
+
+
+
+
+
+
+
+
+
+` 
+
+−2ipk 
+¯ = e 7
+
+= w 
+7
+= w = w 
+6 
+
+¯ 	2 	4 
+= ¯ + (¯)2 + (¯)4 
+= w6 + w6 2 + w6 4 = w6 + w 2 + w24
+= w6 + w  + 5 + w(3×7)+3 = w6 + w5 + w3
+7 
+ 
+
+
+
+
+
+Question 14 (c) (iii) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	1 
+
+Sample answer: 
+
+c = aa 
+¯ 
+(w + w2 + w4)(w3 + w5 + w6) = w4 + w6 + w7 + w5 + w7 + w8 + w7 + w9 + w10 = w4 + w6 + 1 + w5 + 1 + w + 1 + w2 + w3 
+ 	 
+= 3 + (−1) 
+` 	c = 2 
+
+
+
+
+
+
+Page 21 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+b	a 	a 
+	a  	     a	               	a     
+ 	 
+	a	    	a     
+= 
+( 
+)(	) 
+= 
+= 
+= 
+< 
+	a     
+<	<	< 
+< 
+` 
+1 
+> 
+1	1 
+1	1	1	1 
+ab 
+
+Question 14 (d) 
+
+Criteria 	Marks 
+	a    
+
+• Provides correct solution 	3 
+• Writes a + d and b + c in terms of a and k, or equivalent merit 	2 
+
+• Writes b = 1 + ak , or equivalent merit 	1 
+
+
+Sample answer: 
+Since 1 = 1 + k = 1 + ak
+
+
+
+a + d = a + 1 + 3ak 
+2a + 3a2k 
+1 + 3ak 
+
+
+
+then b = 1 + ak. Similarly c = 1 + 2ak, and d = 1 + 3ak 
+
+
+Alternate solution: 
+1	1	1	1 
+a	b	c	d 
+
+
+
+
+b + c = 1 + ak + 1 + 2ak 
+2a + 3a2k 
+1 + ak 1 + 2ak
+2a + 3a2k 
+1 + 3ak + 2a2k2 
+
+
+Since k ! R, k > 0 
+2a2k2 > 0 
+` 	1 + 3ak + 2a2k2 > 1 + 3ak 
+	1	    	1	
+1 + 3ak + 2a k2 	1 + 3ak 
+2 
+
+
+Multiply by 2a + 3a2k 
+2a + 3a2k 	2a + 3a2k 
+1 + 3ak + 2a k2 	1 + 3ak 
+2 
+
+`	 a > b > c > d 
+` ab > cd 
+ab 
+cd 
+
+
+Now, b − a = k and d − c = k 
+1 	1 
+
+` 	b − a = d − c
+a − b	c − d 
+ab 	cd 
+
+(a − b) = (c − d ) . cd > (c − d ) ` a − b > c − d
+` a + d > b + c 
+
+` b + c < a + d 
+
+
+
+
+
+
+
+
+Page 22 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+7 
+1 
+
+Question 15 (a) 
+
+Criteria 	Marks 
+a	b 
+
+• Provides correct solution 	4 
+
+• Calculates the perpendicular height, or equivalent merit 	3 
+
+• Calculates a projection, or equivalent merit 	2 
+• Finds |  | or |  |, or equivalent merit 	1 
+
+Sample answer: 
+
+
+ 
+a 
+a 
+ 
+
+
+
+
+
+projb ( )	b
+
+Area of parallelogram is base × perpendicular height base = |  |= 22 + (−1)2 + 32 = 14 
+b 
+b 
+a 
+b 
+a 
+ 
+| 
+b 
+=	· 
+b 
+
+
+
+| proj ( )|= 
+
+
+ ·  
+|  |2  
+
+| 8 − 3 − 3  
+14 
+
+
+14 = 7 · 14
+
+
+
+Hence perpendicular height = |  |2 − | projb ( )|2
+a 
+ 
+a 
+ 
+
+= (16 + 9 + 1) − 49 
+14 
+
+
+= 26 − 2 = 3
+
+20 
+7 
+
+
+Area = 14 × 3 20 = 3 × 2 × 20 = 6 10 square units. 
+7 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 23 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+2p 
+1 
+
+Question 15 (b) 
+
+Criteria 	Marks 
+ 1 
+1 
+
+• Provides correct solution 	4 
+
+• Finds A = 2 3 	3 
+• Finds maximum speed in terms of A, or equivalent merit 	2 
+
+• Finds period is 2 , or equivalent merit 	1 
+
+
+Sample answer: 
+
+Two cycles per second 
+
+T = n 
+
+
+
+period T = 2 n = 4p
+
+Let A be the amplitude 
+·· = −n2x 	` maximum positive acceleration = |−(4p)2 · A  = 16p2A 
+| 
+x 
+
+Let x(t) = A cos(4pt + a) 
+` v(t) = −4pA sin(4pt + a) 
+` Maximum speed = | −4pA  = 4pA 
+| 
+
+
+Let t = 0 be the time when x = 4 and v = 2 × 4pA = 2pA 
+1 	1 
+1 
+` 	A cos a = 4 and       | −4pA sin a  = 2pA 
+| 
+4pA sin a = 2pA ` sin a = 2 
+1 
+p 
+` a = 6 ` 	A cos 6 = 4 
+ 1  
+p 
+1 
+A = 2 3 
+` Maximum positive acceleration = 16p2 × 213 = 8 3 ms 2
+	  
+p 
+2 
+–
+
+
+Page 24 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 15 (b) sample answer (continued) Alternative solution 
+The particle is in simple harmonic motion about the origin with period 1 and amplitude A, so the displacement at time t is 
+2 
+x(t) = A cos 4pt + a). The velocity is 
+( 
+( 
+x 
+( 
+· t) = −4pA sin 4pt + a). The maximum speed is 4pA. 
+
+Let t0 be the time when the particle is 4 m from the origin x(t0) = A cos(4pt0 + a) = 4 
+1 
+1 
+and the speed is half its maximum 
+
+·(t0) = 4pA = 2pA = −4pA sin 4pt0 + a).
+2 
+( 
+x 
+ 
+
+This means sin 4pt0 + a) = − 2 and so cos 4pt0 + a) = ±   .
+3 
+2 
+1 
+( 
+( 
+Hence A cos 4pt0 + a) = ± 23 = ± 4 and so A = 213 . (Since amplitude is not negative.) 
+A  
+       
+1 
+( 
+
+The acceleration is x t) = −16p2A cos(4pt + a). The maximum positive acceleration is 16p2A = 3 ms 2. 
+8p 
+2 
+·· 
+( 
+–
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 25 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 15 (c) (i) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	3 
+
+• Uses double angle formulas 	2 
+
+• Realises denominator, or equivalent merit 	1 
+
+Sample answer: 
+
+1 + cos q + i sin q 	1 − cos q + i sin q
+LHS = 	× 
+1 − cos q − i sin q 	1 − cos q + i sin q 
+2i sin q
+= 
+2 − 2 cos q 
+
+4i sin 2 cos 2 4 sin2 2 
+                   
+q	q 
+= 
+q 
+
+= i cot 2 
+q 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 26 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 15 (c) (ii) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	2 
+
+• Uses De Moivre’s theorem 	1 
+
+Sample answer: 
+
+w6 = −1 	` | w = 1 
+| 
+Let w = cos q + i sin q 
+
+(cos q + i sin q)6 = 1 
+cos6q + i sin6q = cos p + i sin p 
+
+Equating real parts, 
+6q = p + 2kp, 	k = 0, 1, 2, 3, 4, 5 q = p + 2kp
+6	6 
+
+(2k + 1)p
+= 
+6 
+
+
+` w = cos (2k + 1)p + i sin (2k + 1)p , 	k = 0, 1, 2, 3, 4, 5
+6	6 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 27 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+6 
+z = 
+k 
+(	) 
+
+Question 15 (c) (iii) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	2 
+• Finds an expression for z in terms of cos and sin, or equivalent merit 	1 
+
+Sample answer: 
+
+Let ak = cos (2k + 1)p + i sin (2k + 1)p for k = 0, 1, 2, 3, 4, 5
+6	6 
+z 1 
+− 
+
+From part (ii) 	z + 1 = ak
+
+` 	z − 1 = zak + ak 
+
+z(1 − ak) = 1 + ak 
+1 + a 1 − ak
+
+1 + cos (2k + 1)p + i sin = 1 − cos (2k + 1)p − i sin
+
+
+
+
+
+
+
+
+(2k + 1)p
+6 
+(2k + 1)p
+6 
+
+= i cot (2k + 1 p	from part (i) 
+) 
+2 × 6 
+6 
+
+= i cot (2k + 1)p	for k = 0, 1, 2, 3, 4, 5
+12 
+p 	3p 	5p 	7p 
+1 	1 	1 	1 
+9p 	11p 
+1 
+
+= i cot 2, i cot 2, i cot 2, i cot 2, i cot 2 and i cot 12 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 28 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+1 
+1 
+1 
+1 
+
+Question 16 (a) 
+
+Criteria 	Marks 
+
+
+• Provides correct solution 
+
+• States and uses the assumption that at least one solution lies inside the circle 
+
+• Obtains a geometric series, or equivalent merit 
+
+• Uses triangle inequality, or equivalent merit 
+
+4 
+
+3 
+
+2 
+
+1 
+
+
+Sample answer: 
+
+Assume for contradiction that w is a solution to the equation and | w  ≤ 2.
+1 
+ 
+| 
+
+` wncos nq + w  −1 cos(n −1)q + wn − 2 cos(n −2)q + ··· + w cos q = 1 
+n 
+ 
+ 
+` | w cos nq + w  −1 cos(n −1)q + wn − 2 cos(n −2)q + ··· + w cos q =| 1 = 1 
+n	n 
+| 
+ 
+| 
+
+
+` 1 ≤ | wncos nq + | wn −1 cos(n −1)q + | wn − 2 cos(n −2)q + ··· + | w cos q  	`inequality j = | wn || cos nq + | wn −1 || cos(n −1)q + | wn − 2 || cos(n −2)q + ··· + | w|| cos q  property ofj ≤ | wn |+ | wn −1 |+ | wn − 2 |+ ··· + | w  	(since | cos a  ≤ 1 a) 
+| 
+ 	 
+| 
+| 
+| 
+| 
+| 
+ 
+| 
+by triangle 
+| 
+` 
+modulus 
+| 
+ 
+| 
+= | w n + | w n −1 + | w n − 2 + ··· + | w  	(property of modulus) 
+| 
+1 
+| 
+| 
+| 
+
+
+≤ 
+
+
+1
+2
+
+
+n
++ 
+
+
+1
+2
+
+n −1 	n − 2 
++ 2 	+ ··· + 2 
+
+
+(by assumption)
+
+
+
+
+
+= 2 
+
+1− 2 n	(sum of GP) 1− 2 
+
+
+= 1 −  n 
+1 
+2 
+
+< 1 
+
+This is a contradiction, so original assumption must be false, and all the solutions lie outside the circle | z = 2.
+1 
+ 
+| 
+
+
+
+
+
+
+
+
+
+
+Page 29 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 16 (b) 
+
+Criteria 	Marks 
+) 
+·	· 
+) 
+· 	· 
+x 	y 
+
+• Provides correct solution 	5 
+• Obtains x and y, or equivalent merit 	4 
+• Obtains (x and y  or (y and x , or equivalent merit 	3 
+• Obtains x or y or both x and y, or equivalent merit 	2 
+• Obtains · or ·, or equivalent merit 	1 
+
+Sample answer: 
+
+Horizontal motion: ·· = −k · 
+x 
+x 
+· 
+d 
+x 
+d(t) = −kx ` 	· = Ae−kt 
+· 
+x 
+4 
+When t = 0, x = 50cos q = 50 × 5 = 40 ` A = 40 ` 	x = 40e kt
+· 
+· 
+− 
+
+
+Integrating, 
+` 	x = − 0e−kt + C
+40 
+4 
+k 
+
+When t = 0, x = 0 ` C = k ` 	x = − 0e−kt + k 
+4 
+40 
+k 
+(	) 
+x = 40 1 − e−kt 
+k 
+
+
+
+* Rearranging, 
+kx 
+1 − 40 = e−kt
+	40  
+` 	ekt = 40 − kx 
+1 	40 
+
+` 	t = k ln 40 − kx 
+
+
+
+
+
+
+Page 30 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+k 
+ 
+1 
+− 
+ 
+k 
+k 
+k 
+
+Question 16 (b) sample answer (continued) 
+
+
+Vertical motion: 
+·· = −k · − 10 ddt  = −ky − 10
+y 
+y 
+· 
+( ) 
+y 
+· 
+
+ky + 10 = − dt
+d 
+y 
+· 
+( ) 
+· 
+1 
+` 		t = − k ln  ky + 10)|+ C Ae−kt = ky + 10 
+ 
+| 
+( 
+· 
+· 
+
+
+When t = 0, y = −50 × sin q = −50 × 3 
+· 
+5 
+= −30 
+
+` 	A = −30k + 10 
+` 	· = 1 (10 − 30k)e−kt − 10
+k 
+y 
+
+= −10 (3k − 1)e−kt + 1
+k 
+
+
+
+Integrating, 
+e 
+−kt 
+y = −10 (3k − 1) −k + t + C
+k 
+
+= 10 (3k − 1)e−kt − t + C
+ 
+k 
+k 
+
+
+
+When t = 0, y = 0 
+` C = −10 (3k − 1)
+k 
+2 
+
+
+` 	y = 10 
+
+
+= 10 
+
+(3k − 1)e−kt − t − (3kk  )
+
+(3k − 1) e−kt − 1 − t
+
+
+
+
+
+Page 31 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+1 
+k 
+1 
+
+Question 16 (b) sample answer (continued) 
+
+
+Using * , 	e−kt − 1 = −kx 
+40 
+1 	40 
+
+and 	t = k ln 40 − kx 
+
+
+` 	y = 10 
+
+(3k − ) −kx 
+k 	40 
+
+
+− k ln
+
+
+40
+40 − kx 
+
+
+10 (1 − 3k)kx 	40 − kx 
++ 
+ln 
+= 
+k2 	40 	40 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 32 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 16 (c) (i) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	2 
+
+• Finds an expression for distance, or equivalent merit 	1 
+
+Sample answer: 
+The distance is minimised when the squared distance is minimised. The squared distance is g(l) = | b − (a + ld)|  
+ 
+2 
+ 
+ 	 
+ 
+ 
+2 
+= | ( − a) − l |  
+d 
+b 
+ 
+= (b − a) − ld · (b − a) − ld
+ 	 
+ 	 
+ 	 
+= | b − a|2 − 2(b − a) · dl + l2 	since,  ·  =|  |2 = 1 
+ 
+ 
+ 
+ 
+ 
+ 
+d 
+d 
+d 
+This is a concave-up parabola. The smallest value occurs on the axis of symmetry. 
+2( − a) ·  
+= 
+ 
+b	d 
+l 
+0 		2 = ( − a) ·  
+ 
+b	d 
+
+
+
+
+Question 16 (c) (ii) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	1 
+
+Sample answer: 
+
+The direction of line l is  . 
+d 
+PB =  − ( + l ) 
+0 
+b	a	d 
+= ( − a) − l0 
+ 
+b	d 
+Hence PB ·  = ((b − a) − l0d) · d =  − a ·  − l0 · d = l0 − l0  d |  
+ 
+ 	 	 
+(	) 
+b	d	d 
+ 	 
+2 
+| 
+ 
+d 
+= l0 − l0 = 0 
+
+So the vectors are perpendicular. 
+
+Page 33 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 16 (c) (iii) 
+
+Criteria 	Marks 
+
+• Provides correct solution 	3 
+
+• Uses Pythagoras’ theorem, or equivalent merit 	2 
+
+• Uses the projection formula, or equivalent merit 	1 
+
+Sample answer: 
+
+
+l 
+b 
+a 
+a 
+b 
+
+P 
+
+
+
+ 1 B 	 −  	A
+d
+O 	 
+
+
+
+Let A be the point on line l with position vector a and let B be the point on the sphere closest
+to the line. 
+
+
+BP 9 AP 	from part (ii) 
+AP is the projection of AB onto  . So AP = ( − |) · d d = l0d
+a 
+ 
+2 
+| 
+d 
+ 
+b 
+d 
+ 
+ 
+
+By Pythagoras, 	| OA |2 = | OP  + | AP | 
+ 
+| 
+2	2 
+| a|2 = 1 + | BP | 2 + | AP 2 ` 1 | BP  2 = |  |2 − | AP   
+| 
+ 
+ 
+| 
+ 
+ 
+| 
+2 
+a 
++ 
+= | a|2 − | l0d |  = | a|2 − l02| d |2 = |  |2 − l0 
+2 
+ 
+ 
+ 
+ 
+ 
+2 
+a 
+
+
+
+
+
+
+
+
+
+
+Page 34 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+Question 16 (c) (iii) sample answer (continued) 
+
+
+Now  · d = 0 from part (ii) since OBP is a straight line. So l0 = b · d − a · d = − ·  . 
+d 
+a 
+b 
+ 
+ 
+ 
+ 
+ 
+
+
+` 	1 + | BP | 2 = | a|2 − 0 − (a ·  ) 2 = | a|2 − (a ·  )2 
+ 
+d 
+ 
+ 
+d 
+ 
+ 
+1 + | BP = |  |2 − ( ·  )2 
+a	a 
+d 
+| 
+` 	| BP |= |  |2 − ( · d)2 − 1 
+ 
+a 
+a 
+ 
+
+
+unless the line intersects the sphere, in which case the distance is zero. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 35 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+
+2025 HSC Mathematics Extension 2 Mapping Grid 
+
+
+
+Section I 
+
+Question Marks 
+
+1 	1 
+
+2 	1 
+
+3 	1 
+
+4 	1 
+
+5 	1 
+
+6 	1 
+
+7 	1 
+
+8 	1 
+
+9 	1 
+
+10 	1 
+
+Section II 
+
+Question Marks 
+
+11 (a) 	2 
+
+11 (b) 	2 
+
+11 (c) (i) 	1 
+
+11 (c) (ii) 	2 
+
+11 (d) (i) 	1 
+
+11 (d) (ii) 	1 
+
+11 (d) (iii) 	1 
+
+11 (e) 	2 
+
+11 (f) 	2 
+
+12 (a) 	3 
+
+12 (b) 	3 
+
+12 (c) 	3 
+
+12 (d) 	4 
+
+12 (e) 	3 
+
+13 (a) 	3 
+
+13 (b) 	4 
+
+13 (c) (i) 	2 
+
+13 (c) (ii) 	2 
+
+13 (d) 	4 
+
+14 (a) (i) 	3 
+
+14 (a) (ii) 	1 
+
+14 (b) (i) 	2 
+
+
+
+Content 
+
+MEX-V1 Further Work with Vectors 
+
+MEX-P1 The Nature of Proof 
+
+MEX-N1 Introduction to Complex Numbers 
+
+MEX-M1 Applications of Calculus to Mechanics 
+
+MEX-P1 The Nature of Proof 
+
+MEX-N2 Using Complex Numbers 
+
+MEX-N2 Using Complex Numbers 
+
+MEX-M1 Applications of Calculus to Mechanics 
+
+MEX-N2 Using Complex Numbers 
+
+MEX-V1 Further Work with Vectors 
+
+
+
+Content 
+
+MEX-N2 Using Complex Numbers 
+
+MEX-N1 Introduction to Complex Numbers 
+
+MEX-N1 Introduction to Complex Numbers 
+
+MEX-N1 Introduction to Complex Numbers 
+
+MEX-M1 Applications of Calculus to Mechanics 
+
+MEX-M1 Applications of Calculus to Mechanics 
+
+MEX-V1 Further Work with Vectors 
+
+MEX-P1 The Nature of Proof 
+
+MEX-C1 Further Integration 
+
+MEX-C1 Further Integration 
+
+MEX-P2 Further Proof by Mathematical Induction 
+
+MEX-N2 Using Complex Numbers 
+
+MEX-C1 Further Integration 
+
+MEX-M1 Applications of Calculus to Mechanics 
+
+MEX-C1 Further Integration 
+
+MEX-V1 Further Work with Vectors 
+
+MEX-P1 The Nature of Proof 
+
+MEX-P1 The Nature of Proof 
+
+MEX-C1 Further Integration 
+
+MEX-C1 Further Integration 
+
+MEX-C1 Further Integration 
+
+MEX-M1 Applications of Calculus to Mechanics 
+
+
+
+Syllabus outcomes 
+
+MEX12-3 
+
+MEX12-8 
+
+MEX12-4 
+
+MEX12-6 
+
+MEX12-8 
+
+MEX12-4 
+
+MEX12-4 
+
+MEX12-7 
+
+MEX12-4 
+
+MEX12-3 
+
+
+
+Syllabus outcomes 
+
+MEX12-4 
+
+MEX12-4 
+
+MEX12-1 
+
+MEX12-1 
+
+MEX12-6 
+
+MEX12-6 
+
+MEX12-3 
+
+MEX12-2 
+
+MEX12-5 
+
+MEX12-5 
+
+MEX12-2 
+
+MEX12-1 
+
+MEX12-5 
+
+MEX12-6 
+
+MEX12-5 
+
+MEX12-3 
+
+MEX12-2 
+
+MEX12-2 
+
+MEX12-5 
+
+MEX12-5 
+
+MEX12-5 
+
+MEX12-6 
+
+
+
+
+Page 36 of 37 
+NESA   2025 HSC   Mathematics Extension 2   Marking Guidelines
+
+
+
+Question Marks 
+
+14 (b) (ii) 	2 
+
+14 (c) (i) 	1 
+
+14 (c) (ii) 	2 
+
+14 (c) (iii) 	1 
+
+14 (d) 	3 
+
+15 (a) 	4 
+
+15 (b) 	4 
+
+15 (c) (i) 	3 
+
+15 (c) (ii) 	2 
+
+15 (c) (iii) 	2 
+
+16 (a) 	4 
+
+16 (b) 	5 
+
+16 (c) (i) 	2 
+
+16 (c) (ii) 	1 
+
+16 (c) (iii) 	3 
+
+Content 
+
+MEX-M1 Applications of Calculus to Mechanics 
+
+MEX-N2 Using Complex Numbers 
+
+MEX-N2 Using Complex Numbers 
+
+MEX-N2 Using Complex Numbers 
+
+MEX-P1 The Nature of Proof 
+
+MEX-V1 Further Work with Vectors 
+
+MEX-M1 Applications of Calculus to Mechanics 
+
+MEX-N1 Introduction to Complex Numbers 
+
+MEX-N2 Using Complex Numbers 
+
+MEX-N2 Using Complex Numbers 
+
+MEX-P1 The Nature of Proof 
+MEX-N1 Introduction to Complex Numbers 
+
+MEX-M1 Applications of Calculus to Mechanics 
+
+MEX-V1 Further Work with Vectors 
+
+MEX-V1 Further Work with Vectors 
+
+MEX-V1 Further Work with Vectors 
+
+Syllabus outcomes 
+
+MEX12-6 
+
+MEX12-4 
+
+MEX12-4 
+
+MEX12-4 
+
+MEX12-1 
+
+MEX12-3 
+
+MEX12-6 
+
+MEX12-1 
+
+MEX12-1 
+
+MEX12-4 
+
+MEX12-2, MEX12-4 
+
+MEX12-6 
+
+MEX12-3, MEX12-7 
+
+MEX12-3, MEX12-7 
+
+MEX12-3, MEX12-7 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 37 of 37 

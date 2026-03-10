@@ -1,0 +1,817 @@
+NSW Syllabus
+for the Australian
+Curriculum
+Mathematics
+Extension 2
+Stage 6
+Syllabus
+
+Original 2017 published version updated:
+January 2018 - NESA Official Notice 29 January 2018 (NESA 4/18)
+March 2018 - NESA Official Notice 26 March 2018 (NESA 22/18)
+November 2019 - NESA Official Notice 18 November 2019 (NESA 48/19)
+
+View the online version log for all syllabus updates.
+
+(c) 2019 NSW Education Standards Authority (NESA) for and on behalf of the Crown in right of the State of New South Wales.
+
+The NESA website holds the ONLY official and up-to-date versions of these documents available on the internet. ANY other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are NOT authorised. You CANNOT rely on copies from any other source.
+
+The documents on this website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright.
+
+All rights reserved. No part of the Material may be reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form, or transmitted to any other person or stored electronically in any form without the prior written permission of NESA, except as permitted by the Copyright Act 1968.
+
+When you access the material you agree:
+* to use the material for information purposes only
+* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the prior permission of NESA
+* to acknowledge that the material is provided by NESA
+* to include this copyright notice in any copy made
+* not to modify the material or any part of the material without the express prior written permission of NESA.
+The material may contain third-party copyright materials such as photos, diagrams, quotations, cartoons and artworks. These materials are protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's specific permission. Unauthorised reproduction, transmission or commercial use of such copyright materials may result in prosecution.
+
+NESA has made all reasonable attempts to locate owners of third-party copyright material and invites anyone from whom permission has not been sought to contact the Copyright Officer.
+
+Phone: (02) 9367 8289
+Fax: (02) 9279 1482
+Email: copyright@nesa.nsw.edu.au
+
+Published by
+NSW Education Standards Authority
+GPO Box 5300
+Sydney NSW 2001
+Australia
+
+www.educationstandards.nsw.edu.au
+
+PAF17/483
+D2017/35787
+
+Contents
+Introduction	4
+Mathematics Extension 2 Key	7
+Rationale	10
+Mathematics in Stage 6	11
+The Place of the Mathematics Extension 2 Stage 6 Syllabus in the K-12 Curriculum	13
+Aim	14
+Objectives	15
+Outcomes	16
+Course Structure and Requirements	18
+Assessment and Reporting	19
+Content	20
+Mathematics Extension 2 Year 12 Course Content	26
+Glossary	43
+
+
+Introduction
+Stage 6 Curriculum
+NSW Education Standards Authority (NESA) Stage 6 syllabuses have been developed to provide students with opportunities to further develop skills which will assist in the next stage of their lives.
+
+The purpose of Stage 6 syllabuses is to:
+? develop a solid foundation of literacy and numeracy
+? provide a curriculum structure which encourages students to complete secondary education at their highest possible level
+? foster the intellectual, creative, ethical and social development of students, in particular relating to:
+- application of knowledge, understanding, skills, values and attitudes in the fields of study they choose
+- capacity to manage their own learning and to become flexible, independent thinkers, problem-solvers and decision-makers
+- capacity to work collaboratively with others
+- respect for the cultural diversity of Australian society
+- desire to continue learning in formal or informal settings after school
+? provide a flexible structure within which students can meet the challenges of and prepare for:
+- further academic study, vocational training and employment
+- changing workplaces, including an increasingly STEM-focused (Science, Technology, Engineering and Mathematics) workforce
+- full and active participation as global citizens
+? provide formal assessment and certification of students' achievements
+? promote the development of students' values, identity and self-respect.
+
+The Stage 6 syllabuses reflect the principles of the NESA K-10 Curriculum Framework and Statement of Equity Principles, the reforms of the NSW Government Stronger HSC Standards (2016), and nationally agreed educational goals. These syllabuses build on the continuum of learning developed in the K-10 syllabuses.
+
+The syllabuses provide a set of broad learning outcomes that summarise the knowledge, understanding, skills, values and attitudes important for students to succeed in and beyond their schooling. In particular, the attainment of skills in literacy and numeracy needed for further study, employment and active participation in society are provided in the syllabuses in alignment with the Australian Core Skills Framework.
+
+The Stage 6 syllabuses include the content of the Australian Curriculum and additional descriptions that clarify the scope and depth of learning in each subject.
+
+NESA syllabuses support a standards-referenced approach to assessment by detailing the important knowledge, understanding, skills, values and attitudes students will develop and outlining clear standards of what students are expected to know and be able to do. The syllabuses take into account the diverse needs of all students and provide structures and processes by which teachers can provide continuity of study for all students.
+
+
+Diversity of Learners
+NSW Stage 6 syllabuses are inclusive of the learning needs of all students. Syllabuses accommodate teaching approaches that support student diversity, including students with disability, gifted and talented students, and students learning English as an additional language or dialect (EAL/D). Students may have more than one learning need.
+Students with Disability
+All students are entitled to participate in and progress through the curriculum. Schools are required to provide additional support or adjustments to teaching, learning and assessment activities for some students with disability. Adjustments are measures or actions taken in relation to teaching, learning and assessment that enable a student with special education needs to access syllabus outcomes and content, and demonstrate achievement of outcomes.
+
+Students with disability can access the outcomes and content from Stage 6 syllabuses in a range of ways. Students may engage with:
+? Stage 6 syllabus outcomes and content with adjustments to teaching, learning and/or assessment activities; or
+? selected Stage 6 Life Skills outcomes and content from one or more Stage 6 Life Skills syllabuses.
+
+Decisions regarding curriculum options, including adjustments, should be made in the context of collaborative curriculum planning with the student, parent/carer and other significant individuals to ensure that decisions are appropriate for the learning needs and priorities of individual students.
+
+Further information can be found in support materials for:
+? Mathematics Extension 2
+? Special Education
+? Life Skills.
+Gifted and Talented Students
+Gifted students have specific learning needs that may require adjustments to the pace, level and content of the curriculum. Differentiated educational opportunities assist in meeting the needs of gifted students.
+
+Generally, gifted students demonstrate the following characteristics:
+? the capacity to learn at faster rates
+? the capacity to find and solve problems
+? the capacity to make connections and manipulate abstract ideas.
+
+There are different kinds and levels of giftedness. Gifted and talented students may also possess learning difficulties and/or disabilities that should be addressed when planning appropriate teaching, learning and assessment activities.
+
+
+Curriculum strategies for gifted and talented students may include:
+? differentiation: modifying the pace, level and content of teaching, learning and assessment activities
+? acceleration: promoting a student to a level of study beyond their age group
+? curriculum compacting: assessing a student's current level of learning and addressing aspects of the curriculum that have not yet been mastered.
+
+School decisions about appropriate strategies are generally collaborative and involve teachers, parents and students, with reference to documents and advice available from NESA and the education sectors.
+
+Gifted and talented students may also benefit from individual planning to determine the curriculum options, as well as teaching, learning and assessment strategies, most suited to their needs and abilities.
+Students Learning English as an Additional Language or Dialect (EAL/D)
+Many students in Australian schools are learning English as an additional language or dialect (EAL/D). EAL/D students are those whose first language is a language or dialect other than Standard Australian English and who require additional support to assist them to develop English language proficiency.
+
+EAL/D students come from diverse backgrounds and may include:
+? overseas and Australian-born students whose first language is a language other than English, including creoles and related varieties
+? Aboriginal and Torres Strait Islander students whose first language is Aboriginal English, including Kriol and related varieties.
+
+EAL/D students enter Australian schools at different ages and stages of schooling and at different stages of English language learning. They have diverse talents and capabilities and a range of prior learning experiences and levels of literacy in their first language and in English. EAL/D students represent a significant and growing percentage of learners in NSW schools. For some, school is the only place they use Standard Australian English.
+
+EAL/D students are simultaneously learning a new language and the knowledge, understanding and skills of the Mathematics Extension 2 Stage 6 Syllabus through that new language. They may require additional support, along with informed teaching that explicitly addresses their language needs.
+
+The ESL scales and the English as an Additional Language or Dialect: Teacher Resource provide information about the English language development phases of EAL/D students. These materials and other resources can be used to support the specific needs of English language learners and to assist students to access syllabus outcomes and content.
+
+
+Mathematics Extension 2 Key
+The following codes and icons are used in the Mathematics Extension 2 Stage 6 Syllabus.
+Outcome Coding
+Syllabus outcomes have been coded in a consistent way. The code identifies the subject, Year and outcome number. For example:
+
+
+
+Outcome codeInterpretationMEX12-4Mathematics Extension 2, Year 12 - Outcome number 4Coding of Australian Curriculum Content
+Australian Curriculum content descriptions included in the syllabus are identified by an Australian Curriculum code which appears in brackets at the end of each content description. For example:
+
+Understand and use a variety of notations and representations for vectors in three dimensions (ACMSM101)
+
+
+
+Where a number of content descriptions are jointly represented, all description codes are included, eg (ACMMM001, ACMMM002, ACMSM003).
+
+
+Coding of Applications and Modelling
+The syllabus provides many opportunities for students to apply and further develop the knowledge, skills and understanding initially described in the topics.
+
+In considering various applications of mathematics, students will be required to construct and use mathematical models. Mathematical modelling gives structure to what we perceive and how we perceive it. In following a modelling process, students view a problem through their past experience, prior knowledge and areas of confidence. As a model emerges, it extends their thinking in new ways as well as enhancing what they have observed.
+
+Modelling opportunities will involve a wide variety of approaches such as generating equations or formulae that describe the behaviour of an object, or alternatively displaying, analysing and interpreting data values from a real-life situation.
+
+In the process of modelling, teachers should provide students with opportunities to make choices, state and question assumptions and make generalisations. Teachers can draw upon problems from a wide variety of sources to reinforce the skills developed, enhance students' appreciation of mathematics and where appropriate, expand their use of technology.
+
+Explicit application and modelling opportunities are identified within the syllabus by the code AAM.
+
+For example: define and use the scalar (dot) product of two vectors in three dimensions AAM
+
+
+Learning Across the Curriculum Icons
+Learning across the curriculum content, including cross-curriculum priorities, general capabilities and other areas identified as important learning for all students, is incorporated and identified by icons in the syllabus.
+
+Cross-curriculum priorities
+ 	Aboriginal and Torres Strait Islander histories and cultures
+ 	Asia and Australia's engagement with Asia
+ 	Sustainability
+
+General capabilities
+ 	Critical and creative thinking
+ 	Ethical understanding
+ 	Information and communication technology capability
+ 	Intercultural understanding
+ 	Literacy
+ 	Numeracy
+ 	Personal and social capability
+
+Other learning across the curriculum areas
+ 	Civics and citizenship
+ 	Difference and diversity
+ 	Work and enterprise
+
+
+Rationale
+Mathematics is the study of order, relation, pattern, uncertainty and generality and is underpinned by observation, logical reasoning and deduction. From its origin in counting and measuring, its development throughout history has been catalysed by its utility in explaining real-world phenomena and its inherent beauty. It has evolved in highly sophisticated ways to become the language now used to describe many aspects of the modern world.
+
+Mathematics is an interconnected subject that involves understanding and reasoning about concepts and the relationships between those concepts. It provides a framework for thinking and a means of communication that is powerful, logical, concise and precise.
+
+The Mathematics Stage 6 syllabuses are designed to offer opportunities for students to think mathematically. Mathematical thinking is supported by an atmosphere of questioning, communicating, reasoning and reflecting and is engendered by opportunities to generalise, challenge, find connections and think critically and creatively.
+
+All Mathematics Stage 6 syllabuses provide opportunities for students to develop 21st-century knowledge, skills, understanding, values and attitudes. As part of this, in all courses students are encouraged to learn with the use of appropriate technology and make appropriate choices when selecting technologies as a support for mathematical activity.
+
+The Mathematics Stage 6 courses, in particular Mathematics Advanced, Mathematics Extension 1 and Mathematics Extension 2, form a continuum to provide opportunities at progressively higher levels for students to acquire knowledge, skills and understanding in relation to concepts within the area of mathematics that have applications in an increasing number of contexts. These concepts and applications are appropriate to the students' continued experience of mathematics as a coherent, interrelated, interesting and intrinsically valuable study that forms the basis for future learning. The introductory concepts and techniques of differential and integral calculus form a strong basis of the courses, and are developed and used across the courses, through a range of applications.
+
+Mathematics Extension 2 provides students with the opportunity to develop strong mathematical manipulative skills and a deep understanding of the fundamental ideas of algebra and calculus, as well as an appreciation of mathematics as an activity with its own intrinsic value, involving invention, intuition and exploration. Mathematics Extension 2 extends students' conceptual knowledge and understanding through exploration of new areas of mathematics not previously seen.
+
+Mathematics Extension 2 provides a basis for a wide range of useful applications of mathematics as well as a strong foundation for further study of the subject.
+
+Mathematics in Stage 6
+There are six Board-developed Mathematics courses of study for the Higher School Certificate: Mathematics Standard 1, Mathematics Standard 2, Mathematics Advanced, Mathematics 
+Extension 1, Mathematics Extension 2 and Mathematics Life Skills.
+
+Students studying the Mathematics Standard syllabus undertake a common course in Year 11. For the Year 12 course students can elect to study either Mathematics Standard 1 or Mathematics Standard 2.
+
+Students who intend to study the Mathematics Standard 2 course in Year 12 must study all Mathematics Standard Year 11 course content.
+
+Students who intend to study the Mathematics Standard 1 course in Year 12 must have studied the content identified by the symbol ? which forms the foundation of course. This content is important for the development and consolidation of numeracy skills.
+
+Mathematics Advanced consists of the courses Mathematics Advanced Year 11 and Mathematics Advanced Year 12. Students studying one or both Extension courses must study both Mathematics Advanced Year 11 and Mathematics Extension Year 11 courses before undertaking the study of Mathematics Extension 1 Year 12, or both Mathematics Extension 1 Year 12 and Mathematics Extension 2 Year 12. An alternative approach is for students to study both Mathematics Advanced Year 11 and Mathematics Advanced Year 12 before undertaking the study of Mathematics Extension Year 11 and Mathematics Extension 1 Year 12, or both Mathematics Extension 1 Year 12 and Mathematics Extension 2 Year 12.
+
+The Year 11 and Year 12 course components undertaken by students who study Mathematics Standard 1, Mathematics Standard 2, or Mathematics Advanced, Mathematics Extension 1 or Mathematics Extension 2 are illustrated below.
+
+
+Mathematics Standard 1 - Year 11 and Year 12 course components
+
+Mathematics Standard 1 or 2 - Year 11 and Year 12 course components
+
+Mathematics Advanced - Year 11 and Year 12 course components
+
+Mathematics Extension 1 - Co-requisites + Year 11 and Year 12 course components
+
+Mathematics Extension 2 - Co-requisites (Year 11 and Year 12 courses) + Year 12 course components
+
+
+The Place of the Mathematics Extension 2 Stage 6 Syllabus in the K-12 Curriculum
+
+
+ 
+
+Aim
+The study of Mathematics Extension 2 in Stage 6 enables students to extend their knowledge and understanding of working mathematically, enhance their skills to tackle difficult, unstructured problems, generalise, make connections and become fluent at communicating in a concise and systematic manner.
+
+Objectives
+Knowledge, Skills and Understanding
+Students:
+? develop efficient strategies to solve complex problems using pattern recognition, generalisation, proof and modelling techniques
+? develop their knowledge, skills and understanding to model and solve complex and interconnected problems in the areas of proof, vectors and mechanics, calculus and complex numbers
+? develop their problem solving and reasoning skills to create appropriate mathematical models in a variety of forms and apply these to difficult unstructured problems
+? use mathematics as an effective means of communication and justification in complex situations.
+Values and Attitudes
+Students value and appreciate:
+? mathematics as an essential and relevant part of life, recognising that its development and use has been largely in response to human needs by societies all around the globe
+? the importance of resilience and self-motivation in undertaking mathematical challenges.
+
+
+Outcomes
+Table of Objectives and Outcomes - Continuum of Learning
+All aspects of Working Mathematically, as described in this syllabus, are integral to the outcomes of the Mathematics Extension 2 Stage 6 course, in particular outcomes MEX12-7 and MEX12-8.
+
+Objective
+Students:
+* develop efficient strategies to solve complex problems using pattern recognition, generalisation, proof and modelling techniquesYear 12 Mathematics Extension 2 outcomes
+A student:MEX12-1
+understands and uses different representations of numbers and functions to model, prove results and find solutions to problems in a variety of contexts
+Objective
+Students:
+* develop their knowledge, skills and understanding to model and solve complex and interconnected problems in the areas of proof, vectors and mechanics, calculus and complex numbersYear 12 Mathematics Extension 2 outcomes
+A student:MEX12-2
+chooses appropriate strategies to construct arguments and proofs in both practical and abstract settingsMEX12-3
+uses vectors to model and solve problems in two and three dimensionsMEX12-4
+uses the relationship between algebraic and geometric representations of complex numbers and complex number techniques to prove results, model and solve problemsMEX12-5
+applies techniques of integration to structured and unstructured problemsMEX12-6
+uses mechanics to model and solve practical problems
+
+Objective
+Students:
+* develop their problem-solving and reasoning skills to create appropriate mathematical models in a variety of forms and apply these to difficult unstructured problemsYear 12 Mathematics Extension 2 outcomes
+A student:MEX12-7
+applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems
+Objective
+Students:
+* use mathematics as an effective means of communication and justification in complex situationsYear 12 Mathematics Extension 2 outcomes
+A student:MEX12-8
+communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument
+
+Course Structure and Requirements
+The course is organised in topics, with the topics divided into subtopics.
+
+Year 12 course
+(60 hours)Mathematics Extension 2TopicsSubtopicsProofMEX-P1 The Nature of Proof
+MEX-P2 Further Proof by Mathematical InductionVectorsMEX-V1 Further Work with VectorsComplex NumbersMEX-N1 Introduction to Complex Numbers
+MEX-N2 Using Complex NumbersCalculusMEX-C1 Further IntegrationMechanicsMEX-M1 Applications of Calculus to Mechanics
+For this course:
+? The Mathematics Extension 1 Year 12 course should be taught prior to or concurrently with this course.
+? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
+? Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
+
+
+Assessment and Reporting
+Information about assessment in relation to the Mathematics Extension 2 syllabus is contained in Assessment and Reporting in Mathematics Extension 2 Stage 6. It outlines course-specific advice and requirements regarding:
+? Year 12 school-based assessment requirements
+? Year 12 mandatory components and weightings
+? External assessment requirements, including HSC examination specifications.
+
+This information should be read in conjunction with requirements on the Assessment Certification Examination (ACE) website.
+
+Additional advice is available in the Principles of Assessment for Stage 6.
+
+
+Content
+Content defines what students are expected to know and do as they work towards syllabus outcomes. It provides the foundations for students to successfully progress to the next stage of schooling or post-school opportunities.
+Teachers will make decisions about content regarding the sequence, emphasis and any adjustments required based on the needs, interests, abilities and prior learning of students.
+Content in Stage 6 syllabuses defines learning expectations that may be assessed in Higher School Certificate examinations.
+
+Organisation of Content
+The following diagram provides an illustrative representation of elements of the course and their relationship. The Mathematics Extension 2 course includes all of the Mathematics Extension 1 and Mathematics Advanced content.
+
+
+Working Mathematically
+Working Mathematically is integral to the learning process in mathematics. It provides students with the opportunity to engage in genuine mathematical activity and develop the skills to become flexible, critical and creative users of mathematics. In this syllabus, Working Mathematically builds on the skills developed in Stage 5, and encompasses six interrelated aspects which form the focus of the syllabus:
+
+These six aspects of Working Mathematically are embedded across the range of syllabus objectives, outcomes and topics. Teachers extend students' level of proficiency in Working Mathematically by creating opportunities for development through a range of teaching and learning activities they design.
+
+The two key components of assessment are created from these aspects:
+* Understanding, Fluency and Communicating
+* Problem Solving, Reasoning and Justification
+
+Learning Across the Curriculum
+Learning across the curriculum content, including the cross-curriculum priorities and general capabilities, assists students to achieve the broad learning outcomes defined in the NESA Statement of Equity Principles, the Melbourne Declaration on Educational Goals for Young Australians (December 2008) and in the Australian Government's Core Skills for Work Developmental Framework (2013).
+
+Cross-curriculum priorities enable students to develop understanding about and address the contemporary issues they face.
+
+The cross-curriculum priorities are:
+? Aboriginal and Torres Strait Islander histories and cultures 
+? Asia and Australia's engagement with Asia 
+? Sustainability 
+
+General capabilities encompass the knowledge, skills, attitudes and behaviours to assist students to live and work successfully in the 21st century.
+
+The general capabilities are:
+? Critical and creative thinking 
+? Ethical understanding 
+? Information and communication technology capability 
+? Intercultural understanding 
+? Literacy 
+? Numeracy 
+? Personal and social capability 
+
+NESA syllabuses include other areas identified as important learning for all students:
+? Civics and citizenship 
+? Difference and diversity 
+? Work and enterprise 
+
+Learning across the curriculum content is incorporated, and identified by icons, in the content of the Mathematics Extension 2 Stage 6 Syllabus in the following ways.
+
+
+Aboriginal and Torres Strait Islander Histories and Cultures 
+Through application and modelling across the topics of the syllabus, students have the opportunity to experience the significance of mathematics in Aboriginal and Torres Strait Islander histories and cultures. Opportunities are provided to connect mathematics with Aboriginal and Torres Strait Islander Peoples' cultural, linguistic and historical experiences. The narrative of the development of mathematics and its integration with cultural development can be explored in the context of some topics. Through the evaluation of statistical data where appropriate, students can deepen their understanding of the lives of Aboriginal and Torres Strait Islander Peoples.
+
+When planning and programming content relating to Aboriginal and Torres Strait Islander histories and cultures teachers are encouraged to:
+? involve local Aboriginal communities and/or appropriate knowledge holders in determining suitable resources, or to use Aboriginal or Torres Strait Islander authored or endorsed publications
+? read the Principles and Protocols relating to teaching and learning about Aboriginal and Torres Strait Islander histories and cultures and the involvement of local Aboriginal communities.
+Asia and Australia's Engagement with Asia 
+Students have the opportunity to learn about the understandings and applications of mathematics in Asia and the way mathematicians from Asia continue to contribute to the ongoing development of mathematics. By drawing on knowledge of and examples from the Asia region, such as calculation, money, art, architecture, design and travel, students have the opportunity to develop mathematical understanding in fields such as numbers, patterns, measurement, symmetry and statistics. Through the evaluation of statistical data, students have the opportunity to examine issues pertinent to the Asia region.
+Sustainability 
+Mathematics provides a foundation for the exploration of issues of sustainability. Students have the opportunity to learn about the mathematics underlying topics in sustainability such as energy use and how to reduce consumption, alternative energy using solar cells and wind turbines, climate science and mathematical modelling. Through measurement and the reasoned use of data, students have the opportunity to measure and evaluate sustainability changes over time and develop a deeper appreciation of the world around them. Mathematical knowledge, skills and understanding are necessary to monitor and quantify both the impact of human activity on ecosystems and changes to conditions in the biosphere.
+Critical and Creative Thinking 
+Critical and creative thinking are key to the development of mathematical understanding. Mathematical reasoning and logical thought are fundamental elements of critical and creative thinking. Students are encouraged to be critical thinkers when justifying their choice of a calculation strategy or identifying relevant questions during an investigation. They are encouraged to look for alternative ways to approach mathematical problems, for example identifying when a problem is similar to a previous one, drawing diagrams or simplifying a problem to control some variables. Students are encouraged to be creative in their approach to solving new problems, combining the skills and knowledge they have acquired in their study of a number of different topics, within a new context.
+
+
+Ethical Understanding 
+Mathematics makes a clear distinction between the deductions made from basic principles and their consequences in different circumstances. Students have opportunities to explore, develop and apply ethical understanding to mathematics in a range of contexts. Examples include: collecting, displaying and interpreting data; examining selective use of data by individuals and organisations; detecting and eliminating bias in the reporting of information; exploring the importance of fair comparison; and interrogating financial claims and sources.
+Information and Communication Technology Capability 
+Mathematics provides opportunities for students to develop their information and communication technology (ICT) capability when they investigate, create and communicate mathematical ideas and concepts using fast, automated, interactive and multimodal technologies. Students can use their ICT capability to perform calculations; draw graphs; collect, manage, analyse and interpret data; share and exchange information and ideas; and investigate and model concepts and relationships. Digital technologies, such as calculators, spreadsheets, dynamic geometry software, graphing software and computer algebra software, can engage students and promote understanding of key concepts.
+Intercultural Understanding 
+Students have opportunities to understand that mathematical expressions use universal symbols, while mathematical knowledge has its origin in many cultures. Students are provided with opportunities to realise that proficiencies such as understanding, fluency, reasoning and problem-solving are not culture or language-specific, but that mathematical reasoning and understanding can find different expression in different cultures and languages. The curriculum provides contexts for exploring mathematical problems from a range of cultural perspectives and within diverse cultural contexts. Students can apply mathematical thinking to identify and resolve issues related to living with diversity.
+Literacy 
+Literacy is used throughout mathematics to understand and interpret word problems and instructions containing particular language featured in mathematics. Students have the opportunity to learn the vocabulary associated with mathematics, including synonyms, technical terminology, passive voice and common words with specific meanings in a mathematical context. Literacy is used to pose and answer questions, engage in mathematical problem-solving and to discuss, produce and explain solutions. There are opportunities for students to develop the ability to create and interpret a range of media typical of mathematics, ranging from graphs to complex data displays.
+Numeracy 
+Numeracy is embedded throughout the Mathematics Stage 6 syllabuses. It relates to a high proportion of the content descriptions across Years 11 and 12. Consequently, this particular general capability is not tagged in this syllabus.
+
+Numeracy involves drawing on knowledge of particular contexts and circumstances in deciding when to use mathematics, choosing the mathematics to use and critically evaluating its use. To be numerate is to use mathematics effectively to meet the general demands of life at home, at work, and for participation in community and civic life. It is therefore important that the mathematics curriculum provides the opportunity to apply mathematical understanding and skills in context, in other learning areas and in real-world scenarios.
+Personal and Social Capability 
+Students are provided with opportunities to develop personal and social competence as they learn to understand and manage themselves, their relationships and their lives more effectively. Mathematics enhances the development of students' personal and social capabilities by providing opportunities for initiative-taking, decision-making, communicating their processes and findings, and working independently and collaboratively in the mathematics classroom. Students have the opportunity to apply mathematical skills in a range of personal and social contexts. This may be through activities that relate learning to their own lives and communities, such as time management, budgeting and financial management, and understanding statistics in everyday contexts.
+Civics and Citizenship 
+Mathematics has an important role in civics and citizenship education because it has the potential to help us understand our society and our role in shaping it. The role of mathematics in society has expanded significantly in recent decades as almost all aspects of modern-day life are now quantified. Through modelling reality using mathematics and then manipulating the mathematics in order to understand and/or predict reality, students have the opportunity to learn mathematical knowledge, skills and understanding that are essential for active participation in the world in which we live.
+Difference and Diversity 
+Students make sense of and construct mathematical ideas in different ways, drawing upon their own unique experiences in life and prior learning. By valuing students' diversity of ideas, teachers foster students' efficacy in learning mathematics.
+Work and Enterprise 
+Students have the opportunity to develop work and enterprise knowledge, skills and understanding through their study of mathematics in a work-related context. Students are encouraged to select and apply appropriate mathematical techniques and problem-solving strategies through work-related experience. This allows them to make informed financial decisions by selecting and analysing relevant information.
+
+Mathematics Extension 2 Year 12 Course Content
+Course Structure and Requirements
+The course is organised in topics, with the topics divided into subtopics.
+
+Year 12 course
+(60 hours)Mathematics Extension 2TopicsSubtopicsProofMEX-P1 The Nature of Proof
+MEX-P2 Further Proof by Mathematical InductionVectorsMEX-V1 Further Work with VectorsComplex NumbersMEX-N1 Introduction to Complex Numbers
+MEX-N2 Using Complex NumbersCalculusMEX-C1 Further IntegrationMechanicsMEX-M1 Applications of Calculus to Mechanics
+For this course:
+? The Mathematics Extension 1 Year 12 course should be taught prior to or concurrently with this course.  
+? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
+? Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
+
+
+Topic: Proof
+Outcomes
+A student:
+› understands and uses different representations of numbers and functions to model, prove results and find solutions to problems in a variety of contexts MEX12-1
+› chooses appropriate strategies to construct arguments and proofs in both practical and abstract settings MEX12-2
+› applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Topic Focus
+The topic Proof involves the communication and justification of an argument for a mathematical statement in a clear, concise and precise manner.
+
+A knowledge of proof enables a level of reasoning, justification and communication that is accurate, concise and precise and lays the foundations for understanding the structure of a mathematical argument.
+
+The study of proof is important in developing students' ability to reason, justify, communicate and critique mathematical arguments and statements necessary for problem-solving and generalising patterns.
+Subtopics
+MEX-P1: The Nature of Proof
+MEX-P2: Further Proof by Mathematical Induction
+
+
+Proof
+MEX-P1 The Nature of Proof
+Outcomes
+A student:
+› understands and uses different representations of numbers and functions to model, prove results and find solutions to problems in a variety of contexts MEX12-1
+› chooses appropriate strategies to construct arguments and proofs in both practical and abstract settings MEX12-2
+› applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Subtopic Focus
+The principal focus of this subtopic is to develop rigorous mathematical arguments and proofs, specifically in the context of number and algebra.
+
+Students develop an understanding of the necessity for rigorous and robust methods to prove the validity of a variety of concepts related to number and algebra. The level of clear and concise communication developed will be used in further pathways.
+Content
+Students:
+? use the formal language of proof, including the terms statement, implication, converse, negation and contrapositive (ACMSM024)
+- use the symbols for implication (?), equivalence (?) and equality (=) , demonstrating a clear understanding of the difference between them (ACMSM026)
+- use the phrases 'for all' (?), 'if and only if' (iff) and 'there exists' (?) (ACMSM027)
+- understand that a statement is equivalent to its contrapositive but that the converse of a true statement may not be true
+? prove simple results involving numbers (ACMSM061) 
+? use proof by contradiction including proving the irrationality for numbers such as v2 and log_2 5 (ACMSM025, ACMSM063) 
+? use examples and counter-examples (ACMSM028)
+? prove results involving inequalities. For example: 
+- prove inequalities by using the definition of a>b for real a and b 
+- prove inequalities by using the property that squares of real numbers are non-negative
+- prove and use the triangle inequality |x|+|y|=|x+y| and interpret the inequality geometrically
+- establish and use the relationship between the arithmetic mean and geometric mean for two non-negative numbers
+? prove further results involving inequalities by logical use of previously obtained inequalities 
+
+
+Proof
+MEX-P2 Further Proof by Mathematical Induction
+Outcomes
+A student:
+› understands and uses different representations of numbers and functions to model, prove results and find solutions to problems in a variety of contexts MEX12-1
+› chooses appropriate strategies to construct arguments and proofs in both practical and abstract settings MEX12-2
+› applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Subtopic Focus
+The principal focus of this subtopic is to use the technique of proof by mathematical induction to prove results in series, divisibility, inequality, algebra, probability, calculus and geometry.
+
+Students further develop the use of formal mathematical language across various mathematical topics to rigorously and robustly prove the validity of given situations using inductive reasoning. The logical sequence of steps in the proof technique needs to be understood and carefully justified in each application, thus encouraging clear and concise communication which is vital for further study.
+Content
+Students:
+? prove results using mathematical induction where the initial value of n is greater than 1, and/or n does not increase strictly by 1, for example prove that  n^2+2n is a multiple of 8 if n is an even positive integer
+? understand and use sigma notation to prove results for sums, for example:
+?_(n=1)^N¦1/(2n+1)(2n-1) =N/(2N+1)
+? understand and prove results using mathematical induction, including inequalities and results in algebra, calculus, probability and geometry. For example: 
+- prove inequality results, eg 2^n>n^2, for positive integers n>4
+- prove divisibility results, eg 3^(2n+4)-2^2n is divisible by 5 for any positive integer n
+- prove results in calculus, eg prove that for any positive integer n , d/dx(x^n)=nx^(n-1)
+- prove results related to probability, eg the binomial theorem:
+(x+a)^n=?_(r=0)^n¦(_ ^n)C_r   x^(n-r) a^r
+- prove geometric results, eg prove that the sum of the exterior angles of an n-sided plane convex polygon is 360°
+? use mathematical induction to prove first-order recursive formulae 
+
+Topic: Vectors
+Outcomes
+A student:
+› uses vectors to model and solve problems in two and three dimensions MEX12-3
+› applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Topic Focus
+The topic Vectors involves mathematical representation of a quantity with magnitude and direction and its geometrical depiction. This topic provides a modern language and approach to explore and explain an array of object behaviours in a variety of contexts from theoretical or real-life scenarios.
+
+A knowledge of vectors enables the understanding of objects in two and three dimensions and ways in which this behaviour can be expressed, including the consideration of position, location and movement. Vectors are easy to generalise to multiple topics and fields of study, including engineering, structural analysis and navigation.
+Subtopics
+MEX-V1: Further Work with Vectors
+
+
+Vectors
+MEX-V1 Further Work with Vectors
+Outcomes
+A student:
+› uses vectors to model and solve problems in two and three dimensions MEX12-3
+› applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Subtopic Focus
+The principal focus of this subtopic is to extend the concept of vectors to three dimensions, as well as develop the understanding of vectors to include representations of lines. Vectors are used to represent quantities with magnitude and direction and this representation allows for exploration of situations such as geometrical proofs.
+
+Students develop an understanding of vector notations and how to manipulate vectors to allow geometrical situations to be explored further.
+Content
+V1.1: Introduction to three-dimensional vectors
+Students:
+? understand and use a variety of notations and representations for vectors in three dimensions
+- define the standard unit vectors,  and 
+- express and use a vector in three dimensions in a variety of forms, including component form, ordered triples and column vector notation
+? perform addition and subtraction of three-dimensional vectors and multiplication of three-dimensional vectors by a scalar algebraically and geometrically, and interpret these operations in geometric terms  
+
+
+V1.2: Further operations with three-dimensional vectors
+Students:
+? define, calculate and use the magnitude of a vector in three dimensions 
+- establish that the magnitude of a vector in three dimensions can be found using:
+
+- convert a non-zero vector  into a unit vector  by dividing by its length: 
+? define and use the scalar (dot) product of two vectors in three dimensions AAM
+- define and apply the scalar product  to vectors expressed in component form, where 
+,  and 
+- extend the formula  for three dimensions and use it to solve problems
+? prove geometric results in the plane and construct proofs in three dimensions (ACMSM102) 
+
+V1.3: Vectors and vector equations of lines
+Students:
+? use Cartesian coordinates in two and three-dimensional space
+? recognise and find the equations of spheres
+? use vector equations of curves in two or three dimensions involving a parameter, and determine a corresponding Cartesian equation in the two-dimensional case, where possible (ACMSM104) AAM
+? understand and use the vector equation  of a straight line through points A and B where R is a point on AB, , , ? is a parameter and 
+? make connections in two dimensions between the equation  and y=mx+c
+? determine a vector equation of a straight line or straight-line segment, given the position of two points or equivalent information, in two and three dimensions (ACMSM105)
+? determine when two lines in vector form are parallel
+? determine when intersecting lines are perpendicular in a plane or three dimensions
+? determine when a given point lies on a given line in vector form
+
+
+Topic: Complex Numbers
+Outcomes
+A student:
+› understands and uses different representations of numbers and functions to model, prove results and find solutions to problems in a variety of contexts MEX12-1
+› uses the relationship between algebraic and geometric representations of complex numbers and complex number techniques to prove results, model and solve problems MEX12-4
+› applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Topic Focus
+The topic Complex Numbers involves investigating and extending understanding of the real number system to include complex numbers. The use of complex numbers is integral to many areas of life and modern-day technology such as electronics.
+
+A knowledge of complex numbers enables exploration of the ways different mathematical representations inform each other, and the development of understanding of the relationship between algebra, geometry and the extension of the real number system.
+
+The study of complex numbers is important in developing students' understanding of the interconnectedness of mathematics and the real world. It prepares students for further study in mathematics itself and its applications.
+Subtopics
+MEX-N1: Introduction to Complex Numbers
+MEX-N2: Using Complex Numbers
+
+
+Complex Numbers
+MEX-N1 Introduction to Complex Numbers
+Outcomes
+A student:
+› understands and uses different representations of numbers and functions to model, prove results and find solutions to problems in a variety of contexts MEX12-1
+› uses the relationship between algebraic and geometric representations of complex numbers and complex number techniques to model and solve problems MEX12-4
+› applies various mathematical techniques and concepts to prove results, model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Subtopic Focus
+The principal focus of this subtopic is the development of the concept of complex numbers, their associated notations, different representations of complex numbers and the use of complex number operations in order to solve problems.
+
+Students develop a suite of tools to represent and operate with complex numbers in a range of contexts. The skills of algebra, trigonometry and geometry are brought together and developed further, thus preparing students to work effectively with applications of complex numbers.
+Content
+N1.1: Arithmetic of complex numbers
+Students:
+? use the complex number system  
+- develop an understanding of the classification of numbers and their associated properties, symbols and representations
+- define the number, i, as a root of the equation x^2= -1 (ACMSM067)
+- use the symbol i to solve quadratic equations that do not have real roots
+? represent and use complex numbers in Cartesian form AAM  
+- use complex numbers in the form z=a+ib, where a and b are real numbers and a is the real part Re(z) and b is the imaginary part Im(z) of the complex number (ACMSM068, ACMSM077)
+- identify the condition for z_1=a+ib and z_2=c+id to be equal
+- define and perform complex number addition, subtraction and multiplication (ACMSM070) 
+- define, find and use complex conjugates, and denote the complex conjugate of z as z ¯ 
+- divide one complex number by another complex number and give the result in the form 
+a+ib
+- find the reciprocal and two square roots of complex numbers in the form z=a+ib
+
+
+N1.2: Geometric representation of a complex number
+Students:
+? represent and use complex numbers in the complex plane (ACMSM071)  
+- use the fact that there exists a one-to-one correspondence between the complex number z=a+ib and the ordered pair (a,b)
+- plot the point corresponding to z=a+ib
+? represent and use complex numbers in polar or modulus-argument form, z=r(cos??+i sin??), where r is the modulus of z and ? is the argument of z AAM 
+- define and calculate the modulus of a complex number z=a+ib as |z|=v(a^2+b^2 )
+- define and calculate the argument of a non-zero complex number z=a+ib as arg??(z)?=?, where tan???=b/a?
+- define, calculate and use the principal argument Arg(z) of a non-zero complex number z as the unique value of the argument in the interval (-p,p]
+? prove and use the basic identities involving modulus and argument (ACMSM080) AAM 
+- |z_1 z_2 |=|z_1 ||z_2 | and arg (z_1 z_2)=arg z_1+arg z_2
+- |z_1/z_2 |=(|z_1 |)/(|z_2 |) and arg(z_1/z_2 )=arg z_1-arg z_2, z_2?0
+- |z^n |=?|z|?^n and arg(z^n)=n arg z
+- |1/z^n |=1/?|z|?^n  and arg(1/z^n )=-n arg z, z?0
+- (z_1 ) ¯+(z_2 ) ¯=(z_1+ z_2 ) ¯  
+- (z_1 ) ¯  (z_2 ) ¯=(z_1  z_2 ) ¯
+- zz ¯=|z|^2
+- z+z ¯=2Re(z)
+- z-z ¯=2iIm(z)
+
+N1.3: Other representations of complex numbers
+Students:
+? understand Euler's formula, e^ix=cos x + i sin x, for real x
+? represent and use complex numbers in exponential form, z=re^i?, where r is the modulus of z and ? is the argument of z AAM  
+? use Euler's formula to link polar form and exponential form 
+? convert between Cartesian, polar and exponential forms of complex numbers
+? find powers of complex numbers using exponential form
+? use multiplication, division and powers of complex numbers in polar form and interpret these geometrically (ACMSM082) AAM 
+? solve problems involving complex numbers in a variety of forms AAM 
+
+
+Complex Numbers
+MEX-N2 Using Complex Numbers
+Outcomes
+A student:
+› understands and uses different representations of numbers and functions to model, prove results and find solutions to problems in a variety of contexts MEX12-1
+› uses the relationship between algebraic and geometric representations of complex numbers and complex number techniques to prove results, model and solve problems MEX12-4
+› applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Subtopic Focus
+The principal focus of this subtopic is to develop and to apply knowledge of complex numbers to situations involving trigonometric identities, powers and vector representations in a complex number plane.
+
+Students develop an understanding of the interconnectedness of complex numbers across various mathematical topics and their applications in real life. An important application of complex numbers is that the solutions of polynomial equations of any degree can be written in a form that uses complex numbers. Geometrically, complex numbers are represented as points in a plane and may be represented using polar coordinates or as vectors. In these forms they provide useful models for many scientific quantities and are used, for example in physics and electronics.
+Content
+N2.1: Solving equations with complex numbers
+Students:
+? use De Moivre's theorem with complex numbers in both polar and exponential form AAM
+- prove De Moivre's theorem for integral powers using proof by induction (ACMSM083) 
+- use De Moivre's theorem to derive trigonometric identities such as
+sin?3?=3 cos^2??? sin?? ?-sin^3??
+? determine the solutions of real quadratic equations
+? define and determine complex conjugate solutions of real quadratic equations (ACMSM075) AAM
+? determine conjugate roots for polynomials with real coefficients (ACMSM090) AAM
+? solve problems involving real polynomials with conjugate roots
+? solve quadratic equations of the form ?ax?^2+bx+c=0, where a,b,c are complex numbers AAM 
+
+
+N2.2: Geometrical implications of complex numbers
+Students:
+? examine and use addition and subtraction of complex numbers as vectors in the complex plane (ACMSM084) AAM
+- given the points representing z_1 and z_2, find the position of the points representing z_1+z_2 and z_1-z_2
+- describe the vector representing z_1+z_2 or z_1-z_2 as corresponding to the relevant diagonal of a parallelogram with vectors representing z_1 and z_2 as adjacent sides
+? examine and use the geometric interpretation of multiplying complex numbers, including rotation and dilation in the complex plane  
+? recognise and use the geometrical relationship between the point representing a complex number z=a+ib, and the points representing z ¯, cz (where c is real) and iz 
+? determine and examine the nth roots of unity and their location on the unit circle (ACMSM087)  
+? determine and examine the nth roots of complex numbers and their location in the complex plane (ACMSM088)  
+? solve problems using nth roots of complex numbers AAM 
+? identify subsets of the complex plane determined by relations, for example |z-3i|=4,
+p/4=Arg(z)=3p/4, Re(z)>Im(z) and |z-1|=2|z-i| (ACMSM086) 
+
+
+Topic: Calculus
+Outcomes
+A student:
+› understands and uses different representations of numbers and functions to model, prove results and find solutions to problems in a variety of contexts MEX12-1
+› applies techniques of integration to structured and unstructured problems MEX12-5
+› applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Topic Focus
+The topic Calculus involves the study of how things change and provides a framework for developing quantitative models of change and deducing their consequences. This topic involves the development of a broader range of techniques and strategies to solve complex problems related to differential equations and integration.
+
+The study of calculus is important in developing students' knowledge, understanding and capacity to operate with and model change situations involving a variety of functions, use algebraic and graphical techniques to describe and solve problems and to predict future outcomes with relevance to, for example Chemistry, Physics and the construction industry.
+Subtopics
+MEX-C1: Further Integration
+
+
+Calculus
+MEX-C1 Further Integration
+Outcomes
+A student:
+› understands and uses different representations of numbers and functions to model, prove results and find solutions to problems in a variety of contexts MEX12-1
+› applies techniques of integration to structured and unstructured problems MEX12-5
+› applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Subtopic Focus
+The principal focus of this subtopic is extending students' knowledge, skills and understanding to a broader range of integration techniques, such as integration of rational functions, integration using partial fractions and integration by parts.
+
+Students develop an awareness and understanding of the interconnectedness of topics across the syllabus, and the fluency that can be obtained in the use of calculus techniques. Later studies in mathematics place prime importance on familiarity and confidence in a variety of calculus techniques as these are used in many different fields.
+Content
+Students:
+? find and evaluate indefinite and definite integrals using the method of integration by substitution, where the substitution may or may not be given 
+? integrate rational functions involving a quadratic denominator by completing the square or otherwise 
+? decompose rational functions whose denominators have simple linear or quadratic factors, or a combination of both, into partial fractions 
+? use partial fractions to integrate functions 
+? evaluate integrals using the method of integration by parts (ACMSM123)
+- develop the method for integration by parts, expressed as ?uv'dx=uv-?vu'dx or 
+?¦?u dv/dx dx=uv-?¦v  du/dx dx?, where u and v are both functions of x 
+? derive and use recurrence relationships
+? apply these techniques of integration to practical and theoretical situations AAM  
+
+
+Topic: Mechanics
+Outcomes
+A student:
+› uses mechanics to model and solve practical problems MEX12-6
+› applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Topic Focus
+The topic Mechanics involves the study of change in the motion of objects when acted upon by forces. It involves the mathematical representation of quantities with magnitude and direction and their representation graphically and algebraically.
+
+A knowledge of mechanics enables understanding of the behaviour of objects according to mathematical law in order to model physical systems and predict the behaviour of objects that are under the influence of forces such as gravity and air resistance.
+
+The study of mechanics is important in developing students' understanding of changes in motion, modelling change situations involving a variety of mathematical techniques and contexts and using algebraic and graphical techniques to describe and solve problems and to predict future outcomes with relevance to, for example physics.
+Subtopics
+MEX-M1: Applications of Calculus to Mechanics
+
+Mechanics
+MEX-M1 Applications of Calculus to Mechanics
+Outcomes
+A student:
+› uses mechanics to model and solve practical problems MEX12-6
+› applies various mathematical techniques and concepts to model and solve structured, unstructured and multi-step problems MEX12-7
+› communicates and justifies abstract ideas and relationships using appropriate language, notation and logical argument MEX12-8
+Subtopic Focus
+The principal focus of this subtopic is to model the mechanics of objects in a variety of situations, with and without resistance. Models of systems are developed and used to predict the behaviour of objects under the influence of forces such as gravity or air resistance.
+
+Students develop experience in applying calculus techniques to the solution of a range of physical problems. Applications require the use of techniques from other sections of the course and students have the opportunity to develop high-level problem-solving skills. The connections between mathematical representations and physical descriptions of motion are an essential part of Applied Mathematics.
+Content
+M1.1: Simple harmonic motion
+Students:
+? derive equations for displacement, velocity and acceleration in terms of time, given that a motion is simple harmonic and describe the motion modelled by these equations AAM
+- establish that simple harmonic motion is modelled by equations of the form:
+x=a cos??(nt+a)+c? or x=a sin?(nt+a)+c, where x is displacement from a fixed point, a is the amplitude, 2p/n is the period, a/n is the phase shift and c is the central point of motion
+- establish that when a particle moves in simple harmonic motion about c, the central point of motion, then x ¨=-n^2 (x-c)
+? prove that motion is simple harmonic when given an equation of motion for acceleration, velocity or displacement and describe the resulting motion
+? sketch graphs of x, x ? and x ¨ as functions of t and interpret and describe features of the motion
+? prove that motion is simple harmonic when given graphs of motion for acceleration, velocity or displacement and determine equations for the motion and describe the resulting motion
+? derive v^2=g(x) and the equations for velocity and displacement in terms of time when given x ¨=f(x) and initial conditions, and describe the resulting motion
+? use relevant formulae and graphs to solve problems involving simple harmonic motion AAM  
+
+
+M1.2: Modelling motion without resistance
+Students:
+? examine force, acceleration, action and reaction under constant and non-constant force (ACMSM133, ACMSM134) AAM  
+? examine motion of a body under concurrent forces (ACMSM135) AAM  
+? consider and solve problems involving motion in a straight line with both constant and non-constant acceleration and derive and use the expressions dv/dt, v dv/dx and d/dx (1/2 v^2 ) for acceleration (ACMSM136) AAM 
+? use Newton's laws to obtain equations of motion in situations involving motion other than projectile motion or simple harmonic motion AAM
+- use F=mx ¨ where F is the force acting on a mass, m, with acceleration x ¨
+? describe mathematically the motion of particles in situations other than projectile motion and simple harmonic motion AAM
+- interpret graphs of displacement-time and velocity-time to describe the motion of a particle, including the possible direction of a force which acts on the particle
+? derive and use the equations of motion of a particle travelling in a straight line with both constant and variable acceleration (ACMSM114) AAM
+
+M1.3: Resisted motion
+Students:
+? solve problems involving resisted motion of a particle moving along a horizontal line AAM 
+- derive, from Newton's laws of motion, the equation of motion of a particle moving in a single direction under a resistance proportional to a power of the speed
+- derive an expression for velocity as a function of time
+- derive an expression for velocity as a function of displacement
+- derive an expression for displacement as a function of time
+- solve problems involving resisted motion along a horizontal line
+? solve problems involving the motion of a particle moving vertically (upwards or downwards) in a resisting medium and under the influence of gravity AAM  
+- derive, from Newton's laws of motion, the equation of motion of a particle moving vertically in a medium, with a resistance R proportional to the first or second power of its speed
+- derive an expression for velocity as a function of time and for velocity as a function of displacement (or vice versa)
+- derive an expression for displacement as a function of time
+- determine the terminal velocity of a falling particle from its equation of motion
+- solve problems by using the expressions derived for acceleration, velocity and displacement including obtaining the maximum height reached by a particle, and the time taken to reach this maximum height and obtaining the time taken for a particle to reach ground level when falling
+
+M1.4: Projectiles and resisted motion
+Students:
+? solve problems involving projectiles in a variety of contexts AAM 
+- use parametric equations of a projectile to determine a corresponding Cartesian equation for the projectile 
+- use the Cartesian equation of the trajectory of a projectile, including problems in which the initial speed and/or angle of projection may be unknown
+? solve problems involving projectile motion in a resisting medium and under the influence of gravity which include consideration of the complete motion of a particle projected vertically upwards or at an angle to the horizontal AAM  
+- 
+Glossary
+Glossary termElaborationAboriginal and Torres Strait Islander PeoplesAboriginal Peoples are the first peoples of Australia and are represented by over 250 language groups each associated with a particular Country or territory. Torres Strait Islander Peoples whose island territories to the north east of Australia were annexed by Queensland in 1879 are also Indigenous Australians and are represented by five cultural groups.
+
+An Aboriginal and/or Torres Strait Islander person is someone who:
+* is of Aboriginal and/or Torres Strait Islander descent
+* identifies as an Aboriginal person and/or Torres Strait Islander person, and
+* is accepted as such by the Aboriginal and/or Torres Strait Islander community in which they live.argument and principal argument of a complex numberWhen a complex number z is represented by a point P in the complex plane then the argument of z, denoted arg z, is the angle ? that OP (where O denotes the origin) makes with the positive real axis O_x, with the angle measured from O_x.
+
+If the argument is restricted to the interval (-p, p], this is called the principal argument and is denoted by Arg z.arithmetic meanThe arithmetic mean of the numbers x_1,  x_2,  x_3,..., x_n is defined to be: (x_1 ?+x?_2+x_3+...+x_n)/nCartesian equationA Cartesian equation is the equation of a relation or a function expressed in terms of the Cartesian coordinates x and y.
+
+A Cartesian equation may sometimes be formed from two parametric equations by eliminating the parameter.Cartesian form of a complex numberThe Cartesian form of a complex number (z) is z=x+iy, where x and y are real numbers and i is the imaginary number. Also known as standard or rectangular form.column vector notationA vector in two or three dimensions can be represented in column vector notation. For example  can be represented as the ordered triple  and in column vector notation as.complex conjugateThe complex conjugate of the number z=a+ib is given by z ¯=a-ib, where a and b are real numbers. A complex number and its conjugate are called a conjugate pair.complex planeA complex plane is a Cartesian plane in which the horizontal axis is the real axis and the vertical axis is the imaginary axis. The complex plane is sometimes called the Argand plane. Geometric plots in the complex plane are known as Argand diagrams.component form of a vectorThe component form of a vector describes the projections of a vector in the x, y and z-directions. It can be expressed as an ordered triple (in 3 dimensions) or by a linear combination of unit vectors,  and .contrapositiveThe contrapositive of the statement 'If P then Q' is 'If not Q then not P'. The contrapositive is true if and only if the statement itself is also true.converseThe converse of a statement 'If P then Q' is 'If Q then P'.
+
+The statements can be represented as: the converse of P?Q is Q?P or P?Q.
+
+The converse of a true statement need not be true.counter-exampleA counter-example is an example that demonstrates that an assertion is not true in general.De Moivre's theoremDe Moivre's theorem states that for all integers n:
+?[r(cos ? + i sin ?)]?^n=r^n (cos n? + i sin n?)
+
+In exponential form, when r=1, De Moivre's theorem is simply a statement of the law of indices: (e^i? )^n=e^in?Euler's formulaEuler's formula states that for any real number ?: e^i?=cos ? + i sin ?exponential form of a complex numberThe complex number z=a+ib can be expressed in exponential form as z=re^i?, where r is the modulus of the complex number and ? is the argument expressed in radians.geometric meanThe geometric mean of the positive numbers x_1,  x_2,  x_3,..., x_n is defined to be: (x_1 x_2 x_3...x_n )^(1/n)implicationTo say that P implies Q means that if P is true then Q is true.
+
+In shorthand it can be written as 'If P then Q' and in notation form as P?Q.negationIf P is a statement then the statement 'not P' is the negation of P. The negation of P is denoted by ¬P or ~P.Newton's laws of motionNewton's laws of motion consist of three fundamental laws of classical physics:
+1. Unless acted upon by a resultant force, a body remains at rest or in uniform motion in a straight line.
+2. The acceleration of a body is proportional to the resultant force that acts on the body and inversely proportional to the mass of the body.
+3. For every action, there is an equal and opposite reaction.parameter1. A parameter is a quantity that defines certain characteristics of a function or system. For example ? is a parameter in y=x cos??.
+2. A parameter can be a characteristic value of a situation. For example the time taken for a machine to produce a certain product.parametric equationsA parametric equation is the equation of a relation or function expressed in terms of independent parameters.polar form of a complex numberThe complex number z=a+ib can be expressed in polar form as:
+z=r cos?+ri sin?=r(cos?+i sin?), where r is the modulus of the complex number and ? is its argument expressed in radians. This is also known as modulus-argument form.proof by contradictionProof by contradiction is when a mathematical proof assumes the opposite (negation) of the original statement being proven and illustrates through a logical chain of arguments that the opposite is demonstrably false.  As the reasoning is correct and the conclusion absurd, the only element that could be wrong was the initial assumption. Therefore the original statement is true.rational functionA rational function is a function of the form (p(x))/(q(x)) where p(x) and q(x) are polynomials and q(x)?0.recursive formulaA recursive formula defines a sequence in which successive terms are expressed as a function of the preceding terms.resisted motionResisted motion is motion that encounters resisting forces, for example friction and air resistance.roots of unityA complex number z is an nth root of unity if z^n=1.
+
+The points in the complex plane representing the roots of unity lie on the unit circle and are evenly spaced.statementA statement is an assertion that can be true or false but not both.terminal velocityTerminal velocity is the constant velocity that a free-falling object will eventually reach when the resistance of the medium through which the object is falling prevents further acceleration.
+
+
+
+
+Mathematics Extension 2 Stage 6 Syllabus (2017)		21
+
+
+
+
+
+Year 12
+
+
+
+
+
+
+
+
+

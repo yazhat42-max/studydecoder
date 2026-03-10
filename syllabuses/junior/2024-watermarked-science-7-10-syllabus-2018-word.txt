@@ -1,0 +1,1954 @@
+NSW Syllabus
+for the Australian
+Curriculum
+Science Years 7-10
+Syllabus (2018)
+Implementation in 2026
+The new Science 7-10 Syllabus (2023) is to be implemented in 2026.
+2024 and 2025 - Plan and prepare to teach the new syllabus
+2026 - Start teaching new syllabus
+School sectors are responsible for implementing syllabuses and are best placed to provide schools with specific guidance and information on implementation given their understanding of their individual contexts.
+
+
+Version 1.0 released 2012
+Original published version updated:
+February 2013: 	Revised
+November 2018: 	NESA Official Notice 19 November 2018 (NESA 47/18), includes change of syllabus name to Science Years 7-10 Syllabus (2018)
+October 2019: 	Revised
+View the online version log for all syllabus updates.
+(c) 2019 NSW Education Standards Authority (NESA) for and on behalf of the Crown in right of the State of New South Wales.
+The NESA website holds the ONLY official and up-to-date versions of these documents available on the internet. ANY other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are NOT authorised. You CANNOT rely on copies from any other source.
+The documents on this website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright.
+All rights reserved. No part of the Material may be reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form, or transmitted to any other person or stored electronically in any form without the prior written permission of NESA, except as permitted by the Copyright Act 1968.
+When you access the material you agree:
+* to use the material for information purposes only
+* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the prior permission of NESA
+* to acknowledge that the material is provided by NESA
+* to include this copyright notice in any copy made
+* not to modify the material or any part of the material without the express prior written permission of NESA.
+The material may contain third-party copyright materials such as photos, diagrams, quotations, cartoons and artworks. These materials are protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's specific permission. Unauthorised reproduction, transmission or commercial use of such copyright materials may result in prosecution.
+NESA has made all reasonable attempts to locate owners of third-party copyright material and invites anyone from whom permission has not been sought to contact the Copyright Officer.
+Phone: (02) 9367 8289
+Fax: (02) 9279 1482
+Email: copyright@nesa.nsw.edu.au
+Published by
+NSW Education Standards Authority
+GPO Box 5300
+Sydney NSW 2001
+Australia
+www.educationstandards.nsw.edu.au
+NCS-585
+D2018/121058
+
+Contents
+
+Contents	3
+Introduction	4
+Science Key	7
+Rationale	10
+The Place of the Science Years 7-10 Syllabus in the K-12 Curriculum	11
+Aim	12
+Objectives	13
+Outcomes	14
+Stage Statements	17
+Organisation of Content	22
+Content for Stage 4	32
+Content for Stage 5	47
+Years 7-10 Life Skills outcomes and content	62
+Years 7-10 Life Skills Outcomes	63
+Years 7-10 Life Skills Content	71
+Assessment	92
+Glossary	95
+
+
+
+Introduction
+The K-10 Curriculum
+The NSW Education Standards Authority (NESA) syllabuses are developed with respect to some overarching views about education. These include the NESA K-10 Curriculum Framework and Statement of Equity Principles and the Melbourne Declaration on Educational Goals for Young Australians (December 2008).
+
+NESA syllabuses include agreed Australian Curriculum content and content that clarifies the scope, breadth and depth of learning. The Australian Curriculum achievement standards underpin the syllabus outcomes and the Stage statements for Early Stage 1 to Stage 5.
+
+In accordance with the K-10 Curriculum Framework and the Statement of Equity Principles, the syllabus takes into account the diverse needs of all students. It identifies essential knowledge, understanding, skills, values and attitudes. It outlines clear standards of what students are expected to know and be able to do in K-10. It provides structures and processes by which teachers can provide continuity of study for all students.
+
+The framework also provides a set of broad learning outcomes that summarise the knowledge, understanding, skills, values and attitudes essential for all students in all learning areas to succeed in and beyond their schooling.
+
+The continued relevance of the K-10 Curriculum Framework is consistent with the intent of the Melbourne Declaration on Educational Goals for Young Australians (December 2008), which sets the direction for Australian schooling for the next ten years. There are two broad goals:
+Goal 1: Australian schooling promotes equity and excellence
+Goal 2: All young Australians become successful learners, confident and creative individuals, and active and informed citizens.
+
+The way in which learning in the Science Years 7-10 Syllabus contributes to the curriculum, and to students' achievement of the broad learning outcomes, is outlined in the syllabus rationale.
+
+
+Diversity of Learners
+NSW syllabuses are inclusive of the learning needs of all students. Syllabuses accommodate teaching approaches that support student diversity, including students with disability, gifted and talented students, and students learning English as an additional language or dialect (EAL/D). Students may have more than one learning need.
+Students with disability
+All students are entitled to participate in and progress through the curriculum. Under the Disability Standards for Education 2005, schools are required to provide additional support or adjustments to teaching, learning and assessment activities for some students with disability. Adjustments are measures or actions taken in relation to teaching, learning and assessment that enable a student with disability to access syllabus outcomes and content and demonstrate achievement of outcomes.
+
+Students with disability can access outcomes and content from Years 7-10 syllabuses in a range of ways. Students may engage with:
+* syllabus outcomes and content from their age-appropriate Stage with adjustments to teaching, learning and/or assessment activities; or
+* selected syllabus outcomes and content from their age-appropriate Stage, relevant to their learning needs; or
+* syllabus outcomes from an earlier Stage, using age-appropriate content; or
+* selected Years 7-10 Life Skills outcomes and content from one or more syllabuses for students in Stages 4 and 5.
+
+Decisions regarding curriculum options, including adjustments, should be made in the context of collaborative curriculum planning with the student, parent/carer and other significant individuals to ensure that syllabus outcomes and content reflect the learning needs and priorities of individual students.
+
+Further information can be found in support materials for:
+* Science
+* Special education
+* Life Skills.
+Gifted and Talented Students
+Gifted and talented students have specific learning needs that may require adjustments to the pace, level and content of the curriculum. Differentiated educational opportunities assist in meeting the needs of gifted and talented students.
+
+Generally, gifted and talented students demonstrate the following characteristics:
+* the capacity to learn at faster rates
+* the capacity to find and solve problems
+* the capacity to make connections and manipulate abstract ideas.
+
+There are different kinds and levels of giftedness and talent. Gifted and talented students may also have learning disabilities and/or English as an additional language or dialect. These needs should be addressed when planning appropriate teaching, learning and assessment activities.
+
+
+Curriculum strategies for gifted and talented students may include:
+* differentiation: modifying the pace, level and content of teaching, learning and assessment activities
+* acceleration: promoting a student to a level of study beyond their age group
+* curriculum compacting: assessing a student's current level of learning and addressing aspects of the curriculum that have not yet been mastered.
+
+School decisions about appropriate strategies are generally collaborative and involve teachers, parents/carers and students, with reference to documents and advice available from NESA and the education sectors.
+
+Gifted and talented students may also benefit from individual planning to determine the curriculum options, as well as teaching, learning and assessment strategies, most suited to their needs and abilities.
+Students Learning English as an Additional Language or Dialect (EAL/D)
+Many students in Australian schools are learning English as an additional language or dialect (EAL/D). EAL/D students are those whose first language is a language or dialect other than Standard Australian English and who require additional support to assist them to develop English language proficiency.
+
+EAL/D students come from diverse backgrounds and may include:
+* overseas and Australian-born students whose first language is a language other than English, including creoles and related varieties
+* Aboriginal and Torres Strait Islander students whose first language is Aboriginal English, including Kriol and related varieties.
+
+EAL/D students enter Australian schools at different ages and stages of schooling and at different stages of English language learning. They have diverse talents and capabilities and a range of prior learning experiences and levels of literacy in their first language and in Standard Australian English. EAL/D students represent a significant and growing percentage of learners in NSW schools. For some, school is the only place they use Standard Australian English.
+
+EAL/D students are simultaneously learning a new language and the knowledge, understanding and skills of a syllabus through that new language. They require additional time and support, along with informed teaching that explicitly addresses their language needs, and assessments that take into account their developing language proficiency.
+
+The ESL Scales and the English as an Additional Language or Dialect: Teacher Resource provide information about the English language development phases of EAL/D students. These materials and other resources can be used to support the specific needs of EAL/D students and to assist students to access syllabus outcomes and content.
+
+
+Science Key
+The following codes and icons are used in the Science Years 7-10 Syllabus.
+Outcome coding
+Syllabus outcomes have been coded in a consistent way. The code identifies the subject, stage, outcome number and the way content is organised.
+
+Stage 4 and Stage 5 are represented by the following codes:
+StagesCodesStage 44Stage 55
+In the Science Years 7-10 Syllabus, the outcome codes indicate the subject, stage, outcome and strand. The values and attitudes outcomes are also coded:
+OutcomesCodesScience (Years 7-10)SCScience Life SkillsSCLSValues and AttitudesVA
+Skills strandCodesWorking ScientificallyWS
+Knowledge and Understanding strandsCodesPhysical WorldPWEarth and SpaceESLiving WorldLWChemical WorldCW
+
+For example:
+
+Outcome codesInterpretationsSC4-4WSScience, Stage 4 - Outcome number 4, Working ScientificallySC5-16CWScience, Stage 5 - Outcome number 16, Chemical WorldSCLS-9WSScience, Life Skills - Outcome number 9, Working ScientificallyCoding of Australian Curriculum content
+The syllabus includes all the Australian Curriculum content descriptions for Science. The content descriptions are identified by an Australian Curriculum code which appears in brackets at the end of each content description, for example:
+Chemical change involves substances reacting to form new substances (ACSSU225)
+
+Where a number of content descriptions are jointly represented, both description codes are included, for example (ACSIS125, ACSIS140).
+
+The Australian Curriculum Science codes are:
+CodesInterpretationsACSISAustralian Curriculum, Science Inquiry SkillsACSHEAustralian Curriculum, Science as a Human EndeavourACSSUAustralian Curriculum, Science Understanding
+
+Learning across the curriculum Icons
+Learning across the curriculum content, including the cross-curriculum priorities, general capabilities and other areas identified as important learning for all students, is incorporated and identified by icons in the syllabus.
+
+Cross-curriculum priorities
+ 	Aboriginal and Torres Strait Islander histories and cultures
+ 	Asia and Australia's engagement with Asia
+ 	Sustainability
+
+General capabilities
+ 	Critical and creative thinking
+ 	Ethical understanding
+ 	Information and communication technology capability
+ 	Intercultural understanding
+ 	Literacy
+ 	Numeracy
+ 	Personal and social capability
+
+Other learning across the curriculum areas
+ 	Civics and citizenship
+ 	Difference and diversity
+	Work and enterprise
+
+
+Rationale
+Science provides an empirical way of answering interesting and important questions about the biological, physical and technological world. Scientific knowledge is contestable and is revised, refined and extended as new evidence arises or existing evidence is re-conceptualised. The study of Science is a collaborative, creative endeavour and has led to a dynamic body of knowledge organised as an interrelated set of models, theories, laws, systems, structures and interactions. It is through this body of knowledge that science provides explanations for a variety of phenomena and enables sense to be made of the natural world.
+
+As students actively engage in the processes of Working Scientifically, they gain an increased appreciation and understanding of the importance of science in their own lives and society, locally and globally. Through questioning and seeking solutions to problems, students develop an understanding of the relationships between science and technology and its importance in the current and future practice of science.
+
+Through applying the processes of Working Scientifically, students use scientific inquiry to develop their understanding of science ideas and concepts, as well as the importance of scientific evidence. They demonstrate honesty, ethical principles and respect for differing viewpoints on scientific issues. By engaging in scientific inquiry, students develop a deeper appreciation of the unique nature and development of science as an evolving body of knowledge, of the provisional nature of scientific explanations and of the complex relationship between evidence and ideas. Providing opportunities for students to continue to strengthen these scientific capabilities, helps them further develop as scientifically literate citizens.
+
+The study of Science enables students to develop a positive self-concept as learners and gain confidence in and enjoyment from their learning. Through active participation in challenging and engaging experiences they become self-motivated, independent learners. Their understanding of science and its social and cultural contexts provides a basis for students to make reasoned evidence-based future choices and ethical decisions, and to engage in finding innovative solutions to science-related personal, social and global issues, including sustainable futures.
+
+
+The Place of the Science Years 7-10 Syllabus in the K-12 Curriculum
+
+
+
+
+Aim
+The aim of the Science Years 7-10 Syllabus is to develop students':
+* interest in and enthusiasm for science, as well as an appreciation of its role in finding solutions to contemporary science-related problems and issues
+* knowledge and understanding of the nature and practice of scientific inquiry, and skills in applying the processes of Working Scientifically
+* scientific knowledge of and about phenomena within the natural world and the application of their understanding to new situations and events
+* appreciation of the development and dynamic nature of scientific knowledge, its influence in improving understanding of the natural world and the contribution of evidence-based decisions in informing societies' use of science and technology.
+
+
+Objectives
+Values and Attitudes
+Students:
+* develop an appreciation of the contribution of science to finding solutions to personal, social and global issues relevant to their lives now and in the future
+* develop a willingness to use evidence and reason to engage with and respond to scientific and technological ideas as informed, reflective citizens.
+Skills, Knowledge and Understanding
+Students:
+* develop knowledge, understanding of and skills in applying the processes of Working Scientifically
+* develop knowledge of the Physical World, Earth and Space, Living World and Chemical World, and understanding about the nature, development, use and influence of science.
+
+
+Outcomes
+Stage 4 and Stage 5
+Table of objectives and outcomes
+Values and Attitudes
+Values and attitudes outcomes have been developed for the stages of learning.
+
+Objectives
+Students:
+* develop an appreciation of the contribution of science to finding solutions to personal, social and global issues relevant to their lives now and in the future
+* develop a willingness to use evidence and reason to engage with and respond to scientific and technological ideas as informed, reflective citizens
+
+Stage 4 to Stage 5 outcomes
+A student:SC4-1VA, SC5-1VA
+appreciates the importance of science in their lives and the role of scientific inquiry in increasing understanding of the world around themSC4-2VA, SC5-2VA
+shows a willingness to engage in finding solutions to science-related personal, social and global issues, including shaping sustainable futuresSC4-3VA, SC5-3VA
+demonstrates confidence in making reasoned, evidence-based decisions about the current and future use and influence of science and technology, including ethical considerations
+
+Skills
+Objective
+Students:
+* develop knowledge, understanding of and skills in applying the processes of Working Scientifically
+
+Stage 4 outcomes
+A student:Stage 5 outcomes
+A student:SC4-4WS
+identifies questions and problems that can be tested or researched and makes predictions based on scientific knowledgeSC5-4WS
+develops questions or hypotheses to be investigated scientificallySC4-5WS
+collaboratively and individually produces a plan to investigate questions and problemsSC5-5WS
+produces a plan to investigate identified questions, hypotheses or problems, individually and collaborativelySC4-6WS
+follows a sequence of instructions to safely undertake a range of investigation types, collaboratively and individuallySC5-6WS
+undertakes first-hand investigations to collect valid and reliable data and information, individually and collaborativelySC4-7WS
+processes and analyses data from a first-hand investigation and secondary sources to identify trends, patterns and relationships, and draw conclusionsSC5-7WS
+processes, analyses and evaluates data from first-hand investigations and secondary sources to develop evidence-based arguments and conclusionsSC4-8WS
+selects and uses appropriate strategies, understanding and skills to produce creative and plausible solutions to identified problemsSC5-8WS
+applies scientific understanding and critical thinking skills to suggest possible solutions to identified problemsSC4-9WS
+presents science ideas, findings and information to a given audience using appropriate scientific language, text types and representationsSC5-9WS
+presents science ideas and evidence for a particular purpose and to a specific audience, using appropriate scientific language, conventions and representations
+
+Knowledge and Understanding
+Objective
+Students:
+* develop knowledge of the Physical World, Earth and Space, Living World and Chemical World, and understanding about the nature, development, use and influence of science
+
+Stage 4 outcomes
+A student:Stage 5 outcomes
+A student:SC4-10PW
+describes the action of unbalanced forces in everyday situationsSC5-10PW
+applies models, theories and laws to explain situations involving energy, force and motionSC4-11PW
+discusses how scientific understanding and technological developments have contributed to finding solutions to problems involving energy transfers and transformationsSC5-11PW
+explains how scientific understanding about energy conservation, transfers and transformations is applied in systemsSC4-12ES
+describes the dynamic nature of models, theories and laws in developing scientific understanding of the Earth and solar systemSC5-12ES
+describes changing ideas about the structure of the Earth and the universe to illustrate how models, theories and laws are refined over time by the scientific communitySC4-13ES
+explains how advances in scientific understanding of processes that occur within and on the Earth, influence the choices people make about resource use and managementSC5-13ES
+explains how scientific knowledge about global patterns of geological activity and interactions involving global systems can be used to inform decisions related to contemporary issuesSC4-14LW
+relates the structure and function of living things to their classification, survival and reproductionSC5-14LW
+analyses interactions between components and processes within biological systemsSC4-15LW
+explains how new biological evidence changes people's understanding of the worldSC5-15LW
+explains how biological understanding has advanced through scientific discoveries, technological developments and the needs of societySC4-16CW
+describes the observed properties and behaviour of matter, using scientific models and theories about the motion and arrangement of particles SC5-16CW
+explains how models, theories and laws about matter have been refined as new scientific evidence becomes availableSC4-17CW
+explains how scientific understanding of, and discoveries about the properties of elements, compounds and mixtures relate to their uses in everyday lifeSC5-17CW
+discusses the importance of chemical reactions in the production of a range of substances, and the influence of society on the development of new materials
+
+Stage Statements
+Stage statements are summaries of the knowledge, understanding, skills, values and attitudes that have been developed by students as a result of achieving the outcomes for the relevant Stage of learning.
+Prior-to-school learning
+Students bring to school a range of knowledge, understanding and skills developed in home and prior-to-school settings. The movement into Early Stage 1 should be seen as a continuum of learning and planned for appropriately.
+
+The Early Years Learning Framework for Australia describes a range of opportunities for students to learn and develop a foundation for future success in learning.
+
+The Early Years Learning Framework for Australia has five learning outcomes that reflect contemporary theories and research evidence about children's learning. The outcomes are used to guide planning and to assist all children to make progress.
+
+The outcomes are:
+1. Children have a strong sense of identity.
+2. Children are connected with and contribute to their world.
+3. Children have a strong sense of wellbeing.
+4. Children are confident and involved learners.
+5. Children are effective communicators.
+
+In addition, teachers need to acknowledge the learning that children bring to school, and plan appropriate learning experiences that make connections with existing language and literacy development, including language used at home.
+Early Stage 1 - Science and Technology K-6
+By the end of Early Stage 1, students engage in the processes of Working Scientifically, and Design and Production to make sense of the world around them. They explore their immediate surroundings and ask questions about their observations and experiences. They collect data and communicate their ideas and observations in a variety of ways. Students investigate possibilities and solutions, individually and in collaboration with others, and use the design process to develop solutions. They effectively use a range of classroom equipment and learn to work safely when using resources and materials.
+
+Students recognise that living things have different features and basic needs which can be met. They recognise that plants and animals can be used for food, clothing and shelter. Students identify that objects are made from materials that have observable properties, and that these properties influence their design and use. They describe how objects move and observe the effects of push and pull forces. Students identify daily and seasonal changes in the environment. Students also identify familiar digital systems and follow a simple set of instructions.
+
+
+Stage 1 - Science and Technology K-6
+By the end of Stage 1, students engage in the processes of Working Scientifically, and Design and Production. They participate in guided investigations, pose and respond to questions and make predictions. Students collect and represent information using a variety of methods. They safely manipulate equipment and materials, making sustainable and time-efficient choices. Students generate and develop design ideas and solutions that they communicate with labelled drawings and models and through the use of digital technologies where appropriate. They provide explanations about what they have done and evaluate their ideas using predetermined criteria.
+
+Students describe the external features, changes and growth of living things and how their environments provide for their needs. They identify how plants and animals are produced for food and fibre. Students investigate the characteristics and properties of materials, how they can be changed and combined for a purpose. Students identify heat, light and sound energy and explore how forces and energy can be used. They are able to identify observable changes that occur on the Earth and in the sky and how humans care for the environment and Earth's resources. Students identify the components of digital systems and explore how data is represented through pictures, symbols and diagrams. They describe, follow and represent algorithms that are needed to solve problems.
+Stage 2 - Science and Technology K-6
+By the end of Stage 2, students engage in the processes of Working Scientifically, and Design and Production by asking questions, predicting outcomes and undertaking guided investigations with increasing independence. Students make and record observations, using formal units where appropriate, and compare results with predictions. They reflect on whether methods undertaken are fair and identify ways to improve subsequent investigations. Students organise and identify patterns in data and create tables to organise and represent information.
+
+Students develop solutions that address specific criteria. They generate and develop ideas, using research to inform their design ideas, which are represented using sketches, brainstorms and where appropriate, digital technologies. Students select materials appropriate for their purposes, with consideration of sustainability and constraints to produce designed solutions. They are guided to develop specific criteria to critically evaluate designed solutions.
+
+Students compare living things and identify the life cycles which support the survival of plant and animal species. They describe how agricultural processes are used to grow plants and raise animals for food, clothing and shelter. Students identify the physical properties of materials and how heat can alter their state. They investigate the suitability of natural and manufactured materials for specific purposes. They explain how energy is transferred from one place to another, and how forces affect objects and the behaviour of a product or system. Students describe the regular changes caused by interactions between the Earth and the Sun, and the changes to the Earth's surface that are caused over time by natural processes and human activity. They describe how digital systems transmit data, explore different types of data and how data patterns can be represented and interpreted.
+
+
+Stage 3 - Science and Technology K-6
+By the end of Stage 3, students have developed an appreciation of the role of Science and Technology in local, national and global issues relevant to their lives and a sustainable future. Students engage in the skills of Working Scientifically, and Design and Production independently and collaboratively. They pose questions for investigation, predict likely outcomes, and demonstrate accuracy and honesty when collecting, recording and analysing data and information. Students plan and conduct fair tests, isolate variables and select appropriate measurement methods. They construct tables and graphs to organise data and are able to identify patterns, using evidence to compare with predictions, draw conclusions and develop explanations. Students develop criteria to evaluate success based on their intended outcome. They examine needs and opportunities for design projects, using research and existing solutions to inform their ideas. Students are able to reflect on their processes to identify risks and improve their design ideas, methods and findings. They communicate their ideas in tables, graphs, diagrams and multimodal texts, using digital technologies where applicable.
+
+Students examine how environmental conditions affect the growth, adaptations, structural features and survival of living things. They explain how food and fibre are produced sustainably in managed environments for health and nutrition. Students examine the properties of materials and observe how changes of state occur and new substances are formed. Students explain how energy is transformed, describe the difference between contact and non-contact forces, and investigate how electrical energy can control movement. They compare the regular events in the solar system with the irregular events that cause rapid changes to the Earth's surface. Students collect, store and interpret different types of data and explain how digital systems connect to form networks that transmit data. They define problems, and design, modify and follow simple algorithms that involve branching, iteration and user input.
+Stage 4
+By the end of Stage 4 students use scientific inquiry by actively engaging in using and applying the processes of Working Scientifically. They identify questions and problems that they can test or research scientifically. They select and use appropriate strategies, understanding and skills to generate creative plausible solutions to identified problems. Individually and collaboratively they plan and conduct a range of types of first-hand investigations, including fieldwork and controlled experimental methods, ensuring that fairness, safety and ethical guidelines are followed.
+Students process and analyse data and information from first-hand investigations and secondary sources to identify trends, patterns and relationships, drawing relevant, evidence-based conclusions. They reflect on how the methods, strategies used and the quality of data obtained could be improved. Their ideas, methods and findings are communicated to a given audience using appropriate scientific language, representations and text types, with information sources acknowledged using a recognised method.
+By engaging in scientific inquiry, students develop their knowledge of and about science ideas and concepts, as well as the nature, development and importance of scientific evidence. They explain how scientific knowledge changes as new discoveries and technological developments are made available, appreciating that new evidence leads to an improved understanding of the world.
+Students describe the action of unbalanced forces on the motion of objects in everyday situations, including the Earth's gravity. They discuss how developments in scientific knowledge and technology have contributed to finding solutions to problems involving the use of energy transfers and transformations in simple systems and how the solutions may impact on other areas of society.
+
+
+Students relate the structure and function of living things to their classification, survival and reproduction. They predict the effects of environmental changes on ecosystems and how scientific understanding influences the development of some management practices. They explain the contribution and influence of scientific knowledge and technological advances in finding solutions to contemporary issues and that these solutions may involve ethical considerations.
+
+Students describe the dynamic nature of models, theories and laws in developing scientific understanding of the Earth, solar system and observed properties and behaviour of matter. They describe processes occurring in and on the Earth and the time scales involved, as well as situations where understanding and skills from across the disciplines of Science are used in exploration for resources and obtaining and processing of materials. They explain how advances in scientific understanding influence the choices people make about resource use and management practices in shaping sustainable futures.
+
+Students relate the physical and chemical properties of matter to how materials are processed and used by society in everyday life. They describe situations where scientific knowledge and collaboration between scientists generates solutions to obtaining and making new substances from the Earth's spheres.
+Stage 5
+By the end of Stage 5 students use scientific inquiry by actively engaging in using and applying the processes of Working Scientifically to increase their understanding of and about the world around them. By engaging in scientific inquiry, students develop their understanding of science ideas and concepts, how scientific knowledge is refined over time and the significance of scientific evidence in evaluating claims, explanations and predictions.
+
+Students formulate questions or hypotheses to be investigated scientifically. They apply scientific understanding and critical thinking skills to suggest possible solutions to identified problems. Individually and collaboratively they plan and undertake a range of types of first-hand investigations to accurately collect data using appropriate units, assessing risk and considering ethical issues associated with the method. They design and conduct controlled experiments to collect valid and reliable first-hand data.
+
+In Stage 5 students process, analyse and evaluate data and information from first-hand investigations to draw conclusions consistent with the evidence, identifying sources of uncertainty and possible alternative explanations for findings. They assess the validity and reliability of claims made in secondary sources. They evaluate the methods and strategies they and others use and ways in which the quality of data could be improved, including the appropriate use of digital technologies. They communicate science ideas for specific purposes and construct evidence-based arguments using appropriate scientific language, conventions and representations.
+
+Students apply models, theories and laws to explain phenomena and situations involving energy, force and motion. They explain the concept of energy conservation, by describing energy transfers and transformations within systems.
+
+Students describe changing ideas about the structure of the Earth, origins of the universe and the diversity of life on the Earth to illustrate how models, theories and laws are refined over time by the scientific community as new evidence becomes available. They describe situations where advances in scientific understanding may depend on developments in technology, and that technological advances are frequently linked to scientific discoveries. 
+
+Students explain how scientific understanding has contributed to knowledge about global patterns of geological activity and interactions between global systems. They analyse interactions between components and processes within biological systems and their responses to external changes. They use scientific evidence to assess whether claims, explanations and predictions are supported and can be used to evaluate predictions and inform decisions related to contemporary issues.
+
+Students explain the organisation of the periodic table, chemical reactions and natural radioactivity in terms of atoms. They describe how different factors influence the rate of chemical reactions and the importance of a range of types of chemical reactions in the production of substances.
+
+By the end of Stage 5 students describe how the values and needs of contemporary society can influence the focus of scientific research and technological development in a variety of areas, including efficiency of use of electricity and non-renewable energy sources, the development of new materials, biotechnology, and plant, animal and human health. They outline examples of where the applications of the advances of science, emerging sciences and technologies significantly affect people's lives, including generating new career opportunities.
+
+
+Organisation of Content
+For Kindergarten to Year 10, courses of study and educational programs are based on the outcomes of syllabuses. The content describes in more detail how the outcomes are to be interpreted and used, and the intended learning appropriate for the Stage. In considering the intended learning, teachers will make decisions about the sequence, the emphasis to be given to particular areas of content, and any adjustments required based on the needs, interests and abilities of their students.
+
+The knowledge, understanding and skills described in the outcomes and content provide a sound basis for students to successfully move to the next stage of learning.
+
+
+
+The content of the Science Years 7-10 Syllabus is organised by the strands:
+* Skills:
+- Working Scientifically (WS)
+* Knowledge and Understanding:
+- Physical World (PW)
+- Earth and Space (ES)
+- Living World (LW)
+- Chemical World (CW).
+
+
+These strands form a continuum with the Working Scientifically strand and the Physical World, Earth and Space and Living World strands of the Science and Technology K-6 Syllabus. The Material World strand in the Science and Technology K-6 Syllabus provides the foundation for the Chemical World strand.
+
+Within the Knowledge and Understanding strands:
+* content statements summarise the overarching scientific concepts/ideas and understanding about science. The related group of content describes the appropriate depth and scope of learning for each statement
+* content incorporates understanding about the nature, development, use and influence of science with relevant knowledge of scientific concepts, principles, models, theories and laws.
+
+Continuity of learning in all aspects of the syllabus is provided when teaching programs:
+* are based on contexts that:
+- are relevant to students' learning needs, interests, experiences and cultural backgrounds
+- relate to the nature, development, use and influence of science
+* incorporate all content across each stage
+* integrate content selected from across the Knowledge and Understanding strands through the skills and processes of Working Scientifically
+* develop understanding of science through a range of hands-on practical experiences that use the skills and processes of Working Scientifically
+* engage students in scientific inquiry through applying the processes of Working Scientifically
+* allocate at least 50% of the course time to students' active engagement in hands-on practical experiences
+* include at least one substantial student research project in each of Stage 4 and Stage 5
+* address the objectives and outcomes for the values and attitudes through the relevant skills, knowledge and understanding content for each stage.
+Content Strands
+In the Science Years 7-10 Syllabus content is organised by strands in relation to the skills and the knowledge and understanding objectives and outcomes.
+Skills
+The skills strand is organised by the processes of Working Scientifically and specifies the development of the skills that students should be able to demonstrate by the end of Stage 4 and Stage 5. The content reflects the continuum with the Working Scientifically strand in K-6.
+
+The processes of Working Scientifically are at the centre of teaching and learning. Students develop skills in applying the processes of Working Scientifically through regular, active participation in a range of collaborative and individual hands-on practical experiences, including at least one substantial student research project in each stage.
+
+Through applying the processes of Working Scientifically, students use scientific inquiry to develop their understanding of science ideas and concepts, the unique nature of Science as a discipline and the importance of scientific evidence in making informed decisions about the use of science and technology.
+
+
+The Working Scientifically strand involves students in the processes of:
+Questioning and Predicting
+* identifying and constructing questions
+* proposing hypotheses
+* making predictions about possible outcomes
+
+Planning investigations
+* working individually and collaboratively to plan and organise activities
+* selecting appropriate methods, materials, specimens and equipment to complete activities
+* identifying ways of reducing risks and addressing ethical guidelines in the laboratory and in the field
+
+Conducting Investigations
+* working individually and collaboratively to locate and gather information from a variety of sources for a planned investigation
+* increasing skills in performing first-hand investigations
+* gathering first-hand data and information
+* using time and resources effectively
+* assessing risks and addressing ethical issues in using equipment, materials and chemicals safely
+* accessing and collecting information from secondary sources using appropriately a variety of digital technologies
+
+Processing and Analysing Data and Information
+* organising data and information to explain trends, patterns and relationships
+* using critical thinking skills to analyse data and information, make predictions and evaluate evidence
+* representing data and information in meaningful ways
+* evaluating the quality of data, information, processes and evidence
+* using evidence to draw and justify conclusions
+Problem Solving
+* identifying issues and problems
+* framing possible problem-solving processes
+* using creative thinking to develop ideas and possibilities that are new and applying them in different and novel situations
+* devising appropriate strategies to deal with issues and working through them in a logical and coherent way
+
+Communicating
+* conveying information, ideas and findings of investigations to others through appropriate representations and digital technologies
+* representing data and information in multi-modal texts
+* presenting information and ideas using appropriate scientific language and text types.
+
+
+Knowledge and Understanding
+The Knowledge and Understanding strands specify the content for each stage and integrate content related to the understanding about the nature, development, use and influence of science with knowledge of scientific concepts, principles, models, theories and laws. Students develop their scientific understanding about the natural world and the unique nature of Science as a discipline through using and applying the processes of Working Scientifically.
+
+Teachers choose contexts to assist students make meaning of and integrate the content. The choice of appropriate contexts for scientific learning should encourage students to further develop their understanding of science as a distinct view and way of thinking about the natural world.
+
+The knowledge and understanding content is organised into four strands:
+Physical World (PW)
+The Physical World strand is concerned with understanding the nature of forces and motion, and matter and energy. The two key concepts developed within this strand are that forces affect the motion and behaviour of objects and that energy can be transferred and transformed from one form to another. Through this strand students gain an understanding of how the concepts of force, motion, matter and energy apply to systems ranging in scale from atoms to the universe itself.
+
+Earth and Space (ES)
+The Earth and Space strand is concerned with the Earth's dynamic structure and its place in the cosmos. The key concepts developed within this strand are that the Earth is part of a solar system that, in turn, is part of a larger universe and that the Earth is subject to change within and on its surface, over a range of timescales, as a result of natural processes. Students explore the ways that humans use resources from the Earth and appreciate the influence of human activity on the surface of the Earth and the atmosphere.
+
+Living World (LW)
+The Living World strand is concerned with understanding living things. The key concepts developed within this strand are that the cell is the basic unit of life and that there is a diverse range of living things that have evolved on Earth. Students will gain an appreciation of the interdependence of living things and how they interact with each other and the environment. Through this strand students gain an understanding of how the structure of living things relates to the functions that their body systems perform and how these features aid their survival.
+
+Chemical World (CW)
+The Chemical World strand is concerned with understanding the composition and behaviour of matter. The key concepts developed in this strand are that the chemical and physical properties of substances are determined by their structure on an atomic scale and that substances change and new substances are produced in chemical reactions by rearranging atoms through atomic interactions and energy transfer.
+
+
+Additional content
+The syllabus content is designed so that the typical student can realistically address it in the indicative course time. Additional knowledge and understanding content is provided in recognition that some students will need to extend their learning by engaging with content beyond the syllabus. To broaden and deepen students' scientific understanding, teachers may develop extension units or incorporate additional content into units of study throughout their teaching program.
+
+The additional knowledge and understanding content presented in the syllabus provides suggestions only, should not be considered an exhaustive list and is not required as prerequisite knowledge for any Stage 6 Science course. Additional content selected for the school learning program must be based on scientific understanding that is evidence-based and has been refined over time through review processes by the scientific community. All science ideas are theories and must be testable and measurable using the procedures of scientific inquiry.
+
+Teachers may:
+* incorporate additional content into units of study throughout their teaching program or develop extension units in their teaching program. In this way, students' learning can be extended into areas of specific interest
+* choose other contexts to reinforce the content of the syllabus. In this way, students can be given more time to acquire the skills, knowledge and understanding
+* undertake remediation of knowledge, understanding and/or skills in addressing the outcomes and content of the syllabus.
+
+Practical Experiences
+The practical experiences, including the student research project, provide opportunities for students to engage in scientific inquiry during the course of their learning. Through applying the processes of Working Scientifically, students use scientific inquiry to develop their understanding of science ideas and concepts and the importance of scientific evidence-based conclusions.
+
+Practical experiences should emphasise a range of types of hands-on activities and include:
+* undertaking laboratory investigations, including fair tests and controlled experiments
+* undertaking fieldwork and surveys
+* researching by using a variety of print and multimedia, as well as internet and electronic sources of data and information
+* using a range of strategies and technologies to collect and record data, including appropriate use of digital technologies, eg data loggers
+* using and constructing models
+* using or reorganising second-hand data, including those in spreadsheets and databases
+* extracting and reorganising information in the form of flow charts, tables, graphs, diagrams, prose, keys, spreadsheets and databases
+* using digital technologies, eg computer animations and simulations, to capture and analyse data and information
+* presenting data and information in multi-modal texts.
+Student Research Project
+Class time should be allocated to assist students in clarifying their question or problem to be investigated, developing hypotheses and identifying variables to be controlled, measured or changed in fair tests. Students should also be supported in planning their investigations, carrying out research, evaluating evidence and conclusions, and communicating results, findings and explanations to others.
+
+All students are required to undertake at least one substantial research project during Stage 4 and Stage 5:
+* at least one project will involve hands-on practical investigation
+* at least one Stage 5 project will be an individual task.
+
+Students should choose investigations related to one of the topics they have studied or to an area of interest. They should be encouraged to address problems relevant to their immediate environment and use readily available materials to undertake their investigation. Apart from the mandatory Stage 5 individual project, projects may involve collaboration with peers.
+
+The student research project can be used as an assessment for learning strategy to inform future teaching. It may also form part of the assessment of learning in the school-based assessment program.
+
+Note
+In developing and delivering teaching programs teachers should be aware of, and adopt relevant guidelines and directives of their education authorities and/or schools. Teaching programs should recognise and reflect relevant State and Commonwealth legislation, regulations and standards, including Work Health and Safety Standards, Chemical Safety in Schools and Animal Welfare guidelines. Teachers need to be aware of activities that may require notification, certification, permission, permits and licences.
+Teachers should be aware that students may have food allergies that can result in anaphylaxis, a severe and sometimes sudden allergic reaction which is potentially life-threatening and always requires an emergency response. This is an important consideration in selecting the foods to be handled and consumed.
+
+
+Learning Across the Curriculum
+Learning across the curriculum content, including the cross-curriculum priorities and general capabilities, assists students to achieve the broad learning outcomes defined in the NESA Statement of Equity Principles, the Melbourne Declaration on Educational Goals for Young Australians (December 2008) and in the Australian Government's Core Skills for Work Developmental Framework (2013).
+
+Cross-curriculum priorities enable students to develop understanding about and address the contemporary issues they face.
+
+The cross-curriculum priorities are:
+* Aboriginal and Torres Strait Islander histories and cultures 
+* Asia and Australia's engagement with Asia 
+* Sustainability 
+
+General capabilities encompass the knowledge, skills, attitudes and behaviours to assist students to live and work successfully in the 21st century.
+
+The general capabilities are:
+* Critical and creative thinking 
+* Ethical understanding 
+* Information and communication technology capability 
+* Intercultural understanding 
+* Literacy 
+* Numeracy 
+* Personal and social capability 
+
+NESA syllabuses include other areas identified as important learning for all students:
+* Civics and citizenship 
+* Difference and diversity 
+* Work and enterprise 
+
+Learning across the curriculum content is incorporated, and identified by icons, in the content of the syllabus in the following ways.
+
+
+Aboriginal and Torres Strait Islander histories and cultures 
+Science and Technology provides students with opportunities to learn about how Aboriginal and Torres Strait Islander Peoples have developed and refined knowledge about the world through observation, making predictions, testing and responding to environmental factors within specific contexts. It emphasises the relationships people have with places and their interconnectedness with the environments in which they live. Students learn about Aboriginal and Torres Strait Islander Peoples' understanding of the environment and the ways that traditional knowledge and Western scientific knowledge can be complementary. Students learn that there are different ways of interacting with the environment and how this can influence sustainability.
+
+When planning and programming content relating to Aboriginal and Torres Strait Islander histories and cultures, teachers are encouraged to:
+* involve local Aboriginal communities and/or appropriate knowledge holders in determining suitable resources, or to use Aboriginal or Torres Strait Islander authored or endorsed publications
+* read the Principles and Protocols relating to teaching and learning about Aboriginal and Torres Strait Islander histories and cultures and the involvement of local Aboriginal communities.
+Asia and Australia's engagement with Asia 
+The syllabus provides students with opportunities to recognise that the Asia region includes diverse environments. Students develop an appreciation of how interactions within and between these environments impact on human activity and influence the region and the rest of the world. Students identify how the Asia region plays an important role in scientific research and development in manufacturing technologies.
+Sustainability 
+Sustainability is concerned with the ongoing capacity of the Earth to maintain all life. It provides authentic contexts for exploring, investigating and understanding systems in the natural and made environments. The Science Years 7-10 Syllabus provides students with opportunities to investigate relationships between systems and system components, to consider how systems respond to change and to develop appreciation for the interconnectedness of the Earth's spheres.
+
+Relationships, cycles and cause and effect are explored, and students develop observation and analytical skills to examine these relationships in the world around them to design solutions to identified sustainability problems.
+Critical and creative thinking 
+Critical and creative thinking are integral to activities where students learn to generate and evaluate knowledge, clarify concepts and ideas, seek possibilities, consider alternatives and solve problems. Critical and creative thinking are embedded in the skills and processes of Working Scientifically. The Science Years 7-10 Syllabus provides students with opportunities to develop critical and creative thinking skills through asking and posing questions, making predictions, engaging in first-hand investigations and design projects, problem solving, making evidence-based decisions, and analysing and evaluating evidence.
+
+
+Ethical understanding 
+Students develop the capability to behave ethically as they identify and investigate the nature of ethical concepts, values and principles, and understand how reasoning can assist ethical judgement. The Science Years 7-10 Syllabus provides opportunities for students to form and make ethical judgements in relation to scientific investigations, design, codes of practice, and the use of scientific and technological information and applications. Students explore what integrity and honesty mean in using the processes of Working Scientifically. They apply ethical guidelines in their investigations and design projects, particularly in their implications for others and the environment.
+Information and communication technology capability 
+Information and communication technology (ICT) can be used effectively and appropriately to access, create and communicate information and ideas, solve problems and work collaboratively. The Science Years 7-10 Syllabus provides students with opportunities to develop ICT capability when they develop design ideas and solutions, research science concepts and applications, investigate science phenomena, and communicate their scientific and technological understandings. In particular they learn to access information, collect, analyse and represent data, model and interpret concepts and relationships, and communicate scientific and technological ideas, processes and information. Digital technologies and aids, such as animations and simulations, provide opportunities to view phenomena and test predictions that cannot be investigated through practical experiences in the classroom, and may enhance students' understanding and engagement with science and technology.
+Intercultural understanding 
+Students develop intercultural understanding as they learn to understand themselves in relation to others. This involves students valuing their own cultures and those of others, and engaging with people of diverse cultures in ways that recognise commonalities and differences, create connections and cultivate respect. The Science Years 7-10 Syllabus provides opportunities for students to appreciate the contribution that diverse cultural perspectives have made to the development, breadth and diversity of scientific and technological knowledge and applications. Students learn about and engage with issues requiring cultural sensitivity, and learn that scientists work in culturally diverse teams to address issues and solve problems of national and international importance.
+Literacy 
+Literacy is the ability to use a repertoire of knowledge and skills to communicate and comprehend effectively, using a variety of modes and media. Being 'literate' is more than the acquisition of technical skills - it includes the ability to identify, understand, interpret, create and communicate effectively using written, visual and digital forms of expression and communication for a number of purposes. The Science Years 7-10 Syllabus provides students with the opportunities to understand that language varies according to the context. The language of science and technology is often technical and includes specific terms for concepts, processes and features of the world. Students learn that scientific and technological information can be presented in the form of diagrams, flowcharts, tables and graphs, and that specific text types are used to link information and ideas, give explanations, formulate questions, hypotheses, draw conclusions and construct evidence-based arguments.
+
+
+Numeracy 
+Numeracy involves students in recognising and understanding the role of mathematics in the world. Students become numerate as they develop the confidence, willingness and ability to apply mathematics in their lives in constructive and meaningful ways. The Science Years 7-10 Syllabus provides students with opportunities to develop numeracy skills through practical measurement and the collection, representation and interpretation of data from first-hand investigations and secondary sources. Initially students make measurements using informal units, then they apply the formal units of measurement. Students consider issues of uncertainty and reliability in measurement and learn data-analysis skills, identifying trends and patterns from numerical data and graphs.
+Personal and social capability 
+Students develop personal and social capability as they learn to understand and manage themselves, their relationships and their lives more effectively. This includes establishing positive relationships, making responsible decisions, working effectively individually and in teams and constructively handling challenging situations. The Science Years 7-10 Syllabus provides students with opportunities, through applying processes of Working Scientifically, to learn how scientific knowledge informs and is applied in their daily lives. They develop skills in communication, initiative taking, goal setting, interacting with others, decision making, and the capacity to work independently and collaboratively. The study of Science enhances personal and social capability by expanding students' capacity to question, solve problems, explore and display curiosity. Students use their scientific understanding to make informed choices about issues that impact on their lives and consider how the use and application of science meets a range of personal and social needs.
+Civics and citizenship 
+Civics and citizenship content involves knowledge and understanding of how our Australian society operates. The Science Years 7-10 Syllabus provides students with opportunities to broaden their understanding of aspects of civics and citizenship in relation to the application of science ideas and technological advances, including ecological sustainability and the development of environmental and sustainable practices.
+Difference and diversity 
+Difference and diversity comprise gender, race and socio-economic circumstances. The Science Years 7-10 Syllabus provides opportunities for students to understand and appreciate the difference and diversity they experience in their everyday lives. Working Scientifically provides opportunities for students to work collaboratively, where they can develop an appreciation of the values and ideas of all group members. This also enables them to identify individual rights, challenge stereotypes and engage with opinions different to their own.
+Work and enterprise 
+Students develop work-related skills and an appreciation of the value of working individually and collaboratively when conducting investigations and design tasks. The Science Years 7-10 Syllabus provides opportunities for students to prioritise safe practices and understand the potential risks and hazards present when conducting investigations and constructing design solutions. They safely use materials, electrical devices, classroom equipment and specialised tools.
+
+
+Content for Stage 4
+Questioning and predicting
+Outcome
+A student:
+› identifies questions and problems that can be tested or researched and makes predictions based on scientific knowledge SC4-4WS
+Related Life Skills outcome: SCLS-4WS
+Content
+WS4 Students question and predict by:
+a. identifying questions and problems that can be investigated scientifically (ACSIS124, ACSIS139)
+b. making predictions based on scientific knowledge and their own observations (ACSIS124, ACSIS139)
+
+
+Planning Investigations
+Outcome
+A student:
+› collaboratively and individually produces a plan to investigate questions and problems SC4-5WS
+Related Life Skills outcome: SCLS-5WS
+Content
+WS5.1 Students identify data to be collected in an investigation by:
+a. identifying the purpose of an investigation
+b. proposing the type of information and data that needs to be collected in a range of investigation types, including first-hand and secondary sources  
+c. locating possible sources of data and information, including secondary sources, relevant to the investigation  
+
+WS5.2 Students plan first-hand investigations by:
+a. collaboratively and individually planning a range of investigation types, including fieldwork, experiments, surveys and research (ACSIS125, ACSIS140)
+b. outlining a logical procedure for undertaking a range of investigations to collect valid first-hand data, including fair tests
+c. identifying in fair tests, variables to be controlled (held constant), measured and changed
+d. describing safety and ethical guidelines to be addressed  
+
+WS5.3	Students choose equipment or resources for an investigation by:
+a. identifying suitable equipment or resources to perform the task, including safety equipment and digital technologies 
+b. selecting equipment to collect data with accuracy appropriate to the task (ACSIS126, ACSIS141) 
+
+
+Conducting Investigations
+Outcome
+A student:
+› follows a sequence of instructions to safely undertake a range of investigation types, collaboratively and individually SC4-6WS
+Related Life Skills outcome: SCLS-6WS
+Content
+WS6 Students conduct investigations by:
+a. collaboratively and individually conducting a range of investigation types, including fieldwork and experiments, ensuring safety and ethical guidelines are followed (ACSIS125, ACSIS140)  
+b. assembling and using appropriate equipment and resources to perform the investigation, including safety equipment
+c. selecting equipment to collect data with accuracy appropriate to the task (ACSIS126, ACSIS141) 
+d. following the planned procedure, including in fair tests, measuring and controlling variables (ACSIS126, ACSIS141)  
+e. recording observations and measurements accurately, using appropriate units for physical quantities 
+f. performing specific roles safely and responsibly when working collaboratively to complete a task within the timeline 
+g. assessing the method used and identifying improvements to the method (ACSIS131, ACSIS146)  
+
+
+Processing and analysing data and information
+Outcome
+A student:
+› processes and analyses data from a first-hand investigation and secondary sources to identify trends, patterns and relationships, and draw conclusions SC4-7WS
+Related Life Skills outcome: SCLS-7WS
+Content
+WS7.1 Students process data and information by:
+a. summarising data from students' own investigations and secondary sources (ACSIS130, ACSIS145)  
+b. using a range of representations to organise data, including graphs, keys, models, diagrams, tables and spreadsheets 
+c. extracting information from diagrams, flowcharts, tables, databases, other texts, multimedia resources and graphs including histograms and column, sector and line graphs  
+d. accessing information from a range of sources, including using digital technologies  
+e. applying simple numerical procedures, eg calculating means when processing data and information, as appropriate 
+
+WS7.2 Students analyse data and information by:
+a. checking the reliability of gathered data and information by comparing with observations or information from other sources 
+b. constructing and using a range of representations, including graphs, keys and models to represent and analyse patterns or relationships, including using digital technologies as appropriate (ACSIS129, ACSIS144)   
+c. identifying data which supports or discounts a question being investigated or a proposed solution to a problem 
+d. using scientific understanding to identify relationships and draw conclusions based on students' data or secondary sources (ACSIS130, ACSIS145)
+e. proposing inferences based on presented information and observations 
+f. reflecting on the method used to investigate a question or solve a problem, including evaluating the quality of the data collected (ACSIS131, ACSIS146) 
+
+
+Problem solving
+Outcome
+A student:
+› selects and uses appropriate strategies, understanding and skills to produce creative and plausible solutions to identified problems SC4-8WS
+Related Life Skills outcome: SCLS-8WS
+Content
+WS8 Students solve problems by:
+a. using identified strategies to suggest possible solutions to a familiar problem 
+b. describing different strategies that could be employed to solve an identified problem with a scientific component 
+c. using scientific knowledge and findings from investigations to evaluate claims (ACSIS132, ACSIS234) 
+d. using cause and effect relationships to explain ideas and findings 
+e. evaluating the appropriateness of different strategies for solving an identified problem  
+
+
+Communicating
+Outcome
+A student:
+› presents science ideas, findings and information to a given audience using appropriate scientific language, text types and representations SC4-9WS
+Related Life Skills outcome: SCLS-9WS
+Content
+WS9 Students communicate by:
+a. presenting ideas, findings and solutions to problems using scientific language and representations using digital technologies as appropriate (ACSIS133, ACSIS148)  
+b. using appropriate text types in presentations, including a discussion, explanation, exposition, procedure and recount 
+c. using a recognised method to acknowledge sources of data and information 
+d. constructing and using a range of representations to honestly, clearly and/or succinctly present data and information including diagrams, keys, models, tables, drawings, images, flowcharts, spreadsheets and databases   
+e. constructing and using the appropriate type of graph (histogram, column, sector or line graph) to express relationships clearly and succinctly, employing digital technologies as appropriate  
+
+
+Physical World
+Outcomes
+A student:
+› describes the action of unbalanced forces in everyday situations SC4-10PW
+› discusses how scientific understanding and technological developments have contributed to finding solutions to problems involving energy transfers and transformations SC4-11PW
+Related Life Skills outcomes: SCLS-10PW, SCLS-11PW, SCLS-12PW
+Content
+PW1 Change to an object's motion is caused by unbalanced forces acting on the object (ACSSU117)
+Students:
+a. identify changes that take place when particular forces are acting
+b. predict the effect of unbalanced forces acting in everyday situations
+c. describe some examples of technological developments that have contributed to finding solutions to reduce the impact of forces in everyday life, eg car safety equipment and footwear design  
+d. analyse some everyday common situations where friction operates to oppose motion and produce heat 
+e. investigate factors that influence the size and effect of frictional forces
+
+PW2 The action of forces that act at a distance may be observed and related to everyday situations
+Students:
+a. use the term 'field' in describing forces acting at a distance 
+b. identify ways in which objects acquire electrostatic charge
+c. describe the behaviour of charged objects when they are brought close to each other
+d. investigate everyday situations where the effects of electrostatic forces can be observed, eg lightning strikes during severe weather and dust storms 
+e. identify that the Earth's gravity pulls objects towards the centre of the Earth (ACSSU118)
+f. describe everyday situations where gravity acts as an unbalanced force
+g. distinguish between the terms 'mass' and 'weight'
+h. describe the behaviour of magnetic poles when they are brought close together
+i. investigate how magnets and electromagnets are used in some everyday devices or technologies used in everyday life 
+
+PW3 Energy appears in different forms including movement (kinetic energy), heat and potential energy, and causes change within systems (ACSSU155)
+Students:
+a. identify objects that possess energy because of their motion (kinetic) or because of other properties (potential)
+b. describe the transfer of heat energy by conduction, convection and radiation, including situations in which each occurs
+c. relate electricity with energy transfer in a simple circuit
+d. construct and draw circuits containing a number of components to show a transfer of electricity
+e. investigate some everyday energy transformations that cause change within systems, including motion, electricity, heat, sound and light
+
+
+PW4 Science and technology contribute to finding solutions to a range of contemporary issues; these solutions may impact on other areas of society and involve ethical considerations (ACSHE120, ACSHE135)
+Students:
+a. identify that most energy conversions are inefficient and lead to the production of heat energy, eg in light bulbs 
+b. research ways in which scientific knowledge and technological developments have led to finding a solution to a contemporary issue, eg improvements in devices to increase the efficiency of energy transfers or conversions  
+c. discuss the implications for society and the environment of some solutions to increase the efficiency of energy conversions by reducing the production of heat energy  
+
+Additional content
+Additional content is not prerequisite knowledge for following stages, but may be used to broaden and deepen students' skills, knowledge and understanding in Stage 4.
+Students:
+* investigate characteristics of specific forces in terms of size and direction
+* investigate some simple machines, eg levers, pulleys, gears or inclined planes
+* trace the history of the development of particular devices or technologies, eg circuitry through to microcircuitry
+* describe the scientific principles used in some traditional technologies used and developed by Aboriginal and Torres Strait Islander Peoples 
+* trace the history of pendulum-motion studies and its connection with timekeeping and setting standards of length
+* debate intergenerational implications of the use of non-renewable energy resources   
+* research current ideas about the Earth's magnetic field and its effects
+
+
+Earth and Space
+Outcomes
+A student:
+› describes the dynamic nature of models, theories and laws in developing scientific understanding of the Earth and solar system SC4-12ES
+› explains how advances in scientific understanding of processes that occur within and on the Earth, influence the choices people make about resource use and management SC4-13ES
+Related Life Skills outcomes: SCLS-13ES, SCLS-14ES, SCLS-15ES, SCLS-16ES
+Content
+ES1 Sedimentary, igneous and metamorphic rocks contain minerals and are formed by processes that occur within Earth over a variety of timescales. (ACSSU153)
+Students:
+a. describe the structure of the Earth in terms of core, mantle, crust and lithosphere
+b. relate the formation of a range of landforms to physical and chemical weathering, erosion and deposition
+c. outline the origins of and relationships between sedimentary, igneous and metamorphic rocks
+d. identify that sedimentary, igneous and metamorphic rocks contain minerals
+e. classify a variety of common rocks and minerals into groups according to their observable properties 
+f. describe the conditions under which fossils form
+g. outline how geological history can be interpreted in a sequence of horizontal sedimentary layers, in which the oldest are at the base and the youngest at the top 
+h. describe examples to show how people use understanding and skills from across the disciplines of science in occupations related to the exploration, mining or processing of minerals in Australia (ACSHE224, ACSHE227)  
+
+ES2 Scientific knowledge changes as new evidence becomes available. Some technological developments and scientific discoveries have significantly changed people's understanding of the solar system.
+Students:
+a. explain that predictable phenomena on the Earth, including day and night, seasons and eclipses are caused by the relative positions of the sun, the Earth and the moon (ACSSU115)
+b. demonstrate, using examples, how ideas by people from different cultures have contributed to the current understanding of the solar system  
+c. compare historical and current models of the solar system to show how models are modified or rejected as a result of new scientific evidence 
+d. describe some examples of how technological advances have led to discoveries and increased scientific understanding of the solar system 
+
+
+ES3 Scientific knowledge influences the choices people make in regard to the use and management of the Earth's resources.
+Students:
+a. classify a range of the Earth's resources as renewable or non-renewable (ACSSU116) 
+b. outline features of some non-renewable resources, including metal ores and fossil fuels
+c. describe uses of a variety of natural and made resources extracted from the biosphere, atmosphere, lithosphere and hydrosphere
+d. investigate some strategies used by people to conserve and manage non-renewable resources, eg recycling and the alternative use of natural and made resources 
+e. discuss different viewpoints people may use to weight criteria in making decisions about the use of a major non-renewable resource found in Australia  
+f. outline the choices that need to be made when considering whether to use scientific and technological advances to obtain a resource from Earth's spheres   
+
+ES4 Science understanding influences the development of practices in areas of human activity such as industry, agriculture and marine and terrestrial resource management. (ACSHE121, ACSHE136)
+Students:
+a. identify that water is an important resource that cycles through the environment (ACSSU222)
+b. explain the water cycle in terms of the physical processes involved
+c. demonstrate how scientific knowledge of the water cycle has influenced the development of household, industrial and agricultural water management practices  
+d. research how Aboriginal and Torres Strait Islander Peoples' knowledge is being used in decisions to care for country and place, eg terrestrial and aquatic resource management   
+
+Additional content
+Additional content is not prerequisite knowledge for following stages, but may be used to broaden and deepen students' skills, knowledge and understanding in Stage 4.
+Students:
+* investigate examples of how scientific knowledge has developed through collaboration of experts from across the disciplines of Science, eg space exploration and resource management  
+* describe the effect of the forces of the sun and moon on the hydrosphere
+* investigate the role of forces and energy in the formation of different types of rocks and minerals
+* describe some methods used by scientists to determine the relative age of rock layers
+* debate the economic and environmental impacts of mining and resource exploration   
+* describe ways in which technology has increased the variety of made resources 
+
+
+Living World
+Outcomes
+A student:
+› relates the structure and function of living things to their classification, survival and reproduction SC4-14LW
+› explains how new biological evidence changes people's understanding of the world SC4-15LW
+Related Life Skills outcomes: SCLS-17LW, SCLS-18LW, SCLS-19LW, SCLS-20LW, SCLS-21LW
+Content
+LW1 There are differences within and between groups of organisms; classification helps organise this diversity (ACSSU111)
+Students:
+a. identify reasons for classifying living things
+b. classify a variety of living things based on similarities and differences in structural features
+c. use simple keys to identify a range of plants and animals 
+d. identify some examples of groups of micro-organisms
+e. outline the structural features used to group living things, including plants, animals, fungi and bacteria
+f. explain how the features of some Australian plants and animals are adaptations for survival and reproduction in their environment  
+
+LW2 Cells are the basic units of living things and have specialised structures and functions (ACSSU149)
+Students:
+a. identify that living things are made of cells
+b. identify structures within cells, including the nucleus, cytoplasm, cell membrane, cell wall and chloroplast, and describe their functions
+c. outline the role of respiration in providing energy for the activities of cells
+d. identify that new cells are produced by cell division
+e. distinguish between unicellular and multicellular organisms
+f. identify that different types of cells make up the tissues, organs and organ systems of multicellular organisms
+
+
+LW3 Multicellular organisms contain systems of organs that carry out specialised functions that enable them to survive and reproduce (ACSSU150)
+Students:
+a. identify the materials required by multicellular organisms for the processes of respiration and photosynthesis
+b. explain that the systems in multicellular organisms work together to provide cell requirements, including gases, nutrients and water, and to remove cell wastes 
+c. outline the role of cell division in growth, repair and reproduction in multicellular organisms
+d. describe the role of the flower, root, stem and leaf in maintaining flowering plants as functioning organisms  
+e. describe the role of the digestive, circulatory, excretory, skeletal/muscular and respiratory systems in maintaining a human as a functioning multicellular organism 
+f. outline the role of the reproductive system in humans
+
+LW4 Scientific knowledge changes as new evidence becomes available, and some scientific discoveries have significantly changed people's understanding of the world. (ACSHE119, ACSHE134)
+Students:
+a. research an example of how changes in scientific knowledge have contributed to finding a solution to a human health issue  
+b. recount how evidence from a scientific discovery has changed understanding and contributed to solving a real world problem, eg animal or plant disease, hygiene, food preservation, sewage treatment or biotechnology  
+c. describe, using examples, how developments in technology have contributed to finding solutions to a contemporary issue, eg organ transplantation, artificial joints/limbs, treatment for diabetes, asthma, kidney or heart disease  
+d. give examples to show that groups of people in society may use or weight criteria differently in making decisions about the application of a solution to a contemporary issue, eg organ transplantation, control and prevention of diseases and dietary deficiencies    
+
+LW5 Science and technology contribute to finding solutions to conserving and managing sustainable ecosystems.
+Students:
+a. construct and interpret food chains and food webs, including examples from Australian ecosystems
+b. describe interactions between organisms in food chains and food webs, including producers, consumers and decomposers (ACSSU112)
+c. describe examples of beneficial and harmful effects that micro-organisms can have on living things and the environment
+d. predict how human activities can affect interactions in food chains and food webs, including examples from Australian land or marine ecosystems (ACSSU112) 
+e. explain, using examples, how scientific evidence and/or technological developments contribute to developing solutions to manage the impact of natural events on Australian ecosystems  
+f. describe how scientific knowledge has influenced the development of practices in agriculture, eg animal husbandry or crop cultivation to improve yields and sustainability, or the effect of plant-cloning techniques in horticulture  
+
+
+Additional content
+Additional content is not prerequisite knowledge for following stages, but may be used to broaden and deepen students' skills, knowledge and understanding in Stage 4.
+Students:
+* describe how people in occupations that involve the biological sciences use understanding and skills from across the disciplines of Science 
+* debate why society should support biological research   
+* design and construct simple keys to identify a range of living things 
+* classify, using a hierarchical system, a range of selected plants and animals to species level 
+* identify, using an example of an organism or group of organisms, where the classification has changed as a result of new evidence from technological developments, scientific discoveries and/or advances in scientific understanding
+* research the contributions of Australian scientists to the study of human impact on environments and to local environmental management projects  
+* discuss how the observations and understanding of the structure, function and life cycles of native plants are used by Aboriginal and Torres Strait Islander Peoples 
+
+
+Chemical World
+Outcomes
+A student:
+› describes the observed properties and behaviour of matter, using scientific models and theories about the motion and arrangement of particles SC4-16CW
+› explains how scientific understanding of, and discoveries about, the properties of elements, compounds and mixtures relate to their uses in everyday life SC4-17CW
+Related Life Skills outcomes: SCLS-22CW, SCLS-23CW
+Content
+CW1 The properties of the different states of matter can be explained in terms of the motion and arrangement of particles. (ACSSU151)
+Students:
+a. describe the behaviour of matter in terms of particles that are continuously moving and interacting
+b. relate an increase or decrease in the amount of heat energy possessed by particles to changes in particle movement
+c. use a simple particle model to predict the effect of adding or removing heat on different states of matter
+d. relate changes in the physical properties of matter to heat energy and particle movement that occur during observations of evaporation, condensation, boiling, melting and freezing
+e. explain density in terms of a simple particle model
+f. identify the benefits and limitations of using models to explain the properties of solids, liquids and gases 
+
+CW2 Scientific knowledge and developments in technology have changed our understanding of the structure and properties of matter.
+Students:
+a. describe the properties and uses of some common elements, including metals and non-metals
+b. identify how our understanding of the structure and properties of elements has changed as a result of some technological devices
+c. identify some examples of common compounds
+d. explain why internationally recognised symbols are used for common elements
+e. describe at a particle level the difference between elements, compounds and mixtures, including the type and arrangement of particles (ACSSU152)
+f. investigate how people in different cultures in the past have applied their knowledge of the properties of elements and compounds to their use in everyday life, eg utensils, weapons and tools   
+
+
+CW3 Mixtures, including solutions, contain a combination of pure substances that can be separated using a range of techniques. (ACSSU113)
+Students:
+a. describe the importance of water as a solvent in daily life, industries and the environment
+b. describe aqueous mixtures in terms of solute, solvent and solution
+c. relate a range of techniques used to separate the components of some common mixtures to the physical principles involved in each process, including filtration, decantation, evaporation, crystallisation, chromatography and distillation 
+d. investigate the application of a physical separation technique used in everyday situations or industrial processes, eg water filtering, sorting waste materials, extracting pigments or oils from plants, separating blood products or cleaning up oil spills 
+e. research how people in different occupations use understanding and skills from across the disciplines of Science in carrying out separation techniques  
+
+CW4 In a chemical change, new substances are formed, which may have specific properties related to their uses in everyday life.
+Students:
+a. identify when a chemical change is taking place by observing a change in temperature, the appearance of new substances or the disappearance of an original substance
+b. demonstrate that a chemical change involves substances reacting to form new substances (ACSSU225)
+c. investigate some examples of chemical change that occur in everyday life, eg photosynthesis, respiration and chemical weathering
+d. compare physical and chemical changes in terms of the arrangement of particles and reversibility of the process
+e. propose reasons why society should support scientific research, eg in the development of new pharmaceuticals and polymers    
+f. describe, using examples, how science knowledge can develop through collaboration and connecting ideas across the disciplines of science, eg making or obtaining new substances from Earth's spheres (ACSHE223, ACSHE226) 
+
+Additional content
+Additional content is not prerequisite knowledge for following stages, but may be used to broaden and deepen students' skills, knowledge and understanding in Stage 4.
+Students:
+* research how a knowledge of physical properties of natural materials is used by Aboriginal and Torres Strait Islander Peoples in everyday life, eg tools, weapons, utensils, shelter, housing or bush medicine 
+* discuss the cost and benefits to society of the development of new materials
+* investigate the nature of mineral crystals
+* outline how some historical developments have contributed to evidence that has advanced our understanding of the particle model of matter
+* investigate how the chemical properties of a substance will affect its use, eg flammability and ability to corrode
+* explain the changes in pressure of gases in terms of increases or decreases in the frequency of particle collisions
+
+Content for Stage 5
+Questioning and predicting
+Outcome
+A student:
+› develops questions or hypotheses to be investigated scientifically SC5-4WS
+Related Life Skills outcome: SCLS-4WS
+Content
+WS4 Students question and predict by:
+a. formulating questions or hypotheses that can be investigated scientifically (ACSIS164, ACSIS198) 
+b. predicting outcomes based on observations and scientific knowledge
+
+
+Planning investigations
+Outcome
+A student:
+› produces a plan to investigate identified questions, hypotheses or problems, individually and collaboratively SC5-5WS
+Related Life Skills outcome: SCLS-5WS
+Content
+WS5.1 Students identify data to be collected for an investigation by:
+a. describing the purpose of an investigation
+b. explaining why certain types of information need to be collected in a range of investigation types  
+c. selecting possible sources of data, including secondary sources, relevant to the investigation
+d. justifying why variables need to be kept constant if reliable first-hand data is to be collected in controlled experiments
+
+WS5.2 Students plan first-hand investigations by:
+a. planning and selecting appropriate investigation methods, including fieldwork and laboratory experimentation, to collect reliable data (ACSIS165, ACSIS199)   
+b. describing a logical procedure for undertaking a range of investigation types
+c. designing controlled experiments to collect valid first-hand data
+d. specifying the dependent and independent variables for controlled experiments
+e. accounting for the use of an experimental control as appropriate
+
+WS5.3 Students choose equipment or resources for an investigation by:
+a. identifying appropriate equipment and materials
+b. identifying the appropriate units to be used in collecting data 
+c. selecting equipment to collect and record reliable data or information, using digital technologies as appropriate, eg data loggers  
+d. assessing risks and addressing ethical issues associated with these methods (ACSIS165, ACSIS199)  
+
+
+Conducting investigations
+Outcome
+A student:
+› undertakes first-hand investigations to collect valid and reliable data and information, individually and collaboratively SC5-6WS
+Related Life Skills outcome: SCLS-6WS
+Content
+WS6	Students conduct investigations by:
+a. individually and collaboratively using appropriate investigation methods, including fieldwork and laboratory experimentation, to collect reliable data (ACSIS165, ACSIS199) 
+b. safely constructing, assembling and manipulating identified equipment 
+c. selecting and using appropriate equipment, including digital technologies, to systematically and accurately collect and record data (ACSIS166, ACSIS200)  
+d. using appropriate units for measuring physical quantities 
+e. reporting data and information, evidence and findings, with accuracy and honesty 
+f. evaluating the effectiveness of the planned procedure, considering risk factors and ethical issues, and suggesting improvements as appropriate   
+
+
+Processing and analysing data and information
+Outcome
+A student:
+› processes, analyses and evaluates data from first-hand investigations and secondary sources to develop evidence-based arguments and conclusions SC5-7WS
+Related Life Skills outcome: SCLS-7WS
+Content
+WS7.1 Students process data and information by:
+a. selecting and using a variety of methods to organise data and information including diagrams, tables, models, spreadsheets and databases   
+b. selecting and extracting information from tables, flow diagrams, other texts, audiovisual resources and graphs, including histograms and column, sector or line graphs 
+c. accessing data and information by using a range of appropriate digital technologies 
+d. applying numerical procedures and mathematical concepts and using digital technologies, where appropriate   
+e. identifying data which supports or discounts a question or hypothesis being investigated or a proposed solution to a problem 
+f. describing specific ways to improve the quality of the data (ACSIS171, ACSIS205)
+
+WS7.2 Students analyse data and information by:
+a. analysing patterns and trends, including identifying inconsistencies in data and information (ACSIS169, ACSIS203)  
+b. describing relationships between variables (ACSIS169, ACSIS203) 
+c. assessing the validity and reliability of first-hand data 
+d. using knowledge of scientific concepts to draw conclusions that are consistent with evidence (ACSIS170, ACSIS204)
+e. synthesising data and information to develop evidence-based arguments
+f. evaluating conclusions and evidence, including identifying sources of uncertainty and possible alternative explanations (ACSIS171, ACSIS205) 
+g. critically analysing the validity of information from secondary sources (ACSIS172, ACSIS206) 
+
+
+Problem Solving
+Outcome
+A student:
+› applies scientific understanding and critical thinking skills to suggest possible solutions to identified problems SC5-8WS
+Related Life Skills outcome: SCLS-8WS
+Content
+WS8	Students solve problems by:
+a. describing strategies to develop a range of possible solutions to an identified problem
+b. assessing strategies that have been identified as possible solutions to an identified problem
+c. applying the processes of Working Scientifically in developing creative solutions to problems   
+d. using cause-and-effect relationships to explain ideas
+e. using models to explain phenomena and make predictions  
+f. applying critical thinking in considering suggested proposals, solutions and conclusions, including a consideration of risk 
+g. evaluating different approaches used to solve problems (ACSIS172, ACSIS206)
+
+
+Communicating
+Outcome
+A student:
+› presents science ideas and evidence for a particular purpose and to a specific audience, using appropriate scientific language, conventions and representations SC5-9WS
+Related Life Skills outcome: SCLS-9WS
+Content
+WS9	Students communicate by:
+a. selecting and using in presentations, for different purposes and contexts, appropriate text types including discussions, explanations, expositions, procedures, recounts or reports 
+b. selecting and constructing an appropriate table, type of diagram, table or graph (histogram or sector, column or line graph) to present information and show relationships clearly and succinctly using digital technologies as appropriate   
+c. using appropriate units for physical quantities and symbols to express relationships, including mathematical ones 
+d. proposing ideas that demonstrate coherence and logical progression  
+e. presenting scientific ideas and information for a particular purpose, including constructing evidence-based arguments and using appropriate scientific language, conventions and representations for specific audiences (ACSIS174, ACSIS208) 
+
+
+Physical World
+Outcomes
+A student:
+› applies models, theories and laws to explain situations involving energy, force and motion 
+SC5-10PW
+› explains how scientific understanding about energy conservation, transfers and transformations is applied in systems SC5-11PW
+Related Life Skills outcomes: SCLS-10PW, SCLS-11PW, SCLS-12PW
+Content
+PW1 Energy transfer through different mediums can be explained using wave and particle models. (ACSSU182)
+Students:
+a. explain, in terms of the particle model, the processes underlying convection and conduction of heat energy
+b. identify situations where waves transfer energy
+c. describe, using the wave model, the features of waves including wavelength, frequency and speed
+d. explain, using the particle model, the transmission of sound in different mediums
+e. relate the properties of different types of radiation in the electromagnetic spectrum to their uses in everyday life, including communications technology 
+f. describe the occurrence and some applications of absorption, reflection and refraction in everyday situations 
+
+PW2 The motion of objects can be described and predicted using the laws of physics. (ACSSU229)
+Students:
+a. describe the relationship between force, mass and acceleration
+b. explain the relationship between distance, speed and time
+c. relate acceleration to a change in speed and/or direction as a result of a net force
+d. analyse everyday situations involving motion in terms of Newton's laws 
+
+PW3 Scientific understanding of current electricity has resulted in technological developments designed to improve the efficiency in generation and use of electricity.
+Students:
+a. describe voltage, current and resistance in terms of energy applied, carried and dissipated
+b. describe the relationship between voltage, resistance and current
+c. compare the characteristics and applications of series and parallel electrical circuits
+d. outline recent examples where scientific or technological developments have involved specialist teams from different branches of science, engineering and technology, eg low-emissions electricity generation and reduction in atmospheric pollution   
+
+
+PW4 Energy conservation in a system can be explained by describing energy transfers and transformations (ACSSU190)
+Students:
+a. apply the law of conservation of energy to account for the total energy involved in energy transfers and transformations
+b. describe how, in energy transfers and transformations, a variety of processes can occur so that usable energy is reduced and the system is not 100% efficient
+c. discuss, using examples, how the values and needs of contemporary society can influence the focus of scientific research in the area of increasing efficiency of the use of electricity by individuals and society (ACSHE228, ACSHE230)   
+d. discuss viewpoints and choices that need to be considered in making decisions about the use of non-renewable energy resources    
+
+Additional content
+Additional content is not prerequisite knowledge for following stages, but may be used to broaden and deepen students' skills, knowledge and understanding in Stage 5.
+Students:
+* investigate quantitatively, features of waves including frequency, wavelength and speed using V=f? and relate this to musical instruments 
+* relate scattering and dispersion of light to everyday occurrences
+* explain the difference between speed and velocity
+* describe the relationships between displacement, time, velocity and acceleration, using the equations of motion 
+* relate quantitatively, force, mass and acceleration, and apply to everyday situations 
+* apply Newton's laws of motion to space travel 
+* compare energy changes in interactions in sport activities 
+* explain the relationship between resistance, voltage and current, using Ohm's Law 
+* investigate the energy efficiency of appliances and relate this to a household energy account
+* research how engineers and architects employ scientific concepts and principles in designing energy-efficient devices and buildings  
+
+
+Earth and Space
+Outcomes
+A student:
+› describes changing ideas about the structure of the Earth and the universe to illustrate how models, theories and laws are refined over time by the scientific community SC5-12ES
+› explains how scientific knowledge about global patterns of geological activity and interactions involving global systems can be used to inform decisions related to contemporary issues 
+SC5-13ES
+Related Life Skills outcomes: SCLS-13ES, SCLS-14ES, SCLS-15ES, SCLS-16ES
+Content
+ES1 Scientific understanding, including models and theories, are contestable and are refined over time through a process of review by the scientific community. (ACSHE157, ACSHE191)
+Students:
+a. outline some of the major features contained in the universe, including galaxies, stars, solar systems and nebulae (ACSSU188)
+b. describe, using examples, some technological developments that have advanced scientific understanding about the universe  
+c. use appropriate scales to describe differences in sizes of and distances between structures making up the universe 
+d. identify that all objects exert a force of gravity on all other objects in the universe
+e. use scientific evidence to outline how the Big Bang theory can be used to explain the origin of the universe and its age (ACSSU188)  
+f. outline how scientific thinking about the origin of the universe is refined over time through a process of review by the scientific community 
+
+ES2 The theory of plate tectonics explains global patterns of geological activity and continental movement. (ACSSU180)
+Students:
+a. outline how the theory of plate tectonics changed ideas about the structure of the Earth and continental movement over geological time
+b. relate movements of the Earth's plates to mantle convection currents and gravitational forces
+c. outline how the theory of plate tectonics explains earthquakes, volcanic activity and formation of new landforms 
+d. describe how some technological developments have increased scientific understanding of global patterns in geological activity, including in the Asia-Pacific region  
+
+
+ES3 People use scientific knowledge to evaluate claims, explanations or predictions in relation to interactions involving the atmosphere, biosphere, hydrosphere and lithosphere. (ACSHE160, ACSHE194)
+Students:
+a. outline how global systems rely on interactions involving the biosphere, lithosphere, hydrosphere and atmosphere, including the carbon cycle (ACSSU189)
+b. describe some impacts of natural events, including cyclones, volcanic eruptions or earthquakes, on the Earth's spheres  
+c. evaluate scientific evidence of some current issues affecting society that are the result of human activity on global systems, eg the greenhouse effect, ozone layer depletion, effect of climate change on sea levels, long-term effects of waste management and loss of biodiversity    
+d. discuss the reasons different groups in society may use or weight criteria differently to evaluate claims, explanations or predictions in making decisions about contemporary issues involving interactions of the Earth's spheres   
+
+Additional content
+Additional content is not prerequisite knowledge for following stages, but may be used to broaden and deepen students' skills, knowledge and understanding in Stage 5.
+Students:
+* relate colours of stars to their age, size and distance from the Earth
+* describe evidence used to support estimates of time in the universe 
+* describe some recent contributions made by Australian scientists in the exploration and study of the universe 
+* discuss technological developments that have extended the ability of scientists to collect information about, and monitor events in, the natural world 
+* research evidence relating global warming to changes in weather patterns, including El Niño and La Niña  
+* examine the factors that drive deep ocean currents, their role in regulating climate and their effects on marine life
+* research how computer modelling has improved knowledge and predictability of phenomena, eg atmospheric pollution, ocean salinity and climate change 
+* discuss the development and implications of international agreements relating to biodiversity and climate change, eg the original 1987 Montreal Protocol, 1992 United Nations Conference on Environment and Development, 1997 Kyoto Protocol and the 2009 United Nations Climate Change Conference  
+* outline examples where advances in science and emerging science and technologies significantly affect people's lives, including generating new career opportunities in areas such as astrophysics, geophysics, space science and vulcanology 
+
+
+Living World
+Outcomes
+A student:
+› analyses interactions between components and processes within biological systems SC5-14LW
+› explains how biological understanding has advanced through scientific discoveries, technological developments and the needs of society SC5-15LW
+Related Life Skills outcomes: SCLS-17LW, SCLS-18LW, SCLS-19LW, SCLS-20LW, SCLS-21LW
+Content
+LW1 Multicellular organisms rely on coordinated and interdependent internal systems to respond to changes in their environment. (ACSSU175)
+Students:
+a. describe some examples of how multicellular organisms respond to changes in their environment
+b. describe how the coordinated function of internal systems in multicellular organisms provides cells with requirements for life, including gases, nutrients and water, and removes cell wastes
+c. outline some responses of the human body to infectious and non-infectious diseases
+d. describe the role of, and interaction between, the coordination systems in maintaining humans as functioning organisms
+e. discuss, using examples, how the values and needs of contemporary society can influence the focus of scientific research, eg the occurrence of diseases affecting animals and plants, an epidemic or pandemic disease in humans or lifestyle related non-infectious diseases in humans   
+
+LW2 Conserving and maintaining the quality and sustainability of the environment requires scientific understanding of interactions within, the cycling of matter and the flow of energy through ecosystems.
+Students:
+a. recall that ecosystems consist of communities of interdependent organisms and abiotic components of the environment (ACSSU176)
+b. outline using examples how matter is cycled through ecosystems such as nitrogen (ACSSU176)
+c. describe how energy flows through ecosystems, including input and output through food webs (ACSSU176)
+d. analyse how changes in some biotic and abiotic components of an ecosystem affect populations and/or communities 
+e. assess ways that Aboriginal and Torres Strait Islander Peoples' cultural practices and knowledge of the environment contribute to the conservation and management of sustainable ecosystems  
+f. evaluate some examples in ecosystems, of strategies used to balance conserving, protecting and maintaining the quality and sustainability of the environment with human activities and needs    
+
+
+LW3 Advances in scientific understanding often rely on developments in technology, and technological advances are often linked to scientific discoveries. (ACSHE158, ACSHE192)
+Students:
+a. relate the organs involved in human reproductive systems to their function
+b. identify that during reproduction the transmission of heritable characteristics from one generation to the next involves DNA and genes (ACSSU184)
+c. identify that genetic information is transferred as genes in the DNA of chromosomes
+d. outline how the Watson-Crick model of DNA explains:
+- the exact replication of DNA
+- changes in genes (mutation)
+e. describe, using examples, how developments in technology have advanced biological understanding, eg vaccines, biotechnology, stem-cell research and in-vitro fertilisation   
+f. discuss some advantages and disadvantages of the use and applications of biotechnology, including social and ethical considerations  
+
+LW4 The theory of evolution by natural selection explains the diversity of living things and is supported by a range of scientific evidence. (ACSSU185)
+Students:
+a. describe scientific evidence that present-day organisms have evolved from organisms in the past
+b. relate the fossil record to the age of the Earth and the time over which life has been evolving
+c. explain, using examples, how natural selection relates to changes in a population, eg in the development of resistance of bacteria to antibiotics and insects to pesticides 
+d. outline the roles of genes and environmental factors in the survival of organisms in a population 
+
+Additional content
+Additional content is not prerequisite knowledge for following stages, but may be used to broaden and deepen students' skills, knowledge and understanding in Stage 5.
+Students:
+* debate why any investigation relating to biological research and involving or affecting animals, must be humane, justified and ethical  
+* describe the range of functions carried out by some endocrine (hormonal) glands in humans 
+* investigate how models can be used to predict the changes in populations due to environmental changes, eg the impact of fire or flooding, introduction of a disease or predator  
+* discuss the strengths and limitations of using models to make predictions about changes in biological systems 
+* describe examples of advances in science and/or emerging science and technologies, in areas that involve biological science such as dentistry, environmental science, biomedical engineering, physiology, pharmaceuticals or nanotechnology   
+* assess the role of the development of fast computers in the analysis of DNA sequences 
+* research how information technology is applied in bioinformatics 
+
+
+Chemical World
+Outcomes
+A student:
+› explains how models, theories and laws about matter have been refined as new scientific evidence becomes available SC5-16CW
+› discusses the importance of chemical reactions in the production of a range of substances, and the influence of society on the development of new materials SC5-17CW
+Related Life Skills outcomes: SCLS-22CW, SCLS-23CW, SCLS-24CW
+Content
+CW1 Scientific understanding changes and is refined over time through a process of review by the scientific community.
+Students:
+a. identify that all matter is made of atoms which are composed of protons, neutrons and electrons (ACSSU177)
+b. describe the structure of atoms in terms of the nucleus, protons, neutrons and electrons
+c. outline historical developments of the atomic theory to demonstrate how models and theories have been contested and refined over time through a process of review by the scientific community 
+d. identify that natural radioactivity arises from the decay of nuclei in atoms, releasing particles and energy (ACSSU177)
+e. evaluate the benefits and problems associated with medical and industrial uses of nuclear energy   
+
+CW2 The atomic structure and properties of elements are used to organise them in the Periodic Table. (ACSSU186)
+Students:
+a. identify the atom as the smallest unit of an element and that it can be represented by a symbol
+b. distinguish between the atoms of some common elements by comparing information about the numbers of protons, neutrons and electrons
+c. describe the organisation of elements in the Periodic Table using their atomic number
+d. relate the properties of some common elements to their position in the Periodic Table
+e. predict, using the Periodic Table, the properties of some common elements
+f. outline some examples to show how creativity, logical reasoning and the scientific evidence available at the time, contributed to the development of the modern Periodic Table   
+
+
+CW3 Chemical reactions involve rearranging atoms to form new substances; during a chemical reaction mass is not created or destroyed. (ACSSU178)
+Students:
+a. recall that all matter is composed of atoms and has mass
+b. identify a range of compounds using their common names and chemical formulae
+c. classify compounds into groups based on common chemical characteristics
+d. investigate a range of types of important chemical reactions that occur in non-living systems and involve energy transfer, including:
+- combustion (ACSSU179)
+- the reaction of acids including metals and carbonates (ACSSU179)
+- corrosion
+- precipitation
+- neutralisation
+- decomposition
+e. identify some examples of important chemical reactions that occur in living systems and involve energy transfer, including respiration and reactions involving acids such as occur during digestion (ACSSU179)
+f. construct word equations from observations and written descriptions of a range of chemical reactions 
+g. deduce that new substances are formed during chemical reactions by rearranging atoms rather than creating or destroying them
+CW4 Different types of chemical reactions are used to produce a range of products and can occur at different rates and involve energy transfer. (ACSSU187)
+Students:
+a. identify that chemical reactions involve energy transfer and can be exothermic or endothermic
+b. compare combustion and respiration as types of chemical reactions that release energy but occur at different rates
+c. describe the effects of factors, eg temperature and catalysts, on the rate of some common chemical reactions
+d. analyse how social, ethical and environmental considerations can influence decisions about scientific research related to the development and production of new materials    
+e. describe examples to show where advances in science and/or emerging science and technologies significantly affect people's lives, including generating new career opportunities in areas of chemical science such as biochemistry and industrial chemistry (ACSHE161, ACSHE195)   
+Additional content
+Additional content is not prerequisite knowledge for following stages, but may be used to broaden and deepen students' skills, knowledge and understanding in Stage 5.
+Students:
+* use models to describe the arrangement of electrons in the energy levels of common elements
+* research the development of ideas about the nature of radioactivity 
+* investigate the order of activity of a range of metals
+* balance a range of common chemical equations
+* conduct flame tests and explain the colours in terms of subatomic structure
+* research ways that are used to restore and prevent corrosion of submerged objects
+* investigate the processes involved in the production of new materials from synthetic fibres 
+* evaluate, using scientific evidence, the claims, explanations or predictions made in the media or advertising in relation to a substance, material or product
+* construct simple electrochemical cells using fruit and describe energy transfer
+* research the structure of small portable electrochemical cells, eg mercury cells and rechargeable batteries 
+
+
+Years 7-10 Life Skills outcomes and content
+The Years 7-10 Life Skills outcomes and content are developed from the objectives of the Science Years 7-10 Syllabus.
+
+Before deciding that a student should undertake a course based on Life Skills outcomes and content, consideration should be given to other ways of assisting the student to engage with the regular course outcomes. This assistance may include a range of adjustments to teaching, learning and assessment activities.
+
+If the adjustments do not provide a student with sufficient access to some or all of the Stage 4 and Stage 5 outcomes, a decision can be explored for the student to undertake Life Skills outcomes and content. This decision should be made through the collaborative curriculum planning process involving the student and parent/carer and other significant individuals. School principals are responsible for the management of the collaborative curriculum planning process.
+
+The following points need to be taken into consideration:
+* students are required to demonstrate achievement of one or more Life Skills outcomes
+* specific Life Skills outcomes should be selected based on the needs, strengths, goals, interests and prior learning of each student
+* achievement of an outcome may be demonstrated through selected Life Skills content
+* outcomes may be demonstrated independently or with support.
+
+Further information in relation to planning, implementing and assessing Life Skills outcomes and content can be found in support materials for:
+* Science
+* Special education
+* Life Skills.
+
+
+Years 7-10 Life Skills Outcomes
+Table of Objectives and Outcomes
+Values and Attitudes
+Objectives
+Students:
+* develop an appreciation of the contribution of science to finding solutions to personal, social and global issues relevant to their lives now and in the future
+* develop a willingness to use evidence and reason to engage with and respond to scientific and technological ideas as informed, reflective citizens
+
+Life Skills outcomes
+A student:SCLS-1VA
+recognises the role of science in personal, social and global issues relating to everyday life
+
+SCLS-2VA
+recognises that using the processes of Working Scientifically increases their understanding of the world
+
+SCLS-3VA
+demonstrates a willingness to engage with science-related issues relevant to their lives
+SCLS-1VA, SCLS-2VA and SCLS-3VA refer to values and attitudes developed through the study of Science. These outcomes are integrated throughout the Science Years 7-10 Life Skills content.
+
+
+Skills
+Objective
+Students:
+* develop knowledge, understanding of and skills in applying the processes of Working Scientifically
+
+Life Skills outcomes
+A student:SCLS-4WS
+asks questions that can be tested and makes predictions
+
+SCLS-5WS
+participates in planning to investigate questions or problems
+
+SCLS-6WS
+participates in an investigation by following a sequence
+
+SCLS-7WS
+collects, records and interprets data and information
+
+SCLS-8WS
+recognises strategies to solve identified problems
+
+SCLS-9WS
+uses a variety of strategies to communicate information about an investigation
+
+Knowledge and Understanding
+Objective
+Students:
+* develop knowledge of the Physical World, Earth and Space, Living World and Chemical World, and understanding about the nature, development, use and influence of science
+
+Life Skills outcomes
+A student:SCLS-10PW
+explores a range of forces in everyday situations
+SCLS-11PW
+identifies various forms and sources of energy and their uses
+SCLS-12PW
+investigates ways to use energy responsiblySCLS-13ES
+identifies features of the Earth
+SCLS-14ES
+explores features of the solar system, including the Earth's position and movement
+SCLS-15ES
+identifies that the Earth is the source of resources used in everyday life
+SCLS-16ES
+investigates some practices used in the effective management of the Earth's resourcesSCLS-17LW
+recognises features of living and non-living things
+
+SCLS-18LW
+identifies structures of living things and their functions
+
+SCLS-19LW
+explores ways in which science and technology have improved human health
+
+SCLS-20LW
+explores the interactions of living things with each other and the environment
+
+SCLS-21LW
+investigates the effect of science and technology on the environmentSCLS-22CW
+recognises the properties of common substances
+
+SCLS-23CW
+explores how common chemicals affect everyday life
+
+SCLS-24CW
+investigates a variety of chemical changesYears 7-10 Life Skills and Related Syllabus Outcomes
+Objectives
+Students:
+* develop an appreciation of the contribution of science to finding solutions to personal, social and global issues relevant to their lives now and in the future
+* develop a willingness to use evidence and reason to engage with and respond to scientific and technological ideas as informed, reflective citizens
+
+Life Skills outcomes
+A student:Related Stage 4/5 outcomes
+A student:SCLS-1VA
+recognises the role of science in personal, social and global issues relating to everyday lifeSC4-1VA, SC5-1VA
+appreciates the importance of science in their lives and the role of scientific inquiry in increasing understanding of the world around them SCLS-2VA
+recognises that using the processes of Working Scientifically increases their understanding of the worldSC4-2VA, SC5-2VA
+shows a willingness to engage in finding solutions to science-related personal, social and global issues, including shaping sustainable futuresSCLS-3VA
+demonstrates a willingness to engage with science-related issues relevant to their livesSC4-3VA, SC5-3VA
+demonstrates confidence in making reasoned, evidence-based decisions about the current and future use and influence of science and technology, including ethical considerations
+
+Years 7-10 Life Skills and Related Syllabus Outcomes (continued)
+Objective
+Students:
+* develop knowledge, understanding of and skills in applying the processes of Working Scientifically
+
+Life Skills outcomes
+A student:Related Stage 4/5 outcomes
+A student:SCLS-4WS
+asks questions that can be tested and makes predictionsSC4-4WS
+identifies questions and problems that can be tested or researched and makes predictions based on scientific knowledge
+
+SC5-4WS
+develops questions or hypotheses to be investigated scientificallySCLS-5WS
+participates in planning to investigate questions or problemsSC4-5WS
+collaboratively and individually produces a plan to investigate questions and problems
+
+SC5-5WS
+produces a plan to investigate identified questions, hypotheses or problems, individually and collaborativelySCLS-6WS
+participates in an investigation by following a sequenceSC4-6WS
+follows a sequence of instructions to safely undertake a range of investigation types, collaboratively and individually
+
+SC5-6WS
+undertakes first-hand investigations to collect valid and reliable data and information, individually and collaborativelySCLS-7WS
+collects, records and interprets data and informationSC4-7WS
+processes and analyses data from a first-hand investigation and secondary sources to identify trends, patterns and relationships, and draw conclusions
+
+SC5-7WS
+processes, analyses and evaluates data from first-hand investigations and secondary sources to develop 
+evidence-based arguments and conclusionsSCLS-8WS
+recognises strategies to solve identified problemsSC4-8WS
+selects and uses appropriate strategies, understanding and skills to produce creative and plausible solutions to identified problems
+
+SC5-8WS
+applies scientific understanding and critical thinking skills to suggest possible solutions to identified problemsSCLS-9WS
+uses a variety of strategies to communicate information about an investigationSC4-9WS
+presents science ideas, findings and information to a given audience using appropriate scientific language, text types and representations
+
+SC5-9WS
+presents science ideas and evidence for a particular purpose and to a specific audience, using appropriate scientific language, conventions and representations
+
+Years 7-10 Life Skills and Related Syllabus Outcomes (continued)
+Objective
+Students:
+* develop knowledge of the Physical World, Earth and Space, Living World and Chemical World, and understanding about the nature, development, use and influence of science
+
+Life Skills outcomes
+A student:Related Stage 4/5 outcomes
+A student:SCLS-10PW
+explores a range of forces in everyday situationsSC4-10PW
+describes the action of unbalanced forces in everyday situationsSC5-10PW
+applies models, theories and laws to explain situations involving energy, force and motionSCLS-11PW
+identifies various forms and sources of energy and their usesSC4-11PW
+discusses how scientific understanding and technological developments have contributed to finding solutions to problems involving energy transfers and transformationsSCLS-12PW
+investigates ways to use energy responsiblySC5-11PW
+explains how scientific understanding about energy conservation, transfers and transformations is applied in systemsSCLS-13ES
+identifies features of the EarthSC4-12ES
+describes the dynamic nature of models, theories and laws in developing scientific understanding of the Earth and solar system SCLS-14ES
+explores features of the solar system, including the Earth's position and movementSC5-12ES
+describes changing ideas about the structure of the Earth and the universe to illustrate how models, theories and laws are refined over time by the scientific communitySCLS-15ES
+identifies that the Earth is the source of resources used in everyday life SC4-13ES
+explains how advances in scientific understanding of processes that occur within and on the Earth, influence the choices people make about resource use and managementSCLS-16ES
+investigates some practices used in the effective management of the Earth's resourcesSC5-13ES
+explains how scientific knowledge about global patterns of geological activity and interactions involving global systems can be used to inform decisions related to contemporary issuesSCLS-17LW
+recognises features of living and non-living thingsSC4-14LW
+relates the structure and function of living things to their classification, survival and reproduction SCLS-18LW
+identifies structures of living things and their functionsSC5-14LW
+analyses interactions between components and processes within biological systemsSCLS-19LW
+explores ways in which science and technology have improved human healthSCLS-20LW
+explores the interactions of living things with each other and the environment SC4-15LW
+explains how new biological evidence changes people's understanding of the worldSCLS-21LW
+investigates the effect of science and technology on the environmentSC5-15LW
+explains how biological understanding has advanced through scientific discoveries, technological developments and the needs of societySCLS-22CW
+recognises the properties of common substancesSC4-16CW
+describes the observed properties and behaviour of matter, using scientific models and theories about the motion and arrangement of particles SC5-16CW
+explains how models, theories and laws about matter have been refined as new scientific evidence becomes availableSCLS-23CW
+explores how common chemicals affect everyday lifeSC4-17CW
+explains how scientific understanding of, and discoveries about the properties of elements, compounds and mixtures relate to their uses in everyday lifeSCLS-24CW
+investigates a variety of chemical changesSC5-17CW
+discusses the importance of chemical reactions in the production of a range of substances, and the influence of society on the development of new materials
+
+Years 7-10 Life Skills Content
+The Years 7-10 Life Skills content is suggested.
+
+Content describes the intended learning for students as they work towards achieving one or more of the Life Skills outcomes. It provides the foundations for students to progress to the next stage of schooling or post-school opportunities.
+
+Teachers will make decisions about the choice of outcomes and selection of content regarding the sequence, emphasis and any adjustments required based on the needs, strengths, goals, interests and prior learning of students. Examples provided in the content are suggestions only. Teachers may use the examples provided or use other examples to meet the particular needs of individual students.
+Practical experiences
+Where appropriate, students should have the opportunity to develop their skills in Working Scientifically by participating in a range of practical experiences to develop their understanding and demonstrate achievement of Science Years 7-10 Life Skills outcomes. The Working Scientifically processes may be integrated into any additional Life Skills content undertaken and can provide students with meaningful opportunities to engage with scientific concepts.
+
+
+Questioning and predicting
+Outcome
+A student:
+› asks questions that can be tested and makes predictions SCLS-4WS
+Related Stage 4/5 outcomes: SC4-4WS, SC5-4WS
+Content
+Students question and predict by:
+* asking questions about familiar objects and events
+* identifying questions that can be investigated scientifically
+* predicting the outcomes of an investigation using background knowledge, experience and/or scientific understanding 
+
+
+Planning investigations
+Outcome
+A student:
+› participates in planning to investigate questions or problems SCLS-5WS
+Related Stage 4/5 outcomes: SC4-5WS, SC5-5WS
+Content
+Students plan investigations by:
+* suggesting suitable methods for gathering data, including practical investigations and research, using secondary sources 
+* identifying scientific equipment and materials, and their purposes
+* identifying safety rules when using scientific equipment and materials in an investigation 
+* working individually and/or collaboratively to record aspects of their plan  
+* recognising variables to be changed, kept the same and measured in an investigation
+
+
+Conducting investigations
+Outcome
+A student:
+› participates in an investigation by following a sequence SCLS-6WS
+Related Stage 4/5 outcomes: SC4-6WS, SC5-6WS
+Content
+Students conduct investigations by:
+* using a range of techniques including practical experiences, surveys, fieldwork and research to gather data and information, using digital technologies as appropriate  
+* selecting and using appropriate equipment, measuring tools and methods to make accurate observations and measurements 
+* working individually and/or collaboratively to participate in an investigation  
+* making adjustments when necessary to a planned method for an investigation
+* following safety rules when using equipment and tools in an investigation 
+* recording observations and measurements, using appropriate units and abbreviations  
+
+
+Processing and analysing data and information
+Outcome
+A student:
+› collects, records and interprets data and information SCLS-7WS
+Related Stage 4/5 outcomes: SC4-7WS, SC5-7WS
+Content
+Students process and analyse data and information by:
+* selecting the most appropriate method to organise and display data and information  
+* interpreting data and information gathered 
+* relating data and information gathered, to questions and predictions 
+* drawing conclusions from data and information gathered in an investigation 
+* reflecting on the strengths and limitations of their investigation 
+* using their conclusions to identify further questions that may be investigated scientifically
+
+
+Problem solving
+Outcome
+A student:
+› recognises strategies to solve identified problems SCLS-8WS
+Related Stage 4/5 outcomes: SC4-8WS, SC5-8WS
+Content
+Students solve problems by:
+* identifying problems that can be investigated scientifically
+* identifying different strategies that could be used to solve a problem 
+
+
+Communicating
+Outcome
+A student:
+› uses a variety of strategies to communicate information about an investigation SCLS-9WS
+Related Stage 4/5 outcomes: SC4-9WS, SC5-9WS
+Content
+Students communicate by:
+* using a variety of strategies including tables, graphs and diagrams to present data and information, using digital technologies as appropriate  
+* presenting ideas and information gathered through a scientific investigation in a variety of forms, using digital technologies as appropriate  
+
+
+Physical World: Forces
+Outcome
+A student:
+› explores a range of forces in everyday situations SCLS-10PW
+Related Stage 4/5 outcomes: SC4-10PW, SC5-10PW
+Content
+There are different types of forces that can be experienced in daily life.
+
+Forces
+Students:
+* identify a force as a push or pull
+* recognise the ways people use pushes and pulls in everyday life, eg opening and closing a door
+* communicate what happens when a force is applied to an object, eg squeezing/stretching
+* observe the change in motion that occurs when a force is applied to an object, eg a car starting/stopping, a surfer changing direction or an elevator moving up and down
+* investigate how technological developments have reduced the harmful impact of forces in everyday life, eg safety helmets, seatbelts and airbags  
+
+Frictional force
+Students:
+* recognise that heat is generated when surfaces rub together, eg rubbing hands together or tyres moving on the surface of a road
+* identify some of the effects of friction, eg wear and tear on shoes and tyres
+* participate in an investigation of the friction caused by a variety of surfaces, eg rolling a ball on a smooth or bumpy surface
+* explore ways of reducing friction, eg by smoothing or greasing a surface
+* recognise factors that influence the size of frictional forces
+
+Electrostatic forces
+Students:
+* identify an electrical discharge, eg lightning, sparks from taking off an acrylic jumper, 'zaps' from rubbing shoes on carpet
+* investigate the effects of rubbing insulators to gain a static electric charge, eg plastic and nylon
+* investigate attraction or repulsion of electrical charges
+
+Gravitational force
+Students:
+* observe the way the force of gravity pulls objects towards the Earth
+* investigate the effects of gravity as a downward-acting force on a variety of objects
+
+
+Magnetic forces
+Students:
+* recognise a common magnet
+* recognise the effects of a magnet by observing the responses of a variety of materials to a magnet, including iron and steel
+* investigate attraction and repulsion by the poles of a magnet
+* identify uses of magnets, eg fridge magnets, toys, motors or compasses
+
+
+Physical World: Energy
+Outcomes
+A student:
+› identifies various forms and sources of energy and their uses SCLS-11PW
+› investigates ways to use energy responsibly SCLS-12PW
+Related Stage 4/5 outcomes: SC4-11PW, SC5-11PW
+Content
+There are different forms of energy, which may be transferred and transformed for different purposes.
+Students:
+* observe and/or experience forms of energy, eg feeling heat from a fire, seeing light from a lamp or feeling the vibrations when a musical instrument is played
+* recognise forms of energy we use in our home/school, eg heat, light or sound
+* identify the sources of energy we use in the home/school, eg electricity, gas or solar
+* recognise that the form of energy can change, eg electrical to heat (stove), electrical to sound and light (television) or electrical to light and heat (light globe)
+* recognise that electrical devices source electricity from power points and batteries
+* explore potential risks and the safe use of electrical devices, eg turning off the power point before unplugging a device and not using electrical devices near water 
+* construct or draw simple circuits 
+* recognise that electricity cannot flow if the circuit is incomplete, eg when a fuse breaks
+
+Responsible use of energy is important for individuals and society.
+Students:
+* identify why we should reduce our use of energy 
+* explore ways in which individuals can reduce their use of energy, eg walking or cycling instead of driving, limiting the length of a shower or turning electrical appliances off instead of leaving them on standby  
+* investigate new technologies and innovations to help reduce the amount of energy used around the home, eg energy-saving light globes, energy ratings on appliances or home insulation  
+
+
+Earth and Space: Earth and Solar System
+Outcomes
+A student:
+› identifies features of the Earth SCLS-13ES
+› explores features of the solar system, including the Earth's position and movement SCLS-14ES
+Related Stage 4/5 outcomes: SC4-12ES, SC5-12ES
+Content
+The Earth has a variety of features that can be observed and that change over time.
+
+Features of the Earth
+Students:
+* classify features of their local area according to whether they are natural or man-made, eg buildings, trees and parks
+* interact with and/or investigate some natural features of their local area to recognise their purpose, eg rivers used for fishing and swimming 
+* identify using maps, pictures, interactive media or videos some examples of Australian landforms, eg mountains, deserts, oceans, rivers, lakes, swamps, beaches and sand dunes  
+* recognise that the Earth is a sphere and is surrounded by air
+
+Changes to the features of the Earth
+Students:
+* describe the effects of droughts and floods on the local landscape
+* investigate some changes to features in the local landscape that have occurred by natural processes, eg weathering and erosion by water
+* research natural processes in Asia and Australia, eg volcanic activity, tsunamis and earthquakes, using digital technologies or simulation models  
+* investigate how volcanoes, tsunamis or earthquakes may change or create a landform 
+
+Features of the Earth are influenced by its position and movement in the solar system.
+
+Solar system
+Students:
+* identify some components of the solar system, eg planets, moons, stars, meteors and comets
+* explore some of the features of our solar system using interactive media, videos, models, visual and graphic resources 
+* compare some features of different planets in the solar system 
+* recognise the importance of the sun as a star, which provides heat and light to the Earth
+* identify some stars and constellations including the Southern Cross
+* explore how Aboriginal and Torres Strait Islander Peoples use the night sky to make decisions about everyday activities, eg food gathering and ceremonies 
+* compare the sizes of the Earth, sun and moon 
+
+
+The Earth's movement in space
+Students:
+* recognise that the Earth moves around the sun
+* identify the time it takes the Earth to travel around the sun (one year) 
+* identify that night and day are caused by the rotation of the Earth once every 24 hours
+* compare the lengths of shadows produced at different times of the day 
+* identify and sequence the seasons 
+* compare the timing of the seasons in the Southern and Northern hemispheres 
+* explore a seasonal calendar used by Aboriginal and Torres Strait Islander Peoples 
+* recognise that the phases of the moon follow a cycle 
+
+
+Earth and Space: Earth's Resources
+Outcomes
+A student:
+› identifies that the Earth is the source of resources used in everyday life SCLS-15ES
+› investigates some practices used in the effective management of the Earth's resources 
+SCLS-16ES
+Related Stage 4/5 outcomes: SC4-13ES, SC5-13ES
+Content
+The Earth is the source of all the resources needed in everyday life.
+Students:
+* recognise that living things need food, water, clean air and shelter for survival
+* recognise that the needs of all living things are provided by the Earth
+* recognise some natural resources in the environment
+* identify the uses of a variety of natural resources, including fuel for cars
+* recognise ways that water is used in the school or at home
+* identify the structure of the Earth in terms of core, mantle and crust
+* recognise that the Earth's crust is made of different types of rocks
+* identify some of the Earth's natural resources, eg rocks, minerals, water and fossil fuels
+* distinguish between some natural resources that are non-renewable, eg fossil fuels, minerals and those that are renewable, eg water and solar energy 
+
+Human activity has an impact on the effective management of the Earth's resources.
+Students:
+* identify items of waste that can be recycled
+* participate in the recycling of items of waste, eg using a recycling bin appropriately  
+* identify ways to reduce the quantity of resources used, eg turning off taps properly, running the dishwasher only when full or requesting that bills be sent electronically
+* explore human activities that negatively affect resources, eg logging, overfishing and destroying habitats  
+* identify ways to conserve and protect the use of resources in everyday life, eg land care and water management  
+* explore and/or participate in ways to improve the environment, eg composting, recycling, cleaning up the local area and planting trees  
+* investigate strategies to prevent landform erosion or repair landforms after erosion 
+* identify how human activity has affected the Earth's atmosphere at a global level, eg climate change and ozone depletion 
+* identify ways that individuals may change their lifestyle to reduce the negative effects of their actions on the atmosphere, eg cycling, car pooling or using electric/hybrid cars   
+* recognise ways that Aboriginal and Torres Strait Islander Peoples sustain the value of the land, eg through the selective use of resources 
+
+
+Living World: Structure and Function
+Outcomes
+A student:
+› recognises features of living and non-living things SCLS-17LW
+› identifies structures of living things and their functions SCLS-18LW
+Related Stage 4/5 outcomes: SC4-14LW, SC5-14LW
+Content
+There are differences within and between living things.
+
+Living and non-living things
+Students:
+* group things according to whether they are living or non-living
+* recognise living things and non-living things at home, at school and in the community
+* recognise the ways that living and non-living things are different, eg growing and reproducing
+
+Features of living things
+Students:
+* recognise the two main groups of living things (animals and plants)
+* identify a variety of plants and animals in the local environment
+* describe characteristics of living things, eg living things grow and change, use food, use water and air, respond to changes and reproduce
+* compare the similarities and differences in the needs of living things, eg plants need sunlight and water, animals need food and water 
+* identify some external features of animals and/or plants
+* classify a variety of living things according to their observable features, eg vertebrates (mammals, reptiles, fish, birds) and invertebrates (insects, spiders, snails) 
+* represent the classification of living things in a variety of ways, eg diagrams and tables  
+* participate in and/or investigate ways to care for an identified living thing 
+* identify some micro-organisms in the environment, eg bacteria and viruses 
+* outline some beneficial and harmful effects that micro-organisms can have on living things, eg contribution to health, production of useful products and disease 
+* explore ways that Aboriginal and Torres Strait Islander Peoples classify plants or animals 
+
+Changes in living things
+Students:
+* recognise that living things have life cycles
+* observe changes that occur in a plant and/or animal over time, eg by comparing a living adult with its offspring
+* observe the stages in the life cycle of a common animal and/or plant
+* represent stages in the life cycle of a common animal and/or plant in a variety of ways 
+
+
+Living things have structures that carry out specialised functions.
+
+Plants
+Students:
+* observe some structures in plants, eg root, stem and leaf
+* appreciate that the structures in a plant serve a specific function, eg the hardness of a stem provides support and transport of water and nutrients, and leaves absorb light and make food
+
+Animals
+Students:
+* recognise some external structures of animals, eg fur, feathers, hard shells, skin and limbs
+* communicate the function of some basic external structures of animals, eg limbs are used for moving
+* identify some major organs of the body, eg the organs of the skeletal/muscular, circulatory, digestive, respiratory, excretory, reproductive and/or nervous systems
+* describe the functions of some major organs of the body
+* explore the consequences of damage to an organ or system 
+* identify factors that are important in maintaining a healthy body, eg exercise and diet 
+
+
+Living World: Human Body
+Outcome
+A student:
+› explores ways in which science and technology have improved human health SCLS-19LW
+Related Stage 4/5 outcomes: SC4-14LW, SC5-14LW
+Content
+Scientific and technological developments have affected the functioning of the human body.
+Students:
+* recognise that humans need clean air, water, food and shelter
+* identify an issue that could affect the functioning of the human body, eg eating food that has not been prepared or stored appropriately, eating a balanced diet, maintaining oral hygiene or protecting the skin from sun damage 
+* investigate ways to maintain a healthy body 
+* investigate how scientific developments have changed or influenced the way people look after their bodies, eg the use of sunscreen to prevent sunburn, gym equipment to exercise different parts of the body, refrigeration to store food, immunisation to prevent disease, or safety helmets and seatbelts   
+* identify some responses of the body to infectious and non-infectious diseases
+* communicate how advances in science and technology have improved our understanding of the causes and control of some infectious diseases 
+
+
+Living World: Environment
+Outcomes
+A student:
+› explores the interactions of living things with each other and the environment SCLS-20LW
+› investigates the effect of science and technology on the environment SCLS-21LW
+Related Stage 4/5 outcomes: SC4-15LW, SC5-15LW
+Content
+Living things depend on each other and on the environment.
+Students:
+* recognise that living things need food
+* recognise that food is a source of energy for animals
+* recognise that sunlight is a source of energy for plants
+* explore the ways in which plants use sunlight to make their own food
+* investigate the needs of living things as they grow, eg the effect of light and water on plants
+* describe a simple food chain, eg plant is food for caterpillar which is food for magpie
+* represent simple food chains in a variety of ways, such as a pictorial representation or flowchart, eg plant ? caterpillar ? magpie 
+* recognise an ecosystem in the local environment
+* identify the relationships between plants and animals within an ecosystem 
+* participate in an investigation of an ecosystem through constructing and observing an ecosystem or experiencing an existing ecosystem
+* identify how a particular habitat in the local environment is used by plants and animals
+* identify the features of a variety of living things that make them suited to their environment, eg nocturnal behaviour or webbed feet for swimming
+* explore how some features of a common plant and/or animal help it to survive in its environment 
+* identify the roles of producers (plants), consumers (animals) and decomposers (fungi) in an identified ecosystem (rock pool or garden)
+* observe the decomposition process through building and maintaining a compost heap or worm farm
+* communicate the purpose of decomposition, eg natural recycling of materials 
+* identify materials that are cycled within an ecosystem, including water and carbon dioxide
+
+Human activity can affect how an ecosystem functions.
+Students:
+* recognise waste, including personal and school waste or waste in the local community
+* engage with an ecosystem to recognise the effects of particular waste, eg plastic bags and bottles in the school environment, fishing lines and hair ties in rivers and streams, and oil and grease in drains  
+* respond to ways to reduce the effect of waste on an ecosystem, eg putting rubbish in the bin, using biodegradable detergents and plastics, and exploring alternatives to dumping oil and grease into drains that feed rivers and streams  
+* explore positive and negative changes to the environment as a result of human activity, eg building cities, farms and roads, fishing or pollution   
+* recognise the difference between native and introduced species of plants and animals
+* explore ways that the introduction of plant or animal species, eg rabbits and boneseed, has affected a local ecosystem 
+* participate in an investigation to reduce the effect of human activity on an environment, eg tree planting in the school or local environment  
+* participate in and/or investigate caring for an ecosystem, eg planting trees or constructing fences to protect the habitat  
+
+
+Chemical World: Properties of Substances
+Outcomes
+A student:
+› recognises the properties of common substances SCLS-22CW
+› explores how common chemicals affect everyday life SCLS-23CW
+Related Stage 4/5 outcomes: SC4-16CW, SC5-16CW, SC4-17CW
+Content
+Solids, liquids and gases have different properties.
+Students:
+* recognise common materials in their surroundings, eg cup, water, table or air
+* identify matter existing as either a solid (ice, desk), a liquid (milk, soft drink, water) or a gas (air from a fan, air in balloons, bubbles in water)
+* recognise that matter can change its state, eg ice cream melts to become a liquid, boiled water becomes gas (steam) when it is heated and breath turns to liquid (condensation) in cold temperatures
+* investigate the effect of heat on the states of matter, eg evaporation, melting, boiling, condensation and freezing 
+* recognise some properties of materials, eg strength, flexibility, elasticity or hardness
+* recognise things made from metal, eg coins, taps, saucepans, pipes or window frames
+* describe some of the properties of metals, eg shiny appearance, silver or gold in colour, heats quickly, changes shape without breaking, most are solids and good for conducting electricity
+* identify and categorise familiar objects according to whether they are metals or non-metals
+
+Mixtures can be separated using a range of techniques.
+Students:
+* recognise common mixtures that are naturally occurring and those that can be made, eg sea water, muddy water, cordial, tea containing milk and sugar or rice cooking in water
+* recognise some substances that can be dissolved, eg sugar, liquid dishwashing detergent, oil in petrol for motor fuel or carbon dioxide gas in water for soft drinks
+* observe the effects of dissolving a substance into another substance, eg sugar in water
+* participate in an investigation to identify substances that can be dissolved and substances that cannot be dissolved
+* identify different ways of separating mixtures, eg draining rice with a sieve, filtering coffee or evaporating water from salt water
+* explore reasons for separating mixtures, eg water purification
+* separate the components of some common mixtures through techniques including filtration, decantation, evaporation, crystallisation (dissolve sugar in water and leave in the sun to evaporate into sugar crystals) and chromatography (place coloured lollies in water and observe the food colouring separate using filter paper) 
+
+
+Common chemicals have different uses.
+Students:
+* recognise common foods that contain acids, eg lemons and oranges, yoghurt and vinegar
+* recognise the uses of a variety of natural materials in different cultures, eg the use of common plants as dyes for clothing and shelter by Aboriginal and Torres Strait Islander Peoples 
+* recognise uses of metals in familiar contexts, eg cutlery, cooking utensils, cars, furniture, window frames or door handles
+* describe the properties of materials in relation to a useful function, eg elastic bands are flexible so that they fit a variety of objects
+* describe the properties of metals in relation to a useful function, eg metal as a good conductor to make simple circuits or metal as a poor insulator to keep drinks warm
+* describe common uses for a variety of substances, eg styrofoam cups or coolers
+* investigate the best substance to use for a particular purpose, eg the best material to insulate a coffee cup 
+* identify common chemicals in the home, eg vinegar, baking soda, salt, sugar, soap, nail polish remover, bleach, motor oil or paint 
+* identify and associate common household chemicals with their uses, eg detergents for removing grease or bleach for sanitising
+* identify common chemical safety/hazard symbols 
+* recognise and note the language used to describe how hazardous a product is, eg 'danger', 'warning' or 'caution'  
+* describe the need for safe use and storage of household chemicals, including strategies to minimise harm 
+* describe the effects of an identified household chemical that is not used or stored safely
+* explore and/or participate in the safe use and storage of household chemicals 
+
+
+Chemical World: Chemical Change
+Outcome
+A student:
+› investigates a variety of chemical changes SCLS-24CW
+Related Stage 4/5 outcome: SC5-17CW
+Content
+When a chemical change occurs, new substances may be formed.
+Students:
+* observe some types of chemical changes, eg baking a cake, making bread, lighting a sparkler or gas bubbles forming in water
+* recognise that some substances change when heated, eg burning magnesium
+* recognise that in a chemical change there may be the appearance of a new substance, eg rust forms on iron materials or the disappearance of an original substance, eg acid is added to a piece of chalk
+* investigate the requirements for rusting, including oxygen and water from the air
+* identify ways to prevent rusting, eg painting or plating
+* describe some ways to remove rust from metals, including using sandpaper or soaking in lemon juice
+
+There are different types of chemical reactions that can be used in our everyday life.
+
+Combustion
+Students:
+* identify common things that burn, eg paper, cardboard, wood and leaves
+* recognise that materials change when they burn, eg paper turns to ash
+* identify that burning things produce heat and light
+* investigate the requirements for combustion, eg fuel, heat and oxygen (air)
+* identify safety issues relating to combustion, eg prevention and storage procedures 
+* recognise highly combustible materials, eg petrol, paint in spray cans or nail polish
+
+Reactions of acids
+Students:
+* distinguish between acids and alkalis by observing the colour change when adding red cabbage juice to a variety of household chemicals, eg vinegar, floor or window cleaner, soap, lemon juice, milk, shampoo, lemonade or soda water
+* investigate the reaction of acids, eg the effect of adding vinegar to baking soda
+
+
+Assessment
+Standards
+The NSW Education Standards Authority (NESA) K-10 Curriculum Framework is a standards-referenced framework that describes, through syllabuses and other documents, the expected learning outcomes for students.
+
+Standards in the framework consist of three interrelated elements:
+* outcomes and content in syllabuses showing what is to be learned
+* Stage statements that summarise student achievement
+* samples of work on the NESA website that provide examples of levels of achievement within a Stage.
+
+Syllabus outcomes in Science contribute to a developmental sequence in which students are challenged to acquire new knowledge, understanding and skills.
+Assessment
+Assessment is an integral part of teaching and learning. Well-designed assessment is central to engaging students and should be closely aligned to the outcomes within a Stage. Effective assessment increases student engagement in their learning and leads to enhanced student outcomes.
+
+Assessment for Learning, Assessment as Learning and Assessment of Learning are three approaches to assessment that play an important role in teaching and learning. The NESA Years 
+K-10 syllabuses particularly promote Assessment for Learning as an essential component of good teaching.
+
+Further advice on programming and appropriate assessment practice is provided on the NESA website. This support material provides general advice on assessment as well as strategies to assist teachers in planning education programs.
+Assessment for Students with Disability
+Some students with disability will require adjustments to assessment practices in order to demonstrate what they know and can do in relation to syllabus outcomes and content. The type of adjustments and support will vary according to the particular needs of the student and the requirements of the activity. These may be:
+* adjustments to the assessment process, for example scaffolded instructions, additional guidance provided, highlighted keywords or phrases, the use of specific technology, extra time in an examination
+* adjustments to assessment activities, for example rephrasing questions, using simplified language, fewer questions or alternative formats for questions
+* alternative formats for responses, for example written point form instead of essays, scaffolded structured responses, short objective questions or multimedia presentations.
+
+It is a requirement under the Disability Standards for Education 2005 for schools to ensure that assessment tasks are accessible to students with disability. Schools are responsible for any decisions made at school level to offer adjustments to coursework, assessment activities and tasks, including in-school tests. Decisions regarding adjustments should be made in the context of collaborative curriculum planning.
+
+Further examples of adjustments to assessment for students with disability and information on assessment of students undertaking Life Skills outcomes and content can be found in support materials for:
+* Science
+* Special education
+* Life Skills.
+Reporting
+Reporting is the process of providing feedback to students, parents/carers and other teachers about student progress.
+
+Teachers use assessment evidence to extend the process of Assessment for Learning into their Assessment of Learning. In a standards-referenced framework, teachers make professional judgements about student achievement at key points in the learning cycle. These points may be at the end of a Year or Stage, when schools may wish to report differentially on the levels of knowledge, understanding and skills demonstrated by students.
+
+Descriptions of student achievement provide schools with a useful tool to report consistent information about student achievement to students and parents/carers, and to the next teacher to help plan the future steps in the learning process.
+
+The A-E grade scale or equivalent provides a common language for reporting by describing observable and measurable features of student achievement at the end of a Stage, within the indicative hours of study. Teachers use the descriptions of the standards to make a professional, on-balance judgement, based on available assessment information, to match each student's achievement to a description. Teachers use the Common Grade Scale (A-E) or equivalent to report student levels of achievement from Stage 1 to Stage 5.
+
+For students with disability, teachers may need to consider, in consultation with their school and sector, the most appropriate method of reporting student achievement. It may be deemed more appropriate for students with disability to be reported against outcomes or goals identified through the collaborative curriculum planning process. There is no requirement for schools to use the Common Grade Scale (A-E) or equivalent to report achievement of students undertaking Life Skills outcomes and content.
+
+
+Glossary
+The terms defined in this glossary have specific relevance for teaching or the interpretation of the Science Years 7-10 Syllabus.
+
+Glossary termDefinitionaccuracy (plausible)Accuracy estimated taking into consideration the evident sources of error and the limitations of the instruments used in making the measurements.biotechnologyThe use of living things to make or change products. Gene technology sits within the broader area of biotechnology and includes the discovery of genes, understanding of how genes function and interact, and genetic modification or engineering.conclusionsAn opinion or judgement based on evidence.contextContexts are devised by teachers and are the framework within which the learning experiences take place. The skills and the knowledge and understanding content is developed in contexts relevant to the needs, interests, experiences and cultural backgrounds of students. The syllabus does not specify contexts, as these will be selected by the teacher.control (the control in an experiment)The sample in an experiment to which all the other samples are compared.dataFacts or figures that can be used to draw conclusions.dependent variableThe factor in an experiment that changes as a result of changes to the independent variable; conventionally plotted on the vertical (y) axis of a graph.Earth's spheresThe four interacting spheres, ie atmosphere, biosphere, lithosphere and hydrosphere.evidenceIn science, evidence is valid/reliable data that can be used to support a particular theory, hypothesis, idea or conclusion.fair testAn investigation where one variable (the independent variable) is changed and all other conditions (controlled variables) are kept the same; what is measured or observed is referred to as the dependent variable.fieldworkAn investigation that is undertaken in the normal environment of the subject of the study.first-hand investigationInquiry based on the direct use of observation or measurement.formal measurementMeasurement that is based on an agreed standard unit, for example metre, second and gram.hypothesisA predictive statement that can be tested using a range of methods, most often associated with experimental procedure; can be supported or refuted by experiment.independent variableThe variable that is deliberately changed, often through a series of preset values. Conventionally plotted on the horizontal (x) axis of a graph.
+
+interactionsRelationships between components within and between systems that lead to a greater understanding of how our world works.investigatePlan, inquire into and draw conclusions.investigationA type of first-hand activity that can be used to answer a question, explore an idea or solve a problem. A scientific investigation is a systematic inquiry usually involving using and applying the processes of planning a course of action, safely manipulating tools and equipment in collecting and interpreting data, drawing evidence-based conclusions and communicating findings.lawA simple and precise statement that has been shown, based on available evidence, to be universally reliable. It describes phenomena that occur with unvarying regularity under the same conditions. No scientific law is ever conclusively verified.modelA mathematical, conceptual or physical representation that describes, simplifies, clarifies or provides an explanation of the structure, workings or relationships within an object, system or idea. Models can provide a means of testing and predicting behaviour within limited conditions.multi-modal textText that combines two or more modes of communication. This can include print text as well as image and spoken word as in film or computer presentations.natural worldRelates to and includes phenomena in the biological and physical (including chemical and geological components) world on and beyond the Earth.observationThat which can be sensed either directly by an individual or indirectly by measuring devices.qualitativeTo use descriptive explanations involving features, characteristics or properties to identify important components. Data and information that is not numerical in nature.quantitativeData or components that can be expressed or measured numerically, including chemical formulae or numbers.relateTo identify connections or associations between ideas and/or relationships between components of systems and structures.reliability of 
+first-hand dataThe degree to which repeated observation and/or measurements taken under identical circumstances will yield the same results.researchTo locate, gather, record and analyse information through literature and/or first-hand investigation to develop understanding.scientific inquiryThe processes of scientific inquiry enable scientists to develop answers to questions and to improve explanations for phenomena in the natural world. A scientific idea must be framed in a way that is testable and can be either refuted or confirmed by observation or experiment (empirical evidence). Scientific knowledge is refined and extended as new evidence arises or existing evidence is re-conceptualised. As students engage in applying the skills and processes of Working Scientifically, they extend their understanding of scientific ideas and concepts and how these are developed through scientific inquiry.secondary sourcesA range of forms of information and data that have resulted from the investigations of other people, including graphs, diagrams and images.sensesPerceptions that a living organism uses to take in information about its surroundings. The five main senses are hearing, sight, touch, taste and smell.structureEntities in which the parts are linked together to form a whole.surveyA type of investigation to obtain data and information that involves asking respondents a range of questions.sustainability The patterns of activities that meet the needs of the present generation without prejudicing the ability of future generations to meet their needs.systemA set of components within the natural and made environments that interact. An understanding of natural complex systems requires the integration and application of concepts from more than one Science discipline.technological designThe process of design, produce and evaluate.technologiesThe knowledge and creative processes that assist people to use tools, resources and systems to solve problems and meet human needs and wants.text typesDifferent forms of writing for particular purposes, including discussion, explanation, exposition, procedure, recount and report.theoryAn explanation of a body of experimental evidence that has been accepted through the processes of review by the scientific community. A theory provides predictions that can be tested against observations and can be supported or refuted.validity of first-hand dataThe extent to which the processes and resultant data measure what was intended.variableA factor that can be changed, kept the same or measured in an investigation.variable held constantFactors that may vary, but for the purposes of an experiment are deliberately held constant so that a valid conclusion is possible.
+
+
+Stage 4
+
+
+
+
+
+
+
+
+
+
+
+Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+
+
+
+
+Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+
+
+
+
+ Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+Science Years 7-10 Syllabus		21
+
+
+
+
+
+ Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+
+
+
+
+Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+
+
+
+
+ Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+
+
+
+
+ Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+
+
+
+
+ Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+
+
+
+
+ Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+
+
+
+
+ Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+
+
+
+
+ Before teaching this syllabus refer to implementation advice on curriculum.nsw.edu.au
+
+
+
