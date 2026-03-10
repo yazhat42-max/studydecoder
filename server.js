@@ -2249,7 +2249,36 @@ app.post('/api/admin/revoke-access', requireOwner, (req, res) => {
 
 // ==================== SYLLABUS DATA ====================
 
-const SYLLABUSES_PATH = path.join(__dirname, 'syllabuses');
+// Source syllabuses ship with the repo; on production we copy them to persistent disk
+// so they survive Render restarts and can be updated without redeploying.
+const SYLLABUSES_SOURCE = path.join(__dirname, 'api', 'syllabuses');
+const SYLLABUSES_PATH = config.isDev
+    ? SYLLABUSES_SOURCE
+    : path.join('/var/data', 'syllabuses');
+
+// Copy syllabuses to persistent disk on first deploy (production only)
+if (!config.isDev && fs.existsSync(SYLLABUSES_SOURCE)) {
+    const copyRecursive = (src, dest) => {
+        if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
+        for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+            const srcPath = path.join(src, entry.name);
+            const destPath = path.join(dest, entry.name);
+            if (entry.isDirectory()) {
+                copyRecursive(srcPath, destPath);
+            } else {
+                // Always overwrite – ensures latest syllabus/paper versions from repo
+                fs.copyFileSync(srcPath, destPath);
+            }
+        }
+    };
+    try {
+        copyRecursive(SYLLABUSES_SOURCE, SYLLABUSES_PATH);
+        console.log('📁 Syllabuses & past papers copied to persistent disk:', SYLLABUSES_PATH);
+    } catch (e) {
+        console.error('❌ Failed to copy syllabuses to persistent disk:', e.message);
+    }
+}
+
 const SUBJECTS_FILE = path.join(SYLLABUSES_PATH, 'subjects.json');
 const JUNIOR_SUBJECTS_FILE = path.join(SYLLABUSES_PATH, 'junior-subjects.json');
 const PAST_PAPERS_FILE = path.join(SYLLABUSES_PATH, 'past-papers.json');
@@ -2295,12 +2324,10 @@ try {
     console.error('Error loading past papers config:', e.message);
 }
 
-// Get past paper content and marking guidelines for a subject
+// Get past paper content for a subject (exam papers only — excludes MGs)
 const pastPaperCache = {};
 function getPastPaperContent(subjectId) {
-    if (pastPaperCache[subjectId]) {
-        return pastPaperCache[subjectId];
-    }
+    if (pastPaperCache[subjectId]) return pastPaperCache[subjectId];
     
     const subjectPapers = pastPapersConfig.papers.find(p => p.id === subjectId);
     if (!subjectPapers) return null;
@@ -2320,6 +2347,59 @@ function getPastPaperContent(subjectId) {
     
     pastPaperCache[subjectId] = content;
     return content;
+}
+
+// Get ONLY marking guidelines for a subject (files with MG in type)
+const mgCache = {};
+function getMarkingGuidelineContent(subjectId) {
+    if (mgCache[subjectId]) return mgCache[subjectId];
+    
+    const subjectPapers = pastPapersConfig.papers.find(p => p.id === subjectId);
+    if (!subjectPapers) return null;
+    
+    let content = '';
+    for (const paper of subjectPapers.papers) {
+        // Only load marking guideline files (type contains "MG")
+        if (!paper.type.toUpperCase().includes('MG')) continue;
+        const filePath = path.join(SYLLABUSES_PATH, paper.file);
+        try {
+            if (fs.existsSync(filePath)) {
+                const fileContent = fs.readFileSync(filePath, 'utf8');
+                content += `\n\n=== ${paper.year} HSC ${subjectPapers.name} MARKING GUIDELINES (${paper.type}) ===\n${fileContent.substring(0, 50000)}`;
+            }
+        } catch (e) {
+            console.error(`Error reading marking guideline ${paper.file}:`, e.message);
+        }
+    }
+    
+    mgCache[subjectId] = content || null;
+    return content || null;
+}
+
+// Get ONLY exam paper content (non-MG files)
+const examPaperCache = {};
+function getExamPaperContent(subjectId) {
+    if (examPaperCache[subjectId]) return examPaperCache[subjectId];
+    
+    const subjectPapers = pastPapersConfig.papers.find(p => p.id === subjectId);
+    if (!subjectPapers) return null;
+    
+    let content = '';
+    for (const paper of subjectPapers.papers) {
+        if (paper.type.toUpperCase().includes('MG')) continue;
+        const filePath = path.join(SYLLABUSES_PATH, paper.file);
+        try {
+            if (fs.existsSync(filePath)) {
+                const fileContent = fs.readFileSync(filePath, 'utf8');
+                content += `\n\n=== ${paper.year} HSC ${subjectPapers.name} ${paper.type} ===\n${fileContent.substring(0, 40000)}`;
+            }
+        } catch (e) {
+            console.error(`Error reading exam paper ${paper.file}:`, e.message);
+        }
+    }
+    
+    examPaperCache[subjectId] = content || null;
+    return content || null;
 }
 
 // Load syllabus content for a subject (cached)
@@ -3871,6 +3951,460 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
     }
 });
 
+// ==================== FULL EXAM MODE ENDPOINTS ====================
+
+// Exam usage tracker (weekly limits for free users)
+const examUsageTracker = new Map();
+
+function _getWeekKey(userId) {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+    const weekNum = Math.ceil(((now - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
+    return `${now.getFullYear()}_W${weekNum}_${userId}`;
+}
+
+function getExamWeeklyCount(userId) {
+    return examUsageTracker.get(_getWeekKey(userId)) || 0;
+}
+
+function incrementExamWeeklyCount(userId) {
+    const key = _getWeekKey(userId);
+    const count = (examUsageTracker.get(key) || 0) + 1;
+    examUsageTracker.set(key, count);
+    // Clean old weeks
+    const currentPrefix = key.substring(0, key.lastIndexOf('_'));
+    for (const [k] of examUsageTracker) {
+        const kPrefix = k.substring(0, k.lastIndexOf('_'));
+        if (kPrefix !== currentPrefix) examUsageTracker.delete(k);
+    }
+    return count;
+}
+
+// Get exam progress for a user
+function getExamProgress(userId) {
+    const user = getUser(userId);
+    if (!user) return {};
+    return user.examProgress || {};
+}
+
+// Save exam progress for a user
+function saveExamProgress(userId, progress) {
+    const user = getUser(userId);
+    if (!user) return;
+    user.examProgress = progress;
+    scheduleSave();
+}
+
+// Generate exam — returns structured JSON with questions
+app.post('/api/exam/generate', express.json(), async (req, res) => {
+    if (!req.session?.userId) {
+        return res.status(401).json({ error: 'Authentication required' });
+    }
+    const user = getUser(req.session.userId);
+    if (!user) return res.status(401).json({ error: 'User not found' });
+
+    const hasFull = hasFullAccess(user);
+
+    // Free tier: 3 exams per week, must have scored 80%+ on last exam (or no previous exam)
+    if (!hasFull) {
+        const weeklyCount = getExamWeeklyCount(req.session.userId);
+        if (weeklyCount >= 3) {
+            return res.status(403).json({
+                error: 'Weekly exam limit reached',
+                examLimitReached: true,
+                weeklyCount,
+                maxPerWeek: 3
+            });
+        }
+        // Check 80% gate: user must have scored 80%+ on their last exam for this subject (or have no previous exam)
+        const { subject } = req.body;
+        if (subject) {
+            const progress = getExamProgress(req.session.userId);
+            const subjectProgress = progress[subject];
+            if (subjectProgress && subjectProgress.lastScore !== undefined && subjectProgress.lastScore < 80) {
+                return res.status(403).json({
+                    error: 'Must score 80%+ on previous exam before generating a new one',
+                    scoreGateBlocked: true,
+                    lastScore: subjectProgress.lastScore,
+                    requiredScore: 80
+                });
+            }
+        }
+    }
+
+    const { subject, topics, duration } = req.body;
+    if (!subject) return res.status(400).json({ error: 'Subject is required' });
+
+    const OPENAI_API_KEY = config.openaiApiKey;
+    const aiSettings = getAISettings(user);
+
+    // Build context with syllabus + past papers + marking guidelines
+    let contextPrompt = '';
+    const subjectName = subjectsConfig.subjects.find(s => s.id === subject)?.name || subject;
+
+    const syllabusContent = getSyllabusContent(subject);
+    if (syllabusContent) {
+        const truncated = syllabusContent.substring(0, 60000);
+        contextPrompt += `\n\n=== OFFICIAL ${subjectName.toUpperCase()} SYLLABUS ===\n${truncated}\n=== END SYLLABUS ===`;
+    }
+
+    // Inject exam papers for style/format reference (NOT to copy)
+    const examPapers = getExamPaperContent(subject);
+    if (examPapers) {
+        const truncated = examPapers.substring(0, 25000);
+        contextPrompt += `\n\n=== PAST EXAM PAPERS FOR REFERENCE (style/format only — DO NOT copy any questions) ===\n${truncated}\n=== END PAST PAPERS ===`;
+    }
+
+    // Inject marking guidelines so generated questions have accurate marking criteria
+    const mgContent = getMarkingGuidelineContent(subject);
+    if (mgContent) {
+        const truncatedMG = mgContent.substring(0, 20000);
+        contextPrompt += `\n\n=== OFFICIAL NESA MARKING GUIDELINES ===\nUse these to create accurate markingCriteria for each question. Base your mark allocations on these real guidelines.\n${truncatedMG}\n=== END MARKING GUIDELINES ===`;
+    }
+
+    // Generate a unique seed to ensure variety across exams
+    const examSeed = `SEED-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+
+    // Determine exam structure based on subject and duration
+    const durationHours = parseFloat(duration) || 2;
+    const totalMarks = durationHours === 1 ? 60 : durationHours === 2 ? 80 : 100;
+
+    const systemPrompt = `You are an expert HSC exam paper generator. Generate a COMPLETE exam paper as structured JSON.
+
+UNIQUENESS SEED: ${examSeed}
+Use this seed to ensure you generate completely unique questions every time. Never reuse questions, contexts, scenarios, data, or stimulus material from any previous generation.
+
+CRITICAL RULES:
+1. Questions must be ORIGINAL — inspired by past paper style/format but NEVER copied from them. Do NOT reproduce any question from the past papers provided.
+2. Questions must NEVER repeat across exams. Always use fresh contexts, scenarios, names, data, and stimulus material unique to this generation.
+3. Use exact NESA directive verbs matching mark values.
+4. Follow proper HSC exam structure for ${subjectName}.
+5. Include stimulus material (data tables, quotes, sources) where HSC papers typically have them.
+6. Base marking criteria on the official NESA marking guidelines provided, but write original questions.
+7. Vary question topics across different syllabus areas — do not cluster questions in one topic.
+
+MATHEMATICS (Standard/Advanced/Extension): Max 4 marks per question part. NO 5+ mark questions.
+SCIENCE (Biology/Chemistry/Physics): Max 8-9 marks extended response. NO 20-mark questions.
+ENGLISH & HUMANITIES: ONE 20-mark essay MAX per section.
+ENTERPRISE COMPUTING / SOFTWARE ENGINEERING: Online exam format, max 8 marks per question.
+
+UNICODE MATH FORMATTING: Use x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, ° — NEVER LaTeX.
+
+Subject: ${subjectName}
+Topics: ${topics || 'All Year 12 content'}
+Duration: ${durationHours} hour(s)
+Total marks: ~${totalMarks}
+
+Return ONLY valid JSON (no markdown, no code fences) in this exact structure:
+{
+  "title": "2025 HSC ${subjectName} Trial Examination",
+  "duration": "${durationHours} hour(s)",
+  "totalMarks": ${totalMarks},
+  "instructions": "Brief exam instructions string",
+  "sections": [
+    {
+      "name": "Section I — Multiple Choice",
+      "instructions": "Select the correct answer.",
+      "questions": [
+        {
+          "number": 1,
+          "type": "mc",
+          "marks": 1,
+          "text": "Question text here",
+          "options": ["A. option", "B. option", "C. option", "D. option"],
+          "correctAnswer": "B"
+        }
+      ]
+    },
+    {
+      "name": "Section II — Short Answer",
+      "instructions": "Answer all questions.",
+      "questions": [
+        {
+          "number": 11,
+          "type": "short",
+          "marks": 3,
+          "text": "Question text with stimulus if needed",
+          "stimulus": "Optional stimulus material (data table, quote, source extract) or null",
+          "markingCriteria": "Brief marking criteria for this question"
+        }
+      ]
+    },
+    {
+      "name": "Section III — Extended Response",
+      "instructions": "Answer the question.",
+      "questions": [
+        {
+          "number": 25,
+          "type": "extended",
+          "marks": 8,
+          "text": "Extended response question",
+          "stimulus": null,
+          "markingCriteria": "Detailed marking criteria"
+        }
+      ]
+    }
+  ]
+}
+
+Use "mc" type for multiple choice (with "options" and "correctAnswer"), "short" for short answer (2-6 marks), and "extended" for extended response (7+ marks).
+Every question MUST have "markingCriteria" (except mc which has "correctAnswer").
+Generate the COMPLETE exam — all questions, all sections. Do not truncate.${contextPrompt}`;
+
+    try {
+        const isGpt5 = aiSettings.model.startsWith('gpt-5');
+        const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+        const requestBody = {
+            model: aiSettings.model,
+            messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. Return ONLY valid JSON.` }
+            ],
+            [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
+        };
+        if (!isGpt5) requestBody.temperature = aiSettings.temperature;
+
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('OpenAI exam generate error:', error);
+            return res.status(500).json({ error: 'AI service unavailable' });
+        }
+
+        const data = await response.json();
+        let reply = data.choices?.[0]?.message?.content || '';
+
+        // Strip markdown code fences if present
+        reply = reply.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+
+        let exam;
+        try {
+            exam = JSON.parse(reply);
+        } catch (parseErr) {
+            console.error('Failed to parse exam JSON:', parseErr.message, 'Raw:', reply.substring(0, 200));
+            return res.status(500).json({ error: 'Failed to generate valid exam structure. Please try again.' });
+        }
+
+        // Increment free tier usage
+        if (!hasFull) {
+            incrementExamWeeklyCount(req.session.userId);
+            incrementFreeTierUsage(req.session.userId, 'practice');
+        }
+
+        res.json({ exam, isPremium: hasFull });
+    } catch (error) {
+        console.error('Exam generate error:', error);
+        res.status(500).json({ error: 'Failed to generate exam' });
+    }
+});
+
+// Mark exam — takes questions + student answers, returns scores + feedback
+app.post('/api/exam/mark', express.json(), async (req, res) => {
+    if (!req.session?.userId) {
+        return res.status(401).json({ error: 'Authentication required' });
+    }
+    const user = getUser(req.session.userId);
+    if (!user) return res.status(401).json({ error: 'User not found' });
+
+    const hasFull = hasFullAccess(user);
+    const { exam, answers, subject } = req.body;
+
+    if (!exam || !answers) return res.status(400).json({ error: 'Exam and answers are required' });
+
+    const OPENAI_API_KEY = config.openaiApiKey;
+    const aiSettings = getAISettings(user);
+    const subjectName = subjectsConfig.subjects.find(s => s.id === subject)?.name || subject;
+
+    // Build the marking request with all questions and answers
+    let questionsText = '';
+    let totalPossible = 0;
+    const allQuestions = [];
+
+    for (const section of exam.sections) {
+        questionsText += `\n\n--- ${section.name} ---\n`;
+        for (const q of section.questions) {
+            totalPossible += q.marks;
+            allQuestions.push(q);
+            questionsText += `\nQ${q.number} [${q.marks} mark${q.marks > 1 ? 's' : ''}] (${q.type}):\n${q.text}\n`;
+            if (q.stimulus) questionsText += `Stimulus: ${q.stimulus}\n`;
+            if (q.markingCriteria) questionsText += `Marking criteria: ${q.markingCriteria}\n`;
+            if (q.correctAnswer) questionsText += `Correct answer: ${q.correctAnswer}\n`;
+
+            const studentAnswer = answers[q.number];
+            questionsText += `Student's answer: ${studentAnswer || '(no answer provided)'}\n`;
+        }
+    }
+
+    const includeSampleAnswers = hasFull;
+
+    // Load official marking guidelines for accurate marking
+    let mgContext = '';
+    const mgContent = getMarkingGuidelineContent(subject);
+    if (mgContent) {
+        const truncatedMG = mgContent.substring(0, 35000);
+        mgContext = `\n\n=== OFFICIAL NESA MARKING GUIDELINES FOR ${subjectName.toUpperCase()} ===\nUse these REAL marking guidelines to inform your marking. Reference the specific band descriptors, criteria, and mark allocations from these guidelines when assessing each answer.\n\n${truncatedMG}\n\n=== END OF MARKING GUIDELINES ===`;
+    }
+
+    const systemPrompt = `You are an expert HSC marker for ${subjectName}. Mark each student answer accurately and fairly using NESA marking criteria.${mgContext}
+
+MARKING RULES:
+- Multiple choice: 1 mark if correct, 0 if wrong. No partial marks.
+- Short answer: Award marks based on marking criteria. Partial marks allowed.
+- Extended response: Use holistic marking. Award based on depth, accuracy, and structure.
+- Be FAIR but STRICT — mark like a real HSC marker would.
+
+Return ONLY valid JSON (no markdown, no code fences):
+{
+  "results": [
+    {
+      "questionNumber": 1,
+      "marksAwarded": 1,
+      "marksTotal": 1,
+      "feedback": "Brief feedback on the student's answer"${includeSampleAnswers ? ',\n      "sampleAnswer": "A model answer for this question"' : ''}
+    }
+  ],
+  "totalMarksAwarded": 65,
+  "totalMarksPossible": ${totalPossible},
+  "percentage": 81.25,
+  "expectedBand": "Band 5",
+  "overallFeedback": "2-3 sentences summarising overall performance, strengths, and areas to improve."
+}
+
+Band scale (percentage-based):
+- Band 6: 90-100%
+- Band 5: 80-89%
+- Band 4: 70-79%
+- Band 3: 60-69%
+- Band 2: 50-59%
+- Band 1: 0-49%
+
+${includeSampleAnswers ? 'Include a concise "sampleAnswer" for EVERY question showing what a full-marks response looks like.' : 'Do NOT include sample answers — only provide feedback and marking guidelines.'}`;
+
+    try {
+        const isGpt5 = aiSettings.model.startsWith('gpt-5');
+        const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+        const requestBody = {
+            model: aiSettings.model,
+            messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: `Mark the following ${subjectName} exam:\n${questionsText}\n\nReturn ONLY valid JSON.` }
+            ],
+            [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
+        };
+        if (!isGpt5) requestBody.temperature = 0.3; // Low temp for consistent marking
+
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('OpenAI exam mark error:', error);
+            return res.status(500).json({ error: 'AI service unavailable' });
+        }
+
+        const data = await response.json();
+        let reply = data.choices?.[0]?.message?.content || '';
+        reply = reply.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+
+        let markingResult;
+        try {
+            markingResult = JSON.parse(reply);
+        } catch (parseErr) {
+            console.error('Failed to parse marking JSON:', parseErr.message);
+            return res.status(500).json({ error: 'Failed to parse marking results. Please try again.' });
+        }
+
+        // Save progress
+        const progress = getExamProgress(req.session.userId);
+        if (!progress[subject]) {
+            progress[subject] = { attempts: [], bestScore: 0 };
+        }
+        const attempt = {
+            date: new Date().toISOString(),
+            percentage: markingResult.percentage,
+            band: markingResult.expectedBand,
+            totalMarks: markingResult.totalMarksAwarded,
+            possibleMarks: markingResult.totalMarksPossible
+        };
+        progress[subject].attempts.push(attempt);
+        if (progress[subject].attempts.length > 20) {
+            progress[subject].attempts = progress[subject].attempts.slice(-20);
+        }
+        progress[subject].lastScore = markingResult.percentage;
+        if (markingResult.percentage > progress[subject].bestScore) {
+            progress[subject].bestScore = markingResult.percentage;
+        }
+        saveExamProgress(req.session.userId, progress);
+
+        // Include progress comparison
+        const previousAttempts = progress[subject].attempts;
+        let comparison = null;
+        if (previousAttempts.length >= 2) {
+            const prev = previousAttempts[previousAttempts.length - 2];
+            comparison = {
+                previousPercentage: prev.percentage,
+                previousBand: prev.band,
+                change: markingResult.percentage - prev.percentage
+            };
+        }
+
+        res.json({
+            marking: markingResult,
+            progress: {
+                subject: subjectName,
+                totalAttempts: previousAttempts.length,
+                bestScore: progress[subject].bestScore,
+                comparison,
+                canGenerateNew: hasFull || markingResult.percentage >= 80
+            },
+            isPremium: hasFull
+        });
+    } catch (error) {
+        console.error('Exam mark error:', error);
+        res.status(500).json({ error: 'Failed to mark exam' });
+    }
+});
+
+// Get exam progress
+app.get('/api/exam/progress', async (req, res) => {
+    if (!req.session?.userId) {
+        return res.status(401).json({ error: 'Authentication required' });
+    }
+    const progress = getExamProgress(req.session.userId);
+    const hasFull = hasFullAccess(getUser(req.session.userId));
+    const weeklyCount = hasFull ? null : getExamWeeklyCount(req.session.userId);
+    res.json({ progress, weeklyCount, maxPerWeek: hasFull ? null : 3, isPremium: hasFull });
+});
+
+// Get exam limits status for free users
+app.get('/api/exam/limits', async (req, res) => {
+    if (!req.session?.userId) {
+        return res.status(401).json({ error: 'Authentication required' });
+    }
+    const user = getUser(req.session.userId);
+    const hasFull = hasFullAccess(user);
+    if (hasFull) {
+        return res.json({ isPremium: true, unlimited: true });
+    }
+    const weeklyCount = getExamWeeklyCount(req.session.userId);
+    const progress = getExamProgress(req.session.userId);
+    res.json({
+        isPremium: false,
+        weeklyCount,
+        maxPerWeek: 3,
+        remaining: Math.max(0, 3 - weeklyCount),
+        progress
+    });
+});
+
 // OpenAI Chat endpoint (secured - requires authentication, allows free tier with limits)
 app.post('/api/chat/:botType', express.json(), async (req, res) => {
     // Require authentication
@@ -3998,18 +4532,35 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     
     // Inject past paper content for practice bot (both question generation AND feedback)
     if (botType === 'practice' && subjectId) {
-        const pastPaperContent = getPastPaperContent(subjectId);
-        if (pastPaperContent) {
-            const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
-            const lastUserMessage = messages[messages.length - 1]?.content || '';
-            const isFeedbackMode = lastUserMessage.includes('[FEEDBACK MODE]');
-            
-            // Add past paper content - different instructions for different modes
-            const truncatedPastPaper = pastPaperContent.substring(0, 35000);
-            if (isFeedbackMode) {
-                systemPrompt += `\n\n=== HSC PAST PAPERS AND MARKING GUIDELINES FOR ${subjectName.toUpperCase()} ===\nUse these marking guidelines to assess the student's response. Reference specific marking criteria when giving feedback.\n\n⚠️ CRITICAL: You are ONLY providing feedback - NEVER reveal the correct answer or write a model response.\n\n${truncatedPastPaper}\n\n=== END OF PAST PAPERS ===`;
-            } else {
-                systemPrompt += `\n\n=== HSC PAST PAPERS FOR ${subjectName.toUpperCase()} ===\nUse these past papers as REFERENCE for question style, format, and difficulty. Base your generated questions on these real exam patterns.\n\n${truncatedPastPaper}\n\n=== END OF PAST PAPERS ===`;
+        const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
+        const lastUserMessage = messages[messages.length - 1]?.content || '';
+        const isFeedbackMode = lastUserMessage.includes('[FEEDBACK MODE]');
+        
+        if (isFeedbackMode) {
+            // FEEDBACK MODE: Prioritise marking guidelines (MG files)
+            const mgContent = getMarkingGuidelineContent(subjectId);
+            if (mgContent) {
+                const truncatedMG = mgContent.substring(0, 40000);
+                systemPrompt += `\n\n=== OFFICIAL NESA MARKING GUIDELINES FOR ${subjectName.toUpperCase()} ===\nThese are the REAL marking guidelines used by HSC markers. You MUST reference these specific criteria, band descriptors, and mark allocations when assessing the student's response.\n\n⚠️ CRITICAL: You are ONLY providing feedback — NEVER reveal the correct answer or write a model response.\n\n${truncatedMG}\n\n=== END OF MARKING GUIDELINES ===`;
+            }
+            // Also include exam papers for context on question expectations
+            const examPapers = getExamPaperContent(subjectId);
+            if (examPapers) {
+                const truncatedPapers = examPapers.substring(0, 15000);
+                systemPrompt += `\n\n=== HSC PAST EXAM PAPERS (for question context) ===\n${truncatedPapers}\n=== END ===`;
+            }
+        } else {
+            // STANDARD / question generation mode: past papers for style reference
+            const examPapers = getExamPaperContent(subjectId);
+            if (examPapers) {
+                const truncated = examPapers.substring(0, 25000);
+                systemPrompt += `\n\n=== HSC PAST EXAM PAPERS FOR ${subjectName.toUpperCase()} ===\nUse these past papers as REFERENCE for question style, format, and difficulty. Base your generated questions on these real exam patterns. Do NOT copy questions verbatim — create original questions inspired by these patterns.\n\n${truncated}\n\n=== END OF PAST PAPERS ===`;
+            }
+            // Include marking guidelines so generated questions have accurate mark criteria
+            const mgContent = getMarkingGuidelineContent(subjectId);
+            if (mgContent) {
+                const truncatedMG = mgContent.substring(0, 15000);
+                systemPrompt += `\n\n=== MARKING GUIDELINES (for mark allocation accuracy) ===\n${truncatedMG}\n=== END ===`;
             }
         }
     }

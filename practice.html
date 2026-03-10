@@ -229,6 +229,170 @@
             }
         }
         @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
+
+        /* ===== INTERACTIVE EXAM MODE STYLES ===== */
+        .exam-view { display: none; height: 100vh; flex-direction: column; }
+        .exam-view.active { display: flex; }
+        .exam-header {
+            background: #16202a; border-bottom: 1px solid #2f3336;
+            padding: 12px 24px; display: flex; align-items: center;
+            justify-content: space-between; flex-shrink: 0;
+        }
+        .exam-header-left { display: flex; align-items: center; gap: 16px; }
+        .exam-header-title { font-size: 18px; font-weight: 700; color: #e7e9ea; }
+        .exam-header-meta { font-size: 12px; color: #71767b; margin-top: 2px; }
+        .exam-timer { font-size: 14px; font-weight: 600; color: #4f8cff; background: rgba(79,140,255,0.1); padding: 6px 14px; border-radius: 8px; }
+        .exam-body { flex: 1; overflow-y: auto; padding: 24px; background: #0f1419; }
+        .exam-content { max-width: 800px; margin: 0 auto; }
+
+        /* Setup panel */
+        .exam-setup { padding: 30px 0; }
+        .exam-setup-title { font-size: 1.6rem; font-weight: 700; color: #e7e9ea; margin-bottom: 6px; text-align: center; }
+        .exam-setup-sub { font-size: 0.95rem; color: #71767b; text-align: center; margin-bottom: 24px; }
+        .exam-limits-banner {
+            background: rgba(79,140,255,0.08); border: 1px solid rgba(79,140,255,0.2);
+            border-radius: 12px; padding: 14px 18px; margin-bottom: 20px;
+            font-size: 13px; color: #8ab4f8; text-align: center;
+        }
+        .exam-limits-banner strong { color: #4f8cff; }
+        .exam-setup-form { display: flex; flex-direction: column; gap: 14px; }
+        .exam-setup-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .exam-generate-btn {
+            width: 100%; background: linear-gradient(135deg, #4f8cff, #6C63FF); color: #fff;
+            border: none; border-radius: 10px; padding: 14px 24px; font-size: 15px;
+            font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 8px;
+        }
+        .exam-generate-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(79,140,255,0.3); }
+        .exam-generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Question display */
+        .exam-question-card {
+            background: #16202a; border: 1px solid #2f3336; border-radius: 16px;
+            padding: 28px; margin-bottom: 20px; animation: fadeIn 0.3s ease;
+        }
+        .exam-section-header {
+            font-size: 15px; font-weight: 600; color: #4f8cff;
+            margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .exam-q-number { font-size: 13px; color: #71767b; margin-bottom: 12px; }
+        .exam-q-marks { background: rgba(79,140,255,0.15); color: #4f8cff; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-left: 8px; }
+        .exam-q-text { font-size: 15px; color: #e7e9ea; line-height: 1.7; margin-bottom: 16px; white-space: pre-wrap; }
+        .exam-stimulus {
+            background: #0f1419; border-left: 3px solid #4f8cff; padding: 14px 18px;
+            margin-bottom: 16px; border-radius: 0 8px 8px 0; font-size: 14px;
+            color: #c0c8d0; line-height: 1.6; font-style: italic;
+        }
+
+        /* MC options */
+        .exam-mc-options { display: flex; flex-direction: column; gap: 8px; }
+        .exam-mc-option {
+            display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+            background: #0f1419; border: 1px solid #2f3336; border-radius: 10px;
+            cursor: pointer; transition: all 0.2s; font-size: 14px; color: #e7e9ea;
+        }
+        .exam-mc-option:hover { border-color: #4f8cff; background: rgba(79,140,255,0.05); }
+        .exam-mc-option.selected { border-color: #4f8cff; background: rgba(79,140,255,0.1); }
+        .exam-mc-option input[type="radio"] { accent-color: #4f8cff; width: 16px; height: 16px; flex-shrink: 0; }
+
+        /* Text answer */
+        .exam-answer-box {
+            width: 100%; background: #0f1419; border: 1px solid #2f3336; border-radius: 10px;
+            padding: 14px; color: #e7e9ea; font-size: 14px; font-family: inherit;
+            resize: vertical; min-height: 100px; line-height: 1.6;
+        }
+        .exam-answer-box:focus { outline: none; border-color: #4f8cff; }
+        .exam-answer-box.extended { min-height: 200px; }
+
+        /* Navigation */
+        .exam-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 24px; background: #16202a; border-top: 1px solid #2f3336; flex-shrink: 0;
+        }
+        .exam-nav-btn {
+            padding: 10px 20px; border: 1px solid #2f3336; border-radius: 8px;
+            background: transparent; color: #e7e9ea; font-size: 14px; font-weight: 500;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .exam-nav-btn:hover { border-color: #4f8cff; color: #4f8cff; }
+        .exam-nav-btn.primary { background: #4f8cff; border-color: #4f8cff; color: #fff; }
+        .exam-nav-btn.primary:hover { background: #3d7ae8; }
+        .exam-nav-btn.submit-exam { background: linear-gradient(135deg, #22c55e, #16a34a); border-color: #22c55e; color: #fff; }
+        .exam-nav-btn.submit-exam:hover { background: linear-gradient(135deg, #16a34a, #15803d); }
+        .exam-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .exam-progress-bar {
+            flex: 1; margin: 0 20px; height: 6px; background: #2f3336; border-radius: 3px; overflow: hidden;
+        }
+        .exam-progress-fill { height: 100%; background: #4f8cff; border-radius: 3px; transition: width 0.3s ease; }
+        .exam-q-counter { font-size: 13px; color: #71767b; text-align: center; min-width: 80px; }
+
+        /* Question dots nav */
+        .exam-dots {
+            display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+            padding: 12px 24px; background: #16202a; border-top: 1px solid #2f3336;
+        }
+        .exam-dot {
+            width: 28px; height: 28px; border-radius: 6px; border: 1px solid #2f3336;
+            background: #0f1419; color: #71767b; font-size: 11px; font-weight: 600;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .exam-dot:hover { border-color: #4f8cff; }
+        .exam-dot.current { border-color: #4f8cff; background: rgba(79,140,255,0.15); color: #4f8cff; }
+        .exam-dot.answered { background: rgba(79,140,255,0.1); border-color: #4f8cff; color: #4f8cff; }
+
+        /* Results */
+        .exam-results { animation: fadeIn 0.3s ease; }
+        .exam-results-header {
+            text-align: center; padding: 30px 20px; border-bottom: 1px solid #2f3336; margin-bottom: 24px;
+        }
+        .exam-results-score {
+            font-size: 3rem; font-weight: 800; margin-bottom: 8px;
+        }
+        .exam-results-score.band6 { color: #22c55e; }
+        .exam-results-score.band5 { color: #4f8cff; }
+        .exam-results-score.band4 { color: #eab308; }
+        .exam-results-score.band3 { color: #f97316; }
+        .exam-results-score.low { color: #ef4444; }
+        .exam-results-band { font-size: 1.3rem; font-weight: 600; color: #e7e9ea; margin-bottom: 4px; }
+        .exam-results-marks { font-size: 0.95rem; color: #71767b; }
+        .exam-results-comparison {
+            background: rgba(79,140,255,0.08); border: 1px solid rgba(79,140,255,0.2);
+            border-radius: 12px; padding: 16px; margin: 16px auto; max-width: 400px;
+            font-size: 14px; color: #8ab4f8; text-align: center;
+        }
+        .exam-results-feedback {
+            background: #16202a; border: 1px solid #2f3336; border-radius: 14px;
+            padding: 20px; margin-bottom: 20px;
+        }
+        .exam-results-feedback h3 { color: #e7e9ea; font-size: 16px; margin-bottom: 10px; }
+        .exam-results-feedback p { color: #c0c8d0; font-size: 14px; line-height: 1.6; }
+        .exam-result-item {
+            background: #16202a; border: 1px solid #2f3336; border-radius: 12px;
+            padding: 18px; margin-bottom: 12px;
+        }
+        .exam-result-q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .exam-result-q-num { font-size: 14px; font-weight: 600; color: #e7e9ea; }
+        .exam-result-q-score { font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 6px; }
+        .exam-result-q-score.full { background: rgba(34,197,94,0.15); color: #22c55e; }
+        .exam-result-q-score.partial { background: rgba(234,179,8,0.15); color: #eab308; }
+        .exam-result-q-score.zero { background: rgba(239,68,68,0.15); color: #ef4444; }
+        .exam-result-feedback { font-size: 13px; color: #8b949e; line-height: 1.5; margin-top: 6px; }
+        .exam-result-sample { font-size: 13px; color: #4f8cff; line-height: 1.5; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2f3336; }
+        .exam-result-sample strong { color: #6C63FF; }
+        .exam-results-actions { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+
+        /* Loading overlay for exam */
+        .exam-loading {
+            text-align: center; padding: 60px 20px;
+        }
+        .exam-loading-text { color: #71767b; font-size: 15px; margin-top: 16px; }
+
+        @media (max-width: 768px) {
+            .exam-setup-row { grid-template-columns: 1fr; }
+            .exam-question-card { padding: 20px; }
+            .exam-dots { padding: 8px 12px; }
+            .exam-nav { padding: 12px 16px; }
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -425,6 +589,34 @@
             </div>
         </main>
         </div><!-- end activeView -->
+
+        <!-- INTERACTIVE EXAM VIEW (full-screen exam experience) -->
+        <div id="examView" class="exam-view">
+            <div class="exam-header">
+                <div class="exam-header-left">
+                    <a href="#" class="back-btn" id="examBackBtn" onclick="exitExam(event)">← Exit Exam</a>
+                    <div>
+                        <div class="exam-header-title" id="examTitle">Full Exam Paper</div>
+                        <div class="exam-header-meta" id="examMeta"></div>
+                    </div>
+                </div>
+                <div class="exam-timer" id="examTimer">00:00:00</div>
+            </div>
+            <div class="exam-body" id="examBody">
+                <div class="exam-content" id="examContent">
+                    <!-- Setup / Questions / Results rendered here by JS -->
+                </div>
+            </div>
+            <div class="exam-dots" id="examDots" style="display:none;"></div>
+            <div class="exam-nav" id="examNav" style="display:none;">
+                <button class="exam-nav-btn" id="examPrev" onclick="examNavigate(-1)">← Previous</button>
+                <div class="exam-progress-bar"><div class="exam-progress-fill" id="examProgressFill"></div></div>
+                <span class="exam-q-counter" id="examQCounter">1 / 20</span>
+                <button class="exam-nav-btn primary" id="examNext" onclick="examNavigate(1)">Next →</button>
+                <button class="exam-nav-btn submit-exam" id="examSubmitBtn" style="display:none;" onclick="submitExam()">Submit Exam</button>
+            </div>
+        </div>
+
     </div>
     <script>
         const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
@@ -831,13 +1023,22 @@
             conversationHistory = [];
             outputContent.innerHTML = '';
             
+            // Exam mode uses its own full-screen view
+            if (mode === 'exam') {
+                document.getElementById('modeLanding').style.display = 'none';
+                document.getElementById('activeView').style.display = 'none';
+                document.getElementById('examView').classList.add('active');
+                showExamSetup();
+                return;
+            }
+            
             // Hide landing, show active view
             document.getElementById('modeLanding').style.display = 'none';
             const activeView = document.getElementById('activeView');
             activeView.style.display = 'flex';
             
             // Update title
-            const titles = { standard: 'Standard Questions', exam: 'Full Exam Paper', feedback: 'Get Feedback' };
+            const titles = { standard: 'Standard Questions', feedback: 'Get Feedback' };
             document.getElementById('activeTitle').textContent = titles[mode] || 'Practice Questions';
             document.getElementById('formTitle').textContent = titles[mode] || 'Practice Questions';
             
@@ -846,10 +1047,7 @@
             examPanel.style.display = 'none';
             feedbackPanel.style.display = 'none';
             
-            if (mode === 'exam') {
-                examPanel.style.display = 'block';
-                submitBtn.textContent = 'Generate Full Exam';
-            } else if (mode === 'feedback') {
+            if (mode === 'feedback') {
                 feedbackPanel.style.display = 'block';
                 submitBtn.textContent = 'Get Feedback';
             } else {
@@ -861,9 +1059,11 @@
         function backToModes(e) {
             e.preventDefault();
             document.getElementById('activeView').style.display = 'none';
+            document.getElementById('examView').classList.remove('active');
             document.getElementById('modeLanding').style.display = 'block';
             conversationHistory = [];
             outputContent.innerHTML = '';
+            stopExamTimer();
         }
         
         function formatResponse(text) {
@@ -981,7 +1181,7 @@
             } finally {
                 isLoading = false;
                 submitBtn.disabled = false;
-                submitBtn.textContent = currentMode === 'exam' ? 'Generate Full Exam' : (currentMode === 'feedback' ? 'Get Feedback' : 'Generate Questions');
+                submitBtn.textContent = currentMode === 'feedback' ? 'Get Feedback' : 'Generate Questions';
             }
         }
         
@@ -989,22 +1189,7 @@
             e.preventDefault();
             let message, subjectId;
             console.log('[DEBUG] Submit handler triggered. Current mode:', currentMode);
-            if (currentMode === 'exam') {
-                subjectId = examSubjectSelect.value;
-                console.log('[DEBUG] Exam subjectId:', subjectId);
-                if (!subjectId) { alert('Please select a subject.'); return; }
-                const subjectName = examSubjectSelect.options[examSubjectSelect.selectedIndex].text;
-                const topics = document.getElementById('examTopics').value;
-                const duration = document.getElementById('examDuration').value;
-                console.log('[DEBUG] Exam fields:', { subjectName, topics, duration });
-                message = `[FULL EXAM MODE]
-Generate a complete ${duration} HSC EXAM PAPER.
-Subject: ${subjectName}
-Topics: ${topics || 'All Year 12 content'}
-Duration: ${duration}
-
-Create a complete exam with multiple sections, varied question types matching HSC format, proper mark allocations, and reading time instructions. Structure it like a real HSC paper. Start generating immediately.`;
-            } else if (currentMode === 'feedback') {
+            if (currentMode === 'feedback') {
                 subjectId = feedbackSubjectSelect.value;
                 console.log('[DEBUG] Feedback subjectId:', subjectId);
                 if (!subjectId) { alert('Please select a subject.'); return; }
@@ -1272,6 +1457,421 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             }
         }
         
+        // ===== INTERACTIVE EXAM MODE =====
+        let examData = null;          // The generated exam JSON
+        let examAnswers = {};         // { questionNumber: answer }
+        let examQuestions = [];       // Flat list of all questions with section info
+        let examCurrentIdx = 0;       // Current question index
+        let examTimerInterval = null;
+        let examStartTime = null;
+        let examIsPremium = false;
+        let examSubjectId = '';
+
+        function exitExam(e) {
+            e.preventDefault();
+            if (examData && examQuestions.length > 0) {
+                if (!confirm('Are you sure you want to exit? Your exam progress will be lost.')) return;
+            }
+            stopExamTimer();
+            examData = null;
+            examAnswers = {};
+            examQuestions = [];
+            document.getElementById('examView').classList.remove('active');
+            document.getElementById('modeLanding').style.display = 'block';
+        }
+
+        function stopExamTimer() {
+            if (examTimerInterval) { clearInterval(examTimerInterval); examTimerInterval = null; }
+        }
+
+        function startExamTimer() {
+            examStartTime = Date.now();
+            stopExamTimer();
+            const timerEl = document.getElementById('examTimer');
+            examTimerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - examStartTime) / 1000);
+                const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+                const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+                const s = String(elapsed % 60).padStart(2, '0');
+                timerEl.textContent = `${h}:${m}:${s}`;
+            }, 1000);
+        }
+
+        async function showExamSetup() {
+            document.getElementById('examNav').style.display = 'none';
+            document.getElementById('examDots').style.display = 'none';
+            document.getElementById('examTimer').textContent = '00:00:00';
+            document.getElementById('examTitle').textContent = 'Full Exam Paper';
+            document.getElementById('examMeta').textContent = '';
+            stopExamTimer();
+
+            // Fetch limits
+            let limitsHtml = '';
+            try {
+                const limitsRes = await fetch(`${API_BASE}/api/exam/limits`, { credentials: 'include' });
+                if (limitsRes.ok) {
+                    const limits = await limitsRes.json();
+                    examIsPremium = limits.isPremium;
+                    if (!limits.isPremium) {
+                        limitsHtml = `<div class="exam-limits-banner">
+                            <strong>Free Tier:</strong> ${limits.remaining} of 3 exams remaining this week.
+                            Score 80%+ to unlock the next exam. <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="color:#4f8cff;font-weight:600;">Upgrade for unlimited →</a>
+                        </div>`;
+                    }
+                }
+            } catch (e) { /* ignore */ }
+
+            // Build subject options from the already-loaded subjects array
+            let subjectOpts = '<option value="">Select your subject...</option>';
+            subjects.forEach(s => {
+                subjectOpts += `<option value="${s.id}">${s.name}</option>`;
+            });
+
+            document.getElementById('examContent').innerHTML = `
+                <div class="exam-setup">
+                    <div class="exam-setup-title">📝 Full Exam Paper</div>
+                    <div class="exam-setup-sub">Generate a complete interactive HSC-style exam. Answer question by question, then submit for auto-marking.</div>
+                    ${limitsHtml}
+                    <div class="exam-setup-form">
+                        <div class="exam-setup-row">
+                            <div class="form-group">
+                                <label class="form-label">📘 Subject</label>
+                                <select class="form-select" id="examSetupSubject">${subjectOpts}</select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">⏱️ Duration</label>
+                                <select class="form-select" id="examSetupDuration">
+                                    <option value="1">1 hour (Mini Exam)</option>
+                                    <option value="2" selected>2 hours (Standard)</option>
+                                    <option value="3">3 hours (Full HSC)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">📚 Topics to Cover</label>
+                            <input type="text" class="form-input" id="examSetupTopics" placeholder="e.g., All Year 12 content, Module 5-8...">
+                        </div>
+                        <button type="button" class="exam-generate-btn" id="examGenerateBtn" onclick="generateExam()">📝 Generate Exam</button>
+                    </div>
+                </div>`;
+
+            // Restore saved subject preference
+            const saved = localStorage.getItem('sd_subject_preference');
+            if (saved) {
+                const sel = document.getElementById('examSetupSubject');
+                if (sel) { sel.value = saved; }
+            }
+        }
+
+        async function generateExam() {
+            const subjectEl = document.getElementById('examSetupSubject');
+            const durationEl = document.getElementById('examSetupDuration');
+            const topicsEl = document.getElementById('examSetupTopics');
+            const genBtn = document.getElementById('examGenerateBtn');
+
+            examSubjectId = subjectEl.value;
+            if (!examSubjectId) { alert('Please select a subject.'); return; }
+
+            const subjectName = subjectEl.options[subjectEl.selectedIndex].text;
+            const duration = durationEl.value;
+            const topics = topicsEl.value || 'All Year 12 content';
+
+            genBtn.disabled = true;
+            genBtn.textContent = 'Generating exam...';
+
+            // Show loading
+            document.getElementById('examContent').innerHTML = `
+                <div class="exam-loading">
+                    <div class="loading-dots" style="justify-content:center;"><span></span><span></span><span></span></div>
+                    <div class="exam-loading-text">Generating your ${subjectName} exam paper... This may take a moment.</div>
+                </div>`;
+
+            try {
+                const res = await fetch(`${API_BASE}/api/exam/generate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ subject: examSubjectId, topics, duration })
+                });
+
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    if (err.examLimitReached) {
+                        document.getElementById('examContent').innerHTML = `
+                            <div style="text-align:center;padding:60px 20px;">
+                                <h2 style="color:#e7e9ea;margin-bottom:12px;">⚡ Weekly Exam Limit Reached</h2>
+                                <p style="color:#71767b;margin-bottom:20px;">You've used all 3 free exams this week. Upgrade for unlimited exams.</p>
+                                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="exam-generate-btn" style="display:inline-block;text-decoration:none;max-width:300px;">Upgrade to Premium</a>
+                                <br><button class="exam-nav-btn" style="margin-top:16px;" onclick="showExamSetup()">← Back</button>
+                            </div>`;
+                        return;
+                    }
+                    if (err.scoreGateBlocked) {
+                        document.getElementById('examContent').innerHTML = `
+                            <div style="text-align:center;padding:60px 20px;">
+                                <h2 style="color:#e7e9ea;margin-bottom:12px;">🔒 Score 80% to Unlock</h2>
+                                <p style="color:#71767b;margin-bottom:12px;">Your last score was <strong style="color:#ef4444;">${err.lastScore}%</strong>. You need 80%+ to generate a new exam.</p>
+                                <p style="color:#71767b;margin-bottom:20px;">Retry your previous exam or upgrade for unlimited access.</p>
+                                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="exam-generate-btn" style="display:inline-block;text-decoration:none;max-width:300px;">Upgrade to Premium</a>
+                                <br><button class="exam-nav-btn" style="margin-top:16px;" onclick="showExamSetup()">← Back</button>
+                            </div>`;
+                        return;
+                    }
+                    throw new Error(err.error || 'Failed to generate exam');
+                }
+
+                const data = await res.json();
+                examData = data.exam;
+                examIsPremium = data.isPremium;
+                examAnswers = {};
+
+                // Flatten questions with section info
+                examQuestions = [];
+                for (const section of examData.sections) {
+                    for (const q of section.questions) {
+                        examQuestions.push({ ...q, sectionName: section.name });
+                    }
+                }
+
+                if (examQuestions.length === 0) {
+                    throw new Error('No questions generated');
+                }
+
+                // Start the exam
+                examCurrentIdx = 0;
+                document.getElementById('examTitle').textContent = examData.title || `${subjectName} Exam`;
+                document.getElementById('examMeta').textContent = `${examData.duration || duration + ' hour(s)'} · ${examData.totalMarks} marks · ${examQuestions.length} questions`;
+                document.getElementById('examNav').style.display = 'flex';
+                document.getElementById('examDots').style.display = 'flex';
+                startExamTimer();
+                renderExamDots();
+                renderExamQuestion();
+
+            } catch (error) {
+                document.getElementById('examContent').innerHTML = `
+                    <div style="text-align:center;padding:60px 20px;">
+                        <h2 style="color:#ef4444;margin-bottom:12px;">Failed to Generate Exam</h2>
+                        <p style="color:#71767b;margin-bottom:20px;">${error.message}</p>
+                        <button class="exam-nav-btn primary" onclick="showExamSetup()">Try Again</button>
+                    </div>`;
+            }
+        }
+
+        function renderExamDots() {
+            const dotsEl = document.getElementById('examDots');
+            dotsEl.innerHTML = '';
+            examQuestions.forEach((q, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'exam-dot' + (i === examCurrentIdx ? ' current' : '') + (examAnswers[q.number] ? ' answered' : '');
+                dot.textContent = q.number;
+                dot.onclick = () => { saveCurrentAnswer(); examCurrentIdx = i; renderExamQuestion(); renderExamDots(); };
+                dotsEl.appendChild(dot);
+            });
+        }
+
+        function saveCurrentAnswer() {
+            const q = examQuestions[examCurrentIdx];
+            if (!q) return;
+            if (q.type === 'mc') {
+                const selected = document.querySelector('input[name="mc-answer"]:checked');
+                if (selected) examAnswers[q.number] = selected.value;
+            } else {
+                const textarea = document.getElementById('exam-answer-' + q.number);
+                if (textarea) {
+                    const val = textarea.value.trim();
+                    if (val) examAnswers[q.number] = val;
+                    else delete examAnswers[q.number];
+                }
+            }
+        }
+
+        function renderExamQuestion() {
+            const q = examQuestions[examCurrentIdx];
+            const content = document.getElementById('examContent');
+
+            // Navigation state
+            const isFirst = examCurrentIdx === 0;
+            const isLast = examCurrentIdx === examQuestions.length - 1;
+            document.getElementById('examPrev').disabled = isFirst;
+            document.getElementById('examNext').style.display = isLast ? 'none' : '';
+            document.getElementById('examSubmitBtn').style.display = isLast ? '' : 'none';
+            document.getElementById('examQCounter').textContent = `${examCurrentIdx + 1} / ${examQuestions.length}`;
+            document.getElementById('examProgressFill').style.width = `${((examCurrentIdx + 1) / examQuestions.length) * 100}%`;
+
+            let html = `<div class="exam-question-card">`;
+            html += `<div class="exam-section-header">${q.sectionName}</div>`;
+            html += `<div class="exam-q-number">Question ${q.number} <span class="exam-q-marks">${q.marks} mark${q.marks > 1 ? 's' : ''}</span></div>`;
+
+            if (q.stimulus) {
+                html += `<div class="exam-stimulus">${q.stimulus}</div>`;
+            }
+
+            html += `<div class="exam-q-text">${q.text}</div>`;
+
+            if (q.type === 'mc' && q.options) {
+                html += `<div class="exam-mc-options">`;
+                q.options.forEach((opt, i) => {
+                    const letter = opt.charAt(0) === String.fromCharCode(65 + i) ? opt.charAt(0) : String.fromCharCode(65 + i);
+                    const isSelected = examAnswers[q.number] === letter;
+                    html += `<label class="exam-mc-option${isSelected ? ' selected' : ''}">
+                        <input type="radio" name="mc-answer" value="${letter}" ${isSelected ? 'checked' : ''} onchange="this.closest('.exam-mc-options').querySelectorAll('.exam-mc-option').forEach(o=>o.classList.remove('selected'));this.closest('.exam-mc-option').classList.add('selected');">
+                        ${opt}
+                    </label>`;
+                });
+                html += `</div>`;
+            } else {
+                const isExtended = q.type === 'extended' || q.marks >= 7;
+                const saved = examAnswers[q.number] || '';
+                html += `<textarea class="exam-answer-box${isExtended ? ' extended' : ''}" id="exam-answer-${q.number}" placeholder="Type your answer here...">${saved}</textarea>`;
+            }
+
+            html += `</div>`;
+            content.innerHTML = html;
+
+            // Render KaTeX in question
+            if (window.renderMathInElement) {
+                renderKaTeX(content);
+            }
+        }
+
+        function examNavigate(dir) {
+            saveCurrentAnswer();
+            examCurrentIdx = Math.max(0, Math.min(examQuestions.length - 1, examCurrentIdx + dir));
+            renderExamQuestion();
+            renderExamDots();
+            document.getElementById('examBody').scrollTop = 0;
+        }
+
+        async function submitExam() {
+            saveCurrentAnswer();
+
+            // Check how many answered
+            const answered = Object.keys(examAnswers).length;
+            const total = examQuestions.length;
+            if (answered < total) {
+                if (!confirm(`You've answered ${answered} of ${total} questions. Unanswered questions will receive 0 marks. Submit anyway?`)) return;
+            }
+
+            stopExamTimer();
+            document.getElementById('examNav').style.display = 'none';
+            document.getElementById('examDots').style.display = 'none';
+
+            // Show marking loading
+            document.getElementById('examContent').innerHTML = `
+                <div class="exam-loading">
+                    <div class="loading-dots" style="justify-content:center;"><span></span><span></span><span></span></div>
+                    <div class="exam-loading-text">Marking your exam... This may take a moment.</div>
+                </div>`;
+
+            try {
+                const res = await fetch(`${API_BASE}/api/exam/mark`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ exam: examData, answers: examAnswers, subject: examSubjectId })
+                });
+
+                if (!res.ok) {
+                    throw new Error('Failed to mark exam');
+                }
+
+                const data = await res.json();
+                renderExamResults(data);
+
+            } catch (error) {
+                document.getElementById('examContent').innerHTML = `
+                    <div style="text-align:center;padding:60px 20px;">
+                        <h2 style="color:#ef4444;margin-bottom:12px;">Marking Failed</h2>
+                        <p style="color:#71767b;margin-bottom:20px;">${error.message}</p>
+                        <button class="exam-nav-btn primary" onclick="showExamSetup()">Back to Setup</button>
+                    </div>`;
+            }
+        }
+
+        function renderExamResults(data) {
+            const { marking, progress, isPremium } = data;
+            const pct = marking.percentage || 0;
+            const scoreClass = pct >= 90 ? 'band6' : pct >= 80 ? 'band5' : pct >= 70 ? 'band4' : pct >= 60 ? 'band3' : 'low';
+
+            let html = `<div class="exam-results">`;
+
+            // Header with score
+            html += `<div class="exam-results-header">
+                <div class="exam-results-score ${scoreClass}">${Math.round(pct)}%</div>
+                <div class="exam-results-band">${marking.expectedBand || ''}</div>
+                <div class="exam-results-marks">${marking.totalMarksAwarded} / ${marking.totalMarksPossible} marks</div>`;
+
+            // Comparison with previous
+            if (progress.comparison) {
+                const change = progress.comparison.change;
+                const arrow = change > 0 ? '📈' : change < 0 ? '📉' : '➡️';
+                const changeText = change > 0 ? `+${change.toFixed(1)}%` : `${change.toFixed(1)}%`;
+                html += `<div class="exam-results-comparison">
+                    ${arrow} <strong>${changeText}</strong> compared to your last attempt (${progress.comparison.previousPercentage}% — ${progress.comparison.previousBand})
+                    <br><span style="font-size:12px;">Best score: ${progress.bestScore}% · ${progress.totalAttempts} total attempt${progress.totalAttempts > 1 ? 's' : ''}</span>
+                </div>`;
+            }
+            html += `</div>`;
+
+            // Overall feedback
+            if (marking.overallFeedback) {
+                html += `<div class="exam-results-feedback">
+                    <h3>📋 Overall Feedback</h3>
+                    <p>${marking.overallFeedback}</p>
+                </div>`;
+            }
+
+            // Free tier gate message
+            if (!isPremium && pct < 80) {
+                html += `<div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:16px;margin-bottom:20px;text-align:center;">
+                    <strong style="color:#ef4444;">🔒 Score 80%+ to unlock a new exam</strong>
+                    <p style="color:#71767b;font-size:13px;margin:8px 0 0;">You can retry this exam by clearing your answers. Or <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="color:#4f8cff;font-weight:600;">upgrade to Premium</a> for unlimited exams.</p>
+                </div>`;
+            }
+
+            // Per-question results
+            html += `<h3 style="color:#e7e9ea;font-size:16px;margin-bottom:14px;">Question-by-Question Results</h3>`;
+            if (marking.results && marking.results.length > 0) {
+                for (const r of marking.results) {
+                    const scoreRatio = r.marksTotal > 0 ? r.marksAwarded / r.marksTotal : 0;
+                    const scoreTag = scoreRatio >= 1 ? 'full' : scoreRatio > 0 ? 'partial' : 'zero';
+                    html += `<div class="exam-result-item">
+                        <div class="exam-result-q-header">
+                            <span class="exam-result-q-num">Question ${r.questionNumber}</span>
+                            <span class="exam-result-q-score ${scoreTag}">${r.marksAwarded} / ${r.marksTotal}</span>
+                        </div>
+                        <div class="exam-result-feedback">${r.feedback || ''}</div>`;
+                    if (r.sampleAnswer) {
+                        html += `<div class="exam-result-sample"><strong>Sample Answer:</strong> ${r.sampleAnswer}</div>`;
+                    }
+                    html += `</div>`;
+                }
+            }
+
+            // Action buttons
+            html += `<div class="exam-results-actions">
+                <button class="exam-nav-btn" onclick="retryExam()">🔄 Retry This Exam</button>
+                <button class="exam-nav-btn primary" onclick="showExamSetup()">📝 New Exam</button>
+                <button class="exam-nav-btn" onclick="exitExam(event)">← Back to Modes</button>
+            </div>`;
+
+            html += `</div>`;
+
+            document.getElementById('examContent').innerHTML = html;
+            document.getElementById('examBody').scrollTop = 0;
+        }
+
+        function retryExam() {
+            if (!examData) { showExamSetup(); return; }
+            examAnswers = {};
+            examCurrentIdx = 0;
+            document.getElementById('examNav').style.display = 'flex';
+            document.getElementById('examDots').style.display = 'flex';
+            startExamTimer();
+            renderExamDots();
+            renderExamQuestion();
+        }
+
         checkAuth();
     </script>
 </body>
