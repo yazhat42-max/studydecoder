@@ -1548,18 +1548,41 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">📚 Topics to Cover</label>
-                            <input type="text" class="form-input" id="examSetupTopics" placeholder="e.g., All Year 12 content, Module 5-8...">
+                            <label class="form-label">📚 Modules / Topics</label>
+                            <select class="form-select" id="examSetupTopics">
+                                <option value="All">All Modules</option>
+                            </select>
                         </div>
                         <button type="button" class="exam-generate-btn" id="examGenerateBtn" onclick="generateExam()">📝 Generate Exam</button>
                     </div>
                 </div>`;
 
-            // Restore saved subject preference
+            // Restore saved subject preference & populate modules
             const saved = localStorage.getItem('sd_subject_preference');
             if (saved) {
                 const sel = document.getElementById('examSetupSubject');
-                if (sel) { sel.value = saved; }
+                if (sel) { sel.value = saved; updateExamModules(saved); }
+            }
+
+            // Wire subject change to update modules
+            const examSubjectEl = document.getElementById('examSetupSubject');
+            if (examSubjectEl) {
+                examSubjectEl.addEventListener('change', () => updateExamModules(examSubjectEl.value));
+            }
+        }
+
+        function updateExamModules(subjectId) {
+            const sel = document.getElementById('examSetupTopics');
+            if (!sel) return;
+            sel.innerHTML = '<option value="All">All Modules</option>';
+            const topics = subjectTopics[subjectId];
+            if (topics && topics.length > 0) {
+                topics.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t;
+                    opt.textContent = t;
+                    sel.appendChild(opt);
+                });
             }
         }
 
@@ -1574,7 +1597,8 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
             const subjectName = subjectEl.options[subjectEl.selectedIndex].text;
             const duration = durationEl.value;
-            const topics = topicsEl.value || 'All Year 12 content';
+            const selectedTopic = topicsEl.value;
+            const topics = selectedTopic === 'All' ? 'All Year 12 content' : selectedTopic;
 
             genBtn.disabled = true;
             genBtn.textContent = 'Generating exam...';

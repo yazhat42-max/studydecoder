@@ -2249,15 +2249,18 @@ app.post('/api/admin/revoke-access', requireOwner, (req, res) => {
 
 // ==================== SYLLABUS DATA ====================
 
-// Source syllabuses ship with the repo; on production we copy them to persistent disk
-// so they survive Render restarts and can be updated without redeploying.
+// Source syllabuses ship with the repo; on production we copy them to persistent disk.
 const SYLLABUSES_SOURCE = path.join(__dirname, 'api', 'syllabuses');
-const SYLLABUSES_PATH = config.isDev
-    ? SYLLABUSES_SOURCE
-    : path.join('/var/data', 'syllabuses');
+const PERSISTENT_SYLLABUS_PATH = path.join('/var/data', 'syllabuses');
 
-// Copy syllabuses to persistent disk on first deploy (production only)
-if (!config.isDev && fs.existsSync(SYLLABUSES_SOURCE)) {
+// Determine actual syllabuses path
+let SYLLABUSES_PATH;
+if (config.isDev) {
+    SYLLABUSES_PATH = SYLLABUSES_SOURCE;
+} else {
+    // Try to copy to persistent disk; fall back to source if disk unavailable
+    console.log(`📁 Source syllabuses: ${SYLLABUSES_SOURCE} (exists: ${fs.existsSync(SYLLABUSES_SOURCE)})`);
+    console.log(`📁 Persistent disk /var/data exists: ${fs.existsSync('/var/data')}`);
     const copyRecursive = (src, dest) => {
         if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
         for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
@@ -2266,16 +2269,29 @@ if (!config.isDev && fs.existsSync(SYLLABUSES_SOURCE)) {
             if (entry.isDirectory()) {
                 copyRecursive(srcPath, destPath);
             } else {
-                // Always overwrite – ensures latest syllabus/paper versions from repo
                 fs.copyFileSync(srcPath, destPath);
             }
         }
     };
-    try {
-        copyRecursive(SYLLABUSES_SOURCE, SYLLABUSES_PATH);
-        console.log('📁 Syllabuses & past papers copied to persistent disk:', SYLLABUSES_PATH);
-    } catch (e) {
-        console.error('❌ Failed to copy syllabuses to persistent disk:', e.message);
+    if (fs.existsSync(SYLLABUSES_SOURCE)) {
+        try {
+            copyRecursive(SYLLABUSES_SOURCE, PERSISTENT_SYLLABUS_PATH);
+            SYLLABUSES_PATH = PERSISTENT_SYLLABUS_PATH;
+            const fileCount = fs.readdirSync(PERSISTENT_SYLLABUS_PATH).length;
+            console.log(`📁 ✅ Syllabuses copied to persistent disk: ${PERSISTENT_SYLLABUS_PATH} (${fileCount} items)`);
+        } catch (e) {
+            console.error('❌ Failed to copy to persistent disk, using source:', e.message);
+            SYLLABUSES_PATH = SYLLABUSES_SOURCE;
+        }
+    } else {
+        // Source missing (shouldn't happen) — check if persistent disk already has them
+        if (fs.existsSync(PERSISTENT_SYLLABUS_PATH)) {
+            SYLLABUSES_PATH = PERSISTENT_SYLLABUS_PATH;
+            console.log('📁 Using existing persistent disk syllabuses (source not found)');
+        } else {
+            SYLLABUSES_PATH = SYLLABUSES_SOURCE;
+            console.error('❌ No syllabuses found anywhere!');
+        }
     }
 }
 
@@ -4042,24 +4058,23 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     let contextPrompt = '';
     const subjectName = subjectsConfig.subjects.find(s => s.id === subject)?.name || subject;
 
+    // Keep context lean for faster generation — only enough for style & accuracy
     const syllabusContent = getSyllabusContent(subject);
     if (syllabusContent) {
-        const truncated = syllabusContent.substring(0, 60000);
-        contextPrompt += `\n\n=== OFFICIAL ${subjectName.toUpperCase()} SYLLABUS ===\n${truncated}\n=== END SYLLABUS ===`;
+        const truncated = syllabusContent.substring(0, 15000);
+        contextPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS (key topics) ===\n${truncated}\n=== END SYLLABUS ===`;
     }
 
-    // Inject exam papers for style/format reference (NOT to copy)
     const examPapers = getExamPaperContent(subject);
     if (examPapers) {
-        const truncated = examPapers.substring(0, 25000);
-        contextPrompt += `\n\n=== PAST EXAM PAPERS FOR REFERENCE (style/format only — DO NOT copy any questions) ===\n${truncated}\n=== END PAST PAPERS ===`;
+        const truncated = examPapers.substring(0, 10000);
+        contextPrompt += `\n\n=== PAST EXAM PAPERS (style/format reference ONLY — DO NOT copy) ===\n${truncated}\n=== END ===`;
     }
 
-    // Inject marking guidelines so generated questions have accurate marking criteria
     const mgContent = getMarkingGuidelineContent(subject);
     if (mgContent) {
-        const truncatedMG = mgContent.substring(0, 20000);
-        contextPrompt += `\n\n=== OFFICIAL NESA MARKING GUIDELINES ===\nUse these to create accurate markingCriteria for each question. Base your mark allocations on these real guidelines.\n${truncatedMG}\n=== END MARKING GUIDELINES ===`;
+        const truncatedMG = mgContent.substring(0, 8000);
+        contextPrompt += `\n\n=== MARKING GUIDELINES (for mark allocation accuracy) ===\n${truncatedMG}\n=== END ===`;
     }
 
     // Generate a unique seed to ensure variety across exams
