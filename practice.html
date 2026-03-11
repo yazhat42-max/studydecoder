@@ -1693,9 +1693,17 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     examIsPremium = limits.isPremium;
                     examIsOwner = !!limits.isOwner;
                     if (!limits.isPremium) {
-                        limitsHtml = `<div class="exam-limits-banner">
-                            <strong>Free Tier:</strong> ${limits.remaining} of 3 exams remaining this week.
-                            Score 80%+ to unlock the next exam. <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="color:#4f8cff;font-weight:600;">Upgrade for unlimited →</a>
+                        limitsHtml = `<div class="exam-limits-banner" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid #4f8cff33;border-radius:12px;padding:18px 20px;margin-bottom:18px;color:#e7e9ea;">
+                            <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px;">🏆 Full Exam Mode — Our Flagship Feature</div>
+                            <div style="color:#8899a6;font-size:0.9rem;margin-bottom:10px;">Sit complete HSC exams with auto-marking & band feedback. This is <strong style="color:#4f8cff;">the #1 reason students upgrade</strong>.</div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                                <span style="color:#f59e0b;font-weight:600;">${limits.remaining} of 3 free exams left this week · Score 80%+ to unlock next</span>
+                                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="background:linear-gradient(135deg,#4f8cff,#764ba2);color:white;padding:8px 20px;border-radius:50px;font-size:0.85rem;font-weight:700;text-decoration:none;">Upgrade for Unlimited Exams →</a>
+                            </div>
+                        </div>`;
+                    } else {
+                        limitsHtml = `<div class="exam-limits-banner" style="background:linear-gradient(135deg,#0f3460,#1a1a2e);border:1px solid #4f8cff44;border-radius:12px;padding:16px 20px;margin-bottom:18px;color:#e7e9ea;">
+                            <div style="font-size:0.95rem;">✅ <strong>Premium</strong> — Unlimited exams, full NESA-style structure, all 45 subjects. Generate as many as you need.</div>
                         </div>`;
                     }
                 }

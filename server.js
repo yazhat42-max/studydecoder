@@ -92,6 +92,7 @@ const DB_PATH = config.isDev ? path.join(__dirname, 'data') : '/var/data';
 const USERS_FILE = path.join(DB_PATH, 'users.json');
 const PAYMENTS_FILE = path.join(DB_PATH, 'payments.json');
 const OG_CODES_FILE = path.join(DB_PATH, 'og-codes.json');
+const REVIEWS_FILE = path.join(DB_PATH, 'reviews.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DB_PATH)) {
@@ -349,6 +350,29 @@ const ogCodesState = loadDB(OG_CODES_FILE, {
 
 function saveOGState() {
     saveDB(OG_CODES_FILE, ogCodesState);
+}
+
+// ==================== REVIEWS SYSTEM ====================
+const DEFAULT_REVIEWS = [
+    { id: 'seed-1', rating: 5, text: 'Helps understand what to actually study. Full exam mode makes finding practice exams stress free' },
+    { id: 'seed-2', rating: 5, text: 'Finally something that breaks down the syllabus in a way that makes sense! My study sessions are so much more productive now.' },
+    { id: 'seed-3', rating: 4, text: 'The practice questions are really helpful for exam prep. Saved me hours of trying to figure out what to focus on.' },
+    { id: 'seed-4', rating: 5, text: 'Full Exam Mode is a game changer. Getting a fresh HSC paper whenever I want with instant marking? Absolute lifesaver before trials.' },
+    { id: 'seed-5', rating: 4, text: 'Great for organising study. The timetable generator balanced all 6 of my subjects and the syllabus decoder saves heaps of time.' },
+    { id: 'seed-6', rating: 5, text: 'Wish I had this earlier in Year 11! The syllabus breakdown alone is worth it. Makes studying way less stressful.' },
+    { id: 'seed-7', rating: 5, text: 'The worksheet decoder actually reads my teacher\'s messy handouts and makes them usable. Notes transcriber is solid too.' },
+    { id: 'seed-8', rating: 4, text: 'Used it for my Year 9 science and it actually helped me understand what the syllabus was asking. Junior mode is really good.' },
+    { id: 'seed-9', rating: 5, text: 'Sat a 3-hour Biology trial and the questions were genuinely hard. Way better than the random past papers I was finding online.' },
+    { id: 'seed-10', rating: 4, text: 'Solid tool for HSC prep. The marking feedback is detailed and actually tells you what you missed, not just a score.' }
+];
+
+let reviewsData = loadDB(REVIEWS_FILE, { reviews: [] });
+if (!reviewsData.reviews || reviewsData.reviews.length === 0) {
+    reviewsData.reviews = DEFAULT_REVIEWS;
+    saveDB(REVIEWS_FILE, reviewsData);
+}
+function saveReviews() {
+    saveDB(REVIEWS_FILE, reviewsData);
 }
 
 // ==================== OWNER & ROLE SYSTEM ====================
@@ -4060,20 +4084,25 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
 
     // ===== MATHEMATICS (Standard, Advanced, Extension 1, Extension 2) =====
     if (category === 'mathematics') {
+        // Real HSC MC counts: Standard 2 = 15 MC, all others = 10 MC
+        const isStandard = subject === 'mathematics-standard';
         if (durationHours === 1) {
-            structureGuide = `EXAM STRUCTURE (1h, 60 marks — Mathematics):
-- Section I — Multiple Choice: 5 questions × 1 mark = 5 marks (Yes, Maths HSC has MC)
-- Section II — Problems: 10-12 questions totalling ~55 marks. Each question has parts (a)(b)(c)(d), max 4 marks per part. Scaffold easy→hard.
+            const mc = isStandard ? 8 : 5;
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName}):
+- Section I — Multiple Choice: ${mc} questions × 1 mark = ${mc} marks
+- Section II — Problems: ${isStandard ? '10-13' : '8-11'} questions totalling ~${60 - mc} marks. Each question has parts (a)(b)(c)(d), max 4 marks per part. Scaffold easy→hard.
 TOTAL: ~60 marks. You MUST include both sections.`;
         } else if (durationHours === 2) {
-            structureGuide = `EXAM STRUCTURE (2h, 80 marks — Mathematics):
-- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Problems: 12-15 questions totalling ~70 marks. Each question has parts (a)(b)(c)(d)(e), max 4 marks per part. Scaffold easy→hard within each question.
+            const mc = isStandard ? 12 : 8;
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName}):
+- Section I — Multiple Choice: ${mc} questions × 1 mark = ${mc} marks
+- Section II — Problems: 12-15 questions totalling ~${80 - mc} marks. Each question has parts (a)(b)(c)(d)(e), max 4 marks per part. Scaffold easy→hard within each question.
 TOTAL: ~80 marks. You MUST include both sections.`;
         } else {
-            structureGuide = `EXAM STRUCTURE (3h, 100 marks — Mathematics):
-- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Problems: 14-16 questions totalling ~90 marks. Each question has parts (a)(b)(c)(d)(e), max 4 marks per part. Scaffold easy→hard.
+            const mc = isStandard ? 15 : 10;
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName}):
+- Section I — Multiple Choice: ${mc} questions × 1 mark = ${mc} marks
+- Section II — Problems: 14-16 questions totalling ~${100 - mc} marks. Each question has parts (a)(b)(c)(d)(e), max 4 marks per part. Scaffold easy→hard.
 TOTAL: ~100 marks. You MUST include both sections.`;
         }
         categoryRules = `MATHEMATICS-SPECIFIC RULES:
@@ -4084,15 +4113,16 @@ TOTAL: ~100 marks. You MUST include both sections.`;
 - Ext 2: include complex numbers, proof, integration techniques, mechanics, further vectors.
 - Standard: include networks, financial maths, measurement, statistics, algebra.
 - Use UNICODE for all maths: x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, °, ∈, ∪, ∩, ⊂. NEVER LaTeX.
-- Include graphs/tables described in text where appropriate.`;
+- Include graphs/tables described in text where appropriate.
+- IMPORTANT: Only generate questions from the student's selected module/topic. Every question must belong to that module.`;
 
     // ===== ENGLISH (Advanced, Standard, Extension, EAL/D, Studies) =====
     } else if (category === 'english') {
         if (durationHours === 1) {
-            structureGuide = `EXAM STRUCTURE (1h, 60 marks — English):
-- Section I — Short Response (Unseen Texts): Provide 1-2 unseen stimulus texts (poem, prose extract, visual text description, speech extract). 3-5 questions totalling ~20 marks analysing language, structure, meaning.
-- Section II — Extended Response / Essay: 2 essay questions of ~20 marks each (student chooses 1), OR one compulsory 20-mark essay + 2×10-mark responses.
-TOTAL: ~60 marks. You MUST include both sections. NO multiple choice for English.`;
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — modelled on Paper 1):
+- Section I — Short Response (Unseen Texts): Provide 1-2 unseen stimulus texts (poem, prose extract, visual text description, speech extract). 5-6 questions totalling ~35 marks analysing language, structure, meaning.
+- Section II — Extended Response: 1 essay on prescribed/studied text = ~25 marks.
+TOTAL: ~60 marks. You MUST include both sections. NO multiple choice. Only ONE extended response.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks — English):
 - Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts. 4-6 questions totalling ~20 marks.
@@ -4115,7 +4145,8 @@ TOTAL: ~100 marks. You MUST include all three sections. NO multiple choice for E
 - For EAL/D: provide language-accessible stimulus but test analytical skills.
 - For Studies: include practical/applied literacy contexts.
 - Essay prompts must include a statement or proposition for the student to respond to.
-- All questions must reference "composer", "responder", "text" — standard NESA English terminology.`;
+- All questions must reference "composer", "responder", "text" — standard NESA English terminology.
+- IMPORTANT: Only generate questions from the student's selected module/topic. If a module like "Texts and Human Experiences" is selected, every question must be from that module.`;
 
     // ===== SCIENCE (Biology, Chemistry, Physics, Earth & Environmental, Investigating Science, Science Extension) =====
     } else if (category === 'science') {
@@ -4147,38 +4178,114 @@ TOTAL: ~100 marks across ~32 questions. You MUST include ALL three sections.`;
 - Physics: include calculations with units, force diagrams described in text, real-world applications. Use correct SI units throughout.
 - Earth & Environmental Science: include fieldwork contexts, geological processes, environmental management strategies.
 - Investigating Science: focus on scientific method, experimental design, data analysis, evaluating claims.
-- Science Extension: focus on research methodology, scientific communication, depth studies.`;
+- Science Extension: focus on research methodology, scientific communication, depth studies.
+- IMPORTANT: Only generate questions from the student's selected module/topic. If a specific module is selected, every question must belong to that module.`;
 
-    // ===== HSIE (History, Geography, Business Studies, Economics, Legal Studies, Society & Culture, Studies of Religion) =====
+    // ===== HSIE — subject-level format differences (History NO MC, Geography 15 MC, S&C 8 MC, others 20 MC) =====
     } else if (category === 'hsie') {
-        if (durationHours === 1) {
-            structureGuide = `EXAM STRUCTURE (1h, 60 marks — HSIE):
-- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks (for subjects that use MC, like Business Studies/Economics/Legal)
-- Section II — Short Answer / Source-based: 4-6 questions totalling ~30 marks. Include primary/secondary source extracts as stimulus.
-- Section III — Extended Response: 1 question of ~20 marks (essay).
-TOTAL: ~60 marks. You MUST include all sections. For History subjects, replace MC with additional source-based questions.`;
-        } else if (durationHours === 2) {
-            structureGuide = `EXAM STRUCTURE (2h, 80 marks — HSIE):
-- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks (or source-based for History)
-- Section II — Short Answer / Source-based: 5-7 questions totalling ~35 marks
-- Section III — Extended Response: 1-2 essay questions totalling ~30 marks
-TOTAL: ~80 marks. You MUST include all sections.`;
+        const isHistory = ['ancient-history', 'modern-history', 'history-extension'].includes(subject);
+        const isGeography = subject === 'geography';
+        const isSocietyCulture = subject === 'society-culture';
+
+        if (isHistory) {
+            // Ancient/Modern History & History Extension: NO MC — source-based + essays
+            if (durationHours === 1) {
+                structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — NO MULTIPLE CHOICE):
+- Section I — Source-based (Core): Provide 3-4 primary/secondary sources (document extracts, images described, statistics). 4 questions totalling ~25 marks (scaffolded: 3+4+6+12 marks).
+- Section II — Essay: 1 essay of ~20 marks (choose from 2 options).
+- Section III — Essay: 1 essay of ~15 marks (choose from 2 options, different topic area).
+TOTAL: ~60 marks. NO multiple choice. Source-based questions + essays only.`;
+            } else if (durationHours === 2) {
+                structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — NO MULTIPLE CHOICE):
+- Section I — Source-based (Core): Provide 3-4 sources. 4 questions totalling ~25 marks (3+4+6+12).
+- Section II — Essay: 1 essay of ~25 marks (choose from topic options).
+- Section III — Essay: 1 essay of ~25 marks (different topic area).
+- Additional short-answer: ~5 marks.
+TOTAL: ~80 marks. NO multiple choice.`;
+            } else {
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — NO MULTIPLE CHOICE):
+- Section I — Source-based (Core Study): Provide 3-4 primary/secondary sources. 4 questions totalling 25 marks (3+4+6+12 pattern).
+- Section II — Essay: 1 essay of 25 marks (choose from topic options).
+- Section III — Essay: 1 essay of 25 marks (different topic area).
+- Section IV — Essay: 1 essay of 25 marks (different topic area).
+TOTAL: 100 marks = four 25-mark sections. NO multiple choice.`;
+            }
+        } else if (isGeography) {
+            // Geography: only 15 MC (NOT 20), stimulus booklet
+            if (durationHours === 1) {
+                structureGuide = `EXAM STRUCTURE (1h, 60 marks — Geography):
+- Section I — Objective Response: 8 questions × 1 mark = 8 marks (with stimulus: maps, data, photographs described)
+- Section II — Short Answer: 4-5 questions totalling ~32 marks (fieldwork data, spatial data)
+- Section III — Extended Response: 1 question of ~20 marks
+TOTAL: ~60 marks. You MUST include ALL three sections.`;
+            } else if (durationHours === 2) {
+                structureGuide = `EXAM STRUCTURE (2h, 80 marks — Geography):
+- Section I — Objective Response: 12 questions × 1 mark = 12 marks (with stimulus booklet)
+- Section II — Short Answer: 4-6 questions totalling ~48 marks
+- Section III — Extended Response: 1 question of ~20 marks
+TOTAL: ~80 marks. You MUST include ALL three sections.`;
+            } else {
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — Geography — 15 MC, NOT 20):
+- Section I — Objective Response: 15 questions × 1 mark = 15 marks (with stimulus booklet)
+- Section II — Short Answer: 4-6 questions totalling ~45 marks
+- Section III — Structured Extended Response: 1 question of ~20 marks
+- Section IV — Extended Response (Essay): 1 question of ~20 marks
+TOTAL: 100 marks. You MUST include ALL four sections.`;
+            }
+        } else if (isSocietyCulture) {
+            // Society & Culture: only 8 MC
+            if (durationHours === 1) {
+                structureGuide = `EXAM STRUCTURE (1h, 60 marks — Society and Culture — only 8 MC):
+- Section I: 8 MC (8 marks) + 2 short-answer questions (~12 marks) = 20 marks
+- Section II — Extended Response: 2 essays of ~20 marks each (choose from 4 options) = 40 marks
+TOTAL: ~60 marks. Section I has ONLY 8 MC.`;
+            } else if (durationHours === 2) {
+                structureGuide = `EXAM STRUCTURE (2h, 80 marks — Society and Culture — only 8 MC):
+- Section I: 8 MC (8 marks) + 3 short-answer questions (~17 marks) = 25 marks
+- Section II — Extended Response: 2 essays of ~20 marks each = 40 marks
+- Section III — Short Essay: 1 essay of ~15 marks
+TOTAL: ~80 marks. Section I has ONLY 8 MC.`;
+            } else {
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — Society and Culture — only 8 MC, practice-scaled):
+- Section I: 8 MC (8 marks) + 3 short-answer questions (~22 marks) = 30 marks
+- Section II — Extended Response: 2 essays of ~20 marks each = 40 marks
+- Section III — Extended Response: 1 essay of ~30 marks
+TOTAL: ~100 marks.`;
+            }
         } else {
-            structureGuide = `EXAM STRUCTURE (3h, 100 marks — HSIE):
-- Section I — Multiple Choice: 20 questions × 1 mark = 20 marks (or source-based for History)
-- Section II — Short Answer / Source-based: 6-8 questions totalling ~40 marks
-- Section III — Extended Response: 2 essay questions totalling ~40 marks
-TOTAL: ~100 marks. You MUST include all sections.`;
+            // Business Studies, Economics, Legal Studies, Studies of Religion: standard 20 MC
+            if (durationHours === 1) {
+                structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName}):
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
+- Section II — Short Answer: 3-4 questions totalling ~30 marks
+- Section III — Extended Response: 1 question of ~20 marks
+TOTAL: ~60 marks. You MUST include ALL three sections.`;
+            } else if (durationHours === 2) {
+                structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName}):
+- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
+- Section II — Short Answer: 4 questions totalling ~35 marks
+- Section III — Extended Response: 1-2 questions totalling ~30 marks
+TOTAL: ~80 marks. You MUST include ALL three sections.`;
+            } else {
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName}):
+- Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
+- Section II — Short Answer: 4 questions totalling ~40 marks
+- Section III — Extended Response: 1 question of ~20 marks (choose from options)
+- Section IV — Extended Response: 1 question of ~20 marks (choose from different options)
+TOTAL: 100 marks. You MUST include ALL four sections.`;
+            }
         }
         categoryRules = `HSIE-SPECIFIC RULES:
-- Ancient History / Modern History / History Extension: NO multiple choice. Use source-based questions with historical documents, letters, images described in text, political cartoons described, statistics. Ask students to "Assess the usefulness", "Evaluate the reliability", "Account for", "To what extent".
-- Business Studies: include case studies of real Australian businesses. Use correct business terminology (cash flow, market share, operations management). MC is appropriate.
-- Economics: include economic data (GDP figures, unemployment rates, inflation data). Reference Australian economic policy. Use correct terminology (aggregate demand, monetary policy, fiscal policy). MC is appropriate.
-- Legal Studies: reference real cases (e.g. "Mabo v Queensland"), legislation, legal principles. Ask "Assess the effectiveness of the law in achieving justice".
-- Geography: include fieldwork methodology, spatial technologies, case studies of real places. Provide data/statistics as stimulus.
-- Society and Culture: use sociological terminology. Include cross-cultural perspectives, research methodology.
-- Studies of Religion: reference specific religious traditions, sacred texts, ethical teachings. Use respectful, academic language.
-- Essay prompts MUST include a statement, proposition, or question that demands a sustained argument with evidence.`;
+- Ancient History / Modern History: absolutely NO multiple choice. Use source-based questions with historical documents, letters, images described in text, statistics. Ask "Assess the usefulness", "Evaluate the reliability", "Account for", "To what extent". Section I MUST have 3-4 source documents with questions scaffolded 3+4+6+12 marks.
+- History Extension: NO MC. Focus on historiographical analysis, key questions, case study, historical debate.
+- Business Studies: case studies of real Australian businesses. Correct terminology (cash flow, market share, operations). 20 MC.
+- Economics: economic data (GDP, unemployment, CPI). Terms: aggregate demand, monetary/fiscal policy. 20 MC.
+- Legal Studies: reference real cases (e.g. "Mabo v Queensland"), legislation. Assess effectiveness of law. 20 MC.
+- Geography: only 15 MC (NOT 20). Include fieldwork methodology, spatial technologies, stimulus (maps, data, photographs described).
+- Society and Culture: only 8 MC. Use sociological terminology, cross-cultural perspectives.
+- Studies of Religion: reference specific traditions, sacred texts, ethical teachings. Respectful academic language. MC included.
+- Essay prompts MUST include a statement or proposition demanding sustained argument with evidence.
+- IMPORTANT: Only generate questions from the student's selected module/topic. If a module is selected, every question must belong to that module.`;
 
     // ===== CREATIVE ARTS (Dance, Drama, Music 1, Music 2, Visual Arts) =====
     } else if (category === 'creative arts') {
@@ -4205,7 +4312,8 @@ TOTAL: ~100 marks. NO multiple choice for Creative Arts.`;
 - Drama: reference specific practitioners (Brecht, Stanislavski, Boal), performance styles, dramatic forms, elements of production.
 - Music 1 & 2: reference specific musical concepts (melody, harmony, rhythm, dynamics, texture, tone colour, structure). Describe musical excerpts in text. Ask about compositional techniques.
 - Dance: reference specific choreographers, dance styles, elements of dance (space, time, dynamics, relationships).
-- Include stimulus material: describe an artwork, performance, or musical piece in detail for analysis.`;
+- Include stimulus material: describe an artwork, performance, or musical piece in detail for analysis.
+- IMPORTANT: Only generate questions from the student's selected module/topic.`;
 
     // ===== TAS / Technology (Agriculture, Design & Tech, Engineering, Enterprise Computing, Food Tech, Industrial Tech, IDT, Software Engineering) =====
     } else if (category === 'tas') {
@@ -4236,7 +4344,8 @@ TOTAL: ~100 marks. You MUST include ALL three sections.`;
 - Food Technology: include food science, nutrition, food manufacturing scenarios, Australian food standards.
 - Industrial Technology (all focus areas): include industry-specific knowledge (Automotive, Electronics, Graphics, Metal & Engineering, Multimedia, Timber & Furniture). Reference WHS, manufacturing processes, materials properties.
 - Information and Digital Technology: include database design, networking, digital media, project management.
-- Software Engineering: include code analysis (pseudocode), algorithm design, software development methodologies, testing strategies. Max 8 marks per question.`;
+- Software Engineering: include code analysis (pseudocode), algorithm design, software development methodologies, testing strategies. Max 8 marks per question.
+- IMPORTANT: Only generate questions from the student's selected module/topic.`;
 
     // ===== PDHPE / Health and Movement Science =====
     } else if (category === 'pdhpe') {
@@ -4264,7 +4373,8 @@ TOTAL: ~100 marks. You MUST include ALL three sections.`;
 - Reference Australian health statistics and real health initiatives (e.g. "Measure Up" campaign).
 - Include data interpretation: fitness testing results, health data tables, research findings.
 - Use correct anatomical and physiological terminology.
-- Include ethical considerations in sport and health contexts.`;
+- Include ethical considerations in sport and health contexts.
+- IMPORTANT: Only generate questions from the student's selected module/topic.`;
 
     // ===== VET (Construction, Hospitality) =====
     } else if (category === 'vet') {
@@ -4291,7 +4401,8 @@ TOTAL: ~100 marks. You MUST include ALL three sections.`;
 - Construction: include WHS legislation, building codes, construction methods, materials, tools, site management. Reference Australian Standards.
 - Hospitality: include food safety (FSANZ), customer service, menu planning, workplace hygiene, kitchen operations.
 - Use industry-standard terminology and reference relevant Australian regulations/standards.
-- Include workplace scenarios and practical problem-solving contexts.`;
+- Include workplace scenarios and practical problem-solving contexts.
+- IMPORTANT: Only generate questions from the student's selected module/topic.`;
 
     // ===== FALLBACK for any uncategorised subject =====
     } else {
@@ -4314,7 +4425,7 @@ TOTAL: ~80 marks. You MUST include ALL three sections.`;
 - Section III — Extended Response: 2-3 questions totalling ~30 marks
 TOTAL: ~100 marks. You MUST include ALL three sections.`;
         }
-        categoryRules = `Follow standard HSC exam conventions for this subject. Use precise academic terminology. Include stimulus material where appropriate.`;
+        categoryRules = `Follow standard HSC exam conventions for this subject. Use precise academic terminology. Include stimulus material where appropriate.\n- IMPORTANT: Only generate questions from the student's selected module/topic.`;
     }
 
     const systemPrompt = `You are an EXPERT HSC exam paper writer who has written real NESA exam papers. Generate a COMPLETE exam paper as structured JSON.
@@ -5046,6 +5157,40 @@ app.get('*', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// ==================== REVIEWS API ====================
+
+// GET /api/reviews - public, returns all reviews (no dates shown)
+app.get('/api/reviews', (req, res) => {
+    const reviews = (reviewsData.reviews || []).map(r => ({
+        id: r.id,
+        rating: r.rating,
+        text: r.text
+    }));
+    res.json({ reviews });
+});
+
+// POST /api/reviews - authenticated, anonymous submission
+app.post('/api/reviews', express.json(), (req, res) => {
+    if (!req.session || !req.session.userId) {
+        return res.status(401).json({ error: 'Sign in to leave a review' });
+    }
+    const { rating, text } = req.body;
+    if (!rating || !Number.isInteger(rating) || rating < 1 || rating > 5) {
+        return res.status(400).json({ error: 'Rating must be 1-5 stars' });
+    }
+    if (!text || typeof text !== 'string' || text.trim().length < 10 || text.trim().length > 500) {
+        return res.status(400).json({ error: 'Review must be 10-500 characters' });
+    }
+    const review = {
+        id: require('crypto').randomUUID(),
+        rating,
+        text: text.trim()
+    };
+    reviewsData.reviews.push(review);
+    saveReviews();
+    res.json({ success: true, review: { id: review.id, rating: review.rating, text: review.text } });
+});
+
 // ==================== ERROR HANDLING ====================
 
 app.use((err, req, res, next) => {
@@ -5065,6 +5210,7 @@ function shutdown() {
     console.log('\n🛑 Shutting down gracefully...');
     saveDB(USERS_FILE, db.users);
     saveDB(PAYMENTS_FILE, db.payments);
+    saveReviews();
     process.exit(0);
 }
 
