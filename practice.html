@@ -1498,6 +1498,8 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         let examSubjectId = '';
         let examLockdownActive = false;
         let examViolations = 0;
+        let examFinalViolations = 0; // preserved for results display after lockdown disabled
+        let lockdownDebounce = 0;    // prevent double-counting from blur+visibility firing together
 
         function exitExam(e) {
             e.preventDefault();
@@ -1556,20 +1558,31 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         function onVisibilityChange() {
             if (!examLockdownActive || examTimeExpired) return;
             if (document.hidden) {
+                const now = Date.now();
+                if (now - lockdownDebounce < 500) return; // dedupe with blur
+                lockdownDebounce = now;
                 examViolations++;
                 showLockdownWarning();
             }
         }
         function onWindowBlur() {
             if (!examLockdownActive || examTimeExpired) return;
+            const now = Date.now();
+            if (now - lockdownDebounce < 500) return;
+            lockdownDebounce = now;
             examViolations++;
             showLockdownWarning();
         }
         function onFullscreenChange() {
             if (!examLockdownActive || examTimeExpired) return;
             if (!document.fullscreenElement) {
-                // They exited fullscreen — re-request after a beat
                 examViolations++;
+                // Immediately try to re-enter fullscreen
+                setTimeout(() => {
+                    if (examLockdownActive && !document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(() => {});
+                    }
+                }, 100);
                 showLockdownWarning();
             }
         }
@@ -1608,6 +1621,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         function disableLockdown() {
             if (!examLockdownActive) return;
             examLockdownActive = false;
+            examFinalViolations = examViolations; // preserve for results
             examViolations = 0;
             document.getElementById('lockdownBadge').classList.remove('active');
             document.getElementById('lockdownOverlay').classList.remove('active');
@@ -2010,6 +2024,25 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 </div>`;
             }
             html += `</div>`;
+
+            // Lockdown violation summary (owner only)
+            if (examFinalViolations > 0) {
+                html += `<div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:22px;">⚠️</span>
+                    <div>
+                        <strong style="color:#ef4444;">Lockdown Violations: ${examFinalViolations}</strong>
+                        <p style="color:#71767b;font-size:13px;margin:4px 0 0;">You left the exam window ${examFinalViolations} time${examFinalViolations > 1 ? 's' : ''} during this exam. In a real exam, this would be flagged to the supervisor.</p>
+                    </div>
+                </div>`;
+            } else if (examIsOwner && examFinalViolations === 0) {
+                html += `<div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:22px;">✅</span>
+                    <div>
+                        <strong style="color:#22c55e;">Clean Exam — No Violations</strong>
+                        <p style="color:#71767b;font-size:13px;margin:4px 0 0;">You stayed in the exam window the entire time. Well done.</p>
+                    </div>
+                </div>`;
+            }
 
             // Overall feedback
             if (marking.overallFeedback) {
