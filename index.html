@@ -709,68 +709,94 @@
             margin-bottom: 1.5rem;
         }
 
-        /* ========== FULL EXAM BANNER ========== */
-        .exam-banner {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            padding: 4rem 5%;
-            text-align: center;
+        /* ========== FEATURED EXAM CARD ========== */
+        .featured-exam-section {
+            padding: 3rem 5% 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .featured-exam-card {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+            border-radius: 20px;
+            padding: 2.5rem 3rem;
+            text-decoration: none;
+            color: white;
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
         }
-        .exam-banner::before {
+        .featured-exam-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.25);
+        }
+        .featured-exam-card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(102, 126, 234, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(118, 75, 162, 0.08) 0%, transparent 50%);
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
             pointer-events: none;
         }
-        .exam-banner-content { position: relative; max-width: 700px; margin: 0 auto; }
-        .exam-banner-badge {
+        .featured-exam-icon {
+            flex-shrink: 0;
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem;
+        }
+        .featured-exam-body { position: relative; flex: 1; }
+        .featured-exam-badge {
             display: inline-block;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: 800;
-            padding: 6px 18px;
+            padding: 4px 14px;
             border-radius: 50px;
-            letter-spacing: 2px;
-            margin-bottom: 1.2rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.8rem;
         }
-        .exam-banner h2 {
-            color: white;
-            font-size: 2.4rem;
+        .featured-exam-body h3 {
+            font-size: 1.5rem;
             font-weight: 800;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
-        .exam-banner p {
-            color: rgba(255,255,255,0.75);
-            font-size: 1.1rem;
-            line-height: 1.7;
-            margin-bottom: 2rem;
+        .featured-exam-body p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
         }
-        .exam-banner-features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 2rem;
+        .featured-exam-pills {
+            display: flex; flex-wrap: wrap; gap: 8px;
         }
-        .exam-banner-feat {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            color: rgba(255,255,255,0.9);
-            padding: 8px 18px;
+        .featured-exam-pills span {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 4px 12px;
             border-radius: 50px;
-            font-size: 0.88rem;
+            font-size: 0.78rem;
             font-weight: 600;
+            color: rgba(255,255,255,0.85);
         }
-        .exam-banner-cta {
-            font-size: 1.1rem;
-            padding: 14px 36px;
+        .featured-exam-arrow {
+            flex-shrink: 0;
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.5);
+            transition: transform 0.3s;
+        }
+        .featured-exam-card:hover .featured-exam-arrow {
+            transform: translateX(4px);
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .featured-exam-card { flex-direction: column; text-align: center; padding: 2rem 1.5rem; gap: 1.2rem; }
+            .featured-exam-pills { justify-content: center; }
+            .featured-exam-arrow { display: none; }
         }
 
         /* ========== REVIEWS SECTION ========== */
@@ -1083,21 +1109,23 @@
         </div>
     </section>
 
-    <!-- Full Exam Mode Banner -->
-    <section class="exam-banner" id="examBanner">
-        <div class="exam-banner-content">
-            <div class="exam-banner-badge">🏆 FLAGSHIP FEATURE</div>
-            <h2>Full Exam Mode</h2>
-            <p>Sit a complete, timed HSC exam paper — generated fresh every time, auto-marked with detailed feedback. Covers all 45 subjects with authentic NESA-style structure.</p>
-            <div class="exam-banner-features">
-                <div class="exam-banner-feat">⏱️ Timed exam conditions</div>
-                <div class="exam-banner-feat">📝 MC, Short Answer & Essays</div>
-                <div class="exam-banner-feat">✅ Instant auto-marking</div>
-                <div class="exam-banner-feat">📊 Band-level feedback</div>
+    <!-- Featured Exam Card -->
+    <section class="featured-exam-section">
+        <a href="#" onclick="openTool('practice'); return false;" class="featured-exam-card" id="featuredExamCard">
+            <div class="featured-exam-icon">📝</div>
+            <div class="featured-exam-body">
+                <div class="featured-exam-badge">🏆 FLAGSHIP</div>
+                <h3>Full Exam Mode</h3>
+                <p>Sit a complete, timed HSC exam — auto-generated and auto-marked with band-level feedback. All 45 subjects, authentic NESA structure.</p>
+                <div class="featured-exam-pills">
+                    <span>⏱️ Timed</span>
+                    <span>📝 MC + Short Answer + Essays</span>
+                    <span>✅ Auto-marked</span>
+                    <span>📊 Band feedback</span>
+                </div>
             </div>
-            <a href="#" onclick="openTool('practice'); return false;" class="btn btn-primary exam-banner-cta" id="examBannerCta" style="display:none;">Try Full Exam Mode →</a>
-            <a href="login.html" class="btn btn-primary exam-banner-cta" id="examBannerLogin">Sign In to Try It →</a>
-        </div>
+            <div class="featured-exam-arrow">→</div>
+        </a>
     </section>
 
     <!-- AI Study Suite Section -->
@@ -1125,10 +1153,10 @@
                 <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
                 <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
             </a>
-            <a href="#" onclick="openTool('practice'); return false;" class="tool-card flagship">
+            <a href="#" onclick="openTool('practice'); return false;" class="tool-card">
                 <div class="tool-card-icon">✏️</div>
-                <h3>Practice Questions & Full Exams</h3>
-                <p>Generate exam-style questions or sit a full timed HSC exam with auto-marking, section breakdowns, and performance feedback. Our flagship study tool.</p>
+                <h3>Practice Questions</h3>
+                <p>Generate exam-style questions, get instant marking feedback, or practise specific topics with targeted question sets.</p>
                 <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
                 <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
             </a>
@@ -1401,10 +1429,13 @@
             document.getElementById('ctaLoggedIn').style.display = 'block';
         }
 
-        // Exam banner
-        document.getElementById('examBannerLogin').style.display = 'none';
+        // Featured exam card — clicks go to login if not authenticated
+        const examCard = document.getElementById('featuredExamCard');
         if (hasAccess) {
-            document.getElementById('examBannerCta').style.display = 'inline-block';
+            examCard.onclick = function(e) { e.preventDefault(); openTool('practice'); };
+        } else {
+            examCard.href = 'login.html';
+            examCard.onclick = null;
         }
 
         // Reviews - show add button for logged in users
@@ -1421,8 +1452,9 @@
         document.getElementById('heroSignInBtn').href = 'login.html';
         document.getElementById('ctaSignIn').style.display = 'inline-block';
         document.getElementById('ctaLoggedIn').style.display = 'none';
-        document.getElementById('examBannerLogin').style.display = 'inline-block';
-        document.getElementById('examBannerCta').style.display = 'none';
+        const examCardOut = document.getElementById('featuredExamCard');
+        examCardOut.href = 'login.html';
+        examCardOut.onclick = null;
         document.getElementById('addReviewBtn').style.display = 'none';
         document.querySelectorAll('.course-link-locked').forEach(el => el.style.display = 'inline-block');
         document.querySelectorAll('.course-link-unlocked').forEach(el => el.style.display = 'none');
