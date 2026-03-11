@@ -1843,7 +1843,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
                 // Start the exam
                 examCurrentIdx = 0;
-                examDurationSeconds = durationHours * 3600;
+                examDurationSeconds = parseFloat(duration) * 3600;
                 document.getElementById('examTitle').textContent = examData.title || `${subjectName} Exam`;
                 document.getElementById('examMeta').textContent = `${examData.duration || duration + ' hour(s)'} · ${examData.totalMarks} marks · ${examQuestions.length} questions`;
                 document.getElementById('examNav').style.display = 'flex';
