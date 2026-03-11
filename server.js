@@ -4050,6 +4050,28 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     const durationHours = parseFloat(duration) || 2;
     const totalMarks = durationHours === 1 ? 60 : durationHours === 2 ? 80 : 100;
 
+    // Explicit section breakdowns so the AI doesn't guess
+    let structureGuide = '';
+    if (durationHours === 1) {
+        structureGuide = `EXAM STRUCTURE FOR 1-HOUR (60 marks):
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
+- Section II — Short Answer: 5-7 questions totalling ~35 marks (mix of 2, 3, 4, 5, and 6 mark questions)
+- Section III — Extended Response: 1-2 questions totalling ~15 marks (e.g. one 7-mark and one 8-mark)
+TOTAL: ~60 marks across ~18-19 questions. You MUST include ALL three sections.`;
+    } else if (durationHours === 2) {
+        structureGuide = `EXAM STRUCTURE FOR 2-HOUR (80 marks):
+- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
+- Section II — Short Answer: 6-8 questions totalling ~40 marks (mix of 2, 3, 4, 5, and 6 mark questions)
+- Section III — Extended Response: 2-3 questions totalling ~25 marks (e.g. 7, 8, and 9 mark questions)
+TOTAL: ~80 marks across ~25-26 questions. You MUST include ALL three sections.`;
+    } else {
+        structureGuide = `EXAM STRUCTURE FOR 3-HOUR (100 marks):
+- Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
+- Section II — Short Answer: 8-10 questions totalling ~50 marks (mix of 2, 3, 4, 5, and 6 mark questions)
+- Section III — Extended Response: 2-3 questions totalling ~30 marks (e.g. 8, 9, and 12 mark questions OR one 20-mark essay for English)
+TOTAL: ~100 marks across ~32-33 questions. You MUST include ALL three sections.`;
+    }
+
     const systemPrompt = `You are an EXPERT HSC exam paper writer who has written real NESA exam papers. Generate a COMPLETE exam paper as structured JSON.
 
 UNIQUENESS SEED: ${examSeed}
@@ -4061,11 +4083,20 @@ MODULE/TOPIC CONSTRAINT — THIS IS ABSOLUTE:
 - If "All Year 12 content" is selected, spread questions evenly across all modules.
 - Before writing each question, verify it belongs to the selected module. If it doesn't, discard it.
 
-HSC LANGUAGE & AUTHENTICITY — CRITICAL:
+${structureGuide}
+
+HSC LANGUAGE & AUTHENTICITY — CRITICAL (applies to ALL subjects, not just Science):
 - Write EXACTLY like a NESA exam writer. Study the phrasing in the past papers provided.
-- Use precise scientific/academic terminology. NEVER use casual or simplified language.
-- Biology example: "Explain how a CHANGE in the nucleotide sequence of a gene can result in a non-functional protein" — NOT "Explain how genes change"
-- MC distractors must be PLAUSIBLE and require genuine understanding to eliminate. Never include obviously wrong answers.
+- Use precise scientific/academic/technical terminology appropriate to the subject. NEVER use casual or simplified language.
+- Subject-specific phrasing examples:
+  * Biology: "Explain how a change in the nucleotide sequence of a gene can result in a non-functional protein" — NOT "Explain how genes change"
+  * Chemistry: "Account for the difference in boiling points of ethanol and dimethyl ether" — NOT "Why do these have different boiling points?"
+  * Physics: "Analyse the role of the magnetic field in the operation of a DC motor" — NOT "How does a motor work?"
+  * Mathematics: "Find the exact value of the integral" with proper scaffolding — NOT "Solve this"
+  * English: "Evaluate how the composer uses language techniques to position the responder" — NOT "What techniques are used?"
+  * Modern History: "Assess the significance of the Treaty of Versailles in shaping post-war Europe" — NOT "Was the Treaty important?"
+  * Enterprise Computing: "Evaluate the effectiveness of two data validation techniques for ensuring data integrity" — NOT "What is data validation?"
+- MC distractors must be PLAUSIBLE and require genuine understanding to eliminate. Never include obviously wrong answers. All four options should sound reasonable to a student who hasn't studied.
 - Short answer questions must use NESA directive verbs PRECISELY:
   * 1-2 marks: Identify, State, Define, Outline
   * 3-4 marks: Describe, Explain, Compare
