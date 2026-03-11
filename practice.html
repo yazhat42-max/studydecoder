@@ -245,6 +245,22 @@
         .exam-timer.warning { color: #f59e0b; background: rgba(245,158,11,0.15); }
         .exam-timer.critical { color: #ef4444; background: rgba(239,68,68,0.15); animation: timerPulse 1s infinite; }
         @keyframes timerPulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+
+        /* Lockdown overlay for tab-switch violations */
+        .lockdown-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.92); z-index: 99999;
+            justify-content: center; align-items: center; flex-direction: column;
+        }
+        .lockdown-overlay.active { display: flex; }
+        .lockdown-overlay h2 { color: #ef4444; font-size: 28px; margin-bottom: 12px; }
+        .lockdown-overlay p { color: #a0a0a0; font-size: 15px; max-width: 450px; text-align: center; line-height: 1.5; }
+        .lockdown-overlay .violation-count { color: #f59e0b; font-size: 18px; font-weight: 600; margin-top: 16px; }
+        .lockdown-overlay button { margin-top: 24px; padding: 12px 32px; background: #4f8cff; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+        .lockdown-overlay button:hover { background: #3a6fd8; }
+        .lockdown-badge { display: none; font-size: 11px; font-weight: 600; color: #ef4444; background: rgba(239,68,68,0.12); padding: 3px 10px; border-radius: 6px; margin-left: 10px; }
+        .lockdown-badge.active { display: inline-block; }
         .exam-body { flex: 1; overflow-y: auto; padding: 24px; background: #0f1419; }
         .exam-content { max-width: 800px; margin: 0 auto; }
 
@@ -604,6 +620,7 @@
                     </div>
                 </div>
                 <div class="exam-timer" id="examTimer">00:00:00</div>
+                <span class="lockdown-badge" id="lockdownBadge">🔒 LOCKED</span>
             </div>
             <div class="exam-body" id="examBody">
                 <div class="exam-content" id="examContent">
@@ -611,6 +628,13 @@
                 </div>
             </div>
             <div class="exam-dots" id="examDots" style="display:none;"></div>
+            <!-- Lockdown violation overlay -->
+            <div class="lockdown-overlay" id="lockdownOverlay">
+                <h2>⚠️ Tab Switch Detected</h2>
+                <p>This exam is in <strong>lockdown mode</strong>. Switching tabs, minimising, or leaving the exam window is flagged as a violation.</p>
+                <div class="violation-count" id="violationCount"></div>
+                <button onclick="dismissLockdownWarning()">Return to Exam</button>
+            </div>
             <div class="exam-nav" id="examNav" style="display:none;">
                 <button class="exam-nav-btn" id="examPrev" onclick="examNavigate(-1)">← Previous</button>
                 <div class="exam-progress-bar"><div class="exam-progress-fill" id="examProgressFill"></div></div>
@@ -1470,13 +1494,17 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         let examDurationSeconds = 0;   // total exam duration in seconds
         let examTimeExpired = false;    // true when timer hits 0
         let examIsPremium = false;
+        let examIsOwner = false;
         let examSubjectId = '';
+        let examLockdownActive = false;
+        let examViolations = 0;
 
         function exitExam(e) {
             e.preventDefault();
             if (examData && examQuestions.length > 0 && !examTimeExpired) {
                 if (!confirm('Are you sure you want to exit? Your exam progress will be lost.')) return;
             }
+            disableLockdown();
             stopExamTimer();
             examTimeExpired = false;
             examDurationSeconds = 0;
@@ -1524,9 +1552,95 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             el.textContent = `${h}:${m}:${s}`;
         }
 
+        // ===== BROWSER LOCKDOWN (owner only) =====
+        function onVisibilityChange() {
+            if (!examLockdownActive || examTimeExpired) return;
+            if (document.hidden) {
+                examViolations++;
+                showLockdownWarning();
+            }
+        }
+        function onWindowBlur() {
+            if (!examLockdownActive || examTimeExpired) return;
+            examViolations++;
+            showLockdownWarning();
+        }
+        function onFullscreenChange() {
+            if (!examLockdownActive || examTimeExpired) return;
+            if (!document.fullscreenElement) {
+                // They exited fullscreen — re-request after a beat
+                examViolations++;
+                showLockdownWarning();
+            }
+        }
+        function onLockdownKeydown(e) {
+            if (!examLockdownActive) return;
+            // Block common escape combos that the browser lets us intercept
+            if (e.key === 'F11' || (e.ctrlKey && e.key === 'w') || (e.ctrlKey && e.key === 'W') ||
+                (e.ctrlKey && e.key === 't') || (e.ctrlKey && e.key === 'T') ||
+                (e.ctrlKey && e.key === 'n') || (e.ctrlKey && e.key === 'N') ||
+                (e.ctrlKey && e.key === 'Tab') || (e.altKey && e.key === 'Tab') ||
+                (e.ctrlKey && e.shiftKey && e.key === 'I') || e.key === 'F12') {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }
+        function onLockdownContextMenu(e) {
+            if (!examLockdownActive) return;
+            e.preventDefault();
+        }
+
+        function enableLockdown() {
+            examLockdownActive = true;
+            examViolations = 0;
+            document.getElementById('lockdownBadge').classList.add('active');
+            // Enter fullscreen
+            const el = document.documentElement;
+            if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+            // Attach listeners
+            document.addEventListener('visibilitychange', onVisibilityChange);
+            window.addEventListener('blur', onWindowBlur);
+            document.addEventListener('fullscreenchange', onFullscreenChange);
+            document.addEventListener('keydown', onLockdownKeydown, true);
+            document.addEventListener('contextmenu', onLockdownContextMenu, true);
+        }
+
+        function disableLockdown() {
+            if (!examLockdownActive) return;
+            examLockdownActive = false;
+            examViolations = 0;
+            document.getElementById('lockdownBadge').classList.remove('active');
+            document.getElementById('lockdownOverlay').classList.remove('active');
+            // Remove listeners
+            document.removeEventListener('visibilitychange', onVisibilityChange);
+            window.removeEventListener('blur', onWindowBlur);
+            document.removeEventListener('fullscreenchange', onFullscreenChange);
+            document.removeEventListener('keydown', onLockdownKeydown, true);
+            document.removeEventListener('contextmenu', onLockdownContextMenu, true);
+            // Exit fullscreen if still in it
+            if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+        }
+
+        function showLockdownWarning() {
+            const overlay = document.getElementById('lockdownOverlay');
+            document.getElementById('violationCount').textContent = `Violations: ${examViolations}`;
+            overlay.classList.add('active');
+        }
+
+        function dismissLockdownWarning() {
+            document.getElementById('lockdownOverlay').classList.remove('active');
+            // Re-enter fullscreen
+            const el = document.documentElement;
+            if (el.requestFullscreen && !document.fullscreenElement) {
+                el.requestFullscreen().catch(() => {});
+            }
+        }
+
         async function autoSubmitExam() {
             // Save whatever the student has typed on the current question
             saveCurrentAnswer();
+            // Disable lockdown — exam is over
+            disableLockdown();
             // Lock all inputs so student can't keep typing
             document.querySelectorAll('.exam-answer-box, input[name="mc-answer"]').forEach(el => el.disabled = true);
             // Show time's up banner briefly then submit
@@ -1563,6 +1677,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 if (limitsRes.ok) {
                     const limits = await limitsRes.json();
                     examIsPremium = limits.isPremium;
+                    examIsOwner = !!limits.isOwner;
                     if (!limits.isPremium) {
                         limitsHtml = `<div class="exam-limits-banner">
                             <strong>Free Tier:</strong> ${limits.remaining} of 3 exams remaining this week.
@@ -1719,6 +1834,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 document.getElementById('examMeta').textContent = `${examData.duration || duration + ' hour(s)'} · ${examData.totalMarks} marks · ${examQuestions.length} questions`;
                 document.getElementById('examNav').style.display = 'flex';
                 document.getElementById('examDots').style.display = 'flex';
+                if (examIsOwner) enableLockdown();
                 startExamTimer();
                 renderExamDots();
                 renderExamQuestion();
@@ -1830,6 +1946,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             }
 
             stopExamTimer();
+            disableLockdown();
             document.getElementById('examNav').style.display = 'none';
             document.getElementById('examDots').style.display = 'none';
 
@@ -1951,6 +2068,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             timerEl.classList.remove('warning', 'critical');
             document.getElementById('examNav').style.display = 'flex';
             document.getElementById('examDots').style.display = 'flex';
+            if (examIsOwner) enableLockdown();
             startExamTimer();
             renderExamDots();
             renderExamQuestion();

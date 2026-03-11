@@ -4433,8 +4433,9 @@ app.get('/api/exam/limits', async (req, res) => {
     }
     const user = getUser(req.session.userId);
     const hasFull = hasFullAccess(user);
+    const isOwner = user?.role === 'owner';
     if (hasFull) {
-        return res.json({ isPremium: true, unlimited: true });
+        return res.json({ isPremium: true, unlimited: true, isOwner });
     }
     const weeklyCount = getExamWeeklyCount(req.session.userId);
     const progress = getExamProgress(req.session.userId);
