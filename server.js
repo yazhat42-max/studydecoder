@@ -4050,26 +4050,271 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     const durationHours = parseFloat(duration) || 2;
     const totalMarks = durationHours === 1 ? 60 : durationHours === 2 ? 80 : 100;
 
-    // Explicit section breakdowns so the AI doesn't guess
+    // Look up subject category for structure/language rules
+    const subjectEntry = subjectsConfig.subjects.find(s => s.id === subject);
+    const category = (subjectEntry?.category || '').toLowerCase();
+
+    // Build structure + language rules PER CATEGORY so all 45 subjects are covered
     let structureGuide = '';
-    if (durationHours === 1) {
-        structureGuide = `EXAM STRUCTURE FOR 1-HOUR (60 marks):
+    let categoryRules = '';
+
+    // ===== MATHEMATICS (Standard, Advanced, Extension 1, Extension 2) =====
+    if (category === 'mathematics') {
+        if (durationHours === 1) {
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — Mathematics):
+- Section I — Multiple Choice: 5 questions × 1 mark = 5 marks (Yes, Maths HSC has MC)
+- Section II — Problems: 10-12 questions totalling ~55 marks. Each question has parts (a)(b)(c)(d), max 4 marks per part. Scaffold easy→hard.
+TOTAL: ~60 marks. You MUST include both sections.`;
+        } else if (durationHours === 2) {
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks — Mathematics):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 5-7 questions totalling ~35 marks (mix of 2, 3, 4, 5, and 6 mark questions)
-- Section III — Extended Response: 1-2 questions totalling ~15 marks (e.g. one 7-mark and one 8-mark)
-TOTAL: ~60 marks across ~18-19 questions. You MUST include ALL three sections.`;
-    } else if (durationHours === 2) {
-        structureGuide = `EXAM STRUCTURE FOR 2-HOUR (80 marks):
+- Section II — Problems: 12-15 questions totalling ~70 marks. Each question has parts (a)(b)(c)(d)(e), max 4 marks per part. Scaffold easy→hard within each question.
+TOTAL: ~80 marks. You MUST include both sections.`;
+        } else {
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks — Mathematics):
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
+- Section II — Problems: 14-16 questions totalling ~90 marks. Each question has parts (a)(b)(c)(d)(e), max 4 marks per part. Scaffold easy→hard.
+TOTAL: ~100 marks. You MUST include both sections.`;
+        }
+        categoryRules = `MATHEMATICS-SPECIFIC RULES:
+- Every question must have sub-parts: (a), (b), (c), etc. Max 4 marks per individual part. NEVER a single 5+ mark part.
+- Use "Show that", "Find the exact value of", "Hence, or otherwise", "Prove that" — standard HSC maths language.
+- Include: calculus, trigonometry, probability, series, functions, financial maths as appropriate to the course level.
+- Ext 1: include mathematical induction, combinatorics, vectors, parametrics.
+- Ext 2: include complex numbers, proof, integration techniques, mechanics, further vectors.
+- Standard: include networks, financial maths, measurement, statistics, algebra.
+- Use UNICODE for all maths: x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, °, ∈, ∪, ∩, ⊂. NEVER LaTeX.
+- Include graphs/tables described in text where appropriate.`;
+
+    // ===== ENGLISH (Advanced, Standard, Extension, EAL/D, Studies) =====
+    } else if (category === 'english') {
+        if (durationHours === 1) {
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — English):
+- Section I — Short Response (Unseen Texts): Provide 1-2 unseen stimulus texts (poem, prose extract, visual text description, speech extract). 3-5 questions totalling ~20 marks analysing language, structure, meaning.
+- Section II — Extended Response / Essay: 2 essay questions of ~20 marks each (student chooses 1), OR one compulsory 20-mark essay + 2×10-mark responses.
+TOTAL: ~60 marks. You MUST include both sections. NO multiple choice for English.`;
+        } else if (durationHours === 2) {
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks — English):
+- Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts. 4-6 questions totalling ~20 marks.
+- Section II — Module-based Response: 2-3 questions totalling ~30 marks (short essay or structured response).
+- Section III — Extended Response / Essay: 1-2 essay questions totalling ~30 marks (e.g. 1×20 + 1×10, or 2×15).
+TOTAL: ~80 marks. You MUST include all three sections. NO multiple choice for English.`;
+        } else {
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks — English):
+- Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts. 5-7 questions totalling ~20 marks.
+- Section II — Module-based Response: 2-3 questions totalling ~40 marks.
+- Section III — Extended Response / Essay: 1-2 major essay questions totalling ~40 marks.
+TOTAL: ~100 marks. You MUST include all three sections. NO multiple choice for English.`;
+        }
+        categoryRules = `ENGLISH-SPECIFIC RULES:
+- NEVER include multiple choice questions. English HSC exams do NOT have MC.
+- Section I MUST include unseen stimulus texts (poem, prose passage, speech extract, visual text described in words, media text). Include the FULL text in the "stimulus" field.
+- Use HSC English directive verbs: "Analyse", "Evaluate", "To what extent", "How does the composer", "Assess the statement", "Compare how TWO texts represent".
+- For Advanced/Extension: reference specific modules (e.g. "Texts and Human Experiences", "Craft of Writing"). Questions must demand sophisticated analysis.
+- For Standard: scaffold questions more accessibly but still demand analytical thinking.
+- For EAL/D: provide language-accessible stimulus but test analytical skills.
+- For Studies: include practical/applied literacy contexts.
+- Essay prompts must include a statement or proposition for the student to respond to.
+- All questions must reference "composer", "responder", "text" — standard NESA English terminology.`;
+
+    // ===== SCIENCE (Biology, Chemistry, Physics, Earth & Environmental, Investigating Science, Science Extension) =====
+    } else if (category === 'science') {
+        if (durationHours === 1) {
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — Science):
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
+- Section II — Short Answer: 5-7 questions totalling ~35 marks (mix of 2, 3, 4, 5, 6 mark questions)
+- Section III — Extended Response: 1-2 questions totalling ~15 marks (e.g. 7 + 8 marks)
+TOTAL: ~60 marks across ~18 questions. You MUST include ALL three sections.`;
+        } else if (durationHours === 2) {
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks — Science):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 6-8 questions totalling ~40 marks (mix of 2, 3, 4, 5, and 6 mark questions)
-- Section III — Extended Response: 2-3 questions totalling ~25 marks (e.g. 7, 8, and 9 mark questions)
-TOTAL: ~80 marks across ~25-26 questions. You MUST include ALL three sections.`;
-    } else {
-        structureGuide = `EXAM STRUCTURE FOR 3-HOUR (100 marks):
+- Section II — Short Answer: 6-8 questions totalling ~40 marks
+- Section III — Extended Response: 2-3 questions totalling ~25 marks
+TOTAL: ~80 marks across ~25 questions. You MUST include ALL three sections.`;
+        } else {
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks — Science):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer: 8-10 questions totalling ~50 marks (mix of 2, 3, 4, 5, and 6 mark questions)
-- Section III — Extended Response: 2-3 questions totalling ~30 marks (e.g. 8, 9, and 12 mark questions OR one 20-mark essay for English)
-TOTAL: ~100 marks across ~32-33 questions. You MUST include ALL three sections.`;
+- Section II — Short Answer: 8-10 questions totalling ~50 marks
+- Section III — Extended Response: 2-3 questions totalling ~30 marks (max 9 marks each)
+TOTAL: ~100 marks across ~32 questions. You MUST include ALL three sections.`;
+        }
+        categoryRules = `SCIENCE-SPECIFIC RULES:
+- Max 8-9 marks per extended response question. NEVER a 20-mark question.
+- Reference first-hand investigations, experimental design, variables (independent/dependent/controlled), reliability, validity, accuracy.
+- Include data analysis: tables, graphs described in text, experimental results for interpretation.
+- Biology: use precise terminology (e.g. "nucleotide sequence", "complementary base pairing", "polypeptide chain"). Reference specific enzymes, organisms, processes.
+- Chemistry: include balanced equations, molar calculations, reaction types, properties of substances. Use correct chemical nomenclature.
+- Physics: include calculations with units, force diagrams described in text, real-world applications. Use correct SI units throughout.
+- Earth & Environmental Science: include fieldwork contexts, geological processes, environmental management strategies.
+- Investigating Science: focus on scientific method, experimental design, data analysis, evaluating claims.
+- Science Extension: focus on research methodology, scientific communication, depth studies.`;
+
+    // ===== HSIE (History, Geography, Business Studies, Economics, Legal Studies, Society & Culture, Studies of Religion) =====
+    } else if (category === 'hsie') {
+        if (durationHours === 1) {
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — HSIE):
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks (for subjects that use MC, like Business Studies/Economics/Legal)
+- Section II — Short Answer / Source-based: 4-6 questions totalling ~30 marks. Include primary/secondary source extracts as stimulus.
+- Section III — Extended Response: 1 question of ~20 marks (essay).
+TOTAL: ~60 marks. You MUST include all sections. For History subjects, replace MC with additional source-based questions.`;
+        } else if (durationHours === 2) {
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks — HSIE):
+- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks (or source-based for History)
+- Section II — Short Answer / Source-based: 5-7 questions totalling ~35 marks
+- Section III — Extended Response: 1-2 essay questions totalling ~30 marks
+TOTAL: ~80 marks. You MUST include all sections.`;
+        } else {
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks — HSIE):
+- Section I — Multiple Choice: 20 questions × 1 mark = 20 marks (or source-based for History)
+- Section II — Short Answer / Source-based: 6-8 questions totalling ~40 marks
+- Section III — Extended Response: 2 essay questions totalling ~40 marks
+TOTAL: ~100 marks. You MUST include all sections.`;
+        }
+        categoryRules = `HSIE-SPECIFIC RULES:
+- Ancient History / Modern History / History Extension: NO multiple choice. Use source-based questions with historical documents, letters, images described in text, political cartoons described, statistics. Ask students to "Assess the usefulness", "Evaluate the reliability", "Account for", "To what extent".
+- Business Studies: include case studies of real Australian businesses. Use correct business terminology (cash flow, market share, operations management). MC is appropriate.
+- Economics: include economic data (GDP figures, unemployment rates, inflation data). Reference Australian economic policy. Use correct terminology (aggregate demand, monetary policy, fiscal policy). MC is appropriate.
+- Legal Studies: reference real cases (e.g. "Mabo v Queensland"), legislation, legal principles. Ask "Assess the effectiveness of the law in achieving justice".
+- Geography: include fieldwork methodology, spatial technologies, case studies of real places. Provide data/statistics as stimulus.
+- Society and Culture: use sociological terminology. Include cross-cultural perspectives, research methodology.
+- Studies of Religion: reference specific religious traditions, sacred texts, ethical teachings. Use respectful, academic language.
+- Essay prompts MUST include a statement, proposition, or question that demands a sustained argument with evidence.`;
+
+    // ===== CREATIVE ARTS (Dance, Drama, Music 1, Music 2, Visual Arts) =====
+    } else if (category === 'creative arts') {
+        if (durationHours === 1) {
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — Creative Arts):
+- Section I — Short Response: 4-6 questions totalling ~30 marks. Include stimulus material (description of artwork, performance excerpt, musical score described).
+- Section II — Extended Response: 1-2 essay questions totalling ~30 marks.
+TOTAL: ~60 marks. NO multiple choice for Creative Arts.`;
+        } else if (durationHours === 2) {
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks — Creative Arts):
+- Section I — Short Response: 5-7 questions totalling ~35 marks with stimulus material.
+- Section II — Extended Response: 2 essay questions totalling ~45 marks.
+TOTAL: ~80 marks. NO multiple choice for Creative Arts.`;
+        } else {
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks — Creative Arts):
+- Section I — Short Response: 6-8 questions totalling ~40 marks with stimulus material.
+- Section II — Extended Response: 2-3 essay questions totalling ~60 marks.
+TOTAL: ~100 marks. NO multiple choice for Creative Arts.`;
+        }
+        categoryRules = `CREATIVE ARTS-SPECIFIC RULES:
+- NEVER include multiple choice questions. Creative Arts HSC exams do NOT have MC.
+- Written exam only — do NOT include performance, composition, or practical tasks.
+- Visual Arts: reference specific artworks and artists. Ask about "the frames" (structural, cultural, subjective, postmodern), art criticism, art history, practice.
+- Drama: reference specific practitioners (Brecht, Stanislavski, Boal), performance styles, dramatic forms, elements of production.
+- Music 1 & 2: reference specific musical concepts (melody, harmony, rhythm, dynamics, texture, tone colour, structure). Describe musical excerpts in text. Ask about compositional techniques.
+- Dance: reference specific choreographers, dance styles, elements of dance (space, time, dynamics, relationships).
+- Include stimulus material: describe an artwork, performance, or musical piece in detail for analysis.`;
+
+    // ===== TAS / Technology (Agriculture, Design & Tech, Engineering, Enterprise Computing, Food Tech, Industrial Tech, IDT, Software Engineering) =====
+    } else if (category === 'tas') {
+        if (durationHours === 1) {
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — TAS/Technology):
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
+- Section II — Short Answer: 5-7 questions totalling ~35 marks (include diagrams described in text, case studies, scenarios)
+- Section III — Extended Response: 1-2 questions totalling ~15 marks
+TOTAL: ~60 marks. You MUST include ALL three sections.`;
+        } else if (durationHours === 2) {
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks — TAS/Technology):
+- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
+- Section II — Short Answer: 6-8 questions totalling ~40 marks
+- Section III — Extended Response: 2-3 questions totalling ~25 marks
+TOTAL: ~80 marks. You MUST include ALL three sections.`;
+        } else {
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks — TAS/Technology):
+- Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
+- Section II — Short Answer: 8-10 questions totalling ~50 marks
+- Section III — Extended Response: 2-3 questions totalling ~30 marks
+TOTAL: ~100 marks. You MUST include ALL three sections.`;
+        }
+        categoryRules = `TAS/TECHNOLOGY-SPECIFIC RULES:
+- Agriculture: include farm management scenarios, production systems, sustainability. Reference specific Australian agricultural practices.
+- Design and Technology: include design scenarios, innovation/entrepreneurship, materials knowledge, project management.
+- Engineering Studies: include calculations (stress, strain, moments, circuits). Describe engineering drawings in text. Reference real engineering projects.
+- Enterprise Computing: include data management, networking, cybersecurity, project management scenarios. Use IT industry terminology. Max 8 marks per question.
+- Food Technology: include food science, nutrition, food manufacturing scenarios, Australian food standards.
+- Industrial Technology (all focus areas): include industry-specific knowledge (Automotive, Electronics, Graphics, Metal & Engineering, Multimedia, Timber & Furniture). Reference WHS, manufacturing processes, materials properties.
+- Information and Digital Technology: include database design, networking, digital media, project management.
+- Software Engineering: include code analysis (pseudocode), algorithm design, software development methodologies, testing strategies. Max 8 marks per question.`;
+
+    // ===== PDHPE / Health and Movement Science =====
+    } else if (category === 'pdhpe') {
+        if (durationHours === 1) {
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — PDHPE/Health & Movement Science):
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
+- Section II — Short Answer: 5-7 questions totalling ~35 marks
+- Section III — Extended Response: 1-2 questions totalling ~15 marks
+TOTAL: ~60 marks. You MUST include ALL three sections.`;
+        } else if (durationHours === 2) {
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks — PDHPE/Health & Movement Science):
+- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
+- Section II — Short Answer: 6-8 questions totalling ~40 marks (include data, case studies, scenarios)
+- Section III — Extended Response: 2-3 questions totalling ~25 marks
+TOTAL: ~80 marks. You MUST include ALL three sections.`;
+        } else {
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks — PDHPE/Health & Movement Science):
+- Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
+- Section II — Short Answer: 8-10 questions totalling ~50 marks
+- Section III — Extended Response: 2-3 questions totalling ~30 marks
+TOTAL: ~100 marks. You MUST include ALL three sections.`;
+        }
+        categoryRules = `PDHPE/HEALTH & MOVEMENT SCIENCE RULES:
+- Include biomechanics, exercise physiology, sports psychology, health promotion scenarios.
+- Reference Australian health statistics and real health initiatives (e.g. "Measure Up" campaign).
+- Include data interpretation: fitness testing results, health data tables, research findings.
+- Use correct anatomical and physiological terminology.
+- Include ethical considerations in sport and health contexts.`;
+
+    // ===== VET (Construction, Hospitality) =====
+    } else if (category === 'vet') {
+        if (durationHours === 1) {
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — VET):
+- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
+- Section II — Short Answer: 6-8 questions totalling ~35 marks (workplace scenarios, WHS, industry knowledge)
+- Section III — Extended Response: 1 question of ~10 marks
+TOTAL: ~60 marks. You MUST include ALL three sections.`;
+        } else if (durationHours === 2) {
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks — VET):
+- Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
+- Section II — Short Answer: 8-10 questions totalling ~45 marks
+- Section III — Extended Response: 1-2 questions totalling ~15 marks
+TOTAL: ~80 marks. You MUST include ALL three sections.`;
+        } else {
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks — VET):
+- Section I — Multiple Choice: 25 questions × 1 mark = 25 marks
+- Section II — Short Answer: 10-12 questions totalling ~55 marks
+- Section III — Extended Response: 1-2 questions totalling ~20 marks
+TOTAL: ~100 marks. You MUST include ALL three sections.`;
+        }
+        categoryRules = `VET-SPECIFIC RULES:
+- Construction: include WHS legislation, building codes, construction methods, materials, tools, site management. Reference Australian Standards.
+- Hospitality: include food safety (FSANZ), customer service, menu planning, workplace hygiene, kitchen operations.
+- Use industry-standard terminology and reference relevant Australian regulations/standards.
+- Include workplace scenarios and practical problem-solving contexts.`;
+
+    // ===== FALLBACK for any uncategorised subject =====
+    } else {
+        if (durationHours === 1) {
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks):
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
+- Section II — Short Answer: 5-7 questions totalling ~35 marks
+- Section III — Extended Response: 1-2 questions totalling ~15 marks
+TOTAL: ~60 marks. You MUST include ALL three sections.`;
+        } else if (durationHours === 2) {
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks):
+- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
+- Section II — Short Answer: 6-8 questions totalling ~40 marks
+- Section III — Extended Response: 2-3 questions totalling ~25 marks
+TOTAL: ~80 marks. You MUST include ALL three sections.`;
+        } else {
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks):
+- Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
+- Section II — Short Answer: 8-10 questions totalling ~50 marks
+- Section III — Extended Response: 2-3 questions totalling ~30 marks
+TOTAL: ~100 marks. You MUST include ALL three sections.`;
+        }
+        categoryRules = `Follow standard HSC exam conventions for this subject. Use precise academic terminology. Include stimulus material where appropriate.`;
     }
 
     const systemPrompt = `You are an EXPERT HSC exam paper writer who has written real NESA exam papers. Generate a COMPLETE exam paper as structured JSON.
@@ -4085,42 +4330,26 @@ MODULE/TOPIC CONSTRAINT — THIS IS ABSOLUTE:
 
 ${structureGuide}
 
-HSC LANGUAGE & AUTHENTICITY — CRITICAL (applies to ALL subjects, not just Science):
+HSC LANGUAGE & AUTHENTICITY — CRITICAL:
 - Write EXACTLY like a NESA exam writer. Study the phrasing in the past papers provided.
-- Use precise scientific/academic/technical terminology appropriate to the subject. NEVER use casual or simplified language.
-- Subject-specific phrasing examples:
-  * Biology: "Explain how a change in the nucleotide sequence of a gene can result in a non-functional protein" — NOT "Explain how genes change"
-  * Chemistry: "Account for the difference in boiling points of ethanol and dimethyl ether" — NOT "Why do these have different boiling points?"
-  * Physics: "Analyse the role of the magnetic field in the operation of a DC motor" — NOT "How does a motor work?"
-  * Mathematics: "Find the exact value of the integral" with proper scaffolding — NOT "Solve this"
-  * English: "Evaluate how the composer uses language techniques to position the responder" — NOT "What techniques are used?"
-  * Modern History: "Assess the significance of the Treaty of Versailles in shaping post-war Europe" — NOT "Was the Treaty important?"
-  * Enterprise Computing: "Evaluate the effectiveness of two data validation techniques for ensuring data integrity" — NOT "What is data validation?"
-- MC distractors must be PLAUSIBLE and require genuine understanding to eliminate. Never include obviously wrong answers. All four options should sound reasonable to a student who hasn't studied.
+- Use precise academic/technical terminology appropriate to the subject. NEVER use casual or simplified language.
 - Short answer questions must use NESA directive verbs PRECISELY:
   * 1-2 marks: Identify, State, Define, Outline
   * 3-4 marks: Describe, Explain, Compare
   * 5-6 marks: Analyse, Assess, Explain in detail
   * 7-9 marks: Evaluate, Discuss, Assess with reference to
 - Every question must test UNDERSTANDING, not just recall. Include application, analysis, or evaluation.
-- Include stimulus material (data tables, experimental results, graphs described in text, source extracts, diagrams) for AT LEAST 40% of non-MC questions — this is what real HSC papers do.
-- For Science: reference first-hand investigations, experimental design, variables, reliability, validity.
-- For English: use literary analysis prompts ("To what extent...", "How does the composer...", "Evaluate the statement...").
-- For Mathematics: sub-parts (a)(b)(c)(d)(e) scaffolded from easy to hard, max 4 marks each.
+- Include stimulus material (data tables, experimental results, graphs described in text, source extracts, diagrams) for AT LEAST 40% of non-MC questions.
+- MC distractors (where MC applies) must be PLAUSIBLE — all four options should sound reasonable.
 
 QUESTION FORMAT RULES:
-- MC options must be full sentences or precise terms — never single words unless appropriate (e.g. organism names).
-- MC must have exactly 4 options (A, B, C, D). All must be plausible.
+- MC options must be full sentences or precise terms. Exactly 4 options (A, B, C, D).
 - Short answer: include context/scenario/data. Bare "Describe X" without context is NOT HSC-standard.
-- Extended response: must include a clear directive, context, and scope. Always specify what the student should address.
+- Extended response: must include a clear directive, context, and scope.
 
-MARK LIMITS BY SUBJECT TYPE:
-- MATHEMATICS (Standard/Advanced/Extension): Max 4 marks per question part. NO 5+ mark single parts.
-- SCIENCE (Biology/Chemistry/Physics): Max 8-9 marks extended response. NO 20-mark questions.
-- ENGLISH & HUMANITIES: ONE 20-mark essay MAX per section.
-- ENTERPRISE COMPUTING / SOFTWARE: Online exam format, max 8 marks per question.
+${categoryRules}
 
-UNICODE MATH FORMATTING: Use x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, ° — NEVER LaTeX.
+UNICODE MATH FORMATTING (for all subjects): Use x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, ° — NEVER LaTeX.
 
 Subject: ${subjectName}
 Topics: ${topics || 'All Year 12 content'}
@@ -4135,44 +4364,18 @@ Return ONLY valid JSON (no markdown, no code fences) in this exact structure:
   "instructions": "Brief exam instructions string",
   "sections": [
     {
-      "name": "Section I — Multiple Choice",
-      "instructions": "Select the correct answer.",
+      "name": "Section name matching the structure above",
+      "instructions": "Section-specific instructions",
       "questions": [
         {
           "number": 1,
-          "type": "mc",
+          "type": "mc OR short OR extended",
           "marks": 1,
           "text": "Question text here",
           "options": ["A. option", "B. option", "C. option", "D. option"],
-          "correctAnswer": "B"
-        }
-      ]
-    },
-    {
-      "name": "Section II — Short Answer",
-      "instructions": "Answer all questions.",
-      "questions": [
-        {
-          "number": 11,
-          "type": "short",
-          "marks": 3,
-          "text": "Question text with stimulus if needed",
-          "stimulus": "Optional stimulus material (data table, quote, source extract) or null",
-          "markingCriteria": "Brief marking criteria for this question"
-        }
-      ]
-    },
-    {
-      "name": "Section III — Extended Response",
-      "instructions": "Answer the question.",
-      "questions": [
-        {
-          "number": 25,
-          "type": "extended",
-          "marks": 8,
-          "text": "Extended response question",
-          "stimulus": null,
-          "markingCriteria": "Detailed marking criteria"
+          "correctAnswer": "B",
+          "stimulus": "Optional stimulus material or null",
+          "markingCriteria": "Brief marking criteria (for non-MC)"
         }
       ]
     }
@@ -4180,7 +4383,8 @@ Return ONLY valid JSON (no markdown, no code fences) in this exact structure:
 }
 
 Use "mc" type for multiple choice (with "options" and "correctAnswer"), "short" for short answer (2-6 marks), and "extended" for extended response (7+ marks).
-Every question MUST have "markingCriteria" (except mc which has "correctAnswer").
+For MC questions: include "options" and "correctAnswer". For non-MC: include "markingCriteria" and optionally "stimulus".
+Match the section names and structure to the EXAM STRUCTURE specified above. If the structure says NO multiple choice, do NOT include an MC section.
 Generate the COMPLETE exam — all questions, all sections. Do not truncate.${contextPrompt}`;
 
     try {
