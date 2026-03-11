@@ -241,7 +241,10 @@
         .exam-header-left { display: flex; align-items: center; gap: 16px; }
         .exam-header-title { font-size: 18px; font-weight: 700; color: #e7e9ea; }
         .exam-header-meta { font-size: 12px; color: #71767b; margin-top: 2px; }
-        .exam-timer { font-size: 14px; font-weight: 600; color: #4f8cff; background: rgba(79,140,255,0.1); padding: 6px 14px; border-radius: 8px; }
+        .exam-timer { font-size: 14px; font-weight: 600; color: #4f8cff; background: rgba(79,140,255,0.1); padding: 6px 14px; border-radius: 8px; transition: color 0.3s, background 0.3s; }
+        .exam-timer.warning { color: #f59e0b; background: rgba(245,158,11,0.15); }
+        .exam-timer.critical { color: #ef4444; background: rgba(239,68,68,0.15); animation: timerPulse 1s infinite; }
+        @keyframes timerPulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
         .exam-body { flex: 1; overflow-y: auto; padding: 24px; background: #0f1419; }
         .exam-content { max-width: 800px; margin: 0 auto; }
 
@@ -1464,18 +1467,24 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         let examCurrentIdx = 0;       // Current question index
         let examTimerInterval = null;
         let examStartTime = null;
+        let examDurationSeconds = 0;   // total exam duration in seconds
+        let examTimeExpired = false;    // true when timer hits 0
         let examIsPremium = false;
         let examSubjectId = '';
 
         function exitExam(e) {
             e.preventDefault();
-            if (examData && examQuestions.length > 0) {
+            if (examData && examQuestions.length > 0 && !examTimeExpired) {
                 if (!confirm('Are you sure you want to exit? Your exam progress will be lost.')) return;
             }
             stopExamTimer();
+            examTimeExpired = false;
+            examDurationSeconds = 0;
             examData = null;
             examAnswers = {};
             examQuestions = [];
+            const timerEl = document.getElementById('examTimer');
+            timerEl.classList.remove('warning', 'critical');
             document.getElementById('examView').classList.remove('active');
             document.getElementById('modeLanding').style.display = 'block';
         }
@@ -1486,24 +1495,66 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
         function startExamTimer() {
             examStartTime = Date.now();
+            examTimeExpired = false;
             stopExamTimer();
             const timerEl = document.getElementById('examTimer');
+            // Set initial display
+            updateTimerDisplay(timerEl, examDurationSeconds);
             examTimerInterval = setInterval(() => {
                 const elapsed = Math.floor((Date.now() - examStartTime) / 1000);
-                const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-                const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-                const s = String(elapsed % 60).padStart(2, '0');
-                timerEl.textContent = `${h}:${m}:${s}`;
+                const remaining = Math.max(0, examDurationSeconds - elapsed);
+                updateTimerDisplay(timerEl, remaining);
+                // Warning colors
+                const pctLeft = remaining / examDurationSeconds;
+                timerEl.classList.toggle('warning', pctLeft <= 0.15 && pctLeft > 0.05);
+                timerEl.classList.toggle('critical', pctLeft <= 0.05);
+                // Auto-submit when time runs out
+                if (remaining <= 0 && !examTimeExpired) {
+                    examTimeExpired = true;
+                    stopExamTimer();
+                    autoSubmitExam();
+                }
             }, 1000);
+        }
+
+        function updateTimerDisplay(el, totalSeconds) {
+            const h = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+            const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+            const s = String(totalSeconds % 60).padStart(2, '0');
+            el.textContent = `${h}:${m}:${s}`;
+        }
+
+        async function autoSubmitExam() {
+            // Save whatever the student has typed on the current question
+            saveCurrentAnswer();
+            // Lock all inputs so student can't keep typing
+            document.querySelectorAll('.exam-answer-box, input[name="mc-answer"]').forEach(el => el.disabled = true);
+            // Show time's up banner briefly then submit
+            const content = document.getElementById('examContent');
+            content.innerHTML = `
+                <div style="text-align:center;padding:60px 20px;">
+                    <h2 style="color:#ef4444;margin-bottom:12px;">⏰ Time's Up!</h2>
+                    <p style="color:#71767b;margin-bottom:20px;">Your exam is being submitted and marked automatically...</p>
+                    <div class="loading-dots" style="justify-content:center;"><span></span><span></span><span></span></div>
+                </div>`;
+            document.getElementById('examNav').style.display = 'none';
+            document.getElementById('examDots').style.display = 'none';
+            // Small delay so student sees the message, then mark
+            await new Promise(r => setTimeout(r, 1500));
+            await doSubmitExam();
         }
 
         async function showExamSetup() {
             document.getElementById('examNav').style.display = 'none';
             document.getElementById('examDots').style.display = 'none';
-            document.getElementById('examTimer').textContent = '00:00:00';
+            const timerEl = document.getElementById('examTimer');
+            timerEl.textContent = '00:00:00';
+            timerEl.classList.remove('warning', 'critical');
             document.getElementById('examTitle').textContent = 'Full Exam Paper';
             document.getElementById('examMeta').textContent = '';
             stopExamTimer();
+            examTimeExpired = false;
+            examDurationSeconds = 0;
 
             // Fetch limits
             let limitsHtml = '';
@@ -1663,6 +1714,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
                 // Start the exam
                 examCurrentIdx = 0;
+                examDurationSeconds = durationHours * 3600;
                 document.getElementById('examTitle').textContent = examData.title || `${subjectName} Exam`;
                 document.getElementById('examMeta').textContent = `${examData.duration || duration + ' hour(s)'} · ${examData.totalMarks} marks · ${examQuestions.length} questions`;
                 document.getElementById('examNav').style.display = 'flex';
@@ -1767,6 +1819,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         }
 
         async function submitExam() {
+            if (examTimeExpired) return; // already auto-submitted
             saveCurrentAnswer();
 
             // Check how many answered
@@ -1787,6 +1840,10 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     <div class="exam-loading-text">Marking your exam... This may take a moment.</div>
                 </div>`;
 
+            await doSubmitExam();
+        }
+
+        async function doSubmitExam() {
             try {
                 const res = await fetch(`${API_BASE}/api/exam/mark`, {
                     method: 'POST',
@@ -1889,6 +1946,9 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             if (!examData) { showExamSetup(); return; }
             examAnswers = {};
             examCurrentIdx = 0;
+            examTimeExpired = false;
+            const timerEl = document.getElementById('examTimer');
+            timerEl.classList.remove('warning', 'critical');
             document.getElementById('examNav').style.display = 'flex';
             document.getElementById('examDots').style.display = 'flex';
             startExamTimer();

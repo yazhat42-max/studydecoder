@@ -4041,6 +4041,8 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
         contextPrompt += `\n\n=== MARKING GUIDELINES (for mark allocation accuracy) ===\n${truncatedMG}\n=== END ===`;
     }
 
+    console.log(`📝 Exam generate for ${subjectName}: syllabus=${syllabusContent ? syllabusContent.length + ' chars' : 'NONE'}, papers=${examPapers ? examPapers.length + ' chars' : 'NONE'}, MG=${mgContent ? mgContent.length + ' chars' : 'NONE'}, total context=${contextPrompt.length} chars`);
+
     // Generate a unique seed to ensure variety across exams
     const examSeed = `SEED-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
 
@@ -4211,29 +4213,40 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
     let questionsText = '';
     let totalPossible = 0;
     const allQuestions = [];
+    const unansweredQuestions = []; // Track unanswered for instant 0-mark
 
     for (const section of exam.sections) {
         questionsText += `\n\n--- ${section.name} ---\n`;
         for (const q of section.questions) {
             totalPossible += q.marks;
             allQuestions.push(q);
+
+            const studentAnswer = answers[q.number];
+            const hasAnswer = studentAnswer && studentAnswer.toString().trim().length > 0;
+
+            if (!hasAnswer) {
+                // Track unanswered — we'll give them 0 marks instantly, no AI needed
+                unansweredQuestions.push({ number: q.number, marks: q.marks, type: q.type });
+                continue; // Skip sending to AI — saves tokens and time
+            }
+
             questionsText += `\nQ${q.number} [${q.marks} mark${q.marks > 1 ? 's' : ''}] (${q.type}):\n${q.text}\n`;
             if (q.stimulus) questionsText += `Stimulus: ${q.stimulus}\n`;
             if (q.markingCriteria) questionsText += `Marking criteria: ${q.markingCriteria}\n`;
             if (q.correctAnswer) questionsText += `Correct answer: ${q.correctAnswer}\n`;
-
-            const studentAnswer = answers[q.number];
-            questionsText += `Student's answer: ${studentAnswer || '(no answer provided)'}\n`;
+            questionsText += `Student's answer: ${studentAnswer}\n`;
         }
     }
 
     const includeSampleAnswers = hasFull;
+    const answeredCount = allQuestions.length - unansweredQuestions.length;
 
     // Load official marking guidelines for accurate marking
     let mgContext = '';
     const mgContent = getMarkingGuidelineContent(subject);
     if (mgContent) {
-        const truncatedMG = mgContent.substring(0, 35000);
+        // Use less MG context for faster marking — 20K is plenty for marking accuracy
+        const truncatedMG = mgContent.substring(0, 20000);
         mgContext = `\n\n=== OFFICIAL NESA MARKING GUIDELINES FOR ${subjectName.toUpperCase()} ===\nUse these REAL marking guidelines to inform your marking. Reference the specific band descriptors, criteria, and mark allocations from these guidelines when assessing each answer.\n\n${truncatedMG}\n\n=== END OF MARKING GUIDELINES ===`;
     }
 
@@ -4244,6 +4257,8 @@ MARKING RULES:
 - Short answer: Award marks based on marking criteria. Partial marks allowed.
 - Extended response: Use holistic marking. Award based on depth, accuracy, and structure.
 - Be FAIR but STRICT — mark like a real HSC marker would.
+- Keep feedback CONCISE — 1-2 sentences per question maximum. Be direct.
+- ONLY mark the ${answeredCount} questions given below. Unanswered questions are handled separately.
 
 Return ONLY valid JSON (no markdown, no code fences):
 {
@@ -4252,7 +4267,7 @@ Return ONLY valid JSON (no markdown, no code fences):
       "questionNumber": 1,
       "marksAwarded": 1,
       "marksTotal": 1,
-      "feedback": "Brief feedback on the student's answer"${includeSampleAnswers ? ',\n      "sampleAnswer": "A model answer for this question"' : ''}
+      "feedback": "Brief feedback on the student's answer"${includeSampleAnswers ? ',\n      "sampleAnswer": "A concise model answer"' : ''}
     }
   ],
   "totalMarksAwarded": 65,
@@ -4270,43 +4285,83 @@ Band scale (percentage-based):
 - Band 2: 50-59%
 - Band 1: 0-49%
 
-${includeSampleAnswers ? 'Include a concise "sampleAnswer" for EVERY question showing what a full-marks response looks like.' : 'Do NOT include sample answers — only provide feedback and marking guidelines.'}`;
+${includeSampleAnswers ? 'Include a concise "sampleAnswer" for EVERY question showing what a full-marks response looks like.' : 'Do NOT include sample answers — only provide feedback.'}`;
 
     try {
-        const isGpt5 = aiSettings.model.startsWith('gpt-5');
-        const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
-        const requestBody = {
-            model: aiSettings.model,
-            messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: `Mark the following ${subjectName} exam:\n${questionsText}\n\nReturn ONLY valid JSON.` }
-            ],
-            [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
-        };
-        if (!isGpt5) requestBody.temperature = 0.3; // Low temp for consistent marking
-
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-            body: JSON.stringify(requestBody)
-        });
-
-        if (!response.ok) {
-            const error = await response.json();
-            console.error('OpenAI exam mark error:', error);
-            return res.status(500).json({ error: 'AI service unavailable' });
-        }
-
-        const data = await response.json();
-        let reply = data.choices?.[0]?.message?.content || '';
-        reply = reply.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-
         let markingResult;
-        try {
-            markingResult = JSON.parse(reply);
-        } catch (parseErr) {
-            console.error('Failed to parse marking JSON:', parseErr.message);
-            return res.status(500).json({ error: 'Failed to parse marking results. Please try again.' });
+
+        // If ALL questions are unanswered, skip AI entirely — instant 0
+        if (answeredCount === 0) {
+            markingResult = {
+                results: unansweredQuestions.map(uq => ({
+                    questionNumber: uq.number,
+                    marksAwarded: 0,
+                    marksTotal: uq.marks,
+                    feedback: 'No answer provided — 0 marks awarded.'
+                })),
+                totalMarksAwarded: 0,
+                totalMarksPossible: totalPossible,
+                percentage: 0,
+                expectedBand: 'Band 1',
+                overallFeedback: 'No answers were provided for any question. All questions received 0 marks.'
+            };
+        } else {
+            // Call AI to mark only the answered questions
+            const isGpt5 = aiSettings.model.startsWith('gpt-5');
+            const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+            const requestBody = {
+                model: aiSettings.model,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: `Mark the following ${subjectName} exam:\n${questionsText}\n\nReturn ONLY valid JSON.` }
+                ],
+                [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
+            };
+            if (!isGpt5) requestBody.temperature = 0.3; // Low temp for consistent marking
+
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                console.error('OpenAI exam mark error:', error);
+                return res.status(500).json({ error: 'AI service unavailable' });
+            }
+
+            const data = await response.json();
+            let reply = data.choices?.[0]?.message?.content || '';
+            reply = reply.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+
+            try {
+                markingResult = JSON.parse(reply);
+            } catch (parseErr) {
+                console.error('Failed to parse marking JSON:', parseErr.message);
+                return res.status(500).json({ error: 'Failed to parse marking results. Please try again.' });
+            }
+
+            // Merge unanswered question results (0 marks each)
+            if (unansweredQuestions.length > 0) {
+                const unansweredResults = unansweredQuestions.map(uq => ({
+                    questionNumber: uq.number,
+                    marksAwarded: 0,
+                    marksTotal: uq.marks,
+                    feedback: 'No answer provided — 0 marks awarded.'
+                }));
+                markingResult.results = [...(markingResult.results || []), ...unansweredResults];
+                // Sort by question number for clean display
+                markingResult.results.sort((a, b) => a.questionNumber - b.questionNumber);
+                // Recalculate totals to include unanswered
+                const aiMarks = (markingResult.results || []).reduce((sum, r) => sum + (r.marksAwarded || 0), 0);
+                markingResult.totalMarksAwarded = aiMarks;
+                markingResult.totalMarksPossible = totalPossible;
+                markingResult.percentage = totalPossible > 0 ? Math.round((aiMarks / totalPossible) * 10000) / 100 : 0;
+                // Recalculate band
+                const pct = markingResult.percentage;
+                markingResult.expectedBand = pct >= 90 ? 'Band 6' : pct >= 80 ? 'Band 5' : pct >= 70 ? 'Band 4' : pct >= 60 ? 'Band 3' : pct >= 50 ? 'Band 2' : 'Band 1';
+            }
         }
 
         // Save progress
