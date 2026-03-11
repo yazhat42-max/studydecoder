@@ -799,81 +799,9 @@
             .featured-exam-arrow { display: none; }
         }
 
-        /* ========== REVIEWS SECTION ========== */
-        .reviews-section {
-            padding: 5rem 5%;
-            background: #f9f9fb;
-            text-align: center;
-        }
-        .reviews-section .section-title { margin-bottom: 0.5rem; }
-        .reviews-avg {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 2.5rem;
-        }
-        .reviews-avg .stars { color: #f59e0b; font-size: 1.4rem; }
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto 2rem;
-        }
-        .review-card {
-            background: white;
-            border-radius: 14px;
-            padding: 24px;
-            text-align: left;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            border: 1px solid #eee;
-        }
-        .review-card .review-stars { color: #f59e0b; font-size: 1.1rem; margin-bottom: 10px; }
-        .review-card .review-text { color: #444; font-size: 0.95rem; line-height: 1.6; }
-        .review-card .review-author { color: #999; font-size: 0.82rem; margin-top: 12px; }
-        .review-add-btn {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .review-add-btn:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(102,126,234,0.35); }
-        .review-modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none; align-items: center;
-            justify-content: center; z-index: 9999;
-        }
-        .review-modal {
-            background: white; border-radius: 16px; padding: 32px;
-            max-width: 450px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        .review-modal h3 { font-size: 1.3rem; margin-bottom: 8px; color: var(--secondary); }
-        .review-modal p { color: #666; margin-bottom: 20px; font-size: 0.9rem; }
-        .review-stars-input { display: flex; gap: 8px; margin-bottom: 16px; font-size: 2rem; cursor: pointer; }
-        .review-stars-input span { color: #ddd; transition: color 0.15s; }
-        .review-stars-input span.active { color: #f59e0b; }
-        .review-modal textarea {
-            width: 100%; min-height: 100px; border: 2px solid #eee; border-radius: 10px;
-            padding: 12px; font-size: 0.95rem; resize: vertical; font-family: inherit;
-            margin-bottom: 16px;
-        }
-        .review-modal textarea:focus { border-color: var(--primary); outline: none; }
-        .review-submit-btn {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white; border: none; padding: 12px 28px; border-radius: 50px;
-            font-size: 0.95rem; font-weight: 600; cursor: pointer; width: 100%;
-        }
-        .review-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
         @media (max-width: 768px) {
             .exam-banner h2 { font-size: 1.8rem; }
             .exam-banner-features { flex-direction: column; align-items: center; }
-            .reviews-grid { grid-template-columns: 1fr; }
         }
 
         /* ========== CTA SECTION ========== */
@@ -1177,34 +1105,6 @@
         </div>
     </section>
 
-    <!-- Reviews Section -->
-    <section class="reviews-section" id="reviewsSection">
-        <h2 class="section-title">What Students Say</h2>
-        <div class="reviews-avg" id="reviewsAvg"></div>
-        <div class="reviews-grid" id="reviewsGrid">
-            <!-- Populated by JS -->
-        </div>
-        <button class="review-add-btn" id="addReviewBtn" onclick="openReviewModal()" style="display:none;">⭐ Leave a Review</button>
-    </section>
-
-    <!-- Review Modal -->
-    <div class="review-modal-overlay" id="reviewModal">
-        <div class="review-modal" onclick="event.stopPropagation()">
-            <h3>Leave a Review</h3>
-            <p>Your review is anonymous — no name or date shown.</p>
-            <div class="review-stars-input" id="reviewStarsInput">
-                <span onclick="setReviewRating(1)">★</span>
-                <span onclick="setReviewRating(2)">★</span>
-                <span onclick="setReviewRating(3)">★</span>
-                <span onclick="setReviewRating(4)">★</span>
-                <span onclick="setReviewRating(5)">★</span>
-            </div>
-            <textarea id="reviewText" placeholder="What do you like about Study Decoder?" maxlength="500"></textarea>
-            <button class="review-submit-btn" id="reviewSubmitBtn" onclick="submitReview()">Submit Review</button>
-            <button onclick="closeReviewModal()" style="margin-top:12px;background:none;border:none;color:#888;cursor:pointer;font-size:0.9rem;width:100%;">Cancel</button>
-        </div>
-    </div>
-
     <!-- Level Selector Modal (fallback) -->
     <div class="level-modal-overlay" id="levelModal" style="display:none;">
         <div class="level-modal">
@@ -1437,9 +1337,6 @@
             examCard.href = 'login.html';
             examCard.onclick = null;
         }
-
-        // Reviews - show add button for logged in users
-        document.getElementById('addReviewBtn').style.display = 'inline-block';
     }
 
     function showLoggedOutUI() {
@@ -1455,7 +1352,6 @@
         const examCardOut = document.getElementById('featuredExamCard');
         examCardOut.href = 'login.html';
         examCardOut.onclick = null;
-        document.getElementById('addReviewBtn').style.display = 'none';
         document.querySelectorAll('.course-link-locked').forEach(el => el.style.display = 'inline-block');
         document.querySelectorAll('.course-link-unlocked').forEach(el => el.style.display = 'none');
     }
@@ -1853,117 +1749,6 @@
         }
     })();
 
-    // ========== REVIEWS ==========
-    let reviewRating = 0;
-
-    function renderStars(rating) {
-        return '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
-    }
-
-    async function loadReviews() {
-        try {
-            const res = await fetch(API_BASE + '/api/reviews');
-            if (!res.ok) return;
-            const data = await res.json();
-            const reviews = data.reviews || [];
-            if (!reviews.length) return;
-
-            // Calculate average
-            const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
-            document.getElementById('reviewsAvg').innerHTML =
-                `<span class="stars">${renderStars(avg)}</span> ${avg.toFixed(1)} out of 5 — ${reviews.length} reviews`;
-
-            // Render cards (owner sees delete button)
-            const isOwner = currentUser && currentUser.role === 'owner';
-            const grid = document.getElementById('reviewsGrid');
-            grid.innerHTML = reviews.map(r => `
-                <div class="review-card" id="review-${r.id}">
-                    ${isOwner ? `<button onclick="deleteReview('${r.id}')" style="float:right;background:none;border:none;color:#ef4444;cursor:pointer;font-size:1.1rem;padding:0 0 4px 8px;" title="Delete review">✕</button>` : ''}
-                    <div class="review-stars">${renderStars(r.rating)}</div>
-                    <div class="review-text">${escapeHtml(r.text)}</div>
-                    <div class="review-author">Anonymous Student</div>
-                </div>
-            `).join('');
-        } catch (e) { /* ignore */ }
-    }
-
-    function escapeHtml(str) {
-        const d = document.createElement('div');
-        d.textContent = str;
-        return d.innerHTML;
-    }
-
-    async function deleteReview(id) {
-        if (!confirm('Remove this review?')) return;
-        try {
-            const res = await fetch(API_BASE + '/api/reviews/' + encodeURIComponent(id), {
-                method: 'DELETE',
-                credentials: 'include'
-            });
-            if (!res.ok) {
-                const err = await res.json().catch(() => ({}));
-                alert(err.error || 'Failed to delete');
-                return;
-            }
-            loadReviews();
-        } catch (e) { alert('Failed to delete review'); }
-    }
-
-    function openReviewModal() {
-        reviewRating = 0;
-        document.querySelectorAll('#reviewStarsInput span').forEach(s => s.classList.remove('active'));
-        document.getElementById('reviewText').value = '';
-        document.getElementById('reviewModal').style.display = 'flex';
-    }
-
-    function closeReviewModal() {
-        document.getElementById('reviewModal').style.display = 'none';
-    }
-
-    // Close modal on overlay click
-    document.getElementById('reviewModal').addEventListener('click', function(e) {
-        if (e.target === this) closeReviewModal();
-    });
-
-    function setReviewRating(n) {
-        reviewRating = n;
-        document.querySelectorAll('#reviewStarsInput span').forEach((s, i) => {
-            s.classList.toggle('active', i < n);
-        });
-    }
-
-    async function submitReview() {
-        const text = document.getElementById('reviewText').value.trim();
-        if (!reviewRating) { alert('Please select a star rating.'); return; }
-        if (text.length < 10) { alert('Please write at least 10 characters.'); return; }
-
-        const btn = document.getElementById('reviewSubmitBtn');
-        btn.disabled = true;
-        btn.textContent = 'Submitting...';
-
-        try {
-            const res = await fetch(API_BASE + '/api/reviews', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ rating: reviewRating, text })
-            });
-            if (!res.ok) {
-                const err = await res.json().catch(() => ({}));
-                throw new Error(err.error || 'Failed to submit review');
-            }
-            closeReviewModal();
-            loadReviews();
-        } catch (e) {
-            alert(e.message);
-        } finally {
-            btn.disabled = false;
-            btn.textContent = 'Submit Review';
-        }
-    }
-
-    // Load reviews on page load
-    loadReviews();
     </script>
 </body>
 </html>

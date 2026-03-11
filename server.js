@@ -92,7 +92,6 @@ const DB_PATH = config.isDev ? path.join(__dirname, 'data') : '/var/data';
 const USERS_FILE = path.join(DB_PATH, 'users.json');
 const PAYMENTS_FILE = path.join(DB_PATH, 'payments.json');
 const OG_CODES_FILE = path.join(DB_PATH, 'og-codes.json');
-const REVIEWS_FILE = path.join(DB_PATH, 'reviews.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DB_PATH)) {
@@ -350,29 +349,6 @@ const ogCodesState = loadDB(OG_CODES_FILE, {
 
 function saveOGState() {
     saveDB(OG_CODES_FILE, ogCodesState);
-}
-
-// ==================== REVIEWS SYSTEM ====================
-const DEFAULT_REVIEWS = [
-    { id: 'seed-1', rating: 5, text: 'Helps understand what to actually study. Full exam mode makes finding practice exams stress free' },
-    { id: 'seed-2', rating: 5, text: 'Finally something that breaks down the syllabus in a way that makes sense! My study sessions are so much more productive now.' },
-    { id: 'seed-3', rating: 4, text: 'The practice questions are really helpful for exam prep. Saved me hours of trying to figure out what to focus on.' },
-    { id: 'seed-4', rating: 5, text: 'Full Exam Mode is a game changer. Getting a fresh HSC paper whenever I want with instant marking? Absolute lifesaver before trials.' },
-    { id: 'seed-5', rating: 4, text: 'Great for organising study. The timetable generator balanced all 6 of my subjects and the syllabus decoder saves heaps of time.' },
-    { id: 'seed-6', rating: 5, text: 'Wish I had this earlier in Year 11! The syllabus breakdown alone is worth it. Makes studying way less stressful.' },
-    { id: 'seed-7', rating: 5, text: 'The worksheet decoder actually reads my teacher\'s messy handouts and makes them usable. Notes transcriber is solid too.' },
-    { id: 'seed-8', rating: 4, text: 'Used it for my Year 9 science and it actually helped me understand what the syllabus was asking. Junior mode is really good.' },
-    { id: 'seed-9', rating: 5, text: 'Sat a 3-hour Biology trial and the questions were genuinely hard. Way better than the random past papers I was finding online.' },
-    { id: 'seed-10', rating: 4, text: 'Solid tool for HSC prep. The marking feedback is detailed and actually tells you what you missed, not just a score.' }
-];
-
-let reviewsData = loadDB(REVIEWS_FILE, { reviews: [] });
-if (!reviewsData.reviews || reviewsData.reviews.length === 0) {
-    reviewsData.reviews = DEFAULT_REVIEWS;
-    saveDB(REVIEWS_FILE, reviewsData);
-}
-function saveReviews() {
-    saveDB(REVIEWS_FILE, reviewsData);
 }
 
 // ==================== OWNER & ROLE SYSTEM ====================
@@ -5157,58 +5133,6 @@ app.get('*', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// ==================== REVIEWS API ====================
-
-// GET /api/reviews - public, returns all reviews (no dates shown)
-app.get('/api/reviews', (req, res) => {
-    const reviews = (reviewsData.reviews || []).map(r => ({
-        id: r.id,
-        rating: r.rating,
-        text: r.text
-    }));
-    res.json({ reviews });
-});
-
-// POST /api/reviews - authenticated, anonymous submission
-app.post('/api/reviews', express.json(), (req, res) => {
-    if (!req.session || !req.session.userId) {
-        return res.status(401).json({ error: 'Sign in to leave a review' });
-    }
-    const { rating, text } = req.body;
-    if (!rating || !Number.isInteger(rating) || rating < 1 || rating > 5) {
-        return res.status(400).json({ error: 'Rating must be 1-5 stars' });
-    }
-    if (!text || typeof text !== 'string' || text.trim().length < 10 || text.trim().length > 500) {
-        return res.status(400).json({ error: 'Review must be 10-500 characters' });
-    }
-    const review = {
-        id: require('crypto').randomUUID(),
-        rating,
-        text: text.trim()
-    };
-    reviewsData.reviews.push(review);
-    saveReviews();
-    res.json({ success: true, review: { id: review.id, rating: review.rating, text: review.text } });
-});
-
-// DELETE /api/reviews/:id - owner only
-app.delete('/api/reviews/:id', (req, res) => {
-    if (!req.session || !req.session.userId) {
-        return res.status(401).json({ error: 'Not authenticated' });
-    }
-    const user = db.users[req.session.userId];
-    if (!user || getUserRole(user.email) !== 'owner') {
-        return res.status(403).json({ error: 'Owner access required' });
-    }
-    const idx = reviewsData.reviews.findIndex(r => r.id === req.params.id);
-    if (idx === -1) {
-        return res.status(404).json({ error: 'Review not found' });
-    }
-    reviewsData.reviews.splice(idx, 1);
-    saveReviews();
-    res.json({ success: true });
-});
-
 // ==================== ERROR HANDLING ==
 
 app.use((err, req, res, next) => {
@@ -5228,7 +5152,6 @@ function shutdown() {
     console.log('\n🛑 Shutting down gracefully...');
     saveDB(USERS_FILE, db.users);
     saveDB(PAYMENTS_FILE, db.payments);
-    saveReviews();
     process.exit(0);
 }
 
