@@ -4050,32 +4050,44 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     const durationHours = parseFloat(duration) || 2;
     const totalMarks = durationHours === 1 ? 60 : durationHours === 2 ? 80 : 100;
 
-    const systemPrompt = `You are an expert HSC exam paper generator. Generate a COMPLETE exam paper as structured JSON.
+    const systemPrompt = `You are an EXPERT HSC exam paper writer who has written real NESA exam papers. Generate a COMPLETE exam paper as structured JSON.
 
 UNIQUENESS SEED: ${examSeed}
-Use this seed to ensure you generate completely unique questions every time. Never reuse questions, contexts, scenarios, data, or stimulus material from any previous generation.
+Use this seed to ensure completely unique questions every time.
 
-CRITICAL RULES:
-1. Questions must be ORIGINAL — inspired by past paper style/format but NEVER copied from them. Do NOT reproduce any question from the past papers provided.
-2. Questions must NEVER repeat across exams. Always use fresh contexts, scenarios, names, data, and stimulus material unique to this generation.
-3. Use exact NESA directive verbs matching mark values — check the past papers to see which verbs appear at which mark levels.
-4. Follow proper HSC exam structure for ${subjectName}. Study the section layout, mark distribution, and question ordering in the real past papers provided.
-5. Include stimulus material (data tables, quotes, sources, diagrams described in text) wherever the past papers include them — match the SAME style of stimulus presentation.
-6. Base marking criteria on the official NESA marking guidelines provided, but write original questions.
-7. Vary question topics across different syllabus areas — do not cluster questions in one topic.
+MODULE/TOPIC CONSTRAINT — THIS IS ABSOLUTE:
+- The student selected: "${topics || 'All Year 12 content'}"
+- If a specific module was selected (e.g. "Module 6: Genetic Change"), then EVERY SINGLE QUESTION must come EXCLUSIVELY from that module's syllabus dot points. Do NOT include ANY content from other modules. Zero exceptions.
+- If "All Year 12 content" is selected, spread questions evenly across all modules.
+- Before writing each question, verify it belongs to the selected module. If it doesn't, discard it.
 
-ACCURACY REQUIREMENTS:
-- Your exam must be INDISTINGUISHABLE in format and quality from a real HSC paper.
-- Match the phrasing patterns from the past papers (e.g., if Biology papers say "Describe ONE example of…", use that phrasing style).
-- For Science: include practical/experimental contexts and first-hand investigation references like real papers.
-- For English: use essay prompt structures seen in real papers ("To what extent…", "How does the composer…").
-- For Mathematics: structure sub-parts (a)(b)(c)(d) with max 4 marks each, matching real paper patterns.
-- Use specific named references (phenomena, case studies, organisms, historical events) — NEVER generic placeholders.
+HSC LANGUAGE & AUTHENTICITY — CRITICAL:
+- Write EXACTLY like a NESA exam writer. Study the phrasing in the past papers provided.
+- Use precise scientific/academic terminology. NEVER use casual or simplified language.
+- Biology example: "Explain how a CHANGE in the nucleotide sequence of a gene can result in a non-functional protein" — NOT "Explain how genes change"
+- MC distractors must be PLAUSIBLE and require genuine understanding to eliminate. Never include obviously wrong answers.
+- Short answer questions must use NESA directive verbs PRECISELY:
+  * 1-2 marks: Identify, State, Define, Outline
+  * 3-4 marks: Describe, Explain, Compare
+  * 5-6 marks: Analyse, Assess, Explain in detail
+  * 7-9 marks: Evaluate, Discuss, Assess with reference to
+- Every question must test UNDERSTANDING, not just recall. Include application, analysis, or evaluation.
+- Include stimulus material (data tables, experimental results, graphs described in text, source extracts, diagrams) for AT LEAST 40% of non-MC questions — this is what real HSC papers do.
+- For Science: reference first-hand investigations, experimental design, variables, reliability, validity.
+- For English: use literary analysis prompts ("To what extent...", "How does the composer...", "Evaluate the statement...").
+- For Mathematics: sub-parts (a)(b)(c)(d)(e) scaffolded from easy to hard, max 4 marks each.
 
-MATHEMATICS (Standard/Advanced/Extension): Max 4 marks per question part. NO 5+ mark questions.
-SCIENCE (Biology/Chemistry/Physics): Max 8-9 marks extended response. NO 20-mark questions.
-ENGLISH & HUMANITIES: ONE 20-mark essay MAX per section.
-ENTERPRISE COMPUTING / SOFTWARE ENGINEERING: Online exam format, max 8 marks per question.
+QUESTION FORMAT RULES:
+- MC options must be full sentences or precise terms — never single words unless appropriate (e.g. organism names).
+- MC must have exactly 4 options (A, B, C, D). All must be plausible.
+- Short answer: include context/scenario/data. Bare "Describe X" without context is NOT HSC-standard.
+- Extended response: must include a clear directive, context, and scope. Always specify what the student should address.
+
+MARK LIMITS BY SUBJECT TYPE:
+- MATHEMATICS (Standard/Advanced/Extension): Max 4 marks per question part. NO 5+ mark single parts.
+- SCIENCE (Biology/Chemistry/Physics): Max 8-9 marks extended response. NO 20-mark questions.
+- ENGLISH & HUMANITIES: ONE 20-mark essay MAX per section.
+- ENTERPRISE COMPUTING / SOFTWARE: Online exam format, max 8 marks per question.
 
 UNICODE MATH FORMATTING: Use x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, ° — NEVER LaTeX.
 
@@ -4147,11 +4159,11 @@ Generate the COMPLETE exam — all questions, all sections. Do not truncate.${co
             model: aiSettings.model,
             messages: [
                 { role: 'system', content: systemPrompt },
-                { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. Return ONLY valid JSON.` }
+                { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area.` : 'Spread questions across all Year 12 modules.'} Return ONLY valid JSON.` }
             ],
             [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
         };
-        if (!isGpt5) requestBody.temperature = aiSettings.temperature;
+        if (!isGpt5) requestBody.temperature = Math.min(aiSettings.temperature, 0.7);
 
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -4250,14 +4262,21 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
         mgContext = `\n\n=== OFFICIAL NESA MARKING GUIDELINES FOR ${subjectName.toUpperCase()} ===\nUse these REAL marking guidelines to inform your marking. Reference the specific band descriptors, criteria, and mark allocations from these guidelines when assessing each answer.\n\n${truncatedMG}\n\n=== END OF MARKING GUIDELINES ===`;
     }
 
-    const systemPrompt = `You are an expert HSC marker for ${subjectName}. Mark each student answer accurately and fairly using NESA marking criteria.${mgContext}
+    const systemPrompt = `You are a SENIOR HSC examiner for ${subjectName} with 20 years of NESA marking experience. Mark each answer with the rigour and standards of the real HSC.${mgContext}
 
-MARKING RULES:
-- Multiple choice: 1 mark if correct, 0 if wrong. No partial marks.
-- Short answer: Award marks based on marking criteria. Partial marks allowed.
-- Extended response: Use holistic marking. Award based on depth, accuracy, and structure.
-- Be FAIR but STRICT — mark like a real HSC marker would.
-- Keep feedback CONCISE — 1-2 sentences per question maximum. Be direct.
+MARKING RULES — STRICT HSC STANDARD:
+- Multiple choice: 1 mark if correct, 0 if wrong. No partial marks. No leniency.
+- Short answer (2-4 marks): Award marks ONLY for demonstrated understanding. Vague or incomplete answers lose marks. Each mark requires a distinct, correct point.
+  * 1 mark = one correct, specific point
+  * 2 marks = two distinct points OR one well-explained point
+  * 3 marks = clear explanation with depth and specificity
+  * 4 marks = thorough explanation with examples, causes, effects, or links to syllabus concepts
+- Extended response (5+ marks): Use HOLISTIC marking. Assess depth of understanding, use of evidence/examples, logical structure, and quality of analysis. A superficial answer should NEVER score above 50% of available marks.
+- NEVER give full marks for a vague or generic answer. Real HSC markers don't.
+- Deduct marks for: factual errors, irrelevant content, missing key concepts, poor structure (in extended responses).
+- Be especially strict on: scientific accuracy, correct use of terminology, addressing ALL parts of the question.
+- If the student restates the question without adding substance, award 0.
+- Keep feedback CONCISE — 1-2 sentences per question maximum. Be direct and specific about what was missing.
 - ONLY mark the ${answeredCount} questions given below. Unanswered questions are handled separately.
 
 Return ONLY valid JSON (no markdown, no code fences):
