@@ -1873,10 +1873,12 @@
             document.getElementById('reviewsAvg').innerHTML =
                 `<span class="stars">${renderStars(avg)}</span> ${avg.toFixed(1)} out of 5 — ${reviews.length} reviews`;
 
-            // Render cards
+            // Render cards (owner sees delete button)
+            const isOwner = currentUser && currentUser.role === 'owner';
             const grid = document.getElementById('reviewsGrid');
             grid.innerHTML = reviews.map(r => `
-                <div class="review-card">
+                <div class="review-card" id="review-${r.id}">
+                    ${isOwner ? `<button onclick="deleteReview('${r.id}')" style="float:right;background:none;border:none;color:#ef4444;cursor:pointer;font-size:1.1rem;padding:0 0 4px 8px;" title="Delete review">✕</button>` : ''}
                     <div class="review-stars">${renderStars(r.rating)}</div>
                     <div class="review-text">${escapeHtml(r.text)}</div>
                     <div class="review-author">Anonymous Student</div>
@@ -1889,6 +1891,22 @@
         const d = document.createElement('div');
         d.textContent = str;
         return d.innerHTML;
+    }
+
+    async function deleteReview(id) {
+        if (!confirm('Remove this review?')) return;
+        try {
+            const res = await fetch(API_BASE + '/api/reviews/' + encodeURIComponent(id), {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                alert(err.error || 'Failed to delete');
+                return;
+            }
+            loadReviews();
+        } catch (e) { alert('Failed to delete review'); }
     }
 
     function openReviewModal() {

@@ -5191,7 +5191,25 @@ app.post('/api/reviews', express.json(), (req, res) => {
     res.json({ success: true, review: { id: review.id, rating: review.rating, text: review.text } });
 });
 
-// ==================== ERROR HANDLING ====================
+// DELETE /api/reviews/:id - owner only
+app.delete('/api/reviews/:id', (req, res) => {
+    if (!req.session || !req.session.userId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+    }
+    const user = db.users[req.session.userId];
+    if (!user || getUserRole(user.email) !== 'owner') {
+        return res.status(403).json({ error: 'Owner access required' });
+    }
+    const idx = reviewsData.reviews.findIndex(r => r.id === req.params.id);
+    if (idx === -1) {
+        return res.status(404).json({ error: 'Review not found' });
+    }
+    reviewsData.reviews.splice(idx, 1);
+    saveReviews();
+    res.json({ success: true });
+});
+
+// ==================== ERROR HANDLING ==
 
 app.use((err, req, res, next) => {
     console.error('Server error:', err);
