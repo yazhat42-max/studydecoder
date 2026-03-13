@@ -301,6 +301,26 @@
             margin-bottom: 16px; border-radius: 0 8px 8px 0; font-size: 14px;
             color: #c0c8d0; line-height: 1.6; font-style: italic;
         }
+        .exam-stimulus table, .exam-q-text table, .exam-result-feedback table, .exam-result-sample table,
+        .exam-data-table, .message table {
+            width: 100%; border-collapse: collapse; margin: 12px 0; font-style: normal;
+        }
+        .exam-stimulus th, .exam-stimulus td, .exam-q-text th, .exam-q-text td,
+        .exam-result-feedback th, .exam-result-feedback td, .exam-result-sample th, .exam-result-sample td,
+        .exam-data-table th, .exam-data-table td, .message th, .message td {
+            border: 1px solid #2f3336; padding: 8px 12px; text-align: left; font-size: 13px; color: #e7e9ea;
+        }
+        .exam-stimulus th, .exam-q-text th, .exam-result-feedback th, .exam-result-sample th,
+        .exam-data-table th, .message th {
+            background: rgba(79,140,255,0.1); font-weight: 600; color: #8ab4f8;
+        }
+        .exam-stimulus tr:nth-child(even) td, .exam-q-text tr:nth-child(even) td,
+        .exam-data-table tr:nth-child(even) td, .message tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+        /* Sub-parts */
+        .exam-part { margin-top: 16px; padding: 12px 16px; background: rgba(255,255,255,0.02); border-radius: 8px; border-left: 2px solid #4f8cff; }
+        .exam-part-label { font-weight: 700; color: #8ab4f8; margin-bottom: 6px; font-size: 14px; }
+        .exam-part-text { color: #c0c8d0; font-size: 14px; line-height: 1.5; margin-bottom: 8px; }
 
         /* MC options */
         .exam-mc-options { display: flex; flex-direction: column; gap: 8px; }
@@ -1093,7 +1113,30 @@
             stopExamTimer();
         }
         
+        function parseMarkdownTables(text) {
+            return text.replace(/(?:^|\n)((?:\|.*\|[ \t]*\n){2,})/gm, function(match) {
+                const lines = match.trim().split('\n').filter(l => l.trim());
+                if (lines.length < 2) return match;
+                const parseRow = line => line.split('|').slice(1, -1).map(c => c.trim());
+                const headers = parseRow(lines[0]);
+                // Skip separator row (|---|---|)
+                const startIdx = /^\|[\s\-:]+\|/.test(lines[1]) ? 2 : 1;
+                let html = '<table class="exam-data-table"><thead><tr>';
+                headers.forEach(h => { html += `<th>${h}</th>`; });
+                html += '</tr></thead><tbody>';
+                for (let i = startIdx; i < lines.length; i++) {
+                    const cells = parseRow(lines[i]);
+                    html += '<tr>';
+                    cells.forEach(c => { html += `<td>${c}</td>`; });
+                    html += '</tr>';
+                }
+                html += '</tbody></table>';
+                return html;
+            });
+        }
+
         function formatResponse(text) {
+            text = parseMarkdownTables(text);
             return text
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/Topic:|Difficulty:|Marks:|Question \d+:|Answer:|Marking Guideline:|Section [A-Z]:/gi, '<br><br><strong>$&</strong>')
@@ -1735,11 +1778,21 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">📚 Modules / Topics</label>
-                            <select class="form-select" id="examSetupTopics">
-                                <option value="All">All Modules</option>
-                            </select>
+                        <div class="exam-setup-row">
+                            <div class="form-group">
+                                <label class="form-label">📚 Modules / Topics</label>
+                                <select class="form-select" id="examSetupTopics">
+                                    <option value="All">All Modules</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">🎯 Difficulty</label>
+                                <select class="form-select" id="examSetupDifficulty">
+                                    <option value="standard" selected>Standard (HSC-level)</option>
+                                    <option value="easy">Easy (Foundation / Revision)</option>
+                                    <option value="hard">Hard (Trial-level / Extension)</option>
+                                </select>
+                            </div>
                         </div>
                         <button type="button" class="exam-generate-btn" id="examGenerateBtn" onclick="generateExam()">📝 Generate Exam</button>
                     </div>
@@ -1778,6 +1831,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             const subjectEl = document.getElementById('examSetupSubject');
             const durationEl = document.getElementById('examSetupDuration');
             const topicsEl = document.getElementById('examSetupTopics');
+            const difficultyEl = document.getElementById('examSetupDifficulty');
             const genBtn = document.getElementById('examGenerateBtn');
 
             examSubjectId = subjectEl.value;
@@ -1787,6 +1841,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             const duration = durationEl.value;
             const selectedTopic = topicsEl.value;
             const topics = selectedTopic === 'All' ? 'All Year 12 content' : selectedTopic;
+            const difficulty = difficultyEl.value;
 
             genBtn.disabled = true;
             genBtn.textContent = 'Generating exam...';
@@ -1803,7 +1858,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ subject: examSubjectId, topics, duration })
+                    body: JSON.stringify({ subject: examSubjectId, topics, duration, difficulty })
                 });
 
                 if (!res.ok) {
@@ -1889,6 +1944,17 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             if (q.type === 'mc') {
                 const selected = document.querySelector('input[name="mc-answer"]:checked');
                 if (selected) examAnswers[q.number] = selected.value;
+            } else if (q.parts && q.parts.length > 0) {
+                // Save each sub-part answer separately
+                q.parts.forEach((part, pi) => {
+                    const partKey = q.number + '_' + (pi + 1);
+                    const textarea = document.getElementById('exam-answer-' + partKey);
+                    if (textarea) {
+                        const val = textarea.value.trim();
+                        if (val) examAnswers[partKey] = val;
+                        else delete examAnswers[partKey];
+                    }
+                });
             } else {
                 const textarea = document.getElementById('exam-answer-' + q.number);
                 if (textarea) {
@@ -1917,10 +1983,10 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             html += `<div class="exam-q-number">Question ${q.number} <span class="exam-q-marks">${q.marks} mark${q.marks > 1 ? 's' : ''}</span></div>`;
 
             if (q.stimulus) {
-                html += `<div class="exam-stimulus">${q.stimulus}</div>`;
+                html += `<div class="exam-stimulus">${parseMarkdownTables(q.stimulus)}</div>`;
             }
 
-            html += `<div class="exam-q-text">${q.text}</div>`;
+            html += `<div class="exam-q-text">${parseMarkdownTables(q.text)}</div>`;
 
             if (q.type === 'mc' && q.options) {
                 html += `<div class="exam-mc-options">`;
@@ -1933,6 +1999,18 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     </label>`;
                 });
                 html += `</div>`;
+            } else if (q.parts && q.parts.length > 0) {
+                // Multi-part question — render each sub-part with its own answer box
+                q.parts.forEach((part, pi) => {
+                    const partKey = q.number + '_' + (pi + 1);
+                    const saved = examAnswers[partKey] || '';
+                    const isExt = part.marks >= 7;
+                    html += `<div class="exam-part">
+                        <div class="exam-part-label">${part.label || '(' + String.fromCharCode(97 + pi) + ')'} <span class="exam-q-marks">${part.marks} mark${part.marks > 1 ? 's' : ''}</span></div>
+                        <div class="exam-part-text">${parseMarkdownTables(part.text)}</div>
+                        <textarea class="exam-answer-box${isExt ? ' extended' : ''}" id="exam-answer-${partKey}" placeholder="Type your answer here...">${saved}</textarea>
+                    </div>`;
+                });
             } else {
                 const isExtended = q.type === 'extended' || q.marks >= 7;
                 const saved = examAnswers[q.number] || '';
@@ -2079,9 +2157,9 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                             <span class="exam-result-q-num">Question ${r.questionNumber}</span>
                             <span class="exam-result-q-score ${scoreTag}">${r.marksAwarded} / ${r.marksTotal}</span>
                         </div>
-                        <div class="exam-result-feedback">${r.feedback || ''}</div>`;
+                        <div class="exam-result-feedback">${parseMarkdownTables(r.feedback || '')}</div>`;
                     if (r.sampleAnswer) {
-                        html += `<div class="exam-result-sample"><strong>Sample Answer:</strong> ${r.sampleAnswer}</div>`;
+                        html += `<div class="exam-result-sample"><strong>Sample Answer:</strong> ${parseMarkdownTables(r.sampleAnswer)}</div>`;
                     }
                     html += `</div>`;
                 }

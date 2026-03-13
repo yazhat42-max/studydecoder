@@ -569,7 +569,29 @@ The AI will transform them into polished, professional-looking notes with proper
         }
 
         // ===== MESSAGING =====
+        function parseMarkdownTables(text) {
+            return text.replace(/(?:^|\n)((?:\|.*\|[ \t]*\n){2,})/gm, function(match) {
+                var lines = match.trim().split('\n').filter(function(l) { return l.trim(); });
+                if (lines.length < 2) return match;
+                var parseRow = function(line) { return line.split('|').slice(1, -1).map(function(c) { return c.trim(); }); };
+                var headers = parseRow(lines[0]);
+                var startIdx = /^\|[\s\-:]+\|/.test(lines[1]) ? 2 : 1;
+                var html = '<table style="width:100%;border-collapse:collapse;margin:12px 0;"><thead><tr>';
+                headers.forEach(function(h) { html += '<th style="border:1px solid #2f3336;padding:8px 12px;text-align:left;background:rgba(79,140,255,0.1);font-weight:600;color:#8ab4f8;font-size:13px;">' + h + '</th>'; });
+                html += '</tr></thead><tbody>';
+                for (var i = startIdx; i < lines.length; i++) {
+                    var cells = parseRow(lines[i]);
+                    html += '<tr>';
+                    cells.forEach(function(c) { html += '<td style="border:1px solid #2f3336;padding:8px 12px;text-align:left;font-size:13px;color:#e7e9ea;">' + c + '</td>'; });
+                    html += '</tr>';
+                }
+                html += '</tbody></table>';
+                return html;
+            });
+        }
+
         function formatResponse(text) {
+            text = parseMarkdownTables(text);
             let html = text
                 .replace(/## (.*)/g, '<h2>$1</h2>')
                 .replace(/### (.*)/g, '<h3>$1</h3>')

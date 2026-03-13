@@ -3681,6 +3681,13 @@ Your job is to transform their messy notes into polished, professional, study-re
 
 If the user sends a text message without [NOTE GLOW-UP MODE] and without an image, they are doing a follow-up in conversation - respond helpfully to their request (e.g. summarise to X pages, reorganise, expand a section, simplify, etc).
 
+TABLE FORMATTING:
+When the user requests a specific note format that uses tables (e.g. "Cornell notes", "comparison table", "table format", "two-column notes"), output the table using markdown table syntax:
+| Column 1 | Column 2 |
+|---|---|
+| content | content |
+This will be rendered as a proper HTML table. Use tables whenever the content is naturally tabular (data, comparisons, timelines with dates/events, etc).
+
 You are StudyDecoder – Notes Transcriber.`
 };
 
@@ -4012,7 +4019,7 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
         }
     }
 
-    const { subject, topics, duration } = req.body;
+    const { subject, topics, duration, difficulty } = req.body;
     if (!subject) return res.status(400).json({ error: 'Subject is required' });
 
     const OPENAI_API_KEY = config.openaiApiKey;
@@ -4048,11 +4055,19 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
 
     // Determine exam structure based on subject and duration
     const durationHours = parseFloat(duration) || 2;
-    const totalMarks = durationHours === 1 ? 60 : durationHours === 2 ? 80 : 100;
 
     // Look up subject category for structure/language rules
     const subjectEntry = subjectsConfig.subjects.find(s => s.id === subject);
     const category = (subjectEntry?.category || '').toLowerCase();
+
+    // Total marks vary by subject category and duration (based on real NESA papers)
+    let totalMarks;
+    if (category === 'science') {
+        // Real HSC science exams: 75 marks for 3h, scaled for shorter
+        totalMarks = durationHours === 1 ? 45 : durationHours === 2 ? 60 : 75;
+    } else {
+        totalMarks = durationHours === 1 ? 60 : durationHours === 2 ? 80 : 100;
+    }
 
     // Build structure + language rules PER CATEGORY so all 45 subjects are covered
     let structureGuide = '';
@@ -4127,28 +4142,29 @@ TOTAL: ~100 marks. You MUST include all three sections. NO multiple choice for E
     // ===== SCIENCE (Biology, Chemistry, Physics, Earth & Environmental, Investigating Science, Science Extension) =====
     } else if (category === 'science') {
         if (durationHours === 1) {
-            structureGuide = `EXAM STRUCTURE (1h, 60 marks — Science):
+            structureGuide = `EXAM STRUCTURE (1h, 45 marks — Science):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 5-7 questions totalling ~35 marks (mix of 2, 3, 4, 5, 6 mark questions)
-- Section III — Extended Response: 1-2 questions totalling ~15 marks (e.g. 7 + 8 marks)
-TOTAL: ~60 marks across ~18 questions. You MUST include ALL three sections.`;
+- Section II — Short Answer: 4-5 questions totalling ~25 marks (mix of 3, 4, 5, 6 mark questions with sub-parts)
+- Section III — Extended Response: 1 question of ~10 marks
+TOTAL: ~45 marks. You MUST include ALL three sections.`;
         } else if (durationHours === 2) {
-            structureGuide = `EXAM STRUCTURE (2h, 80 marks — Science):
+            structureGuide = `EXAM STRUCTURE (2h, 60 marks — Science):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 6-8 questions totalling ~40 marks
-- Section III — Extended Response: 2-3 questions totalling ~25 marks
-TOTAL: ~80 marks across ~25 questions. You MUST include ALL three sections.`;
+- Section II — Short Answer: 5-6 questions totalling ~30 marks (each with sub-parts (a)(b)(c))
+- Section III — Extended Response: 1-2 questions totalling ~15 marks
+TOTAL: ~60 marks. You MUST include ALL three sections.`;
         } else {
-            structureGuide = `EXAM STRUCTURE (3h, 100 marks — Science):
+            structureGuide = `EXAM STRUCTURE (3h, 75 marks — Science — REAL HSC FORMAT):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer: 8-10 questions totalling ~50 marks
-- Section III — Extended Response: 2-3 questions totalling ~30 marks (max 9 marks each)
-TOTAL: ~100 marks across ~32 questions. You MUST include ALL three sections.`;
+- Section II — Short Answer: 5-6 questions totalling ~35 marks. Each question MUST have sub-parts (a)(b)(c)(d). Questions are scaffolded: parts start at 2-3 marks and build to 5-7 marks.
+- Section III — Extended Response: 1-2 questions totalling ~20 marks (max 9 marks each)
+TOTAL: 75 marks. You MUST include ALL three sections. NOTE: Real HSC science exams are 75 marks, NOT 100.`;
         }
         categoryRules = `SCIENCE-SPECIFIC RULES:
 - Max 8-9 marks per extended response question. NEVER a 20-mark question.
+- Short answer questions (Section II) MUST have sub-parts (a)(b)(c)(d). Each part is 2-4 marks. Scaffold within each question: part (a) is easiest, final part is hardest.
 - Reference first-hand investigations, experimental design, variables (independent/dependent/controlled), reliability, validity, accuracy.
-- Include data analysis: tables, graphs described in text, experimental results for interpretation.
+- Include data analysis: use markdown tables for experimental data (| Column | Column |), graphs described in text, experimental results for interpretation.
 - Biology: use precise terminology (e.g. "nucleotide sequence", "complementary base pairing", "polypeptide chain"). Reference specific enzymes, organisms, processes.
 - Chemistry: include balanced equations, molar calculations, reaction types, properties of substances. Use correct chemical nomenclature.
 - Physics: include calculations with units, force diagrams described in text, real-world applications. Use correct SI units throughout.
@@ -4187,23 +4203,23 @@ TOTAL: ~80 marks. NO multiple choice.`;
 TOTAL: 100 marks = four 25-mark sections. NO multiple choice.`;
             }
         } else if (isGeography) {
-            // Geography: only 15 MC (NOT 20), stimulus booklet
+            // Geography: 20 MC, uses stimulus booklet (maps, data, photographs)
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — Geography):
-- Section I — Objective Response: 8 questions × 1 mark = 8 marks (with stimulus: maps, data, photographs described)
-- Section II — Short Answer: 4-5 questions totalling ~32 marks (fieldwork data, spatial data)
+- Section I — Objective Response: 10 questions × 1 mark = 10 marks (with stimulus: maps, data, photographs described)
+- Section II — Short Answer: 3-4 questions totalling ~30 marks (fieldwork data, spatial data, with sub-parts (a)(b)(c))
 - Section III — Extended Response: 1 question of ~20 marks
 TOTAL: ~60 marks. You MUST include ALL three sections.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — Geography):
-- Section I — Objective Response: 12 questions × 1 mark = 12 marks (with stimulus booklet)
-- Section II — Short Answer: 4-6 questions totalling ~48 marks
+- Section I — Objective Response: 15 questions × 1 mark = 15 marks (with stimulus booklet)
+- Section II — Short Answer: 4-5 questions totalling ~45 marks (with sub-parts)
 - Section III — Extended Response: 1 question of ~20 marks
 TOTAL: ~80 marks. You MUST include ALL three sections.`;
             } else {
-                structureGuide = `EXAM STRUCTURE (3h, 100 marks — Geography — 15 MC, NOT 20):
-- Section I — Objective Response: 15 questions × 1 mark = 15 marks (with stimulus booklet)
-- Section II — Short Answer: 4-6 questions totalling ~45 marks
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — Geography — REAL HSC FORMAT):
+- Section I — Objective Response: 20 questions × 1 mark = 20 marks (with stimulus booklet)
+- Section II — Short Answer: 4-5 questions totalling ~40 marks (with sub-parts (a)(b)(c))
 - Section III — Structured Extended Response: 1 question of ~20 marks
 - Section IV — Extended Response (Essay): 1 question of ~20 marks
 TOTAL: 100 marks. You MUST include ALL four sections.`;
@@ -4257,7 +4273,7 @@ TOTAL: 100 marks. You MUST include ALL four sections.`;
 - Business Studies: case studies of real Australian businesses. Correct terminology (cash flow, market share, operations). 20 MC.
 - Economics: economic data (GDP, unemployment, CPI). Terms: aggregate demand, monetary/fiscal policy. 20 MC.
 - Legal Studies: reference real cases (e.g. "Mabo v Queensland"), legislation. Assess effectiveness of law. 20 MC.
-- Geography: only 15 MC (NOT 20). Include fieldwork methodology, spatial technologies, stimulus (maps, data, photographs described).
+- Geography: 20 MC. Include fieldwork methodology, spatial technologies, stimulus (maps, data, photographs described).
 - Society and Culture: only 8 MC. Use sociological terminology, cross-cultural perspectives.
 - Studies of Religion: reference specific traditions, sacred texts, ethical teachings. Respectful academic language. MC included.
 - Essay prompts MUST include a statement or proposition demanding sustained argument with evidence.
@@ -4438,6 +4454,8 @@ ${categoryRules}
 
 UNICODE MATH FORMATTING (for all subjects): Use x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, ° — NEVER LaTeX.
 
+DIFFICULTY LEVEL: ${difficulty === 'easy' ? 'EASY — Foundation/Revision level. Use simpler language, more scaffolded questions, fewer multi-step problems. Short answer questions should have clear single-concept focus. Extended responses should be more guided with specific prompts. MC distractors should be more obviously wrong. Keep questions at the lower end of Bloom\'s taxonomy (recall, understand, apply).' : difficulty === 'hard' ? 'HARD — Trial-level / Extension difficulty. Use complex multi-step problems, nuanced stimulus material, higher-order thinking throughout. Short answers should require synthesis of multiple concepts. Extended responses should demand sophisticated analysis with ambiguous/debatable propositions. MC distractors should be very close to the correct answer. Target the upper end of Bloom\'s taxonomy (analyse, evaluate, create). Include questions that would challenge Band 6 students.' : 'STANDARD — HSC exam difficulty. Follow the typical difficulty distribution of a real NESA exam: start easier and build to harder questions within each section. Match the rigour and complexity of actual past HSC papers.'}
+
 Subject: ${subjectName}
 Topics: ${topics || 'All Year 12 content'}
 Duration: ${durationHours} hour(s)
@@ -4458,7 +4476,11 @@ Return ONLY valid JSON (no markdown, no code fences) in this exact structure:
           "number": 1,
           "type": "mc OR short OR extended",
           "marks": 1,
-          "text": "Question text here",
+          "text": "Main question text (for multi-part questions, this is the stem/context)",
+          "parts": [
+            { "label": "(a)", "text": "Sub-question text", "marks": 2 },
+            { "label": "(b)", "text": "Sub-question text", "marks": 3 }
+          ],
           "options": ["A. option", "B. option", "C. option", "D. option"],
           "correctAnswer": "B",
           "stimulus": "Optional stimulus material or null",
@@ -4469,10 +4491,16 @@ Return ONLY valid JSON (no markdown, no code fences) in this exact structure:
   ]
 }
 
-Use "mc" type for multiple choice (with "options" and "correctAnswer"), "short" for short answer (2-6 marks), and "extended" for extended response (7+ marks).
-For MC questions: include "options" and "correctAnswer". For non-MC: include "markingCriteria" and optionally "stimulus".
-Match the section names and structure to the EXAM STRUCTURE specified above. If the structure says NO multiple choice, do NOT include an MC section.
-Generate the COMPLETE exam — all questions, all sections. Do not truncate.${contextPrompt}`;
+CRITICAL JSON RULES:
+- "type": Use "mc" for multiple choice, "short" for short answer (2-6 marks), "extended" for extended response (7+ marks).
+- MC questions: include "options" (array of 4 strings starting with A. B. C. D.) and "correctAnswer" (letter). No "parts" for MC.
+- Short/Extended questions with 4+ marks SHOULD have "parts" — an array of sub-questions with labels like "(a)", "(b)", "(c)". Each part has its own "text" and "marks". The question's total "marks" must equal the sum of all part marks.
+- Short/Extended questions with 2-3 marks can omit "parts" (single question is fine).
+- For non-MC: include "markingCriteria" and optionally "stimulus".
+- DATA TABLES in stimulus: Format tables as markdown tables with | separators and header row: "| Column 1 | Column 2 |\\n|---|---|\\n| data | data |"
+- Match section names and structure to the EXAM STRUCTURE specified above.
+- If the structure says NO multiple choice, do NOT include an MC section.
+- Generate the COMPLETE exam — all questions, all sections. Do not truncate.${contextPrompt}`;
 
     try {
         const isGpt5 = aiSettings.model.startsWith('gpt-5');
@@ -4481,7 +4509,7 @@ Generate the COMPLETE exam — all questions, all sections. Do not truncate.${co
             model: aiSettings.model,
             messages: [
                 { role: 'system', content: systemPrompt },
-                { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area.` : 'Spread questions across all Year 12 modules.'} Return ONLY valid JSON.` }
+                { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. Return ONLY valid JSON.` }
             ],
             [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
         };
@@ -4502,14 +4530,19 @@ Generate the COMPLETE exam — all questions, all sections. Do not truncate.${co
         const data = await response.json();
         let reply = data.choices?.[0]?.message?.content || '';
 
-        // Strip markdown code fences if present
-        reply = reply.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+        // Robust JSON extraction — strip fences, find JSON object
+        reply = reply.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
+        const jsonStart = reply.indexOf('{');
+        const jsonEnd = reply.lastIndexOf('}');
+        if (jsonStart !== -1 && jsonEnd > jsonStart) {
+            reply = reply.substring(jsonStart, jsonEnd + 1);
+        }
 
         let exam;
         try {
             exam = JSON.parse(reply);
         } catch (parseErr) {
-            console.error('Failed to parse exam JSON:', parseErr.message, 'Raw:', reply.substring(0, 200));
+            console.error('Failed to parse exam JSON:', parseErr.message, 'Raw:', reply.substring(0, 500));
             return res.status(500).json({ error: 'Failed to generate valid exam structure. Please try again.' });
         }
 
@@ -4555,20 +4588,47 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
             totalPossible += q.marks;
             allQuestions.push(q);
 
-            const studentAnswer = answers[q.number];
-            const hasAnswer = studentAnswer && studentAnswer.toString().trim().length > 0;
+            // Check if this question has sub-parts
+            if (q.parts && q.parts.length > 0) {
+                // Collect answers for each sub-part
+                let hasAnyPartAnswer = false;
+                let partAnswersText = '';
+                q.parts.forEach((part, pi) => {
+                    const partKey = q.number + '_' + (pi + 1);
+                    const partAnswer = answers[partKey];
+                    const partLabel = part.label || '(' + String.fromCharCode(97 + pi) + ')';
+                    if (partAnswer && partAnswer.toString().trim().length > 0) {
+                        hasAnyPartAnswer = true;
+                        partAnswersText += `  ${partLabel} [${part.marks} marks]: ${partAnswer}\n`;
+                    } else {
+                        partAnswersText += `  ${partLabel} [${part.marks} marks]: [No answer]\n`;
+                    }
+                });
 
-            if (!hasAnswer) {
-                // Track unanswered — we'll give them 0 marks instantly, no AI needed
-                unansweredQuestions.push({ number: q.number, marks: q.marks, type: q.type });
-                continue; // Skip sending to AI — saves tokens and time
+                if (!hasAnyPartAnswer) {
+                    unansweredQuestions.push({ number: q.number, marks: q.marks, type: q.type });
+                    continue;
+                }
+
+                questionsText += `\nQ${q.number} [${q.marks} mark${q.marks > 1 ? 's' : ''}] (${q.type}, multi-part):\n${q.text}\n`;
+                if (q.stimulus) questionsText += `Stimulus: ${q.stimulus}\n`;
+                if (q.markingCriteria) questionsText += `Marking criteria: ${q.markingCriteria}\n`;
+                questionsText += `Parts and student answers:\n${partAnswersText}`;
+            } else {
+                const studentAnswer = answers[q.number];
+                const hasAnswer = studentAnswer && studentAnswer.toString().trim().length > 0;
+
+                if (!hasAnswer) {
+                    unansweredQuestions.push({ number: q.number, marks: q.marks, type: q.type });
+                    continue;
+                }
+
+                questionsText += `\nQ${q.number} [${q.marks} mark${q.marks > 1 ? 's' : ''}] (${q.type}):\n${q.text}\n`;
+                if (q.stimulus) questionsText += `Stimulus: ${q.stimulus}\n`;
+                if (q.markingCriteria) questionsText += `Marking criteria: ${q.markingCriteria}\n`;
+                if (q.correctAnswer) questionsText += `Correct answer: ${q.correctAnswer}\n`;
+                questionsText += `Student's answer: ${studentAnswer}\n`;
             }
-
-            questionsText += `\nQ${q.number} [${q.marks} mark${q.marks > 1 ? 's' : ''}] (${q.type}):\n${q.text}\n`;
-            if (q.stimulus) questionsText += `Stimulus: ${q.stimulus}\n`;
-            if (q.markingCriteria) questionsText += `Marking criteria: ${q.markingCriteria}\n`;
-            if (q.correctAnswer) questionsText += `Correct answer: ${q.correctAnswer}\n`;
-            questionsText += `Student's answer: ${studentAnswer}\n`;
         }
     }
 
@@ -4674,12 +4734,19 @@ ${includeSampleAnswers ? 'Include a concise "sampleAnswer" for EVERY question sh
 
             const data = await response.json();
             let reply = data.choices?.[0]?.message?.content || '';
-            reply = reply.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+
+            // Robust JSON extraction — strip fences, find JSON object
+            reply = reply.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
+            const jsonStart = reply.indexOf('{');
+            const jsonEnd = reply.lastIndexOf('}');
+            if (jsonStart !== -1 && jsonEnd > jsonStart) {
+                reply = reply.substring(jsonStart, jsonEnd + 1);
+            }
 
             try {
                 markingResult = JSON.parse(reply);
             } catch (parseErr) {
-                console.error('Failed to parse marking JSON:', parseErr.message);
+                console.error('Failed to parse marking JSON:', parseErr.message, 'Raw:', reply.substring(0, 500));
                 return res.status(500).json({ error: 'Failed to parse marking results. Please try again.' });
             }
 
