@@ -1518,7 +1518,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 });
                 
                 if (!res.ok) {
-                    window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                    window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
                     return;
                 }
                 
@@ -1559,7 +1559,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 
             } catch (e) {
                 console.error('Auth check failed:', e);
-                window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
             }
         }
         
@@ -1892,7 +1892,13 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     }
                 }
 
-                if (allAttempts.length === 0) return;
+                if (allAttempts.length === 0) {
+                    content.innerHTML = `<div style="text-align:center;padding:20px;color:#71767b;">
+                        <p style="font-size:0.9rem;">No exam history yet. Complete your first exam to see your stats here!</p>
+                    </div>`;
+                    section.style.display = 'block';
+                    return;
+                }
 
                 // Sort by date, newest first
                 allAttempts.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -1987,7 +1993,13 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 content.innerHTML = html;
                 section.style.display = 'block';
             } catch (e) {
-                // Silently fail — history is optional
+                // Show empty state on error
+                if (section) {
+                    content.innerHTML = `<div style="text-align:center;padding:20px;color:#71767b;">
+                        <p style="font-size:0.9rem;">No exam history yet. Complete your first exam to see your stats here!</p>
+                    </div>`;
+                    section.style.display = 'block';
+                }
             }
         }
 
