@@ -4060,14 +4060,8 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     const subjectEntry = subjectsConfig.subjects.find(s => s.id === subject);
     const category = (subjectEntry?.category || '').toLowerCase();
 
-    // Total marks vary by subject category and duration (based on real NESA papers)
-    let totalMarks;
-    if (category === 'science') {
-        // Real HSC science exams: 75 marks for 3h, scaled for shorter
-        totalMarks = durationHours === 1 ? 45 : durationHours === 2 ? 60 : 75;
-    } else {
-        totalMarks = durationHours === 1 ? 60 : durationHours === 2 ? 80 : 100;
-    }
+    // Total marks vary by duration (based on real NESA papers: 3h = 100 marks for most subjects)
+    let totalMarks = durationHours === 1 ? 60 : durationHours === 2 ? 80 : 100;
 
     // Build structure + language rules PER CATEGORY so all 45 subjects are covered
     let structureGuide = '';
@@ -4142,23 +4136,23 @@ TOTAL: ~100 marks. You MUST include all three sections. NO multiple choice for E
     // ===== SCIENCE (Biology, Chemistry, Physics, Earth & Environmental, Investigating Science, Science Extension) =====
     } else if (category === 'science') {
         if (durationHours === 1) {
-            structureGuide = `EXAM STRUCTURE (1h, 45 marks — Science):
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — Science):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 4-5 questions totalling ~25 marks (mix of 3, 4, 5, 6 mark questions with sub-parts)
-- Section III — Extended Response: 1 question of ~10 marks
-TOTAL: ~45 marks. You MUST include ALL three sections.`;
-        } else if (durationHours === 2) {
-            structureGuide = `EXAM STRUCTURE (2h, 60 marks — Science):
-- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 5-6 questions totalling ~30 marks (each with sub-parts (a)(b)(c))
-- Section III — Extended Response: 1-2 questions totalling ~15 marks
+- Section II — Short Answer: 5-6 questions totalling ~35 marks (mix of 3, 4, 5, 6, 7 mark questions with sub-parts (a)(b)(c))
+- Section III — Extended Response: 1 question of ~15 marks
 TOTAL: ~60 marks. You MUST include ALL three sections.`;
+        } else if (durationHours === 2) {
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks — Science):
+- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
+- Section II — Short Answer: 6-7 questions totalling ~45 marks (each with sub-parts (a)(b)(c)(d)). Scaffold easy→hard within each question.
+- Section III — Extended Response: 1-2 questions totalling ~20 marks
+TOTAL: ~80 marks. You MUST include ALL three sections.`;
         } else {
-            structureGuide = `EXAM STRUCTURE (3h, 75 marks — Science — REAL HSC FORMAT):
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks — Science — REAL HSC FORMAT):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer: 5-6 questions totalling ~35 marks. Each question MUST have sub-parts (a)(b)(c)(d). Questions are scaffolded: parts start at 2-3 marks and build to 5-7 marks.
-- Section III — Extended Response: 1-2 questions totalling ~20 marks (max 9 marks each)
-TOTAL: 75 marks. You MUST include ALL three sections. NOTE: Real HSC science exams are 75 marks, NOT 100.`;
+- Section II — Short Answer: 6-8 questions totalling ~55 marks. Each question MUST have sub-parts (a)(b)(c)(d). Questions are scaffolded: parts start at 2-3 marks and build to 5-7 marks.
+- Section III — Extended Response: 1-2 questions totalling ~25 marks (max 9 marks each)
+TOTAL: 100 marks. You MUST include ALL three sections.`;
         }
         categoryRules = `SCIENCE-SPECIFIC RULES:
 - Max 8-9 marks per extended response question. NEVER a 20-mark question.
@@ -4225,21 +4219,21 @@ TOTAL: ~80 marks. You MUST include ALL three sections.`;
 TOTAL: 100 marks. You MUST include ALL four sections.`;
             }
         } else if (isSocietyCulture) {
-            // Society & Culture: only 8 MC
+            // Society & Culture: 10 MC (real HSC has ~10 MC)
             if (durationHours === 1) {
-                structureGuide = `EXAM STRUCTURE (1h, 60 marks — Society and Culture — only 8 MC):
-- Section I: 8 MC (8 marks) + 2 short-answer questions (~12 marks) = 20 marks
+                structureGuide = `EXAM STRUCTURE (1h, 60 marks — Society and Culture — 10 MC):
+- Section I: 10 MC (10 marks) + 2 short-answer questions (~10 marks) = 20 marks
 - Section II — Extended Response: 2 essays of ~20 marks each (choose from 4 options) = 40 marks
-TOTAL: ~60 marks. Section I has ONLY 8 MC.`;
+TOTAL: ~60 marks. Section I has 10 MC.`;
             } else if (durationHours === 2) {
-                structureGuide = `EXAM STRUCTURE (2h, 80 marks — Society and Culture — only 8 MC):
-- Section I: 8 MC (8 marks) + 3 short-answer questions (~17 marks) = 25 marks
+                structureGuide = `EXAM STRUCTURE (2h, 80 marks — Society and Culture — REAL HSC FORMAT):
+- Section I: 10 MC (10 marks) + 3 short-answer questions (~15 marks) = 25 marks
 - Section II — Extended Response: 2 essays of ~20 marks each = 40 marks
 - Section III — Short Essay: 1 essay of ~15 marks
-TOTAL: ~80 marks. Section I has ONLY 8 MC.`;
+TOTAL: ~80 marks. Section I has 10 MC.`;
             } else {
-                structureGuide = `EXAM STRUCTURE (3h, 100 marks — Society and Culture — only 8 MC, practice-scaled):
-- Section I: 8 MC (8 marks) + 3 short-answer questions (~22 marks) = 30 marks
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — Society and Culture — 10 MC, practice-scaled):
+- Section I: 10 MC (10 marks) + 3 short-answer questions (~20 marks) = 30 marks
 - Section II — Extended Response: 2 essays of ~20 marks each = 40 marks
 - Section III — Extended Response: 1 essay of ~30 marks
 TOTAL: ~100 marks.`;
@@ -4274,7 +4268,7 @@ TOTAL: 100 marks. You MUST include ALL four sections.`;
 - Economics: economic data (GDP, unemployment, CPI). Terms: aggregate demand, monetary/fiscal policy. 20 MC.
 - Legal Studies: reference real cases (e.g. "Mabo v Queensland"), legislation. Assess effectiveness of law. 20 MC.
 - Geography: 20 MC. Include fieldwork methodology, spatial technologies, stimulus (maps, data, photographs described).
-- Society and Culture: only 8 MC. Use sociological terminology, cross-cultural perspectives.
+- Society and Culture: 10 MC. Use sociological terminology, cross-cultural perspectives.
 - Studies of Religion: reference specific traditions, sacred texts, ethical teachings. Respectful academic language. MC included.
 - Essay prompts MUST include a statement or proposition demanding sustained argument with evidence.
 - IMPORTANT: Only generate questions from the student's selected module/topic. If a module is selected, every question must belong to that module.`;
@@ -4344,21 +4338,24 @@ TOTAL: ~100 marks. You MUST include ALL three sections.`;
         if (durationHours === 1) {
             structureGuide = `EXAM STRUCTURE (1h, 60 marks — PDHPE/Health & Movement Science):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 5-7 questions totalling ~35 marks
-- Section III — Extended Response: 1-2 questions totalling ~15 marks
-TOTAL: ~60 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer (Core 1): 3-4 questions totalling ~20 marks
+- Section III — Short Answer (Core 2): 2-3 questions totalling ~15 marks
+- Section IV — Extended Response (Option): 1 question of ~15 marks
+TOTAL: ~60 marks. You MUST include ALL four sections.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks — PDHPE/Health & Movement Science):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 6-8 questions totalling ~40 marks (include data, case studies, scenarios)
-- Section III — Extended Response: 2-3 questions totalling ~25 marks
-TOTAL: ~80 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer (Core 1): 3-4 questions totalling ~25 marks (include data, case studies)
+- Section III — Short Answer (Core 2): 3-4 questions totalling ~20 marks
+- Section IV — Extended Response (Option): 1-2 questions totalling ~20 marks
+TOTAL: ~80 marks. You MUST include ALL four sections.`;
         } else {
-            structureGuide = `EXAM STRUCTURE (3h, 100 marks — PDHPE/Health & Movement Science):
+            structureGuide = `EXAM STRUCTURE (3h, 100 marks — PDHPE/Health & Movement Science — REAL HSC FORMAT):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer: 8-10 questions totalling ~50 marks
-- Section III — Extended Response: 2-3 questions totalling ~30 marks
-TOTAL: ~100 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer (Core 1): 4-5 questions totalling ~30 marks
+- Section III — Short Answer (Core 2): 3-4 questions totalling ~20 marks
+- Section IV — Extended Response (Options): 2 questions totalling ~30 marks
+TOTAL: 100 marks. You MUST include ALL four sections.`;
         }
         categoryRules = `PDHPE/HEALTH & MOVEMENT SCIENCE RULES:
 - Include biomechanics, exercise physiology, sports psychology, health promotion scenarios.
@@ -4377,15 +4374,15 @@ TOTAL: ~100 marks. You MUST include ALL three sections.`;
 - Section III — Extended Response: 1 question of ~10 marks
 TOTAL: ~60 marks. You MUST include ALL three sections.`;
         } else if (durationHours === 2) {
-            structureGuide = `EXAM STRUCTURE (2h, 80 marks — VET):
-- Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer: 8-10 questions totalling ~45 marks
+            structureGuide = `EXAM STRUCTURE (2h, 80 marks — VET — REAL HSC FORMAT):
+- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
+- Section II — Short Answer: 8-10 questions totalling ~50 marks (workplace scenarios, case studies)
 - Section III — Extended Response: 1-2 questions totalling ~15 marks
 TOTAL: ~80 marks. You MUST include ALL three sections.`;
         } else {
             structureGuide = `EXAM STRUCTURE (3h, 100 marks — VET):
-- Section I — Multiple Choice: 25 questions × 1 mark = 25 marks
-- Section II — Short Answer: 10-12 questions totalling ~55 marks
+- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
+- Section II — Short Answer: 10-14 questions totalling ~65 marks
 - Section III — Extended Response: 1-2 questions totalling ~20 marks
 TOTAL: ~100 marks. You MUST include ALL three sections.`;
         }
@@ -4782,7 +4779,10 @@ ${includeSampleAnswers ? 'Include a concise "sampleAnswer" for EVERY question sh
             percentage: markingResult.percentage,
             band: markingResult.expectedBand,
             totalMarks: markingResult.totalMarksAwarded,
-            possibleMarks: markingResult.totalMarksPossible
+            possibleMarks: markingResult.totalMarksPossible,
+            subjectName,
+            duration: exam.duration || '',
+            title: exam.title || ''
         };
         progress[subject].attempts.push(attempt);
         if (progress[subject].attempts.length > 20) {

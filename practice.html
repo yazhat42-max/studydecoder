@@ -426,11 +426,41 @@
         }
         .exam-loading-text { color: #71767b; font-size: 15px; margin-top: 16px; }
 
+        /* Exam history */
+        .exam-history-section { margin-top: 28px; border-top: 1px solid #2f3336; padding-top: 24px; }
+        .exam-history-header h3 { color: #e7e9ea; font-size: 1.1rem; margin: 0 0 16px; }
+        .exam-history-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+        .exam-history-stat { background: rgba(79,140,255,0.08); border: 1px solid rgba(79,140,255,0.15); border-radius: 10px; padding: 14px 12px; text-align: center; }
+        .exam-history-stat-value { font-size: 1.4rem; font-weight: 700; color: #4f8cff; }
+        .exam-history-stat-label { font-size: 0.75rem; color: #71767b; margin-top: 4px; }
+        .exam-history-subjects { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+        .exam-history-subject-card { background: rgba(255,255,255,0.03); border: 1px solid #2f3336; border-radius: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .exam-history-subject-name { color: #e7e9ea; font-weight: 600; font-size: 0.95rem; }
+        .exam-history-subject-stats { display: flex; gap: 12px; align-items: center; font-size: 0.8rem; color: #8899a6; }
+        .exam-history-badge { padding: 3px 10px; border-radius: 50px; font-size: 0.78rem; font-weight: 700; }
+        .exam-history-badge.band6 { background: rgba(34,197,94,0.15); color: #22c55e; }
+        .exam-history-badge.band5 { background: rgba(79,140,255,0.15); color: #4f8cff; }
+        .exam-history-badge.band4 { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .exam-history-badge.band3 { background: rgba(251,146,60,0.15); color: #fb923c; }
+        .exam-history-badge.low { background: rgba(239,68,68,0.15); color: #ef4444; }
+        .exam-history-subject-stats .positive { color: #22c55e; }
+        .exam-history-subject-stats .negative { color: #ef4444; }
+        .exam-history-recent-title { font-size: 0.9rem; font-weight: 600; color: #8899a6; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .exam-history-list { display: flex; flex-direction: column; gap: 6px; }
+        .exam-history-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(255,255,255,0.02); border: 1px solid #2f3336; border-radius: 8px; flex-wrap: wrap; gap: 6px; }
+        .exam-history-item-left { display: flex; flex-direction: column; gap: 2px; }
+        .exam-history-item-subject { color: #e7e9ea; font-weight: 600; font-size: 0.88rem; }
+        .exam-history-item-meta { color: #71767b; font-size: 0.75rem; }
+        .exam-history-item-right { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; }
+        .exam-history-item-band { color: #8899a6; font-size: 0.78rem; }
+        .exam-history-item-marks { color: #71767b; font-size: 0.75rem; }
+
         @media (max-width: 768px) {
             .exam-setup-row { grid-template-columns: 1fr; }
             .exam-question-card { padding: 20px; }
             .exam-dots { padding: 8px 12px; }
             .exam-nav { padding: 12px 16px; }
+            .exam-history-stats { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
@@ -1520,6 +1550,12 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     upgradeBtn.onmouseleave = () => { upgradeBtn.style.transform = 'scale(1)'; upgradeBtn.style.boxShadow = '0 4px 15px rgba(102,126,234,0.4)'; };
                     document.body.appendChild(upgradeBtn);
                 }
+
+                // Auto-open exam mode if ?mode=exam in URL
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('mode') === 'exam') {
+                    selectMode('exam');
+                }
                 
             } catch (e) {
                 console.error('Auth check failed:', e);
@@ -1796,6 +1832,12 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                         </div>
                         <button type="button" class="exam-generate-btn" id="examGenerateBtn" onclick="generateExam()">📝 Generate Exam</button>
                     </div>
+                    <div class="exam-history-section" id="examHistorySection" style="display:none;">
+                        <div class="exam-history-header">
+                            <h3>📊 Your Exam History</h3>
+                        </div>
+                        <div id="examHistoryContent"></div>
+                    </div>
                 </div>`;
 
             // Restore saved subject preference & populate modules
@@ -1810,6 +1852,9 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             if (examSubjectEl) {
                 examSubjectEl.addEventListener('change', () => updateExamModules(examSubjectEl.value));
             }
+
+            // Load exam history
+            loadExamHistory();
         }
 
         function updateExamModules(subjectId) {
@@ -1824,6 +1869,125 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     opt.textContent = t;
                     sel.appendChild(opt);
                 });
+            }
+        }
+
+        async function loadExamHistory() {
+            const section = document.getElementById('examHistorySection');
+            const content = document.getElementById('examHistoryContent');
+            if (!section || !content) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/api/exam/progress`, { credentials: 'include' });
+                if (!res.ok) return;
+                const data = await res.json();
+                const progress = data.progress || {};
+
+                // Collect all attempts across subjects
+                const allAttempts = [];
+                for (const [subjectId, subjectData] of Object.entries(progress)) {
+                    if (!subjectData.attempts) continue;
+                    for (const a of subjectData.attempts) {
+                        allAttempts.push({ ...a, subjectId, subjectName: a.subjectName || subjectId });
+                    }
+                }
+
+                if (allAttempts.length === 0) return;
+
+                // Sort by date, newest first
+                allAttempts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                // Build subject stats summary
+                const subjectStats = {};
+                for (const [subjectId, subjectData] of Object.entries(progress)) {
+                    if (!subjectData.attempts || subjectData.attempts.length === 0) continue;
+                    const name = subjectData.attempts[subjectData.attempts.length - 1]?.subjectName || subjectId;
+                    const scores = subjectData.attempts.map(a => a.percentage);
+                    const avg = Math.round(scores.reduce((s, v) => s + v, 0) / scores.length);
+                    subjectStats[subjectId] = {
+                        name,
+                        attempts: subjectData.attempts.length,
+                        best: Math.round(subjectData.bestScore || Math.max(...scores)),
+                        avg,
+                        last: Math.round(scores[scores.length - 1]),
+                        trend: scores.length >= 2 ? scores[scores.length - 1] - scores[scores.length - 2] : 0
+                    };
+                }
+
+                // Overall stats
+                const totalAttempts = allAttempts.length;
+                const overallAvg = Math.round(allAttempts.reduce((s, a) => s + a.percentage, 0) / totalAttempts);
+                const overallBest = Math.round(Math.max(...allAttempts.map(a => a.percentage)));
+
+                let html = '';
+
+                // Stats bar
+                html += `<div class="exam-history-stats">
+                    <div class="exam-history-stat">
+                        <div class="exam-history-stat-value">${totalAttempts}</div>
+                        <div class="exam-history-stat-label">Total Exams</div>
+                    </div>
+                    <div class="exam-history-stat">
+                        <div class="exam-history-stat-value">${overallAvg}%</div>
+                        <div class="exam-history-stat-label">Average Score</div>
+                    </div>
+                    <div class="exam-history-stat">
+                        <div class="exam-history-stat-value">${overallBest}%</div>
+                        <div class="exam-history-stat-label">Best Score</div>
+                    </div>
+                    <div class="exam-history-stat">
+                        <div class="exam-history-stat-value">${Object.keys(subjectStats).length}</div>
+                        <div class="exam-history-stat-label">Subjects</div>
+                    </div>
+                </div>`;
+
+                // Per-subject breakdown
+                if (Object.keys(subjectStats).length > 0) {
+                    html += `<div class="exam-history-subjects">`;
+                    for (const [id, s] of Object.entries(subjectStats)) {
+                        const trendIcon = s.trend > 0 ? '📈' : s.trend < 0 ? '📉' : '➡️';
+                        const trendClass = s.trend > 0 ? 'positive' : s.trend < 0 ? 'negative' : '';
+                        const bandClass = s.best >= 90 ? 'band6' : s.best >= 80 ? 'band5' : s.best >= 70 ? 'band4' : s.best >= 60 ? 'band3' : 'low';
+                        html += `<div class="exam-history-subject-card">
+                            <div class="exam-history-subject-name">${s.name}</div>
+                            <div class="exam-history-subject-stats">
+                                <span class="exam-history-badge ${bandClass}">Best: ${s.best}%</span>
+                                <span>Avg: ${s.avg}%</span>
+                                <span>${s.attempts} exam${s.attempts > 1 ? 's' : ''}</span>
+                                <span class="${trendClass}">${trendIcon} ${s.trend > 0 ? '+' : ''}${Math.round(s.trend)}%</span>
+                            </div>
+                        </div>`;
+                    }
+                    html += `</div>`;
+                }
+
+                // Recent attempts list
+                const recentAttempts = allAttempts.slice(0, 10);
+                html += `<div class="exam-history-recent-title">Recent Exams</div>`;
+                html += `<div class="exam-history-list">`;
+                for (const a of recentAttempts) {
+                    const date = new Date(a.date);
+                    const dateStr = date.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+                    const timeStr = date.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' });
+                    const pctClass = a.percentage >= 90 ? 'band6' : a.percentage >= 80 ? 'band5' : a.percentage >= 70 ? 'band4' : a.percentage >= 60 ? 'band3' : 'low';
+                    html += `<div class="exam-history-item">
+                        <div class="exam-history-item-left">
+                            <div class="exam-history-item-subject">${a.subjectName || a.subjectId}</div>
+                            <div class="exam-history-item-meta">${dateStr} at ${timeStr}${a.duration ? ' · ' + a.duration : ''}</div>
+                        </div>
+                        <div class="exam-history-item-right">
+                            <span class="exam-history-badge ${pctClass}">${Math.round(a.percentage)}%</span>
+                            <span class="exam-history-item-band">${a.band || ''}</span>
+                            <span class="exam-history-item-marks">${a.totalMarks}/${a.possibleMarks}</span>
+                        </div>
+                    </div>`;
+                }
+                html += `</div>`;
+
+                content.innerHTML = html;
+                section.style.display = 'block';
+            } catch (e) {
+                // Silently fail — history is optional
             }
         }
 
