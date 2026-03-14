@@ -2374,9 +2374,55 @@ function getExamPaperContent(subjectId) {
     return content || null;
 }
 
-// Load syllabus content for a subject (cached)
+// Load module index for per-module syllabus loading
+let modulesIndex = null;
+try {
+    const indexPath = path.join(SYLLABUSES_PATH, 'modules', 'modules-index.json');
+    if (fs.existsSync(indexPath)) {
+        modulesIndex = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+        console.log(`📚 Loaded modules index: ${Object.keys(modulesIndex).length} subjects`);
+    }
+} catch (e) {
+    console.error('Failed to load modules-index.json:', e.message);
+}
+
+// Load syllabus content for a subject (cached), optionally scoped to a specific module/topic
 const syllabusCache = {};
-function getSyllabusContent(subjectId, isJunior = false) {
+function getSyllabusContent(subjectId, isJunior = false, topic = null) {
+    // Try module-specific file first when a topic is specified
+    if (topic && topic !== 'All Year 12 content' && topic !== 'All Year 11 content' && !isJunior && modulesIndex) {
+        const subjectModules = modulesIndex[subjectId];
+        if (subjectModules) {
+            // Find matching module by exact or fuzzy match
+            let moduleFile = subjectModules[topic];
+            if (!moduleFile) {
+                // Fuzzy: check if topic is a substring of a module name or vice versa
+                const topicLower = topic.toLowerCase();
+                for (const [modName, modFile] of Object.entries(subjectModules)) {
+                    if (modName.toLowerCase().includes(topicLower) || topicLower.includes(modName.toLowerCase())) {
+                        moduleFile = modFile;
+                        break;
+                    }
+                }
+            }
+            if (moduleFile) {
+                const modulePath = path.join(SYLLABUSES_PATH, 'modules', subjectId, moduleFile);
+                try {
+                    if (fs.existsSync(modulePath)) {
+                        const content = fs.readFileSync(modulePath, 'utf8');
+                        if (content.length > 500) {
+                            console.log(`📎 Loaded module-specific syllabus for ${subjectId}/${moduleFile} (${content.length} chars)`);
+                            return content;
+                        }
+                    }
+                } catch (e) {
+                    console.error(`Error reading module file ${modulePath}:`, e.message);
+                }
+            }
+        }
+    }
+
+    // Fall back to full syllabus
     const cacheKey = (isJunior ? 'jr:' : 'sr:') + subjectId;
     if (syllabusCache[cacheKey]) {
         return syllabusCache[cacheKey];
@@ -2516,8 +2562,8 @@ app.post('/api/demo', express.json(), async (req, res) => {
     const isJunior = ['Year 7', 'Year 8', 'Year 9', 'Year 10'].includes(yearLevel);
     let systemPrompt = DEMO_PROMPTS[tool];
     
-    // Add minimal syllabus context
-    const syllabusContent = getSyllabusContent(subject, isJunior);
+    // Add minimal syllabus context (module-specific when available)
+    const syllabusContent = getSyllabusContent(subject, isJunior, topic);
     if (syllabusContent) {
         // Only inject a small amount for demo (5000 chars max)
         systemPrompt += `\n\nSYLLABUS CONTEXT (use sparingly for accuracy):\n${syllabusContent.substring(0, 5000)}`;
@@ -4030,7 +4076,8 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     const subjectName = subjectsConfig.subjects.find(s => s.id === subject)?.name || subject;
 
     // Keep context lean for faster generation — only enough for style & accuracy
-    const syllabusContent = getSyllabusContent(subject);
+    // Pass topics so we load module-specific syllabus content when available
+    const syllabusContent = getSyllabusContent(subject, false, topics);
     if (syllabusContent) {
         const truncated = syllabusContent.substring(0, 15000);
         contextPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS (key topics) ===\n${truncated}\n=== END SYLLABUS ===`;
@@ -5124,7 +5171,11 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     
     // Inject syllabus content for syllabus and practice bots
     if (subjectId && (botType === 'syllabus' || botType === 'practice')) {
-        const syllabusContent = getSyllabusContent(subjectId);
+        // Extract topic from user message for module-specific loading
+        const lastMsg = messages.length > 0 ? messages[messages.length - 1].content : '';
+        const botTopicMatch = lastMsg.match(/Topic:\s*(.+?)(?:\n|$)/i);
+        const botTopic = botTopicMatch ? botTopicMatch[1].trim() : null;
+        const syllabusContent = getSyllabusContent(subjectId, false, botTopic);
         if (syllabusContent) {
             const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
             

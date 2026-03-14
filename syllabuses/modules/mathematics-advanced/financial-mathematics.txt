@@ -1,0 +1,203 @@
+﻿=== Financial mathematics ===
+Subject: mathematics-advanced
+============================================================
+
+Financial mathematics is used to make financial decisions about, for example, home loans, savings accounts and car loans.
+
+Annuities are used when saving for a goal, retirement planning, and for plans such as sinking funds operated by clubs and societies.
+Real-world applications
+Considerations
+    • Some students may need to review the concept of compound interest in preparation for applying it to reducing balance loans and annuities.
+    • Students could compare current interest rates for loans from various lending institutions and use online loan calculators to explore the duration of loans, borrowing capacity and repayment amounts for different loan amounts.
+    • Students could use a loan spreadsheet or an online calculator to explore the effects of varying the amount borrowed, the interest rate and the repayment amount, and to determine borrowing capacity. They could determine the answers to suitable ‘what if’ questions, for example, what is the effect on the term of the loan and the amount of interest paid if: there is an interest rate rise, or more than the minimum monthly repayment is paid, or there is an interest rate rise in the case where more than the minimum monthly repayment is already being paid?
+Diversity of learners
+    • Teachers should consider the accessibility of tools and resources. Considerations for tools such as spreadsheets, calculators and applications may include compatibility with screen readers and other assistive technologies including alternative input devices and the use of accessible calculators (see approved calculators). Considerations for resources may include the language demands, readability of and long descriptions for images and providing alternative text for graphs and diagrams.
+    • Students with disability may require adjustments including access to visual or digital aids to communicate and demonstrate knowledge, understanding and skills.
+    • Students for whom English is an additional language or dialect (EAL/D) may require additional support and targeted strategies in learning language specific to mathematics.
+    • The pace and complexity of learning may need to be adjusted for students who progress at different rates.
+Glossary
+Mathematics Advanced 11–12 (2024) Terms
+absolute value
+The magnitude or size of a real number, i.e. the distance of the number from the origin on a number line.
+Formally, it has the piecewise definition .
+acceleration
+The rate at which velocity changes over time.
+acute angle
+An angle smaller than a right angle, between 0° and 90°.
+Extended in Mathematics Advanced and Extension 1: In circular measure, an angle lying in the interval 
+algebraic expression
+A mathematical statement formed by combining numbers and algebraic symbols using arithmetic operations, e.g. .
+algebraic fraction
+A fraction in which the numerator and/or the denominator are algebraic expressions.
+ambiguous case (of the sine rule)
+In trigonometry, refers to using the sine rule to calculate the size of an angle in a triangle where there are two possibilities for the angle, one obtuse and one acute, leading to two possible triangles. This occurs because, for an acute angle , .
+amplitude
+A function of the form  or  has amplitude , that is half the distance between the maximum and minimum values.
+angle
+Formed by 2 straight lines meeting at a common endpoint, called the vertex. An angle can describe the amount of turn between its 2 arms (lines).
+angle of depression
+The angle between horizontal and the line of sight from an observer to an object that is lower than the observer.
+
+angle of elevation
+The angle between horizontal and the line of sight from an observer to an object that is higher than the observer.
+
+angle of inclination
+The angle a straight line makes with the positive -axis.
+annuity
+A compound interest investment to which payments are made, or a single sum invested from which payments are received, on a regular basis for a fixed period of time.
+arc
+A part of a circle’s circumference.
+Extended in Mathematics Extension 1: A part of a curve.
+arc length
+The distance between two points on a curve. In a circle the length of an arc is given by , where  is the arc length,  is the radius and  is the angle subtended at the centre, measured in radians.
+area of a triangle
+Calculated using , where  is the base length and  is the perpendicular height. For a triangle  with sides  and  about the angle , the area of the triangle is .
+arithmetic progression (AP)
+A sequence of numbers in which the difference between any two successive terms of the sequence is constant. Also known as arithmetic sequence.
+arithmetic sequence
+A sequence of numbers in which the difference between any two successive terms of the sequence is constant. Also known as arithmetic progression.
+array
+One of several different arrangements that can be used to model multiplicative situations. It is made by arranging a set of objects, such as counters, into columns and rows. Each column must contain the same number of objects as the other columns, and each row must contain the same number of objects as the other rows.
+association
+Relationship between pairs of numerical variables e.g. in terms of strength, form and direction.
+asymptote
+A straight line (or another curve) that a curve approaches as  tends to , or to some particular value.
+For example, the curve  has an asymptote  as  tends to , and the curve  has asymptotes  and  as  tends to  and  respectively.
+average
+A number expressing a central or typical value in a set of data. While it usually refers to the arithmetic mean, that is, the sum of a set of numbers divided by the number of numbers in the set, it may also refer to other measures of centre.
+average rate of change
+The change in one quantity divided by the corresponding change in another quantity. For a function  over the domain , the average rate of change of  with respect to  is, .
+axis of symmetry
+A straight line that divides a shape or curve into two so that one side is a reflection of the other in the given line.
+bearing
+A direction from one point on the Earth’s surface to another. Two types of bearings may be used: compass bearing and true bearing.
+See compass bearing and true bearing
+break-even point
+The point at which income from production and cost of production are equal.
+Cartesian coordinate system
+A system that specifies the position of each point in a plane, formed by the intersection of 2 perpendicular number lines called axes. Each point is represented by an ordered pair of real numbers called the coordinates of the point. The point where the axes meet is called the origin and has coordinates .
+chain rule
+A formula for the derivative of the composite of two differentiable functions. If  is a function of , and  is a function of , then the chain rule states that . If  is the composite function , then .
+change of base rule
+A rule for writing a logarithm with a particular base as the ratio of two logarithms with a different base: .
+circle
+All points equal to a given distance from a fixed point, the centre. When used to describe a shape, a circle includes all points inside the boundary.
+circumference
+The boundary of a circle. The length of the circumference   is given by , where  is the diameter. Alternatively, it is given by , where  is the radius.
+coefficient
+A numerical quantity that multiplies a variable in an algebraic expression, e.g. 5 is the coefficient of . Variables with no specified coefficient have a coefficient of 1.
+common difference
+The constant difference between successive terms of an arithmetic sequence.
+common ratio
+The constant ratio between successive terms of a geometric sequence.
+compass bearing
+Angles either side of north or south. For example, a compass bearing of N50°E is found by facing north and moving through an angle of 50° to the east.
+complement
+All of the outcomes that are not in a given event. All the elements of a set that are not in a given subset.
+complementary angles
+Two adjacent angles that form a right angle, i.e. the sum of the angles measured in degrees is 90°.
+complementary events
+Two mutually exclusive outcomes in a probability experiment, such that  where  is the probability of event  and  the probability of event .
+Extended in Mathematics Standard and Advanced: Two mutually exclusive events that make up the sample space.
+completing the square
+Rearranging a quadratic expression  into the form .
+composite functions
+When the output of one function becomes the input of a second function.
+For example, (read as of  of ) is a composite function where the outputs of function  are taken as the inputs of function . 
+compound interest
+The interest earned by investing a sum of money (the principal) when each successive interest payment is added to the principal for calculating the next interest payment.
+concave down
+A function in which all points on a graph between any two given points on the graph lie on or above the chord joining the given points.
+concave up
+A function for which all points on a graph between any two given points on the graph lie on or below the chord joining the given points.
+conditional probability
+Consideration of whether the knowledge of the occurrence of one event, A, affects the probability of occurrence of another event, B.
+Extended in Mathematics Advanced: The probability of an event  occurring, given that another event  has occurred, notated as  (read as ‘probability of  given ’).
+conjugate
+For a surd , where , ,  and  are real numbers, the conjugate is .
+In complex numbers, the conjugate of  is .  and  are complex conjugates.
+constant
+A fixed numerical value. For example, in the algebraic expression , the number 11 is a constant.
+constant function
+A function that has only one value.
+continuous function
+The graph of a continuous function is an unbroken curve. It can be drawn without lifting the pen off the paper.
+continuous random variable
+A continuous random variable is a numerical variable that can take any value along a continuum.
+contribution
+An amount of money that is paid into an annuity. The contribution can be made as a lump sum or as a series of payments.
+converse
+If one relationship is true, then the opposite is also true.
+The converse of a statement ‘If  then ' is 'If  then '. For example, the converse of Pythagoras’ theorem is that if the sum of the squares of 2 sides of a triangle is equal to the square of the third side, then the triangle is right-angled.
+Extended in Mathematics Extension 2: The converse of  is  or .
+cosecant ratio
+For an angle, its cosecant is the reciprocal of its sine, .
+In any right-angled triangle,  where .
+
+cosine rule
+
+A formula  that relates the lengths of the sides of a triangle to the cosine of one of its angles. 
+cost
+The price paid to acquire, produce, accomplish or maintain anything.
+cotangent ratio
+For an angle, its cotangent is the reciprocal of its tangent, .
+In any right-angled triangle,  where .
+
+cubic function
+A polynomial function of degree 3, that is, a function of the form .
+cumulative distribution function (CDF)
+For a continuous random variable , the cumulative distribution function (CDF), given by the function , is .
+cumulative frequency
+The accumulating total of frequencies within an ordered dataset.
+cumulative frequency histogram
+A visual representation of data using bars to represent the class boundaries and the cumulative frequencies.
+The area of each bar is proportional to the cumulative frequency of the observations up to the end of that class.
+cumulative frequency polygon
+A series of straight lines representing the cumulative frequency for a given dataset. Sometimes called the ‘ogive’.
+degree (networks)
+The degree of a vertex is the number of edge ends at that vertex.
+degrees (geometry)
+A unit for measuring an angle. Angles are measured as a proportion of a full turn, which is equivalent to 360 degrees, so that one degree, written as  is equal to  of a full turn.
+denominator
+Comes from Latin, meaning ‘that which gives a name’ [de- “completely”; nomen “name”]. The denominator of a fraction identifies the name of the fractional parts (e.g. thirds, quarters or fifths).
+Extended in 7–10: In the fraction , b is the denominator.
+dependent variable
+The variable used to represent the output values of a function. A dependent variable is generally represented on the vertical axis of a graph.
+derivative
+The result obtained after differentiation. For the function , the derivative is the gradient function of , and is denoted . The derivative of  from first principles is given by . The derivative of  with respect to  is denoted  or .
+differentiable
+A function which can be differentiated at each point in its domain.
+A function  is differentiable at  if  exists, that is if there is a non-vertical tangent to the graph of  at the point .
+differentiation
+The process used to find the derivative of a function.
+dilation
+A process of stretching or compressing the graph of a function. This could happen either in the  or  direction or both.
+direct variation
+A proportional relationship where one quantity directly varies with respect to a change in another quantity. This implies that if there is an increase (or decrease) in one quantity then the other quantity will experience a proportionate increase (or decrease).
+discontinuity
+A point at which the graph of a function is broken (not continuous) and the function is undefined.
+discrete probability distribution
+Specifies the probabilities with which a discrete random variable takes each of its values.
+discrete random variable
+A numerical variable whose values can be listed.
+discrete variable
+Individual and countable items that can be listed.
+Extended in Mathematics Advanced: Also known as a discrete random variable.
+discriminant
+In the quadratic expression , the discriminant 
+disjoint (sets)
+Two sets which do not have any common elements.
+displacement
+The change in position of an object, after a period of time, from its original position. Displacement is a vector quantity. The displacement may be positive, negative or zero.
+distance
+The length between two points. Distance is a positive scalar quantity.
+distance–time graph
+A line graph that relates distance and time, with time on the horizontal axis and distance on the vertical axis.
+distinct
+Different, not equal.
+domain
+The set of allowable values of  in a function or relation.
+Extended in Mathematics Advanced, Extension 1 and Extension 2: For a function or relation, it is the set of real numbers on which the function or relation is defined.
+element(s)
+A member of a set. For example,  is a member of the set of natural numbers . This relation can be written more concisely as  (' is an element of the set ').
+empirical rule (for a normally distributed random variable)

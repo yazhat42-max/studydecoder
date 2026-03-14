@@ -1,0 +1,341 @@
+﻿{
+    "agriculture":  {
+                        "Plant production":  "plant-production.txt",
+                        "Farm case study":  "farm-case-study.txt",
+                        "Animal production":  "animal-production.txt",
+                        "Farm product study":  "farm-product-study.txt",
+                        "Plant/Animal production":  "plant-animal-production.txt",
+                        "Electives":  "electives.txt"
+                    },
+    "music-1":  {
+                    "Composition":  "composition.txt",
+                    "Aural Skills":  "aural-skills.txt",
+                    "Performance (Solo and Ensemble)":  "performance-solo-and-ensemble.txt",
+                    "Musicology":  "musicology.txt"
+                },
+    "history-extension":  {
+                              "Research Projects":  "research-projects.txt",
+                              "Extension History Topics":  "extension-history-topics.txt"
+                          },
+    "drama":  {
+                  "Improvisation, Playbuilding and Acting":  "improvisation-playbuilding-and-acting.txt",
+                  "Australian Drama and Theatre":  "australian-drama-and-theatre.txt",
+                  "Individual Project - Critical Analysis":  "individual-project-critical-analysis.txt",
+                  "Group Performance":  "group-performance.txt",
+                  "Elements of Production in Performance":  "elements-of-production-in-performance.txt",
+                  "Theatrical Traditions and Performance Styles":  "theatrical-traditions-and-performance-styles.txt"
+              },
+    "biology":  {
+                    "Module 4: Ecosystem Dynamics":  "module-4-ecosystem-dynamics.txt",
+                    "Module 7: Infectious Disease":  "module-7-infectious-disease.txt",
+                    "Module 5: Heredity":  "module-5-heredity.txt",
+                    "Module 2: Organisation of Living Things":  "module-2-organisation-of-living-things.txt",
+                    "Module 8: Non-infectious Disease and Disorders":  "module-8-non-infectious-disease-and-disorders.txt",
+                    "Module 1: Cells as the Basis of Life":  "module-1-cells-as-the-basis-of-life.txt",
+                    "Module 3: Biological Diversity":  "module-3-biological-diversity.txt",
+                    "Module 6: Genetic Change":  "module-6-genetic-change.txt"
+                },
+    "hospitality":  {
+                        "Food and Beverage Services":  "food-and-beverage-services.txt",
+                        "Hospitality Operations":  "hospitality-operations.txt"
+                    },
+    "ancient-history":  {
+                            "Historical Periods - Fall of Roman Republic 78-31 BC":  "historical-periods-fall-of-roman-republic-78-31-bc.txt",
+                            "Personalities - Julius Caesar":  "personalities-julius-caesar.txt",
+                            "Ancient Societies - Athenian society in the time of Pericles":  "ancient-societies-athenian-society-in-the-time-of-pericles.txt",
+                            "Historical Periods - The Augustan Age":  "historical-periods-the-augustan-age.txt",
+                            "Ancient Societies - Spartan society to Leuctra 371 BC":  "ancient-societies-spartan-society-to-leuctra-371-bc.txt",
+                            "Personalities - Agrippina the Younger":  "personalities-agrippina-the-younger.txt",
+                            "Personalities - Xerxes":  "personalities-xerxes.txt",
+                            "Core Study: Cities of Vesuvius - Pompeii and Herculaneum":  "core-study-cities-of-vesuvius-pompeii-and-herculaneum.txt",
+                            "Personalities - Hatshepsut":  "personalities-hatshepsut.txt",
+                            "Historical Periods - New Kingdom Egypt to Thutmose IV":  "historical-periods-new-kingdom-egypt-to-thutmose-iv.txt",
+                            "Historical Periods - The Julio-Claudians":  "historical-periods-the-julio-claudians.txt",
+                            "Ancient Societies - New Kingdom Egypt to Amenhotep III":  "ancient-societies-new-kingdom-egypt-to-amenhotep-iii.txt",
+                            "Personalities - Akhenaten":  "personalities-akhenaten.txt"
+                        },
+    "design-technology":  {
+                              "Designing and Producing":  "designing-and-producing.txt",
+                              "Project realisation":  "project-realisation.txt",
+                              "Project proposal and development":  "project-proposal-and-development.txt",
+                              "Innovation and Emerging Technologies":  "innovation-and-emerging-technologies.txt"
+                          },
+    "industrial-tech-metals":  {
+                                   "Industry Related Manufacturing Technology":  "industry-related-manufacturing-technology.txt",
+                                   "Production":  "production.txt",
+                                   "Industry Study":  "industry-study.txt",
+                                   "Design, Management and Communication":  "design-management-and-communication.txt"
+                               },
+    "health-movement-science":  {
+                                    "The body and mind in motion":  "the-body-and-mind-in-motion.txt",
+                                    "Health for individuals and communities":  "health-for-individuals-and-communities.txt",
+                                    "Health in an Australian and global context":  "health-in-an-australian-and-global-context.txt",
+                                    "Training for improved performance":  "training-for-improved-performance.txt"
+                                },
+    "mathematics-advanced":  {
+                                 "Financial mathematics":  "financial-mathematics.txt",
+                                 "Exponential and logarithmic functions":  "exponential-and-logarithmic-functions.txt",
+                                 "Differential calculus":  "differential-calculus.txt",
+                                 "Applications of calculus":  "applications-of-calculus.txt",
+                                 "Trigonometry and measure of angles":  "trigonometry-and-measure-of-angles.txt",
+                                 "Introduction to differentiation":  "introduction-to-differentiation.txt",
+                                 "Sequences and series":  "sequences-and-series.txt",
+                                 "Working with functions":  "working-with-functions.txt",
+                                 "Integral calculus":  "integral-calculus.txt",
+                                 "Random variables":  "random-variables.txt"
+                             },
+    "earth-environmental-science":  {
+                                        "Module 5: Earths Processes":  "module-5-earths-processes.txt",
+                                        "Module 8: Resource Management":  "module-8-resource-management.txt",
+                                        "Module 6: Hazards":  "module-6-hazards.txt",
+                                        "Module 2: Plate Tectonics":  "module-2-plate-tectonics.txt",
+                                        "Module 3: Energy Transformations":  "module-3-energy-transformations.txt",
+                                        "Module 1: Earths Resources":  "module-1-earths-resources.txt",
+                                        "Module 7: Climate Science":  "module-7-climate-science.txt",
+                                        "Module 4: Human Impacts":  "module-4-human-impacts.txt"
+                                    },
+    "english-advanced":  {
+                             "Narratives that shape our world":  "narratives-that-shape-our-world.txt",
+                             "The craft of writing":  "the-craft-of-writing.txt",
+                             "Textual conversations":  "textual-conversations.txt",
+                             "Critical study of literature":  "critical-study-of-literature.txt",
+                             "Texts and human experiences":  "texts-and-human-experiences.txt"
+                         },
+    "modern-history":  {
+                           "Change in the Modern World - Civil Rights in the USA 1945-1968":  "change-in-the-modern-world-civil-rights-in-the-usa-1945-1968.txt",
+                           "National Studies - China 1927-1949":  "national-studies-china-1927-1949.txt",
+                           "Peace and Conflict - Conflict in Europe 1935-1945":  "peace-and-conflict-conflict-in-europe-1935-1945.txt",
+                           "Core Study: Power and Authority in the Modern World 1919-1946":  "core-study-power-and-authority-in-the-modern-world-1919-1946.txt",
+                           "National Studies - USA 1919-1941":  "national-studies-usa-1919-1941.txt",
+                           "Peace and Conflict - Conflict in Indochina 1954-1979":  "peace-and-conflict-conflict-in-indochina-1954-1979.txt",
+                           "Change in the Modern World - Apartheid in South Africa 1960-1994":  "change-in-the-modern-world-apartheid-in-south-africa-1960-1994.txt",
+                           "National Studies - Russia and the Soviet Union 1917-1941":  "national-studies-russia-and-the-soviet-union-1917-1941.txt",
+                           "Peace and Conflict - The Cold War 1945-1991":  "peace-and-conflict-the-cold-war-1945-1991.txt"
+                       },
+    "chemistry":  {
+                      "Module 7: Organic Chemistry":  "module-7-organic-chemistry.txt",
+                      "Module 5: Equilibrium and Acid Reactions":  "module-5-equilibrium-and-acid-reactions.txt",
+                      "Module 4: Drivers of Reactions":  "module-4-drivers-of-reactions.txt",
+                      "Module 3: Reactive Chemistry":  "module-3-reactive-chemistry.txt",
+                      "Module 2: Introduction to Quantitative Chemistry":  "module-2-introduction-to-quantitative-chemistry.txt",
+                      "Module 1: Properties and Structure of Matter":  "module-1-properties-and-structure-of-matter.txt",
+                      "Module 8: Applying Chemical Ideas":  "module-8-applying-chemical-ideas.txt",
+                      "Module 6: Acid/Base Reactions":  "module-6-acid-base-reactions.txt"
+                  },
+    "food-technology":  {
+                            "Food Product Development":  "food-product-development.txt",
+                            "Nutrition":  "nutrition.txt",
+                            "Contemporary Nutrition Issues":  "contemporary-nutrition-issues.txt",
+                            "Food Quality":  "food-quality.txt",
+                            "Food Manufacture":  "food-manufacture.txt",
+                            "The Australian Food Industry":  "the-australian-food-industry.txt",
+                            "Food Availability and Selection":  "food-availability-and-selection.txt"
+                        },
+    "economics":  {
+                      "Introduction to Economics":  "introduction-to-economics.txt",
+                      "Economic Issues":  "economic-issues.txt",
+                      "Markets":  "markets.txt",
+                      "Economic Policies and Management":  "economic-policies-and-management.txt",
+                      "Government and the Economy":  "government-and-the-economy.txt",
+                      "Consumers and Business":  "consumers-and-business.txt",
+                      "Labour Markets":  "labour-markets.txt",
+                      "Financial Markets":  "financial-markets.txt",
+                      "The Global Economy":  "the-global-economy.txt"
+                  },
+    "industrial-tech-multimedia":  {
+                                       "Industry Related Manufacturing Technology":  "industry-related-manufacturing-technology.txt",
+                                       "Production":  "production.txt",
+                                       "Industry Study":  "industry-study.txt",
+                                       "Design, Management and Communication":  "design-management-and-communication.txt"
+                                   },
+    "enterprise-computing":  {
+                                 "Data Visualisation":  "data-visualisation.txt",
+                                 "Intelligent Systems":  "intelligent-systems.txt",
+                                 "Networking Systems and Social Computing":  "networking-systems-and-social-computing.txt",
+                                 "Principles of Cybersecurity":  "principles-of-cybersecurity.txt",
+                                 "Interactive Media and the User Experience":  "interactive-media-and-the-user-experience.txt",
+                                 "Enterprise Project":  "enterprise-project.txt",
+                                 "Data Science":  "data-science.txt"
+                             },
+    "science-extension":  {
+                              "Science Inquiry and Innovation Project":  "science-inquiry-and-innovation-project.txt"
+                          },
+    "english-extension":  {
+                              "Texts, culture and value":  "texts-culture-and-value.txt",
+                              "Literary worlds (Extension 1)":  "literary-worlds-extension-1.txt"
+                          },
+    "music-2":  {
+                    "Composition":  "composition.txt",
+                    "Aural Skills":  "aural-skills.txt",
+                    "Performance":  "performance.txt",
+                    "Musicology":  "musicology.txt"
+                },
+    "industrial-tech-timber":  {
+                                   "Industry Related Manufacturing Technology":  "industry-related-manufacturing-technology.txt",
+                                   "Production":  "production.txt",
+                                   "Industry Study":  "industry-study.txt",
+                                   "Design, Management and Communication":  "design-management-and-communication.txt"
+                               },
+    "information-digital-technology":  {
+                                           "Information Systems":  "information-systems.txt",
+                                           "Data and Information":  "data-and-information.txt",
+                                           "Digital Systems":  "digital-systems.txt"
+                                       },
+    "geography":  {
+                      "Global sustainability":  "global-sustainability.txt",
+                      "Rural and urban places":  "rural-and-urban-places.txt",
+                      "Ecosystems and global biodiversity":  "ecosystems-and-global-biodiversity.txt"
+                  },
+    "english-standard":  {
+                             "The craft of writing":  "the-craft-of-writing.txt",
+                             "Language, identity and culture":  "language-identity-and-culture.txt",
+                             "Contemporary possibilities":  "contemporary-possibilities.txt",
+                             "Texts and human experiences":  "texts-and-human-experiences.txt",
+                             "Close study of literature":  "close-study-of-literature.txt"
+                         },
+    "english-studies":  {
+                            "Narrative and human experiences":  "narrative-and-human-experiences.txt",
+                            "Writing for purpose":  "writing-for-purpose.txt"
+                        },
+    "business-studies":  {
+                             "Business planning":  "business-planning.txt",
+                             "Marketing":  "marketing.txt",
+                             "Finance":  "finance.txt",
+                             "Operations":  "operations.txt",
+                             "Human resources":  "human-resources.txt",
+                             "Nature of business":  "nature-of-business.txt",
+                             "Business management":  "business-management.txt"
+                         },
+    "engineering-studies":  {
+                                "Engineering Fundamentals":  "engineering-fundamentals.txt",
+                                "Biomedical Engineering":  "biomedical-engineering.txt",
+                                "Civil Structures":  "civil-structures.txt",
+                                "Braking Systems":  "braking-systems.txt",
+                                "Personal and Public Transport":  "personal-and-public-transport.txt",
+                                "Engineered Products":  "engineered-products.txt",
+                                "Aeronautical Engineering":  "aeronautical-engineering.txt",
+                                "Telecommunications Engineering":  "telecommunications-engineering.txt"
+                            },
+    "construction":  {
+                         "Tools of the trade":  "tools-of-the-trade.txt",
+                         "Skills in construction":  "skills-in-construction.txt",
+                         "Safety":  "safety.txt",
+                         "Working in the industry":  "working-in-the-industry.txt"
+                     },
+    "visual-arts":  {
+                        "Art Criticism and Art History":  "art-criticism-and-art-history.txt",
+                        "The Conceptual Framework":  "the-conceptual-framework.txt",
+                        "Body of Work Development":  "body-of-work-development.txt",
+                        "Artmaking Practice":  "artmaking-practice.txt"
+                    },
+    "mathematics-extension-1":  {
+                                    "Further calculus skills":  "further-calculus-skills.txt",
+                                    "Introduction to vectors":  "introduction-to-vectors.txt",
+                                    "Further trigonometry":  "further-trigonometry.txt",
+                                    "Inverse trigonometric functions":  "inverse-trigonometric-functions.txt",
+                                    "Proof by mathematical induction":  "proof-by-mathematical-induction.txt",
+                                    "Further work with functions":  "further-work-with-functions.txt",
+                                    "Polynomials":  "polynomials.txt",
+                                    "Permutations and combinations":  "permutations-and-combinations.txt"
+                                },
+    "dance":  {
+                  "Appreciation - Development of Dance in Australia":  "appreciation-development-of-dance-in-australia.txt",
+                  "Composition - Elements of Dance":  "composition-elements-of-dance.txt",
+                  "Performance - Dance Technique":  "performance-dance-technique.txt",
+                  "Major Study - Performance":  "major-study-performance.txt",
+                  "Major Study - Composition":  "major-study-composition.txt"
+              },
+    "investigating-science":  {
+                                  "Module 8: Science and Society":  "module-8-science-and-society.txt",
+                                  "Module 5: Scientific Investigations":  "module-5-scientific-investigations.txt",
+                                  "Module 1: Cause and Effect - Observing":  "module-1-cause-and-effect-observing.txt",
+                                  "Module 7: Fact or Fallacy?":  "module-7-fact-or-fallacy.txt",
+                                  "Module 4: Theories and Laws":  "module-4-theories-and-laws.txt",
+                                  "Module 6: Technologies":  "module-6-technologies.txt",
+                                  "Module 3: Scientific Models":  "module-3-scientific-models.txt",
+                                  "Module 2: Cause and Effect - Inferences and Generalisations":  "module-2-cause-and-effect-inferences-and-generalisations.txt"
+                              },
+    "english-eald":  {
+                         "Texts and society":  "texts-and-society.txt",
+                         "Language, identity and culture":  "language-identity-and-culture.txt",
+                         "Texts and human experiences":  "texts-and-human-experiences.txt",
+                         "Close study of text":  "close-study-of-text.txt"
+                     },
+    "mathematics-extension-2":  {
+                                    "The nature of proof":  "the-nature-of-proof.txt",
+                                    "Further work with vectors":  "further-work-with-vectors.txt",
+                                    "Applications of calculus to mechanics":  "applications-of-calculus-to-mechanics.txt",
+                                    "Further integration":  "further-integration.txt",
+                                    "Introduction to complex numbers":  "introduction-to-complex-numbers.txt"
+                                },
+    "industrial-tech-electronics":  {
+                                        "Industry Related Manufacturing Technology":  "industry-related-manufacturing-technology.txt",
+                                        "Production":  "production.txt",
+                                        "Industry Study":  "industry-study.txt",
+                                        "Design, Management and Communication":  "design-management-and-communication.txt"
+                                    },
+    "studies-of-religion":  {
+                                "Religion and Belief Systems in Australia post-1945":  "religion-and-belief-systems-in-australia-post-1945.txt",
+                                "Religion and Peace":  "religion-and-peace.txt",
+                                "Nature of Religion and Beliefs":  "nature-of-religion-and-beliefs.txt"
+                            },
+    "society-culture":  {
+                            "Depth Study - Belief Systems and Ideologies":  "depth-study-belief-systems-and-ideologies.txt",
+                            "Depth Study - Popular Culture":  "depth-study-popular-culture.txt",
+                            "The Social and Cultural World":  "the-social-and-cultural-world.txt",
+                            "Social and Cultural Continuity and Change":  "social-and-cultural-continuity-and-change.txt",
+                            "Intercultural Communication":  "intercultural-communication.txt",
+                            "Personal and Social Identity":  "personal-and-social-identity.txt"
+                        },
+    "legal-studies":  {
+                          "Law in Practice":  "law-in-practice.txt",
+                          "Options - Family":  "options-family.txt",
+                          "Crime":  "crime.txt",
+                          "The Individual and the Law":  "the-individual-and-the-law.txt",
+                          "Options - Workplace":  "options-workplace.txt",
+                          "Options - Consumers":  "options-consumers.txt",
+                          "Options - World Order":  "options-world-order.txt",
+                          "Human Rights":  "human-rights.txt",
+                          "The Legal System":  "the-legal-system.txt"
+                      },
+    "physics":  {
+                    "Module 3: Waves and Thermodynamics":  "module-3-waves-and-thermodynamics.txt",
+                    "Module 8: From the Universe to the Atom":  "module-8-from-the-universe-to-the-atom.txt",
+                    "Module 1: Kinematics":  "module-1-kinematics.txt",
+                    "Module 2: Dynamics":  "module-2-dynamics.txt",
+                    "Module 4: Electricity and Magnetism":  "module-4-electricity-and-magnetism.txt",
+                    "Module 5: Advanced Mechanics":  "module-5-advanced-mechanics.txt",
+                    "Module 7: The Nature of Light":  "module-7-the-nature-of-light.txt",
+                    "Module 6: Electromagnetism":  "module-6-electromagnetism.txt"
+                },
+    "software-engineering":  {
+                                 "Software Automation":  "software-automation.txt",
+                                 "Software Engineering Project":  "software-engineering-project.txt",
+                                 "Secure Software Architecture":  "secure-software-architecture.txt",
+                                 "The Object-Oriented Paradigm":  "the-object-oriented-paradigm.txt",
+                                 "Programming Fundamentals":  "programming-fundamentals.txt",
+                                 "Programming Mechatronics":  "programming-mechatronics.txt",
+                                 "Programming for the Web":  "programming-for-the-web.txt"
+                             },
+    "industrial-tech-graphics":  {
+                                     "Industry Related Manufacturing Technology":  "industry-related-manufacturing-technology.txt",
+                                     "Production":  "production.txt",
+                                     "Industry Study":  "industry-study.txt",
+                                     "Design, Management and Communication":  "design-management-and-communication.txt"
+                                 },
+    "industrial-tech-automotive":  {
+                                       "Industry Related Manufacturing Technology":  "industry-related-manufacturing-technology.txt",
+                                       "Production":  "production.txt",
+                                       "Industry Study":  "industry-study.txt",
+                                       "Design, Management and Communication":  "design-management-and-communication.txt"
+                                   },
+    "mathematics-standard":  {
+                                 "Bivariate data analysis":  "bivariate-data-analysis.txt",
+                                 "The normal distribution":  "the-normal-distribution.txt",
+                                 "Formulas and equations":  "formulas-and-equations.txt",
+                                 "Applications of measurement":  "applications-of-measurement.txt",
+                                 "Data analysis":  "data-analysis.txt",
+                                 "Networks, paths and trees":  "networks-paths-and-trees.txt",
+                                 "Linear relationships":  "linear-relationships.txt"
+                             }
+}

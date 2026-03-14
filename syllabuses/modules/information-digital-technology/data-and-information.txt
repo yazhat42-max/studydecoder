@@ -1,0 +1,539 @@
+﻿=== Data and Information ===
+Subject: information-digital-technology
+============================================================
+
+* explains policy and procedures for storing sensitive data and information.
+3.2.2	Associated units of competency
+The scope of learning for the HSC must be read and delivered in conjunction with the following associated units of competency:
+* BSBXCS303	Securely manage personally identifiable information and workplace information
+* ICTICT313	Identify IP, ethics and privacy policies in ICT environments
+The application and elements for each of these units of competency are provided below.
+BSBXCS303	Securely manage personally identifiable information and workplace information
+Application	This unit describes the skills and knowledge required to securely manage personally identifiable information (PII) and workplace information.
+Elements	1.	Handle PII and workplace information responsibly
+2.	Store and share PII and workplace information securely
+3.	Apply information protection protocols.
+Assessment requirements for BSBXCS303 Securely manage personally identifiable information and workplace information are detailed in the Training Package.
+ICTICT313	Identify IP, ethics and privacy policies in ICT environments
+Application	This unit describes the skills and knowledge required to assist with the protection and lawful use of intellectual property (IP) and observing relevant organisational ethics and privacy policies.
+Elements	1.	Identify principles underpinning organisational IP, ethics and privacy policy procedures
+2.	Understand and apply principles underpinning organisational IP, ethics and privacy policy procedures
+3.	Assist with non-compliance incident identification and recommendations.
+Assessment requirements for ICTICT313 Identify IP, ethics and privacy policies in ICT environments are detailed in the Training Package.
+
+3.2.3	Scope of learning for the HSC
+personally identifiable information (PII) and workplace information* an understanding of:
+- what is, and what is not, personally identifiable information (PII)
+- what is, and what is not, sensitive information in a workplace environment
+- the importance of confidentiality and security in relation to PII and workplace information (data)
+- the importance of ensuring PII and workplace information (data) is accurate and up-to-date* 'personal information' as defined by the Privacy Act 1988 (Australian Government) (as amended):
+- definition technologically neutral
+- identifiable versus reasonably identifiable* types of personal information:
+- name, age/date of birth, address, phone contact
+- employee record
+- financial records
+- health information
+- online username/identity
+- sensitive information, including race, ethnicity, religion, sexual orientation, criminal record, political opinion
+- tax file numbercompliance* privacy legislation in relation to information management: 
+- national:
+* purpose and intent of the Privacy Act 1988 (Australian Government) (as amended)
+* awareness of the Australian Privacy Principles (APPs)
+* what must be included in an organisation/workplace privacy policy
+- state:
+* purpose and intent of the Privacy and Personal Information Protection Act 1998 (NSW) (as amended)
+* primary role/function of the Information and Privacy Commission NSW* basic awareness of international legislation related to securely managing personal and workplace information (data)* privacy impact assessment (PIA):
+- what is it? why do it? when is it done?
+- primary role/function of the Office of the Australian Information Commissioner (OAIC) (Australian Government)
+- awareness of the steps in undertaking a PIA* notifiable data breaches:
+- primary role/function of the OAIC (Australian Government)
+- purpose and role of the Notifiable Data Breaches (NDB) scheme
+- what is a notifiable data breach, and when and how to report itcompliance, continued* cyber security in the workplace:
+- sources of information on current online security threats: 3
+* Australian Government:
+o Australian Bureau of Statistics (ABS)
+o Australian Competition & Consumer Commission (ACCC)
+o Australian Cyber Security Centre (ACSC)
+o Australian Signals Directorate (ASD)
+o ScamWatch
+* risk-management resources
+* industry codes of practice and guidelines
+* policy and procedures
+- workplace policy and procedures to identify and report notifiable breacheshandling, sharing and storing PII and workplace information* equipment and technology commonly used in workplaces to collect, process, store and maintain personal and workplace information* monitoring and reporting faults and malfunctions in IT infrastructure:
+- workplace policy and procedures
+- role in data management and protection* industry best practice standards and workplace policy and procedures to securely manage personal information and other workplace information:
+- accessing and sharing data, including risks of communicating sensitive information via non-secure means 
+- storage of data: 
+* document and media labelling
+* framework for distributed storage
+* on-site and off-site back-up of data
+* risks and benefits of cloud storage
+- deletion/disposal of data, including sensitive information
+- confidentiality agreement
+- firewall implementation
+- intrusion monitoring
+- password protection, including requirements for strength, complexity, change frequency and reuse
+- use of two factor authentication
+- use of security software
+- software updates
+- user access levels* protocols and practices protecting unauthorised access to client, employee and workplace information from:
+- disclosure
+- interference
+- loss
+- modification
+- theft and misusehandling, sharing and storing PII and workplace information, continued* protocols and practices for the ongoing storage of personal information:
+- accuracy and currency (up-to-date versus historical)
+- de-identification
+- destruction (disposal)
+- encryption, including protocols for its use
+- secure digital and physical storage* industry standards and workplace practices to test, assess and evaluate the security of stored personal information:
+- risk assessment
+- compliance maintenance and reporting* roles and responsibilities of workplace personnel for information protection in the workplace:
+- managing
+- reportingintellectual property (IP), ethics and privacy* difference between legal and ethical* basic understanding of different ethical theories and approaches:
+- deontological
+- utilitarian
+- virtue* legal and ethical issues affecting the ICT industry:
+- issues:
+* confidentiality
+* copyright
+* intellectual property
+* privacy
+- interrelationship of the legal and ethical aspects of these issues
+- effect of these legal and ethical issues and resulting obligations for the client, the ICT worker and employer, and the industry
+- workplace policy and procedures related to these legal and ethical issues - purpose, intention and underpinning principles* intellectual property (IP):
+- meaning in relation to both an individual and a business
+- primary role/function of IP Australia (Australian Government)
+- common types of IP rights - copyright, domain name, patent, registered design, trademark and confidential information
+- organisational costs associated with a breach of IP (economic and reputation)
+- an understanding that IP rights are country-specific
+- components of an organisation/workplace IP policy* copyright:
+- purpose and intent of the Copyright Act 1968 (Australian Government) (as amended)
+- consequences of infringing copyrightintellectual property (IP), ethics and privacy, continued* ICT industry code of ethics:
+- purpose
+- examples:
+* Australian Computer Society (ACS) code of ethics
+* Information Technology Professionals Association (ITPA) code of ethics
+- their influence on workplace policy, procedures and practice* roles and responsibilities of workplace personnel in implementing IP, ethics and privacy policy and procedures non-compliance* in relation to internal and external non-compliance infringements of IP, ethics and privacy policy and procedures: 
+- process for risk assessment and identification of non-compliance risk and incidents and breaches
+- how, when and to whom to report issues and incidents 
+- recommendations to overcome non-compliance and improve underpinning policy and procedures
+
+3.3	Safety - mandatory focus area
+3.3.1	Outcomes
+The student:
+* explains safe work practices and procedures for the information and communications technology (ICT) industry
+* demonstrates understanding of work health and safety (WHS) consultation, participation and compliance in the ICT industry
+* applies hazard identification and risk management in an ICT workplace
+* describes workplace policy and procedures that ensure the safety of clients, colleagues and the ICT worker.
+3.3.2	Associated unit of competency
+The scope of learning for the HSC must be read and delivered in conjunction with the following associated unit of competency:
+* BSBWHS311	Assist with maintaining workplace safety
+The application and elements for this unit of competency are provided below.
+BSBWHS311	Assist with maintaining workplace safety
+Application	This unit describes the skills and knowledge required to assist with implementing and monitoring an organisation's work health and safety (WHS) policies, procedures and programs as part of a small work team.
+Elements	1.	Assist with incorporating WHS policies and procedures into work team processes
+2.	Contribute to consultative arrangements for managing WHS
+3.	Contribute to organisational procedures for providing WHS training
+4.	Participate in identifying hazards, and assessing and controlling risks for the work area.
+Assessment requirements for BSBWHS311 Assist with maintaining workplace safety are detailed in the Training Package.
+
+
+3.3.3	Scope of learning for the HSC
+work health and safety (WHS)* meaning of health, safety and duty of care* acknowledge that WHS is everyone's responsibility in the workplace and the implications of this responsibility* concept of 'participation' and 'consultation' in relation to WHS* internal and external sources of workplace WHS information* primary role/function of key bodies involved in WHS:
+- SafeWork NSW
+- Safe Work Australia
+- local councils
+- unions
+- professional associations* importance of acting within scope of responsibility/level of authority in relation to WHS in the workplace:
+- taking initiative
+- problem-solving
+- decision-makingWHS compliance* difference between an act, regulation, code of practice, guidance material and standard (Australian, industry and workplace)* purpose and intent of WHS legislation and codes of practice and their application to the information and communications technology (ICT) industry and workplace, and a specific job role:
+- WHS legislation:
+* Work Health and Safety Act 2011 (NSW) (as amended)
+* Work Health and Safety Regulation 2017 (NSW) (as amended)
+- codes of practice related to:
+* first aid in the workplace
+* hazardous substances
+* manual handling
+* risk management and reporting
+* WHS consultation
+* work environment and facilities
+* working with electricity* WHS rights, duties and responsibilities of the person conducting a business or undertaking (PCBU), officer and worker (as defined in the legislation)* functions and powers of WHS inspectors* consequences of failure to observe (non-compliance) WHS workplace policy and procedures and legislative requirementsWHS compliance, continued* safety signs, symbols and barricades used in the ICT industry and their use in the workplace:
+- legislative requirements
+- meaning of colour and shape
+- appropriate placement and positioning* purpose and importance of monitoring and reporting* describe how, when and to whom to report:
+- types:
+* formal/informal
+* written
+* verbal
+- reporting to appropriate persons* apply workplace policy and protocols and regulatory requirements when monitoring, recording and reporting in relation to WHSWHS consultation and participation* opportunities for workers to provide input into WHS consultation and participation processes:
+- formal and informal discussion
+- survey
+- training and workshops
+- WHS audit
+- WHS inspection* requirements (including election/formation) of a health and safety committee or health and safety representative (HSR) and their role and responsibilities in the workplace* role and responsibilities of relevant personnel in WHS consultation and participation:
+- PCBU
+- manager/supervisor/team leader
+- self
+- other workers
+- union* importance of identifying, reporting and responding to:
+- WHS issues and concerns
+- workplace hazards
+- unsafe work practices
+- breaches of health and safety
+and examples specific to the ICT industry and workplace* planning and conducting WHS training sessions in the workplace:
+- aligned to workplace policy and procedures
+- communicate importance of safe work procedures and practices
+- increase work team's understanding of their legal obligations
+- implement improvements in response to WHS feedback
+- meet training needs of the work team to develop and enhance WHS competence
+- raise awareness of the importance of WHS monitoring and reportingWHS consultation and participation, continued* use of data and evidence to demonstrate how safe work practices can be improved to:
+- contribute to a safety culture
+- continuously improve policy and systems
+- empower workers
+- inform management of critical health and safety risks hazard identification and risk management* difference between a hazard and a risk* risk management and its application in an ICT workplace:
+- hazard identification:
+* potential hazards to self, colleagues, clients and others typical to the industry
+* range of hazards:
+o electricity and cabling
+o equipment
+o hazardous and non-hazardous materials
+o human factors (self and others)
+o manual handling
+o work environment
+o work processes and practices
+* identifying and reporting workplace hazards
+- risk assessment
+- risk control using a hierarchy, including:
+* eliminate the risk
+* minimise the risk:
+o substitution
+o modification
+o isolation
+o engineering control
+* other controls:
+o administrative
+o safe work practices
+o personal protective equipment (PPE)
+- monitor and reviewsafe work procedures and practices* safe work procedures and practices, and their purposes:
+- WHS induction training
+- adherence to:
+* standard operating procedures (SOP)
+* work documentation and plans
+* work instructions
+* workplace policy
+- ergonomics and posture:
+* correct placement of equipment
+* sitting and standing positions
+* task rotation
+* use of adjustable equipment and furniture safe work procedures and practices, continued- hazardous substances and dangerous goods:
+* correct handling, application, labelling, transport, storage and disposal
+* safety data sheet (SDS)
+- manual handling techniques:
+* recommended weight limits
+* when working individually, in pairs and with a team:
+o bending and twisting
+o loading and unloading
+o moving, lifting, carrying and placing items down
+o undertaking repetitious tasks
+o using mechanical aids/lifting equipment
+- housekeeping:
+* clean-up procedures
+* movement and storage of materials
+* storage and disposal of waste
+* consideration of WHS and the environment
+- selection, use and maintenance of PPE
+- tools and equipment:
+* pre-operational checks and correct use
+* regular maintenance and correct storage
+* safety tags and lockout
+* selection appropriate to task/work activity
+- working with electricity:
+* general electrical safety 
+* cabling and leads:
+o appropriate storage
+o maintenance
+o proper placement and securing* importance of safe work procedures and practices* propose safe work procedures and practices for a workplace and specific job role within the ICT industryincidents, accidents and emergencies* meaning of incident, accident and emergency* a range of incidents, accidents and emergencies common to the ICT industry* distinguish between a manageable first aid situation and an emergency situation* a range of potential injuries common to an ICT industry workplace, their cause(s) and basic first aid for these injuries* strategies to reduce workplace accidents, injury and impairment* implications of the cost of workplace injury:
+- human
+- socialincidents, accidents and emergencies, continued- economic
+- organisational* responding to incidents, accidents and emergencies:
+- emergency situations
+- seeking assistance
+- emergency contact numbers
+- emergency signals, alarms and exits - location and use
+- procedures to follow:
+* notification
+* workplace policy and procedures:
+o evacuation
+o security
+* reporting
+- role of personnel in an emergency
+- first aid:
+* basic principles
+* personnel responsible* apply workplace policy and protocols and regulatory requirements when recording and reporting in relation to incidents, accidents and emergencies
+
+3.4	Working in the industry - mandatory focus area
+3.4.1	Outcomes
+The student:
+* communicates ideas and expresses points of view
+* works independently and collaboratively in the ICT workplace
+* analyses problems in order to generate coded solutions
+* applies computational thinking to develop algorithms to solve problems
+* tests and evaluates programming code.
+3.4.2	Associated units of competency
+The scope of learning for the HSC must be read and delivered in conjunction with the following associated units of competency:
+* BSBXTW301	Work in a team
+* ICTPRG302	Apply introductory programming techniques
+The application and elements for these units of competency are provided below.
+BSBXTW301	Work in a team
+Application	This unit describes the skills and knowledge required to work effectively as part of permanent or project based teams in a workplace within an industry.
+Elements	1.	Identify individual work tasks within a team
+2.	Contribute effectively to team goals
+3.	Work effectively with team members
+4.	Communicate effectively with team leaders.
+Assessment requirements for BSBXTW301 Work in a team are detailed in the Training Package.
+ICTPRG302	Apply introductory programming techniques
+Application	This unit describes the skills and knowledge required to create simple applications through introductory programming techniques.
+Elements	1.	Establish application task
+2.	Apply language syntax and layout
+3.	Apply control structures
+4.	Code using standard programming algorithms
+5.	Test code
+6.	Create a simple application and seek feedback.
+Assessment requirements for ICTPRG302 Apply introductory programming techniques are detailed in the Training Package.
+
+3.4.3	Scope of learning for the HSC
+To support learning in ICTPRG302 Apply introductory programming techniques, the scope of learning for the HSC should be addressed using a text-based, object-oriented programming language.
+nature of the ICT industry* general features of the information and communications technology (ICT) industry:
+- in ICT-specific workplaces
+- across diverse industries that use ICT* sectors/service areas within the ICT industry:
+- primary role/function(s)
+- product(s) and/or service(s) provided* interrelationships between sectors/service areas and the effect on an individual's work, the work of the team, and client outcomes* career pathways across the ICT industry and the knowledge, skills and training (qualifications, vendor certifications and vendor-neutral certifications) required for different job roles* industry currency:
+- importance of maintaining currency
+- individual and workplace strategies to maintain currencyemployment* types of employment in the ICT industry - full time, part-time, casual, contract* the difference between an award, registered agreement and contract, and how they apply to workers in the ICT industry* investigate the employment terms and conditions for a specific ICT job role* working knowledge of employer and employee rights and responsibilities in relation to employment and work* purpose of a code of conduct and its value for the industry, workplace, worker and client* equal employment opportunity (EEO):
+- principles
+- intent of EEO legislation
+- rights and responsibilities of employers and employees in relation to EEO
+- workplace policy and procedures relating to EEO* anti-discrimination in the workplace:
+- principles 
+- intent of anti-discrimination legislation 
+- rights and responsibilities of employers and employees in relation to anti-discrimination
+- workplace policy and procedures relating to anti-discrimination* bullying and harassment in the workplace:
+- direct and indirectemployment, continued- types (verbal, physical, psychological, sexual)
+- rights and responsibilities of employers and employees in relation to bullying and harassment
+- workplace policy and procedures relating to bullying and harassment* strategies to eliminate bias and harassment in the workplace* consequences, including legal ramifications, of discriminatory workplace behaviour* recourse available to individuals in the event of inappropriate workplace behaviourICT industry worker* characteristics of an ICT worker:
+- personal attributes and work ethic valued by the ICT industry
+- interpersonal skills beneficial to an individual working in an ICT workplace
+- importance of personal presentation and standards of personal hygiene
+- presentation standards for a specific ICT workplace and job role
+- behaviour to support a safe and sustainable ICT industry work environment* how personal values, opinions and ethics can affect everyday work* working within scope of responsibility, level of authority and ability:
+- taking initiative, problem-solving and decision-making 
+- seeking assistance when needed* feedback to improve work performance and behaviour:
+- value to an individual worker, the workplace and the industry
+- types of feedback:
+* formal and informal
+* direct and indirect
+- strategies for obtaining and interpreting feedback from supervisor(s), colleagues and clients
+- dealing with positive feedback and negative feedback
+- responsibility of a worker to use personal reflection, seek and provide feedback and improve
+- opportunities for ongoing training to meet knowledge and skills gaps, for upskilling and/or fulfil career aspirations* importance of work-life balance and strategies to maintain that balancework practices* impact of poor work practices on colleagues, clients, the workplace and the industry* an understanding that work practices and experiences differ between workplaces, and the potential benefits of transferring experiences between workplaces to assist team practices* work tasks typical to an ICT workplace (routine, non-routine and rostered)* work instructions:
+- access and use a range of sources containing information and instructions relating to work responsibilities
+- read, interpret, clarify and follow instructions for work tasks of varying degrees of difficulty
+- deliver instruction to others work practices, continued* working sustainably:
+- current environmental issues affecting the ICT industry
+- concepts of sustainability in the workplace and environmentally sustainable work practices
+- environmental responsibilities of the ICT workplace and individual worker* implementation and maintenance of work practices in accordance with industry standards and workplace policy, guidelines and proceduresworking with others* importance of developing and maintaining collegial work relationships* communication in the workplace with colleagues and clients:
+- communication process/cycle:
+* sender (idea)
+* message (encoding)
+* transmission
+* receiver (decodes message and interprets meaning)
+* feedback
+- effective verbal, nonverbal and written communication
+- effective questioning and listening techniques:
+* open, closed and probing questions
+* active listening
+- methods and tools used to communicate effectively, including those to collaborate with others remotely:
+* phone or mobile
+* video conference
+* other digital tools or software
+- barriers to effective communication and strategies to overcome them* importance of teamwork in an ICT work environment:
+- meaning of 'team' and 'teamwork'
+- characteristics of effective teamwork
+- benefits of teamwork to an ICT workplace
+- typical composition and examples of teams or work groups in an ICT workplace and their area(s) of responsibility
+- relationship between individual worker and the team/work group
+- difference between individual and workplace goals and plans
+- supporting others to achieve team/work group goals and tasks* workplace and team diversity:
+- benefits
+- need for understanding and acceptance in the workplace
+- importance of respect and sensitivity
+- proactive strategies for promoting workplace diversity and accommodating individual differences
+- culturally appropriate work practices
+- effective cross-cultural communication skillsworking with others, continued* causes of misunderstandings and conflict when working with others, and conflict resolution techniques to manage any work team relationship issues* collaboration with team members and team leader to plan, organise and perform work tasks in accordance with workplace requirements:
+- determine the components of the work task
+- schedule and prioritise the work
+- allocate roles and responsibilities
+- confirm resources required, and their availability
+- confirm understanding of task instructions
+- share knowledge, ideas and problems
+- seek and/or offer support to determine solutions and resolve problems 
+- monitor task completion, and report any issues preventing completion* delivering quality work outcomes through teamwork and work groups, including those working remotelyapplication requirements* inputs and outputs required to solve a particular problem:
+- clarification of specifications with client:
+* user interface design
+* user experience (UX)
+- use specifications to develop an input-process-output (IPO) diagram* critical specifications influencing the development of the solution:
+- flow of data through a system using diagrammatic models:
+* flowchart - terminator, process, input/output, decision, subprogram
+* data flow diagram - process, external entity, data store, data flow
+* structure chart - module, parameter, flag (control variable), decision, repetition
+- data:
+* required
+* collected
+* processed
+* displayed
+- hardware:
+* user input/output
+* programmer input/output* research required to solve a problem:
+- needs analysis
+- feasibility study:
+* economic
+* operational
+* schedule
+* technical
+- language/paradigm requirements
+- industry standards and guidelinesprogramming* algorithm design:
+- control structures:
+* sequence
+* selection
+* iteration (repetition or looping)
+- subroutines
+- representing algorithms:
+* pseudocode
+* flowcharts* use of data structures:
+- one-dimensional, two-dimensional, array of records
+- sequential and relative files* search and sort:
+- linear search
+- binary search
+- bubble sort
+- insertion sort
+- selection sort* reasons for the development and use of standard/library modules* generate syntax using language rules (statements, variables and keywords):
+- appropriate data type use
+- operators* standard data types:
+- boolean
+- date/time
+- numeric:
+* integer
+* real
+* floating point
+- string* characteristics of an integrated development environment (IDE): 
+- compiler
+- debugger
+- interpreter
+- source code editorcode testing and evaluation* features and purpose of documentation:
+- code comments, intrinsic documentation
+- frequently asked questions (FAQs)
+- manuals and readme files 
+- troubleshooting guidecode testing and evaluation, continued* use of a debugger:
+- correcting errors
+- desk checking method
+- detecting and reporting errors
+- 'step into' feature* purpose and selection of test data:
+- expected output
+- unexpected output
+- outliers* sources of feedback to support development:
+- developer
+- peer
+- user* criteria used to evaluate solutions:
+- functionality and performance
+- quality of user and developer documentation 
+- readability of code
+- solution efficiencyelementary program development* top-down design:
+- develop and convert an algorithm into code
+- use control structures
+- use standard modules
+- create relevant subprograms* apply skills in computational thinking and programming to develop an elementary program
+
+4	HSC exam
+The Information and Digital Technology Curriculum Framework includes an HSC exam which provides the opportunity for students to have this HSC exam mark contribute to the calculation of their Australian Tertiary Admission Rank (ATAR).
+The Information and Digital Technology HSC exam can contribute up to 2 units towards the calculation of a student's ATAR.
+Students who have completed the Information and Digital Technology (240 indicative hours) course are eligible to sit for the Information and Digital Technology HSC exam. 
+Students who want to sit for the Information and Digital Technology HSC exam must be entered for both the Information and Digital Technology (240 indicative hours) course and the Information and Digital Technology exam in Schools Online.
+For the HSC exam specifications, which describe the format of the external HSC exam, see Assessment and Reporting in Information and Digital Technology.
+The HSC exam is independent of the competency-based assessment undertaken during the course and has no impact on student eligibility for AQF VET qualifications.
+4.1	Examinable outcomes and content
+The HSC exam in Information and Digital Technology is based on the HSC Content (focus areas) in this Framework.
+The HSC Content is detailed in Section 3 of this syllabus.
+4.2	Relationship of the 240-hour course to the HSC exam 
+For a description of the relationship between the Information and Digital Technology (240 indicative hours) course structure, the HSC Content and the HSC exam see Assessment and Reporting in Information and Digital Technology.
+
+
+5	Other important information
+5.1	Exclusions
+Where there is significant overlap between an HSC VET course and other HSC VET or general education courses, NESA has an exclusion between the courses. Exclusions are generally applied at a course level rather than at the unit of competency level.
+Students can only undertake the Information and Digital Technology (120 indicative hours) course or the Information and Digital Technology (240 indicative hours) course.
+Schools should check all course exclusions when determining an appropriate pattern of study for their students.
+5.2	Recognition of credit transfer and prior learning (RPL) within VET courses
+Students who have current knowledge, skills or experience relevant to a VET course may be granted credit towards the course requirements (ACE Rule 14.4.2).
+Find out more about arrangements for credit transfer and RPL within VET courses, including processes, application form and examples of possible scenarios.
+5.3	School-based trainees
+Read information about provision for school-based trainees within the HSC. 
+Information on requirements and arrangements for NSW school-based traineeships is available on the NSW government website under Apprentices and trainees.
+5.4	Industries related to information and digital technology
+VET qualifications consist of technical skills that prepare you for work or further study in a specific job or industry, as well as employability skills that can be applied across a range of industry (or career) pathways.
+Industries related to this course include, but are not limited to the following outlined on the Your Career website:
+* Education and Training
+* Financial and Insurance Services
+* Information Media and Telecommunications
+* Professional, Scientific and Technical Services
+* Public Administration and Safety
+
+5.5	Students with disability
+Students with disability may access a VET course in one of 2 ways:
+* by undertaking the course under regular course arrangements, or 
+* by undertaking selected units of competency within the course that have been identified through the collaborative curriculum planning process.
+For more information see VET courses and students with disability and collaborative curriculum planning advice.
+5.6	Students in Years 9 and 10 (Stage 5)
+In certain circumstances students in Years 9 and 10 (Stage 5) may access Stage 6 VET courses. Further information is available in the Stage 5 VET section.
+
+
+6	Glossary
+AQFAustralian Qualifications Framework 
+The AQF is the policy framework that defines all qualifications recognised nationally in post-compulsory education and training in Australia. The AQF comprises titles and guidelines that define each qualification, as well as the principles and protocols covering cross-sectoral qualification links and the issuing of qualifications and statements of attainment.Australian ApprenticeshipsAustralian Apprenticeships encompass all apprenticeships and traineeships. They combine time at work with training and can be full-time, part-time or school-based.
+www.apprenticeships.gov.aucompetencyThe broad concept of industry competency concerns the ability to perform particular tasks and duties to the standard of performance expected in the workplace. Competency requires the application of specified skills, knowledge and attitudes relevant to effective participation in an industry, industry sector or enterprise.core units of competencyUnits of competency required by the Training Package to be eligible for an AQF VET qualification.elements of competencyThe basic building blocks of a unit of competency which describe the key activities or elements of the work covered by the unit.focus areasHSC Content is organised into focus areas. HSC Content prescribes the scope of learning for the HSC.mandatory units of competencyUnits of competency that must be studied for an HSC VET course.recognition of prior learning (RPL)The result of an assessment of an individual's formal, non-formal and informal learning to determine the extent to which that individual has achieved the required learning outcomes, competency outcomes, or standards for entry to, and/or partial or total completion of, a qualification.RTORegistered Training Organisation 
+A training organisation registered by a registering body in accordance with the VET Quality Framework, within a defined scope of registration (including school system/sector RTOs, TAFE NSW and other providers).scope of registrationThe particular services and products an RTO is registered to provide. The RTO's scope defines the specific AQF VET qualifications, units of competency and accredited courses it is registered to provide, and whether it is registered to provide: 
+* both training delivery and assessment services, and to issue the relevant AQF VET qualifications and statements of attainment, or 
+* only assessment services, and to issue the relevant AQF VET qualifications and statements of attainment.Stage 5In NSW, Stage 5 relates to Years 9 and 10 of schooling.Stage 6In NSW, Stage 6 relates to Years 11 and 12 of schooling.Statement of AttainmentMay be issued in the vocational education and training sector by an RTO when an individual has completed one or more units of competency from nationally recognised qualification(s)/course(s).training.gov.auhttps://training.gov.au
+The national register for recording information about RTOs, Training Packages and accredited courses.Training PackageA nationally endorsed, integrated set of competency standards, assessment guidelines and AQF VET qualifications for a specific industry, industry sector or enterprise.training planA documented program of training and assessment required for an apprenticeship/traineeship training contract. It is developed by an RTO in consultation with the parties to the contract as the basis for training and assessing a person undertaking an apprenticeship or traineeship.unit of competencySpecification of industry knowledge and skill and the application of that knowledge and skill to the standard of performance expected in the workplace.VETVocational Education and TrainingVET qualificationFormal certification in the VET sector by an RTO that a person has satisfied all requirements of the units of competency or modules that comprise an AQF VET qualification, as specified by:
+* a nationally endorsed Training Package, or
+* an accredited course that provides training for the qualification.VET Quality FrameworkThe VET Quality Framework comprises the:
+* Standards for Registered Training Organisations
+* Financial Viability Risk Assessment Requirements
+* Data Provision Requirements, and
+* Australian Qualifications Framework.
+1	international.austrade.gov.au/en/news-and-analysis/publications-and-reports/digital-technology-report
+2	The Specialisation Study would only be required if the selection of elective units of competency meant that the Certificate III qualification could not be completed within the 240-hour Information and Digital Technology course.
+3	Regulators and bodies named correct at time of publication. Any updates to these names should be considered when delivering HSC Content.
+---------------
+
+------------------------------------------------------------
+
+---------------
+
+------------------------------------------------------------
+
+NSW Education Standards Authority 	
+
+
+
+
+
+Information and Digital Technology Curriculum Framework syllabus	Page 61 of 62
+
+
+
+
+
+
+Information and Digital Technology Curriculum Framework syllabus	Page 61 of 62

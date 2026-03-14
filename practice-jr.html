@@ -162,31 +162,31 @@
         <!-- MODE SELECTION LANDING (shown first) -->
         <div id="modeLanding">
             <div style="padding: 20px 24px;">
-                <a href="index.html" class="back-btn" style="background: rgba(102,126,234,0.15); color: #667eea;">â† Back to Home</a>
+                <a href="index.html" class="back-btn" style="background: rgba(102,126,234,0.15); color: #667eea;">← Back to Home</a>
             </div>
             <div style="max-width: 1100px; margin: 0 auto; padding: 0 24px 60px;">
                 <div style="text-align: center; padding: 30px 20px 40px;">
                     <h1 style="font-size: 2.4rem; font-weight: 700; color: #e7e9ea; margin-bottom: 12px;">Practice Question Generator</h1>
-                    <p style="font-size: 1.1rem; color: #71767b; max-width: 550px; margin: 0 auto; line-height: 1.6;">Generate curriculum-aligned practice questions for Years 7â€“10. Choose a mode below.</p>
+                    <p style="font-size: 1.1rem; color: #71767b; max-width: 550px; margin: 0 auto; line-height: 1.6;">Generate curriculum-aligned practice questions for Years 7–10. Choose a mode below.</p>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
                     <div class="mode-card" onclick="selectMode('standard')">
-                        <div class="mode-card-icon">âœï¸</div>
+                        <div class="mode-card-icon">✏️</div>
                         <h2>Standard Questions</h2>
                         <p>Generate individual practice questions by subject, topic, and difficulty.</p>
-                        <span class="mode-card-cta">Start â†’</span>
+                        <span class="mode-card-cta">Start →</span>
                     </div>
                     <div class="mode-card" onclick="selectMode('exam')">
-                        <div class="mode-card-icon">ðŸ“</div>
+                        <div class="mode-card-icon">📝</div>
                         <h2>Full Test Paper</h2>
                         <p>Generate complete test-style papers matched to your year level.</p>
-                        <span class="mode-card-cta">Start â†’</span>
+                        <span class="mode-card-cta">Start →</span>
                     </div>
                     <div class="mode-card" onclick="selectMode('feedback')">
-                        <div class="mode-card-icon">ðŸ“Š</div>
+                        <div class="mode-card-icon">📊</div>
                         <h2>Get Feedback</h2>
                         <p>Paste a question and your answer to get marking feedback.</p>
-                        <span class="mode-card-cta">Start â†’</span>
+                        <span class="mode-card-cta">Start →</span>
                     </div>
                 </div>
             </div>
@@ -196,10 +196,10 @@
         <div id="activeView" style="display: none; height: 100vh; flex-direction: column;">
             <header class="header">
                 <div class="header-left">
-                    <a href="#" class="back-btn" onclick="backToModes(event)">â† Modes</a>
+                    <a href="#" class="back-btn" onclick="backToModes(event)">← Modes</a>
                     <div>
                         <div class="header-title" id="activeTitle">Practice Questions</div>
-                        <div class="header-subtitle">StudyDecoder Junior â€¢ Years 7â€“10</div>
+                        <div class="header-subtitle">StudyDecoder Junior • Years 7–10</div>
                     </div>
                 </div>
             </header>
@@ -309,7 +309,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <p class="feedback-note">Paste the question below, then your answer. AI will give feedback â€” not the answer.</p>
+                            <p class="feedback-note">Paste the question below, then your answer. AI will give feedback — not the answer.</p>
                             <textarea class="feedback-textarea" id="feedbackQuestion" placeholder="Paste the question here..."></textarea>
                             <textarea class="feedback-textarea" id="feedbackAnswer" placeholder="Paste your answer here..." style="min-height: 100px;"></textarea>
                         </div>

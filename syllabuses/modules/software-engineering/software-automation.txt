@@ -1,0 +1,55 @@
+﻿=== Software Automation ===
+Subject: software-engineering
+============================================================
+
+Software automation
+Outcomes
+A student:
+* justifies methods used to plan, develop and engineer software solutions SE-12-01
+* applies structural elements to develop programming code SE-12-02
+* analyses how current hardware, software and emerging technologies influence the development of software engineering solutions SE-12-03
+* evaluates practices to safely and securely collect, use and store data SE-12-04
+* explains the social, ethical and legal implications of software engineering on the individual, society and the environment SE-12-05
+* justifies the selection and use of tools and resources to design, develop, manage and evaluate software SE-12-06
+* designs, develops and implements safe and secure programming solutions SE-12-07
+* tests and evaluates language structures to refine code SE-12-08
+* applies methods to manage and document the development of a software project SE-12-09
+Content
+Algorithms in machine learning 
+* Investigate how machine learning (ML) supports automation through the use of DevOps, robotic process automation (RPA) and business process automation (BPA)
+* Distinguish between artificial intelligence (AI) and ML
+* Explore models of training ML
+Including:
+* supervised learning
+* unsupervised learning
+* semi-supervised learning
+* reinforcement learning* Investigate common applications of key ML algorithms
+Including:
+* data analysis and forecasting
+* virtual personal assistants
+* image recognition* Research models used by software engineers to design and analyse ML
+Including:
+* decision trees
+* neural networks* Describe types of algorithms associated with ML
+Including:
+* linear regression
+* logistic regression
+* K-nearest neighbourProgramming for automation
+* Design, develop and apply ML regression models using an OOP to predict numeric values
+Including:
+* linear regression
+* polynomial regression
+* logistic regression* Apply neural network models using an OOP to make predictions
+Significance and impact of ML and AI
+* Assess the impact of automation on the individual, society and the environment
+Including:
+* safety of workers
+* people with disability
+* the nature and skills required for employment
+* production efficiency, waste and the environment
+* the economy and distribution of wealth* Explore by implementation how patterns in human behaviour influence ML and AI software development
+Including:
+* psychological responses
+* patterns related to acute stress response
+* cultural protocols
+* belief systems* Investigate the effect of human and dataset source bias in the development of ML and AI solutions

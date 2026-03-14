@@ -1,0 +1,88 @@
+﻿=== Applications of calculus ===
+Subject: mathematics-advanced
+============================================================
+
+Mathematics Extension 1 Year 12 Further applications of calculus
+Integration is used in analysing two-dimensional motion using vectors.
+Mathematics Extension 1 Year 12 Introduction to vectors
+Integration is used in solving simple harmonic motion problems.
+Mathematics Extension 2 Year 12 Applications of calculus to mechanics
+To calculate the Gini coefficient, which is a measure of the distribution of income across a population, the area under the Lorenz curve needs to be calculated using integration or by approximation.
+Real-world applications
+Integration is used to find the average value of a function, the length of a curve or the surface area of a solid.
+
+Simpson’s rule uses a quadratic equation through three given points to estimate the area under a curve.
+Tertiary mathematics
+Integration is used in engineering to determine the geometry of a building. Integration is used in physics to calculate work and the centre of mass.
+Real-world applications
+Considerations
+    • Students should note that for  the function  must be continuous on the closed interval , and that it is not possible to integrate across a discontinuity, including discontinuities at the endpoints of the domain.
+    • It is appropriate for students to derive general results for integration by reversing the process of differentiation. Alternative derivations are not required in this course. 
+    • The method of integration by substitution is not required in this course. Students will be expected to establish results such as  by differentiating a suitable function. Students should practise the process of integrating  by inspection, without a formal change of variable. Further techniques of integration are covered in the Mathematics Extension courses.
+    • To derive the formula  where  students could:
+Prove by differentiation that for , , for some constant , and explain why this formula does not work for .
+Prove by differentiation that for , , for some constant , and explain why this formula does not work for .
+Combine the results above to yield the result , for some constant , where , and recognise that no definite integral of  can be formed on any closed interval that includes the discontinuity at .
+    • If the curve  is approximated on the interval  by the straight line passing through  and , the area under the curve may be estimated by the area under the line as shown in Figure 1. This approximates  by the area of a trapezium, which may be calculated using . By dividing the base into two equal sub-intervals (see Figure 2), and using a linear approximation of  on each sub-interval, the area is approximated by two trapeziums. The method extends to dividing the interval into  equal sub-intervals of width , and using a ‘trapezoidal approximation’ on each sub-interval.
+
+
+Image long description: Two graphs are shown. Figure 1 on the left, shows a curve  and marks  and  on the  axis and marks the distance between them as . Two vertical lines are marked:  at , and at . In Figure 2 on the right, the same diagram is drawn as before, but there is also a vertical line in the middle, which splits the trapezium into two trapezia.
+    • Students may choose to use a general form of the Trapezoidal rule when there are  sub-intervals such as:  where  and , and the values of  are found by dividing the interval  into  equal sub-intervals.
+    • When applying the Trapezoidal rule, students are not restricted to applying a formula when setting out their solution. Using tables or simply considering the areas of different trapezia with common width are appropriate methods for approximating definite integrals using the Trapezoidal rule.
+    • Some students may benefit from being extended by modelling the function  using graphing applications, and examining the rate of change of the area as  varies, leading to the result  but this is not essential content.
+    • The approximation of a region’s area by adding up multiple simple shapes is called a Riemann sum.
+    • Students could explore different methods of approximating the area under a curve, including using different shapes.
+    • Some students may benefit from using graphing applications to explore areas of unbounded regions that have limiting areas in preparation for working with probability density functions, for example: finding that  as , but that  as  shows that diagrams sometimes do not pick up huge differences in behaviour. This is not essential content
+    • Students may use notations such as  and  when representing unbounded regions but this is not essential content.
+Diversity of learners
+    • Teachers should consider the accessibility of tools and resources. Considerations for tools such as spreadsheets, calculators and applications may include compatibility with screen readers and other assistive technologies including alternative input devices and the use of accessible calculators (see approved calculators). Considerations for resources may include the language demands, readability of and long descriptions for images and providing alternative text for graphs and diagrams.
+    • Students with disability may require adjustments including access to visual or digital aids to communicate and demonstrate knowledge, understanding and skills.
+    • Students for whom English is an additional language or dialect (EAL/D) may require additional support and targeted strategies in learning language specific to mathematics.
+    • The pace and complexity of learning may need to be adjusted for students who progress at different rates.
+Teaching advice for Applications of calculus
+Content
+    § Applications of calculus
+Teaching advice
+Purpose
+Calculus involves the study of how things change and provides a framework for developing quantitative models of change and deducing their consequences. It explores the development of analytic and numeric integration techniques and the use of these techniques in solving problems.
+The study of calculus is important in developing students’ knowledge, understanding and capacity to operate with and model situations involving change. It also supports students to use algebraic and graphical techniques to describe and solve problems and to predict future outcomes with relevance to science, engineering, finance, economics and the construction industry.
+Key terms
+    • acceleration
+    • asymptote
+    • concave down
+    • concave up
+    • concavity
+    • continuous
+    • derivative
+    • differentiable
+    • differentiation
+    • discontinuity
+    • displacement
+    • domain
+    • even function
+    • exponential growth and decay
+    • function
+    • global maximum
+    • global minimum
+    • gradient
+    • integration
+    • local maximum
+    • local minimum
+    • odd function
+    • point of inflection
+    • rate of change
+    • stationary point
+    • tangent
+    • velocity
+    • zero (of a function)
+Related Stage 5 Path content
+    • Algebraic techniques B
+    • Area and surface area B
+    • Volume B
+    • Variation and rates of change A
+    • Variation and rates of change B
+    • Non-linear relationships C
+    • Logarithms
+    • Properties of geometrical figures C
+Sequencing advice
+The content in the focus area Applications of calculus builds on content in:

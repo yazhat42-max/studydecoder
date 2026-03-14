@@ -1,0 +1,115 @@
+﻿=== Intelligent Systems ===
+Subject: enterprise-computing
+============================================================
+
+Intelligent systems
+Outcomes
+A student:
+    • explains how systems meet the needs of a range of enterprises EC-12-01
+    • explains the function of data and information within enterprise computing systems EC-12-02
+    • explains and evaluates how data is safely and securely collected, stored and manipulated when developing enterprise computing systems EC-12-03
+    • explains how data is used in enterprise computing systems EC-12-04
+    • applies tools and resources to analyse complex datasets EC-12-05
+    • analyses how innovative technologies have influenced enterprise computing systems EC-12-06
+    • explains the social, ethical and legal implications of the application of enterprise computing systems on the individual, society and the environment EC-12-07
+    • justifies the selection and use of tools and resources to design and develop an enterprise computing system EC-12-08
+    • evaluates the effectiveness of an enterprise computing system EC-12-10
+    • communicates an enterprise computing solution to a specific audience EC-12-11
+Related Life Skills outcomes: CT-LS-01, CT-LS-02, CT-LS-03, CT-LS-04, CT-LS-05, CT-LS-06, CT-LS-07, CT-LS-08, CT-LS-09, CT-LS-10, CT-LS-11, CT-LS-12, CT-LS-13
+Content
+Systems and their applications
+    • Investigate applications of decision support systems
+    • Describe categories of decision-making within decision support systems
+Including:
+    • an infinite set of instructions where judgement may be required (unstructured)
+    • use of a specified set of finite instructions (semi-structured)
+    • automated decisions (structured)
+    • Investigate common applications of expert systems
+Including:
+    • diagnosis
+    • monitoring
+    • process control
+    • scheduling and planning
+    • Describe key features of an expert system
+Including:
+    • knowledge base
+    • inference engine, including forward chaining and backward chaining
+    • user interface (UI)
+    • Research factors that have allowed expert systems to advance from rule-based systems to integrate probability
+Including:
+    • processing power
+    • data availability and access
+    • hardware costs
+    • neural networks
+    • webometrics
+    • Describe how people’s changing needs have shaped the proliferation of expert systems
+Including:
+    • the Internet of Things (IoT)
+    • Internet of Me (IoMe)
+    • Industry 4.0
+    • Describe the operation of simplistic and complex intelligent agents used by search engines, including predictive search strings and the use of voice assistants to initiate interaction
+    • Compare techniques used by different inference engines
+Including:
+    • truth maintenance
+    • hypothetical reasoning
+    • heuristic knowledge and fuzzy logic
+    • ontology classification
+    • Investigate the hardware used in an intelligent system
+Including:
+    • biometrics
+    • haptics
+    • touch and gesture
+    • virtual and augmented reality (VR/AR)
+    • voice and sound
+    • microcontrollers
+    • sensors, actuators and motors
+    • Explore how computational thinking can be integrated into the design and development of an intelligent system
+Including:
+    • decomposition
+    • pattern recognition
+    • abstraction
+    • algorithms
+    • Communicate the logical processes performed by an intelligent system by using flowcharts, data flow diagrams and infographics
+    • Investigate the disruptive effects of intelligent systems
+Including:
+    • multitasking versus digital distraction
+    • working differently to complete the same task
+    • automation of enterprise and manufacturing processes
+    • impact of artificial intelligence (AI) on employment
+    • Investigate social and ethical issues to be considered when developing, implementing and using intelligent systems
+    • Investigate current and emerging technologies associated with intelligent systems, including AI
+    • Explain how intelligent systems combine innovative techniques and technologies to meet the needs of enterprise
+Data and intelligent systems 
+    • Investigate the infrastructure requirements for an intelligent network in an enterprise with devices linked through an Internet of Things (IoT)
+Including:
+    • networks with servers, local and cloud storage, and end-point devices
+    • communication links that enable the efficient control and flow of data
+    • Explore collection, type, storage, processing, application and transmission of relevant and surplus data in an intelligent IoT network
+    • Investigate the application of simulation, data modelling and the automation of systems in a range of enterprises
+Including:
+    • education and training
+    • business analytics
+    • high-risk applications
+    • Explain the role of intelligent systems in surveillance
+Including:
+    • closed circuit television (CCTV)
+    • biometric scanning
+    • customer loyalty schemes
+    • fraud prevention
+    • sniffing
+    • trolling
+    • Explain how AI supports efficiency in an IoT network
+Creating intelligent systems
+    • Develop a set of rules and facts that could be used within an expert system to draw conclusions
+    • Apply certainty factors to construct a decision tree for a proposed expert system
+    • Verify the sources of data used in a decision support system
+    • Use a flowchart to develop a knowledge base of IF-THEN rules to be used by an expert system
+    • Design and model an automated smart system using a range of inputs and outputs
+    • Implement automated processing using software
+    • Assess the output produced by a decision support system, including graphing to detail the success of decisions, and comparing the proposed versus the actual outputs
+    • Explain how expert systems contribute to the efficiency of intelligent systems
+Including:
+    • supercomputers
+    • digital assistants
+    • autonomous vehicles
+    • streaming services

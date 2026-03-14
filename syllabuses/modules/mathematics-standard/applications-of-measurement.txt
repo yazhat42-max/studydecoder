@@ -1,0 +1,120 @@
+﻿=== Applications of measurement ===
+Subject: mathematics-standard
+============================================================
+
+Mathematics Standard Year 11 Applications of measurement
+Ratios are used in the application of scales and maps.        
+ 
+Numeracy CEC 11–12 (4.1.2)
+Numeracy CEC 11–12 (4.1.3)
+Ratios are used in the mixing of agricultural chemicals, herbicides, sprays and drenches.
+Numeracy CEC 11–12 (4.1.2)
+Numeracy CEC 11–12 (4.1.3)
+Rates are used in unit pricing, which is important in purchasing decisions, for example, when comparing the cost-effectiveness of different options.
+Numeracy CEC 11–12 (4.1.1)
+Numeracy CEC 11–12 (4.1.3)
+Scales and scaled models are used in architecture, engineering and construction to aid with construction and visualisation of the final product.
+Real-world applications
+Considerations
+    • The internet could be used as a source of suitable maps and plans for the estimation of distances.
+    • Students could compare costs of different trade professionals using spreadsheets.
+    • Where possible, students are encouraged to use a ruler to take measurements to create a scale and determine measurements using a scale.
+    • Converting between rates involves converting between units of two different quantities, for example, length and time in rates such as km/h to m/s. Students may need to review conversion between units to support them when converting between rates.
+Aboriginal and Torres Strait Islander Priorities in Ratio and rates
+    • Ratio is an important mathematical concept that is connected to customary and contemporary Aboriginal and Torres Strait Islander maps, artworks and artefacts. By using ratio, Aboriginal and Torres Strait Islander Peoples can create representations of their lands, Cultures, Histories and stories that are meaningful, accurate and respectful.
+Diversity of learners
+    • Teachers should consider the accessibility of tools and resources. Considerations for tools such as spreadsheets, calculators and applications may include compatibility with screen readers and other assistive technologies including alternative input devices and accessible calculators (see approved calculators). Considerations for resources may include the language demands, readability of, and long descriptions for images, and providing alternative text for graphs and diagrams.
+    • Relating mathematics learning to real-world contexts supports learning by providing concrete examples and establishing relevance to facilitate motivation and engagement. Manipulatives and real-world objects may reduce the language load for students.
+    • Students with disability may require adjustments including access to visual or digital aids to communicate and demonstrate knowledge, understanding and skills.
+    • Students for whom English is an additional language or dialect (EAL/D) may require additional support and targeted strategies to support their learning of language specific to mathematics.
+    • The pace and complexity of learning may need to be adjusted for students who progress at different rates.
+Teaching advice for Network flow
+Content
+    § Network flow
+Teaching advice
+Purpose
+Networks involve the graphical representation and modelling of situations as an approach to decision-making processes. Knowledge of networks enables development of a logical sequence of tasks or a clear understanding of connections between people or items.
+Study of networks is important in developing students’ ability to interpret a set of connections or sequence of tasks as a concise diagram in order to solve related problems. Studying networks also develops students’ awareness of the applicability of networks throughout their lives (such as social networks) and their ability to use associated techniques to optimise practical problems.
+Key terms
+    • cut (networks)
+    • directed network
+    • edge (networks)
+    • flow capacity
+    • inflow (networks)
+    • maximum-flow minimum-cut theorem
+    • minimum cut
+    • outflow (networks)​
+    • sink (networks)
+    • source (networks)
+Prior knowledge, skills and understanding
+These concepts may be reviewed as required:
+    • defining and using network terminology
+    • constructing networks and solving related problems
+    • determining minimum spanning trees
+    • determining the shortest path in a given network.
+Related Stage 5 Path content
+    • Mathematics Stage 5 Introduction to networks (Path)
+Making connections
+Connections
+Course/Stage/Focus area
+There are many applications of problems involving flows through networks, such as the movement of traffic through an airport, the flow of water in a system of pipes or the transfer of data across a computer intranet.
+Real-world applications
+Considerations
+    • Students should be supported to develop fluency in converting information between different representations of networks, for example, converting from a table to a diagram and vice versa.
+    • A flow must obey two rules: 
+        ◦ The flow assigned to an edge must lie between zero and the capacity of the edge.
+        ◦ The inflow of a vertex (total flow of incoming edges) must be equal to the outflow of a vertex (total flow of outgoing edges). This means that vertices cannot ‘store’ flow and are simply where edges meet.
+Diversity of learners
+    • Teachers should consider the accessibility of tools and resources. Considerations for tools such as spreadsheets, calculators and applications may include compatibility with screen readers and other assistive technologies including alternative input devices and accessible calculators (see approved calculators). Considerations for resources may include the language demands, readability of, and long descriptions for images, and providing alternative text for graphs and diagrams.
+    • Relating mathematics learning to real-world contexts supports learning by providing concrete examples and establishing relevance to facilitate motivation and engagement. Manipulatives and real-world objects may reduce the language load for students.
+    • Students with disability may require adjustments including access to visual or digital aids to communicate and demonstrate knowledge, understanding and skills.
+    • Students for whom English is an additional language or dialect (EAL/D) may require additional support and targeted strategies to support their learning of language specific to mathematics.
+    • The pace and complexity of learning may need to be adjusted for students who progress at different rates.
+Teaching advice for Critical path analysis
+Content
+    § Critical path analysis
+Teaching advice
+Purpose
+Networks involve the graphical representation and modelling of situations as an approach to decision-making processes. Knowledge of networks enables development of a logical sequence of tasks or a clear understanding of connections between people or items.
+Study of networks is important in developing students’ ability to interpret a set of connections or sequence of tasks as a concise diagram in order to solve related problems. Studying networks also develops students’ awareness of the applicability of networks throughout their lives (such as social networks) and their ability to use associated techniques to optimise practical problems.
+Critical path analysis is a useful tool in project planning, management and logistics.
+Key terms
+    • backward scanning (networks)
+    • critical activity (networks)
+    • critical path
+    • dummy activities
+    • earliest start time (EST)
+    • equivalent
+    • float time
+    • forward scanning (networks)​
+    • Gantt chart
+    • immediate predecessor
+    • latest start time (LST)
+    • model
+    • network
+    • non-critical activities (networks)
+    • precedence table
+Prior knowledge, skills and understanding
+These concepts may be reviewed as required:
+    • defining and using network terminology
+    • constructing networks and solving related problems
+    • determining minimum spanning trees
+    • determining the shortest path in a given network.
+Related Stage 5 Path content
+    • Mathematics Stage 5 Introduction to networks (Path)
+Making connections
+Connections
+Course/Stage/Focus area
+Critical path analysis can be applied in the field of medicine, such as in the scheduling of surgeries or clinical trials for drug development.
+Real-world applications
+Considerations
+    • There are different ways to conduct a critical path analysis on a network diagram. This can include using one rectangle or circle for EST & LST at each vertex or using one rectangle or circle for EST & LST for each activity. Students should be encouraged to use an accurate method that they are confident in.
+    • Students should explore the effect that delays in activities may have on the critical path.
+    • Students should become familiar with converting information between different representations of networks, for example, converting from a table to a network diagram or Gantt chart and vice versa.
+    • When using a spreadsheet to model a project, students should construct a table and either merge or shade cells to indicate an activity’s length.
+Diversity of learners
+    • Teachers should consider the accessibility of tools and resources. Considerations for tools such as spreadsheets, calculators and applications may include compatibility with screen readers and other assistive technologies including alternative input devices and accessible calculators (see approved calculators). Considerations for resources may include the language demands, readability of, and long descriptions for images, and providing alternative text for graphs and diagrams.
+    • Relating mathematics learning to real-world contexts supports learning by providing concrete examples and establishing relevance to facilitate motivation and engagement. Manipulatives and real-world objects may reduce the language load for students.
+    • Students with disability may require adjustments including access to visual or digital aids to communicate and demonstrate knowledge, understanding and skills.
+    • Students for whom English is an additional language or dialect (EAL/D) may require additional support and targeted strategies to support their learning of language specific to mathematics.
+    • The pace and complexity of learning may need to be adjusted for students who progress at different rates.

@@ -1,0 +1,73 @@
+﻿=== Design, Management and Communication ===
+Subject: industrial-tech-electronics
+============================================================
+
+- WHS and safe work practices� combine the application design, management and communication with industry related manufacturing technology in the production of a quality Major Project Industry Related Manufacturing Technology 
+Focus Area: Automotive Technologies (Preliminary)
+Note: All repairs/modifications made to motor vehicles must conform to government and statutory regulations and guidelines.
+Students learn about:Students learn to:Fuels and lubricants
+� petrol
+� diesel
+� oils� discuss and differentiate between the characteristics and advantages/disadvantages of a range of fuels and lubricantsEngine types
+� single cylinder 2 stroke
+� single cylinder in line 4 stroke
+� 4 cylinder engines 
+� diesel engines� gain an awareness of the operation of an engine 
+� use basic fault-finding techniques
+� conduct basic routine maintenance 
+� dismantle and reassemble a variety of engine componentsEngine systems
+� engine operation
+� piston assembly
+� identify the engine and its related components
+� use basic fault-finding techniques
+� conduct basic routine maintenance 
+� dismantle and reassemble a variety of chassis and related componentsCooling systems
+� operation of the cooling system
+� coolants� outline the basic automotive cooling systems
+� conduct basic routine maintenance
+� use basic fault-finding techniquesFuel systems
+� principles of the carburettor system
+� principles of fuel injection system� identify and discuss the principles of fuel systems
+� carry out basic repairsIntake and exhaust systems
+� types of air cleaners
+� components of an exhaust system� identify and discuss the principles of intake and exhaust systems
+� carry out basic repairsManual transmission
+� purpose of transmission
+� types of gears� identify and discuss the principles of manual transmissionElectrical ignition system
+� battery
+� distributor
+� spark plugs� identify the components of an ignition system
+� conduct basic routine maintenance
+� use basic fault-finding techniquesBody electrical systems
+� electrical circuit diagrams
+� electrical symbols
+� lamp bulbs
+� headlights
+� exterior lights
+� interior lamps
+� turn signal indicators� identify the components of an electrical system
+� conduct basic routine maintenance
+� use basic fault-finding techniquesBody
+� panel repairs� identify and carry out basic repairs on body panelsDrive line systems
+� front-wheel drive
+� rear-wheel drive
+� four-wheel drive 
+� all-wheel drive� identify and discuss the principles of drive systemsWheels and tyres
+� tyre construction
+� types of tyres
+� characteristics of tyres
+� tyre identification
+� tyre tread patterns� identify and discuss the principles of tyre construction
+� identify and discuss the different types of tyres and their uses
+Braking systems
+� drum brakes
+� disc brakes
+� parking brake� identify and discuss the principles of braking systems
+� conduct basic routine maintenanceSuspension systems
+� leaf springs
+� coil springs
+� shock absorbers� identify and discuss the principles of vehicle suspension systems
+� conduct basic routine maintenanceSteering systems 
+� components of a steering system� identify the components of a steering system
+� conduct basic routine maintenanceTools and equipment
+� the use and maintenance of tools and equipment involved in the processes associated with the engine, chassis, electrical system and body� use safely and correctly a variety of tools and equipment

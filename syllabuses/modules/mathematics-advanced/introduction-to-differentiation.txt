@@ -1,0 +1,78 @@
+﻿=== Introduction to differentiation ===
+Subject: mathematics-advanced
+============================================================
+
+Introduction to differentiation
+Outcomes
+A student:
+    • develops understanding and fluency in mathematics through exploring and connecting mathematical concepts, choosing and applying mathematical techniques to solve problems, and communicating their thinking and reasoning coherently and clearly MAO-WM-01
+    • interprets the meaning of the derivative and determines the derivative of functions to solve problems MAV-11-06
+Content
+Estimating change
+    • Define the average rate of change of  with respect to  for a function  over the domain  as , that is , and recognise  as the gradient of the secant through  and  on the graph of  
+    • Recognise speed as a rate of change of distance with respect to time
+    • Use the definition for average rate of change to determine the average speed of an object from a given distance–time graph
+    • Describe the difference between the average speed of an object and its instantaneous speed
+    • Determine that the instantaneous speed of an object at time  can be approximated by the average speed between its position at time  and its position some time later, and explain how this approximation can be improved
+    • Relate the instantaneous speed of an object to the gradient of the tangent at that point on its distance–time graph
+    • Estimate the instantaneous speed of an object from its distance–time graph
+    • Recognise when modelling with a linear function that its gradient is the rate of change and determine the rate of change for linear functions in practical situations
+    • Recognise when modelling with a non-linear function that the rate of change is not constant and is represented by the gradient of the tangent to the curve at each point on the curve
+    • Estimate the instantaneous rate of change of a non-linear function at a given point from a given graph of a practical situation
+Example(s):
+The graph shows the displacement of a particle that is moving in a horizontal line. Estimate the velocity of the particle as it passes through the origin.
+
+Image long description: A graph of a distance–time function with displacement in metres on the y-axis and time in minutes on the x-axis. It depicts a distance-time function that is in the shape of a concave down parabola with a distance intercept of 5 metres and time intercept of 5 minutes. The vertex of the parabola is at the point .
+
+The derivative
+    • Examine the gradient of a curve at a point on the curve using graphing applications
+Example(s):
+Use a graphing application to magnify the graph of  at . Discuss the ‘straightness’ of the graph when magnified.
+
+    • Approximate the gradient of a curve  at a point  by considering the gradient of the secant through  and  as the magnitude of  approaches zero, using graphing applications or a spreadsheet
+Example(s):
+Use a spreadsheet or graphing application to examine the gradient of ,  and  at  for various values of  by considering the value of  as  steadily decreases.
+
+    • Infer that  is the gradient of  and verify the result using graphing applications
+Example(s):
+Use a graphing application to find an approximation for the gradient of  by considering the graph of  for  and . Summarise the results for the gradients of , ,  and  and generalise the result for .
+
+Use a graphing application to verify the result for positive, negative and fractional values of .
+
+
+    • Define , for any function  and any value , to be the gradient of the tangent to the curve  at the point  if the tangent exists and is not vertical
+    • Refer to  as the derivative of  or the gradient, or derived, function of 
+    • Define differentiation as the process of finding the derivative of a function
+    • Find derivatives of constant and linear functions
+    • Define the derivative of the function  from first principles, as the limiting value of the gradient of the secant  as  approaches zero, when this limiting value exists, and use the notation 
+    • Use first principles to find the derivative of quadratic functions
+Example(s):
+Use differentiation by first principles to verify that if , then .
+
+Calculations with the derivative
+    • Use the notation  and  for the derivative of  when  is a function of 
+    • Use the notation  and  for the derivative of a function 
+    • Use the formula  for all real values of 
+Example(s):
+Find the derivative of ,  and .
+
+    • Apply the fact that the derivative of a sum is the sum of the derivatives: , and the derivative of a multiple of a function is the multiple of its derivative: 
+    • Use the rules for differentiation to find equations of tangents and normals to a curve at points on the curve
+    • Find points on a curve where the tangent or normal has a given gradient
+    • Examine and use the relationship between the angle of inclination of a line or tangent to a curve,  with the positive -axis, and the gradient, , of that line or tangent, and establish that 
+    • Apply the product rule: if , where  and  are both differentiable functions of , then  or if  for differentiable functions  and  then   
+    • Apply the quotient rule: if , where  and  are both functions of  then  or if  then 
+    • Apply the chain rule: if is a differentiable function of , and  is a differentiable function of , then  or if  for differentiable functions  and  then 
+    • Identify and apply the product, quotient or chain rule, or a combination of the rules, as appropriate to differentiate a given function
+Graphical applications of the derivative
+    • Interpret  as increasing at  when  and decreasing at  when 
+    • Describe the behaviour of a function at a point as stationary when the tangent at the point is parallel to the -axis, and recognise that  is stationary at  when 
+    • Graph  for a given graph of a function 
+    • Numerically estimate the value of the derivative at a point on the graph of a power of , with and without the use of digital tools
+    • Identify stationary points on the graph of a cubic function, and the values of  for which the function is increasing and/or decreasing, by first calculating the derivative, and justify conclusions
+The derivative as a rate of change
+    • Interpret  as the instantaneous rate of change of the function  at 
+    • Define and distinguish between displacement and distance and between velocity and speed
+    • Use graphs of functions and their derivatives, without the use of algebraic techniques, to describe and interpret physical phenomena
+    • Use the notation  or  to represent the velocity of a particle with displacement  from a point as a function of time 
+    • Solve problems by determining the velocity of a particle moving in a straight line, given its displacement from a point as a function of time

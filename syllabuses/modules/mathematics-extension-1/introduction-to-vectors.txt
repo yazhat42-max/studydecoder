@@ -1,0 +1,119 @@
+﻿=== Introduction to vectors ===
+Subject: mathematics-extension-1
+============================================================
+
+ME-V1 Introduction to Vectors
+
+
+Vectors
+ME-V1 Introduction to Vectors
+Outcomes
+A student:
+� applies concepts and techniques involving vectors and projectiles to solve problems ME12-2
+� chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+� evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Subtopic Focus
+The principal focus of this subtopic is to introduce the concept of vectors in two dimensions, use them to represent quantities with magnitude and direction, and understand that this representation can allow for the exploration of situations such as geometrical proofs.
+
+Students develop an understanding of vector notations and how to manipulate vectors to allow geometrical situations to be explored further. The example of projectile motion as an application of vectors is then introduced. These concepts are explored further in the Mathematics Extension 2 course.
+Content
+V1.1: Introduction to vectors
+Students:
+? define a vector as a quantity having both magnitude and direction, and examine examples of vectors, including displacement and velocity (ACMSM010)
+- explain the distinction between a position vector and a displacement (relative) vector  
+* define and use a variety of notations and representations for vectors in two dimensions (ACMSM014)
+- use standard notations for vectors, for example: , (AB) ? and a
+- represent vectors graphically in two dimensions as directed line segments
+- define unit vectors as vectors of magnitude 1, and the standard two-dimensional perpendicular unit vectors  and 
+- express and use vectors in two dimensions in a variety of forms, including component form, ordered pairs and column vector notation
+? perform addition and subtraction of vectors and multiplication of a vector by a scalar algebraically and geometrically, and interpret these operations in geometric terms AAM  
+- graphically represent a scalar multiple of a vector (ACMSM012)
+- use the triangle law and the parallelogram law to find the sum and difference of two vectors
+- define and use addition and subtraction of vectors in component form (ACMSM017) 
+- define and use multiplication by a scalar of a vector in component form (ACMSM018)  
+
+
+V1.2: Further operations with vectors
+Students:
+? define, calculate and use the magnitude of a vector in two dimensions and use the notation  for the magnitude of a vector  
+- prove that the magnitude of a vector, , can be found using: 
+- identify the magnitude of a displacement vector (AB) ? as being the distance between the points A and B
+- convert a non-zero vector  into a unit vector  by dividing by its length: 
+? define and use the direction of a vector in two dimensions
+? define, calculate and use the scalar (dot) product of two vectors  and  AAM
+- apply the scalar product, , to vectors expressed in component form, where
+- use the expression for the scalar (dot) product,  where ? is the angle between vectors  and  to solve problems
+- demonstrate the equivalence,  and use this relationship to solve problems
+- establish and use the formula 
+- calculate the angle between two vectors using the scalar (dot) product of two vectors in two dimensions
+? examine properties of parallel and perpendicular vectors and determine if two vectors are parallel or perpendicular (ACMSM021)  
+? define and use the projection of one vector onto another (ACMSM022)
+? solve problems involving displacement, force and velocity involving vector concepts in two dimensions (ACMSM023) AAM
+? prove geometric results and construct proofs involving vectors in two dimensions including to proving that: AAM 
+- the diagonals of a parallelogram meet at right angles if and only if it is a rhombus (ACMSM039)
+- the midpoints of the sides of a quadrilateral join to form a parallelogram (ACMSM040)
+- the sum of the squares of the lengths of the diagonals of a parallelogram is equal to the sum of the squares of the lengths of the sides (ACMSM041)
+
+
+V1.3: Projectile motion
+Students:
+? understand the concept of projectile motion, and model and analyse a projectile's path assuming that:
+- the projectile is a point
+- the force due to air resistance is negligible
+- the only force acting on the projectile is the constant force due to gravity, assuming that the projectile is moving close to the Earth's surface
+? model the motion of a projectile as a particle moving with constant acceleration due to gravity and derive the equations of motion of a projectile AAM
+- represent the motion of a projectile using vectors
+- recognise that the horizontal and vertical components of the motion of a projectile can be represented by horizontal and vertical vectors
+- derive the horizontal and vertical equations of motion of a projectile
+- understand and explain the limitations of this projectile model
+? use equations for horizontal and vertical components of velocity and displacement to solve problems on projectiles
+? apply calculus to the equations of motion to solve problems involving projectiles (ACMSM115) AAM 
+
+
+Topic: Trigonometric Functions
+Outcomes
+A student:
+� applies advanced concepts and techniques in simplifying expressions involving compound angles and solving trigonometric equations ME12-3
+� chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+� evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Topic Focus
+The topic Trigonometric Functions involves the study of periodic functions in geometric, algebraic, numerical and graphical representations. It extends to include the exploration of both algebraic and geometric methods to solve trigonometric problems.
+
+A knowledge of trigonometric functions enables students to manipulate trigonometric expressions to prove identities and solve equations.
+
+The study of trigonometric functions is important in developing students' understanding of the connections between algebraic and graphical representations and how this can be applied to solve problems from theoretical or real-life scenarios, for example involving waves and signals.
+Subtopics
+ME-T3 Trigonometric Equations
+
+
+Trigonometric Functions
+ME-T3 Trigonometric Equations
+Outcomes
+A student:
+� applies advanced concepts and techniques in simplifying expressions involving compound angles and solving trigonometric equations ME12-3
+� chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+� evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Subtopic Focus
+The principal focus of this subtopic is to consolidate and extend students' knowledge in relation to solving trigonometric equations and to apply this knowledge to practical situations.
+
+Students develop complex algebraic manipulative skills and fluency in applying trigonometric knowledge to a variety of situations. Trigonometric expressions and equations provide a powerful tool for modelling quantities that vary in a cyclical way such as tides, seasons, demand for resources, and alternating current.
+Content
+Students:
+? convert expressions of the form ?a cos??x+b sin?x to R cos??(x�a)? or R sin??(x�a)? and apply these to solve equations of the form a cos?x+b sin?x=c, sketch graphs and solve related problems (ACMSM048) 
+? solve trigonometric equations requiring factorising and/or the application of compound angle, double angle formulae or the t-formulae
+? prove and apply other trigonometric identities, for example cos??3x=4cos^3 ? x-3 cos?x (ACMSM049)
+? solve trigonometric equations and interpret solutions in context using technology or otherwise 
+? 
+
+Topic: Calculus
+Outcomes
+A student:
+� applies techniques involving proof or calculus to model and solve problems ME12-1
+� uses calculus in the solution of applied problems, including differential equations and volumes of solids of revolution ME12-4
+� chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+� evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Topic Focus
+The topic Calculus involves the study of how things change and provides a framework for developing quantitative models of change and deducing their consequences. It involves the development of analytic and numeric integration techniques and the use of these techniques in solving problems.
+
+The study of calculus is important in developing students' knowledge, understanding and capacity to operate with and model situations involving change, and to use algebraic and graphical techniques to describe and solve problems and to predict future outcomes with relevance to, for example science, engineering, finance, economics and the construction industry.
+Subtopics

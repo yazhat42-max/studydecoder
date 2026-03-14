@@ -1,0 +1,61 @@
+﻿=== Module 2: Organisation of Living Things ===
+Subject: biology
+============================================================
+
+Module 2: Organisation of Living Things
+Outcomes
+A student:
+    • selects and processes appropriate qualitative and quantitative data and information using a range of appropriate media BIO11/12-4
+    • solves scientific problems using primary and secondary data, critical thinking skills and scientific processes BIO11/12-6
+    • communicates scientific understanding using suitable language and terminology for a specific audience or purpose BIO11/12-7
+    • explains the structure and function of multicellular organisms and describes how the coordinated activities of cells, tissues and organs contribute to macroscopic processes in organisms BIO11-9
+Content Focus
+Multicellular organisms typically consist of a number of interdependent transport systems that range in complexity and allow the organism to exchange nutrients, gases and wastes between the internal and external environments. Students examine the relationship between these transport systems and compare nutrient and gas requirements. 
+
+Models of transport systems and structures have been developed over time, based on evidence gathered from a variety of disciplines. The interrelatedness of these transport systems is critical in maintaining health and in solving problems related to sustainability in agriculture and ecology. 
+Working Scientifically
+In this module, students focus on collecting, processing and analysing data and information to: identify trends, patterns and relationships; solve problems; and communicate ideas about the organisation of living things. Students should be provided opportunities to engage with all Working Scientifically skills throughout the course.
+Content
+Organisation of Cells
+Inquiry question: How are cells arranged in a multicellular organism?
+
+Students:
+    • compare the differences between unicellular, colonial and multicellular organisms by:
+        ◦ investigating structures at the level of the cell and organelle
+        ◦ relating structure of cells and cell specialisation to function
+    • investigate the structure and function of tissues, organs and systems and relate those functions to cell differentiation and specialisation (ACSBL055) 
+    • justify the hierarchical structural organisation of organelles, cells, tissues, organs, systems and organisms (ACSBL054) 
+Nutrient and Gas Requirements
+Inquiry question: What is the difference in nutrient and gas requirements between autotrophs and heterotrophs?
+
+Students:
+    • investigate the structure of autotrophs through the examination of a variety of materials, for example: (ACSBL035) 
+        ◦ dissected plant materials (ACSBL032)
+        ◦ microscopic structures 
+        ◦ using a range of imaging technologies to determine plant structure 
+    • investigate the function of structures in a plant, including but not limited to:
+        ◦ tracing the development and movement of the products of photosynthesis (ACSBL059,  ACSBL060) 
+    • investigate the gas exchange structures in animals and plants (ACSBL032, ACSBL056) through the collection of primary and secondary data and information, for example:
+        ◦ microscopic structures: alveoli in mammals and leaf structure in plants  
+        ◦ macroscopic structures: respiratory systems in a range of animals  
+    • interpret a range of secondary-sourced information to evaluate processes, claims and conclusions that have led scientists to develop hypotheses, theories and models about the structure and function of plants, including but not limited to: (ACSBL034)   
+        ◦ photosynthesis
+        ◦ transpiration-cohesion-tension theory
+    • trace the digestion of foods in a mammalian digestive system, including:  
+        ◦ physical digestion
+        ◦ chemical digestion
+        ◦ absorption of nutrients, minerals and water
+        ◦ elimination of solid waste
+    • compare the nutrient and gas requirements of autotrophs and heterotrophs  
+Transport
+Inquiry question: How does the composition of the transport medium change as it moves around an organism?
+
+Students:
+    • investigate transport systems in animals and plants by comparing structures and components using physical and digital models, including but not limited to: (ACSBL032, ACSBL058, ACSBL059, ACSBL060)  
+        ◦ macroscopic structures in plants and animals
+        ◦ microscopic samples of blood, the cardiovascular system and plant vascular systems 
+    • investigate the exchange of gases between the internal and external environments of plants and animals  
+    • compare the structures and function of transport systems in animals and plants, including but not limited to: (ACSBL033) 
+        ◦ vascular systems in plants and animals
+        ◦ open and closed transport systems in animals
+    • compare the changes in the composition of the transport medium as it moves around an organism
