@@ -4136,11 +4136,10 @@ TOTAL: ~100 marks. You MUST include all three sections. NO multiple choice for E
     // ===== SCIENCE (Biology, Chemistry, Physics, Earth & Environmental, Investigating Science, Science Extension) =====
     } else if (category === 'science') {
         if (durationHours === 1) {
-            structureGuide = `EXAM STRUCTURE (1h, 60 marks — Science):
+            structureGuide = `EXAM STRUCTURE (1h, 60 marks — Science — based on real school topic tests):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 5-6 questions totalling ~35 marks (mix of 3, 4, 5, 6, 7 mark questions with sub-parts (a)(b)(c))
-- Section III — Extended Response: 1 question of ~15 marks
-TOTAL: ~60 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer: 6-8 questions totalling ~50 marks. Each question has sub-parts (a)(b)(c). Individual questions range from 4-8 marks. NO single question exceeds 8 marks.
+TOTAL: ~60 marks. TWO sections only — NO separate extended response section for 1-hour exams. The hardest questions in Section II should be 7-8 marks with multiple sub-parts.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks — Science):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
@@ -4201,8 +4200,8 @@ TOTAL: 100 marks = four 25-mark sections. NO multiple choice.`;
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — Geography):
 - Section I — Objective Response: 10 questions × 1 mark = 10 marks (with stimulus: maps, data, photographs described)
-- Section II — Short Answer: 3-4 questions totalling ~30 marks (fieldwork data, spatial data, with sub-parts (a)(b)(c))
-- Section III — Extended Response: 1 question of ~20 marks
+- Section II — Short Answer: 4-5 questions totalling ~35 marks (fieldwork data, spatial data, with sub-parts (a)(b)(c)). Max 8 marks per question.
+- Section III — Extended Response: 1 question of ~15 marks (with sub-parts (a)(b)(c))
 TOTAL: ~60 marks. You MUST include ALL three sections.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — Geography):
@@ -4243,8 +4242,8 @@ TOTAL: ~100 marks.`;
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName}):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 3-4 questions totalling ~30 marks
-- Section III — Extended Response: 1 question of ~20 marks
+- Section II — Short Answer: 4-5 questions totalling ~35 marks (with sub-parts). Max 8 marks per question.
+- Section III — Extended Response: 1 question of ~15 marks (with sub-parts (a)(b)(c))
 TOTAL: ~60 marks. You MUST include ALL three sections.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName}):
@@ -4277,8 +4276,8 @@ TOTAL: 100 marks. You MUST include ALL four sections.`;
     } else if (category === 'creative arts') {
         if (durationHours === 1) {
             structureGuide = `EXAM STRUCTURE (1h, 60 marks — Creative Arts):
-- Section I — Short Response: 4-6 questions totalling ~30 marks. Include stimulus material (description of artwork, performance excerpt, musical score described).
-- Section II — Extended Response: 1-2 essay questions totalling ~30 marks.
+- Section I — Short Response: 5-6 questions totalling ~35 marks. Include stimulus material (description of artwork, performance excerpt, musical score described). Max 8 marks per question.
+- Section II — Extended Response: 2 essay questions totalling ~25 marks (max 15 marks each).
 TOTAL: ~60 marks. NO multiple choice for Creative Arts.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks — Creative Arts):
@@ -4398,8 +4397,8 @@ TOTAL: ~100 marks. You MUST include ALL three sections.`;
         if (durationHours === 1) {
             structureGuide = `EXAM STRUCTURE (1h, 60 marks):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 5-7 questions totalling ~35 marks
-- Section III — Extended Response: 1-2 questions totalling ~15 marks
+- Section II — Short Answer: 5-7 questions totalling ~35 marks (with sub-parts). Max 8 marks per question.
+- Section III — Extended Response: 1 question of ~15 marks (with sub-parts (a)(b)(c))
 TOTAL: ~60 marks. You MUST include ALL three sections.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks):
@@ -4422,11 +4421,12 @@ TOTAL: ~100 marks. You MUST include ALL three sections.`;
 UNIQUENESS SEED: ${examSeed}
 Use this seed to ensure completely unique questions every time.
 
-MODULE/TOPIC CONSTRAINT — THIS IS ABSOLUTE:
+MODULE/TOPIC CONSTRAINT — ABSOLUTE, NON-NEGOTIABLE:
 - The student selected: "${topics || 'All Year 12 content'}"
-- If a specific module was selected (e.g. "Module 6: Genetic Change"), then EVERY SINGLE QUESTION must come EXCLUSIVELY from that module's syllabus dot points. Do NOT include ANY content from other modules. Zero exceptions.
+- If a specific module was selected (e.g. "Module 6: Genetic Change"), then EVERY SINGLE QUESTION — including MC, short answer, AND extended response — must come EXCLUSIVELY from that module's syllabus dot points. Do NOT include ANY content, terminology, or concepts from other modules. Zero exceptions. An exam that mixes modules is INVALID and USELESS.
 - If "All Year 12 content" is selected, spread questions evenly across all modules.
-- Before writing each question, verify it belongs to the selected module. If it doesn't, discard it.
+- Before writing EACH question, explicitly verify: "Does this question belong to the selected module?" If the answer is no, DISCARD it immediately and write a replacement from the correct module.
+- This constraint applies to stimulus material too — do not reference content from other modules even in stimuli.
 
 ${structureGuide}
 
@@ -4451,16 +4451,21 @@ ${categoryRules}
 
 UNICODE MATH FORMATTING (for all subjects): Use x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, ° — NEVER LaTeX.
 
-DIFFICULTY LEVEL: ${difficulty === 'easy' ? 'EASY — Foundation/Revision level. Use simpler language, more scaffolded questions, fewer multi-step problems. Short answer questions should have clear single-concept focus. Extended responses should be more guided with specific prompts. MC distractors should be more obviously wrong. Keep questions at the lower end of Bloom\'s taxonomy (recall, understand, apply).' : difficulty === 'hard' ? 'HARD — Trial-level / Extension difficulty. Use complex multi-step problems, nuanced stimulus material, higher-order thinking throughout. Short answers should require synthesis of multiple concepts. Extended responses should demand sophisticated analysis with ambiguous/debatable propositions. MC distractors should be very close to the correct answer. Target the upper end of Bloom\'s taxonomy (analyse, evaluate, create). Include questions that would challenge Band 6 students.' : 'STANDARD — HSC exam difficulty. Follow the typical difficulty distribution of a real NESA exam: start easier and build to harder questions within each section. Match the rigour and complexity of actual past HSC papers.'}
+DIFFICULTY LEVEL: ${difficulty === 'easy' ? 'EASY — Foundation/Revision level. Use simpler language, more scaffolded questions, fewer multi-step problems. Short answer questions should have clear single-concept focus. Extended responses should be more guided with specific prompts. MC distractors should be more obviously wrong. Keep questions at the lower end of Bloom\'s taxonomy (recall, understand, apply).' : difficulty === 'hard' ? 'HARD — ELITE TRIAL-LEVEL DIFFICULTY. This must be SIGNIFICANTLY harder than a standard HSC exam. Requirements:\n  * MC: All 4 options must be highly plausible. Include "trick" answers that test precise understanding. At least 30% of MC should require multi-step reasoning or eliminating subtle misconceptions.\n  * Short answer: Every question must require synthesis of multiple concepts. Include unfamiliar contexts, novel stimulus data, and scenarios the student hasn\'t seen before. Never ask a straightforward recall question.\n  * Extended response: Use deliberately ambiguous or debatable propositions. Require students to evaluate competing perspectives with evidence. Demand sophisticated, Band-6-level analysis.\n  * Questions should mirror the hardest questions from top selective school trial papers (e.g. James Ruse, Sydney Grammar, North Sydney Boys).\n  * Include at LEAST one question per section that most students would find genuinely difficult.\n  * Use complex data tables, multi-variable experiments, contradictory sources, and real-world edge cases as stimulus.' : 'STANDARD — HSC exam difficulty. Follow the typical difficulty distribution of a real NESA exam: start easier and build to harder questions within each section. Match the rigour and complexity of actual past HSC papers.'}
+
+MARK TOTAL VERIFICATION — CRITICAL:
+- The sum of ALL question marks across ALL sections MUST equal EXACTLY ${totalMarks}.
+- After generating all questions, add up every question's marks. If the total does not equal ${totalMarks}, adjust question marks or add/remove questions until it does.
+- Each section's marks must match the structure guide above. Do NOT leave marks unaccounted for.
 
 Subject: ${subjectName}
 Topics: ${topics || 'All Year 12 content'}
 Duration: ${durationHours} hour(s)
-Total marks: ~${totalMarks}
+Total marks: EXACTLY ${totalMarks}
 
 Return ONLY valid JSON (no markdown, no code fences) in this exact structure:
 {
-  "title": "2025 HSC ${subjectName} Trial Examination",
+  "title": "HSC ${subjectName} Practice Examination",
   "duration": "${durationHours} hour(s)",
   "totalMarks": ${totalMarks},
   "instructions": "Brief exam instructions string",
@@ -4506,7 +4511,7 @@ CRITICAL JSON RULES:
             model: aiSettings.model,
             messages: [
                 { role: 'system', content: systemPrompt },
-                { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. Return ONLY valid JSON.` }
+                { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.` }
             ],
             [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
         };
@@ -4541,6 +4546,22 @@ CRITICAL JSON RULES:
         } catch (parseErr) {
             console.error('Failed to parse exam JSON:', parseErr.message, 'Raw:', reply.substring(0, 500));
             return res.status(500).json({ error: 'Failed to generate valid exam structure. Please try again.' });
+        }
+
+        // Server-side mark verification — fix totalMarks to match actual question sum
+        let actualTotal = 0;
+        if (exam.sections) {
+            for (const section of exam.sections) {
+                if (section.questions) {
+                    for (const q of section.questions) {
+                        actualTotal += (q.marks || 0);
+                    }
+                }
+            }
+        }
+        if (actualTotal > 0 && actualTotal !== exam.totalMarks) {
+            console.log(`⚠️ Exam mark mismatch: stated ${exam.totalMarks}, actual ${actualTotal}. Correcting.`);
+            exam.totalMarks = actualTotal;
         }
 
         // Increment free tier usage

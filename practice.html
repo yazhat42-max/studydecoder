@@ -2107,7 +2107,14 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             dotsEl.innerHTML = '';
             examQuestions.forEach((q, i) => {
                 const dot = document.createElement('div');
-                dot.className = 'exam-dot' + (i === examCurrentIdx ? ' current' : '') + (examAnswers[q.number] ? ' answered' : '');
+                // Check if answered: for multi-part questions, check composite keys
+                let isAnswered = false;
+                if (q.parts && q.parts.length > 0) {
+                    isAnswered = q.parts.some((_, pi) => examAnswers[q.number + '_' + (pi + 1)]);
+                } else {
+                    isAnswered = !!examAnswers[q.number];
+                }
+                dot.className = 'exam-dot' + (i === examCurrentIdx ? ' current' : '') + (isAnswered ? ' answered' : '');
                 dot.textContent = q.number;
                 dot.onclick = () => { saveCurrentAnswer(); examCurrentIdx = i; renderExamQuestion(); renderExamDots(); };
                 dotsEl.appendChild(dot);
@@ -2214,8 +2221,16 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             if (examTimeExpired) return; // already auto-submitted
             saveCurrentAnswer();
 
-            // Check how many answered
-            const answered = Object.keys(examAnswers).length;
+            // Check how many questions answered (count multi-part as 1 question if any part answered)
+            let answered = 0;
+            for (const q of examQuestions) {
+                if (q.parts && q.parts.length > 0) {
+                    const hasAny = q.parts.some((_, pi) => examAnswers[q.number + '_' + (pi + 1)]);
+                    if (hasAny) answered++;
+                } else if (examAnswers[q.number]) {
+                    answered++;
+                }
+            }
             const total = examQuestions.length;
             if (answered < total) {
                 if (!confirm(`You've answered ${answered} of ${total} questions. Unanswered questions will receive 0 marks. Submit anyway?`)) return;
