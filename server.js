@@ -4103,23 +4103,67 @@ TOTAL: ~100 marks. You MUST include both sections.`;
 
     // ===== ENGLISH (Advanced, Standard, Extension, EAL/D, Studies) =====
     } else if (category === 'english') {
-        if (durationHours === 1) {
-            structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — modelled on Paper 1):
+        // Detect if a single module is selected vs all modules
+        const isAllModules = !topics || topics === 'All Year 12 content';
+        const isCommonModule = topics && topics.toLowerCase().includes('texts and human experiences');
+        const isSingleModule = !isAllModules;
+
+        if (isAllModules) {
+            // Full paper covering all modules
+            if (durationHours === 1) {
+                structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — ALL MODULES):
 - Section I — Short Response (Unseen Texts): Provide 1-2 unseen stimulus texts (poem, prose extract, visual text description, speech extract). 5-6 questions totalling ~35 marks analysing language, structure, meaning.
 - Section II — Extended Response: 1 essay on prescribed/studied text = ~25 marks.
-TOTAL: ~60 marks. You MUST include both sections. NO multiple choice. Only ONE extended response.`;
-        } else if (durationHours === 2) {
-            structureGuide = `EXAM STRUCTURE (2h, 80 marks — English):
+TOTAL: ~60 marks. You MUST include both sections. NO multiple choice.`;
+            } else if (durationHours === 2) {
+                structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — ALL MODULES):
 - Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts. 4-6 questions totalling ~20 marks.
 - Section II — Module-based Response: 2-3 questions totalling ~30 marks (short essay or structured response).
-- Section III — Extended Response / Essay: 1-2 essay questions totalling ~30 marks (e.g. 1×20 + 1×10, or 2×15).
-TOTAL: ~80 marks. You MUST include all three sections. NO multiple choice for English.`;
-        } else {
-            structureGuide = `EXAM STRUCTURE (3h, 100 marks — English):
+- Section III — Extended Response / Essay: 1-2 essay questions totalling ~30 marks.
+TOTAL: ~80 marks. You MUST include all three sections. NO multiple choice.`;
+            } else {
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — ALL MODULES):
 - Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts. 5-7 questions totalling ~20 marks.
 - Section II — Module-based Response: 2-3 questions totalling ~40 marks.
 - Section III — Extended Response / Essay: 1-2 major essay questions totalling ~40 marks.
-TOTAL: ~100 marks. You MUST include all three sections. NO multiple choice for English.`;
+TOTAL: ~100 marks. You MUST include all three sections. NO multiple choice.`;
+            }
+        } else if (isCommonModule) {
+            // Common Module (Texts and Human Experiences): Paper 1 format — short answers on unseen texts + 1 essay
+            if (durationHours === 1) {
+                structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — Common Module: Texts and Human Experiences):
+- Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts (poem, prose passage, visual text, speech extract). 5-7 questions totalling ~40 marks analysing how composers represent human experiences through language, structure, and meaning.
+- Section II — Extended Response: 1 essay of ~20 marks responding to a statement about texts and human experiences.
+TOTAL: ~60 marks. TWO sections. NO multiple choice. All questions must relate to the Common Module.`;
+            } else if (durationHours === 2) {
+                structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — Common Module: Texts and Human Experiences):
+- Section I — Short Response (Unseen Texts): Provide 3-4 unseen stimulus texts. 6-8 questions totalling ~55 marks analysing how composers represent human experiences.
+- Section II — Extended Response: 1 essay of ~25 marks responding to a proposition about texts and human experiences.
+TOTAL: ~80 marks. TWO sections. NO multiple choice. All questions must relate to the Common Module.`;
+            } else {
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — Common Module: Texts and Human Experiences):
+- Section I — Short Response (Unseen Texts): Provide 3-4 unseen stimulus texts. 7-10 questions totalling ~70 marks analysing how composers represent human experiences.
+- Section II — Extended Response: 1 essay of ~30 marks responding to a proposition about texts and human experiences.
+TOTAL: ~100 marks. TWO sections. NO multiple choice. All questions must relate to the Common Module.`;
+            }
+        } else {
+            // Single non-common module selected — focused paper: short answers + 1 essay on that module only
+            if (durationHours === 1) {
+                structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — Module: "${topics}"):
+- Section I — Short Response: 4-6 questions totalling ~40 marks. Include relevant stimulus material where appropriate. All questions must relate to "${topics}".
+- Section II — Extended Response: 1 essay of ~20 marks on "${topics}".
+TOTAL: ~60 marks. TWO sections. NO multiple choice. EVERY question must be about "${topics}" only.`;
+            } else if (durationHours === 2) {
+                structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — Module: "${topics}"):
+- Section I — Short Response: 5-7 questions totalling ~55 marks. Include relevant stimulus material. All questions on "${topics}".
+- Section II — Extended Response: 1 essay of ~25 marks on "${topics}".
+TOTAL: ~80 marks. TWO sections. NO multiple choice. EVERY question must be about "${topics}" only.`;
+            } else {
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — Module: "${topics}"):
+- Section I — Short Response: 6-8 questions totalling ~70 marks. Include stimulus material. All questions on "${topics}".
+- Section II — Extended Response: 1 essay of ~30 marks on "${topics}".
+TOTAL: ~100 marks. TWO sections. NO multiple choice. EVERY question must be about "${topics}" only.`;
+            }
         }
         categoryRules = `ENGLISH-SPECIFIC RULES:
 - NEVER include multiple choice questions. English HSC exams do NOT have MC.
@@ -4173,26 +4217,72 @@ TOTAL: 100 marks. You MUST include ALL three sections.`;
         const isSocietyCulture = subject === 'society-culture';
 
         if (isHistory) {
-            // Ancient/Modern History & History Extension: NO MC — source-based + essays
-            if (durationHours === 1) {
-                structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — NO MULTIPLE CHOICE):
+            // Detect if a single topic is selected vs all
+            const histIsAllModules = !topics || topics === 'All Year 12 content';
+            const histIsCoreStudy = topics && topics.toLowerCase().startsWith('core study:');
+            const histIsSingleTopic = !histIsAllModules;
+
+            if (histIsAllModules) {
+                // Full paper covering all topic areas — source-based + multiple essays
+                if (durationHours === 1) {
+                    structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — ALL TOPICS — NO MULTIPLE CHOICE):
 - Section I — Source-based (Core): Provide 3-4 primary/secondary sources (document extracts, images described, statistics). 4 questions totalling ~25 marks (scaffolded: 3+4+6+12 marks).
 - Section II — Essay: 1 essay of ~20 marks (choose from 2 options).
 - Section III — Essay: 1 essay of ~15 marks (choose from 2 options, different topic area).
 TOTAL: ~60 marks. NO multiple choice. Source-based questions + essays only.`;
-            } else if (durationHours === 2) {
-                structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — NO MULTIPLE CHOICE):
+                } else if (durationHours === 2) {
+                    structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — ALL TOPICS — NO MULTIPLE CHOICE):
 - Section I — Source-based (Core): Provide 3-4 sources. 4-5 questions totalling ~30 marks (scaffolded: 3+4+5+6+12 marks).
 - Section II — Essay: 1 essay of ~25 marks (choose from topic options).
 - Section III — Essay: 1 essay of ~25 marks (different topic area).
 TOTAL: ~80 marks. NO multiple choice.`;
-            } else {
-                structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — NO MULTIPLE CHOICE):
+                } else {
+                    structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — ALL TOPICS — NO MULTIPLE CHOICE):
 - Section I — Source-based (Core Study): Provide 3-4 primary/secondary sources. 4 questions totalling 25 marks (3+4+6+12 pattern).
 - Section II — Essay: 1 essay of 25 marks (choose from topic options).
 - Section III — Essay: 1 essay of 25 marks (different topic area).
 - Section IV — Essay: 1 essay of 25 marks (different topic area).
 TOTAL: 100 marks = four 25-mark sections. NO multiple choice.`;
+                }
+            } else if (histIsCoreStudy) {
+                // Core Study selected — source-based short answers only (25 marks scaled to duration)
+                if (durationHours === 1) {
+                    structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — Core Study: "${topics}" — NO MULTIPLE CHOICE):
+- Source-based Questions ONLY: Provide 4-5 primary/secondary sources (document extracts, images described, statistics, maps).
+- 6-8 questions totalling ~60 marks, all source-based. Scaffold from low-order to high-order: identify (2-3m), describe (4m), explain (6m), assess/evaluate using sources (8-12m).
+- EVERY question must relate to the Core Study: "${topics}".
+TOTAL: ~60 marks. NO essays. NO multiple choice. Source-based short answers only.`;
+                } else if (durationHours === 2) {
+                    structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — Core Study: "${topics}" — NO MULTIPLE CHOICE):
+- Source-based Questions ONLY: Provide 5-6 primary/secondary sources.
+- 7-10 questions totalling ~80 marks, all source-based. Scaffold from identify (2-3m) through explain (6m) to evaluate/assess (10-15m).
+- EVERY question must relate to the Core Study: "${topics}".
+TOTAL: ~80 marks. NO essays. NO multiple choice. Source-based short answers only.`;
+                } else {
+                    structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — Core Study: "${topics}" — NO MULTIPLE CHOICE):
+- Source-based Questions ONLY: Provide 5-6 primary/secondary sources.
+- 8-12 questions totalling ~100 marks, all source-based. Scaffold from identify (2-3m) through explain (6m) to evaluate/assess (10-15m).
+- EVERY question must relate to the Core Study: "${topics}".
+TOTAL: ~100 marks. NO essays. NO multiple choice. Source-based short answers only.`;
+                }
+            } else {
+                // Single non-core topic selected — source-based + 1 essay only
+                if (durationHours === 1) {
+                    structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — Topic: "${topics}" — NO MULTIPLE CHOICE):
+- Section I — Short Answer: 4-5 questions totalling ~35 marks (may include sources/stimulus). All questions on "${topics}".
+- Section II — Essay: 1 essay of ~25 marks on "${topics}" (choose from 2 options).
+TOTAL: ~60 marks. NO multiple choice. EVERY question must be about "${topics}" only. Do NOT include questions from other topic areas.`;
+                } else if (durationHours === 2) {
+                    structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — Topic: "${topics}" — NO MULTIPLE CHOICE):
+- Section I — Short Answer/Source-based: 5-6 questions totalling ~50 marks (include 2-3 sources). All on "${topics}".
+- Section II — Essay: 1 essay of ~30 marks on "${topics}" (choose from 2 options).
+TOTAL: ~80 marks. NO multiple choice. EVERY question must be about "${topics}" only.`;
+                } else {
+                    structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — Topic: "${topics}" — NO MULTIPLE CHOICE):
+- Section I — Short Answer/Source-based: 5-7 questions totalling ~60 marks (include 3-4 sources). All on "${topics}".
+- Section II — Essay: 1 essay of ~40 marks on "${topics}" (choose from 2 options).
+TOTAL: ~100 marks. NO multiple choice. EVERY question must be about "${topics}" only.`;
+                }
             }
         } else if (isGeography) {
             // Geography: 20 MC, uses stimulus booklet (maps, data, photographs)
