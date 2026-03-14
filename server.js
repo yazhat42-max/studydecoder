@@ -4028,6 +4028,93 @@ function saveExamProgress(userId, progress) {
     scheduleSave();
 }
 
+// ===== Helper: Repair exam marks to hit exact target =====
+// Strategy: adjust the last non-MC section's last question(s) marks to close the gap
+function repairExamMarks(exam, targetTotal, actualTotal) {
+    if (!exam.sections || exam.sections.length === 0) return false;
+    const diff = targetTotal - actualTotal; // positive = need more marks, negative = need fewer
+
+    // Find the last section that has non-MC questions (best place to adjust)
+    let targetSection = null;
+    for (let i = exam.sections.length - 1; i >= 0; i--) {
+        const sec = exam.sections[i];
+        if (sec.questions && sec.questions.some(q => q.type !== 'mc')) {
+            targetSection = sec;
+            break;
+        }
+    }
+    if (!targetSection || !targetSection.questions || targetSection.questions.length === 0) return false;
+
+    // Get all non-MC questions in this section sorted by marks descending
+    const nonMcQuestions = targetSection.questions.filter(q => q.type !== 'mc');
+    if (nonMcQuestions.length === 0) return false;
+
+    if (diff > 0) {
+        // Need MORE marks — increase the last question's marks
+        const lastQ = nonMcQuestions[nonMcQuestions.length - 1];
+        const newMarks = lastQ.marks + diff;
+        // Don't let any single question exceed 25 marks (unreasonable)
+        if (newMarks > 25) return false;
+        lastQ.marks = newMarks;
+        // If it has parts, add marks to the last part
+        if (lastQ.parts && lastQ.parts.length > 0) {
+            lastQ.parts[lastQ.parts.length - 1].marks += diff;
+        }
+        return true;
+    } else if (diff < 0) {
+        // Need FEWER marks — reduce marks from the last question
+        const absDiff = Math.abs(diff);
+        const lastQ = nonMcQuestions[nonMcQuestions.length - 1];
+        if (lastQ.marks - absDiff >= 2) {
+            // Can absorb the reduction in one question
+            lastQ.marks -= absDiff;
+            if (lastQ.parts && lastQ.parts.length > 0) {
+                // Reduce from the last part
+                const lastPart = lastQ.parts[lastQ.parts.length - 1];
+                if (lastPart.marks - absDiff >= 1) {
+                    lastPart.marks -= absDiff;
+                } else {
+                    // Remove parts from the end until we've absorbed the diff
+                    let remaining = absDiff;
+                    for (let i = lastQ.parts.length - 1; i >= 0 && remaining > 0; i--) {
+                        const partMarks = lastQ.parts[i].marks;
+                        if (partMarks <= remaining) {
+                            remaining -= partMarks;
+                            lastQ.parts.splice(i, 1);
+                        } else {
+                            lastQ.parts[i].marks -= remaining;
+                            remaining = 0;
+                        }
+                    }
+                }
+            }
+            return true;
+        } else if (absDiff <= lastQ.marks && nonMcQuestions.length > 2) {
+            // Remove the last question entirely if that closes the gap
+            const idx = targetSection.questions.indexOf(lastQ);
+            if (idx !== -1 && lastQ.marks === absDiff) {
+                targetSection.questions.splice(idx, 1);
+                return true;
+            }
+        }
+        // Spread reduction across multiple questions
+        let remaining = absDiff;
+        for (let i = nonMcQuestions.length - 1; i >= 0 && remaining > 0; i--) {
+            const q = nonMcQuestions[i];
+            const canReduce = Math.min(remaining, q.marks - 2);
+            if (canReduce > 0) {
+                q.marks -= canReduce;
+                remaining -= canReduce;
+                if (q.parts && q.parts.length > 0) {
+                    q.parts[q.parts.length - 1].marks = Math.max(1, q.parts[q.parts.length - 1].marks - canReduce);
+                }
+            }
+        }
+        return remaining === 0;
+    }
+    return true; // diff === 0
+}
+
 // Generate exam — returns structured JSON with questions
 app.post('/api/exam/generate', express.json(), async (req, res) => {
     if (!req.session?.userId) {
@@ -4717,108 +4804,121 @@ CRITICAL JSON RULES:
     try {
         const isGpt5 = aiSettings.model.startsWith('gpt-5');
         const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
-        const requestBody = {
-            model: aiSettings.model,
-            messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.` }
-            ],
-            [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
-        };
-        if (!isGpt5) requestBody.temperature = Math.min(aiSettings.temperature, 0.7);
+        // ===== EXAM GENERATION WITH MARK VERIFICATION (retry loop) =====
+        let exam = null;
+        let generateAttempts = 0;
+        const maxGenerateAttempts = 2;
+        let lastError = null;
 
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-            body: JSON.stringify(requestBody)
-        });
+        while (generateAttempts < maxGenerateAttempts && !exam) {
+            generateAttempts++;
+            const extraReminder = generateAttempts > 1
+                ? ` CRITICAL: Your previous attempt produced ${lastError}. The mark total MUST be EXACTLY ${totalMarks}. Count every mark in every section before responding.`
+                : '';
 
-        if (!response.ok) {
-            const error = await response.json();
-            console.error('OpenAI exam generate error:', error);
-            return res.status(500).json({ error: 'AI service unavailable' });
-        }
+            const requestBody = {
+                model: aiSettings.model,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}` }
+                ],
+                [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
+            };
+            if (!isGpt5) requestBody.temperature = Math.min(aiSettings.temperature, 0.7);
 
-        const data = await response.json();
-        let reply = data.choices?.[0]?.message?.content || '';
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
+                body: JSON.stringify(requestBody)
+            });
 
-        // Robust JSON extraction — strip fences, find JSON object
-        reply = reply.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
-        const jsonStart = reply.indexOf('{');
-        const jsonEnd = reply.lastIndexOf('}');
-        if (jsonStart !== -1 && jsonEnd > jsonStart) {
-            reply = reply.substring(jsonStart, jsonEnd + 1);
-        }
+            if (!response.ok) {
+                const error = await response.json();
+                console.error('OpenAI exam generate error:', error);
+                return res.status(500).json({ error: 'AI service unavailable' });
+            }
 
-        let exam;
-        try {
-            exam = JSON.parse(reply);
-        } catch (parseErr) {
-            console.error('Failed to parse exam JSON:', parseErr.message, 'Raw:', reply.substring(0, 500));
-            return res.status(500).json({ error: 'Failed to generate valid exam structure. Please try again.' });
-        }
+            const data = await response.json();
+            let reply = data.choices?.[0]?.message?.content || '';
 
-        // Server-side mark enforcement — force total to match the target (60/80/100)
-        // The AI often generates fewer marks than requested. Instead of just accepting
-        // the wrong total, we adjust individual question marks to hit the correct target.
-        if (exam.sections) {
+            // Robust JSON extraction — strip fences, find JSON object
+            reply = reply.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
+            const jsonStart = reply.indexOf('{');
+            const jsonEnd = reply.lastIndexOf('}');
+            if (jsonStart !== -1 && jsonEnd > jsonStart) {
+                reply = reply.substring(jsonStart, jsonEnd + 1);
+            }
+
+            let parsed;
+            try {
+                parsed = JSON.parse(reply);
+            } catch (parseErr) {
+                console.error(`Exam parse failed (attempt ${generateAttempts}):`, parseErr.message);
+                lastError = `invalid JSON`;
+                continue;
+            }
+
+            // ===== SERVER-SIDE MARK VERIFICATION & REPAIR =====
             let actualTotal = 0;
-            const adjustable = []; // non-MC questions we can adjust
-            for (const section of exam.sections) {
-                if (section.questions) {
-                    for (const q of section.questions) {
-                        actualTotal += (q.marks || 0);
-                        if (q.type !== 'mc' && (q.marks || 0) >= 2) {
-                            adjustable.push(q);
-                        }
-                    }
-                }
-            }
-
-            const delta = totalMarks - actualTotal;
-            if (delta !== 0 && adjustable.length > 0) {
-                console.log(`⚠️ Exam mark mismatch: AI generated ${actualTotal}, target ${totalMarks}. Adjusting ${delta > 0 ? '+' : ''}${delta} marks across ${adjustable.length} questions.`);
-
-                // Sort: if adding marks, prioritise lower-mark questions; if removing, prioritise higher-mark ones
-                if (delta > 0) {
-                    adjustable.sort((a, b) => (a.marks || 0) - (b.marks || 0));
-                } else {
-                    adjustable.sort((a, b) => (b.marks || 0) - (a.marks || 0));
-                }
-
-                let remaining = Math.abs(delta);
-                let idx = 0;
-                while (remaining > 0 && idx < adjustable.length) {
-                    const q = adjustable[idx];
-                    // Add or remove 1-2 marks per question per pass to keep it realistic
-                    const step = Math.min(remaining, delta > 0 ? 2 : Math.max(1, q.marks - 2));
-                    if (delta > 0) {
-                        q.marks += step;
-                        // If question has parts, add marks to the last part
-                        if (q.parts && q.parts.length > 0) {
-                            q.parts[q.parts.length - 1].marks = (q.parts[q.parts.length - 1].marks || 1) + step;
-                        }
-                    } else {
-                        if (q.marks - step >= 2) {
-                            q.marks -= step;
+            let totalQuestions = 0;
+            if (parsed.sections) {
+                for (const section of parsed.sections) {
+                    if (section.questions) {
+                        for (const q of section.questions) {
+                            // Verify parts sum matches question marks
                             if (q.parts && q.parts.length > 0) {
-                                q.parts[q.parts.length - 1].marks = Math.max(1, (q.parts[q.parts.length - 1].marks || 1) - step);
+                                const partsSum = q.parts.reduce((s, p) => s + (p.marks || 0), 0);
+                                if (partsSum > 0 && partsSum !== q.marks) {
+                                    q.marks = partsSum; // Trust the parts
+                                }
                             }
-                        } else {
-                            idx++;
-                            continue;
+                            actualTotal += (q.marks || 0);
+                            totalQuestions++;
                         }
                     }
-                    remaining -= step;
-                    idx++;
-                    // Wrap around for another pass if needed
-                    if (idx >= adjustable.length && remaining > 0) idx = 0;
                 }
             }
 
-            // Always set totalMarks to the hardcoded target
-            exam.totalMarks = totalMarks;
-            exam.duration = `${durationHours} hour(s)`;
+            const markDiff = totalMarks - actualTotal;
+
+            if (actualTotal === totalMarks) {
+                // Perfect — use as-is
+                parsed.totalMarks = totalMarks;
+                exam = parsed;
+                console.log(`✅ Exam marks verified: ${actualTotal}/${totalMarks} (attempt ${generateAttempts})`);
+            } else if (actualTotal > 0 && Math.abs(markDiff) <= 10) {
+                // Close enough to repair — adjust the last non-MC section
+                console.log(`⚠️ Exam marks: ${actualTotal}/${totalMarks} (off by ${markDiff}). Attempting repair...`);
+                const repaired = repairExamMarks(parsed, totalMarks, actualTotal);
+                if (repaired) {
+                    parsed.totalMarks = totalMarks;
+                    exam = parsed;
+                    console.log(`✅ Exam marks repaired to ${totalMarks}`);
+                } else {
+                    // Repair failed, but close enough — accept with corrected total
+                    parsed.totalMarks = actualTotal;
+                    exam = parsed;
+                    console.log(`⚠️ Repair failed, accepting ${actualTotal} marks`);
+                }
+            } else if (actualTotal > 0) {
+                // Too far off — retry
+                console.log(`❌ Exam marks way off: ${actualTotal}/${totalMarks} (attempt ${generateAttempts}). Retrying...`);
+                lastError = `only ${actualTotal} marks instead of ${totalMarks}`;
+                if (generateAttempts >= maxGenerateAttempts) {
+                    // Last attempt — accept what we have after repair attempt
+                    const repaired = repairExamMarks(parsed, totalMarks, actualTotal);
+                    parsed.totalMarks = repaired ? totalMarks : actualTotal;
+                    exam = parsed;
+                    console.log(`⚠️ Final attempt: accepted with ${parsed.totalMarks} marks`);
+                }
+            } else {
+                lastError = `0 marks generated`;
+                console.error(`❌ Exam had 0 marks (attempt ${generateAttempts})`);
+            }
+        }
+
+        if (!exam) {
+            return res.status(500).json({ error: 'Failed to generate valid exam structure. Please try again.' });
         }
 
         // Increment free tier usage

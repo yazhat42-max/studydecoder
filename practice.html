@@ -2088,6 +2088,14 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     throw new Error('No questions generated');
                 }
 
+                // Client-side mark verification — recount from actual questions
+                let verifiedTotal = 0;
+                for (const q of examQuestions) verifiedTotal += (q.marks || 0);
+                if (verifiedTotal > 0 && verifiedTotal !== examData.totalMarks) {
+                    console.log(`Mark verification: server said ${examData.totalMarks}, actual ${verifiedTotal}. Using actual.`);
+                    examData.totalMarks = verifiedTotal;
+                }
+
                 // Start the exam
                 examCurrentIdx = 0;
                 examDurationSeconds = parseFloat(duration) * 3600;
