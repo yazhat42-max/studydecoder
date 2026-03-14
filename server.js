@@ -4053,6 +4053,15 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     // Generate a unique seed to ensure variety across exams
     const examSeed = `SEED-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
 
+    // Build previous questions list to prevent repeats (per session, per subject+topic)
+    const repeatKey = `exam_${subject}_${(topics || 'all').replace(/\s+/g, '_')}`;
+    if (!req.session.previousExamQuestions) req.session.previousExamQuestions = {};
+    const previousStems = req.session.previousExamQuestions[repeatKey] || [];
+    let previousQuestionsPrompt = '';
+    if (previousStems.length > 0) {
+        previousQuestionsPrompt = `\n\nPREVIOUSLY GENERATED QUESTIONS — DO NOT REPEAT ANY OF THESE (same subject+topic, this session):\n${previousStems.map((s, i) => `${i + 1}. ${s}`).join('\n')}\n\nYou MUST generate COMPLETELY DIFFERENT questions. Do not rephrase, reword, or restructure any of the above. Every question must be entirely new in concept, context, and stimulus material.\n`;
+    }
+
     // Determine exam structure based on subject and duration
     const durationHours = parseFloat(duration) || 2;
 
@@ -4075,20 +4084,20 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
             const mc = isStandard ? 8 : 5;
             structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName}):
 - Section I — Multiple Choice: ${mc} questions × 1 mark = ${mc} marks
-- Section II — Problems: ${isStandard ? '7-9' : '5-7'} questions totalling ~${60 - mc} marks. Each question has parts (a)(b)(c)(d), max 4 marks per part. Scaffold easy→hard.
-TOTAL: ~60 marks. You MUST include both sections.`;
+- Section II — Problems: ${isStandard ? '7-9' : '5-7'} questions totalling ${60 - mc} marks. Each question has parts (a)(b)(c)(d), max 4 marks per part. Scaffold easy→hard.
+TOTAL: EXACTLY 60 marks. You MUST include both sections.`;
         } else if (durationHours === 2) {
             const mc = isStandard ? 12 : 8;
             structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName}):
 - Section I — Multiple Choice: ${mc} questions × 1 mark = ${mc} marks
-- Section II — Problems: 12-15 questions totalling ~${80 - mc} marks. Each question has parts (a)(b)(c)(d)(e), max 4 marks per part. Scaffold easy→hard within each question.
-TOTAL: ~80 marks. You MUST include both sections.`;
+- Section II — Problems: 12-15 questions totalling ${80 - mc} marks. Each question has parts (a)(b)(c)(d)(e), max 4 marks per part. Scaffold easy→hard within each question.
+TOTAL: EXACTLY 80 marks. You MUST include both sections.`;
         } else {
             const mc = isStandard ? 15 : 10;
             structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName}):
 - Section I — Multiple Choice: ${mc} questions × 1 mark = ${mc} marks
-- Section II — Problems: 14-16 questions totalling ~${100 - mc} marks. Each question has parts (a)(b)(c)(d)(e), max 4 marks per part. Scaffold easy→hard.
-TOTAL: ~100 marks. You MUST include both sections.`;
+- Section II — Problems: 14-16 questions totalling ${100 - mc} marks. Each question has parts (a)(b)(c)(d)(e), max 4 marks per part. Scaffold easy→hard.
+TOTAL: EXACTLY 100 marks. You MUST include both sections.`;
         }
         categoryRules = `MATHEMATICS-SPECIFIC RULES:
 - Every question must have sub-parts: (a), (b), (c), etc. Max 4 marks per individual part. NEVER a single 5+ mark part.
@@ -4112,57 +4121,57 @@ TOTAL: ~100 marks. You MUST include both sections.`;
             // Full paper covering all modules
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — ALL MODULES):
-- Section I — Short Response (Unseen Texts): Provide 1-2 unseen stimulus texts (poem, prose extract, visual text description, speech extract). 5-6 questions totalling ~35 marks analysing language, structure, meaning.
+- Section I — Short Response (Unseen Texts): Provide 1-2 unseen stimulus texts (poem, prose extract, visual text description, speech extract). 5-6 questions totalling 35 marks analysing language, structure, meaning.
 - Section II — Extended Response: 1 essay on prescribed/studied text = ~25 marks.
-TOTAL: ~60 marks. You MUST include both sections. NO multiple choice.`;
+TOTAL: EXACTLY 60 marks. You MUST include both sections. NO multiple choice.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — ALL MODULES):
-- Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts. 4-6 questions totalling ~20 marks.
-- Section II — Module-based Response: 2-3 questions totalling ~30 marks (short essay or structured response).
-- Section III — Extended Response / Essay: 1-2 essay questions totalling ~30 marks.
-TOTAL: ~80 marks. You MUST include all three sections. NO multiple choice.`;
+- Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts. 4-6 questions totalling 20 marks.
+- Section II — Module-based Response: 2-3 questions totalling 30 marks (short essay or structured response).
+- Section III — Extended Response / Essay: 1-2 essay questions totalling 30 marks.
+TOTAL: EXACTLY 80 marks. You MUST include all three sections. NO multiple choice.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — ALL MODULES):
-- Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts. 5-7 questions totalling ~20 marks.
-- Section II — Module-based Response: 2-3 questions totalling ~40 marks.
-- Section III — Extended Response / Essay: 1-2 major essay questions totalling ~40 marks.
-TOTAL: ~100 marks. You MUST include all three sections. NO multiple choice.`;
+- Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts. 5-7 questions totalling 20 marks.
+- Section II — Module-based Response: 2-3 questions totalling 40 marks.
+- Section III — Extended Response / Essay: 1-2 major essay questions totalling 40 marks.
+TOTAL: EXACTLY 100 marks. You MUST include all three sections. NO multiple choice.`;
             }
         } else if (isCommonModule) {
             // Common Module (Texts and Human Experiences): Paper 1 format — short answers on unseen texts + 1 essay
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — Common Module: Texts and Human Experiences):
-- Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts (poem, prose passage, visual text, speech extract). 5-7 questions totalling ~40 marks analysing how composers represent human experiences through language, structure, and meaning.
+- Section I — Short Response (Unseen Texts): Provide 2-3 unseen stimulus texts (poem, prose passage, visual text, speech extract). 5-7 questions totalling 40 marks analysing how composers represent human experiences through language, structure, and meaning.
 - Section II — Extended Response: 1 essay of ~20 marks responding to a statement about texts and human experiences.
-TOTAL: ~60 marks. TWO sections. NO multiple choice. All questions must relate to the Common Module.`;
+TOTAL: EXACTLY 60 marks. TWO sections. NO multiple choice. All questions must relate to the Common Module.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — Common Module: Texts and Human Experiences):
-- Section I — Short Response (Unseen Texts): Provide 3-4 unseen stimulus texts. 6-8 questions totalling ~55 marks analysing how composers represent human experiences.
+- Section I — Short Response (Unseen Texts): Provide 3-4 unseen stimulus texts. 6-8 questions totalling 55 marks analysing how composers represent human experiences.
 - Section II — Extended Response: 1 essay of ~25 marks responding to a proposition about texts and human experiences.
-TOTAL: ~80 marks. TWO sections. NO multiple choice. All questions must relate to the Common Module.`;
+TOTAL: EXACTLY 80 marks. TWO sections. NO multiple choice. All questions must relate to the Common Module.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — Common Module: Texts and Human Experiences):
-- Section I — Short Response (Unseen Texts): Provide 3-4 unseen stimulus texts. 7-10 questions totalling ~70 marks analysing how composers represent human experiences.
+- Section I — Short Response (Unseen Texts): Provide 3-4 unseen stimulus texts. 7-10 questions totalling 70 marks analysing how composers represent human experiences.
 - Section II — Extended Response: 1 essay of ~30 marks responding to a proposition about texts and human experiences.
-TOTAL: ~100 marks. TWO sections. NO multiple choice. All questions must relate to the Common Module.`;
+TOTAL: EXACTLY 100 marks. TWO sections. NO multiple choice. All questions must relate to the Common Module.`;
             }
         } else {
             // Single non-common module selected — focused paper: short answers + 1 essay on that module only
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — Module: "${topics}"):
-- Section I — Short Response: 4-6 questions totalling ~40 marks. Include relevant stimulus material where appropriate. All questions must relate to "${topics}".
+- Section I — Short Response: 4-6 questions totalling 40 marks. Include relevant stimulus material where appropriate. All questions must relate to "${topics}".
 - Section II — Extended Response: 1 essay of ~20 marks on "${topics}".
-TOTAL: ~60 marks. TWO sections. NO multiple choice. EVERY question must be about "${topics}" only.`;
+TOTAL: EXACTLY 60 marks. TWO sections. NO multiple choice. EVERY question must be about "${topics}" only.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — Module: "${topics}"):
-- Section I — Short Response: 5-7 questions totalling ~55 marks. Include relevant stimulus material. All questions on "${topics}".
+- Section I — Short Response: 5-7 questions totalling 55 marks. Include relevant stimulus material. All questions on "${topics}".
 - Section II — Extended Response: 1 essay of ~25 marks on "${topics}".
-TOTAL: ~80 marks. TWO sections. NO multiple choice. EVERY question must be about "${topics}" only.`;
+TOTAL: EXACTLY 80 marks. TWO sections. NO multiple choice. EVERY question must be about "${topics}" only.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — Module: "${topics}"):
-- Section I — Short Response: 6-8 questions totalling ~70 marks. Include stimulus material. All questions on "${topics}".
+- Section I — Short Response: 6-8 questions totalling 70 marks. Include stimulus material. All questions on "${topics}".
 - Section II — Extended Response: 1 essay of ~30 marks on "${topics}".
-TOTAL: ~100 marks. TWO sections. NO multiple choice. EVERY question must be about "${topics}" only.`;
+TOTAL: EXACTLY 100 marks. TWO sections. NO multiple choice. EVERY question must be about "${topics}" only.`;
             }
         }
         categoryRules = `ENGLISH-SPECIFIC RULES:
@@ -4182,19 +4191,19 @@ TOTAL: ~100 marks. TWO sections. NO multiple choice. EVERY question must be abou
         if (durationHours === 1) {
             structureGuide = `EXAM STRUCTURE (1h, 60 marks — Science — based on real school topic tests):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 6-8 questions totalling ~50 marks. EVERY question MUST have sub-parts (a)(b)(c)(d). Individual questions range from 4-8 marks. NO single question exceeds 8 marks. Each sub-part is 2-4 marks.
-TOTAL: ~60 marks. TWO sections only — NO separate extended response section for 1-hour exams. The hardest questions in Section II should be 7-8 marks with multiple sub-parts.`;
+- Section II — Short Answer: 6-8 questions totalling 50 marks. EVERY question MUST have sub-parts (a)(b)(c)(d). Individual questions range from 4-8 marks. NO single question exceeds 8 marks. Each sub-part is 2-4 marks.
+TOTAL: EXACTLY 60 marks. TWO sections only — NO separate extended response section for 1-hour exams. The hardest questions in Section II should be 7-8 marks with multiple sub-parts.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks — Science):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 6-7 questions totalling ~45 marks (each with sub-parts (a)(b)(c)(d)). Scaffold easy→hard within each question.
-- Section III — Extended Response: 1-2 questions totalling ~20 marks
-TOTAL: ~80 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer: 6-7 questions totalling 45 marks (each with sub-parts (a)(b)(c)(d)). Scaffold easy→hard within each question.
+- Section III — Extended Response: 1-2 questions totalling 20 marks
+TOTAL: EXACTLY 80 marks. You MUST include ALL three sections.`;
         } else {
             structureGuide = `EXAM STRUCTURE (3h, 100 marks — Science — REAL HSC FORMAT):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer: 6-8 questions totalling ~55 marks. Each question MUST have sub-parts (a)(b)(c)(d). Questions are scaffolded: parts start at 2-3 marks and build to 5-7 marks.
-- Section III — Extended Response: 1-2 questions totalling ~25 marks (max 9 marks each)
+- Section II — Short Answer: 6-8 questions totalling 55 marks. Each question MUST have sub-parts (a)(b)(c)(d). Questions are scaffolded: parts start at 2-3 marks and build to 5-7 marks.
+- Section III — Extended Response: 1-2 questions totalling 25 marks (max 9 marks each)
 TOTAL: 100 marks. You MUST include ALL three sections.`;
         }
         categoryRules = `SCIENCE-SPECIFIC RULES:
@@ -4226,16 +4235,16 @@ TOTAL: 100 marks. You MUST include ALL three sections.`;
                 // Full paper covering all topic areas — source-based + multiple essays
                 if (durationHours === 1) {
                     structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — ALL TOPICS — NO MULTIPLE CHOICE):
-- Section I — Source-based (Core): Provide 3-4 primary/secondary sources (document extracts, images described, statistics). 4 questions totalling ~25 marks (scaffolded: 3+4+6+12 marks).
+- Section I — Source-based (Core): Provide 3-4 primary/secondary sources (document extracts, images described, statistics). 4 questions totalling 25 marks (scaffolded: 3+4+6+12 marks).
 - Section II — Essay: 1 essay of ~20 marks (choose from 2 options).
 - Section III — Essay: 1 essay of ~15 marks (choose from 2 options, different topic area).
-TOTAL: ~60 marks. NO multiple choice. Source-based questions + essays only.`;
+TOTAL: EXACTLY 60 marks. NO multiple choice. Source-based questions + essays only.`;
                 } else if (durationHours === 2) {
                     structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — ALL TOPICS — NO MULTIPLE CHOICE):
-- Section I — Source-based (Core): Provide 3-4 sources. 4-5 questions totalling ~30 marks (scaffolded: 3+4+5+6+12 marks).
+- Section I — Source-based (Core): Provide 3-4 sources. 4-5 questions totalling 30 marks (scaffolded: 3+4+5+6+12 marks).
 - Section II — Essay: 1 essay of ~25 marks (choose from topic options).
 - Section III — Essay: 1 essay of ~25 marks (different topic area).
-TOTAL: ~80 marks. NO multiple choice.`;
+TOTAL: EXACTLY 80 marks. NO multiple choice.`;
                 } else {
                     structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — ALL TOPICS — NO MULTIPLE CHOICE):
 - Section I — Source-based (Core Study): Provide 3-4 primary/secondary sources. 4 questions totalling 25 marks (3+4+6+12 pattern).
@@ -4249,39 +4258,39 @@ TOTAL: 100 marks = four 25-mark sections. NO multiple choice.`;
                 if (durationHours === 1) {
                     structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — Core Study: "${topics}" — NO MULTIPLE CHOICE):
 - Source-based Questions ONLY: Provide 4-5 primary/secondary sources (document extracts, images described, statistics, maps).
-- 6-8 questions totalling ~60 marks, all source-based. Scaffold from low-order to high-order: identify (2-3m), describe (4m), explain (6m), assess/evaluate using sources (8-12m).
+- 6-8 questions totalling 60 marks, all source-based. Scaffold from low-order to high-order: identify (2-3m), describe (4m), explain (6m), assess/evaluate using sources (8-12m).
 - EVERY question must relate to the Core Study: "${topics}".
-TOTAL: ~60 marks. NO essays. NO multiple choice. Source-based short answers only.`;
+TOTAL: EXACTLY 60 marks. NO essays. NO multiple choice. Source-based short answers only.`;
                 } else if (durationHours === 2) {
                     structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — Core Study: "${topics}" — NO MULTIPLE CHOICE):
 - Source-based Questions ONLY: Provide 5-6 primary/secondary sources.
-- 7-10 questions totalling ~80 marks, all source-based. Scaffold from identify (2-3m) through explain (6m) to evaluate/assess (10-15m).
+- 7-10 questions totalling 80 marks, all source-based. Scaffold from identify (2-3m) through explain (6m) to evaluate/assess (10-15m).
 - EVERY question must relate to the Core Study: "${topics}".
-TOTAL: ~80 marks. NO essays. NO multiple choice. Source-based short answers only.`;
+TOTAL: EXACTLY 80 marks. NO essays. NO multiple choice. Source-based short answers only.`;
                 } else {
                     structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — Core Study: "${topics}" — NO MULTIPLE CHOICE):
 - Source-based Questions ONLY: Provide 5-6 primary/secondary sources.
-- 8-12 questions totalling ~100 marks, all source-based. Scaffold from identify (2-3m) through explain (6m) to evaluate/assess (10-15m).
+- 8-12 questions totalling 100 marks, all source-based. Scaffold from identify (2-3m) through explain (6m) to evaluate/assess (10-15m).
 - EVERY question must relate to the Core Study: "${topics}".
-TOTAL: ~100 marks. NO essays. NO multiple choice. Source-based short answers only.`;
+TOTAL: EXACTLY 100 marks. NO essays. NO multiple choice. Source-based short answers only.`;
                 }
             } else {
                 // Single non-core topic selected — source-based + 1 essay only
                 if (durationHours === 1) {
                     structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName} — Topic: "${topics}" — NO MULTIPLE CHOICE):
-- Section I — Short Answer: 4-5 questions totalling ~35 marks (may include sources/stimulus). All questions on "${topics}".
+- Section I — Short Answer: 4-5 questions totalling 35 marks (may include sources/stimulus). All questions on "${topics}".
 - Section II — Essay: 1 essay of ~25 marks on "${topics}" (choose from 2 options).
-TOTAL: ~60 marks. NO multiple choice. EVERY question must be about "${topics}" only. Do NOT include questions from other topic areas.`;
+TOTAL: EXACTLY 60 marks. NO multiple choice. EVERY question must be about "${topics}" only. Do NOT include questions from other topic areas.`;
                 } else if (durationHours === 2) {
                     structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — Topic: "${topics}" — NO MULTIPLE CHOICE):
-- Section I — Short Answer/Source-based: 5-6 questions totalling ~50 marks (include 2-3 sources). All on "${topics}".
+- Section I — Short Answer/Source-based: 5-6 questions totalling 50 marks (include 2-3 sources). All on "${topics}".
 - Section II — Essay: 1 essay of ~30 marks on "${topics}" (choose from 2 options).
-TOTAL: ~80 marks. NO multiple choice. EVERY question must be about "${topics}" only.`;
+TOTAL: EXACTLY 80 marks. NO multiple choice. EVERY question must be about "${topics}" only.`;
                 } else {
                     structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — Topic: "${topics}" — NO MULTIPLE CHOICE):
-- Section I — Short Answer/Source-based: 5-7 questions totalling ~60 marks (include 3-4 sources). All on "${topics}".
+- Section I — Short Answer/Source-based: 5-7 questions totalling 60 marks (include 3-4 sources). All on "${topics}".
 - Section II — Essay: 1 essay of ~40 marks on "${topics}" (choose from 2 options).
-TOTAL: ~100 marks. NO multiple choice. EVERY question must be about "${topics}" only.`;
+TOTAL: EXACTLY 100 marks. NO multiple choice. EVERY question must be about "${topics}" only.`;
                 }
             }
         } else if (isGeography) {
@@ -4289,19 +4298,19 @@ TOTAL: ~100 marks. NO multiple choice. EVERY question must be about "${topics}" 
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — Geography):
 - Section I — Objective Response: 10 questions × 1 mark = 10 marks (with stimulus: maps, data, photographs described)
-- Section II — Short Answer: 4-5 questions totalling ~35 marks (fieldwork data, spatial data, with sub-parts (a)(b)(c)). Max 8 marks per question.
+- Section II — Short Answer: 4-5 questions totalling 35 marks (fieldwork data, spatial data, with sub-parts (a)(b)(c)). Max 8 marks per question.
 - Section III — Extended Response: 1 question of ~15 marks (with sub-parts (a)(b)(c))
-TOTAL: ~60 marks. You MUST include ALL three sections.`;
+TOTAL: EXACTLY 60 marks. You MUST include ALL three sections.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — Geography):
 - Section I — Objective Response: 15 questions × 1 mark = 15 marks (with stimulus booklet)
-- Section II — Short Answer: 4-5 questions totalling ~45 marks (with sub-parts)
+- Section II — Short Answer: 4-5 questions totalling 45 marks (with sub-parts)
 - Section III — Extended Response: 1 question of ~20 marks
-TOTAL: ~80 marks. You MUST include ALL three sections.`;
+TOTAL: EXACTLY 80 marks. You MUST include ALL three sections.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — Geography — REAL HSC FORMAT):
 - Section I — Objective Response: 20 questions × 1 mark = 20 marks (with stimulus booklet)
-- Section II — Short Answer: 4-5 questions totalling ~40 marks (with sub-parts (a)(b)(c))
+- Section II — Short Answer: 4-5 questions totalling 40 marks (with sub-parts (a)(b)(c))
 - Section III — Structured Extended Response: 1 question of ~20 marks
 - Section IV — Extended Response (Essay): 1 question of ~20 marks
 TOTAL: 100 marks. You MUST include ALL four sections.`;
@@ -4313,38 +4322,38 @@ TOTAL: 100 marks. You MUST include ALL four sections.`;
 - Section I: 10 MC (10 marks) + 2 short-answer questions (~10 marks) = 20 marks
 - Section II — Short Essay: 2 short essays of ~10 marks each = 20 marks
 - Section III — Extended Response: 1 essay of ~20 marks (choose from 2 options)
-TOTAL: ~60 marks. Section I has 10 MC.`;
+TOTAL: EXACTLY 60 marks. Section I has 10 MC.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — Society and Culture — REAL HSC FORMAT):
 - Section I: 10 MC (10 marks) + 3 short-answer questions (~15 marks) = 25 marks
 - Section II — Extended Response: 2 essays of ~20 marks each = 40 marks
 - Section III — Short Essay: 1 essay of ~15 marks
-TOTAL: ~80 marks. Section I has 10 MC.`;
+TOTAL: EXACTLY 80 marks. Section I has 10 MC.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — Society and Culture — 10 MC):
 - Section I: 10 MC (10 marks) + 3 short-answer questions (~20 marks) = 30 marks
 - Section II — Extended Response: 2 essays of ~20 marks each = 40 marks
 - Section III — Extended Response: 2 essays of ~15 marks each = 30 marks
-TOTAL: ~100 marks.`;
+TOTAL: EXACTLY 100 marks.`;
             }
         } else {
             // Business Studies, Economics, Legal Studies, Studies of Religion: standard 20 MC
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName}):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 4-5 questions totalling ~35 marks (with sub-parts (a)(b)(c)). Max 8 marks per question.
+- Section II — Short Answer: 4-5 questions totalling 35 marks (with sub-parts (a)(b)(c)). Max 8 marks per question.
 - Section III — Extended Response: 1 question of ~15 marks (with sub-parts (a)(b)(c))
-TOTAL: ~60 marks. You MUST include ALL three sections.`;
+TOTAL: EXACTLY 60 marks. You MUST include ALL three sections.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName}):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 4-5 questions totalling ~35 marks (with sub-parts (a)(b)(c) for 4+ mark questions)
-- Section III — Extended Response: 1-2 questions totalling ~30 marks
-TOTAL: ~80 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer: 4-5 questions totalling 35 marks (with sub-parts (a)(b)(c) for 4+ mark questions)
+- Section III — Extended Response: 1-2 questions totalling 30 marks
+TOTAL: EXACTLY 80 marks. You MUST include ALL three sections.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName}):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer: 4-5 questions totalling ~40 marks (with sub-parts (a)(b)(c) for 4+ mark questions)
+- Section II — Short Answer: 4-5 questions totalling 40 marks (with sub-parts (a)(b)(c) for 4+ mark questions)
 - Section III — Extended Response: 1 question of ~20 marks (choose from options)
 - Section IV — Extended Response: 1 question of ~20 marks (choose from different options)
 TOTAL: 100 marks. You MUST include ALL four sections.`;
@@ -4366,19 +4375,19 @@ TOTAL: 100 marks. You MUST include ALL four sections.`;
     } else if (category === 'creative arts') {
         if (durationHours === 1) {
             structureGuide = `EXAM STRUCTURE (1h, 60 marks — Creative Arts):
-- Section I — Short Response: 5-6 questions totalling ~35 marks. Include stimulus material (description of artwork, performance excerpt, musical score described). Max 8 marks per question.
-- Section II — Extended Response: 2 essay questions totalling ~25 marks (max 15 marks each).
-TOTAL: ~60 marks. NO multiple choice for Creative Arts.`;
+- Section I — Short Response: 5-6 questions totalling 35 marks. Include stimulus material (description of artwork, performance excerpt, musical score described). Max 8 marks per question.
+- Section II — Extended Response: 2 essay questions totalling 25 marks (max 15 marks each).
+TOTAL: EXACTLY 60 marks. NO multiple choice for Creative Arts.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks — Creative Arts):
-- Section I — Short Response: 5-7 questions totalling ~35 marks with stimulus material.
-- Section II — Extended Response: 2 essay questions totalling ~45 marks.
-TOTAL: ~80 marks. NO multiple choice for Creative Arts.`;
+- Section I — Short Response: 5-7 questions totalling 35 marks with stimulus material.
+- Section II — Extended Response: 2 essay questions totalling 45 marks.
+TOTAL: EXACTLY 80 marks. NO multiple choice for Creative Arts.`;
         } else {
             structureGuide = `EXAM STRUCTURE (3h, 100 marks — Creative Arts):
-- Section I — Short Response: 6-8 questions totalling ~40 marks with stimulus material.
-- Section II — Extended Response: 2-3 essay questions totalling ~60 marks.
-TOTAL: ~100 marks. NO multiple choice for Creative Arts.`;
+- Section I — Short Response: 6-8 questions totalling 40 marks with stimulus material.
+- Section II — Extended Response: 2-3 essay questions totalling 60 marks.
+TOTAL: EXACTLY 100 marks. NO multiple choice for Creative Arts.`;
         }
         categoryRules = `CREATIVE ARTS-SPECIFIC RULES:
 - NEVER include multiple choice questions. Creative Arts HSC exams do NOT have MC.
@@ -4400,18 +4409,18 @@ TOTAL: ~100 marks. NO multiple choice for Creative Arts.`;
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — Enterprise Computing — NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks (includes matching, dropdown, and standard MC)
-- Section II — Short Answer: 10-14 questions totalling ~50 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b). Include practical tasks: SQL queries, spreadsheet formulas, DFD construction, UI design, data dictionary completion.
-TOTAL: ~60 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
+- Section II — Short Answer: 10-14 questions totalling 50 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b). Include practical tasks: SQL queries, spreadsheet formulas, DFD construction, UI design, data dictionary completion.
+TOTAL: EXACTLY 60 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — Enterprise Computing — REAL HSC FORMAT, NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks (includes matching, dropdown, and standard MC)
-- Section II — Short Answer: 15-18 questions totalling ~70 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b). Include practical tasks: SQL queries, spreadsheet formulas/design, DFD construction, UI prototyping, data dictionary completion, true/false checkbox questions.
-TOTAL: ~80 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
+- Section II — Short Answer: 15-18 questions totalling 70 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b). Include practical tasks: SQL queries, spreadsheet formulas/design, DFD construction, UI prototyping, data dictionary completion, true/false checkbox questions.
+TOTAL: EXACTLY 80 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — Enterprise Computing — NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 18-22 questions totalling ~90 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include practical tasks: SQL queries, spreadsheet formulas, DFDs, UI design, data dictionaries.
-TOTAL: ~100 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
+- Section II — Short Answer: 18-22 questions totalling 90 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include practical tasks: SQL queries, spreadsheet formulas, DFDs, UI design, data dictionaries.
+TOTAL: EXACTLY 100 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
             }
             categoryRules = `ENTERPRISE COMPUTING-SPECIFIC RULES (based on real 2025 HSC marking guidelines):
 - ABSOLUTELY NO extended response questions. The maximum marks for ANY single question is 8.
@@ -4427,18 +4436,18 @@ TOTAL: ~100 marks. TWO sections only. NO extended response section. NO question 
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — Software Engineering — NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 12 questions × 1 mark = 12 marks (includes matching, dropdown, checkbox, and standard MC)
-- Section II — Short Answer: 10-14 questions totalling ~48 marks. Max 6 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include practical tasks: pseudocode algorithms, Python code, SQL queries, class diagrams.
-TOTAL: ~60 marks. TWO sections only. NO extended response section. NO question exceeds 6 marks.`;
+- Section II — Short Answer: 10-14 questions totalling 48 marks. Max 6 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include practical tasks: pseudocode algorithms, Python code, SQL queries, class diagrams.
+TOTAL: EXACTLY 60 marks. TWO sections only. NO extended response section. NO question exceeds 6 marks.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — Software Engineering — REAL HSC FORMAT, NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 14 questions × 1 mark = 14 marks (includes matching, dropdown, checkbox, true/false, and standard MC)
-- Section II — Short Answer: 14-18 questions totalling ~66 marks. Max 6 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include: pseudocode algorithms, Python programs, SQL queries (SELECT with JOIN/WHERE/GROUP BY/ORDER BY), class diagrams with inheritance, code debugging.
-TOTAL: ~80 marks. TWO sections only. NO extended response section. NO question exceeds 6 marks.`;
+- Section II — Short Answer: 14-18 questions totalling 66 marks. Max 6 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include: pseudocode algorithms, Python programs, SQL queries (SELECT with JOIN/WHERE/GROUP BY/ORDER BY), class diagrams with inheritance, code debugging.
+TOTAL: EXACTLY 80 marks. TWO sections only. NO extended response section. NO question exceeds 6 marks.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — Software Engineering — NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 18-22 questions totalling ~85 marks. Max 6 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include: pseudocode, Python, SQL, class diagrams, testing strategies.
-TOTAL: ~100 marks. TWO sections only. NO extended response section. NO question exceeds 6 marks.`;
+- Section II — Short Answer: 18-22 questions totalling 85 marks. Max 6 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include: pseudocode, Python, SQL, class diagrams, testing strategies.
+TOTAL: EXACTLY 100 marks. TWO sections only. NO extended response section. NO question exceeds 6 marks.`;
             }
             categoryRules = `SOFTWARE ENGINEERING-SPECIFIC RULES (based on real 2025 HSC marking guidelines):
 - ABSOLUTELY NO extended response questions. The maximum marks for ANY single question is 6.
@@ -4454,21 +4463,21 @@ TOTAL: ~100 marks. TWO sections only. NO extended response section. NO question 
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — TAS/Technology):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 6-8 questions totalling ~35 marks (include diagrams described in text, case studies, scenarios). Most questions with 4+ marks MUST have sub-parts (a)(b)(c).
-- Section III — Extended Response: 1-2 questions totalling ~15 marks (with sub-parts)
-TOTAL: ~60 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer: 6-8 questions totalling 35 marks (include diagrams described in text, case studies, scenarios). Most questions with 4+ marks MUST have sub-parts (a)(b)(c).
+- Section III — Extended Response: 1-2 questions totalling 15 marks (with sub-parts)
+TOTAL: EXACTLY 60 marks. You MUST include ALL three sections.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — TAS/Technology):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 6-8 questions totalling ~40 marks (with sub-parts)
-- Section III — Extended Response: 2-3 questions totalling ~25 marks
-TOTAL: ~80 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer: 6-8 questions totalling 40 marks (with sub-parts)
+- Section III — Extended Response: 2-3 questions totalling 25 marks
+TOTAL: EXACTLY 80 marks. You MUST include ALL three sections.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — TAS/Technology):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer: 8-10 questions totalling ~50 marks (with sub-parts)
-- Section III — Extended Response: 2-3 questions totalling ~30 marks
-TOTAL: ~100 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer: 8-10 questions totalling 50 marks (with sub-parts)
+- Section III — Extended Response: 2-3 questions totalling 30 marks
+TOTAL: EXACTLY 100 marks. You MUST include ALL three sections.`;
             }
             categoryRules = `TAS/TECHNOLOGY-SPECIFIC RULES:
 - Agriculture: include farm management scenarios, production systems, sustainability. Reference specific Australian agricultural practices.
@@ -4486,23 +4495,23 @@ TOTAL: ~100 marks. You MUST include ALL three sections.`;
         if (durationHours === 1) {
             structureGuide = `EXAM STRUCTURE (1h, 60 marks — PDHPE/Health & Movement Science):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer (Core 1): 3-4 questions totalling ~20 marks (questions with 4+ marks MUST have sub-parts (a)(b))
-- Section III — Short Answer (Core 2): 2-3 questions totalling ~15 marks (with sub-parts for 4+ marks)
+- Section II — Short Answer (Core 1): 3-4 questions totalling 20 marks (questions with 4+ marks MUST have sub-parts (a)(b))
+- Section III — Short Answer (Core 2): 2-3 questions totalling 15 marks (with sub-parts for 4+ marks)
 - Section IV — Extended Response (Option): 1 question of ~15 marks
-TOTAL: ~60 marks. You MUST include ALL four sections.`;
+TOTAL: EXACTLY 60 marks. You MUST include ALL four sections.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks — PDHPE/Health & Movement Science):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer (Core 1): 3-4 questions totalling ~25 marks (include data, case studies, sub-parts (a)(b)(c) for 4+ marks)
-- Section III — Short Answer (Core 2): 3-4 questions totalling ~20 marks (with sub-parts for 4+ marks)
-- Section IV — Extended Response (Option): 1-2 questions totalling ~20 marks
-TOTAL: ~80 marks. You MUST include ALL four sections.`;
+- Section II — Short Answer (Core 1): 3-4 questions totalling 25 marks (include data, case studies, sub-parts (a)(b)(c) for 4+ marks)
+- Section III — Short Answer (Core 2): 3-4 questions totalling 20 marks (with sub-parts for 4+ marks)
+- Section IV — Extended Response (Option): 1-2 questions totalling 20 marks
+TOTAL: EXACTLY 80 marks. You MUST include ALL four sections.`;
         } else {
             structureGuide = `EXAM STRUCTURE (3h, 100 marks — PDHPE/Health & Movement Science — REAL HSC FORMAT):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer (Core 1): 4-5 questions totalling ~30 marks (with sub-parts (a)(b)(c) for 4+ marks)
-- Section III — Short Answer (Core 2): 3-4 questions totalling ~20 marks (with sub-parts for 4+ marks)
-- Section IV — Extended Response (Options): 2 questions totalling ~30 marks
+- Section II — Short Answer (Core 1): 4-5 questions totalling 30 marks (with sub-parts (a)(b)(c) for 4+ marks)
+- Section III — Short Answer (Core 2): 3-4 questions totalling 20 marks (with sub-parts for 4+ marks)
+- Section IV — Extended Response (Options): 2 questions totalling 30 marks
 TOTAL: 100 marks. You MUST include ALL four sections.`;
         }
         categoryRules = `PDHPE/HEALTH & MOVEMENT SCIENCE RULES:
@@ -4519,21 +4528,21 @@ TOTAL: 100 marks. You MUST include ALL four sections.`;
         if (durationHours === 1) {
             structureGuide = `EXAM STRUCTURE (1h, 60 marks — VET):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 6-8 questions totalling ~40 marks (workplace scenarios, WHS, industry knowledge)
+- Section II — Short Answer: 6-8 questions totalling 40 marks (workplace scenarios, WHS, industry knowledge)
 - Section III — Extended Response: 1 question of ~10 marks
-TOTAL: ~60 marks. You MUST include ALL three sections.`;
+TOTAL: EXACTLY 60 marks. You MUST include ALL three sections.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks — VET — REAL HSC FORMAT):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 8-10 questions totalling ~50 marks (workplace scenarios, case studies)
-- Section III — Extended Response: 1-2 questions totalling ~15 marks
-TOTAL: ~80 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer: 8-10 questions totalling 50 marks (workplace scenarios, case studies)
+- Section III — Extended Response: 1-2 questions totalling 15 marks
+TOTAL: EXACTLY 80 marks. You MUST include ALL three sections.`;
         } else {
             structureGuide = `EXAM STRUCTURE (3h, 100 marks — VET):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 10-14 questions totalling ~65 marks
-- Section III — Extended Response: 1-2 questions totalling ~20 marks
-TOTAL: ~100 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer: 10-14 questions totalling 65 marks
+- Section III — Extended Response: 1-2 questions totalling 20 marks
+TOTAL: EXACTLY 100 marks. You MUST include ALL three sections.`;
         }
         categoryRules = `VET-SPECIFIC RULES:
 - Construction: include WHS legislation, building codes, construction methods, materials, tools, site management. Reference Australian Standards.
@@ -4547,21 +4556,21 @@ TOTAL: ~100 marks. You MUST include ALL three sections.`;
         if (durationHours === 1) {
             structureGuide = `EXAM STRUCTURE (1h, 60 marks):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 5-7 questions totalling ~35 marks (with sub-parts). Max 8 marks per question.
+- Section II — Short Answer: 5-7 questions totalling 35 marks (with sub-parts). Max 8 marks per question.
 - Section III — Extended Response: 1 question of ~15 marks (with sub-parts (a)(b)(c))
-TOTAL: ~60 marks. You MUST include ALL three sections.`;
+TOTAL: EXACTLY 60 marks. You MUST include ALL three sections.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 6-8 questions totalling ~40 marks
-- Section III — Extended Response: 2-3 questions totalling ~25 marks
-TOTAL: ~80 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer: 6-8 questions totalling 40 marks
+- Section III — Extended Response: 2-3 questions totalling 25 marks
+TOTAL: EXACTLY 80 marks. You MUST include ALL three sections.`;
         } else {
             structureGuide = `EXAM STRUCTURE (3h, 100 marks):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer: 8-10 questions totalling ~50 marks
-- Section III — Extended Response: 2-3 questions totalling ~30 marks
-TOTAL: ~100 marks. You MUST include ALL three sections.`;
+- Section II — Short Answer: 8-10 questions totalling 50 marks
+- Section III — Extended Response: 2-3 questions totalling 30 marks
+TOTAL: EXACTLY 100 marks. You MUST include ALL three sections.`;
         }
         categoryRules = `Follow standard HSC exam conventions for this subject. Use precise academic terminology. Include stimulus material where appropriate.\n- IMPORTANT: Only generate questions from the student's selected module/topic.`;
     }
@@ -4574,9 +4583,11 @@ Use this seed to ensure completely unique questions every time.
 MODULE/TOPIC CONSTRAINT — ABSOLUTE, NON-NEGOTIABLE:
 - The student selected: "${topics || 'All Year 12 content'}"
 - If a specific module was selected (e.g. "Module 6: Genetic Change"), then EVERY SINGLE QUESTION — including MC, short answer, AND extended response — must come EXCLUSIVELY from that module's syllabus dot points. Do NOT include ANY content, terminology, or concepts from other modules. Zero exceptions. An exam that mixes modules is INVALID and USELESS.
+- SYLLABUS MATCHING: Read the SYLLABUS CONTENT provided below carefully. Identify ONLY the dot points, outcomes, and content descriptors that belong to the selected module/topic. Base EVERY question on those specific dot points. If a concept appears in multiple modules, only test it through the lens of the selected module.
 - If "All Year 12 content" is selected, spread questions evenly across all modules.
-- Before writing EACH question, explicitly verify: "Does this question belong to the selected module?" If the answer is no, DISCARD it immediately and write a replacement from the correct module.
+- Before writing EACH question, explicitly verify: "Does this question belong to the selected module's syllabus dot points?" If the answer is no, DISCARD it immediately and write a replacement from the correct module.
 - This constraint applies to stimulus material too — do not reference content from other modules even in stimuli.
+- DO NOT copy questions from past papers verbatim — use them only for style, format, and difficulty reference. Generate ORIGINAL questions based on syllabus dot points.${previousQuestionsPrompt}
 
 ${structureGuide}
 
@@ -4636,7 +4647,7 @@ Return ONLY valid JSON (no markdown, no code fences) in this exact structure:
           "options": ["A. option", "B. option", "C. option", "D. option"],
           "correctAnswer": "B",
           "stimulus": "Optional stimulus material or null",
-          "markingCriteria": "Brief marking criteria (for non-MC)"
+          "markingCriteria": "Detailed marking criteria with band descriptors. For 5+ mark questions include: Band 6 (full marks) criteria, Band 4-5 (partial) criteria, and what earns 0-1 marks. For 2-4 mark questions list each mark's required element. For MC: omit this field."
         }
       ]
     }
@@ -4649,8 +4660,9 @@ CRITICAL JSON RULES:
 - Short/Extended questions with 4+ marks MUST have "parts" — an array of sub-questions with labels like "(a)", "(b)", "(c)". Each part has its own "text" and "marks". The question's total "marks" must equal the sum of all part marks. This is NOT optional — real HSC exams almost ALWAYS use sub-parts for questions worth 4+ marks in Science, Maths, PDHPE, TAS, Geography, and Business subjects.
 - Short/Extended questions with 2-3 marks can omit "parts" (single question is fine).
 - For Science, Mathematics, PDHPE, Geography, TAS subjects: even 3-mark questions often have sub-parts. Prefer sub-parts over single monolithic questions.
-- For non-MC: include "markingCriteria" and optionally "stimulus".
-- DATA TABLES in stimulus: Format tables as markdown tables with | separators and header row: "| Column 1 | Column 2 |\\n|---|---|\\n| data | data |"
+- For non-MC: include detailed "markingCriteria" with specific band-level descriptors (what earns full marks vs partial vs zero). Optionally include "stimulus".
+- For MC: "correctAnswer" should be JUST the letter (A, B, C, or D). "markingCriteria" is NOT needed for MC.
+- DATA TABLES in stimulus: Format ALL tables as proper markdown tables with | separators. EVERY row must use the pipe format — including the LAST row. Structure: "| Column 1 | Column 2 |\n|---|---|\n| data1 | data2 |\n| data3 | data4 |" — NEVER drop the pipe format mid-table. If a table has 5 rows of data, ALL 5 rows must use | separators. Incomplete tables where the last rows become plain text are INVALID.
 - Match section names and structure to the EXAM STRUCTURE specified above.
 - If the structure says NO multiple choice, do NOT include an MC section.
 - Generate the COMPLETE exam — all questions, all sections. Do not truncate.${contextPrompt}`;
@@ -4719,6 +4731,29 @@ CRITICAL JSON RULES:
         if (!hasFull) {
             incrementExamWeeklyCount(req.session.userId);
             incrementFreeTierUsage(req.session.userId, 'practice');
+        }
+
+        // Save question stems to session for no-repeat logic
+        try {
+            const newStems = [];
+            if (exam.sections) {
+                for (const section of exam.sections) {
+                    if (section.questions) {
+                        for (const q of section.questions) {
+                            // Store a short stem: first 120 chars of question text
+                            if (q.text) newStems.push(q.text.substring(0, 120));
+                        }
+                    }
+                }
+            }
+            if (newStems.length > 0) {
+                if (!req.session.previousExamQuestions) req.session.previousExamQuestions = {};
+                const existing = req.session.previousExamQuestions[repeatKey] || [];
+                // Keep max 80 stems per subject+topic to avoid bloating the prompt
+                req.session.previousExamQuestions[repeatKey] = [...existing, ...newStems].slice(-80);
+            }
+        } catch (stemErr) {
+            console.error('Failed to save question stems:', stemErr.message);
         }
 
         res.json({ exam, isPremium: hasFull });
@@ -4816,18 +4851,19 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
     const systemPrompt = `You are a SENIOR HSC examiner for ${subjectName} with 20 years of NESA marking experience. Mark each answer with the rigour and standards of the real HSC.${mgContext}
 
 MARKING RULES — STRICT HSC STANDARD:
-- Multiple choice: 1 mark if correct, 0 if wrong. No partial marks. No leniency.
+- Multiple choice: 1 mark if correct, 0 if wrong. No partial marks. No leniency. Feedback for MC should be ONE sentence maximum — just state the correct answer letter and why the student's choice was wrong (if wrong). Do NOT write a long explanation.
 - Short answer (2-4 marks): Award marks ONLY for demonstrated understanding. Vague or incomplete answers lose marks. Each mark requires a distinct, correct point.
   * 1 mark = one correct, specific point
   * 2 marks = two distinct points OR one well-explained point
   * 3 marks = clear explanation with depth and specificity
   * 4 marks = thorough explanation with examples, causes, effects, or links to syllabus concepts
 - Extended response (5+ marks): Use HOLISTIC marking. Assess depth of understanding, use of evidence/examples, logical structure, and quality of analysis. A superficial answer should NEVER score above 50% of available marks.
+  * Include the BAND DESCRIPTOR in feedback: state what band the response falls into (e.g. "This response sits at Band 4 level") and what was needed for higher.
 - NEVER give full marks for a vague or generic answer. Real HSC markers don't.
 - Deduct marks for: factual errors, irrelevant content, missing key concepts, poor structure (in extended responses).
 - Be especially strict on: scientific accuracy, correct use of terminology, addressing ALL parts of the question.
 - If the student restates the question without adding substance, award 0.
-- Keep feedback CONCISE — 1-2 sentences per question maximum. Be direct and specific about what was missing.
+- Keep MC feedback to 1 sentence. Short answer feedback: 1-2 sentences. Extended response feedback: 2-3 sentences with band reference.
 - ONLY mark the ${answeredCount} questions given below. Unanswered questions are handled separately.
 
 Return ONLY valid JSON (no markdown, no code fences):
@@ -4855,7 +4891,7 @@ Band scale (percentage-based):
 - Band 2: 50-59%
 - Band 1: 0-49%
 
-${includeSampleAnswers ? 'Include a concise "sampleAnswer" for EVERY question showing what a full-marks response looks like.' : 'Do NOT include sample answers — only provide feedback.'}`;
+${includeSampleAnswers ? 'Include a detailed "sampleAnswer" for EVERY question showing what a FULL MARKS (Band 6) response looks like. The sample answer must be long enough to actually earn full marks — not a summary or outline. For extended response questions, write a complete essay paragraph or full structured response. For short answer, write the exact response a student would need. For MC questions, the sampleAnswer should be JUST the correct letter (e.g. "B") — do NOT explain why.' : 'Do NOT include sample answers — only provide feedback.'}`;
 
     try {
         let markingResult;

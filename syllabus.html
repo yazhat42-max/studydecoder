@@ -561,6 +561,11 @@
             
             console.log('[DEBUG] Subject:', subjectName, 'Topic:', topic, 'SubjectId:', subjectId);
             
+            // Save to sessionStorage so practice.html can auto-preload this subject
+            try {
+                sessionStorage.setItem('sd_last_decoded_subject', subjectId);
+            } catch (e) { /* silent */ }
+            
             // Clear conversation history for fresh decode
             conversationHistory = [];
             

@@ -1144,11 +1144,14 @@
         }
         
         function parseMarkdownTables(text) {
-            return text.replace(/(?:^|\n)((?:\|.*\|[ \t]*\n){2,})/gm, function(match) {
-                const lines = match.trim().split('\n').filter(l => l.trim());
+            // Match markdown tables: lines starting and ending with |, at least 2 rows
+            // Also handles tables where the last row isn't followed by a newline
+            return text.replace(/(?:^|\n)((?:\|.*\|[ \t]*(?:\n|$)){2,})/gm, function(match) {
+                const lines = match.trim().split('\n').filter(l => l.trim() && l.trim().includes('|'));
                 if (lines.length < 2) return match;
                 const parseRow = line => line.split('|').slice(1, -1).map(c => c.trim());
                 const headers = parseRow(lines[0]);
+                if (headers.length === 0) return match;
                 // Skip separator row (|---|---|)
                 const startIdx = /^\|[\s\-:]+\|/.test(lines[1]) ? 2 : 1;
                 let html = '<table class="exam-data-table"><thead><tr>';
@@ -1156,9 +1159,11 @@
                 html += '</tr></thead><tbody>';
                 for (let i = startIdx; i < lines.length; i++) {
                     const cells = parseRow(lines[i]);
-                    html += '<tr>';
-                    cells.forEach(c => { html += `<td>${c}</td>`; });
-                    html += '</tr>';
+                    if (cells.length > 0) {
+                        html += '<tr>';
+                        cells.forEach(c => { html += `<td>${c}</td>`; });
+                        html += '</tr>';
+                    }
                 }
                 html += '</tbody></table>';
                 return html;
@@ -1841,10 +1846,13 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 </div>`;
 
             // Restore saved subject preference & populate modules
-            const saved = localStorage.getItem('sd_subject_preference');
-            if (saved) {
+            // Priority: sessionStorage (from Syllabus Decoder) > localStorage (general preference)
+            let savedSubject = null;
+            try { savedSubject = sessionStorage.getItem('sd_last_decoded_subject'); } catch (e) {}
+            if (!savedSubject) savedSubject = localStorage.getItem('sd_subject_preference');
+            if (savedSubject) {
                 const sel = document.getElementById('examSetupSubject');
-                if (sel) { sel.value = saved; updateExamModules(saved); }
+                if (sel) { sel.value = savedSubject; updateExamModules(savedSubject); }
             }
 
             // Wire subject change to update modules
@@ -2343,12 +2351,17 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 for (const r of marking.results) {
                     const scoreRatio = r.marksTotal > 0 ? r.marksAwarded / r.marksTotal : 0;
                     const scoreTag = scoreRatio >= 1 ? 'full' : scoreRatio > 0 ? 'partial' : 'zero';
+                    // Find original question for marking criteria
+                    const origQ = examQuestions.find(q => q.number === r.questionNumber);
                     html += `<div class="exam-result-item">
                         <div class="exam-result-q-header">
                             <span class="exam-result-q-num">Question ${r.questionNumber}</span>
                             <span class="exam-result-q-score ${scoreTag}">${r.marksAwarded} / ${r.marksTotal}</span>
                         </div>
                         <div class="exam-result-feedback">${parseMarkdownTables(r.feedback || '')}</div>`;
+                    if (origQ && origQ.markingCriteria && origQ.type !== 'mc') {
+                        html += `<div class="exam-result-criteria" style="background:rgba(79,140,255,0.08);border:1px solid rgba(79,140,255,0.2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px;color:#8899a6;"><strong style="color:#4f8cff;">Marking Criteria:</strong> ${parseMarkdownTables(origQ.markingCriteria)}</div>`;
+                    }
                     if (r.sampleAnswer) {
                         html += `<div class="exam-result-sample"><strong>Sample Answer:</strong> ${parseMarkdownTables(r.sampleAnswer)}</div>`;
                     }
