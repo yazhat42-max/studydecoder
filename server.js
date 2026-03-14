@@ -4758,20 +4758,67 @@ CRITICAL JSON RULES:
             return res.status(500).json({ error: 'Failed to generate valid exam structure. Please try again.' });
         }
 
-        // Server-side mark verification — fix totalMarks to match actual question sum
-        let actualTotal = 0;
+        // Server-side mark enforcement — force total to match the target (60/80/100)
+        // The AI often generates fewer marks than requested. Instead of just accepting
+        // the wrong total, we adjust individual question marks to hit the correct target.
         if (exam.sections) {
+            let actualTotal = 0;
+            const adjustable = []; // non-MC questions we can adjust
             for (const section of exam.sections) {
                 if (section.questions) {
                     for (const q of section.questions) {
                         actualTotal += (q.marks || 0);
+                        if (q.type !== 'mc' && (q.marks || 0) >= 2) {
+                            adjustable.push(q);
+                        }
                     }
                 }
             }
-        }
-        if (actualTotal > 0 && actualTotal !== exam.totalMarks) {
-            console.log(`⚠️ Exam mark mismatch: stated ${exam.totalMarks}, actual ${actualTotal}. Correcting.`);
-            exam.totalMarks = actualTotal;
+
+            const delta = totalMarks - actualTotal;
+            if (delta !== 0 && adjustable.length > 0) {
+                console.log(`⚠️ Exam mark mismatch: AI generated ${actualTotal}, target ${totalMarks}. Adjusting ${delta > 0 ? '+' : ''}${delta} marks across ${adjustable.length} questions.`);
+
+                // Sort: if adding marks, prioritise lower-mark questions; if removing, prioritise higher-mark ones
+                if (delta > 0) {
+                    adjustable.sort((a, b) => (a.marks || 0) - (b.marks || 0));
+                } else {
+                    adjustable.sort((a, b) => (b.marks || 0) - (a.marks || 0));
+                }
+
+                let remaining = Math.abs(delta);
+                let idx = 0;
+                while (remaining > 0 && idx < adjustable.length) {
+                    const q = adjustable[idx];
+                    // Add or remove 1-2 marks per question per pass to keep it realistic
+                    const step = Math.min(remaining, delta > 0 ? 2 : Math.max(1, q.marks - 2));
+                    if (delta > 0) {
+                        q.marks += step;
+                        // If question has parts, add marks to the last part
+                        if (q.parts && q.parts.length > 0) {
+                            q.parts[q.parts.length - 1].marks = (q.parts[q.parts.length - 1].marks || 1) + step;
+                        }
+                    } else {
+                        if (q.marks - step >= 2) {
+                            q.marks -= step;
+                            if (q.parts && q.parts.length > 0) {
+                                q.parts[q.parts.length - 1].marks = Math.max(1, (q.parts[q.parts.length - 1].marks || 1) - step);
+                            }
+                        } else {
+                            idx++;
+                            continue;
+                        }
+                    }
+                    remaining -= step;
+                    idx++;
+                    // Wrap around for another pass if needed
+                    if (idx >= adjustable.length && remaining > 0) idx = 0;
+                }
+            }
+
+            // Always set totalMarks to the hardcoded target
+            exam.totalMarks = totalMarks;
+            exam.duration = `${durationHours} hour(s)`;
         }
 
         // Increment free tier usage
