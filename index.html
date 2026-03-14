@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Decoder – Making Study Fun Again</title>
+    <title>Study Decoder – AI Practice Exams for HSC Students</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="shortcut icon" href="logo.png" type="image/png">
     <meta name="msapplication-TileImage" content="logo.png">
@@ -190,45 +190,371 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 6rem 5%;
-            min-height: 80vh;
+            padding: 3.5rem 5% 3rem;
+            min-height: auto;
             background: linear-gradient(135deg, #ffffff 0%, #f5f7ff 50%, #ebe8ff 100%);
-            text-align: center;
+            text-align: left;
         }
 
-        .hero-content {
-            max-width: 800px;
+        .hero-inner {
+            display: flex;
+            align-items: center;
+            gap: 3.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
+        .hero-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .hero-text h1 {
+            font-size: 2.8rem;
+            line-height: 1.12;
+            margin-bottom: 1rem;
             font-weight: 700;
             letter-spacing: -1px;
             color: var(--secondary);
         }
 
-        .hero h1 .highlight {
+        .hero-text h1 .highlight {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .hero p {
-            font-size: 1.2rem;
+        .hero-text p.hero-sub {
+            font-size: 1.15rem;
             color: #555;
-            margin-bottom: 2.5rem;
-            line-height: 1.7;
-            font-weight: 300;
+            margin-bottom: 1.8rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .hero-text .hero-trust {
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            color: #888;
+            font-weight: 400;
         }
 
         .hero-buttons {
             display: flex;
-            gap: 1.5rem;
-            justify-content: center;
+            gap: 1rem;
             flex-wrap: wrap;
+        }
+
+        .hero-preview {
+            flex: 1;
+            max-width: 480px;
+            min-width: 320px;
+        }
+
+        .hero-preview-card {
+            background: #1a1a2e;
+            border-radius: 14px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: #e0e0e0;
+        }
+
+        .hero-preview-tab {
+            display: flex;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .hero-preview-tab span {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+            cursor: default;
+            border-bottom: 2px solid transparent;
+            transition: all 0.25s;
+        }
+
+        .hero-preview-tab span.active {
+            color: #a78bfa;
+            border-bottom-color: #a78bfa;
+        }
+
+        .hero-preview-body {
+            padding: 16px 20px 20px;
+        }
+
+        .hero-preview-body .preview-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #a78bfa;
+            margin-bottom: 6px;
+        }
+
+        .hero-preview-body .preview-q {
+            color: #f0f0f0;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .hero-preview-body .preview-marks {
+            display: inline-block;
+            background: rgba(167,139,250,0.15);
+            color: #a78bfa;
+            padding: 2px 10px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .hero-preview-body .preview-criteria {
+            background: rgba(16,185,129,0.1);
+            border-left: 3px solid #10b981;
+            padding: 8px 12px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 12px;
+        }
+
+        .hero-preview-body .preview-criteria .preview-label {
+            color: #10b981;
+        }
+
+        .hero-preview-body .preview-criteria p {
+            color: #d1d5db;
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        .hero-preview-body .preview-feedback {
+            background: rgba(59,130,246,0.1);
+            border-left: 3px solid #3b82f6;
+            padding: 8px 12px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .hero-preview-body .preview-feedback .preview-label {
+            color: #3b82f6;
+        }
+
+        .hero-preview-body .preview-feedback p {
+            color: #d1d5db;
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        /* ========== FULL EXAM FEATURE SECTION ========== */
+        .exam-feature {
+            padding: 4rem 5%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+            color: white;
+        }
+
+        .exam-feature-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .exam-feature-text {
+            flex: 1;
+        }
+
+        .exam-feature-text h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .exam-feature-text p {
+            color: rgba(255,255,255,0.75);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .exam-feature-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .exam-feature-pills span {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .exam-feature-demo {
+            flex: 1;
+            max-width: 460px;
+            min-width: 280px;
+        }
+
+        .exam-demo-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 20px 22px;
+            font-size: 0.82rem;
+        }
+
+        .exam-demo-card .demo-section {
+            margin-bottom: 14px;
+        }
+
+        .exam-demo-card .demo-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .exam-demo-card .demo-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .exam-demo-card .demo-label.q-label { color: #a78bfa; }
+        .exam-demo-card .demo-label.fb-label { color: #3b82f6; }
+
+        .exam-demo-card .demo-q {
+            color: #f0f0f0;
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        .exam-demo-card .demo-score {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        .exam-demo-card .demo-feedback {
+            color: #d1d5db;
+            font-size: 0.78rem;
+            line-height: 1.5;
+        }
+
+        /* ========== EXAMPLE AI OUTPUT SECTION ========== */
+        .example-output {
+            padding: 4.5rem 5%;
+            background: var(--white);
+        }
+
+        .example-output .section-title {
+            margin-bottom: 1rem;
+        }
+
+        .example-output .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.05rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .example-card {
+            background: #fafbff;
+            border: 1px solid #e8e5ff;
+            border-radius: 14px;
+            padding: 1.8rem;
+            position: relative;
+        }
+
+        .example-card .ex-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 50px;
+            margin-bottom: 0.8rem;
+        }
+
+        .example-card .ex-badge.badge-q {
+            background: rgba(108,99,255,0.1);
+            color: var(--primary);
+        }
+
+        .example-card .ex-badge.badge-mc {
+            background: rgba(16,185,129,0.1);
+            color: #059669;
+        }
+
+        .example-card .ex-badge.badge-fb {
+            background: rgba(59,130,246,0.1);
+            color: #3b82f6;
+        }
+
+        .example-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.6rem;
+        }
+
+        .example-card p {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .example-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .example-card ul li {
+            font-size: 0.88rem;
+            color: #555;
+            line-height: 1.65;
+            padding-left: 18px;
+            position: relative;
+        }
+
+        .example-card ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
         }
 
         /* ========== FEATURES SECTION ========== */
@@ -713,101 +1039,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* ========== FEATURED EXAM CARD ========== */
-        .featured-exam-section {
-            padding: 3rem 5% 1rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .featured-exam-card {
-            display: flex;
-            align-items: center;
-            gap: 2.5rem;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
-            border-radius: 20px;
-            padding: 2.5rem 3rem;
-            text-decoration: none;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
-        .featured-exam-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.25);
-        }
-        .featured-exam-card::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        .featured-exam-icon {
-            flex-shrink: 0;
-            width: 80px; height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 18px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.2rem;
-        }
-        .featured-exam-body { position: relative; flex: 1; }
-        .featured-exam-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            font-size: 0.65rem;
-            font-weight: 800;
-            padding: 4px 14px;
-            border-radius: 50px;
-            letter-spacing: 1.5px;
-            margin-bottom: 0.8rem;
-        }
-        .featured-exam-body h3 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-        }
-        .featured-exam-body p {
-            color: rgba(255,255,255,0.7);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 0.8rem;
-        }
-        .featured-exam-pills {
-            display: flex; flex-wrap: wrap; gap: 8px;
-        }
-        .featured-exam-pills span {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.15);
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: rgba(255,255,255,0.85);
-        }
-        .featured-exam-arrow {
-            flex-shrink: 0;
-            font-size: 1.5rem;
-            color: rgba(255,255,255,0.5);
-            transition: transform 0.3s;
-        }
-        .featured-exam-card:hover .featured-exam-arrow {
-            transform: translateX(4px);
-            color: white;
-        }
-        @media (max-width: 768px) {
-            .featured-exam-card { flex-direction: column; text-align: center; padding: 2rem 1.5rem; gap: 1.2rem; }
-            .featured-exam-pills { justify-content: center; }
-            .featured-exam-arrow { display: none; }
-        }
-
-        @media (max-width: 768px) {
-            .exam-banner h2 { font-size: 1.8rem; }
-            .exam-banner-features { flex-direction: column; align-items: center; }
-        }
-
         /* ========== CTA SECTION ========== */
         .cta {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -934,16 +1165,57 @@
             }
 
             .hero {
-                padding: 4rem 5%;
-                min-height: auto;
+                padding: 2.5rem 5% 2rem;
             }
 
-            .hero h1 {
-                font-size: 2.2rem;
+            .hero-inner {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
             }
 
-            .hero p {
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .hero-text p.hero-sub {
                 font-size: 1rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-preview {
+                min-width: 0;
+                max-width: 100%;
+            }
+
+            .exam-feature {
+                padding: 3rem 5%;
+            }
+
+            .exam-feature-inner {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .exam-feature-text h2 {
+                font-size: 1.7rem;
+            }
+
+            .exam-feature-pills {
+                justify-content: center;
+            }
+
+            .exam-feature-demo {
+                max-width: 100%;
+                min-width: 0;
+            }
+
+            .example-grid {
+                grid-template-columns: 1fr;
             }
 
             .features-grid {
@@ -1006,58 +1278,76 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
-            <h1>Making Study <span class="highlight">Fun Again</span></h1>
-            <p>Explore our AI-powered study assistance. Get a competitive advantage with smart learning tools designed to help you succeed.</p>
-            <div class="hero-buttons" id="heroButtons">
-                <a href="login.html" class="btn btn-secondary" id="heroSignInBtn">Sign In to Access</a>
+        <div class="hero-inner">
+            <div class="hero-text">
+                <h1>Generate Full Practice Exams <span class="highlight">With AI</span></h1>
+                <p class="hero-sub">Create realistic HSC exams, answer questions under timed conditions, and receive instant AI marking with band-level feedback — for all 45 subjects.</p>
+                <div class="hero-buttons" id="heroButtons">
+                    <a href="practice.html?mode=exam" class="btn btn-primary" id="featuredExamCard">Start Practice Exam</a>
+                    <a href="login.html" class="btn btn-secondary" id="heroSignInBtn">Sign In to Access</a>
+                </div>
+                <div class="hero-buttons" id="heroLoggedIn" style="display: none;">
+                    <a href="practice.html?mode=exam" class="btn btn-primary">Start Practice Exam</a>
+                    <a href="#tools" class="btn btn-secondary">Explore All Tools</a>
+                </div>
+                <p class="hero-trust">Built for Australian students following the NSW curriculum.</p>
             </div>
-            <!-- Show these when logged in -->
-            <div class="hero-buttons" id="heroLoggedIn" style="display: none;">
-                <a href="#tools" class="btn btn-primary">🛠️ Explore Your Tools</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features">
-        <h2 class="section-title">Why Choose Us?</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3>AI Study Bots</h3>
-                <p>Get personalized study assistance with our intelligent bots that provide practice questions, summaries, and guidance.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⏱️</div>
-                <h3>Save Time</h3>
-                <p>Navigate syllabuses easily and reduce confusion. Focus on what matters most with our streamlined learning approach.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📈</div>
-                <h3>Track Progress</h3>
-                <p>Monitor your learning journey with detailed insights and personalized recommendations for improvement.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Exam Card -->
-    <section class="featured-exam-section">
-        <a href="practice.html?mode=exam" class="featured-exam-card" id="featuredExamCard">
-            <div class="featured-exam-icon">📝</div>
-            <div class="featured-exam-body">
-                <div class="featured-exam-badge">🏆 FLAGSHIP</div>
-                <h3>Full Exam Mode</h3>
-                <p>Sit a complete, timed HSC exam — auto-generated and auto-marked with band-level feedback. All 45 subjects, authentic NESA structure.</p>
-                <div class="featured-exam-pills">
-                    <span>⏱️ Timed</span>
-                    <span>📝 MC + Short Answer + Essays</span>
-                    <span>✅ Auto-marked</span>
-                    <span>📊 Band feedback</span>
+            <div class="hero-preview">
+                <div class="hero-preview-card">
+                    <div class="hero-preview-tab">
+                        <span class="active">Question</span>
+                        <span>Criteria</span>
+                        <span>Feedback</span>
+                    </div>
+                    <div class="hero-preview-body">
+                        <div class="preview-label">Question 22 — Modern History</div>
+                        <div class="preview-q">Assess the significance of the Treaty of Versailles in shaping the political landscape of post-war Europe.</div>
+                        <div class="preview-marks">8 marks</div>
+                        <div class="preview-criteria">
+                            <div class="preview-label">Marking Criteria</div>
+                            <p>Makes a justified judgement about significance. Provides detailed, relevant evidence from the source material.</p>
+                        </div>
+                        <div class="preview-feedback">
+                            <div class="preview-label">AI Feedback</div>
+                            <p>Strong thesis with clear argument structure. Consider expanding on the economic consequences to strengthen your evaluation. Band 5/6.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="featured-exam-arrow">→</div>
-        </a>
+        </div>
+    </section>
+
+    <!-- Full Exam Feature Section -->
+    <section class="exam-feature">
+        <div class="exam-feature-inner">
+            <div class="exam-feature-text">
+                <h2>Simulate Real HSC Exams</h2>
+                <p>Sit a complete, timed exam — auto-generated from the official NESA syllabus and auto-marked with detailed feedback. Multiple choice, short answer, and extended response questions — just like the real thing.</p>
+                <div class="exam-feature-pills">
+                    <span>Timed Conditions</span>
+                    <span>MC + Short Answer + Essays</span>
+                    <span>Auto-marked</span>
+                    <span>Band-level Feedback</span>
+                    <span>All 45 Subjects</span>
+                </div>
+                <a href="practice.html?mode=exam" class="btn btn-primary" style="margin-top: 0.5rem;">Try Full Exam Mode</a>
+            </div>
+            <div class="exam-feature-demo">
+                <div class="exam-demo-card">
+                    <div class="demo-section">
+                        <div class="demo-label q-label">Your Answer — Question 3</div>
+                        <div class="demo-q">"The cell membrane is selectively permeable, meaning it controls what enters and exits the cell through processes such as osmosis and active transport..."</div>
+                    </div>
+                    <div class="demo-section">
+                        <div class="demo-score">6 / 7 marks</div>
+                    </div>
+                    <div class="demo-section">
+                        <div class="demo-label fb-label">AI Feedback</div>
+                        <div class="demo-feedback">Excellent identification of key concepts. To reach full marks, include a specific example of active transport (e.g. sodium-potassium pump) and link structure to function more explicitly.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- AI Study Suite Section -->
@@ -1108,6 +1398,56 @@
                 <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
             </a>
             -->
+        </div>
+    </section>
+
+    <!-- Example AI Output Section -->
+    <section class="example-output">
+        <h2 class="section-title">See What the AI Generates</h2>
+        <p class="section-subtitle">Every exam includes questions, marking criteria, and personalised feedback — generated from the official NESA syllabus.</p>
+        <div class="example-grid">
+            <div class="example-card">
+                <span class="ex-badge badge-q">Exam Question</span>
+                <h4>Extended Response — Biology</h4>
+                <p>Explain how the structure of the cell membrane relates to its function in maintaining homeostasis. In your response, refer to the fluid mosaic model.</p>
+            </div>
+            <div class="example-card">
+                <span class="ex-badge badge-mc">Marking Criteria</span>
+                <h4>What the AI Checks For</h4>
+                <ul>
+                    <li>Correctly identifies phospholipid bilayer structure</li>
+                    <li>Links selective permeability to homeostasis</li>
+                    <li>References the fluid mosaic model accurately</li>
+                    <li>Uses appropriate scientific terminology</li>
+                </ul>
+            </div>
+            <div class="example-card">
+                <span class="ex-badge badge-fb">AI Feedback</span>
+                <h4>Personalised Marking</h4>
+                <p>Strong understanding of membrane structure demonstrated. To improve: explicitly connect how protein channels facilitate specific molecule transport, and reference a real-world example. Score: 5/7.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section (Why Choose Us) -->
+    <section class="features">
+        <h2 class="section-title">Why Students Choose Study Decoder</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3>Syllabus-Aligned</h3>
+                <p>Every question is generated directly from the official NESA syllabus — for all 45 HSC subjects, including module-specific content.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Instant AI Marking</h3>
+                <p>Submit your answers and get band-level feedback in seconds. Understand exactly where you lost marks and how to improve.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Exam-Ready Practice</h3>
+                <p>Timed exams with authentic structure — multiple choice, short answer, and extended response — so you walk in prepared on exam day.</p>
+            </div>
         </div>
     </section>
 
@@ -1164,11 +1504,11 @@
 
     <!-- CTA Section -->
     <section class="cta">
-        <h2>Ready to Transform Your Study Experience?</h2>
-        <p>A professional academic AI suite — study smarter, not harder.</p>
-        <a href="login.html" class="btn btn-primary" id="ctaSignIn">Get Started</a>
+        <h2>Start Practising for Your HSC Today</h2>
+        <p>Built for Australian students following the NSW curriculum. Generate exams, get marked, and improve — all in one place.</p>
+        <a href="login.html" class="btn btn-primary" id="ctaSignIn">Get Started Free</a>
         <div id="ctaLoggedIn" style="display: none;">
-            <a href="#tools" class="btn btn-primary">Explore Your Tools</a>
+            <a href="practice.html?mode=exam" class="btn btn-primary">Start Practice Exam</a>
         </div>
     </section>
 
