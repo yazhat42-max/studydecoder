@@ -4075,7 +4075,7 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
             const mc = isStandard ? 8 : 5;
             structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName}):
 - Section I — Multiple Choice: ${mc} questions × 1 mark = ${mc} marks
-- Section II — Problems: ${isStandard ? '10-13' : '8-11'} questions totalling ~${60 - mc} marks. Each question has parts (a)(b)(c)(d), max 4 marks per part. Scaffold easy→hard.
+- Section II — Problems: ${isStandard ? '7-9' : '5-7'} questions totalling ~${60 - mc} marks. Each question has parts (a)(b)(c)(d), max 4 marks per part. Scaffold easy→hard.
 TOTAL: ~60 marks. You MUST include both sections.`;
         } else if (durationHours === 2) {
             const mc = isStandard ? 12 : 8;
@@ -4182,10 +4182,9 @@ TOTAL: 100 marks. You MUST include ALL three sections.`;
 TOTAL: ~60 marks. NO multiple choice. Source-based questions + essays only.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName} — NO MULTIPLE CHOICE):
-- Section I — Source-based (Core): Provide 3-4 sources. 4 questions totalling ~25 marks (3+4+6+12).
+- Section I — Source-based (Core): Provide 3-4 sources. 4-5 questions totalling ~30 marks (scaffolded: 3+4+5+6+12 marks).
 - Section II — Essay: 1 essay of ~25 marks (choose from topic options).
 - Section III — Essay: 1 essay of ~25 marks (different topic area).
-- Additional short-answer: ~5 marks.
 TOTAL: ~80 marks. NO multiple choice.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName} — NO MULTIPLE CHOICE):
@@ -4222,7 +4221,8 @@ TOTAL: 100 marks. You MUST include ALL four sections.`;
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — Society and Culture — 10 MC):
 - Section I: 10 MC (10 marks) + 2 short-answer questions (~10 marks) = 20 marks
-- Section II — Extended Response: 2 essays of ~20 marks each (choose from 4 options) = 40 marks
+- Section II — Short Essay: 2 short essays of ~10 marks each = 20 marks
+- Section III — Extended Response: 1 essay of ~20 marks (choose from 2 options)
 TOTAL: ~60 marks. Section I has 10 MC.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — Society and Culture — REAL HSC FORMAT):
@@ -4231,10 +4231,10 @@ TOTAL: ~60 marks. Section I has 10 MC.`;
 - Section III — Short Essay: 1 essay of ~15 marks
 TOTAL: ~80 marks. Section I has 10 MC.`;
             } else {
-                structureGuide = `EXAM STRUCTURE (3h, 100 marks — Society and Culture — 10 MC, practice-scaled):
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — Society and Culture — 10 MC):
 - Section I: 10 MC (10 marks) + 3 short-answer questions (~20 marks) = 30 marks
 - Section II — Extended Response: 2 essays of ~20 marks each = 40 marks
-- Section III — Extended Response: 1 essay of ~30 marks
+- Section III — Extended Response: 2 essays of ~15 marks each = 30 marks
 TOTAL: ~100 marks.`;
             }
         } else {
@@ -4428,8 +4428,8 @@ TOTAL: 100 marks. You MUST include ALL four sections.`;
     } else if (category === 'vet') {
         if (durationHours === 1) {
             structureGuide = `EXAM STRUCTURE (1h, 60 marks — VET):
-- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 6-8 questions totalling ~35 marks (workplace scenarios, WHS, industry knowledge)
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
+- Section II — Short Answer: 6-8 questions totalling ~40 marks (workplace scenarios, WHS, industry knowledge)
 - Section III — Extended Response: 1 question of ~10 marks
 TOTAL: ~60 marks. You MUST include ALL three sections.`;
         } else if (durationHours === 2) {
