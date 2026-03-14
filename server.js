@@ -4138,7 +4138,7 @@ TOTAL: ~100 marks. You MUST include all three sections. NO multiple choice for E
         if (durationHours === 1) {
             structureGuide = `EXAM STRUCTURE (1h, 60 marks — Science — based on real school topic tests):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 6-8 questions totalling ~50 marks. Each question has sub-parts (a)(b)(c). Individual questions range from 4-8 marks. NO single question exceeds 8 marks.
+- Section II — Short Answer: 6-8 questions totalling ~50 marks. EVERY question MUST have sub-parts (a)(b)(c)(d). Individual questions range from 4-8 marks. NO single question exceeds 8 marks. Each sub-part is 2-4 marks.
 TOTAL: ~60 marks. TWO sections only — NO separate extended response section for 1-hour exams. The hardest questions in Section II should be 7-8 marks with multiple sub-parts.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks — Science):
@@ -4155,7 +4155,7 @@ TOTAL: 100 marks. You MUST include ALL three sections.`;
         }
         categoryRules = `SCIENCE-SPECIFIC RULES:
 - Max 8-9 marks per extended response question. NEVER a 20-mark question.
-- Short answer questions (Section II) MUST have sub-parts (a)(b)(c)(d). Each part is 2-4 marks. Scaffold within each question: part (a) is easiest, final part is hardest.
+- ALL short answer questions (Section II) MUST have sub-parts (a)(b)(c)(d). This is NON-NEGOTIABLE — real HSC science exams NEVER have a bare 5-mark question without sub-parts. Each part is 2-4 marks. Scaffold within each question: part (a) is easiest, final part is hardest.
 - Reference first-hand investigations, experimental design, variables (independent/dependent/controlled), reliability, validity, accuracy.
 - Include data analysis: use markdown tables for experimental data (| Column | Column |), graphs described in text, experimental results for interpretation.
 - Biology: use precise terminology (e.g. "nucleotide sequence", "complementary base pairing", "polypeptide chain"). Reference specific enzymes, organisms, processes.
@@ -4242,19 +4242,19 @@ TOTAL: ~100 marks.`;
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — ${subjectName}):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 4-5 questions totalling ~35 marks (with sub-parts). Max 8 marks per question.
+- Section II — Short Answer: 4-5 questions totalling ~35 marks (with sub-parts (a)(b)(c)). Max 8 marks per question.
 - Section III — Extended Response: 1 question of ~15 marks (with sub-parts (a)(b)(c))
 TOTAL: ~60 marks. You MUST include ALL three sections.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — ${subjectName}):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 4 questions totalling ~35 marks
+- Section II — Short Answer: 4-5 questions totalling ~35 marks (with sub-parts (a)(b)(c) for 4+ mark questions)
 - Section III — Extended Response: 1-2 questions totalling ~30 marks
 TOTAL: ~80 marks. You MUST include ALL three sections.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — ${subjectName}):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer: 4 questions totalling ~40 marks
+- Section II — Short Answer: 4-5 questions totalling ~40 marks (with sub-parts (a)(b)(c) for 4+ mark questions)
 - Section III — Extended Response: 1 question of ~20 marks (choose from options)
 - Section IV — Extended Response: 1 question of ~20 marks (choose from different options)
 TOTAL: 100 marks. You MUST include ALL four sections.`;
@@ -4263,9 +4263,9 @@ TOTAL: 100 marks. You MUST include ALL four sections.`;
         categoryRules = `HSIE-SPECIFIC RULES:
 - Ancient History / Modern History: absolutely NO multiple choice. Use source-based questions with historical documents, letters, images described in text, statistics. Ask "Assess the usefulness", "Evaluate the reliability", "Account for", "To what extent". Section I MUST have 3-4 source documents with questions scaffolded 3+4+6+12 marks.
 - History Extension: NO MC. Focus on historiographical analysis, key questions, case study, historical debate.
-- Business Studies: case studies of real Australian businesses. Correct terminology (cash flow, market share, operations). 20 MC.
-- Economics: economic data (GDP, unemployment, CPI). Terms: aggregate demand, monetary/fiscal policy. 20 MC.
-- Legal Studies: reference real cases (e.g. "Mabo v Queensland"), legislation. Assess effectiveness of law. 20 MC.
+- Business Studies: case studies of real Australian businesses. Correct terminology (cash flow, market share, operations). 20 MC. Short answer questions with 4+ marks should have sub-parts (a)(b).
+- Economics: economic data (GDP, unemployment, CPI). Terms: aggregate demand, monetary/fiscal policy. 20 MC. Short answer questions with 4+ marks should have sub-parts (a)(b).
+- Legal Studies: reference real cases (e.g. "Mabo v Queensland"), legislation. Assess effectiveness of law. 20 MC. Short answer questions with 4+ marks should have sub-parts.
 - Geography: 20 MC. Include fieldwork methodology, spatial technologies, stimulus (maps, data, photographs described).
 - Society and Culture: 10 MC. Use sociological terminology, cross-cultural perspectives.
 - Studies of Religion: reference specific traditions, sacred texts, ethical teachings. Respectful academic language. MC included.
@@ -4302,63 +4302,123 @@ TOTAL: ~100 marks. NO multiple choice for Creative Arts.`;
 
     // ===== TAS / Technology (Agriculture, Design & Tech, Engineering, Enterprise Computing, Food Tech, Industrial Tech, IDT, Software Engineering) =====
     } else if (category === 'tas') {
-        if (durationHours === 1) {
-            structureGuide = `EXAM STRUCTURE (1h, 60 marks — TAS/Technology):
+        const isEnterpriseComputing = subject === 'enterprise-computing';
+        const isSoftwareEngineering = subject === 'software-engineering';
+
+        if (isEnterpriseComputing) {
+            // Enterprise Computing: NO extended response. Max 8 marks per question. Based on real 2025 HSC MG.
+            if (durationHours === 1) {
+                structureGuide = `EXAM STRUCTURE (1h, 60 marks — Enterprise Computing — NO EXTENDED RESPONSE):
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks (includes matching, dropdown, and standard MC)
+- Section II — Short Answer: 10-14 questions totalling ~50 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b). Include practical tasks: SQL queries, spreadsheet formulas, DFD construction, UI design, data dictionary completion.
+TOTAL: ~60 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
+            } else if (durationHours === 2) {
+                structureGuide = `EXAM STRUCTURE (2h, 80 marks — Enterprise Computing — REAL HSC FORMAT, NO EXTENDED RESPONSE):
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks (includes matching, dropdown, and standard MC)
+- Section II — Short Answer: 15-18 questions totalling ~70 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b). Include practical tasks: SQL queries, spreadsheet formulas/design, DFD construction, UI prototyping, data dictionary completion, true/false checkbox questions.
+TOTAL: ~80 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
+            } else {
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — Enterprise Computing — NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 5-7 questions totalling ~35 marks (include diagrams described in text, case studies, scenarios)
-- Section III — Extended Response: 1-2 questions totalling ~15 marks
-TOTAL: ~60 marks. You MUST include ALL three sections.`;
-        } else if (durationHours === 2) {
-            structureGuide = `EXAM STRUCTURE (2h, 80 marks — TAS/Technology):
+- Section II — Short Answer: 18-22 questions totalling ~90 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include practical tasks: SQL queries, spreadsheet formulas, DFDs, UI design, data dictionaries.
+TOTAL: ~100 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
+            }
+            categoryRules = `ENTERPRISE COMPUTING-SPECIFIC RULES (based on real 2025 HSC marking guidelines):
+- ABSOLUTELY NO extended response questions. The maximum marks for ANY single question is 8.
+- Question types from real exam: standard MC, matching (drag/drop), true/false checkbox sets (2 marks: all correct = 2, most correct = 1), dropdown completion, short answer describe/explain/outline.
+- Practical tasks are ESSENTIAL: SQL queries (SELECT with JOIN, WHERE, ORDER BY), spreadsheet design with formulas, data flow diagrams, user interface prototyping, data dictionary completion.
+- Content areas: Data science (data warehousing, data mining, data dictionaries, databases, SQL, spreadsheets), Data visualisation (charts, graphs, user experience, bias), Intelligent systems (expert systems, forward/backward chaining, decision support systems, neural networks), Enterprise project (DFDs, project management tools like Gantt charts, prototyping, requirements gathering, WHS).
+- Questions with 4+ marks MUST have sub-parts (a)(b) with separate mark allocations.
+- Use NESA directive verbs precisely: Identify (1m), Outline (2m), Describe (3m), Explain (3-4m), Construct (DFDs, 5m).
+- IMPORTANT: Only generate questions from the student's selected module/topic.`;
+
+        } else if (isSoftwareEngineering) {
+            // Software Engineering: NO extended response. Max 6 marks per question. Based on real 2025 HSC MG.
+            if (durationHours === 1) {
+                structureGuide = `EXAM STRUCTURE (1h, 60 marks — Software Engineering — NO EXTENDED RESPONSE):
+- Section I — Multiple Choice: 12 questions × 1 mark = 12 marks (includes matching, dropdown, checkbox, and standard MC)
+- Section II — Short Answer: 10-14 questions totalling ~48 marks. Max 6 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include practical tasks: pseudocode algorithms, Python code, SQL queries, class diagrams.
+TOTAL: ~60 marks. TWO sections only. NO extended response section. NO question exceeds 6 marks.`;
+            } else if (durationHours === 2) {
+                structureGuide = `EXAM STRUCTURE (2h, 80 marks — Software Engineering — REAL HSC FORMAT, NO EXTENDED RESPONSE):
+- Section I — Multiple Choice: 14 questions × 1 mark = 14 marks (includes matching, dropdown, checkbox, true/false, and standard MC)
+- Section II — Short Answer: 14-18 questions totalling ~66 marks. Max 6 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include: pseudocode algorithms, Python programs, SQL queries (SELECT with JOIN/WHERE/GROUP BY/ORDER BY), class diagrams with inheritance, code debugging.
+TOTAL: ~80 marks. TWO sections only. NO extended response section. NO question exceeds 6 marks.`;
+            } else {
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — Software Engineering — NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer: 6-8 questions totalling ~40 marks
+- Section II — Short Answer: 18-22 questions totalling ~85 marks. Max 6 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include: pseudocode, Python, SQL, class diagrams, testing strategies.
+TOTAL: ~100 marks. TWO sections only. NO extended response section. NO question exceeds 6 marks.`;
+            }
+            categoryRules = `SOFTWARE ENGINEERING-SPECIFIC RULES (based on real 2025 HSC marking guidelines):
+- ABSOLUTELY NO extended response questions. The maximum marks for ANY single question is 6.
+- Question types from real exam: standard MC, matching tables, true/false checkbox sets (2 marks), dropdown completion, code writing, algorithm tracing, diagram construction.
+- Practical coding tasks are ESSENTIAL: pseudocode algorithm design (BEGIN/END, IF/ELSE, REPEAT/UNTIL, CASEWHERE), Python programs (input/output, selection, loops, lists, string manipulation), SQL queries (SELECT, JOIN, WHERE, GROUP BY, ORDER BY, COUNT), class diagram construction showing inheritance.
+- Content areas: Programming for the web (HTML/CSS, server-side scripting, PWAs, ORM vs SQL, APIs, load optimisation), Secure software architecture (privacy by design, session management, SAST/DAST testing, regulatory compliance, DevOps, vulnerabilities), Software automation (machine learning, neural networks, AI bias, DevOps, logistic regression), Software engineering project (SDLC, Agile vs Waterfall, data structures, data dictionaries, testing/debugging, implementation methods).
+- Questions with 4+ marks MUST have sub-parts (a)(b)(c) with separate mark allocations.
+- Use NESA directive verbs: Identify (1m), Outline (2-3m), Describe/Compare (3m), Explain (3-4m), Discuss (5m), Construct (diagrams, 3-5m).
+- IMPORTANT: Only generate questions from the student's selected module/topic.`;
+
+        } else {
+            // Generic TAS (Agriculture, Design & Tech, Engineering, Food Tech, Industrial Tech, IDT)
+            if (durationHours === 1) {
+                structureGuide = `EXAM STRUCTURE (1h, 60 marks — TAS/Technology):
+- Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
+- Section II — Short Answer: 6-8 questions totalling ~35 marks (include diagrams described in text, case studies, scenarios). Most questions with 4+ marks MUST have sub-parts (a)(b)(c).
+- Section III — Extended Response: 1-2 questions totalling ~15 marks (with sub-parts)
+TOTAL: ~60 marks. You MUST include ALL three sections.`;
+            } else if (durationHours === 2) {
+                structureGuide = `EXAM STRUCTURE (2h, 80 marks — TAS/Technology):
+- Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
+- Section II — Short Answer: 6-8 questions totalling ~40 marks (with sub-parts)
 - Section III — Extended Response: 2-3 questions totalling ~25 marks
 TOTAL: ~80 marks. You MUST include ALL three sections.`;
-        } else {
-            structureGuide = `EXAM STRUCTURE (3h, 100 marks — TAS/Technology):
+            } else {
+                structureGuide = `EXAM STRUCTURE (3h, 100 marks — TAS/Technology):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer: 8-10 questions totalling ~50 marks
+- Section II — Short Answer: 8-10 questions totalling ~50 marks (with sub-parts)
 - Section III — Extended Response: 2-3 questions totalling ~30 marks
 TOTAL: ~100 marks. You MUST include ALL three sections.`;
-        }
-        categoryRules = `TAS/TECHNOLOGY-SPECIFIC RULES:
+            }
+            categoryRules = `TAS/TECHNOLOGY-SPECIFIC RULES:
 - Agriculture: include farm management scenarios, production systems, sustainability. Reference specific Australian agricultural practices.
 - Design and Technology: include design scenarios, innovation/entrepreneurship, materials knowledge, project management.
 - Engineering Studies: include calculations (stress, strain, moments, circuits). Describe engineering drawings in text. Reference real engineering projects.
-- Enterprise Computing: include data management, networking, cybersecurity, project management scenarios. Use IT industry terminology. Max 8 marks per question.
 - Food Technology: include food science, nutrition, food manufacturing scenarios, Australian food standards.
 - Industrial Technology (all focus areas): include industry-specific knowledge (Automotive, Electronics, Graphics, Metal & Engineering, Multimedia, Timber & Furniture). Reference WHS, manufacturing processes, materials properties.
 - Information and Digital Technology: include database design, networking, digital media, project management.
-- Software Engineering: include code analysis (pseudocode), algorithm design, software development methodologies, testing strategies. Max 8 marks per question.
+- ALL non-MC questions worth 4+ marks MUST have sub-parts (a)(b)(c) with individual mark allocations.
 - IMPORTANT: Only generate questions from the student's selected module/topic.`;
+        }
 
     // ===== PDHPE / Health and Movement Science =====
     } else if (category === 'pdhpe') {
         if (durationHours === 1) {
             structureGuide = `EXAM STRUCTURE (1h, 60 marks — PDHPE/Health & Movement Science):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer (Core 1): 3-4 questions totalling ~20 marks
-- Section III — Short Answer (Core 2): 2-3 questions totalling ~15 marks
+- Section II — Short Answer (Core 1): 3-4 questions totalling ~20 marks (questions with 4+ marks MUST have sub-parts (a)(b))
+- Section III — Short Answer (Core 2): 2-3 questions totalling ~15 marks (with sub-parts for 4+ marks)
 - Section IV — Extended Response (Option): 1 question of ~15 marks
 TOTAL: ~60 marks. You MUST include ALL four sections.`;
         } else if (durationHours === 2) {
             structureGuide = `EXAM STRUCTURE (2h, 80 marks — PDHPE/Health & Movement Science):
 - Section I — Multiple Choice: 15 questions × 1 mark = 15 marks
-- Section II — Short Answer (Core 1): 3-4 questions totalling ~25 marks (include data, case studies)
-- Section III — Short Answer (Core 2): 3-4 questions totalling ~20 marks
+- Section II — Short Answer (Core 1): 3-4 questions totalling ~25 marks (include data, case studies, sub-parts (a)(b)(c) for 4+ marks)
+- Section III — Short Answer (Core 2): 3-4 questions totalling ~20 marks (with sub-parts for 4+ marks)
 - Section IV — Extended Response (Option): 1-2 questions totalling ~20 marks
 TOTAL: ~80 marks. You MUST include ALL four sections.`;
         } else {
             structureGuide = `EXAM STRUCTURE (3h, 100 marks — PDHPE/Health & Movement Science — REAL HSC FORMAT):
 - Section I — Multiple Choice: 20 questions × 1 mark = 20 marks
-- Section II — Short Answer (Core 1): 4-5 questions totalling ~30 marks
-- Section III — Short Answer (Core 2): 3-4 questions totalling ~20 marks
+- Section II — Short Answer (Core 1): 4-5 questions totalling ~30 marks (with sub-parts (a)(b)(c) for 4+ marks)
+- Section III — Short Answer (Core 2): 3-4 questions totalling ~20 marks (with sub-parts for 4+ marks)
 - Section IV — Extended Response (Options): 2 questions totalling ~30 marks
 TOTAL: 100 marks. You MUST include ALL four sections.`;
         }
         categoryRules = `PDHPE/HEALTH & MOVEMENT SCIENCE RULES:
 - Include biomechanics, exercise physiology, sports psychology, health promotion scenarios.
 - Reference Australian health statistics and real health initiatives (e.g. "Measure Up" campaign).
+- Short answer questions with 4+ marks MUST have sub-parts (a)(b)(c).
 - Include data interpretation: fitness testing results, health data tables, research findings.
 - Use correct anatomical and physiological terminology.
 - Include ethical considerations in sport and health contexts.
@@ -4496,8 +4556,9 @@ Return ONLY valid JSON (no markdown, no code fences) in this exact structure:
 CRITICAL JSON RULES:
 - "type": Use "mc" for multiple choice, "short" for short answer (2-6 marks), "extended" for extended response (7+ marks).
 - MC questions: include "options" (array of 4 strings starting with A. B. C. D.) and "correctAnswer" (letter). No "parts" for MC.
-- Short/Extended questions with 4+ marks SHOULD have "parts" — an array of sub-questions with labels like "(a)", "(b)", "(c)". Each part has its own "text" and "marks". The question's total "marks" must equal the sum of all part marks.
+- Short/Extended questions with 4+ marks MUST have "parts" — an array of sub-questions with labels like "(a)", "(b)", "(c)". Each part has its own "text" and "marks". The question's total "marks" must equal the sum of all part marks. This is NOT optional — real HSC exams almost ALWAYS use sub-parts for questions worth 4+ marks in Science, Maths, PDHPE, TAS, Geography, and Business subjects.
 - Short/Extended questions with 2-3 marks can omit "parts" (single question is fine).
+- For Science, Mathematics, PDHPE, Geography, TAS subjects: even 3-mark questions often have sub-parts. Prefer sub-parts over single monolithic questions.
 - For non-MC: include "markingCriteria" and optionally "stimulus".
 - DATA TABLES in stimulus: Format tables as markdown tables with | separators and header row: "| Column 1 | Column 2 |\\n|---|---|\\n| data | data |"
 - Match section names and structure to the EXAM STRUCTURE specified above.
