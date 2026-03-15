@@ -4033,9 +4033,19 @@ function saveExamProgress(userId, progress) {
 // Distribute totalMarks across count questions in ascending order (scaffold easy→hard)
 function distributeMarks(total, count, min, max) {
     if (count <= 0 || total <= 0) return [];
+    if (count === 1) return [Math.min(Math.max(total, min), max)];
     const marks = new Array(count).fill(min);
     let rem = total - count * min;
-    // Distribute remainder from last to first → ascending (smallest first, largest last)
+    // Distribute proportionally by position (ascending — smaller marks first, larger last)
+    const weights = marks.map((_, i) => i + 1);
+    const totalWeight = weights.reduce((a, w) => a + w, 0);
+    for (let i = 0; i < count && rem > 0; i++) {
+        const share = Math.round((weights[i] / totalWeight) * (total - count * min));
+        const add = Math.min(share, max - marks[i], rem);
+        marks[i] += add;
+        rem -= add;
+    }
+    // Distribute any leftover from the end
     for (let i = count - 1; i >= 0 && rem > 0; i--) {
         const add = Math.min(rem, max - marks[i]);
         marks[i] += add;
