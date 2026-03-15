@@ -1757,6 +1757,28 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         }
 
         async function showExamSetup() {
+            // Check for saved exam backup (from failed marking or page refresh)
+            const backup = sessionStorage.getItem('examBackup');
+            if (backup) {
+                try {
+                    const saved = JSON.parse(backup);
+                    if (saved.examData && saved.examAnswers && saved.examSubjectId) {
+                        examData = saved.examData;
+                        examAnswers = saved.examAnswers;
+                        examSubjectId = saved.examSubjectId;
+                        document.getElementById('examContent').innerHTML = `
+                            <div style="text-align:center;padding:60px 20px;">
+                                <h2 style="color:#4f8cff;margin-bottom:12px;">📋 Exam Recovered</h2>
+                                <p style="color:#a1a1aa;margin-bottom:8px;">Your previous exam and answers were saved after marking failed.</p>
+                                <p style="color:#71717a;font-size:0.85rem;margin-bottom:24px;">You can retry marking or start fresh.</p>
+                                <button class="exam-nav-btn primary" onclick="retryMarking()" style="margin-right:10px;">🔄 Retry Marking</button>
+                                <button class="exam-nav-btn" onclick="sessionStorage.removeItem('examBackup'); showExamSetup();" style="opacity:0.7;">Start Fresh</button>
+                            </div>`;
+                        return;
+                    }
+                } catch (e) { sessionStorage.removeItem('examBackup'); }
+            }
+
             document.getElementById('examNav').style.display = 'none';
             document.getElementById('examDots').style.display = 'none';
             const timerEl = document.getElementById('examTimer');
@@ -2268,6 +2290,13 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         }
 
         async function doSubmitExam() {
+            // Save exam state to sessionStorage so it survives page refresh
+            try {
+                sessionStorage.setItem('examBackup', JSON.stringify({
+                    examData, examAnswers, examSubjectId
+                }));
+            } catch (e) { /* storage full — ignore */ }
+
             try {
                 const res = await fetch(`${API_BASE}/api/exam/mark`, {
                     method: 'POST',
@@ -2277,20 +2306,33 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 });
 
                 if (!res.ok) {
-                    throw new Error('Failed to mark exam');
+                    const errData = await res.json().catch(() => ({}));
+                    throw new Error(errData.error || 'Failed to mark exam');
                 }
 
                 const data = await res.json();
+                sessionStorage.removeItem('examBackup');
                 renderExamResults(data);
 
             } catch (error) {
                 document.getElementById('examContent').innerHTML = `
                     <div style="text-align:center;padding:60px 20px;">
                         <h2 style="color:#ef4444;margin-bottom:12px;">Marking Failed</h2>
-                        <p style="color:#71767b;margin-bottom:20px;">${error.message}</p>
-                        <button class="exam-nav-btn primary" onclick="showExamSetup()">Back to Setup</button>
+                        <p style="color:#71717a;margin-bottom:8px;">${error.message}</p>
+                        <p style="color:#71717a;font-size:0.85rem;margin-bottom:24px;">This is usually a temporary issue with the AI service. Your answers are saved — tap Retry.</p>
+                        <button class="exam-nav-btn primary" onclick="retryMarking()" style="margin-right:10px;">🔄 Retry Marking</button>
+                        <button class="exam-nav-btn" onclick="showExamSetup()" style="opacity:0.7;">Back to Setup</button>
                     </div>`;
             }
+        }
+
+        function retryMarking() {
+            document.getElementById('examContent').innerHTML = `
+                <div class="exam-loading">
+                    <div class="loading-dots" style="justify-content:center;"><span></span><span></span><span></span></div>
+                    <div class="exam-loading-text">Retrying... Marking your exam.</div>
+                </div>`;
+            doSubmitExam();
         }
 
         function renderExamResults(data) {
