@@ -4028,91 +4028,294 @@ function saveExamProgress(userId, progress) {
     scheduleSave();
 }
 
-// ===== Helper: Repair exam marks to hit exact target =====
-// Strategy: adjust the last non-MC section's last question(s) marks to close the gap
-function repairExamMarks(exam, targetTotal, actualTotal) {
-    if (!exam.sections || exam.sections.length === 0) return false;
-    const diff = targetTotal - actualTotal; // positive = need more marks, negative = need fewer
+// ===== Deterministic mark allocation (like module splitting — server controls structure, not AI) =====
 
-    // Find the last section that has non-MC questions (best place to adjust)
-    let targetSection = null;
-    for (let i = exam.sections.length - 1; i >= 0; i--) {
-        const sec = exam.sections[i];
-        if (sec.questions && sec.questions.some(q => q.type !== 'mc')) {
-            targetSection = sec;
-            break;
+// Distribute totalMarks across count questions in ascending order (scaffold easy→hard)
+function distributeMarks(total, count, min, max) {
+    if (count <= 0 || total <= 0) return [];
+    const marks = new Array(count).fill(min);
+    let rem = total - count * min;
+    // Distribute remainder from last to first → ascending (smallest first, largest last)
+    for (let i = count - 1; i >= 0 && rem > 0; i--) {
+        const add = Math.min(rem, max - marks[i]);
+        marks[i] += add;
+        rem -= add;
+    }
+    return marks;
+}
+
+// Compute exact per-question mark allocation for any category/subject/duration
+function computeExamAllocation(category, subject, durationHours, totalMarks, topics) {
+    const sections = [];
+    const d = durationHours;
+
+    // ---- MATHEMATICS ----
+    if (category === 'mathematics') {
+        const isStd = subject === 'mathematics-standard';
+        const mc = d === 1 ? (isStd ? 8 : 5) : d === 2 ? (isStd ? 12 : 8) : (isStd ? 15 : 10);
+        const probCount = d === 1 ? (isStd ? 8 : 7) : d === 2 ? (isStd ? 13 : 12) : (isStd ? 15 : 14);
+        const probMax = isStd ? 8 : 10;
+        sections.push({ name: 'Section I — Multiple Choice', marks: new Array(mc).fill(1) });
+        sections.push({ name: 'Section II — Problems', marks: distributeMarks(totalMarks - mc, probCount, 4, probMax) });
+
+    // ---- ENGLISH ----
+    } else if (category === 'english') {
+        const isAll = !topics || topics === 'All Year 12 content';
+        const isCommon = topics && topics.toLowerCase().includes('texts and human experiences');
+        if (isAll) {
+            if (d === 1) {
+                sections.push({ name: 'Section I — Short Response', marks: distributeMarks(35, 5, 4, 10) });
+                sections.push({ name: 'Section II — Extended Response', marks: [25] });
+            } else if (d === 2) {
+                sections.push({ name: 'Section I — Short Response', marks: distributeMarks(20, 5, 3, 6) });
+                sections.push({ name: 'Section II — Module Response', marks: distributeMarks(30, 2, 12, 18) });
+                sections.push({ name: 'Section III — Extended Response', marks: [30] });
+            } else {
+                sections.push({ name: 'Section I — Short Response', marks: distributeMarks(20, 5, 3, 6) });
+                sections.push({ name: 'Section II — Module Response', marks: distributeMarks(40, 2, 18, 22) });
+                sections.push({ name: 'Section III — Extended Response', marks: distributeMarks(40, 2, 18, 22) });
+            }
+        } else if (isCommon) {
+            if (d === 1) {
+                sections.push({ name: 'Section I — Short Response', marks: distributeMarks(40, 6, 4, 10) });
+                sections.push({ name: 'Section II — Extended Response', marks: [20] });
+            } else if (d === 2) {
+                sections.push({ name: 'Section I — Short Response', marks: distributeMarks(55, 7, 5, 12) });
+                sections.push({ name: 'Section II — Extended Response', marks: [25] });
+            } else {
+                sections.push({ name: 'Section I — Short Response', marks: distributeMarks(70, 8, 5, 12) });
+                sections.push({ name: 'Section II — Extended Response', marks: [30] });
+            }
+        } else {
+            // Single non-common module
+            if (d === 1) {
+                sections.push({ name: 'Section I — Short Response', marks: distributeMarks(40, 5, 5, 12) });
+                sections.push({ name: 'Section II — Extended Response', marks: [20] });
+            } else if (d === 2) {
+                sections.push({ name: 'Section I — Short Response', marks: distributeMarks(55, 6, 5, 14) });
+                sections.push({ name: 'Section II — Extended Response', marks: [25] });
+            } else {
+                sections.push({ name: 'Section I — Short Response', marks: distributeMarks(70, 7, 6, 14) });
+                sections.push({ name: 'Section II — Extended Response', marks: [30] });
+            }
+        }
+
+    // ---- SCIENCE ----
+    } else if (category === 'science') {
+        const mc = d === 1 ? 10 : d === 2 ? 15 : 20;
+        sections.push({ name: 'Section I — Multiple Choice', marks: new Array(mc).fill(1) });
+        if (d === 1) {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(totalMarks - mc, 7, 5, 8) });
+        } else if (d === 2) {
+            const ext = [9, 9]; // 18 marks extended
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(totalMarks - mc - 18, 7, 5, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: ext });
+        } else {
+            const ext = [8, 8, 9]; // 25 marks extended
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(totalMarks - mc - 25, 8, 5, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: ext });
+        }
+
+    // ---- HSIE: History (no MC) ----
+    } else if (category === 'hsie' && ['ancient-history', 'modern-history', 'history-extension'].includes(subject)) {
+        const isAll = !topics || topics === 'All Year 12 content';
+        const isCore = topics && topics.toLowerCase().startsWith('core study:');
+        if (isAll) {
+            if (d === 1) {
+                sections.push({ name: 'Section I — Source-based', marks: [3, 4, 6, 12] }); // 25
+                sections.push({ name: 'Section II — Essay', marks: [20] });
+                sections.push({ name: 'Section III — Essay', marks: [15] });
+            } else if (d === 2) {
+                sections.push({ name: 'Section I — Source-based', marks: [3, 4, 5, 6, 12] }); // 30
+                sections.push({ name: 'Section II — Essay', marks: [25] });
+                sections.push({ name: 'Section III — Essay', marks: [25] });
+            } else {
+                sections.push({ name: 'Section I — Source-based', marks: [3, 4, 6, 12] }); // 25
+                sections.push({ name: 'Section II — Essay', marks: [25] });
+                sections.push({ name: 'Section III — Essay', marks: [25] });
+                sections.push({ name: 'Section IV — Essay', marks: [25] });
+            }
+        } else if (isCore) {
+            const qCount = d === 1 ? 7 : d === 2 ? 8 : 10;
+            sections.push({ name: 'Section I — Source-based', marks: distributeMarks(totalMarks, qCount, 3, 15) });
+        } else {
+            // Single non-core topic
+            if (d === 1) {
+                sections.push({ name: 'Section I — Short Answer', marks: distributeMarks(35, 5, 4, 10) });
+                sections.push({ name: 'Section II — Essay', marks: [25] });
+            } else if (d === 2) {
+                sections.push({ name: 'Section I — Short Answer', marks: distributeMarks(50, 6, 5, 12) });
+                sections.push({ name: 'Section II — Essay', marks: [30] });
+            } else {
+                sections.push({ name: 'Section I — Short Answer', marks: distributeMarks(60, 7, 5, 12) });
+                sections.push({ name: 'Section II — Essay', marks: [40] });
+            }
+        }
+
+    // ---- HSIE: Geography ----
+    } else if (category === 'hsie' && subject === 'geography') {
+        const mc = d === 1 ? 10 : d === 2 ? 15 : 20;
+        sections.push({ name: 'Section I — Objective Response', marks: new Array(mc).fill(1) });
+        if (d === 1) {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(35, 5, 5, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: [15] });
+        } else if (d === 2) {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(45, 5, 7, 10) });
+            sections.push({ name: 'Section III — Extended Response', marks: [20] });
+        } else {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(40, 5, 6, 10) });
+            sections.push({ name: 'Section III — Structured Extended', marks: [20] });
+            sections.push({ name: 'Section IV — Extended Response', marks: [20] });
+        }
+
+    // ---- HSIE: Society & Culture ----
+    } else if (category === 'hsie' && subject === 'society-culture') {
+        sections.push({ name: 'Section I — MC + Short Answer', marks: [...new Array(10).fill(1), ...distributeMarks(d === 1 ? 10 : d === 2 ? 15 : 20, d === 1 ? 2 : 3, 4, 8)] });
+        if (d === 1) {
+            sections.push({ name: 'Section II — Short Essay', marks: [10, 10] }); // 20
+            sections.push({ name: 'Section III — Extended Response', marks: [20] });
+        } else if (d === 2) {
+            sections.push({ name: 'Section II — Extended Response', marks: [20, 20] }); // 40
+            sections.push({ name: 'Section III — Short Essay', marks: [15] });
+        } else {
+            sections.push({ name: 'Section II — Extended Response', marks: [20, 20] }); // 40
+            sections.push({ name: 'Section III — Extended Response', marks: [15, 15] }); // 30
+        }
+
+    // ---- HSIE: Business, Economics, Legal, Studies of Religion (standard MC) ----
+    } else if (category === 'hsie') {
+        const mc = d === 1 ? 10 : d === 2 ? 15 : 20;
+        sections.push({ name: 'Section I — Multiple Choice', marks: new Array(mc).fill(1) });
+        if (d === 1) {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(35, 5, 5, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: [15] });
+        } else if (d === 2) {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(35, 5, 5, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: distributeMarks(30, 2, 13, 17) });
+        } else {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(40, 5, 6, 10) });
+            sections.push({ name: 'Section III — Extended Response', marks: [20] });
+            sections.push({ name: 'Section IV — Extended Response', marks: [20] });
+        }
+
+    // ---- CREATIVE ARTS ----
+    } else if (category === 'creative arts') {
+        if (d === 1) {
+            sections.push({ name: 'Section I — Short Response', marks: distributeMarks(35, 5, 5, 8) });
+            sections.push({ name: 'Section II — Extended Response', marks: distributeMarks(25, 2, 12, 13) });
+        } else if (d === 2) {
+            sections.push({ name: 'Section I — Short Response', marks: distributeMarks(35, 6, 4, 8) });
+            sections.push({ name: 'Section II — Extended Response', marks: distributeMarks(45, 2, 20, 25) });
+        } else {
+            sections.push({ name: 'Section I — Short Response', marks: distributeMarks(40, 7, 4, 8) });
+            sections.push({ name: 'Section II — Extended Response', marks: distributeMarks(60, 3, 18, 22) });
+        }
+
+    // ---- TAS: Enterprise Computing ----
+    } else if (category === 'tas' && subject === 'enterprise-computing') {
+        const mc = 10;
+        sections.push({ name: 'Section I — Multiple Choice', marks: new Array(mc).fill(1) });
+        const shortCount = d === 1 ? 12 : d === 2 ? 16 : 20;
+        sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(totalMarks - mc, shortCount, 3, 8) });
+
+    // ---- TAS: Software Engineering ----
+    } else if (category === 'tas' && subject === 'software-engineering') {
+        const mc = d === 1 ? 12 : d === 2 ? 14 : 15;
+        sections.push({ name: 'Section I — Multiple Choice', marks: new Array(mc).fill(1) });
+        const shortCount = d === 1 ? 12 : d === 2 ? 16 : 20;
+        sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(totalMarks - mc, shortCount, 2, 6) });
+
+    // ---- TAS: Generic ----
+    } else if (category === 'tas') {
+        const mc = d === 1 ? 10 : d === 2 ? 15 : 20;
+        sections.push({ name: 'Section I — Multiple Choice', marks: new Array(mc).fill(1) });
+        if (d === 1) {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(35, 6, 4, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: [15] });
+        } else if (d === 2) {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(40, 7, 4, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: distributeMarks(25, 2, 12, 13) });
+        } else {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(50, 9, 4, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: distributeMarks(30, 2, 14, 16) });
+        }
+
+    // ---- PDHPE ----
+    } else if (category === 'pdhpe') {
+        const mc = d === 1 ? 10 : d === 2 ? 15 : 20;
+        sections.push({ name: 'Section I — Multiple Choice', marks: new Array(mc).fill(1) });
+        if (d === 1) {
+            sections.push({ name: 'Section II — Short Answer (Core 1)', marks: distributeMarks(20, 4, 4, 6) });
+            sections.push({ name: 'Section III — Short Answer (Core 2)', marks: distributeMarks(15, 3, 4, 6) });
+            sections.push({ name: 'Section IV — Extended Response', marks: [15] });
+        } else if (d === 2) {
+            sections.push({ name: 'Section II — Short Answer (Core 1)', marks: distributeMarks(25, 4, 5, 8) });
+            sections.push({ name: 'Section III — Short Answer (Core 2)', marks: distributeMarks(20, 3, 5, 8) });
+            sections.push({ name: 'Section IV — Extended Response', marks: distributeMarks(20, 2, 9, 11) });
+        } else {
+            sections.push({ name: 'Section II — Short Answer (Core 1)', marks: distributeMarks(30, 5, 4, 8) });
+            sections.push({ name: 'Section III — Short Answer (Core 2)', marks: distributeMarks(20, 4, 4, 6) });
+            sections.push({ name: 'Section IV — Extended Response', marks: distributeMarks(30, 2, 14, 16) });
+        }
+
+    // ---- VET ----
+    } else if (category === 'vet') {
+        const mc = d === 1 ? 10 : 15;
+        sections.push({ name: 'Section I — Multiple Choice', marks: new Array(mc).fill(1) });
+        if (d === 1) {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(40, 7, 4, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: [10] });
+        } else if (d === 2) {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(50, 9, 4, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: [15] });
+        } else {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(65, 12, 4, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: distributeMarks(20, 2, 9, 11) });
+        }
+
+    // ---- FALLBACK ----
+    } else {
+        const mc = d === 1 ? 10 : d === 2 ? 15 : 20;
+        sections.push({ name: 'Section I — Multiple Choice', marks: new Array(mc).fill(1) });
+        if (d === 1) {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(35, 6, 4, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: [15] });
+        } else if (d === 2) {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(40, 6, 5, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: distributeMarks(25, 2, 12, 13) });
+        } else {
+            sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(50, 8, 4, 8) });
+            sections.push({ name: 'Section III — Extended Response', marks: distributeMarks(30, 3, 9, 11) });
         }
     }
-    if (!targetSection || !targetSection.questions || targetSection.questions.length === 0) return false;
 
-    // Get all non-MC questions in this section sorted by marks descending
-    const nonMcQuestions = targetSection.questions.filter(q => q.type !== 'mc');
-    if (nonMcQuestions.length === 0) return false;
-
-    if (diff > 0) {
-        // Need MORE marks — increase the last question's marks
-        const lastQ = nonMcQuestions[nonMcQuestions.length - 1];
-        const newMarks = lastQ.marks + diff;
-        // Don't let any single question exceed 25 marks (unreasonable)
-        if (newMarks > 25) return false;
-        lastQ.marks = newMarks;
-        // If it has parts, add marks to the last part
-        if (lastQ.parts && lastQ.parts.length > 0) {
-            lastQ.parts[lastQ.parts.length - 1].marks += diff;
-        }
-        return true;
-    } else if (diff < 0) {
-        // Need FEWER marks — reduce marks from the last question
-        const absDiff = Math.abs(diff);
-        const lastQ = nonMcQuestions[nonMcQuestions.length - 1];
-        if (lastQ.marks - absDiff >= 2) {
-            // Can absorb the reduction in one question
-            lastQ.marks -= absDiff;
-            if (lastQ.parts && lastQ.parts.length > 0) {
-                // Reduce from the last part
-                const lastPart = lastQ.parts[lastQ.parts.length - 1];
-                if (lastPart.marks - absDiff >= 1) {
-                    lastPart.marks -= absDiff;
-                } else {
-                    // Remove parts from the end until we've absorbed the diff
-                    let remaining = absDiff;
-                    for (let i = lastQ.parts.length - 1; i >= 0 && remaining > 0; i--) {
-                        const partMarks = lastQ.parts[i].marks;
-                        if (partMarks <= remaining) {
-                            remaining -= partMarks;
-                            lastQ.parts.splice(i, 1);
-                        } else {
-                            lastQ.parts[i].marks -= remaining;
-                            remaining = 0;
-                        }
-                    }
-                }
-            }
-            return true;
-        } else if (absDiff <= lastQ.marks && nonMcQuestions.length > 2) {
-            // Remove the last question entirely if that closes the gap
-            const idx = targetSection.questions.indexOf(lastQ);
-            if (idx !== -1 && lastQ.marks === absDiff) {
-                targetSection.questions.splice(idx, 1);
-                return true;
-            }
-        }
-        // Spread reduction across multiple questions
-        let remaining = absDiff;
-        for (let i = nonMcQuestions.length - 1; i >= 0 && remaining > 0; i--) {
-            const q = nonMcQuestions[i];
-            const canReduce = Math.min(remaining, q.marks - 2);
-            if (canReduce > 0) {
-                q.marks -= canReduce;
-                remaining -= canReduce;
-                if (q.parts && q.parts.length > 0) {
-                    q.parts[q.parts.length - 1].marks = Math.max(1, q.parts[q.parts.length - 1].marks - canReduce);
-                }
-            }
-        }
-        return remaining === 0;
+    // Verify allocation sums to target
+    const allocTotal = sections.reduce((s, sec) => s + sec.marks.reduce((a, m) => a + m, 0), 0);
+    if (allocTotal !== totalMarks) {
+        console.error(`❌ Allocation mismatch: ${allocTotal} vs ${totalMarks} for ${category}/${subject}/${d}h`);
+        return null; // Fall back to AI-only mode
     }
-    return true; // diff === 0
+
+    // Build the prompt table
+    let table = 'EXACT MARK ALLOCATION — you MUST generate questions with EXACTLY these marks:\n';
+    let qNum = 1;
+    for (const sec of sections) {
+        const secTotal = sec.marks.reduce((a, m) => a + m, 0);
+        if (sec.marks.every(m => m === 1)) {
+            // MC section — compact display
+            table += `${sec.name}: Q${qNum}–Q${qNum + sec.marks.length - 1} = ${sec.marks.length} questions × 1 mark = ${secTotal} marks\n`;
+            qNum += sec.marks.length;
+        } else {
+            table += `${sec.name} (${secTotal} marks total):\n`;
+            for (const m of sec.marks) {
+                table += `  Q${qNum}: ${m} marks\n`;
+                qNum++;
+            }
+        }
+    }
+    table += `GRAND TOTAL: ${totalMarks} marks — DO NOT DEVIATE FROM THIS ALLOCATION\n`;
+
+    return { sections, table, total: totalMarks };
 }
 
 // Generate exam — returns structured JSON with questions
@@ -4709,6 +4912,10 @@ TOTAL: EXACTLY 100 marks. You MUST include ALL three sections.`;
         categoryRules = `Follow standard HSC exam conventions for this subject. Use precise academic terminology. Include stimulus material where appropriate.\n- IMPORTANT: Only generate questions from the student's selected module/topic.`;
     }
 
+    // ===== DETERMINISTIC MARK ALLOCATION (like module splitting — bulletproof) =====
+    const allocation = computeExamAllocation(category, subject, durationHours, totalMarks, topics);
+    const allocationPrompt = allocation ? '\n\n' + allocation.table : '';
+
     const systemPrompt = `You are an EXPERT HSC exam paper writer who has written real NESA exam papers. Generate a COMPLETE exam paper as structured JSON.
 
 UNIQUENESS SEED: ${examSeed}
@@ -4723,7 +4930,7 @@ MODULE/TOPIC CONSTRAINT — ABSOLUTE, NON-NEGOTIABLE:
 - This constraint applies to stimulus material too — do not reference content from other modules even in stimuli.
 - DO NOT copy questions from past papers verbatim — use them only for style, format, and difficulty reference. Generate ORIGINAL questions based on syllabus dot points.${previousQuestionsPrompt}
 
-${structureGuide}
+${structureGuide}${allocationPrompt}
 
 HSC LANGUAGE & AUTHENTICITY — CRITICAL:
 - Write EXACTLY like a NESA exam writer. Study the phrasing in the past papers provided.
@@ -4858,59 +5065,83 @@ CRITICAL JSON RULES:
                 continue;
             }
 
-            // ===== SERVER-SIDE MARK VERIFICATION & REPAIR =====
-            let actualTotal = 0;
-            let totalQuestions = 0;
+            // ===== DETERMINISTIC MARK ENFORCEMENT (server-controlled, like module splitting) =====
+            if (allocation && parsed.sections) {
+                // Force-apply the pre-computed mark allocation to each section/question
+                for (let sIdx = 0; sIdx < parsed.sections.length && sIdx < allocation.sections.length; sIdx++) {
+                    const aiSec = parsed.sections[sIdx];
+                    const allocSec = allocation.sections[sIdx];
+                    if (!aiSec.questions) continue;
+
+                    // If AI generated fewer questions than allocation, pad with placeholders
+                    while (aiSec.questions.length < allocSec.marks.length) {
+                        const lastQ = aiSec.questions[aiSec.questions.length - 1];
+                        aiSec.questions.push({
+                            number: aiSec.questions.length + 1,
+                            text: lastQ ? lastQ.text : 'Additional question',
+                            marks: 1,
+                            type: lastQ ? lastQ.type : 'short-answer'
+                        });
+                    }
+                    // If AI generated more questions than allocation, trim excess
+                    if (aiSec.questions.length > allocSec.marks.length) {
+                        aiSec.questions = aiSec.questions.slice(0, allocSec.marks.length);
+                    }
+
+                    // Force each question's marks to the pre-computed value
+                    for (let qIdx = 0; qIdx < aiSec.questions.length; qIdx++) {
+                        aiSec.questions[qIdx].marks = allocSec.marks[qIdx];
+                    }
+                }
+                // If AI generated fewer sections, add missing ones
+                while (parsed.sections.length < allocation.sections.length) {
+                    const allocSec = allocation.sections[parsed.sections.length];
+                    parsed.sections.push({
+                        name: allocSec.name,
+                        questions: allocSec.marks.map((m, i) => ({
+                            number: i + 1,
+                            text: 'Question placeholder',
+                            marks: m,
+                            type: m === 1 ? 'multiple-choice' : 'short-answer'
+                        }))
+                    });
+                }
+                // Trim excess sections
+                if (parsed.sections.length > allocation.sections.length) {
+                    parsed.sections = parsed.sections.slice(0, allocation.sections.length);
+                }
+            }
+
+            // Renumber all questions sequentially
+            let qNumber = 1;
             if (parsed.sections) {
                 for (const section of parsed.sections) {
                     if (section.questions) {
                         for (const q of section.questions) {
-                            // Verify parts sum matches question marks
-                            if (q.parts && q.parts.length > 0) {
-                                const partsSum = q.parts.reduce((s, p) => s + (p.marks || 0), 0);
-                                if (partsSum > 0 && partsSum !== q.marks) {
-                                    q.marks = partsSum; // Trust the parts
-                                }
-                            }
-                            actualTotal += (q.marks || 0);
-                            totalQuestions++;
+                            q.number = qNumber++;
                         }
                     }
                 }
             }
 
-            const markDiff = totalMarks - actualTotal;
+            // Verify final total
+            let actualTotal = 0;
+            if (parsed.sections) {
+                for (const section of parsed.sections) {
+                    if (section.questions) {
+                        for (const q of section.questions) actualTotal += (q.marks || 0);
+                    }
+                }
+            }
+            parsed.totalMarks = totalMarks;
 
             if (actualTotal === totalMarks) {
-                // Perfect — use as-is
-                parsed.totalMarks = totalMarks;
                 exam = parsed;
-                console.log(`✅ Exam marks verified: ${actualTotal}/${totalMarks} (attempt ${generateAttempts})`);
-            } else if (actualTotal > 0 && Math.abs(markDiff) <= 10) {
-                // Close enough to repair — adjust the last non-MC section
-                console.log(`⚠️ Exam marks: ${actualTotal}/${totalMarks} (off by ${markDiff}). Attempting repair...`);
-                const repaired = repairExamMarks(parsed, totalMarks, actualTotal);
-                if (repaired) {
-                    parsed.totalMarks = totalMarks;
-                    exam = parsed;
-                    console.log(`✅ Exam marks repaired to ${totalMarks}`);
-                } else {
-                    // Repair failed, but close enough — accept with corrected total
-                    parsed.totalMarks = actualTotal;
-                    exam = parsed;
-                    console.log(`⚠️ Repair failed, accepting ${actualTotal} marks`);
-                }
+                console.log(`✅ Exam marks verified: ${actualTotal}/${totalMarks} (deterministic allocation)`);
             } else if (actualTotal > 0) {
-                // Too far off — retry
-                console.log(`❌ Exam marks way off: ${actualTotal}/${totalMarks} (attempt ${generateAttempts}). Retrying...`);
-                lastError = `only ${actualTotal} marks instead of ${totalMarks}`;
-                if (generateAttempts >= maxGenerateAttempts) {
-                    // Last attempt — accept what we have after repair attempt
-                    const repaired = repairExamMarks(parsed, totalMarks, actualTotal);
-                    parsed.totalMarks = repaired ? totalMarks : actualTotal;
-                    exam = parsed;
-                    console.log(`⚠️ Final attempt: accepted with ${parsed.totalMarks} marks`);
-                }
+                // Allocation was applied but something is off — accept anyway with forced total
+                exam = parsed;
+                console.log(`⚠️ Exam marks ${actualTotal}/${totalMarks} after allocation — accepted with forced total`);
             } else {
                 lastError = `0 marks generated`;
                 console.error(`❌ Exam had 0 marks (attempt ${generateAttempts})`);
