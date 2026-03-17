@@ -3441,8 +3441,13 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         if (syllabusContent) {
             const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
             
-            // Syllabus bot gets full context; practice bot gets a smaller excerpt
-            const SYLLABUS_CHAR_LIMIT = botType === 'syllabus' ? 30000 : 8000;
+            // Syllabus bot: scale context by detail level (brief=15k, moderate=25k, detailed=40k)
+            // Practice bot: small excerpt only (8k) — GPT already knows HSC content
+            let SYLLABUS_CHAR_LIMIT = 8000; // practice bot default
+            if (botType === 'syllabus') {
+                const level = parseInt(detailLevel) || 2;
+                SYLLABUS_CHAR_LIMIT = level === 1 ? 15000 : level === 3 ? 40000 : 25000;
+            }
             let truncatedSyllabus;
             
             // Try to extract the requested topic from the user message
