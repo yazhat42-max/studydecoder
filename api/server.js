@@ -3430,16 +3430,19 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         }
     }
     
-    // Inject syllabus content for syllabus and practice bots
-    if (subjectId && (botType === 'syllabus' || botType === 'practice')) {
+    // Inject syllabus content: always for syllabus bot, only first message for practice bot
+    // Practice bot doesn't need the full syllabus — GPT already knows HSC content.
+    // Only inject a small excerpt on the first message for topic accuracy.
+    const isPracticeFirstMsg = botType === 'practice' && messages.length <= 1;
+    const needsSyllabus = botType === 'syllabus' || isPracticeFirstMsg;
+    
+    if (subjectId && needsSyllabus) {
         const syllabusContent = getSyllabusContent(subjectId);
         if (syllabusContent) {
             const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
             
-            // Smart syllabus extraction: prioritize the requested topic section
-            // All models support 128k context but TPM limits can be as low as 30k
-            // Keep total request under 25k tokens (~100k chars input + output)
-            const SYLLABUS_CHAR_LIMIT = 30000;
+            // Syllabus bot gets full context; practice bot gets a smaller excerpt
+            const SYLLABUS_CHAR_LIMIT = botType === 'syllabus' ? 30000 : 8000;
             let truncatedSyllabus;
             
             // Try to extract the requested topic from the user message
@@ -3498,20 +3501,25 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         }
     }
     
-    // Inject past paper content for practice bot (both question generation AND feedback)
+    // Inject past paper content for practice bot — only on first message or feedback mode
+    // Follow-up questions don't need past papers re-sent (saves ~4k tokens per message)
     if (botType === 'practice' && subjectId) {
-        const pastPaperContent = getPastPaperContent(subjectId);
-        if (pastPaperContent) {
-            const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
-            const lastUserMessage = messages[messages.length - 1]?.content || '';
-            const isFeedbackMode = lastUserMessage.includes('[FEEDBACK MODE]');
+        const lastUserMessage = messages[messages.length - 1]?.content || '';
+        const isFeedbackMode = lastUserMessage.includes('[FEEDBACK MODE]');
+        
+        if (isFeedbackMode || messages.length <= 1) {
+            const pastPaperContent = getPastPaperContent(subjectId);
+            if (pastPaperContent) {
+                const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
             
-            // Add past paper content - different instructions for different modes
-            const truncatedPastPaper = pastPaperContent.substring(0, 15000);
-            if (isFeedbackMode) {
-                systemPrompt += `\n\n=== HSC PAST PAPERS AND MARKING GUIDELINES FOR ${subjectName.toUpperCase()} ===\nUse these marking guidelines to assess the student's response. Reference specific marking criteria when giving feedback.\n\n⚠️ CRITICAL: You are ONLY providing feedback - NEVER reveal the correct answer or write a model response.\n\n${truncatedPastPaper}\n\n=== END OF PAST PAPERS ===`;
-            } else {
-                systemPrompt += `\n\n=== HSC PAST PAPERS FOR ${subjectName.toUpperCase()} ===\nUse these past papers as REFERENCE for question style, format, and difficulty. Base your generated questions on these real exam patterns.\n\n${truncatedPastPaper}\n\n=== END OF PAST PAPERS ===`;
+                // Feedback mode gets more context; standard gets less
+                const ppLimit = isFeedbackMode ? 15000 : 6000;
+                const truncatedPastPaper = pastPaperContent.substring(0, ppLimit);
+                if (isFeedbackMode) {
+                    systemPrompt += `\n\n=== HSC PAST PAPERS AND MARKING GUIDELINES FOR ${subjectName.toUpperCase()} ===\nUse these marking guidelines to assess the student's response. Reference specific marking criteria when giving feedback.\n\n⚠️ CRITICAL: You are ONLY providing feedback - NEVER reveal the correct answer or write a model response.\n\n${truncatedPastPaper}\n\n=== END OF PAST PAPERS ===`;
+                } else {
+                    systemPrompt += `\n\n=== HSC PAST PAPERS FOR ${subjectName.toUpperCase()} ===\nUse these past papers as REFERENCE for question style, format, and difficulty. Base your generated questions on these real exam patterns.\n\n${truncatedPastPaper}\n\n=== END OF PAST PAPERS ===`;
+                }
             }
         }
     }
