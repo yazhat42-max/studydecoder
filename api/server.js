@@ -42,6 +42,25 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 
+// OpenAI fetch with automatic retry on rate limit (429)
+async function fetchOpenAI(requestBody, apiKey) {
+    const maxRetries = 2;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+            body: JSON.stringify(requestBody)
+        });
+        if (response.status === 429 && attempt < maxRetries) {
+            const waitMs = (attempt + 1) * 3000;
+            console.log(`⚠️ Rate limited (attempt ${attempt + 1}/${maxRetries}), waiting ${waitMs}ms...`);
+            await new Promise(r => setTimeout(r, waitMs));
+            continue;
+        }
+        return response;
+    }
+}
+
 // ==================== CONFIGURATION ====================
 const config = {
     port: process.env.PORT || 3001,
@@ -2030,22 +2049,16 @@ app.post('/api/demo', express.json(), async (req, res) => {
     const userMessage = `${yearLevel} ${subjectName}${topic ? ` - Topic: ${topic}` : ''}. Generate a preview.`;
     
     try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
+        const reqBody = {
                 model: 'gpt-4o-mini',
                 messages: [
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: userMessage }
                 ],
-                max_tokens: 500, // Throttled response
+                max_tokens: 500,
                 temperature: 0.7
-            })
-        });
+        };
+        const response = await fetchOpenAI(reqBody, OPENAI_API_KEY);
         
         if (!response.ok) {
             console.error('OpenAI API error');
@@ -2161,22 +2174,16 @@ app.post('/api/demo-advisor', express.json(), async (req, res) => {
     const selectedPrompt = DEMO_ADVISOR_PROMPTS[mode] || DEMO_ADVISOR_PROMPTS.selection;
     
     try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
+        const reqBody = {
                 model: 'gpt-4o-mini',
                 messages: [
                     { role: 'system', content: selectedPrompt },
                     { role: 'user', content: message }
                 ],
-                max_tokens: 600, // Throttled for demo
+                max_tokens: 600,
                 temperature: 0.7
-            })
-        });
+        };
+        const response = await fetchOpenAI(reqBody, OPENAI_API_KEY);
         
         if (!response.ok) {
             console.error('OpenAI API error for demo advisor');
@@ -2506,14 +2513,7 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
             [tokenParam]: aiSettings.maxTokens
         };
         if (!isGpt5) requestBody.temperature = aiSettings.temperature;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify(requestBody)
-        });
+        const response = await fetchOpenAI(requestBody, OPENAI_API_KEY);
         
         if (!response.ok) {
             console.error('OpenAI API error for subject advisor');
@@ -3290,14 +3290,7 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
         };
         // gpt-5 reasoning models don't support temperature parameter
         if (!isGpt5) requestBody.temperature = 0.3;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify(requestBody)
-        });
+        const response = await fetchOpenAI(requestBody, OPENAI_API_KEY);
         
         if (!response.ok) {
             const error = await response.json();
@@ -3361,11 +3354,7 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
         };
         // gpt-5 reasoning models don't support temperature parameter
         if (!isGpt5) requestBody.temperature = 0.3;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-            body: JSON.stringify(requestBody)
-        });
+        const response = await fetchOpenAI(requestBody, OPENAI_API_KEY);
         if (!response.ok) {
             const error = await response.json();
             console.error('OpenAI API error (notes-transcriber):', error);
@@ -3448,8 +3437,9 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
             
             // Smart syllabus extraction: prioritize the requested topic section
-            // All models (GPT-5-mini, GPT-4o, GPT-4o-mini) support 128k context
-            const SYLLABUS_CHAR_LIMIT = 100000;
+            // All models support 128k context but TPM limits can be as low as 30k
+            // Keep total request under 25k tokens (~100k chars input + output)
+            const SYLLABUS_CHAR_LIMIT = 30000;
             let truncatedSyllabus;
             
             // Try to extract the requested topic from the user message
@@ -3517,7 +3507,7 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             const isFeedbackMode = lastUserMessage.includes('[FEEDBACK MODE]');
             
             // Add past paper content - different instructions for different modes
-            const truncatedPastPaper = pastPaperContent.substring(0, 35000);
+            const truncatedPastPaper = pastPaperContent.substring(0, 15000);
             if (isFeedbackMode) {
                 systemPrompt += `\n\n=== HSC PAST PAPERS AND MARKING GUIDELINES FOR ${subjectName.toUpperCase()} ===\nUse these marking guidelines to assess the student's response. Reference specific marking criteria when giving feedback.\n\n⚠️ CRITICAL: You are ONLY providing feedback - NEVER reveal the correct answer or write a model response.\n\n${truncatedPastPaper}\n\n=== END OF PAST PAPERS ===`;
             } else {
@@ -3546,14 +3536,7 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             [tokenParam]: aiSettings.maxTokens
         };
         if (!isGpt5) requestBody.temperature = aiSettings.temperature;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify(requestBody)
-        });
+        const response = await fetchOpenAI(requestBody, OPENAI_API_KEY);
         
         if (!response.ok) {
             const error = await response.json();
@@ -3660,14 +3643,7 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
             [tokenParam]: aiSettings.maxTokens
         };
         if (!isGpt5) requestBody.temperature = aiSettings.temperature;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify(requestBody)
-        });
+        const response = await fetchOpenAI(requestBody, OPENAI_API_KEY);
         
         if (!response.ok) {
             const error = await response.json();

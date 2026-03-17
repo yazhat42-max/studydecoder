@@ -366,14 +366,27 @@
 
         // ===== MESSAGING =====
         function formatResponse(text) {
-            let html = text
-                .replace(/## (.*)/g, '<h2>$1</h2>')
+            // Protect math delimiters from markdown processing
+            const mathBlocks = [];
+            let processed = text;
+            // Protect display math: $$ ... $$ and \[ ... \]
+            processed = processed.replace(/\$\$[\s\S]*?\$\$/g, m => { mathBlocks.push(m); return `%%MATH${mathBlocks.length - 1}%%`; });
+            processed = processed.replace(/\\\[[\s\S]*?\\\]/g, m => { mathBlocks.push(m); return `%%MATH${mathBlocks.length - 1}%%`; });
+            // Protect inline math: $ ... $ and \( ... \)
+            processed = processed.replace(/\$(?!\$)[^$\n]+?\$/g, m => { mathBlocks.push(m); return `%%MATH${mathBlocks.length - 1}%%`; });
+            processed = processed.replace(/\\\([^)]*?\\\)/g, m => { mathBlocks.push(m); return `%%MATH${mathBlocks.length - 1}%%`; });
+
+            let html = processed
                 .replace(/### (.*)/g, '<h3>$1</h3>')
+                .replace(/## (.*)/g, '<h2>$1</h2>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\n\n/g, '</p><p>')
                 .replace(/\n/g, '<br>')
                 .replace(/^\• (.*)/gm, '<li>$1</li>')
                 .replace(/^- (.*)/gm, '<li>$1</li>');
+
+            // Restore math blocks
+            html = html.replace(/%%MATH(\d+)%%/g, (_, i) => mathBlocks[parseInt(i)]);
             return html;
         }
 
