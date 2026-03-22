@@ -4775,7 +4775,7 @@ TOTAL: EXACTLY 100 marks. TWO sections only. NO extended response section. NO qu
 - Content areas: Data science (data warehousing, data mining, data dictionaries, databases, SQL, spreadsheets), Data visualisation (charts, graphs, user experience, bias), Intelligent systems (expert systems, forward/backward chaining, decision support systems, neural networks), Enterprise project (DFDs, project management tools like Gantt charts, prototyping, requirements gathering, WHS).
 - Questions with 4+ marks MUST have sub-parts (a)(b) with separate mark allocations.
 - Use NESA directive verbs precisely: Identify (1m), Outline (2m), Describe (3m), Explain (3-4m), Construct (DFDs, 5m).
-- IMPORTANT: Only generate questions from the student's selected module/topic.
+- MODULE COVERAGE: If a specific module is selected, ONLY generate questions from that module. If "All Year 12 content" or "All" is selected, spread questions EVENLY across ALL modules (Data Science, Data Visualisation, Intelligent Systems, Enterprise Project) — ensure every module gets at least 2-3 questions. Use the syllabus content provided AND the question style training below to cover all modules.
 
 QUESTION STYLE TRAINING — Enterprise Computing (learn the phrasing, format, and depth from these real HSC-style patterns — DO NOT copy them, generate ORIGINAL questions inspired by these styles):
 
@@ -4832,7 +4832,7 @@ TOTAL: EXACTLY 100 marks. TWO sections only. NO extended response section. NO qu
 - Content areas: Programming for the web (HTML/CSS, server-side scripting, PWAs, ORM vs SQL, APIs, load optimisation), Secure software architecture (privacy by design, session management, SAST/DAST testing, regulatory compliance, DevOps, vulnerabilities), Software automation (machine learning, neural networks, AI bias, DevOps, logistic regression), Software engineering project (SDLC, Agile vs Waterfall, data structures, data dictionaries, testing/debugging, implementation methods).
 - Questions with 4+ marks MUST have sub-parts (a)(b)(c) with separate mark allocations.
 - Use NESA directive verbs: Identify (1m), Outline (2-3m), Describe/Compare (3m), Explain (3-4m), Discuss (5m), Construct (diagrams, 3-5m).
-- IMPORTANT: Only generate questions from the student's selected module/topic.
+- MODULE COVERAGE: If a specific module is selected, ONLY generate questions from that module. If "All Year 12 content" or "All" is selected, spread questions EVENLY across ALL modules (Programming for the Web, Secure Software Architecture, Software Automation, Software Engineering Project) — ensure every module gets at least 2-3 questions. Use the syllabus content provided AND the question style training below to cover all modules.
 
 QUESTION STYLE TRAINING — Software Engineering (learn the phrasing, format, and depth from these real HSC-style patterns — DO NOT copy them, generate ORIGINAL questions inspired by these styles):
 
