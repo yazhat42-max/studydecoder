@@ -2219,9 +2219,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         }
 
         function examNeedsWorking() {
-            return examSubjectId.startsWith('mathematics') ||
-                   examSubjectId === 'enterprise-computing' ||
-                   examSubjectId === 'software-engineering';
+            return examSubjectId.startsWith('mathematics');
         }
 
         function renderExamQuestion() {

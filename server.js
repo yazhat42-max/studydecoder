@@ -4775,7 +4775,37 @@ TOTAL: EXACTLY 100 marks. TWO sections only. NO extended response section. NO qu
 - Content areas: Data science (data warehousing, data mining, data dictionaries, databases, SQL, spreadsheets), Data visualisation (charts, graphs, user experience, bias), Intelligent systems (expert systems, forward/backward chaining, decision support systems, neural networks), Enterprise project (DFDs, project management tools like Gantt charts, prototyping, requirements gathering, WHS).
 - Questions with 4+ marks MUST have sub-parts (a)(b) with separate mark allocations.
 - Use NESA directive verbs precisely: Identify (1m), Outline (2m), Describe (3m), Explain (3-4m), Construct (DFDs, 5m).
-- IMPORTANT: Only generate questions from the student's selected module/topic.`;
+- IMPORTANT: Only generate questions from the student's selected module/topic.
+
+QUESTION STYLE TRAINING — Enterprise Computing (learn the phrasing, format, and depth from these real HSC-style patterns — DO NOT copy them, generate ORIGINAL questions inspired by these styles):
+
+1-MARK MC STYLE:
+- Ask about the PRIMARY PURPOSE of a concept in enterprise systems (e.g. data visualisation, data warehousing, data mining). One correct answer, three plausible distractors from related but incorrect functions.
+- Ask which action introduces a specific problem (e.g. bias in visualisation, data integrity issues). The correct answer should be subtle — not obviously wrong.
+- Ask students to classify data types (nominal, ordinal, interval, ratio) by giving a concrete real-world example and asking which type it is.
+- Ask about data collection methods — give a company scenario and ask which method is passive vs active (e.g. analysing purchase history vs conducting surveys).
+- Ask about maintaining data integrity — include options mixing correct practices (validating source data) with plausible-sounding wrong answers (manipulating visualisations).
+- Ask about ethical considerations when implementing enterprise systems — test whether students can distinguish technical issues (compatibility, performance) from ethical issues (automated decisions affecting people).
+- Ask about testing types — give a scenario (e.g. large group of external testers before release) and ask which testing type applies (alpha, beta, functional, etc).
+- Ask how expert systems contribute to intelligent systems — options should include correct rule-based reasoning alongside plausible distractors about raw data storage or replacing algorithms.
+- Ask about relationships between system types (e.g. how business analytic systems relate to expert systems) — correct answer shows integration, distractors confuse purposes.
+- MATCHING/TABLE MC: Present 2-3 situations and ask students to select the appropriate tool for each (e.g. Survey vs Interview for different data collection scenarios).
+
+2-MARK STYLE:
+- "Select all that apply" checkbox questions about technical concepts (e.g. which statements are TRUE about forward chaining). Include 5-6 options mixing correct and incorrect statements. Award 2 for all correct, 1 for mostly correct.
+
+3-4 MARK STYLE:
+- Give a real-world scenario (e.g. company analysing social media memes for advertising effectiveness) and ask students to DESCRIBE how a technology/method can provide insights.
+- Give a manufacturing/industry scenario and ask students to DESCRIBE hardware needed for an intelligent system, requiring specific sensor examples.
+- Ask students to EXPLAIN benefits of introducing specific systems (e.g. expert systems into manufacturing) with reference to Industry 4.0.
+
+5-6 MARK STYLE:
+- Present a business scenario (e.g. coffee shop chain with branches nationally) and ask multi-part questions:
+  (a) Explain how data warehousing could benefit the business (3 marks)
+  (b) Explain how hardware advancement affects data processing (3 marks)
+- Ask about spreadsheet features for data analysis in a professional scenario (e.g. marine biologist using spreadsheets to predict trends from environmental data).
+- Present a project scenario and ask students to: (a) Outline a project management tool (2 marks), (b) Justify security methods for data protection (3 marks).
+- Ask students to explain advantages AND disadvantages of business decisions (e.g. freelance work and offshore development for a specific purpose).`;
 
         } else if (isSoftwareEngineering) {
             // Software Engineering: NO extended response. Max 6 marks per question. Based on real 2025 HSC MG.
@@ -4802,7 +4832,34 @@ TOTAL: EXACTLY 100 marks. TWO sections only. NO extended response section. NO qu
 - Content areas: Programming for the web (HTML/CSS, server-side scripting, PWAs, ORM vs SQL, APIs, load optimisation), Secure software architecture (privacy by design, session management, SAST/DAST testing, regulatory compliance, DevOps, vulnerabilities), Software automation (machine learning, neural networks, AI bias, DevOps, logistic regression), Software engineering project (SDLC, Agile vs Waterfall, data structures, data dictionaries, testing/debugging, implementation methods).
 - Questions with 4+ marks MUST have sub-parts (a)(b)(c) with separate mark allocations.
 - Use NESA directive verbs: Identify (1m), Outline (2-3m), Describe/Compare (3m), Explain (3-4m), Discuss (5m), Construct (diagrams, 3-5m).
-- IMPORTANT: Only generate questions from the student's selected module/topic.`;
+- IMPORTANT: Only generate questions from the student's selected module/topic.
+
+QUESTION STYLE TRAINING — Software Engineering (learn the phrasing, format, and depth from these real HSC-style patterns — DO NOT copy them, generate ORIGINAL questions inspired by these styles):
+
+1-MARK MC STYLE:
+- Give a real-world scenario (e.g. streaming platform updating an algorithm, tested on a user group before full rollout) and ask which IMPLEMENTATION METHOD was used (Pilot, Direct, Phased, Parallel).
+- Ask about the FUNCTION of a specific protocol or technology (e.g. TLS) — options should include plausible networking/security functions, with only one correctly describing the protocol's actual purpose.
+- Give a technical concept definition (e.g. file locking prevents multiple users editing simultaneously) and ask what problem it MINIMISES — options should be real security/concurrency terms (race conditions, invalid redirection, XSS, authentication issues).
+- "Select all that apply" checkbox questions about regulatory compliance GOALS — mix correct goals (protecting sensitive data, meeting legal standards) with plausible but incorrect ones (limiting updates, bypassing security, reducing testing time).
+
+3-MARK STYLE (multi-part):
+- Present a real application scenario (e.g. weather app with real-time updates, location-specific conditions, event warnings) and ask multi-part questions:
+  (a) COMPARE two approaches for delivering the app (e.g. PWA vs interactive website) — 3 marks
+  (b) OUTLINE ways to minimise load time (other than PWA) — 3 marks
+  (c) DESCRIBE how privacy by design could be implemented — 3 marks
+- Each sub-part should be answerable independently with clear mark allocation.
+
+4-MARK SQL/CODE STYLE:
+- Present a DATABASE TABLE with realistic columns (e.g. JobID, Issue, Response, FixTime, Category, Status) and sample data rows.
+- Ask students to CONSTRUCT a SQL query that performs aggregation (COUNT), filtering (WHERE), grouping (GROUP BY), and sorting (ORDER BY).
+- The query should combine multiple SQL concepts in one question (e.g. count jobs grouped by category and status, ordered by count descending).
+- Always show the table structure and sample data so students can verify their query logic.
+
+GENERAL STYLE NOTES:
+- MC distractors must all be real technical terms — never include obviously silly options.
+- Short answer scenarios should be grounded in realistic professional contexts (tech companies, apps, platforms, support systems).
+- Questions should test APPLICATION of knowledge, not just recall — students must apply concepts to the given scenario.
+- For compare/contrast questions, students should identify strengths and limitations of BOTH options.`;
 
         } else {
             // Generic TAS (Agriculture, Design & Tech, Engineering, Food Tech, Industrial Tech, IDT)
