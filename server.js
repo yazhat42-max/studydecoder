@@ -155,9 +155,9 @@ const AI_QUALITY_TIERS = {
         model: 'gpt-4o'       // Upgraded to GPT-4o (old owner model)
     },
     og_tester: {
-        maxTokens: 16384,     // Same as lifetime
-        temperature: 1.0,
-        model: 'gpt-4o'
+        maxTokens: 4000,
+        temperature: 0.7,
+        model: 'gpt-4o-mini'
     },
     paid: {
         maxTokens: 4000,      // Standard for subscribers
@@ -176,7 +176,8 @@ function getAISettings(user) {
     if (!user) return AI_QUALITY_TIERS.free;
     const role = getUserRole(user.email);
     if (role === 'owner') return AI_QUALITY_TIERS.owner;
-    if (role === 'lifetime' || role === 'og_tester') return AI_QUALITY_TIERS.lifetime;
+    if (role === 'lifetime') return AI_QUALITY_TIERS.lifetime;
+    if (role === 'og_tester') return AI_QUALITY_TIERS.og_tester;
     if (user.subscribed === true) return AI_QUALITY_TIERS.paid;
     return AI_QUALITY_TIERS.free;
 }
@@ -2566,7 +2567,7 @@ app.post('/api/demo', express.json(), async (req, res) => {
     const syllabusContent = getSyllabusContent(subject, isJunior, topic);
     if (syllabusContent) {
         // Only inject a small amount for demo (5000 chars max)
-        systemPrompt += `\n\nSYLLABUS CONTEXT (use sparingly for accuracy):\n${syllabusContent.substring(0, 5000)}`;
+        systemPrompt += `\n\nSYLLABUS CONTEXT (use sparingly for accuracy):\n${syllabusContent.substring(0, 2000)}`;
     }
     
     const userMessage = `${yearLevel} ${subjectName}${topic ? ` - Topic: ${topic}` : ''}. Generate a preview.`;
@@ -3894,14 +3895,13 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
     const OPENAI_API_KEY = config.openaiApiKey;
     const systemPrompt = BOT_PROMPTS.worksheet;
     const aiSettings = getAISettings(user);
-    const worksheetMaxTokens = Math.max(aiSettings.maxTokens, 8000);
     const isGpt5 = aiSettings.model.startsWith('gpt-5');
     try {
         const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
         const requestBody = {
             model: aiSettings.model,
             messages: [{ role: 'system', content: systemPrompt }, ...messages.map(m => ({ role: m.role, content: m.content }))],
-            [tokenParam]: worksheetMaxTokens
+            [tokenParam]: aiSettings.maxTokens
         };
         if (!isGpt5) requestBody.temperature = 0.3;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -3953,14 +3953,13 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
     const OPENAI_API_KEY = config.openaiApiKey;
     const systemPrompt = BOT_PROMPTS['notes-transcriber'];
     const aiSettings = getAISettings(user);
-    const transcribeMaxTokens = Math.max(aiSettings.maxTokens, 8000);
     const isGpt5 = aiSettings.model.startsWith('gpt-5');
     try {
         const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
         const requestBody = {
             model: aiSettings.model,
             messages: [{ role: 'system', content: systemPrompt }, ...messages.map(m => ({ role: m.role, content: m.content }))],
-            [tokenParam]: transcribeMaxTokens
+            [tokenParam]: aiSettings.maxTokens
         };
         if (!isGpt5) requestBody.temperature = 0.3;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -5235,10 +5234,15 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
                 q.parts.forEach((part, pi) => {
                     const partKey = q.number + '_' + (pi + 1);
                     const partAnswer = answers[partKey];
+                    const partWorking = answers['working_' + partKey];
                     const partLabel = part.label || '(' + String.fromCharCode(97 + pi) + ')';
                     if (partAnswer && partAnswer.toString().trim().length > 0) {
                         hasAnyPartAnswer = true;
-                        partAnswersText += `  ${partLabel} [${part.marks} marks]: ${partAnswer}\n`;
+                        if (partWorking && partWorking.toString().trim().length > 0) {
+                            partAnswersText += `  ${partLabel} [${part.marks} marks]:\n    Working: ${partWorking}\n    Answer: ${partAnswer}\n`;
+                        } else {
+                            partAnswersText += `  ${partLabel} [${part.marks} marks]: ${partAnswer}\n`;
+                        }
                     } else {
                         partAnswersText += `  ${partLabel} [${part.marks} marks]: [No answer]\n`;
                     }
@@ -5255,6 +5259,7 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
                 questionsText += `Parts and student answers:\n${partAnswersText}`;
             } else {
                 const studentAnswer = answers[q.number];
+                const studentWorking = answers['working_' + q.number];
                 const hasAnswer = studentAnswer && studentAnswer.toString().trim().length > 0;
 
                 if (!hasAnswer) {
@@ -5266,6 +5271,9 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
                 if (q.stimulus) questionsText += `Stimulus: ${q.stimulus}\n`;
                 if (q.markingCriteria) questionsText += `Marking criteria: ${q.markingCriteria}\n`;
                 if (q.correctAnswer) questionsText += `Correct answer: ${q.correctAnswer}\n`;
+                if (studentWorking && studentWorking.toString().trim().length > 0) {
+                    questionsText += `Student's working: ${studentWorking}\n`;
+                }
                 questionsText += `Student's answer: ${studentAnswer}\n`;
             }
         }
@@ -5300,6 +5308,7 @@ MARKING RULES — STRICT HSC STANDARD:
 - If the student restates the question without adding substance, award 0.
 - Keep MC feedback to 1 sentence. Short answer feedback: 1-2 sentences. Extended response feedback: 2-3 sentences with band reference.
 - ONLY mark the ${answeredCount} questions given below. Unanswered questions are handled separately.
+- WORKING OUT: If a student provides working out, award marks for correct steps/method even if the final answer is wrong. This follows real HSC marking where process marks are awarded for demonstrated mathematical reasoning, correct formulas, and logical intermediate steps.
 
 Return ONLY valid JSON (no markdown, no code fences):
 {

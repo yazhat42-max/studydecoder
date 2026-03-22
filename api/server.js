@@ -223,9 +223,9 @@ const AI_QUALITY_TIERS = {
         model: 'gpt-4o'
     },
     og_tester: {
-        maxTokens: 16384,
-        temperature: 1.0,
-        model: 'gpt-4o'
+        maxTokens: 4000,
+        temperature: 0.7,
+        model: 'gpt-4o-mini'
     },
     paid: {
         maxTokens: 4000,
@@ -243,7 +243,8 @@ function getAISettings(user) {
     if (!user) return AI_QUALITY_TIERS.free;
     const role = getUserRole(user.email);
     if (role === 'owner') return AI_QUALITY_TIERS.owner;
-    if (role === 'lifetime' || role === 'og_tester') return AI_QUALITY_TIERS.lifetime;
+    if (role === 'lifetime') return AI_QUALITY_TIERS.lifetime;
+    if (role === 'og_tester') return AI_QUALITY_TIERS.og_tester;
     if (user.subscribed === true) return AI_QUALITY_TIERS.paid;
     return AI_QUALITY_TIERS.free;
 }
@@ -2043,7 +2044,7 @@ app.post('/api/demo', express.json(), async (req, res) => {
     const syllabusContent = getSyllabusContent(subject, isJunior);
     if (syllabusContent) {
         // Only inject a small amount for demo (5000 chars max)
-        systemPrompt += `\n\nSYLLABUS CONTEXT (use sparingly for accuracy):\n${syllabusContent.substring(0, 5000)}`;
+        systemPrompt += `\n\nSYLLABUS CONTEXT (use sparingly for accuracy):\n${syllabusContent.substring(0, 2000)}`;
     }
     
     const userMessage = `${yearLevel} ${subjectName}${topic ? ` - Topic: ${topic}` : ''}. Generate a preview.`;
@@ -3272,7 +3273,6 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
     
     // Get AI settings based on user tier (but override max_tokens for worksheet - needs more)
     const aiSettings = getAISettings(user);
-    const worksheetMaxTokens = Math.max(aiSettings.maxTokens, 8000); // Worksheets need more tokens
     const isGpt5 = aiSettings.model.startsWith('gpt-5');
     
     try {
@@ -3286,7 +3286,7 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
                     content: m.content
                 }))
             ],
-            [tokenParam]: worksheetMaxTokens
+            [tokenParam]: aiSettings.maxTokens
         };
         // gpt-5 reasoning models don't support temperature parameter
         if (!isGpt5) requestBody.temperature = 0.3;
@@ -3343,14 +3343,13 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
     const OPENAI_API_KEY = config.openaiApiKey;
     const systemPrompt = BOT_PROMPTS['notes-transcriber'];
     const aiSettings = getAISettings(user);
-    const transcribeMaxTokens = Math.max(aiSettings.maxTokens, 8000);
     const isGpt5 = aiSettings.model.startsWith('gpt-5');
     try {
         const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
         const requestBody = {
             model: aiSettings.model,
             messages: [{ role: 'system', content: systemPrompt }, ...messages.map(m => ({ role: m.role, content: m.content }))],
-            [tokenParam]: transcribeMaxTokens
+            [tokenParam]: aiSettings.maxTokens
         };
         // gpt-5 reasoning models don't support temperature parameter
         if (!isGpt5) requestBody.temperature = 0.3;
