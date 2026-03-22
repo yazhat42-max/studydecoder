@@ -150,9 +150,9 @@ const AI_QUALITY_TIERS = {
         model: 'gpt-5-mini'   // Latest flagship model
     },
     lifetime: {
-        maxTokens: 16384,     // Same as old owner tier
-        temperature: 1.0,     // Same as old owner tier
-        model: 'gpt-4o'       // Upgraded to GPT-4o (old owner model)
+        maxTokens: 4000,
+        temperature: 0.7,
+        model: 'gpt-4o-mini'
     },
     og_tester: {
         maxTokens: 4000,

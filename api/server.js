@@ -218,9 +218,9 @@ const AI_QUALITY_TIERS = {
         model: 'gpt-5-mini'
     },
     lifetime: {
-        maxTokens: 16384,
-        temperature: 1.0,
-        model: 'gpt-4o'
+        maxTokens: 4000,
+        temperature: 0.7,
+        model: 'gpt-4o-mini'
     },
     og_tester: {
         maxTokens: 4000,
