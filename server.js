@@ -1959,8 +1959,15 @@ app.post('/api/stripe-webhook', async (req, res) => {
         switch (event.type) {
             case 'checkout.session.completed': {
                 const session = event.data.object;
-                const userId = session.metadata?.userId;
-                const plan = session.metadata?.plan || 'monthly';
+                let userId = session.metadata?.userId;
+                const plan = session.metadata?.plan || (session.amount_total >= 3000 ? 'yearly' : 'monthly');
+                
+                // If no userId in metadata (Payment Links), match by email
+                if (!userId && session.customer_details?.email) {
+                    const email = session.customer_details.email.toLowerCase();
+                    const matchedUser = Object.values(db.users).find(u => u.email && u.email.toLowerCase() === email);
+                    if (matchedUser) userId = matchedUser.userId;
+                }
                 
                 if (userId) {
                     const expiration = new Date();

@@ -653,8 +653,8 @@
             paywall.classList.remove('hidden');
             const isSale = new Date() < new Date('2026-04-25T00:00:00');
             const dealCard = isSale
-                ? `<a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="position:absolute;top:-12px;background:#f59e0b;color:#000;font-weight:700;font-size:0.7rem;padding:3px 12px;border-radius:20px;">🔥 LIMITED DEAL</span><span style="font-size:0.8rem;opacity:0.85;margin-top:8px;">One-Time Payment — Lifetime</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$37.50</span><span style="text-decoration:line-through;opacity:0.6;font-size:0.9rem;">$75/year</span><span style="font-size:0.75rem;opacity:0.8;margin-top:6px;">Ends April 25 — pay once, use forever</span></a>`
-                : `<a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="font-size:0.8rem;opacity:0.85;">Yearly Subscription</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$75</span><span style="font-size:0.8rem;opacity:0.8;">/year — that's $6.25/mo</span></a>`;
+                ? `<a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" onclick="startPaymentPolling()" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="position:absolute;top:-12px;background:#f59e0b;color:#000;font-weight:700;font-size:0.7rem;padding:3px 12px;border-radius:20px;">🔥 LIMITED DEAL</span><span style="font-size:0.8rem;opacity:0.85;margin-top:8px;">One-Time Payment — Lifetime</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$37.50</span><span style="text-decoration:line-through;opacity:0.6;font-size:0.9rem;">$75/year</span><span style="font-size:0.75rem;opacity:0.8;margin-top:6px;">Ends April 25 — pay once, use forever</span></a>`
+                : `<a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" onclick="startPaymentPolling()" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="font-size:0.8rem;opacity:0.85;">Yearly Subscription</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$75</span><span style="font-size:0.8rem;opacity:0.8;">/year — that's $6.25/mo</span></a>`;
             paywall.innerHTML = `
                 <div class="paywall-card">
                     <img src="logo.png" alt="Logo">
@@ -668,7 +668,7 @@
                     
                     <div style="display:flex;gap:12px;align-items:stretch;justify-content:center;flex-wrap:wrap;margin:16px 0;">
                         ${dealCard}
-                        <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="flex:0.9;min-width:180px;max-width:240px;padding:20px 14px;background:#f8f9fa;color:#2A2A2A;text-decoration:none;border-radius:14px;border:2px solid #e0e0e0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                        <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" onclick="startPaymentPolling()" style="flex:0.9;min-width:180px;max-width:240px;padding:20px 14px;background:#f8f9fa;color:#2A2A2A;text-decoration:none;border-radius:14px;border:2px solid #e0e0e0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
                             <span style="font-size:0.8rem;color:#888;">Monthly</span>
                             <span style="font-size:1.6rem;font-weight:700;margin:6px 0 2px;color:#6C63FF;">$7.50</span>
                             <span style="font-size:0.8rem;color:#888;">/month</span>
@@ -691,8 +691,12 @@
                         </div>
                     </div>
                     
-                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 16px;">After payment, click below to activate:</p>
-                    <button id="activateBtn" class="paywall-btn paywall-btn-activate">✓ I've Paid - Activate Now</button>
+                    <div id="paymentPollingStatus" style="display:none;text-align:center;margin:12px 0;">
+                        <span style="font-size:0.85rem;color:#6C63FF;">⏳ Waiting for payment confirmation...</span>
+                    </div>
+                    <div id="activateManualHint" style="display:none;text-align:center;margin-bottom:8px;">
+                        <span style="font-size:0.8rem;color:#888;">Already paid? <a href="#" onclick="verifyAndActivate(); return false;" style="color:#6C63FF;">Check manually</a></span>
+                    </div>
                     <button id="logoutBtn" class="paywall-btn paywall-btn-signout">Sign Out</button>
                 </div>
             `;
@@ -705,17 +709,50 @@
                     window.location.reload();
                 }
             });
-            document.getElementById('activateBtn').addEventListener('click', verifyAndActivate);
             document.getElementById('logoutBtn').addEventListener('click', logout);
         }
 
-        async function verifyAndActivate() {
-            const btn = document.getElementById('activateBtn');
-            const originalText = btn.textContent;
-            btn.textContent = '⏳ Verifying...';
-            btn.disabled = true;
-            btn.style.background = '#9ca3af';
+        let paymentPollInterval = null;
+        
+        function startPaymentPolling() {
+            const statusEl = document.getElementById('paymentPollingStatus');
+            const hintEl = document.getElementById('activateManualHint');
+            if (statusEl) statusEl.style.display = 'block';
+            setTimeout(() => { if (hintEl) hintEl.style.display = 'block'; }, 15000);
             
+            if (paymentPollInterval) return;
+            let attempts = 0;
+            paymentPollInterval = setInterval(async () => {
+                attempts++;
+                if (attempts > 60) {
+                    stopPaymentPolling();
+                    if (statusEl) statusEl.innerHTML = '<span style="font-size:0.85rem;color:#888;">Auto-detection timed out. <a href="#" onclick="verifyAndActivate(); return false;" style="color:#6C63FF;">Check manually</a></span>';
+                    return;
+                }
+                try {
+                    const res = await fetch(API_BASE + '/api/verify-payment', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const data = await res.json();
+                    if (data.success && data.subscribed) {
+                        stopPaymentPolling();
+                        if (statusEl) statusEl.innerHTML = '<span style="font-size:0.85rem;color:#16a34a;">✅ Payment confirmed! Activating...</span>';
+                        setTimeout(() => window.location.reload(), 1200);
+                    }
+                } catch (e) {}
+            }, 5000);
+        }
+        
+        function stopPaymentPolling() {
+            if (paymentPollInterval) {
+                clearInterval(paymentPollInterval);
+                paymentPollInterval = null;
+            }
+        }
+
+        async function verifyAndActivate() {
             try {
                 const res = await fetch(API_BASE + '/api/verify-payment', { 
                     method: 'POST', 
@@ -726,20 +763,18 @@
                 const data = await res.json();
                 
                 if (data.success && data.subscribed) {
-                    btn.textContent = '✅ Activated!';
-                    btn.style.background = '#10b981';
+                    stopPaymentPolling();
+                    const statusEl = document.getElementById('paymentPollingStatus');
+                    if (statusEl) {
+                        statusEl.style.display = 'block';
+                        statusEl.innerHTML = '<span style="font-size:0.85rem;color:#16a34a;">✅ Payment confirmed! Activating...</span>';
+                    }
                     setTimeout(() => window.location.reload(), 1000);
                 } else {
-                    alert(data.message || 'No payment found. Please complete payment first, then click this button.');
-                    btn.textContent = originalText;
-                    btn.disabled = false;
-                    btn.style.background = '#10b981';
+                    alert(data.message || 'No payment found. Please complete payment first.');
                 }
             } catch (e) {
                 alert('Error verifying payment. Please try again.');
-                btn.textContent = originalText;
-                btn.disabled = false;
-                btn.style.background = '#10b981';
             }
         }
 

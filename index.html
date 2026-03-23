@@ -1178,7 +1178,7 @@
             
             <div style="display: flex; gap: 16px; align-items: stretch; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;">
                 <!-- DEAL CARD (left, bigger) -->
-                <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" id="upgradeYearlyBtn" style="flex: 1.3; min-width: 240px; max-width: 320px; padding: 28px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(102,126,234,0.35);">
+                <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" id="upgradeYearlyBtn" onclick="startPaymentPolling()" style="flex: 1.3; min-width: 240px; max-width: 320px; padding: 28px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(102,126,234,0.35);">
                     <span style="position: absolute; top: -12px; background: #f59e0b; color: #000; font-weight: 700; font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; letter-spacing: 0.5px;">🔥 LIMITED DEAL</span>
                     <span style="font-size: 0.85rem; opacity: 0.85; margin-top: 8px;">One-Time Payment — Lifetime Access</span>
                     <span style="font-size: 2.2rem; font-weight: 800; margin: 8px 0 4px;">$37.50</span>
@@ -1186,7 +1186,7 @@
                     <span style="font-size: 0.8rem; opacity: 0.8; margin-top: 8px;">Offer ends April 25 — pay once, use forever</span>
                 </a>
                 <!-- MONTHLY CARD (right, smaller) -->
-                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="flex: 0.9; min-width: 200px; max-width: 260px; padding: 24px 18px; background: #f8f9fa; color: #2A2A2A; text-decoration: none; border-radius: 14px; border: 2px solid #e0e0e0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.2s, box-shadow 0.2s;">
+                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" onclick="startPaymentPolling()" style="flex: 0.9; min-width: 200px; max-width: 260px; padding: 24px 18px; background: #f8f9fa; color: #2A2A2A; text-decoration: none; border-radius: 14px; border: 2px solid #e0e0e0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.2s, box-shadow 0.2s;">
                     <span style="font-size: 0.85rem; color: #888;">Monthly Subscription</span>
                     <span style="font-size: 1.8rem; font-weight: 700; margin: 8px 0 4px; color: #6C63FF;">$7.50</span>
                     <span style="font-size: 0.85rem; color: #888;">/month</span>
@@ -1194,8 +1194,10 @@
                 </a>
             </div>
             
-            <p style="color: #666; font-size: 0.9rem; margin-bottom: 12px;">After payment, click below to activate:</p>
-            <button onclick="verifyUpgradePayment()" id="upgradeActivateBtn" style="width: 100%; padding: 12px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 12px; transition: all 0.2s;">✓ I've Paid - Activate Now</button>
+            <div id="paymentPollingStatus" style="display: none; text-align: center; margin-bottom: 12px; padding: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;">
+                <span style="font-size: 0.9rem; color: #16a34a;">⏳ Waiting for payment confirmation... This will activate automatically.</span>
+            </div>
+            <p id="activateManualHint" style="color: #999; font-size: 0.8rem; margin-bottom: 8px; display: none;">Payment not detected? <a href="#" onclick="verifyUpgradePayment(); return false;" style="color: #6C63FF; text-decoration: underline;">Check manually</a></p>
             <button onclick="closeUpgradeModal()" style="width: 100%; padding: 12px; background: #e0e0e0; color: #2A2A2A; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Close</button>
         </div>
     </div>
@@ -1466,16 +1468,61 @@
         if (!event || event.target === document.getElementById('upgradeModalOverlay')) {
             document.getElementById('upgradeModalOverlay').style.display = 'none';
             document.getElementById('upgradeModalOverlay').classList.add('hidden');
+            stopPaymentPolling();
+            // Reset polling UI
+            const statusEl = document.getElementById('paymentPollingStatus');
+            const hintEl = document.getElementById('activateManualHint');
+            if (statusEl) { statusEl.style.display = 'none'; statusEl.innerHTML = '<span style="font-size:0.9rem;color:#16a34a;">⏳ Waiting for payment confirmation... This will activate automatically.</span>'; }
+            if (hintEl) hintEl.style.display = 'none';
         }
     }
     
-    async function verifyUpgradePayment() {
-        const btn = document.getElementById('upgradeActivateBtn');
-        const originalText = btn.textContent;
-        btn.textContent = '⏳ Verifying...';
-        btn.disabled = true;
-        btn.style.background = '#9ca3af';
+    let paymentPollInterval = null;
+
+    function startPaymentPolling() {
+        // Show polling status, show manual hint after delay
+        const statusEl = document.getElementById('paymentPollingStatus');
+        const hintEl = document.getElementById('activateManualHint');
+        if (statusEl) statusEl.style.display = 'block';
+        setTimeout(() => { if (hintEl) hintEl.style.display = 'block'; }, 15000);
         
+        // Don't start duplicate intervals
+        if (paymentPollInterval) return;
+        
+        let attempts = 0;
+        paymentPollInterval = setInterval(async () => {
+            attempts++;
+            if (attempts > 60) { // Stop after ~5 minutes
+                clearInterval(paymentPollInterval);
+                paymentPollInterval = null;
+                if (statusEl) statusEl.innerHTML = '<span style="font-size:0.9rem;color:#888;">Auto-detection timed out. <a href="#" onclick="verifyUpgradePayment(); return false;" style="color:#6C63FF;">Check manually</a></span>';
+                return;
+            }
+            try {
+                const res = await fetch(API_BASE + '/api/verify-payment', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await res.json();
+                if (data.success && data.subscribed) {
+                    clearInterval(paymentPollInterval);
+                    paymentPollInterval = null;
+                    if (statusEl) statusEl.innerHTML = '<span style="font-size:0.9rem;color:#16a34a;">✅ Payment confirmed! Activating...</span>';
+                    setTimeout(() => window.location.reload(), 1200);
+                }
+            } catch (e) {}
+        }, 5000);
+    }
+
+    function stopPaymentPolling() {
+        if (paymentPollInterval) {
+            clearInterval(paymentPollInterval);
+            paymentPollInterval = null;
+        }
+    }
+
+    async function verifyUpgradePayment() {
         try {
             const res = await fetch(API_BASE + '/api/verify-payment', {
                 method: 'POST',
@@ -1486,20 +1533,18 @@
             const data = await res.json();
             
             if (data.success && data.subscribed) {
-                btn.textContent = '✅ Activated!';
-                btn.style.background = '#10b981';
+                stopPaymentPolling();
+                const statusEl = document.getElementById('paymentPollingStatus');
+                if (statusEl) {
+                    statusEl.style.display = 'block';
+                    statusEl.innerHTML = '<span style="font-size:0.9rem;color:#16a34a;">✅ Payment confirmed! Activating...</span>';
+                }
                 setTimeout(() => window.location.reload(), 1000);
             } else {
-                alert(data.message || 'No payment found. Please complete payment first, then click this button.');
-                btn.textContent = originalText;
-                btn.style.background = '#10b981';
-                btn.disabled = false;
+                alert(data.message || 'No payment found. Please complete payment first.');
             }
         } catch (e) {
             alert('Error verifying payment. Please try again.');
-            btn.textContent = originalText;
-            btn.style.background = '#10b981';
-            btn.disabled = false;
         }
     }
 // ========== LEVEL SELECTOR MODAL (fallback) ==========

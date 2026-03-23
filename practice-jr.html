@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -162,31 +162,31 @@ c:\Users\Yazan\AppData\Local\Packages\MicrosoftWindows.Client.Core_cw5n1h2txyewy
         <!-- MODE SELECTION LANDING (shown first) -->
         <div id="modeLanding">
             <div style="padding: 20px 24px;">
-                <a href="index.html" class="back-btn" style="background: rgba(102,126,234,0.15); color: #667eea;">← Back to Home</a>
+                <a href="index.html" class="back-btn" style="background: rgba(102,126,234,0.15); color: #667eea;">? Back to Home</a>
             </div>
             <div style="max-width: 1100px; margin: 0 auto; padding: 0 24px 60px;">
                 <div style="text-align: center; padding: 30px 20px 40px;">
                     <h1 style="font-size: 2.4rem; font-weight: 700; color: #e7e9ea; margin-bottom: 12px;">Practice Question Generator</h1>
-                    <p style="font-size: 1.1rem; color: #71767b; max-width: 550px; margin: 0 auto; line-height: 1.6;">Generate curriculum-aligned practice questions for Years 7–10. Choose a mode below.</p>
+                    <p style="font-size: 1.1rem; color: #71767b; max-width: 550px; margin: 0 auto; line-height: 1.6;">Generate curriculum-aligned practice questions for Years 7�10. Choose a mode below.</p>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
                     <div class="mode-card" onclick="selectMode('standard')">
-                        <div class="mode-card-icon">✏️</div>
+                        <div class="mode-card-icon">??</div>
                         <h2>Standard Questions</h2>
                         <p>Generate individual practice questions by subject, topic, and difficulty.</p>
-                        <span class="mode-card-cta">Start →</span>
+                        <span class="mode-card-cta">Start ?</span>
                     </div>
                     <div class="mode-card" onclick="selectMode('exam')">
-                        <div class="mode-card-icon">📝</div>
+                        <div class="mode-card-icon">??</div>
                         <h2>Full Test Paper</h2>
                         <p>Generate complete test-style papers matched to your year level.</p>
-                        <span class="mode-card-cta">Start →</span>
+                        <span class="mode-card-cta">Start ?</span>
                     </div>
                     <div class="mode-card" onclick="selectMode('feedback')">
-                        <div class="mode-card-icon">📊</div>
+                        <div class="mode-card-icon">??</div>
                         <h2>Get Feedback</h2>
                         <p>Paste a question and your answer to get marking feedback.</p>
-                        <span class="mode-card-cta">Start →</span>
+                        <span class="mode-card-cta">Start ?</span>
                     </div>
                 </div>
             </div>
@@ -196,10 +196,10 @@ c:\Users\Yazan\AppData\Local\Packages\MicrosoftWindows.Client.Core_cw5n1h2txyewy
         <div id="activeView" style="display: none; height: 100vh; flex-direction: column;">
             <header class="header">
                 <div class="header-left">
-                    <a href="#" class="back-btn" onclick="backToModes(event)">← Modes</a>
+                    <a href="#" class="back-btn" onclick="backToModes(event)">? Modes</a>
                     <div>
                         <div class="header-title" id="activeTitle">Practice Questions</div>
-                        <div class="header-subtitle">StudyDecoder Junior • Years 7–10</div>
+                        <div class="header-subtitle">StudyDecoder Junior � Years 7�10</div>
                     </div>
                 </div>
             </header>
@@ -309,7 +309,7 @@ c:\Users\Yazan\AppData\Local\Packages\MicrosoftWindows.Client.Core_cw5n1h2txyewy
                                     </select>
                                 </div>
                             </div>
-                            <p class="feedback-note">Paste the question below, then your answer. AI will give feedback — not the answer.</p>
+                            <p class="feedback-note">Paste the question below, then your answer. AI will give feedback � not the answer.</p>
                             <textarea class="feedback-textarea" id="feedbackQuestion" placeholder="Paste the question here..."></textarea>
                             <textarea class="feedback-textarea" id="feedbackAnswer" placeholder="Paste your answer here..." style="min-height: 100px;"></textarea>
                         </div>
@@ -457,8 +457,8 @@ c:\Users\Yazan\AppData\Local\Packages\MicrosoftWindows.Client.Core_cw5n1h2txyewy
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message message-assistant';
             const isSale = new Date() < new Date('2026-04-25T00:00:00');
-            const yearlyText = isSale ? '🔥 Study Break Sale — $37.50 for life' : 'Yearly — $75/yr';
-            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $7.50/mo</a> <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+            const yearlyText = isSale ? '?? Study Break Sale � $37.50 for life' : 'Yearly � $75/yr';
+            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">? ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly � $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
             outputContent.appendChild(messageDiv);
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
@@ -589,9 +589,9 @@ c:\Users\Yazan\AppData\Local\Packages\MicrosoftWindows.Client.Core_cw5n1h2txyewy
                 
                 if (!data.subscribed && data.role !== 'owner' && data.role !== 'lifetime' && data.role !== 'og_tester') {
                     const upgradeBtn = document.createElement('a');
-                    upgradeBtn.href = 'https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02';
+                    upgradeBtn.href = 'https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03';
                     upgradeBtn.target = '_blank';
-                    upgradeBtn.innerHTML = '⚡ Upgrade';
+                    upgradeBtn.innerHTML = '? Upgrade';
                     upgradeBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9rem;z-index:9999;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.2s,box-shadow 0.2s;';
                     upgradeBtn.onmouseenter = () => { upgradeBtn.style.transform = 'scale(1.05)'; upgradeBtn.style.boxShadow = '0 6px 20px rgba(102,126,234,0.6)'; };
                     upgradeBtn.onmouseleave = () => { upgradeBtn.style.transform = 'scale(1)'; upgradeBtn.style.boxShadow = '0 4px 15px rgba(102,126,234,0.4)'; };

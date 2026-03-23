@@ -130,13 +130,6 @@ const StudyDecoderAuth = {
     
     // Verify payment and activate subscription
     async verifyPayment() {
-        const btn = document.getElementById('sd-activate-btn');
-        if (!btn) return;
-        
-        const originalText = btn.textContent;
-        btn.textContent = '⏳ Verifying...';
-        btn.disabled = true;
-        
         try {
             const res = await fetch('/api/verify-payment', { 
                 method: 'POST', 
@@ -147,17 +140,59 @@ const StudyDecoderAuth = {
             const data = await res.json();
             
             if (data.success && data.subscribed) {
-                btn.textContent = '✅ Activated!';
+                this.stopPaymentPolling();
+                var statusEl = document.getElementById('sd-payment-polling-status');
+                if (statusEl) {
+                    statusEl.style.display = 'block';
+                    statusEl.innerHTML = '<span style="font-size:0.85rem;color:#16a34a;">✅ Payment confirmed! Activating...</span>';
+                }
                 setTimeout(() => window.location.reload(), 1000);
             } else {
-                alert(data.message || 'No payment found. Please complete payment first, then click this button.');
-                btn.textContent = originalText;
-                btn.disabled = false;
+                alert(data.message || 'No payment found. Please complete payment first.');
             }
         } catch (e) {
             alert('Error verifying payment. Please try again.');
-            btn.textContent = originalText;
-            btn.disabled = false;
+        }
+    },
+    
+    _paymentPollInterval: null,
+    
+    startPaymentPolling() {
+        var statusEl = document.getElementById('sd-payment-polling-status');
+        var hintEl = document.getElementById('sd-activate-manual-hint');
+        if (statusEl) statusEl.style.display = 'block';
+        setTimeout(function() { if (hintEl) hintEl.style.display = 'block'; }, 15000);
+        
+        if (this._paymentPollInterval) return;
+        var self = this;
+        var attempts = 0;
+        this._paymentPollInterval = setInterval(async function() {
+            attempts++;
+            if (attempts > 60) {
+                self.stopPaymentPolling();
+                if (statusEl) statusEl.innerHTML = '<span style="font-size:0.85rem;color:#888;">Auto-detection timed out. <a href="#" onclick="StudyDecoderAuth.verifyPayment(); return false;" style="color:#6C63FF;">Check manually</a></span>';
+                return;
+            }
+            try {
+                var res = await fetch('/api/verify-payment', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                var data = await res.json();
+                if (data.success && data.subscribed) {
+                    self.stopPaymentPolling();
+                    if (statusEl) statusEl.innerHTML = '<span style="font-size:0.85rem;color:#16a34a;">✅ Payment confirmed! Activating...</span>';
+                    setTimeout(function() { window.location.reload(); }, 1200);
+                }
+            } catch (e) {}
+        }, 5000);
+    },
+    
+    stopPaymentPolling() {
+        if (this._paymentPollInterval) {
+            clearInterval(this._paymentPollInterval);
+            this._paymentPollInterval = null;
         }
     },
     
@@ -179,8 +214,8 @@ const StudyDecoderAuth = {
     showPaywall(user, containerId = null) {
         var isSale = new Date() < new Date('2026-04-25T00:00:00');
         var dealCardHTML = isSale
-            ? '<a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="position:absolute;top:-12px;background:#f59e0b;color:#000;font-weight:700;font-size:0.7rem;padding:3px 12px;border-radius:20px;">🔥 LIMITED DEAL</span><span style="font-size:0.8rem;opacity:0.85;margin-top:8px;">One-Time Payment — Lifetime</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$37.50</span><span style="text-decoration:line-through;opacity:0.6;font-size:0.9rem;">$75/year</span><span style="font-size:0.75rem;opacity:0.8;margin-top:6px;">Ends April 25 — pay once, use forever</span></a>'
-            : '<a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="font-size:0.8rem;opacity:0.85;">Yearly Subscription</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$75</span><span style="font-size:0.8rem;opacity:0.8;">/year — that\'s $6.25/mo</span></a>';
+            ? '<a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" onclick="StudyDecoderAuth.startPaymentPolling()" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="position:absolute;top:-12px;background:#f59e0b;color:#000;font-weight:700;font-size:0.7rem;padding:3px 12px;border-radius:20px;">🔥 LIMITED DEAL</span><span style="font-size:0.8rem;opacity:0.85;margin-top:8px;">One-Time Payment — Lifetime</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$37.50</span><span style="text-decoration:line-through;opacity:0.6;font-size:0.9rem;">$75/year</span><span style="font-size:0.75rem;opacity:0.8;margin-top:6px;">Ends April 25 — pay once, use forever</span></a>'
+            : '<a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" onclick="StudyDecoderAuth.startPaymentPolling()" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="font-size:0.8rem;opacity:0.85;">Yearly Subscription</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$75</span><span style="font-size:0.8rem;opacity:0.8;">/year — that\'s $6.25/mo</span></a>';
         const html = `
             <div class="sd-paywall-overlay">
                 <div class="sd-paywall-card">
@@ -193,15 +228,17 @@ const StudyDecoderAuth = {
                     <p class="sd-paywall-divider">─── or upgrade for unlimited ───</p>
                     <div style="display:flex;gap:12px;align-items:stretch;justify-content:center;flex-wrap:wrap;margin:16px 0;">
                         ${dealCardHTML}
-                        <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="flex:0.9;min-width:180px;max-width:240px;padding:20px 14px;background:#1e1e2e;color:#fff;text-decoration:none;border-radius:14px;border:2px solid #333;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                        <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" onclick="StudyDecoderAuth.startPaymentPolling()" style="flex:0.9;min-width:180px;max-width:240px;padding:20px 14px;background:#1e1e2e;color:#fff;text-decoration:none;border-radius:14px;border:2px solid #333;display:flex;flex-direction:column;align-items:center;justify-content:center;">
                             <span style="font-size:0.8rem;color:#aaa;">Monthly</span>
                             <span style="font-size:1.6rem;font-weight:700;margin:6px 0 2px;color:#6C63FF;">$7.50</span>
                             <span style="font-size:0.8rem;color:#aaa;">/month</span>
                             <span style="font-size:0.7rem;color:#666;margin-top:6px;">Cancel anytime</span>
                         </a>
                     </div>
-                    <p class="sd-paywall-note">After payment, click below to activate:</p>
-                    <button onclick="StudyDecoderAuth.verifyPayment()" class="sd-paywall-btn sd-btn-activate" id="sd-activate-btn">✓ I've Paid - Activate Now</button>
+                    <div id="sd-payment-polling-status" style="display:none;text-align:center;margin:12px 0;padding:10px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;">
+                        <span style="font-size:0.85rem;color:#16a34a;">⏳ Waiting for payment... This will activate automatically.</span>
+                    </div>
+                    <p id="sd-activate-manual-hint" style="color:#999;font-size:0.8rem;margin:8px 0;display:none;">Payment not detected? <a href="#" onclick="StudyDecoderAuth.verifyPayment(); return false;" style="color:#6C63FF;text-decoration:underline;">Check manually</a></p>
                     <button onclick="StudyDecoderAuth.logout()" class="sd-paywall-btn sd-btn-outline">Sign Out</button>
                 </div>
             </div>
