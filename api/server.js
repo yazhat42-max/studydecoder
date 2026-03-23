@@ -2925,6 +2925,7 @@ ACCURACY VERIFICATION:
 4. Account for school hours, sleep, and breaks
 
 Core Rules:
+• STUDY HOURS — CRITICAL: The student specifies their available study hours per day. You MUST fill EXACTLY that many hours of study per day (not including breaks). If the student says 2 hours, the timetable must show EXACTLY 2 hours of study time each day. If they say 3 hours, show 3 hours. NEVER generate fewer hours than requested — this is the #1 complaint. Breaks are EXTRA time on top of the study hours, not counted within them.
 • No unrealistic schedules (8+ hours/day is unrealistic for students)
 • No filler or motivational text
 • No fake productivity advice
