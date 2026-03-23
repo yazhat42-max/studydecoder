@@ -969,7 +969,7 @@
 
     <!-- Sale Banner -->
     <div class="sale-banner" id="saleBanner" style="display: none;" onclick="showUpgradeModal()">
-        🔥 <strong>Study Break Sale</strong> — Get lifetime access for just <strong>$37.50</strong> (normally $75/yr)! Offer ends April 20. <a href="#" onclick="showUpgradeModal(); return false;">Grab it now →</a>
+        🔥 <strong>Study Break Sale</strong> — Get lifetime access for just <strong>$37.50</strong> (normally $75/yr)! Offer ends April 25. <a href="#" onclick="showUpgradeModal(); return false;">Grab it now →</a>
     </div>
 
     <!-- Hero Section -->
@@ -1171,14 +1171,28 @@
 
     <!-- Upgrade Modal for Free Users -->
     <div class="upgrade-modal-overlay hidden" id="upgradeModalOverlay" onclick="closeUpgradeModal(event)" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 9999;">
-        <div class="upgrade-modal" onclick="event.stopPropagation()" style="background: white; border-radius: 12px; padding: 32px; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); text-align: center;">
-            <h2 style="margin-bottom: 12px; font-size: 1.5rem; color: #6C63FF;">⭐ Upgrade to Premium</h2>
-            <p style="color: #666; margin-bottom: 8px;">You're on the <strong>Free Plan</strong> — 10 uses/day, 1 worksheet decode &amp; 1 notes transcription per day.</p>
+        <div class="upgrade-modal" onclick="event.stopPropagation()" style="background: white; border-radius: 16px; padding: 32px; max-width: 680px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.2); text-align: center;">
+            <h2 style="margin-bottom: 8px; font-size: 1.5rem; color: #6C63FF;">⭐ Upgrade to Premium</h2>
+            <p style="color: #666; margin-bottom: 6px;">You're on the <strong>Free Plan</strong> — 10 uses/day, 1 worksheet decode &amp; 1 notes transcription per day.</p>
             <p style="color: #888; font-size: 0.9rem; margin-bottom: 24px;">Premium = <strong>unlimited uses</strong>, longer responses &amp; better quality answers.</p>
             
-            <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display: block; width: 100%; padding: 14px; background: #6C63FF; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-bottom: 12px; transition: all 0.2s;">📅 Monthly - $7.50/month</a>
-            <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" id="upgradeYearlyBtn" style="display: block; width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-bottom: 8px; transition: all 0.2s;">⭐ Yearly - $75/year</a>
-            <p style="color: #888; font-size: 0.8rem; margin-bottom: 20px;">That's only $6.25/month!</p>
+            <div style="display: flex; gap: 16px; align-items: stretch; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;">
+                <!-- DEAL CARD (left, bigger) -->
+                <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" id="upgradeYearlyBtn" style="flex: 1.3; min-width: 240px; max-width: 320px; padding: 28px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(102,126,234,0.35);">
+                    <span style="position: absolute; top: -12px; background: #f59e0b; color: #000; font-weight: 700; font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; letter-spacing: 0.5px;">🔥 LIMITED DEAL</span>
+                    <span style="font-size: 0.85rem; opacity: 0.85; margin-top: 8px;">One-Time Payment — Lifetime Access</span>
+                    <span style="font-size: 2.2rem; font-weight: 800; margin: 8px 0 4px;">$37.50</span>
+                    <span style="text-decoration: line-through; opacity: 0.6; font-size: 1rem;">$75/year</span>
+                    <span style="font-size: 0.8rem; opacity: 0.8; margin-top: 8px;">Offer ends April 25 — pay once, use forever</span>
+                </a>
+                <!-- MONTHLY CARD (right, smaller) -->
+                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="flex: 0.9; min-width: 200px; max-width: 260px; padding: 24px 18px; background: #f8f9fa; color: #2A2A2A; text-decoration: none; border-radius: 14px; border: 2px solid #e0e0e0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.2s, box-shadow 0.2s;">
+                    <span style="font-size: 0.85rem; color: #888;">Monthly Subscription</span>
+                    <span style="font-size: 1.8rem; font-weight: 700; margin: 8px 0 4px; color: #6C63FF;">$7.50</span>
+                    <span style="font-size: 0.85rem; color: #888;">/month</span>
+                    <span style="font-size: 0.75rem; color: #aaa; margin-top: 8px;">Cancel anytime</span>
+                </a>
+            </div>
             
             <p style="color: #666; font-size: 0.9rem; margin-bottom: 12px;">After payment, click below to activate:</p>
             <button onclick="verifyUpgradePayment()" id="upgradeActivateBtn" style="width: 100%; padding: 12px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 12px; transition: all 0.2s;">✓ I've Paid - Activate Now</button>
@@ -1353,7 +1367,7 @@
         
         // Populate subscription info
         if (currentUser) {
-            document.getElementById('subPlan').textContent = currentUser.plan === 'yearly' ? 'Yearly ($75/year)' : 'Monthly ($7.50/month)';
+            document.getElementById('subPlan').textContent = currentUser.plan === 'yearly' ? 'Lifetime ($37.50 one-time)' : 'Monthly ($7.50/month)';
             document.getElementById('subStatus').textContent = 'Active';
             document.getElementById('subStatus').style.color = '#10b981';
             
@@ -1421,13 +1435,13 @@
         const modal = document.getElementById('upgradeModalOverlay');
         modal.style.display = 'flex';
         modal.classList.remove('hidden');
-        // Study Break sale: before April 20 2026
+        // Study Break sale: before April 25 2026
         const yearlyBtn = document.getElementById('upgradeYearlyBtn');
         if (yearlyBtn) {
-            if (new Date() < new Date('2026-04-20T00:00:00')) {
-                yearlyBtn.innerHTML = '🔥 Study Break Sale - $37.50 for life';
-            } else {
-                yearlyBtn.innerHTML = '⭐ Yearly - $75/year';
+            if (new Date() >= new Date('2026-04-25T00:00:00')) {
+                // Sale over — revert to standard yearly card
+                yearlyBtn.querySelector('[data-deal-badge]')?.remove();
+                yearlyBtn.innerHTML = '<span style="font-size:0.85rem;opacity:0.85;">Yearly Subscription</span><span style="font-size:2.2rem;font-weight:800;margin:8px 0 4px;">$75</span><span style="font-size:0.85rem;opacity:0.8;">/year — that\'s $6.25/mo</span>';
             }
         }
     }
@@ -1724,8 +1738,8 @@
             checkAuthStatus();
         }
 
-        // Show sale banner if before April 20, 2026 (hidden for paid/OG/owner in checkAuthStatus)
-        if (new Date() < new Date('2026-04-20T00:00:00')) {
+        // Show sale banner if before April 25, 2026 (hidden for paid/OG/owner in checkAuthStatus)
+        if (new Date() < new Date('2026-04-25T00:00:00')) {
             document.getElementById('saleBanner').style.display = 'block';
         }
     })();

@@ -177,6 +177,10 @@ const StudyDecoderAuth = {
     
     // Show standard paywall
     showPaywall(user, containerId = null) {
+        var isSale = new Date() < new Date('2026-04-25T00:00:00');
+        var dealCardHTML = isSale
+            ? '<a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="position:absolute;top:-12px;background:#f59e0b;color:#000;font-weight:700;font-size:0.7rem;padding:3px 12px;border-radius:20px;">🔥 LIMITED DEAL</span><span style="font-size:0.8rem;opacity:0.85;margin-top:8px;">One-Time Payment — Lifetime</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$37.50</span><span style="text-decoration:line-through;opacity:0.6;font-size:0.9rem;">$75/year</span><span style="font-size:0.75rem;opacity:0.8;margin-top:6px;">Ends April 25 — pay once, use forever</span></a>'
+            : '<a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="font-size:0.8rem;opacity:0.85;">Yearly Subscription</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$75</span><span style="font-size:0.8rem;opacity:0.8;">/year — that\'s $6.25/mo</span></a>';
         const html = `
             <div class="sd-paywall-overlay">
                 <div class="sd-paywall-card">
@@ -187,8 +191,15 @@ const StudyDecoderAuth = {
                     <p class="sd-paywall-desc" style="font-size:0.9rem;color:#aaa;">Premium gets you <strong>unlimited uses</strong>, longer & higher-quality responses.</p>
                     <button onclick="StudyDecoderAuth.closePaywall()" class="sd-paywall-btn sd-btn-success">✓ Continue with Free Plan</button>
                     <p class="sd-paywall-divider">─── or upgrade for unlimited ───</p>
-                    <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="sd-paywall-btn sd-btn-primary">📅 Monthly - $7.50/month</a>
-                    <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" class="sd-paywall-btn sd-btn-secondary" id="sd-yearly-btn">⭐ Yearly - $75/year</a>
+                    <div style="display:flex;gap:12px;align-items:stretch;justify-content:center;flex-wrap:wrap;margin:16px 0;">
+                        ${dealCardHTML}
+                        <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="flex:0.9;min-width:180px;max-width:240px;padding:20px 14px;background:#1e1e2e;color:#fff;text-decoration:none;border-radius:14px;border:2px solid #333;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                            <span style="font-size:0.8rem;color:#aaa;">Monthly</span>
+                            <span style="font-size:1.6rem;font-weight:700;margin:6px 0 2px;color:#6C63FF;">$7.50</span>
+                            <span style="font-size:0.8rem;color:#aaa;">/month</span>
+                            <span style="font-size:0.7rem;color:#666;margin-top:6px;">Cancel anytime</span>
+                        </a>
+                    </div>
                     <p class="sd-paywall-note">After payment, click below to activate:</p>
                     <button onclick="StudyDecoderAuth.verifyPayment()" class="sd-paywall-btn sd-btn-activate" id="sd-activate-btn">✓ I've Paid - Activate Now</button>
                     <button onclick="StudyDecoderAuth.logout()" class="sd-paywall-btn sd-btn-outline">Sign Out</button>
@@ -200,11 +211,6 @@ const StudyDecoderAuth = {
             document.getElementById(containerId).innerHTML = html;
         } else {
             document.body.insertAdjacentHTML('beforeend', html);
-        }
-        // Study Break sale: before April 20 2026
-        var yearlyBtn = document.getElementById('sd-yearly-btn');
-        if (yearlyBtn && new Date() < new Date('2026-04-20T00:00:00')) {
-            yearlyBtn.innerHTML = '\ud83d\udd25 Study Break Sale - $37.50 for life';
         }
     },
     

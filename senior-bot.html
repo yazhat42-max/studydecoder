@@ -570,7 +570,7 @@
             
             // Populate subscription info
             if (window.currentSubData) {
-                document.getElementById('subPlan').textContent = window.currentSubData.plan === 'yearly' ? 'Yearly ($75/year)' : 'Monthly ($7.50/month)';
+                document.getElementById('subPlan').textContent = window.currentSubData.plan === 'yearly' ? 'Lifetime ($37.50 one-time)' : 'Monthly ($7.50/month)';
                 document.getElementById('subStatus').textContent = 'Active';
                 document.getElementById('subStatus').style.color = '#10b981';
                 
@@ -635,6 +635,10 @@
         function showPaywall(user) {
             const paywall = document.getElementById('paywallOverlay');
             paywall.classList.remove('hidden');
+            const isSale = new Date() < new Date('2026-04-25T00:00:00');
+            const dealCard = isSale
+                ? `<a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="position:absolute;top:-12px;background:#f59e0b;color:#000;font-weight:700;font-size:0.7rem;padding:3px 12px;border-radius:20px;">🔥 LIMITED DEAL</span><span style="font-size:0.8rem;opacity:0.85;margin-top:8px;">One-Time Payment — Lifetime</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$37.50</span><span style="text-decoration:line-through;opacity:0.6;font-size:0.9rem;">$75/year</span><span style="font-size:0.75rem;opacity:0.8;margin-top:6px;">Ends April 25 — pay once, use forever</span></a>`
+                : `<a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(102,126,234,0.35);"><span style="font-size:0.8rem;opacity:0.85;">Yearly Subscription</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$75</span><span style="font-size:0.8rem;opacity:0.8;">/year — that's $6.25/mo</span></a>`;
             paywall.innerHTML = `
                 <div class="paywall-card">
                     <img src="logo.png" alt="Logo">
@@ -646,13 +650,15 @@
                     
                     <p style="color: #94a3b8; font-size: 0.85rem; margin: 16px 0;">─── or upgrade for unlimited ───</p>
                     
-                    <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="paywall-btn paywall-btn-primary">
-                        📅 Monthly - $7.50/month
-                    </a>
-                    <a href="https://buy.stripe.com/00wdR8dFbfjyaiK3vd7Vm02" target="_blank" class="paywall-btn paywall-btn-yearly" id="seniorYearlyBtn">
-                        ⭐ Yearly - $75/year
-                    </a>
-                    <p style="font-size: 0.8rem; color: #888; margin-bottom: 20px;">That's only $6.25/month!</p>
+                    <div style="display:flex;gap:12px;align-items:stretch;justify-content:center;flex-wrap:wrap;margin:16px 0;">
+                        ${dealCard}
+                        <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="flex:0.9;min-width:180px;max-width:240px;padding:20px 14px;background:#f8f9fa;color:#2A2A2A;text-decoration:none;border-radius:14px;border:2px solid #e0e0e0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                            <span style="font-size:0.8rem;color:#888;">Monthly</span>
+                            <span style="font-size:1.6rem;font-weight:700;margin:6px 0 2px;color:#6C63FF;">$7.50</span>
+                            <span style="font-size:0.8rem;color:#888;">/month</span>
+                            <span style="font-size:0.7rem;color:#aaa;margin-top:6px;">Cancel anytime</span>
+                        </a>
+                    </div>
                     
                     <div class="trust-badges">
                         <div class="trust-badge">
@@ -678,16 +684,11 @@
             document.getElementById('continueFreeBtnPaywall').addEventListener('click', async () => {
                 try {
                     await fetch(API_BASE + '/api/acknowledge-free', { method: 'POST', credentials: 'include' });
-                    window.location.reload(); // Reload so checkAuth sees freeAcknowledged = true
+                    window.location.reload();
                 } catch (e) {
                     window.location.reload();
                 }
             });
-            // Study Break sale: before April 20 2026
-            const yearlyBtn = document.getElementById('seniorYearlyBtn');
-            if (yearlyBtn && new Date() < new Date('2026-04-20T00:00:00')) {
-                yearlyBtn.innerHTML = '🔥 Study Break Sale - $37.50 for life';
-            }
             document.getElementById('activateBtn').addEventListener('click', verifyAndActivate);
             document.getElementById('logoutBtn').addEventListener('click', logout);
         }

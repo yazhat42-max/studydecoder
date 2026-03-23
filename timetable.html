@@ -429,7 +429,7 @@
             const isSpecial = limitType === 'special';
             const toolName = botType === 'worksheet' ? 'worksheet decode' : botType === 'notes-transcriber' ? 'notes transcription' : 'free use';
             const heading = isSpecial ? `You've used your 1 daily ${toolName}.` : `You've used all 10 free uses for today.`;
-            const isSale = new Date() < new Date('2026-04-20T00:00:00');
+            const isSale = new Date() < new Date('2026-04-25T00:00:00');
             const yearlyText = isSale ? '🔥 Study Break Sale — $37.50 for life' : 'Yearly — $75/yr';
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message message-assistant';

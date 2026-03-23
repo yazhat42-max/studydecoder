@@ -633,7 +633,7 @@ The AI will transform them into polished, professional-looking notes with proper
             var isSpecial = limitType === 'special';
             var toolName = botType === 'worksheet' ? 'worksheet decode' : botType === 'notes-transcriber' ? 'notes transcription' : 'free use';
             var heading = isSpecial ? "You've used your 1 daily " + toolName + "." : "You've used all 10 free uses for today.";
-            var isSale = new Date() < new Date('2026-04-20T00:00:00');
+            var isSale = new Date() < new Date('2026-04-25T00:00:00');
             var yearlyText = isSale ? '\ud83d\udd25 Study Break Sale \u2014 $37.50 for life' : 'Yearly \u2014 $75/yr';
             var messageDiv = document.createElement('div');
             messageDiv.className = 'message message-assistant';
