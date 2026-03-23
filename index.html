@@ -1368,8 +1368,22 @@
         // Populate subscription info
         if (currentUser) {
             document.getElementById('subPlan').textContent = currentUser.plan === 'yearly' ? 'Lifetime ($37.50 one-time)' : 'Monthly ($7.50/month)';
-            document.getElementById('subStatus').textContent = 'Active';
-            document.getElementById('subStatus').style.color = '#10b981';
+            
+            if (currentUser.cancelAtPeriodEnd) {
+                document.getElementById('subStatus').textContent = 'Cancelling (access until period ends)';
+                document.getElementById('subStatus').style.color = '#f59e0b';
+                const btn = document.getElementById('cancelSubBtn');
+                btn.textContent = '✓ Already Cancelled';
+                btn.style.background = '#64748b';
+                btn.disabled = true;
+            } else {
+                document.getElementById('subStatus').textContent = 'Active';
+                document.getElementById('subStatus').style.color = '#10b981';
+                const btn = document.getElementById('cancelSubBtn');
+                btn.textContent = 'Cancel Subscription';
+                btn.style.background = '#ef4444';
+                btn.disabled = false;
+            }
             
             if (currentUser.expiresAt) {
                 const expDate = new Date(currentUser.expiresAt);
@@ -1413,6 +1427,8 @@
             if (data.success) {
                 btn.textContent = '✓ Cancelled';
                 btn.style.background = '#64748b';
+                btn.disabled = true;
+                if (currentUser) currentUser.cancelAtPeriodEnd = true;
                 document.getElementById('subStatus').textContent = 'Cancelled (access until period ends)';
                 document.getElementById('subStatus').style.color = '#f59e0b';
                 

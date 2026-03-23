@@ -1239,6 +1239,7 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         name: user.name,
         role: role,
         subscribed: hasFull,
+        cancelAtPeriodEnd: user.cancelAtPeriodEnd || false,
         freeAcknowledged: user.freeAcknowledged || false,
         plan: role === 'owner' ? 'owner' : (role === 'og_tester' ? 'og_lifetime' : user.plan),
         expiresAt: (role === 'owner' || role === 'og_tester') ? null : user.expiresAt,
@@ -1396,6 +1397,10 @@ app.post('/api/cancel', requireAuth, async (req, res) => {
     try {
         const user = req.user;
         
+        if (!user.subscribed) {
+            return res.status(400).json({ error: 'No active subscription to cancel' });
+        }
+
         // Cancel in Stripe if connected
         if (stripe && user.stripeCustomerId) {
             const subscriptions = await stripe.subscriptions.list({
@@ -1403,14 +1408,32 @@ app.post('/api/cancel', requireAuth, async (req, res) => {
                 status: 'active'
             });
             
-            for (const sub of subscriptions.data) {
-                await stripe.subscriptions.update(sub.id, {
-                    cancel_at_period_end: true
-                });
+            if (subscriptions.data.length > 0) {
+                for (const sub of subscriptions.data) {
+                    await stripe.subscriptions.update(sub.id, {
+                        cancel_at_period_end: true
+                    });
+                }
+                // Mark cancellation pending locally
+                user.cancelAtPeriodEnd = true;
+                upsertUser(user.userId, user);
+                res.json({ success: true, message: 'Subscription will be cancelled at period end' });
+            } else {
+                // No active Stripe subscriptions found — revoke immediately
+                user.subscribed = false;
+                user.plan = null;
+                user.cancelAtPeriodEnd = false;
+                upsertUser(user.userId, user);
+                res.json({ success: true, message: 'Subscription cancelled' });
             }
+        } else {
+            // No Stripe connection (manual activation) — revoke immediately
+            user.subscribed = false;
+            user.plan = null;
+            user.cancelAtPeriodEnd = false;
+            upsertUser(user.userId, user);
+            res.json({ success: true, message: 'Subscription cancelled' });
         }
-
-        res.json({ success: true, message: 'Subscription will be cancelled at period end' });
         
     } catch (error) {
         console.error('Cancel error:', error);
@@ -1499,7 +1522,8 @@ app.post('/api/stripe-webhook', async (req, res) => {
                     upsertUser(user.userId, {
                         subscribed: false,
                         plan: null,
-                        expiresAt: null
+                        expiresAt: null,
+                        cancelAtPeriodEnd: false
                     });
                     logPayment({
                         userId: user.userId,
