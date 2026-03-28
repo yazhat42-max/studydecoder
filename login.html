@@ -639,6 +639,7 @@
          data-client_id="875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com"
          data-callback="handleGoogleResponse"
          data-auto_prompt="false"
+         data-use_fedcm_for_prompt="true"
          style="display: none;">
     </div>
     
@@ -688,7 +689,8 @@
                         client_id: GOOGLE_CLIENT_ID,
                         callback: handleGoogleResponse,
                         auto_select: false,
-                        cancel_on_tap_outside: true
+                        cancel_on_tap_outside: true,
+                        use_fedcm_for_prompt: true
                     });
                     oneTapAvailable = true;
                 } catch (e) {
@@ -748,31 +750,18 @@
                 return;
             }
             
-            // Try One Tap first if available (Chrome/Edge)
-            if (oneTapAvailable) {
-                try {
-                    google.accounts.id.prompt((notification) => {
-                        // If One Tap fails or user dismissed, fall back to OAuth popup
-                        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                            console.log('One Tap not available, using OAuth popup');
-                            if (googleTokenClient) {
-                                googleTokenClient.requestAccessToken();
-                            } else {
-                                showError('Google Sign-In is not available in this browser');
-                            }
-                        }
-                    });
-                } catch (e) {
-                    // Fall back to OAuth popup
-                    if (googleTokenClient) {
-                        googleTokenClient.requestAccessToken();
-                    }
-                }
-            } else if (googleTokenClient) {
-                // Use OAuth popup directly (Brave, Firefox with strict privacy)
+            // Use OAuth popup directly on button click (user-initiated = won't be popup-blocked)
+            if (googleTokenClient) {
                 googleTokenClient.requestAccessToken();
+            } else if (oneTapAvailable) {
+                // Fallback: try One Tap if OAuth client unavailable
+                try {
+                    google.accounts.id.prompt();
+                } catch (e) {
+                    showError('Google Sign-In is not available in this browser');
+                }
             } else {
-                showError('Google Sign-In is not available');
+                showError('Google Sign-In is not available. Please check your browser privacy settings.');
             }
         }
         
