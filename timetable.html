@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Smart Study Timetable Generator | Study Decoder</title>
     <meta name="description" content="Create a personalised HSC study timetable with AI. Automatically schedules study sessions around your commitments. Built for Year 11 & 12 students.">
     <link rel="canonical" href="https://www.studydecoder.com.au/timetable.html">
@@ -17,6 +17,12 @@
     <meta name="twitter:title" content="Smart Study Timetable Generator | Study Decoder">
     <meta name="twitter:description" content="Create a personalised HSC study timetable with AI.">
     <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0f1419">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body {
@@ -24,7 +30,7 @@
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #0f1419; color: #e7e9ea;
         }
-        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100vw; }
+        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100%; overflow-x: hidden; }
         .header {
             background: #16202a; border-bottom: 1px solid #2f3336;
             padding: 12px 24px; display: flex; align-items: center;

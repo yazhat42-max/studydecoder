@@ -660,6 +660,37 @@ footer {
 /* Certificate styles */
 .certificate-container { text-align: center; }
 .certificate { background: white; padding: 3rem; border: 3px solid var(--primary); border-radius: 12px; max-width: 800px; margin: 2rem auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+
+/* ===== MOBILE OPTIMIZATION ===== */
+
+/* Prevent iOS Safari zoom on input focus (inputs < 16px trigger zoom) */
+@media (max-width: 768px) {
+    input, select, textarea { font-size: 16px !important; }
+}
+
+/* Remove hover effects on touch devices — add active press feedback instead */
+@media (hover: none) and (pointer: coarse) {
+    .btn:hover, .course-card:hover, .tool-card:hover, .mode-card:hover,
+    .quiz-option:hover, .back-btn:hover, .history-btn:hover {
+        transform: none !important;
+        box-shadow: inherit;
+    }
+    .btn:active, .course-card:active, .tool-card:active, .mode-card:active {
+        transform: scale(0.97) !important;
+        transition: transform 0.1s;
+    }
+}
+
+/* Safe area for notched phones (iPhone X+, modern Android) */
+@supports(padding: max(0px)) {
+    .navbar {
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+    }
+    body {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
 .certificate h1 { font-size: 2rem; color: var(--primary); margin: 1rem 0; }
 .certificate-line { border-top: 2px solid var(--secondary); width: 60%; margin: 1.5rem auto; }
 .certificate-score { font-size: 1.5rem; margin: 1.5rem 0; color: var(--accent); font-weight: bold; }
