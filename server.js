@@ -415,8 +415,8 @@ app.use((req, res, next) => {
     if (host === 'studydecoder.com.au') {
         return res.redirect(301, `https://www.studydecoder.com.au${req.originalUrl}`);
     }
-    // Redirect onrender.com to canonical domain (prevents duplicate indexing)
-    if (!config.isDev && host && host.includes('onrender.com')) {
+    // Redirect onrender.com to canonical domain — only for page loads, not API calls
+    if (!config.isDev && host && host.includes('onrender.com') && !req.path.startsWith('/api/')) {
         return res.redirect(301, `https://www.studydecoder.com.au${req.originalUrl}`);
     }
     next();
