@@ -1025,11 +1025,11 @@
                 <h1>Generate Full Practice Exams <span class="highlight">With AI</span></h1>
                 <p class="hero-sub">Create realistic HSC exams, answer questions under timed conditions, and receive instant AI marking with band-level feedback — for all 45 subjects.</p>
                 <div class="hero-buttons" id="heroButtons">
-                    <a href="practice.html?mode=exam" class="btn btn-primary" id="featuredExamCard">Start Practice Exam</a>
+                    <a href="practice.html?mode=exam" class="btn btn-primary" id="featuredExamCard" onclick="return goExamMode(event)">Start Practice Exam</a>
                     <a href="login.html" class="btn btn-secondary" id="heroSignInBtn">Sign In to Access</a>
                 </div>
                 <div class="hero-buttons" id="heroLoggedIn" style="display: none;">
-                    <a href="practice.html?mode=exam" class="btn btn-primary">Start Practice Exam</a>
+                    <a href="practice.html?mode=exam" class="btn btn-primary" onclick="return goExamMode(event)">Start Practice Exam</a>
                     <a href="#tools" class="btn btn-secondary">Explore All Tools</a>
                 </div>
                 <p class="hero-trust">Built for Australian students following the NSW curriculum.</p>
@@ -1050,7 +1050,7 @@
                     <span>Band-level Feedback</span>
                     <span>All 45 Subjects</span>
                 </div>
-                <a href="practice.html?mode=exam" class="btn btn-primary" style="margin-top: 0.5rem;">Try Full Exam Mode</a>
+                <a href="practice.html?mode=exam" class="btn btn-primary" style="margin-top: 0.5rem;" onclick="return goExamMode(event)">Try Full Exam Mode</a>
             </div>
         </div>
     </section>
@@ -1187,7 +1187,7 @@
         <p>Built for Australian students following the NSW curriculum. Generate exams, get marked, and improve — all in one place.</p>
         <a href="login.html" class="btn btn-primary" id="ctaSignIn">Get Started Free</a>
         <div id="ctaLoggedIn" style="display: none;">
-            <a href="practice.html?mode=exam" class="btn btn-primary">Start Practice Exam</a>
+            <a href="practice.html?mode=exam" class="btn btn-primary" onclick="return goExamMode(event)">Start Practice Exam</a>
         </div>
     </section>
 
@@ -1602,6 +1602,17 @@
         worksheet: { senior: 'worksheet-decoder.html', junior: 'worksheet-decoder.html' },
         'notes-transcriber': { senior: 'notes-transcriber.html', junior: 'notes-transcriber.html' }
     };
+
+    function goExamMode(e) {
+        const savedLevel = currentUser?.preferences?.level;
+        if (savedLevel === 'junior') {
+            e.preventDefault();
+            window.location.href = 'practice-jr.html?mode=exam';
+            return false;
+        }
+        // Default: let the href (practice.html?mode=exam) work naturally
+        return true;
+    }
 
     function openTool(tool) {
         if (tool === 'subject-advisor') {
