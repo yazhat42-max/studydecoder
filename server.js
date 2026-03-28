@@ -408,11 +408,15 @@ process.on('exit', () => {
 
 // ==================== MIDDLEWARE ====================
 
-// Redirect non-www to www for custom domain (301 permanent redirect)
+// Redirect non-www and onrender.com to www.studydecoder.com.au (301 permanent redirect for SEO)
 app.use((req, res, next) => {
     const host = req.get('host');
-    // Only redirect if it's the bare domain (no www, not onrender.com)
+    // Redirect bare domain to www
     if (host === 'studydecoder.com.au') {
+        return res.redirect(301, `https://www.studydecoder.com.au${req.originalUrl}`);
+    }
+    // Redirect onrender.com to canonical domain (prevents duplicate indexing)
+    if (!config.isDev && host && host.includes('onrender.com')) {
         return res.redirect(301, `https://www.studydecoder.com.au${req.originalUrl}`);
     }
     next();
