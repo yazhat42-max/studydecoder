@@ -886,7 +886,7 @@ app.post('/api/auth/login', async (req, res) => {
         // Check if user has a password (might be Google-only)
         if (!user.passwordHash) {
             return res.status(401).json({ 
-                error: 'This account uses Google sign-in. Please sign in with Google.' 
+                error: 'This account was created with Google. Use "Continue with Google" below, or click "Forgot password?" to set a password.' 
             });
         }
         

@@ -1103,7 +1103,7 @@ app.post('/api/auth/login', async (req, res) => {
         // Check if user has a password (might be Google-only)
         if (!user.passwordHash) {
             return res.status(401).json({ 
-                error: 'This account uses Google sign-in. Please sign in with Google.' 
+                error: 'This account was created with Google. Use "Continue with Google" below, or click "Forgot password?" to set a password.' 
             });
         }
         
@@ -1172,8 +1172,8 @@ app.post('/api/auth/forgot-password', async (req, res) => {
         console.log(`📧 Password reset requested for: ${email}`);
         
         const user = getUserByEmail(email);
-        if (user && user.provider !== 'google') {
-            // Only allow password reset for email accounts (Google accounts use Google auth)
+        if (user) {
+            // Allow both email AND Google accounts to set/reset password
             const resetToken = generateSecureToken();
             const resetExpiry = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
             

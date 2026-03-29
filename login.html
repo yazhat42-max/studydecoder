@@ -608,36 +608,101 @@
             </div>
             
             <div class="alert alert-error" id="alertError">
-                <span class="alert-icon">⚠️</span>
+                <span class="alert-icon">&#x26A0;&#xFE0F;</span>
                 <span id="alertErrorText">An error occurred</span>
             </div>
             
             <div class="alert alert-success" id="alertSuccess">
-                <span class="alert-icon">✓</span>
+                <span class="alert-icon">&#x2713;</span>
                 <span id="alertSuccessText">Success!</span>
             </div>
+
+            <!-- Auth Tabs -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('signin')">Sign In</button>
+                <button class="auth-tab" onclick="switchTab('signup')">Create Account</button>
+            </div>
             
-            <!-- Google Sign In Only -->
-            <div class="auth-form active" id="signinForm" style="display: block;">
-                <p style="text-align: center; color: var(--text-secondary); margin-bottom: 24px;">Sign in to access your study tools</p>
+            <!-- Sign In Form -->
+            <div class="auth-form active" id="signinForm">
+                <form onsubmit="handleEmailLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+                            <button type="button" class="password-toggle" onclick="togglePassword('loginPassword', this)">&#x1F441;</button>
+                        </div>
+                    </div>
+                    <div class="forgot-link">
+                        <a href="forgot-password.html">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="loginBtn">Sign In</button>
+                </form>
+                
+                <div class="divider"><span>or</span></div>
                 
                 <button type="button" class="google-btn-custom" id="googleSignInBtn">
                     <img src="https://www.google.com/favicon.ico" alt="Google">
                     Continue with Google
                 </button>
+            </div>
+            
+            <!-- Sign Up Form -->
+            <div class="auth-form" id="signupForm">
+                <form onsubmit="handleEmailRegister(event)">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="registerName" placeholder="Your name" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="registerEmail" placeholder="you@example.com" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-input" id="registerPassword" placeholder="Create a password" required autocomplete="new-password" oninput="checkPasswordStrength(this.value)">
+                            <button type="button" class="password-toggle" onclick="togglePassword('registerPassword', this)">&#x1F441;</button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="password-strength-bar" id="strengthBar"></div>
+                        </div>
+                        <div class="password-requirements" id="passwordReqs">
+                            <p>Password must have:</p>
+                            <ul>
+                                <li id="reqLength"><span class="req-icon">&#x25CB;</span> At least 8 characters</li>
+                                <li id="reqUpper"><span class="req-icon">&#x25CB;</span> One uppercase letter</li>
+                                <li id="reqLower"><span class="req-icon">&#x25CB;</span> One lowercase letter</li>
+                                <li id="reqNumber"><span class="req-icon">&#x25CB;</span> One number</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" class="checkbox-input" id="agreeTerms" required>
+                        <label class="checkbox-label" for="agreeTerms">I agree to the <a href="terms.html" target="_blank">Terms</a> and <a href="privacy.html" target="_blank">Privacy Policy</a></label>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="registerBtn">Create Account</button>
+                </form>
                 
-                <p style="text-align: center; color: var(--text-secondary); font-size: 0.85rem; margin-top: 24px;">
-                    By signing in, you agree to our <a href="terms.html" target="_blank" style="color: var(--primary);">Terms of Service</a> and <a href="privacy.html" target="_blank" style="color: var(--primary);">Privacy Policy</a>
-                </p>
+                <div class="divider"><span>or</span></div>
+                
+                <button type="button" class="google-btn-custom" id="googleSignUpBtn">
+                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                    Sign up with Google
+                </button>
             </div>
             
             <div class="login-footer" id="loginFooter">
-                <p id="footerText">Secure sign-in powered by Google</p>
+                <p id="footerText">Works on every browser &#x2014; no extensions needed</p>
             </div>
         </div>
         
         <div class="back-home">
-            <a href="index.html">← Back to Home</a>
+            <a href="index.html">&#x2190; Back to Home</a>
         </div>
     </div>
     
@@ -660,36 +725,142 @@
         let googleTokenClient = null;
         let oneTapAvailable = false;
         let googleInitRetries = 0;
-        const MAX_GOOGLE_RETRIES = 6; // 3 seconds max
+        const MAX_GOOGLE_RETRIES = 6;
         
         // ==================== DOM Elements ====================
         const alertError = document.getElementById('alertError');
         const alertSuccess = document.getElementById('alertSuccess');
         
+        // ==================== Tab Switching ====================
+        function switchTab(tab) {
+            hideAlerts();
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            if (tab === 'signin') {
+                document.querySelectorAll('.auth-tab')[0].classList.add('active');
+                document.getElementById('signinForm').classList.add('active');
+            } else {
+                document.querySelectorAll('.auth-tab')[1].classList.add('active');
+                document.getElementById('signupForm').classList.add('active');
+            }
+        }
+        
+        // ==================== Password Utilities ====================
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '\u25CF';
+            } else {
+                input.type = 'password';
+                btn.innerHTML = '&#x1F441;';
+            }
+        }
+        
+        function checkPasswordStrength(pw) {
+            const bar = document.getElementById('strengthBar');
+            const hasLen = pw.length >= 8;
+            const hasUpper = /[A-Z]/.test(pw);
+            const hasLower = /[a-z]/.test(pw);
+            const hasNum = /[0-9]/.test(pw);
+            
+            const updateReq = (id, valid) => {
+                const el = document.getElementById(id);
+                if (valid) {
+                    el.classList.add('valid');
+                    el.querySelector('.req-icon').textContent = '\u2713';
+                } else {
+                    el.classList.remove('valid');
+                    el.querySelector('.req-icon').textContent = '\u25CB';
+                }
+            };
+            updateReq('reqLength', hasLen);
+            updateReq('reqUpper', hasUpper);
+            updateReq('reqLower', hasLower);
+            updateReq('reqNumber', hasNum);
+            
+            const score = [hasLen, hasUpper, hasLower, hasNum].filter(Boolean).length;
+            bar.className = 'password-strength-bar';
+            if (score <= 1) bar.classList.add('weak');
+            else if (score <= 3) bar.classList.add('medium');
+            else bar.classList.add('strong');
+        }
+        
+        // ==================== Email/Password Auth ====================
+        async function handleEmailLogin(e) {
+            e.preventDefault();
+            if (isLoading) return;
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            if (!email || !password) return showError('Please fill in all fields');
+            
+            setLoading(true);
+            hideAlerts();
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Login failed');
+                showSuccess('Signed in! Redirecting...');
+                setTimeout(() => redirectAfterLogin(data), 800);
+            } catch (err) {
+                showError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+        
+        async function handleEmailRegister(e) {
+            e.preventDefault();
+            if (isLoading) return;
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            if (!name || !email || !password) return showError('Please fill in all fields');
+            if (!document.getElementById('agreeTerms').checked) return showError('Please agree to the Terms and Privacy Policy');
+            
+            setLoading(true);
+            hideAlerts();
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Registration failed');
+                showSuccess('Account created! Redirecting...');
+                setTimeout(() => redirectAfterLogin(data), 800);
+            } catch (err) {
+                showError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+        
         // ==================== Initialization ====================
         document.addEventListener('DOMContentLoaded', async () => {
             // Check if already logged in
             try {
-                const res = await fetch('/api/subscription', {
-                    credentials: 'include'
-                });
+                const res = await fetch('/api/subscription', { credentials: 'include' });
                 if (res.ok) {
                     const data = await res.json();
-                    // Redirect to homepage (or admin for owner)
                     redirectAfterLogin(data);
                     return;
                 }
-            } catch (e) {
-                // User not logged in
-            }
+            } catch (e) {}
             
-            // Initialize Google Sign-In
+            // Initialize Google Sign-In (optional — works if not blocked)
             initializeGoogleSignIn();
         });
         
         function initializeGoogleSignIn() {
             if (typeof google !== 'undefined' && google.accounts) {
-                // Initialize One Tap (works well on Chrome/Edge)
                 try {
                     google.accounts.id.initialize({
                         client_id: GOOGLE_CLIENT_ID,
@@ -702,7 +873,6 @@
                     console.log('One Tap not available:', e);
                 }
                 
-                // Initialize OAuth2 Token Client as fallback (works on all browsers including Brave)
                 if (google.accounts.oauth2) {
                     googleTokenClient = google.accounts.oauth2.initTokenClient({
                         client_id: GOOGLE_CLIENT_ID,
@@ -712,85 +882,53 @@
                 }
                 
                 googleInitialized = true;
-                // Hide any "Google blocked" messages
-                const blockedMsg = document.getElementById('googleBlockedMsg');
-                if (blockedMsg) blockedMsg.style.display = 'none';
             } else {
                 googleInitRetries++;
                 if (googleInitRetries < MAX_GOOGLE_RETRIES) {
-                    // Retry after a delay
                     setTimeout(initializeGoogleSignIn, 500);
                 } else {
-                    // Google script couldn't load - likely blocked by Brave Shields
-                    console.warn('Google Sign-In script blocked - likely by browser privacy settings');
-                    showGoogleBlockedMessage();
+                    // Google blocked — hide Google buttons, email/password still works fine
+                    document.querySelectorAll('.google-btn-custom').forEach(btn => {
+                        btn.style.display = 'none';
+                    });
+                    document.querySelectorAll('.divider').forEach(d => {
+                        d.style.display = 'none';
+                    });
                 }
             }
-        }
-        
-        function showGoogleBlockedMessage() {
-            // Show message near Google button
-            const googleBtn = document.getElementById('googleSignInBtn');
-            if (googleBtn && !document.getElementById('googleBlockedMsg')) {
-                const msg = document.createElement('p');
-                msg.id = 'googleBlockedMsg';
-                msg.style.cssText = 'color: #f59e0b; font-size: 12px; margin-top: 12px; text-align: center;';
-                msg.innerHTML = '⚠️ Google Sign-In is blocked by your browser.<br><a href="#" onclick="showGoogleHelp(); return false;" style="color: #6C63FF;">Click here to learn how to enable it</a>';
-                googleBtn.parentNode.insertBefore(msg, googleBtn.nextSibling);
-            }
-        }
-        
-        function showGoogleHelp() {
-            alert('Google Sign-In is blocked by your browser\'s privacy settings.\n\nTo enable it in Brave:\n1. Click the Brave Shields icon (lion) in the address bar\n2. Turn off Shields for this site, OR\n3. Click "Advanced Controls" → Allow Google scripts\n\nIn Firefox:\n1. Check your Enhanced Tracking Protection settings\n2. Add this site as an exception');
         }
         
         // ==================== Google Sign-In ====================
         function triggerGoogleSignIn() {
             if (!googleInitialized) {
-                if (googleInitRetries >= MAX_GOOGLE_RETRIES) {
-                    showGoogleHelp();
-                } else {
-                    showError('Google Sign-In is loading, please try again in a moment');
-                }
+                showError('Google Sign-In is blocked by your browser. Use email and password instead.');
                 return;
             }
-            
-            // Try One Tap first if available (Chrome/Edge)
             if (oneTapAvailable) {
                 try {
                     google.accounts.id.prompt((notification) => {
-                        // If One Tap fails or user dismissed, fall back to OAuth popup
                         if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                            console.log('One Tap not available, using OAuth popup');
-                            if (googleTokenClient) {
-                                googleTokenClient.requestAccessToken();
-                            } else {
-                                showError('Google Sign-In is not available in this browser');
-                            }
+                            if (googleTokenClient) googleTokenClient.requestAccessToken();
+                            else showError('Google Sign-In unavailable. Use email and password instead.');
                         }
                     });
                 } catch (e) {
-                    // Fall back to OAuth popup
-                    if (googleTokenClient) {
-                        googleTokenClient.requestAccessToken();
-                    }
+                    if (googleTokenClient) googleTokenClient.requestAccessToken();
                 }
             } else if (googleTokenClient) {
-                // Use OAuth popup directly (Brave, Firefox with strict privacy)
                 googleTokenClient.requestAccessToken();
             } else {
-                showError('Google Sign-In is not available');
+                showError('Google Sign-In unavailable. Use email and password instead.');
             }
         }
         
         document.getElementById('googleSignInBtn').addEventListener('click', triggerGoogleSignIn);
+        document.getElementById('googleSignUpBtn').addEventListener('click', triggerGoogleSignIn);
         
-        // Handle OAuth access token response (fallback for browsers that block One Tap)
         async function handleOAuthTokenResponse(tokenResponse) {
             if (isLoading || !tokenResponse.access_token) return;
             setLoading(true);
             hideAlerts();
-            
             try {
                 const res = await fetch('/api/auth/google-oauth', {
                     method: 'POST',
@@ -798,18 +936,12 @@
                     credentials: 'include',
                     body: JSON.stringify({ accessToken: tokenResponse.access_token })
                 });
-                
                 const data = await res.json();
-                
-                if (!res.ok) {
-                    throw new Error(data.error || 'Authentication failed');
-                }
-                
-                showSuccess('Sign in successful! Redirecting...');
-                setTimeout(() => redirectAfterLogin(data), 1000);
-                
-            } catch (error) {
-                showError(error.message);
+                if (!res.ok) throw new Error(data.error || 'Authentication failed');
+                showSuccess('Signed in! Redirecting...');
+                setTimeout(() => redirectAfterLogin(data), 800);
+            } catch (err) {
+                showError(err.message);
             } finally {
                 setLoading(false);
             }
@@ -819,7 +951,6 @@
             if (isLoading) return;
             setLoading(true);
             hideAlerts();
-            
             try {
                 const res = await fetch('/api/auth/google', {
                     method: 'POST',
@@ -827,24 +958,17 @@
                     credentials: 'include',
                     body: JSON.stringify({ idToken: response.credential })
                 });
-                
                 const data = await res.json();
-                
-                if (!res.ok) {
-                    throw new Error(data.error || 'Authentication failed');
-                }
-                
-                showSuccess('Sign in successful! Redirecting...');
-                setTimeout(() => redirectAfterLogin(data), 1000);
-                
-            } catch (error) {
-                showError(error.message);
+                if (!res.ok) throw new Error(data.error || 'Authentication failed');
+                showSuccess('Signed in! Redirecting...');
+                setTimeout(() => redirectAfterLogin(data), 800);
+            } catch (err) {
+                showError(err.message);
             } finally {
                 setLoading(false);
             }
         }
         
-        // Make it global for Google callback
         window.handleGoogleResponse = handleGoogleResponse;
         
         // ==================== Helpers ====================
@@ -870,17 +994,12 @@
             const buttons = document.querySelectorAll('.btn-primary, .google-btn-custom');
             buttons.forEach(btn => {
                 btn.disabled = loading;
-                if (loading) {
-                    btn.classList.add('btn-loading');
-                } else {
-                    btn.classList.remove('btn-loading');
-                }
+                if (loading) btn.classList.add('btn-loading');
+                else btn.classList.remove('btn-loading');
             });
         }
         
         async function redirectAfterLogin(data) {
-            // Restore cached preferences/freeAcknowledged from localStorage
-            // (handles Render restarts that wipe server-side data)
             try {
                 const raw = localStorage.getItem('sd_user_cache');
                 if (raw) {
@@ -898,10 +1017,14 @@
                         await fetch('/api/acknowledge-free', { method: 'POST', credentials: 'include' });
                     }
                 }
-            } catch (e) { /* silent - best effort restore */ }
-            // Go to admin for owner, homepage for everyone else (onboarding triggers there if needed)
+            } catch (e) {}
+            // Redirect: admin for owner, saved redirect URL, or homepage
+            const params = new URLSearchParams(window.location.search);
+            const redirectTo = params.get('redirect');
             if (data.role === 'owner') {
                 window.location.href = '/admin.html';
+            } else if (redirectTo && redirectTo.startsWith('/')) {
+                window.location.href = redirectTo;
             } else {
                 window.location.href = '/index.html';
             }
