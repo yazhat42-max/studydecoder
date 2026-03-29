@@ -272,7 +272,9 @@ function getAllFreeTierUsage(userId) {
 // Requires EMAIL_USER and EMAIL_APP_PASSWORD environment variables
 const emailTransporter = process.env.EMAIL_USER && process.env.EMAIL_APP_PASSWORD 
     ? nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.titan.email',
+        port: 465,
+        secure: true,
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_APP_PASSWORD
