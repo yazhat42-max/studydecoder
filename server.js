@@ -522,7 +522,7 @@ if (!fs.existsSync(sessionsPath)) {
 app.use(session({
     store: new FileStore({
         path: sessionsPath,
-        ttl: 30 * 24 * 60 * 60, // 30 days
+        ttl: 365 * 24 * 60 * 60, // 1 year
         retries: 0,
         logFn: () => {} // Disable logging
     }),
@@ -533,7 +533,7 @@ app.use(session({
     cookie: {
         secure: !config.isDev,
         httpOnly: true,
-        maxAge: 30 * 24 * 60 * 60 * 1000,
+        maxAge: 365 * 24 * 60 * 60 * 1000, // 1 year
         sameSite: config.isDev ? 'lax' : 'strict'
     }
 }));
@@ -1126,9 +1126,6 @@ app.post('/api/auth/login', async (req, res) => {
         
         // Set session
         req.session.userId = user.userId;
-        if (remember) {
-            req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
-        }
         
         const role = getUserRole(updatedUser.email);
         console.log(`✅ Login: ${updatedUser.email} (${role})`);
