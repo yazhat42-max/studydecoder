@@ -806,7 +806,7 @@
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Login failed');
                 showSuccess('Signed in! Redirecting...');
-                setTimeout(() => redirectAfterLogin(data), 800);
+                await redirectAfterLogin(data);
             } catch (err) {
                 showError(err.message);
             } finally {
@@ -835,7 +835,7 @@
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Registration failed');
                 showSuccess('Account created! Redirecting...');
-                setTimeout(() => redirectAfterLogin(data), 800);
+                await redirectAfterLogin(data);
             } catch (err) {
                 showError(err.message);
             } finally {
@@ -939,7 +939,7 @@
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Authentication failed');
                 showSuccess('Signed in! Redirecting...');
-                setTimeout(() => redirectAfterLogin(data), 800);
+                await redirectAfterLogin(data);
             } catch (err) {
                 showError(err.message);
             } finally {
@@ -961,7 +961,7 @@
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Authentication failed');
                 showSuccess('Signed in! Redirecting...');
-                setTimeout(() => redirectAfterLogin(data), 800);
+                await redirectAfterLogin(data);
             } catch (err) {
                 showError(err.message);
             } finally {
@@ -1018,15 +1018,31 @@
                     }
                 }
             } catch (e) {}
+            
+            // Verify session is established before redirecting
+            try {
+                const check = await fetch('/api/subscription', { credentials: 'include' });
+                if (!check.ok) {
+                    // Session not set yet — wait and retry once
+                    await new Promise(r => setTimeout(r, 1000));
+                    const retry = await fetch('/api/subscription', { credentials: 'include' });
+                    if (!retry.ok) {
+                        showError('Sign-in succeeded but session failed to start. Please try again.');
+                        setLoading(false);
+                        return;
+                    }
+                }
+            } catch (e) {}
+            
             // Redirect: admin for owner, saved redirect URL, or homepage
             const params = new URLSearchParams(window.location.search);
             const redirectTo = params.get('redirect');
             if (data.role === 'owner') {
-                window.location.href = '/admin.html';
+                window.location.replace('/admin.html');
             } else if (redirectTo && redirectTo.startsWith('/')) {
-                window.location.href = redirectTo;
+                window.location.replace(redirectTo);
             } else {
-                window.location.href = '/index.html';
+                window.location.replace('/index.html');
             }
         }
     </script>

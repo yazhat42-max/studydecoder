@@ -467,7 +467,7 @@ app.use(session({
         secure: !config.isDev,
         httpOnly: true,
         maxAge: 365 * 24 * 60 * 60 * 1000, // 1 year
-        sameSite: config.isDev ? 'lax' : 'strict'
+        sameSite: 'lax'
     }
 }));
 

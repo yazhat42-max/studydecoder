@@ -57,6 +57,9 @@
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 1.5rem;
             font-weight: 800;
             background: var(--gradient);
@@ -64,6 +67,21 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-decoration: none;
+        }
+
+        .logo img {
+            width: 36px;
+            height: 36px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--secondary);
         }
 
         .nav-links {
@@ -199,19 +217,54 @@
                 padding: 30px 25px;
             }
 
+            .mobile-menu-btn {
+                display: block;
+            }
+
             .nav-links {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                padding: 1rem 5%;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                gap: 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                padding: 0.8rem 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .nav-links li:last-child {
+                border-bottom: none;
             }
         }
     </style>
 </head>
 <body>
     <nav>
-        <a href="index.html" class="logo">Study Decoder</a>
-        <ul class="nav-links">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Study Decoder">
+            <span>Study Decoder</span>
+        </a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+        <ul class="nav-links" id="navLinks">
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
+            <li id="navSignIn"><a href="login.html" style="background: var(--primary); color: white !important; padding: 8px 20px; border-radius: 50px; font-weight: 600;">Sign In</a></li>
+            <li id="navUserMenu" style="display: none;">
+                <span id="navUserName" style="color: var(--primary); font-weight: 600; margin-right: 12px;"></span>
+                <a href="#" onclick="logout(); return false;" style="border: 2px solid var(--primary); color: var(--primary); padding: 8px 20px; border-radius: 50px; font-weight: 600; text-decoration: none;">Sign Out</a>
+            </li>
         </ul>
     </nav>
 
@@ -343,5 +396,36 @@
             <a href="terms.html">Terms of Service</a> | <a href="privacy.html">Privacy Policy</a> | <a href="contact.html">Contact Us</a>
         </p>
     </footer>
+    <script>
+    document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+        const navLinks = document.getElementById('navLinks');
+        navLinks.classList.toggle('active');
+        this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+    });
+    document.querySelectorAll('#navLinks a').forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('navLinks').classList.remove('active');
+            document.getElementById('mobileMenuBtn').textContent = '☰';
+        });
+    });
+    async function checkNav() {
+        try {
+            const res = await fetch('/api/subscription', { credentials: 'include' });
+            if (res.ok) {
+                const data = await res.json();
+                document.getElementById('navSignIn').style.display = 'none';
+                document.getElementById('navUserMenu').style.display = 'flex';
+                document.getElementById('navUserName').textContent = data.name || data.email.split('@')[0];
+            }
+        } catch (e) {}
+    }
+    function logout() {
+        fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }).finally(() => {
+            try { localStorage.removeItem('sd_user_cache'); } catch(e) {}
+            window.location.href = '/index.html';
+        });
+    }
+    checkNav();
+    </script>
 </body>
 </html>

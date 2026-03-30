@@ -536,7 +536,7 @@ app.use(session({
         secure: !config.isDev,
         httpOnly: true,
         maxAge: 365 * 24 * 60 * 60 * 1000, // 1 year
-        sameSite: config.isDev ? 'lax' : 'strict'
+        sameSite: 'lax'
     }
 }));
 
@@ -1245,6 +1245,62 @@ app.post('/api/auth/reset-password', async (req, res) => {
         console.error('Reset password error:', error);
         res.status(500).json({ error: 'Failed to reset password' });
     }
+});
+
+// ==================== CONTACT FORM ====================
+const contactLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 5,
+    message: { success: false, error: 'Too many messages. Please try again later.' }
+});
+
+app.post('/api/contact', contactLimiter, (req, res) => {
+    const { name, email, subject, message } = req.body;
+    if (!name || !email || !subject || !message) {
+        return res.status(400).json({ success: false, error: 'All fields are required' });
+    }
+    const cleanName = String(name).trim().substring(0, 100);
+    const cleanEmail = String(email).trim().toLowerCase().substring(0, 100);
+    const cleanSubject = String(subject).trim().substring(0, 200);
+    const cleanMessage = String(message).trim().substring(0, 2000);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cleanEmail)) {
+        return res.status(400).json({ success: false, error: 'Invalid email address' });
+    }
+
+    if (!emailTransporter) {
+        console.error('❌ EMAIL NOT CONFIGURED - Cannot send contact form');
+        return res.status(500).json({ success: false, error: 'Email service unavailable' });
+    }
+
+    const mailOptions = {
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: 'help@studydecoder.com.au',
+        replyTo: cleanEmail,
+        subject: `[Contact Form] ${cleanSubject}`,
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h2 style="color: #6366f1;">New Contact Form Message</h2>
+                <p><strong>Name:</strong> ${cleanName}</p>
+                <p><strong>Email:</strong> ${cleanEmail}</p>
+                <p><strong>Subject:</strong> ${cleanSubject}</p>
+                <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                <p style="white-space: pre-wrap;">${cleanMessage}</p>
+                <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                <p style="color: #999; font-size: 11px;">Sent from Study Decoder contact form</p>
+            </div>
+        `
+    };
+
+    emailTransporter.sendMail(mailOptions)
+        .then(() => {
+            console.log(`📧 Contact form email sent from ${cleanEmail}: ${cleanSubject}`);
+            res.json({ success: true, message: 'Message sent successfully' });
+        })
+        .catch(err => {
+            console.error('❌ Failed to send contact email:', err.message);
+            res.status(500).json({ success: false, error: 'Failed to send message' });
+        });
 });
 
 // ==================== OG CODE ROUTES ====================
