@@ -1557,7 +1557,7 @@ app.post('/api/logout', (req, res) => {
         res.clearCookie('studydecoder.sid', {
             secure: !config.isDev,
             httpOnly: true,
-            sameSite: config.isDev ? 'lax' : 'strict'
+            sameSite: 'lax'
         });
         res.json({ success: true });
     });
