@@ -1,1757 +1,0 @@
-
-Industrial Technology
-Stage 6
-Syllabus
-2008
-
-Original published version updated:
-September 1999 - Board Bulletin/Official Notices Vol 8 No 7 (BOS 54/99)
-April 2000 - Board Bulletin/Official Notices Vol 9 No 2 (BOS 13/00)
-March 2002 - Board of Studies Job Number 2002162
-May 2002 - Board Bulletin/Official Notices Vol 11 No 2 (BOS 24/02)
-September 2008 - Board Bulletin/Official Notices Vol 17 No 2 (BOS 25/08)
-June 2009 - Assessment and Reporting information updated
-August 2013 - Updated with minor amendments
-(c) 2009 Copyright Board of Studies NSW for and on behalf of the Crown in right of the State of New South Wales.
-This document contains Material prepared by the Board of Studies NSW for and on behalf of the State of New South Wales. The Material is protected by Crown copyright.
-All rights reserved. No part of the Material may be reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form or transmitted to any other person or stored electronically in any form without the prior written permission of the Board of Studies NSW, except as permitted by the Copyright Act 1968. School students in NSW and teachers in schools in NSW may copy reasonable portions of the Material for the purposes of bona fide research or study.
-When you access the Material you agree:
-* to use the Material for information purposes only
-* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire Material without the prior permission of the Board of Studies NSW
-* to acknowledge that the Material is provided by the Board of Studies NSW
-* not to make any charge for providing the Material or any part of the Material to another person or in any way make commercial use of the Material without the prior written consent of the Board of Studies NSW and payment of the appropriate copyright fee
-* to include this copyright notice in any copy made
-* not to modify the Material or any part of the Material without the express prior written permission of the Board of Studies NSW.
-The Material may contain third party copyright materials such as photos, diagrams, quotations, cartoons and artworks. These materials are protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's specific permission. Unauthorised reproduction, transmission or commercial use of such copyright materials may result in prosecution.
-The Board of Studies has made all reasonable attempts to locate owners of third party copyright material and invites anyone from whom permission has not been sought to contact the Copyright Officer, ph (02) 9367 8289, fax (02) 9279 1482.
-Published by
-Board of Studies NSW
-GPO Box 5300
-Sydney NSW 2001
-Australia
-Tel: (02) 9367 8111
-Fax: (02) 9367 8484
-Internet: www.boardofstudies.nsw.edu.au
-ISBN: 978 174147 8518
-2009374
-20130570
-
-Contents
-1	The Higher School Certificate Program of Study	4
-2	Rationale for Industrial Technology in the Stage 6 Curriculum	5
-3	Continuum of Learning for Industrial Technology Stage 6 Students	6
-4	Aim	7
-5	Objectives	7
-6	Course Structure	8
-7	Objectives and Outcomes	11
-7.1	Table of Objectives and Outcomes	11
-7.2	Key Competencies	13
-8	Content: Industrial Technology Stage 6 Preliminary Course	14
-9	Content: Industrial Technology Stage 6 HSC Course	18
-10	Course Requirements	55
-11	Post-school Opportunities	56
-11.1	Recognition of Student Achievement in Vocational Education and Training (VET)	56
-12	Assessment and Reporting	57
-
-
-
-1	The Higher School Certificate Program of Study
-The purpose of the Higher School Certificate program of study is to:
-* provide a curriculum structure which encourages students to complete secondary education;
-* foster the intellectual, social and moral development of students, in particular developing their:
-- knowledge, skills, understanding and attitudes in the fields of study they choose
-- capacity to manage their own learning
-- desire to continue learning in formal or informal settings after school
-- capacity to work together with others
-- respect for the cultural diversity of Australian society;
-* provide a flexible structure within which students can prepare for:
-- further education and training
-- employment
-- full and active participation as citizens;
-* provide formal assessment and certification of students' achievements;
-* provide a context within which schools also have the opportunity to foster students' physical and spiritual development.
-
-2	Rationale for Industrial Technology in the Stage 6 Curriculum
-Much of Australia's economic, social and cultural development can be related to the capacity of our industries to develop and use technology in the manufacture of goods and services. The effective and responsible application of industrial technologies has a direct bearing upon the quality of our lives. For this reason, the study of industrial technology and its role in industry is relevant and purposeful for many students.
-The subject provides students with a choice of six different focus area industries, through which they can study the course. These focus areas have been chosen to cover a wide range of potentially accessible and locally available technologies. 
-Industrial Technology has been developed to incorporate content related to current and developing technologies. It offers students the opportunity to study the interrelationships of technologies, equipment and materials used by industry and to develop skills through the processes of design, planning and production.
-Rapid technological change, particularly in the computer-based technologies, is influencing the nature of our industrial enterprises and the work that is undertaken in these enterprises. As a result, our industrial enterprises are becoming more globally competitive. 
-Industrial Technology seeks to raise students' awareness of the interaction between technology, industry, society and the environment, and to develop their ability to make value judgements about issues, decisions and problems arising from this interaction. Students achieve this by applying practical experiences to the study of the technology, management and organisation of industry.
-The current Australian industrial workforce is diverse in nature, gender-inclusive and better educated through ongoing training and development. 
-Increasing retention rates within NSW schools have resulted in a need to link the senior school curriculum more closely with post-school vocational education and work options. This syllabus acknowledges the need to strengthen such links. Through a process of observing and analysing industry practice and through personal practical experiences, students will gain knowledge and skills together with appropriate attitudes about technology and industry.
-The course has been designed to be inclusive of the needs, interests and aspirations of students and it provides opportunities for them to learn explicitly about gender issues relating to the industry studied. It also caters for students who wish to undertake further study in a related area at university level or to pursue further industry training. Therefore the skills and knowledge gained through the study of Industrial Technology Stage 6 will enable students to make positive contributions to Australian industry and society.
-
-3	Continuum of Learning for Industrial Technology Stage 6 Students
-
-
-4	Aim
-Industrial Technology at Stage 6 is designed to develop in students a knowledge and understanding of the selected industry and its related technologies with an emphasis on design, management and production through practical applications.
-5	Objectives
-Students will develop:
-* knowledge and understanding of the focus area industry and of manufacturing processes and techniques used by industry
-* knowledge and understanding of safe and cooperative work practices and of the need for a safe and cooperative work environment
-* competence in designing, managing and communicating within a relevant industry context
-* knowledge and skills in producing quality products
-* knowledge and skills in communication and information processing related to the industry focus area
-* an appreciation of quality products and the principles of quality control
-* an appreciation of the relationships between technology, the individual, society and the environment.
-
-6	Course Structure
-Industrial Technology Stage 6 has a Preliminary course and an HSC course.
-The Preliminary course of 120 indicative hours consists of project work and an industry study that provide a broad range of skills and knowledge related to the focus area chosen and an introduction to processes, skills and practices relevant to the design, management, communication and construction of practical projects.
-The HSC course of 120 indicative hours consists of the development, management and communication of a major practical project and folio that contribute to the development of knowledge, skills and understanding related to the focus area of study.
-Students choose to study ONE of SIX focus areas. The same area is to be studied in both the Preliminary and HSC courses. The focus areas are:
-* Automotive Technologies
-* Electronics Technologies
-* Graphics Technologies
-* Metal and Engineering Technologies
-* Multimedia Technologies
-* Timber Products and Furniture Technologies.
-Both the Preliminary and HSC courses are organised around four sections:
-A. Industry Study
-B. Design, Management and Communication
-C.	Production
-D. Industry Related Manufacturing Technology.
-
-Preliminary Course
-120 indicative hoursHSC Course
-120 indicative hoursIndustry Study 15%
-Study of the organisation and management of an individual business within the focus area, including: 
-• structural 
-• technical 
-• environmental 
-• sociological 
-• personnel 
-• WHS issues 
-Industry Study 15%
-Study of the organisation and management of the industry related to the focus area, including: 
-• structural 
-• technical 
-• environmental 
-• sociological 
-• personnel 
-• sectors within the industry
-• legislation
-• WHS issues
-• career opportunities
-• historical aspects
-• sales and marketingDesign 10%
-Design and plan projects through the completion of associated folios
-• elements and principles of design
-• types of design
-• quality
-• influences affecting designMajor Project 60%
-Design, Management and Communication
-• application of design principles in the production of the Major Project:
-- design development 
-- sketching and idea generation
-- prototyping, modelling and testing
-- production and working drawings
-- quality and ongoing evaluation
-- selection of appropriate materials, processes and other resources
-• application of management and communication skills to produce a related folio justifying:
-- research 
-- design
-- analysis 
-- evaluation including selection of appropriate materials, components, processes and technologies
-- ICT 
-- WHS 
-- presentation
-Production 
-• applying knowledge and skills through the construction of a Major Project which reflects:
-- quality
-- evidence of a range of skills
-- degree of difficulty
-- links between planning and production
-- use of appropriate materials, components, processes and technologies
-- evidence of practical problem solving
-- WHS and safe work practices* Management and Communication 20%
-Manage work through the completion of a management folio linked to each project produced
-• development of a number of practical projects 
-• development of management folios
-• development of skills related to research, analysis and evaluation
-• skills in managing projects
-• documentation skills in the preparation, planning and presentation of a management folio
-• skills in literacy through written reports, folio work 
-• skills in computer-based technologies
-• numeracy skills related to sizing, costing, estimating, ordering and efficient resource usage
-• graphical skills related to the project work
-• knowledge and understanding of workplace safety and communication:
-- signage
-- WHS principles and requirements
-- personal protective equipment (PPE)
-- safe working practices
-- risk assessment* Production 40%
-• developing knowledge and skills through the construction of a number of projects 
-• acquisition of relevant practical skillsIndustry Related Manufacturing Technology 25%
-• demonstrates knowledge and understanding of a range of materials, processes, tools, equipment, machinery and technologies related to the focus area industry through practical experiences, including the development of the Major Project
-• new/emerging technologies associated with the industry* Industry Related Manufacturing Technology 15%
-• developing knowledge and understanding of a range of materials, processes, tools, equipment and machinery through the construction of a number of projects* 
-
-7	Objectives and Outcomes
-7.1	Table of Objectives and Outcomes
-ObjectivesPreliminary OutcomesHSC OutcomesStudents will develop
-1. knowledge and understanding of the focus area industry and of manufacturing processes and techniques used by industry
-A student:
-P1.1	describes the organisation and management of an individual business within the focus area industry
-P1.2	identifies appropriate equipment, production and manufacturing techniques, including new and developing technologiesA student:
-H1.1	investigates industry through the study of businesses in one focus area
-H1.2	identifies appropriate equipment, production and manufacturing techniques and describes the impact of new and developing technologies in industry
-H1.3	identifies important historical developments in the focus area industry2. knowledge and understanding of safe and cooperative work practices and of the need for a safe and cooperative work environmentP2.1	describes and uses safe working practices and correct workshop equipment maintenance techniques
-P2.2	works effectively in team situationsH2.1	demonstrates proficiency in the use of safe working practices and workshop equipment maintenance techniques
-3. competence in designing, managing and communicating within a relevant industry contextP3.1	sketches, produces and interprets drawings in the production of projects
-P3.2	applies research and problem-solving skills 
-P3.3	demonstrates appropriate design principles in the production of projectsH3.1	demonstrates skills in sketching, producing and interpreting drawings 
-H3.2	selects and applies appropriate research and problem-solving skills 
-H3.3	applies and justifies design principles through the production of a Major Project4. knowledge and skills in producing quality productsP4.1	demonstrates a range of practical skills in the production of projects
-P4.2	demonstrates competency in using relevant equipment, machinery and processes
-P4.3	identifies and explains the properties and characteristics of materials/components through the production of projectsH4.1	demonstrates competency in a range of practical skills appropriate to the Major Project
-H4.2	explores the need to outsource appropriate expertise where necessary to complement personal practical skills
-H4.3	critically applies knowledge and skills related to properties and characteristics of materials/components 5. knowledge and skills in communication and information processing related to the industry focus areaP5.1	uses communication and information processing skills 
-P5.2	uses appropriate documentation techniques related to the management of projectsH5.1	selects and uses communication and information processing skills 
-H5.2	examines and applies appropriate documentation techniques to project management6. an appreciation of quality products and the principles of quality controlP6.1	identifies the characteristics of quality manufactured products
-P6.2	identifies and explains the principles of quality and quality controlH6.1	evaluates the characteristics of quality manufactured products
-H6.2	applies the principles of quality and quality control 7. an appreciation of the relationships between technology, the individual, society and the environmentP7.1	identifies the impact of one related industry on the social and physical environment 
-P7.2	identifies the impact of existing, new and emerging technologies of one related industry on society and the environmentH7.1	explains the impact of the focus area industry on the social and physical environment
-H7.2	analyses the impact of existing, new and emerging technologies of the focus industry on society and the environmentAll students in Industrial Technology will complete study in the following areas: 
-A. Industry Study
-B. Design, Management and Communication
-C. Production
-D. Industry Related Manufacturing Technology.
-The course outcomes together with the first two sections above are common to each industry focus area. 
-For each industry focus area, the Production and Industry Related Manufacturing Technology are listed separately.
- It is essential that the content and the focus area outcomes be considered collectively when programming for the course in order to ascertain the depth and breadth of treatment of each topic.
-The content in the Preliminary course and the HSC course within each focus area is differentiated in terms of depth of study and its application to the individual student's projects.
-In the Preliminary study, the content is introductory and is related to a number of practical projects and the study of an individual business in the focus area. The aim of the Preliminary course is to prepare and equip the students with the necessary knowledge and skills to successfully complete the HSC Major Project and related folio. 
-The HSC content is centred on the application of design, research and manufacture of a Major Project and related folio, together with a more detailed study of the focus area industry.
-7.2	Key Competencies 
-Industrial Technology Stage 6 provides a context within which to develop general competencies essential for students to become effective learners and make a positive contribution to their community.
-During the course, students learn to:
-* source, select and sequence information about issues in a selected industry, developing competence in collecting, analysing, and organising information
-* debate, describe, discuss and explain issues in written, graphic and oral form, developing competence in communicating ideas and information
-* plan, prepare and present project work and planning folio to meet a range of needs, developing competence in planning and organising activities
-* cooperate with individuals and groups, developing competence in working with others and teams
-* design, implement and evaluate solutions to practical situations in a specific focus industry, developing competence in solving problems
-* plan, develop and modify projects including costing, quantities, measurement and time, developing competence in using mathematical ideas and techniques
-* experiment with and prepare practical projects using appropriate materials and equipment, developing competence in using technology.
-The course structure and pedagogy provide extensive opportunities to develop the key competencies.
-
-8	Content: Industrial Technology Stage 6 Preliminary Course
-Preliminary Course Outcomes and Content 
-Focus Area: All
-It is essential that the content and the focus area outcomes be considered collectively in order to ascertain the depth and breadth of treatment for each topic.
-Course Outcomes
-A student:
-P1.1	describes the organisation and management of an individual business within the focus area industry
-P1.2	identifies appropriate equipment, production and manufacturing techniques, including new and developing technologies
-P2.1	describes and uses safe working practices and correct workshop equipment maintenance techniques
-P2.2	works effectively in team situations
-P3.1	sketches, produces and interprets drawings in the production of projects
-P3.2	applies research and problem-solving skills
-P3.3	demonstrates appropriate design principles in the production of projects
-P4.1	demonstrates a range of practical skills in the production of projects
-P4.2	demonstrates competency in using relevant equipment, machinery and processes
-P4.3	identifies and explains the properties and characteristics of materials/components through the production of projects
-P5.1	uses communication and information processing skills 
-P5.2	uses appropriate documentation techniques related to the management of projects
-P6.1	identifies the characteristics of quality manufactured products
-P6.2	identifies and explains the principles of quality and quality control
-P7.1	identifies the impact of one related industry on the social and physical environment
-P7.2	identifies the impact of existing, new and emerging technologies of one related industry on society and the environment
-
-Industry Study (Preliminary) (15%)
-Students will study the organisation and management of an individual business related to the focus area.
-Students learn about:Students learn to:Structural factors
-• organisation 
-• marketing and sales
-• production
-• workplace environment• investigate the organisation and structure of a businessTechnical factors
-• tools 
-• equipment/plant
-• production techniques, for example, mass production, mechanisation, specialisation
-• identify the range of equipment, processes and techniques used by a business Environmental factors 
-• resources, alternatives, limitations,
-• recycling/reusing
-• pollution
-• government legislation• identify how the resources and processes used in a business impact on environmental and sociological factors
-• identify the problems of pollution and any recycling of materials associated with a business
-• appreciate the impact of government legislationSociological factors
-• issues relating to a business
-• workplace cultures
-• the role of a business in the focus industry• describe how the business impacts on the focus industryPersonnel issues
-• industrial relations
-• entry level training requirements
-• roles of industry personnel• identify career opportunities and working conditions, including gender issues within a business 
-• describe the various roles and requirements of key personnel within a businessWork health and safety
-• signage
-• WHS principles and requirements
-• personal protective equipment (PPE)
-• safe working practices
-• first aid
-• materials handling• identify relevant WHS factors in a business that ensure a safe working environment
-Design (10%) 
-Students learn to design, plan and manage their work through the completion of a management folio linked to each project produced.
-Students learn about:Students learn to:Designing and planning practical projects through the completion of associated management folios• use a range of options available to them during the designing/modifying and planning stages of projectsElements of design
-• line, direction and style
-• shape and size
-• colour
-• texture• experiment with and apply the elements and principles of design across a range of projectsPrinciples of design
-• proportion
-• balance
-• rhythm
-• emphasis
-• contrast, harmony and unity• describe and analyse principles of design for manufactured itemsAspects of design
-• functionality
-• aesthetics
-• factors determining appropriateness of design:
-- economics 
-- environment 
-- manufacturing techniques
-- sustainability 
-- decoration
-- anthropometrics and ergonomics
-• material suitability and selection• describe the relationship between function and aesthetics in a range of manufactured items within the focus technology
-• evaluate a range of manufactured items to determine appropriate design features, material suitability and choice within the focus technology
-Communication techniques
-Communication skills related to practical project work
-Graphical 
-• should include:
-- object drawing: views of items from different perspectives, including orthogonal (2D) and pictorial (3D) representations
-- sketching, rendering using a range of appropriate media
-- industry production drawing specifications: correct dimensions and proportions, accurate details on drawings and exploded views
-- CAD and presentation techniques• interpret and prepare appropriate drawings required for the graphical communication/presentation of projects
-• use a range of manual and computer-based graphical techniques to communicate design details of project developmentInformation and communication technologies (ICT)
-• appropriate tools to assist in design development, including:
-- word processing
-- spreadsheets
-- data bases
-- presentation
-- page layout
-- computer-aided design (CAD)• use appropriate ICT to assist in the development of projects and the preparation and completion of related foliosManagement and Communication (20%)
-Students will learn communication and information processing skills through the completion of a management folio linked to each project produced.
-Students learn about:Students learn to:Knowledge and understanding of project management
-• skills in managing projects
-• development of management folios
-• development of skills related to research, analysis and evaluation• apply research, analysis and evaluation skills in planning a range of practical projectsProject management
-• planning
-• documentation• use project development techniques to complete practical projects within a given time frameLiteracy
-• industry terminology
-• written reports using appropriate text types
-• material/component list
-• management folio
-• ICT• compile reports using appropriate text types using information gathered
-• document relevant information into related folios
-• develop ICT skills in the preparation of related foliosNumeracy
-• related calculation skills:
-- ordering
-- sizing
-- quantities
-- costing
-- estimates• use the appropriate numeracy skills relevant to a business, including calculating the need for and costs of materials/components Communication
-• reading and interpretation of technical drawings
-• industry standards
-• freehand drawing 
-• sketching and annotations
-• production and working drawings
-• ICT
-• WHS signage• interpret and understand drawings 
-• use sketches and freehand drawings to interpret ideas
-• prepare working drawings for the production of projects through both manual and ICT techniques
-• identify and apply signage 9	Content: Industrial Technology Stage 6 HSC Course
-HSC Course Outcomes and Content 
-Focus Area: All
-It is essential that the content and the focus area outcomes be considered collectively in order to ascertain the depth and breadth of treatment for each topic.
-Course Outcomes
-A student:
-H1.1	investigates industry through the study of businesses in one focus area
-H1.2	identifies appropriate equipment, production and manufacturing techniques and describes the impact of new and developing technologies in industry
-H1.3	identifies important historical developments in the focus area industry
-H2.1	demonstrates proficiency in the use of safe working practices and workshop equipment maintenance techniques
-H3.1		demonstrates skills in sketching, producing and interpreting drawings
-H3.2	selects and applies appropriate research and problem-solving skills 
-H3.3	applies and justifies design principles effectively through the production of a Major Project
-H4.1	demonstrates competence in a range of practical skills appropriate to the Major Project
-H4.2	explores the need to outsource appropriate expertise where necessary to complement personal practical skills
-H4.3	critically applies knowledge and skills related to properties and characteristics of materials/components
-H5.1	selects and uses communication and information processing skills
-H5.2	examines and applies appropriate documentation techniques to project management
-H6.1	evaluates the characteristics of quality manufactured products
-H6.2	applies the principles of quality and quality control
-H7.1	explains the impact of the focus area industry on the social and physical environment
-H7.2	analyses the impact of existing, new and emerging technologies of the focus industry on society and the environment 
-
-Industry Study HSC (15%)
-Students will undertake a broad study of industry related to the specific business studied in the Preliminary course.
-Students learn about:Students learn to:Structural considerations
-• organisation 
-• management (roles and levels)
-• marketing and advertising
-• production and efficiency
-• restructuring
-• quality control• identify the organisation and structure of businesses related to the specific industry
-• identify structural factors/considerations that affect production, efficiency and quality control within the business studiedTechnical considerations
-• mechanisation 
-• specialisation/generalisation
-• mass production
-• automation
-• new and emerging technologies• describe and evaluate the significance various technical factors/considerations have in the efficiency and viability of the business studiedEnvironmental and sociological considerations
-• alternative resources: 
-- power
-- material
-- processes
-- limitations
-• recycling and reusing
-• waste management and minimisation
-• pollution
-• sustainable development
-• rehabilitation of commercial sites• describe and evaluate the approaches to the various environmental and sociological factors adopted by the industry studied
-• recognise and evaluate alternatives to traditional industrial practice especially in relation to power and resource management• legislative requirements:
-- local
-- state
-- federal
-- environmental studies • discuss and justify the ramifications of legislative requirements on the development and sustainability of the industry• location:
-- land costs and availability
-- transportation facilities
-- workforce
-- impact on surrounding population
-- resource availability
-- geographical factors
-- waste management• identify and describe how factors relating to location affect the viability and organisation of industryPersonnel issues
-• industrial relations: 
-- equity/EEO 
-- unions
-- group negotiated contracts
-- individual contracts
-• career and training opportunities
-• specialisation and multi-skilling
-• roles of industry personnel
-• work practices• describe the personnel issues that relate to industry 
-• identify government legislation and policies that ensure the employees' rights and job protection Work health and safety
-• government legislation
-• industry requirements: 
-- standards
-- policing
-- prosecution
-• risk assessment
-• safety training and human factors
-• workplace culture
-• WHS communication• discuss the importance of WHS in industry
-• identify government legislation and industry requirements that ensure a safe working environmentHistorical developments
-• the significant developments that have occurred in the focus area industry and how they have impacted on the industry as a whole, including:
-- manufacturing processes
-- materials
-- work practices • recognise how historical developments and practices have moulded the industry both positively and negatively
-Major Project (HSC) (60%)
-Students learn to refine and extend their project management skills in the following areas, largely through the development and completion of their Major Project management folio.
-Students learn about:Students learn to:Design, management and communication
-• application of design principles in the production of the Major Project:
-- research
-- design development 
-- sketching and idea generation
-- prototyping, modelling and testing
-- production and working drawings
-- quality and ongoing evaluation• explain and justify decisions made during the designing/modifying and planning stages of the Major Project
-• refine skills in interpreting and creating drawings relevant to the Major Project
-• prepare all necessary sketches and working drawings required for the production of the Major Project- selection of appropriate materials, processes and resources• select and justify appropriate materials to be used in the Major Project- development of time and finance plans• apply time and finance plans when completing the Major Project• application of management and communication skills to produce a related folio justifying:
-- research 
-- design
-- analysis 
-- evaluation including selection of appropriate materials, components, processes and technologies
-- ICT 
-- WHS
-- management 
-- presentation• utilise appropriate ICT in the development and production of the related folio
-• incorporate a range of presentation skills and techniques in the development and production of the related folioProduction 
-• applying knowledge and skills through the construction of a Major Project which reflects:
-- quality
-- evidence of a range of skills
-- degree of difficulty
-- links between planning and production
-- use of appropriate materials, components, processes and technologies
-- evidence of practical problem solving
-- WHS and safe work practices• combine the application design, management and communication with industry related manufacturing technology in the production of a quality Major Project Industry Related Manufacturing Technology 
-Focus Area: Automotive Technologies (Preliminary)
-Note: All repairs/modifications made to motor vehicles must conform to government and statutory regulations and guidelines.
-Students learn about:Students learn to:Fuels and lubricants
-• petrol
-• diesel
-• oils• discuss and differentiate between the characteristics and advantages/disadvantages of a range of fuels and lubricantsEngine types
-• single cylinder 2 stroke
-• single cylinder in line 4 stroke
-• 4 cylinder engines 
-• diesel engines• gain an awareness of the operation of an engine 
-• use basic fault-finding techniques
-• conduct basic routine maintenance 
-• dismantle and reassemble a variety of engine componentsEngine systems
-• engine operation
-• piston assembly
-• identify the engine and its related components
-• use basic fault-finding techniques
-• conduct basic routine maintenance 
-• dismantle and reassemble a variety of chassis and related componentsCooling systems
-• operation of the cooling system
-• coolants• outline the basic automotive cooling systems
-• conduct basic routine maintenance
-• use basic fault-finding techniquesFuel systems
-• principles of the carburettor system
-• principles of fuel injection system• identify and discuss the principles of fuel systems
-• carry out basic repairsIntake and exhaust systems
-• types of air cleaners
-• components of an exhaust system• identify and discuss the principles of intake and exhaust systems
-• carry out basic repairsManual transmission
-• purpose of transmission
-• types of gears• identify and discuss the principles of manual transmissionElectrical ignition system
-• battery
-• distributor
-• spark plugs• identify the components of an ignition system
-• conduct basic routine maintenance
-• use basic fault-finding techniquesBody electrical systems
-• electrical circuit diagrams
-• electrical symbols
-• lamp bulbs
-• headlights
-• exterior lights
-• interior lamps
-• turn signal indicators• identify the components of an electrical system
-• conduct basic routine maintenance
-• use basic fault-finding techniquesBody
-• panel repairs• identify and carry out basic repairs on body panelsDrive line systems
-• front-wheel drive
-• rear-wheel drive
-• four-wheel drive 
-• all-wheel drive• identify and discuss the principles of drive systemsWheels and tyres
-• tyre construction
-• types of tyres
-• characteristics of tyres
-• tyre identification
-• tyre tread patterns• identify and discuss the principles of tyre construction
-• identify and discuss the different types of tyres and their uses
-Braking systems
-• drum brakes
-• disc brakes
-• parking brake• identify and discuss the principles of braking systems
-• conduct basic routine maintenanceSuspension systems
-• leaf springs
-• coil springs
-• shock absorbers• identify and discuss the principles of vehicle suspension systems
-• conduct basic routine maintenanceSteering systems 
-• components of a steering system• identify the components of a steering system
-• conduct basic routine maintenanceTools and equipment
-• the use and maintenance of tools and equipment involved in the processes associated with the engine, chassis, electrical system and body• use safely and correctly a variety of tools and equipment
-• appreciate safe working procedures and conditionsIndustry Related Manufacturing Technology
-Focus Area: Automotive Technologies (HSC)
-Note: All repairs/modifications made to motor vehicles must conform to government and statutory regulations and guidelines including work health and safety requirements.
-Students learn about:Students learn to:Energy types, fuels and lubricants
-• solar
-• electric
-• petrol
-• diesel
-• oils
-• LPG• discuss the principles and relative merits of a range of energy types, fuels and lubricantsEngine types
-• single cylinder engines
-• multi-cylinder engines
-• diesel engines
-• rotary engines
-• electric motors
-• hybrid
-• alternative fuel• apply the principles of engine type and its related systems through the use of proficient, routine maintenance procedures 
-• select and apply appropriate fault-finding techniques, procedures and repairs Engine and related components
-• engine operation
-• cylinder heads 
-• cylinder blocks
-• cylinder sleeves
-• piston assembly
-• valve and valve trains
-• crankshaft assembly• dismantle and re-assemble engine components
-• safely use a range of related tools and equipment 
-• conduct routine maintenance procedures 
-• select and apply appropriate fault-finding techniques, procedures and repairs Cooling systems 
-• radiator
-• water pump
-• water jackets
-• radiator hoses
-• thermostat
-• fan 
-• coolant• dismantle and re-assemble cooling system components
-• conduct routine maintenance procedures
-Fuel systems
-• carburettor systems
-• fuel injection systems
-• emission control• dismantle and re-assemble fuel system components
-• conduct routine maintenance proceduresIntake and exhaust systems
-• EFI air cleaners
-• engine manifolds
-• mufflers
-• catalytic converters• dismantle and re-assemble intake and exhaust system components
-• conduct routine maintenance proceduresTransmission
-• transmission parts
-• transmission operation
-• manual transmission
-• automatic transmission• identify parts of a transmission system
-• identify appropriate transmission systems for a range of applicationsDrive line systems
-• universal joints
-• constant velocity joints
-• differential• conduct routine maintenance proceduresWheels and tyres
-• tyre wear
-• tyre rotation
-• wheel balance• conduct routine maintenance proceduresBraking systems
-• hydraulic systems
-• master cylinders
-• valves and devices in the hydraulic system
-• wheel cylinders
-• hydraulic brake fluid
-• power brake unit
-• brake shoe assemblies
-• antilock brake systems• apply the principles of braking systems
-• dismantle and re-assemble braking system components
-• conduct routine maintenance proceduresSuspension systems
-• suspension design
-• rear suspension - leaf and coil springs
-• front suspension - leaf and coil springs
-• torsion spring suspension• apply the principles of suspension systems
-• conduct routine maintenance proceduresSteering systems
-• rack and pinion system
-• steering systems with worm gearing
-• steering boxes
-• power steering
-• four-wheel steering• conduct routine maintenance proceduresIgnition systems
-• low-tension cables
-• ignition coil
-• distributor
-• high-tension cables
-• starter motor• apply the principles of a range of electrical components and systems
-• dismantle and re-assemble ignition system components
-• conduct routine maintenance proceduresEngine management systems
-• manifold absolute pressure (MAP) sensor
-• computers
-• coolant temperature sensor
-• throttle control switch
-• airconditioning clutch• conduct routine maintenance proceduresBody electrical systems
-• lights: headlights, tail lights, reversing, direction indicators, interior
-• wiring systems
-• wiring harness
-• electric circuit components
-• relays
-• fuse and fusible links• conduct routine maintenance procedures
-Instrumentation and indicators
-• instrument panels
-• mechanical gauges
-• digital electronic instruments
-• warning lights/sensors• conduct routine maintenance procedures
-Electrical accessories
-• windscreen wipers
-• wiper motor circuit
-• windscreen washer
-• rear window demister
-• horns
-• central door locking
-• power windows
-• electric mirrors• conduct routine maintenance procedures
-Body
-• structural and panel repairs
-• spray painting/finishing systems
-• trim and accessories• select and apply appropriate finishes
-• conduct basic repairs and proceduresTools and equipment
-• use and maintenance of tools and equipment associated with automotive repairs and maintenance• safely use a range of related tools and equipment
-• conduct basic maintenance procedures on tools and equipmentAutomotive design
-Safety
-• seat belts
-• child restraints
-• airbags• discuss the implications of vehicle design Materials
-• steels
-• plastics
-• composite materials
-• glass - laminated and temperedAerodynamics
-• body shapes
-• wind resistanceEnvironmental factors
-• recycling/reusing components
-• carbon emission
-• use of alternative fuels• identify components for recycling/reusing
-• identify appropriate recycling processesGovernment and statutory regulations
-• Australian Design Rule (ADR) 37 - Emission Control for Light Vehicles
-• registration
-• insurance
-• vehicle modifications • apply government and statutory regulations during any vehicle modification
-• accurately complete forms for registration and insurance of a motor vehicle
-
-Industry Related Manufacturing Technology
-Focus Area: Electronics Technologies (Preliminary)
-Note: Any project using or developing voltages in excess of 32V must be inspected and approved in writing as safe by a qualified and accredited person in accordance with appropriate Australian Standards. All projects need to conform to government and statutory regulations and guidelines including work health and safety requirements.
-Students learn about:Students learn to:Electrical principles
-Fundamentals
-• electrical potential
-• current flow (AC/DC)
-• resistance
-• power
-• electromagnetism
-• units and measurement• identify the fundamentals of electrical principles
-Supply and safety
-• sources of power
-• basic safety issues• compare sources of power and their environmental impact
-• outline safety issues with power sourcesCircuitry
-• series and parallel circuits
-• basic calculations
-- Ohm's law
-- components in series and parallel 
-- power• explain the principles of parallel and series circuits
-• apply basic knowledge to complete simple circuits
-• apply various formulae to circuit designComponents/materials/devices
-• labeling and preferred values of common components
-• examples and applications of:
-- conductors, insulators, resistors:
-LDR, thermistor, fixed and variable
-• capacitors
-- different types, fixed and variable
-• inductive coils and relays
-• semiconductors
-- diodes: power, regulator, light emitting diode (LED)• identify and appropriately select common components
-• explain and use conductors, insulators, resistors, both fixed and variable
-• identify thermistors and LDR
-• describe the different types of capacitors
-• explain inductive coils and relays
-• use the range of semiconductors
-Materials
-• solder (tin/lead, lead free)
-• PCB materials
-• silicon and germanium semiconductors• identify relevant materials and use them safely
-Peripherals
-• heat sinks/cooling
-• heat shrink/cable looming
-• enclosures• identify peripherals and use them
-Processes
-• use of tools and equipment
-• circuit assembly
-- prototyping techniques
-- PCB manufacture
-- component layout
-- testing and fault-finding techniques• use appropriate tools and equipment in the processes listed
-• use different circuit assembly techniques
-• explain single PCB manufacture and component layouts
-• analyse and interpret schematic diagramsGraphical communication
-• schematic and circuit symbols
-• PCB design principles and tools• recognise circuit symbols
-• communicate PCB design principles and use appropriate tools to produce simple circuits
-Industry Related Manufacturing Technology 
-Focus Area: Electronics Technologies (HSC)
-Note: Any project using or developing voltages in excess of 32V must be inspected and approved in writing as safe by a qualified and accredited person in accordance with appropriate Australian Standards. All projects need to conform to government and statutory regulations and guidelines including work health and safety requirements.
-Students learn about:Students learn to:Electrical principles
-Supply and safety
-• electricity generation
-• rectification• select and use appropriate sources of power safely and correctly
-• explain the process of rectification of AC electricityDigital electronics
-• current flow in analogue versus digital electronics
-• binary numbering system
-• basic logic gates and truth tables• use analogue and digital circuitry where appropriate
-• read and apply binary numbering system to digital projects
-• explain and apply basic logic gates and truth tablesComponents
-• review of conductors, resistors and capacitors
-• inductive coils and relays
-- transformers
-• semiconductors
-- diodes: signal, power, regulator, light emitting diode (LED), light sensitive, Zener
-• transistors: bipolar/field effect transistor (FET)
-• integrated circuits:
-- analogue
-- digital
-- microprocessors
-- VLSI
-• programmable integrated circuits:
-- PICAXE
-• thyristors
-• thermistors• select and competently use conductors, insulators, resistors and capacitors, both fixed and variable
-• use inductive coils and relays
-• identify and discuss transformers
-• compare the different types of semiconductors
-• analyse and apply the most appropriate semiconductors for the production of circuits
-• discuss and use transistors 
-• competently use a variety of integrated circuits
-• identify and discuss programmable integrated circuits
-• identify and discuss thyristors and thermistorsInput/output devices
-• solenoids
-• stepped motors
-• free running motors
-• speakers
-• buzzers
-• piezo devices
-• UHF transmitter/receivers
-• movement/vibration switches
-• microphones• analyse the various input/output devices and competently select the appropriate one for practical situations
-• competently use the correct devices in practical exercises
-Industry Related Manufacturing Technology 
-Focus Area: Electronics Technologies (HSC)
-Students learn about:Students learn to:Processes
-• use of tools and equipment
-• circuit assembly
-- prototyping techniques
-- PCB manufacture
-- component layout
-- testing, fault-finding techniques• use a range of tools and equipment during circuit assembly
-• apply sound techniques to circuit designs and assemblies
-• read and use circuit graphics
-• use PCB design
-• outsource appropriate expertise where necessary to complement personal practical skillsCircuitry
-• series and parallel circuits
-• basic calculation• explain the principles of more complicated circuits
-• apply knowledge, skills and calculations when designing and making circuitsGraphical communication
-• schematic and circuit symbols
-• PCB design principles and tools
-• circuit design software• realise PCB designs using ICT
-• simulate circuits using softwareInstruments and test equipment
-• measurement equipment
-- analogue and digital meters
-- oscilloscope
-• testing equipment, eg in-circuit transistor tester
-• digital simulation of circuits
-• testing of circuits and models
-• applications of circuits
-- amplifiers, timers, detectors/sensors
-• applications of integrated circuits
-- oscillators
-- op amps
-- logic gates
-- displays
-- counters
-- programmable integrated circuits• select and use most appropriate testing equipment and instruments in testing circuits in practical projects
-
-Industry Related Manufacturing Technology 
-Focus Area: Graphics Technologies (Preliminary)
-Note: Students should develop a series of drawings around a product or theme to gain skills in the areas of engineering, product and architectural drawing. They should complete at least one project or theme in each area.
-Students learn about:Students learn to:Processes
-Freehand drawing
-• 2D and 3D
-• sketch outlines and develop them into a variety of 2D and 3D drawings 
-• use drawing instruments to produce drawings for a variety of purposesPictorial, engineering, product and computer-aided drawing (CAD)
-• isometric
-• oblique
-• perspective: mechanical, measuring point
-• orthographic projection
-• product drawing
-• engineering drawing
-• use CAD programs to produce drawings for a variety of purposes 
-• use appropriate rendering techniques to enhance drawings
-• develop skills in mechanical drawing and/or CAD techniques
-• produce orthogonal drawings to illustrate the shape and features of a variety of objects
-• construct pictorial drawings of simple product parts using mechanical and/or CAD techniques
-• plot or generate mechanical and measuring point perspective drawings and a range of computer-generated perspective drawingsArchitectural drawing
-• brief history of Australian architecture
-• influences of American and European architecture
-• architectural styles
-• architectural drawing: 
-- plans
-- elevations
-• architectural details• recognise and sketch examples of Australian architectural styles and details from the early settlers to today
-• recognise the influences of American and European architectural styles and details on Australian architecture
-• construct pictorial drawings of simple architectural details using mechanical and CAD techniquesPrinciples of planes and coordinates• use planes and coordinates to plot outlinesPresentation techniques
-• composition/balance
-• colour
-• rendering
-• modelling
-• recognise and apply good composition and balance in developing well presented drawings
-• use colour and rendering techniques as a means of defining texture, shape and colour of materials
-• use a range of materials to construct simple models of design Principles/standards
-• third and first angle projection 
-• AS1100 and AS1100.301 as it applies to:
-- section drawings 
-- detail drawings
-- symbols 
-- dimensions• interpret third and first angle projection in orthographic drawings
-• use AS1100 and AS1100.301 requirements when producing orthogonal drawings from engineering, product and architectural themesEquipment
-• to develop and present drawings
-- ICT
-- mechanical drafting equipment
-- photocopier
-- printers
-- laminators• operate at least one software package to communicate a design solution or design process through text or drawing
-• use a range of mediums and computer software programs to define and enhance drawings
-• use a range of equipment appropriate to processes undertaken
-Industry Related Manufacturing Technology 
-Focus Area: Graphics Technologies (HSC)
-Note: As part of the HSC, the Major Project should incorporate a set of related drawings around the design and planning of a product or structure. 
-Students learn about:Students learn to:Processes
-Freehand drawing
-• 2D and 3D
-Pictorial drawing
-• isometric projection
-• axonometric projection
-• oblique projection:
-- cavalier
-- cabinet
-• perspective: 
-- mechanical 
-- measuring point (single and two)• sketch and develop a variety of freehand orthogonal, isometric, oblique and perspective sketches 
-• use freehand orthogonal and appropriate pictorial sketches to communicate design ideas as needed in the production of the Major Project
-• use orthogonal and a range of pictorial drawing types to communicate design ideas and solutions in the Major ProjectEngineering and product drawing
-• orthographic projection 
-• assembly drawing
-• mechanical drawing 
-• product drawing
-• presentation drawing 
-• engineering drawing• use CAD and a variety of traditional drawing methods to produce drawings for the Major Project
-Architectural drawing
-• brief history of Australian architecture
-• architectural styles
-• architectural details
-• architectural drawing:
-- plans 
-- elevations
-- sections
-- footing details
-- plumbing, electrical and roofing details
-- council requirements
-- site plans
-- set backs
-- shadow diagrams
-- landscape plan
-- colour palette and material selection• describe and sketch examples of Australian architectural styles and details from the early settlers to today
-• analyse and use features of Australian architecture styles if applicable to the Major Project
-• understand the influences of other architectural styles on Australian architecture
-• identify the council requirements when submitting plans for a building or development application
-• use appropriate architectural drawings to illustrate aspects of the Major Project, where applicablePresentation techniques
-• colour
-• 'fly-throughs'
-• rendering
-• prototypes
-• modelling• produce well-composed and balanced drawings using colour and rendering in the Major Project 
-• use 'fly-throughs', models and prototypes to enhance the presentation of the Major Project (if applicable)Principles/standards
-• third and first angle projection
-• scale 
-• AS1100 and AS1100.301 as it applies to:
-- section drawings 
-- detail drawings
-- symbols 
-- types of lines
-- dimensions
-- architectural, engineering and product drawing
-- working and presentation drawings• use third angle projection 
-• select and use scales and relevant drawing standards in producing drawings for the Major ProjectEquipment
-• for developing and presenting the Major Project, for example:
-- computer software packages
-- mechanical drafting equipment
-- photocopier
-- scanner
-- external hard drives
-- flash drives
-- printers
-- laminators
-- display folders
-- appropriate paper sizes
-- stationery• use a range of mediums and computer software programs to develop, enhance and present drawings in the production of the Major Project
-• use a range of equipment appropriate to developing, enhancing and presenting the Major Project
-• use a range of storage equipment appropriate to developing the Major Project
-Industry Related Manufacturing Technology 
-Focus area: Metal and Engineering Technologies (Preliminary)
-Note: Teachers must adequately supervise the design and manufacture of projects where welding is involved. Design of welded projects must consider loadings and weld positioning. The structural design should be such that the welds do not carry the full load.
-Students learn about:Students learn to:Materials
-• properties of ferrous and non-ferrous metals in common usage:
-- strength
-- durability
-- ductility
-- malleability
-- lustre
-- hardness• identify the properties of a range of ferrous and non-ferrous metals
-• applications and use of a range of ferrous and non-ferrous metals:
-- copper
-- brass
-- steel
-- silver
-- gold
-- aluminium• recognise and use a range of ferrous and non-ferrous metals
-• discuss the suitability of a particular metal for an application
-• sections and shapes of ferrous and non-ferrous metals commonly used:
-- tube
-- wire
-- solid sections
-- bar
-- sheet• discuss the uses of the various shapes and forms of ferrous and non-ferrous metals such as sheet, bar, wire and tube for particular applications
-• use various shapes and sections of metals in practical projects
-Processes, tools and machinery
-Work health and safety
-• knowledge and understanding of workplace safety and communication
-- WHS requirements and considerations
-- signage
-- personal protective equipment (PPE)
-- safe work practices
-- risk assessment• respond to all aspects of WHS requirements when in the workshop and when working on practical projects
-Processes
-• skills and methods used, for a variety of metals, in:
-- marking out
-- cutting
-- machining 
-- fabricating
-- joining
-- casting
-- modifying properties
-- finishing
-- colouring 
-• apply the practical skills and methods used, for a variety of metals, in marking out, cutting, machining, fabricating, joining, modifying properties, colouring and finishing 
-• engage in a broad range of processes through a variety of practical projects using the most suitable processes
-• use the appropriate industry processes, where possible, in the production of practical projects
-• gain an awareness of processes used in industry, appropriate to the practical projects being undertaken, which may not be possible in the school environment
-• identify and apply appropriate finishes to complete practical projects
-• identify and apply the various techniques to modify the properties of metals in practical projectsTools and machinery
-• the use and maintenance of the tools and machinery involved in the construction of practical projects such as:
-- pliers
-- squares
-- rules
-- dividers
-- snips
-- punches
-- scriber
-- files
-- shears
-- stakes
-- hammers and mallets
-- heat treatment equipment
-- welding/brazing/soldering equipment
-- forging and shaping equipment
-- clamps
-- jigs and vices
-- thread cutting equipment
-- saws - power and hand
-- pedestal drill
-- drill mill
-- linisher
-- magna bend
-- supershears
-- buff/grinder
-- lathe
-- CNC tools and equipment
-- portable power tools• experience a range of tools and machines appropriate to the metal being used and the processes being carried out, to complete practical projects
-• safely use tools and machinery
-• perform basic maintenance procedures on tools and machinery
-• identify tools and machinery used by industry, not available in the school environment, but appropriate to the practical activities being undertaken 
-Industry Related Manufacturing Technology 
-Focus Area: Metal and Engineering Technologies (HSC)
-Note: Teachers must adequately supervise the design and manufacture of projects where welding is involved. Design of welded projects must consider loadings and weld positioning. The structural design should be such that the welds do not carry the full load.
-Students learn about:Students learn to:Materials
-• properties of ferrous and non-ferrous metals and alloys, for example:
-- copper
-- brass
-- steel
-- silver
-- gold
-- aluminium
-- bronze
-- solder• identify the differences between ferrous and non-ferrous metals and use them in the Major Project appropriately
-• consideration of modification of the properties of ferrous and non-ferrous metals in common usage:
-- annealing
-- work hardening
-- drawing
-- upsetting
-- forging
-- corrosion resistance• describe and analyse the modification of properties of a range of ferrous and non-ferrous metals
-• apply techniques to modify the properties of metals appropriate to the Major Project
-• recognise and describe the effect of corrosion in a range of ferrous and non-ferrous metals
-• modify the effect of corrosion in the metal(s) used in the Major Project• mining, refining and producing a range of metals:
-- copper
-- brass
-- steel
-- silver
-- gold
-- aluminium• describe the process of mining, refining and producing a range of metals
-• sections and shapes of metals commonly used:
-- tube
-- wire
-- bar
-- solid sections
-- sheet
-- pre-formed sections
-- extruded sections• select and use the most suitable shapes and sections of metal in the Major Project
-• additional materials for joining, sealing and decorating component parts:
-- hardware items
-- fasteners
-- solders
-- flux
-- pickle
-- adhesives
-- sealants
-- findings
-- decorative additions• select and apply the most appropriate items from additional materials for use in the Major Project
-• finishing methods and surface treatment of metals for appearance and/or surface protection:
-- buffing
-- bobbing and polishing
-- hammering
-- planishing
-- painting
-- colouring• describe and use the finishing methods and surface treatments appropriate to the Major Project to achieve a quality finish
-Processes, tools and machinery
-Work health and safety
-• WHS and safe work practices and requirements• respond to all aspects of WHSProcesses
-Skills and methods used in:
-• marking out
-• cutting:
-- hand 
-- machine
-• machining 
-- turning
-- milling
-- shaping 
-• forming:
-- fabrication
-- casting 
-- shaping
-• joining
-- mechanical
-- soldering
-- brazing
-- welding (MIG and TIG)
-- bonding• select and use appropriate industrial processes in the production of the Major Project
-• outsource appropriate expertise where necessary to complement the Major Project and justify the reasons
-• describe processes used in industry which may not be possible in the school environment
-• apply techniques to modify the properties of metals appropriate to the Major Project 
-• identify and apply appropriate quality finishes to the Major Project • modification of properties
-- heat treatment
-- work hardening 
-- alloying
-• finishing 
-- buffing
-- polishing
-- painting
-- oiling
-- colouring
-- surface treatmentsTools and machinery
-• the use and maintenance of the tools and machinery 
-• tools and machinery used in industry that may not be available in the school, including:
-- multi-head lathes
-- hydraulic presses
-- pan brake
-- TIG welding
-- extrusion machine
-- rolling machine 
-- stamping machine
-- CNC machines
-- laser cutting equipment
-- high-pressure water-cutting equipment• describe machines used in the school and explain their use and application
-• use machines appropriate to the Major Project
-• use tools and machinery safely and correctly
-• perform maintenance procedures on tools and machinery
-• describe tools and machinery used by industry, not available in the school environment, but appropriate to the Major Project
-
-
-Industry Related Manufacturing Technology 
-Focus Area: Multimedia Technologies (Preliminary)
-Students learn about:Students learn to:Processes, tools and machines
-Multimedia computer systems
-• processor speed
-• RAM
-• graphics cards
-• storage
-• motherboards
-• screen type and resolution
-• sound cards• recognise computer hardware typically used in multimedia computer systems
-• identify computers and related hardware components
-• describe multimedia software and related memory, processing and storage requirementsOperating a computer system 
-• basic system operation
-• understand and apply the procedures associated with the correct use of a computer system• select and operate computing packages - manipulate data between applications• manipulate and integrate data between a range of software applications• input devices, including:
-- keyboard
-- mouse
-- joystick
-- game controller
-- graphics tablet
-- microphone
-- scanners
-• identify and use input and output devices in conjunction with specific multimedia software
-• output devices: 
-- screens
-- printers (ink-jet and laser)
-- projectors• identify and use a range of printers and scanners• internal and external storage devices:
-- USB drives
-- compact disc
-- digital video disc
-- hard drives • identify and use a range of storage devices
-• cameras: 
-- digital/analog
-- still/video• set up and operate basic still and video cameras for use in small media production
-• communication devices: 
-- modems
-- ethernet
-- bluetooth
-- wireless
-- infra-red
-- firewire
-- USB• identify and use modems and communication devices
-• appropriate software relevant to the project in the areas of:
-- authoring
-- publishing
-- sound creation/capture/editing
-- image creation/capture/editing
-- video creation/capture/editing
-- text creation/capture/editing
-- animation creation/capture/editing
-- 2D/3D drawing
-- web page design• investigate and use a range of software suitable for the creation, editing and publishing of multimedia projects
-• investigate and use a range of software tools and techniques used in the development and publishing of websitesMultimedia design in relation to:
-• storyboarding 
-- types:
-o linear
-o non-linear
-o hierarchical
-o composite
-- applications
-• image creation/editing/conversion
-- bitmap
-- vector
-- scanning
-- formats
-- compression
-• sound creation/editing
-- wave
-- MIDI
-- podcasts
-- compression formats/codecs
-• video and still cameras
-- operation
-- lighting
-- angles/composition
-• data integration
-• identify and use planning processes related to a range of multimedia presentations
-• investigate and discuss the processes of obtaining, creating and modifying images, sound and text
-• produce and manipulate digital images
-• plan and develop an audio podcast
-• use presentation techniques and strategies in multimedia
-• author a multimedia product
-• apply principles of design in the planning and production of multimedia presentations• WHS
-- workplace procedures
-- safe handling of equipment
-- risk identification and hazard reduction strategies• recognise workplace health and safety procedures 
-• safely use computing equipment and associated materials 
-
-Industry Related Manufacturing Technology
-Focus Area: Multimedia Technologies (HSC)
-Students learn about:Students learn to:Multimedia elements
-Text
-• fonts: 
-- serif
-- sans serif
-- decorative
-• formatting: 
-- bold
-- italics
-- underline
-- alignment
-- indents
-- bullets
-- numbers
-- size
-- colour
-• stroke and fill
-• headings, subheadings
-• formatting paragraphs and document
-• pagination
-Graphics
-• graphic images: 
-- vector
-- bitmap
-• resolution: 
-- image size
-- colour depth
-- binary digits (bits), eg 8-bit, 16-bit, 
-24-bit
-• file size: in relation to screen size and colour depth
-• file formats: 
-- TIFF
-- BMP
-- PCX/PICT
-- JPEG
-- GIF
-- PNG
-• importing images: 
-- clip art
-- screen capture
-- scanning
-- graphics tablet
-- cameras
-o still
-o video
-- image libraries
-- stock photographs• author a multimedia Major Project
-• select and competently use a range of input and output devices, printers, cameras and scanners in the production of the Major Project
-• investigate and use a range of multimedia components in the development and publishing of the Major Project
-• competently plan all processes and stages required to complete the Major Project
-• apply principles of design in the planning and production of the Major Project
-• produce storyboards to plan presentations and the Major Project
-• produce multimedia elements, identify scope of authoring software, produce and evaluate prototypes 
-• object layering:
-- text
-- other images
-• image enhancements: 
-- filters
-- special effects
-- anti-aliasing
-• image manipulation: 
-- stretch
-- skew
-- rotate
-- colour adjustment
-Audio
-• sound waves: 
-- analogue and digital wave patterns 
-- volume
-- frequency
-• mono/stereo/surround sound
-• converting analogue to digital sound
-• sampling: 
-- sample rate
-- sample size
-- 8-bit
-- 16-bit
-• relationship to file size: file compression
-• file formats: 
-- WAV
-- AIFF
-- MP3
-- WMA 
-- MIDI
-Video
-• video types: 
-- analogue
-- digital
-• file size considerations: 
-- frame rate
-- image size
-- colour depth
-• video compression:
-- lossy
-- lossless
-- image quality
-- software
-• video players
-• file types: 
-- MPEG
-- avi
-- MP4
-• obtain, create and modify images, sound and text
-• compose camera shots and operate still and video cameras
-• transform prototypes into a final product
-• select from a wide range of industry techniques and apply them in the production and presentation of the Major Project
-• obtain, create and modify images, sound and text
-• outsource appropriate expertise where necessary to complement personal practical skills
-• utilise the features of a range of storage devices
-• identify requirements of memory, processing speed, storage and peripherals to complete Major Project
-• outsource appropriate expertise where necessary to complement personal practical skills• video editing: 
-- import/export
-- transitions
-- titles
-- special effects, eg: 
-o twisting
-o zooming
-o rotating
-o slow motion
-o time lapse
-o distorting
-• synchronising sound
-• filters: 
-- colour balance
-- brightness
-- contrast
-- blurring
-- morphingAnimation
-• 2D animation
-- cel animation (stop motion, claymation)
-- path animation
-- behaviour animation
-- morphing and tweening
-- frame rates
-- transitions
-- looping
-• 3D animation
-- modelling
-- wire frame
-- rendering
-- morphing
-- warping
-- motion capture
-• virtual reality
-- simulators
-- walkthroughs 
-- navigable scenes• identify and discuss animation requirements, scope of 2/3D animation software
-• evaluate the characteristics and features of a range of animation techniques
-World Wide Web (www)
-• history and development
-- appropriate usage
-- targeted audience
-- age controls
-- censorship:
-o violence
-o sex
-o language
-• implications of the World Wide Web on multimedia design relating to:• analyse and describe the technology associated with the World Wide WebText
-• font compatibility, font sets, font substitution
-• text as a graphic element
-• embedded text, eg: 
-- open type
-- true type
-• cascading style sheets (CSS)
-• hyperlinks
-• scroll bars and buttons
-• drop-down lists
-• animated text: 
-- scrolling
-- distorting
-• .pdf files
-Graphics
-• file size and compression, eg: 
-- GIF
-- JPEG
-- PNG
-• progressive loading of images: 
-- interlaced GIF
-- progressive JPEG
-• animated GIF
-• thumbnails
-Sound
-• sound quality
-• file size and compression
-• streaming
-• media players
-Video
-• video transfer:
-- hypertext transfer protocol (HTTP)
-- real-time streaming protocol (RTSP)
-• connection speed
-• web casting
-• buffering/streaming• increase and update knowledge of the multimedia industry
-• discuss the impact of changing technology
-• solve problems through accessing and using online help and manuals 
-Major Project
-• appropriate software relevant to the Major Project in the areas of:
-- authoring
-- publishing
-- sound creation/capture/editing
-- image creation/capture/editing
-- video creation/capture/editing
-- text creation/capture/editing
-- animation creation/capture/editing
-- 2D/3D drawing
-• documentation 
-- online help and manuals 
-- user documentation • investigate and competently use a range of suitable software in the creation, editing and publishing of the Major Project
-• apply a wide range of industry terminology, techniques and processes 
-• prepare documentation to support the development of the Major ProjectIntellectual property and ethics
-• copyrights and multimedia
-• ethical use
-• ease of copying, manipulation and incorporating multimedia objects• obtain, modify and use a range of pre-existing components 
-• consider legal and ethical issues in the development of multimedia presentations• WHS
-- workplace procedures
-- safe handling of equipment
-- risk identification and hazard reduction strategies• use computers, associated materials and accessories safely and responsibly
-• identify specific WHS issues associated with the production of the Major ProjectIndustry Related Manufacturing Technology 
-Focus Area: Timber Products and Furniture Technologies (Preliminary)
-Students learn about:Students learn to:Materials
-Timber and timber products
-• structure: 
-- sapwood
-- heartwood
-- earlywood
-- latewood
-- cambium layer
-- growth ring
-- pith
-- xylem and phloem
-- bark
-- photosynthesis• describe the growth of trees and identify and recognise the various parts of a tree
-• properties and characteristics of hardwoods or softwoods:
-- figure
-- grain direction
-- texture
-- colour
-- strength
-- durability
-- weight
-- hardness
-- weathering• identify the properties of hardwoods and softwoods and apply them to practical projects
-• discuss the properties of hardwoods and softwoods and apply them to practical projects
-• timber industry terms relating to:
-- grade
-- sizes: 
-o timber boards
-o manufactured boards• discuss and use timber industry terms in relation to timber sizes and selection
-• identify the range of sizes of timber boards and manufactured boards and make economical use of them in practical projects• timber defects
-- splits
-- checks
-- warping
-- shakes
-- bowing
-- knots
-- twists and winds• manufactured boards, their manufacture, properties and use
-- plywoods
-- medium density fibreboards (MDF)
-- particle boards• apply the properties of manufactured boards and use them in practical projects
-• describe the range of manufactured boards availableFittings and allied materials
-• hardware
-- screws
-- nails
-- nuts
-- bolts
-- knockdown fittings
-- hinges
-- handles
-- knobs
-- staples/staple guns
-• other materials
-- composite materials
-- glass
-- metal
-- polymers
-- upholstery materials
-- adhesives• identify and select appropriate fittings and allied materials to use in practical projects
-Processes, tools and machinery
-Processes
-• planning
-- sketches
-- working drawings
-- materials lists
-- calculations
-- costing
-• preparation of timber
-- dressing
-- thicknessing
-- face
-- edge
-• manufacture of individual components as part of a project:
-- legs
-- rails
-- drawers
-- doors
-- tops
-- panels
-• widening joints
-- dowelled butt
-- tongue and groove
-- rebate
-- groove and feather
-- biscuit 
-• framing joints
-- mitre
-- halving joints
-- dowelled
-- box pin
-- mortise and tenon joints
-- bridle joints• use a broad range of processes through a variety of practical projects
-• identify and apply appropriate finishes to completed projects
-• use the appropriate industry processes, where possible, in the production of projects
-• discuss processes used in industry, appropriate to the practical activities being undertaken, which may not be possible in the school
-• carcase joints
-- rebate
-- scribed
-- dovetail
-- housing 
-• construction techniques, including:
-- sawing
-- drilling
-- edge treatments
-- nailing and screwing
-- sanding
-- scraping
-• other construction techniques
-- turning
-- carving
-- inlaying
-- marquetry
-- veneering
-- parquetry and intarsia
-- laminating
-- bending
-- routing
-• assembly of components, including:
-- test, fit and check joints
-- dry cramp
-- use of cramps
-- testing for square and flatness
-• finishing
-- preparation
-- staining
-- filling
-- oils
-- finishes (oil and water-based)
-- shellac
-- french polish
-- spray finishesTools and machinery
-• the use and maintenance of the tools and machinery involved in the processes listed above• safely and competently use a wide a range of tools and machinery
-• conduct basic maintenance procedures on tools and machinery
-• describe tools and machinery used by industry, not available in the school, but appropriate to the practical activities being undertaken
-Industry Related Manufacturing Technology 
-Focus Area: Timber Products and Furniture Technologies (HSC)
-Students learn about:Students learn to:Materials
-• terminology associated with the timber industry • understand and use timber industry terms when selecting and using timber and timber products for the Major Project• timber recovery and conversion
-- sawing: 
-o live
-o quarter
-o back
-- flitches and burls
-- stability
-- seasoning:
-o air
-o kiln
-- equilibrium moisture content (EMC) • describe how timber is recovered and converted into boards
-• select the most appropriate timber boards and apply them to the Major Projects
-• timber selection considerations
-- plantation timbers
-- exotic timbers 
-- recycling/reusing timbers
-- 'green' timbers
-- economical usage/waste minimisation
-- environmental issues/pollution
-- sustainability
-- WHS issues• describe the considerations and issues related to selecting appropriate timbers for the Major Project
-• describe and apply principles of economical use, sustainability, plantation and 'green' timbers, minimising waste and pollution 
-• apply the considerations and issues related to selecting appropriate timbers to the Major Project• manufactured boards
-- construction and manufacture, veneers, plywood, particle board, fibre boards, block and lamiboards
-- glues 
-- environmental/WHS issues • describe the cutting of veneers
-• describe the manufacture of various boards
-• select and use the most appropriate manufactured boards
-• discuss the environmental issues related to the manufacture, use and disposal of manufactured boardsFittings and allied materials
-• hardware and fittings
-- screws
-- nails
-- nuts
-- bolts
-- knockdown fittings
-- hinges
-- handles
-- knobs
-- staples/staple guns
-- drawer runners
-- table clips
-- latches
-- catches
-- shelf hangers• select and competently use the most appropriate hardware items in the Major Project 
-• additional materials applied to timber and timber-based projects
-- glass 
-- metal
-- polymers
-- upholstery materials
-- composite materials• describe additional materials and their application in timber projects
-• competently use and justify the selection of the most appropriate additional materials in the Major Project
-• adhesives:
-- PVA
-- epoxy resin
-- hot melt
-- urea-formaldehyde
-- resorcinol
-- contact• competently use and justify the selection of the most appropriate adhesives in the Major Project
-Processes, tools and machinery
-Processes
-• planning
-- sketches
-- working drawings
-- materials lists
-- calculations
-- costing• plan the Major Project thoroughly before commencing construction, using appropriate planning techniques
-• preparation of timber
-- dressing
-- thicknessing
-- face 
-- edge• identify and use appropriate preparation techniques for the Major Project
-• manufacturing individual components as part of a project
-- legs
-- rails
-- drawers
-- doors
-- tops
-- panels• select and construct component parts of a project using appropriate techniques
-• widening joints
-- dowelled butt
-- tongue and groove
-- rebate
-- groove and feather
-- biscuit • select and construct appropriate widening joints for the Major Project 
-• framing joints
-- mitre
-- halving joints
-- dowelled
-- box pin
-- mortise and tenon joints
-- bridle joints• select and construct appropriate framing joints for the Major Project 
-• carcase joints
-- rebate
-- scribed
-- dovetail
-- housing • select and construct appropriate carcase joints for the Major Project 
-• construction techniques, including:
-- sawing
-- drilling
-- edge treatments
-- nailing and screwing
-- sanding
-- scraping• select and use construction techniques appropriate for timber projects
-• other construction techniques
-- turning
-- carving
-- inlaying
-- marquetry
-- veneering
-- parquetry and intarsia
-- laminating
-- bending
-- routing• identify, select and use other techniques to construct the Major Project as appropriate
-• construction techniques using manufactured boards
-- economical sheet layout
-- cutting sheet material
-- handling sheet material
-- assembly of components• select and use construction techniques appropriate for manufactured boards
-• describe and sketch different parts of the assembly process and explain their importance 
-• assembly of components, including:
-- test, fit and check joints
-- dry cramp
-- use of cramps
-- testing for square and flatness• select and apply assembly techniques suitable to the Major Project 
-• finishing
-- preparation, staining, filling, oils, finishes (oil and water-based), shellac, french polish, spray finishes
-- environmental issues associated with finishing
-- industrial processes• select and apply finishing techniques suitable to the Major Project as appropriate
-• identify the environmental issues relating to the use, application and cleaning up of finishes
-Tools and machinery
-• the use and maintenance of the tools and machinery involved in the processes listed above
-• tools and machinery used in industry that are not available in the school• use appropriate machines to complete the Major Project
-• use tools and machinery safely and correctly
-• recognise the need for, and perform, maintenance procedures on tools and machinery as required 
-• describe tools and machinery used by industry, not available in the school, but appropriate to the Major Project 
-• outsource appropriate expertise where necessary to complement personal practical skills to complete the Major Project 
-
-10	Course Requirements
-The course requirements are:
-* a Preliminary and HSC course, each of 120 hours indicative time.
-* exclusions exist between Industrial Technology and some Vocational Education and Training Curriculum Frameworks, and some Content Endorsed Courses. For details of these exclusions refer to the current ACE Manual.
-The Preliminary course, of 120 indicative hours, consists of project work and an industry study that provide a broad range of skills and knowledge related to the focus area chosen and an introduction to industrial processes and practices.
-The HSC course, of 120 indicative hours, consists of the development of a Major Project and industry study.
-Students choose to study ONE of SIX focus areas. The same area is to be studied in both the Preliminary and HSC courses. The focus areas are:
-* Automotive Technologies
-* Electronics Technologies
-* Graphics Technologies
-* Metal and Engineering Technologies
-* Multimedia Technologies
-* Timber Products and Furniture Technologies.
-Both the Preliminary and HSC courses are organised around four sections:
-A. Industry Study
-B. Design, Management and Communication
-C. Production
-D. Industry Related Manufacturing Technology
-
-11	Post-school Opportunities
-The study of Industrial Technology Stage 6 provides students with knowledge, understanding and skills that form a valuable foundation for a range of courses at university and other tertiary institutions.
-In addition, the study of Industrial Technology Stage 6 assists students to prepare for employment and full and active participation as citizens. In particular, there are opportunities for students to gain recognition in vocational education and training. Teachers and students should be aware of these opportunities.
-11.1	Recognition of Student Achievement in Vocational Education and Training (VET) 
-Wherever appropriate, the skills and knowledge acquired by students in their study of HSC courses should be recognised by industry and training organisations. Recognition of student achievement means that students who have satisfactorily completed HSC courses will not be required to repeat their learning in courses in TAFE NSW or other Registered Training Organisations (RTOs). 
-Registered Training Organisations, such as TAFE NSW, provide industry training and issue qualifications within the Australian Qualifications Framework.
-The degree of recognition available to students in each subject is based on the similarity of outcomes between HSC courses and industry training packages endorsed within the Australian Qualifications Framework (AQF). Training packages are documents that link an industry's competency standards to AQF qualifications. More information about industry training packages can be found on the National Training Information Service (NTIS) website (www.ntis.gov.au).
-Recognition by TAFE NSW
-TAFE NSW conducts courses in a wide range of industry areas, as outlined each year in the TAFE NSW Handbook. Under current arrangements, the recognition available to students of Industrial Technology in relevant courses conducted by TAFE is described in the HSC/TAFE Credit Transfer Guide. This guide is produced by the Board of Studies and TAFE NSW and is distributed annually to all schools and colleges. Teachers should refer to this guide and be aware of the recognition available to their students through the study of Industrial Technology Stage 6. This information can be found on the TAFE NSW  website (www.tafensw.edu.au/mchoice).
-Recognition by other Registered Training Organisations
-Students may also negotiate recognition into a training package qualification with another Registered Training Organisation. Each student will need to provide the RTO with evidence of satisfactory achievement in Industrial Technology Stage 6 so that the degree of recognition available can be determined.
-
-12	Assessment and Reporting
-Advice on appropriate assessment practice in relation to the Industrial Technology syllabus is contained in Assessment and Reporting in Industrial Technology Stage 6. That document provides general advice on assessment in Stage 6 as well as the specific requirements for the Preliminary and HSC courses. The document contains:
-* suggested components and weightings for the internal assessment of the Preliminary course
-* mandatory components and weightings for the internal assessment of the HSC course 
-* the HSC examination specifications, which describe the format of the external HSC examination.
-The document and other resources and advice related to assessment in Stage 6 Industrial Technology are available on the Board's website (www.boardofstudies.nsw.edu.au/syllabus_hsc).
-
-
-
-
-Industrial Technology Stage 6 Syllabus
-
-57
-

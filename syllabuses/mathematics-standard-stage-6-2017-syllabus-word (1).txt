@@ -1,1659 +1,0 @@
-NSW Syllabus
-for the Australian
-Curriculum
-Mathematics Standard
-Stage 6
-Syllabus
-
-
-Original 2017 published version updated:
-November 2017 - NESA Official Notice 23 November 2017 (NESA 51/17)
-January 2018 - NESA Official Notice 29 January 2018 (NESA 4/18)
-March 2018 - NESA Official Notice 26 March 2018 (NESA 23/18)
-November 2019 - NESA Official Notice 18 November 2019 (NESA 48/19)
-
-View the online version log for all syllabus updates.
-
-(c) 2019 NSW Education Standards Authority (NESA) for and on behalf of the Crown in right of the State of New South Wales.
-
-The NESA website holds the ONLY official and up-to-date versions of these documents available on the internet. ANY other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are NOT authorised. You CANNOT rely on copies from any other source.
-
-The documents on this website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright.
-
-All rights reserved. No part of the Material may be reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form, or transmitted to any other person or stored electronically in any form without the prior written permission of NESA, except as permitted by the Copyright Act 1968.
-
-When you access the material you agree:
-* to use the material for information purposes only
-* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the prior permission of NESA
-* to acknowledge that the material is provided by NESA
-* to include this copyright notice in any copy made
-* not to modify the material or any part of the material without the express prior written permission of NESA.
-The material may contain third-party copyright materials such as photos, diagrams, quotations, cartoons and artworks. These materials are protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's specific permission. Unauthorised reproduction, transmission or commercial use of such copyright materials may result in prosecution.
-
-NESA has made all reasonable attempts to locate owners of third-party copyright material and invites anyone from whom permission has not been sought to contact the Copyright Officer.
-
-Phone: (02) 9367 8289
-Fax: (02) 9279 1482
-Email: copyright@nesa.nsw.edu.au
-
-Published by
-NSW Education Standards Authority
-GPO Box 5300
-Sydney NSW 2001
-Australia
-
-www.educationstandards.nsw.edu.au
-
-DSSP-27615 | D2016/34744
-
-Contents
-Introduction	4
-Mathematics Standard Key	7
-Rationale	10
-Mathematics in Stage 6	11
-The Place of the Mathematics Standard Stage 6 Syllabus in the K-12 Curriculum	13
-Building on Mathematics Learning in Stage 5	14
-Aim	15
-Objectives	16
-Outcomes	17
-Year 11 Course Structure and Requirements	20
-Year 12 Course Structure and Requirements	21
-Assessment and Reporting	22
-Content	23
-Mathematics Standard Year 11 Course Content	30
-Mathematics Standard 1 Year 12 Course Content	48
-Mathematics Standard 2 Year 12 Course Content	64
-Glossary	85
-
-
-Introduction
-Stage 6 Curriculum
-NSW Education Standards Authority (NESA) Stage 6 syllabuses have been developed to provide students with opportunities to further develop skills which will assist in the next stage of their lives.
-
-The purpose of Stage 6 syllabuses is to:
-* develop a solid foundation of literacy and numeracy
-* provide a curriculum structure which encourages students to complete secondary education at their highest possible level
-* foster the intellectual, creative, ethical and social development of students, in particular relating to:
-- application of knowledge, understanding, skills, values and attitudes in the fields of study they choose
-- capacity to manage their own learning and to become flexible, independent thinkers, problem-solvers and decision-makers
-- capacity to work collaboratively with others
-- respect for the cultural diversity of Australian society
-- desire to continue learning in formal or informal settings after school
-* provide a flexible structure within which students can meet the challenges of and prepare for:
-- further academic study, vocational training and employment
-- changing workplaces, including an increasingly STEM-focused (Science, Technology, Engineering and Mathematics) workforce
-- full and active participation as global citizens
-* provide formal assessment and certification of students' achievements
-* promote the development of students' values, identity and self-respect.
-
-The Stage 6 syllabuses reflect the principles of the NESA K-10 Curriculum Framework and Statement of Equity Principles, the reforms of the NSW Government Stronger HSC Standards (2016), and nationally agreed educational goals. These syllabuses build on the continuum of learning developed in the K-10 syllabuses.
-
-The syllabuses provide a set of broad learning outcomes that summarise the knowledge, understanding, skills, values and attitudes important for students to succeed in and beyond their schooling. In particular, the attainment of skills in literacy and numeracy needed for further study, employment and active participation in society are provided in the syllabuses in alignment with the Australian Core Skills Framework.
-
-The Stage 6 syllabuses include the content of the Australian Curriculum and additional descriptions that clarify the scope and depth of learning in each subject.
-
-NESA syllabuses support a standards-referenced approach to assessment by detailing the important knowledge, understanding, skills, values and attitudes students will develop and outlining clear standards of what students are expected to know and be able to do. The syllabuses take into account the diverse needs of all students and provide structures and processes by which teachers can provide continuity of study for all students.
-
-
-Diversity of Learners
-NSW Stage 6 syllabuses are inclusive of the learning needs of all students. Syllabuses accommodate teaching approaches that support student diversity, including students with disability, gifted and talented students, and students learning English as an additional language or dialect (EAL/D). Students may have more than one learning need.
-Students with Disability
-All students are entitled to participate in and progress through the curriculum. Under the Disability Standards for Education 2005, schools are required to provide additional support or adjustments to teaching, learning and assessment activities for some students with disability. Adjustments are measures or actions taken in relation to teaching, learning and assessment that enable a student with disability to access syllabus outcomes and content, and demonstrate achievement of outcomes.
-
-Students with disability can access outcomes and content from Stage 6 syllabuses in a range of ways. Students may engage with:
-* Stage 6 syllabus outcomes and content with adjustments to teaching, learning and/or assessment activities; or
-* selected Stage 6 Life Skills outcomes and content from one or more Stage 6 Life Skills syllabuses.
-
-Decisions regarding curriculum options, including adjustments, should be made in the context of collaborative curriculum planning with the student, parent/carer and other significant individuals to ensure that syllabus outcomes and content reflect the learning needs and priorities of individual students.
-
-The Mathematics Life Skills Stage 6 Syllabus has been developed from the rationale, aim and objectives of the Mathematics Standard Stage 6 Syllabus.
-
-Further information can be found in support materials for:
-* Mathematics 
-* Special Education 
-* Life Skills.
-Gifted and Talented Students
-Gifted and talented students have specific learning needs that may require adjustments to the pace, level and content of the curriculum. Differentiated educational opportunities assist in meeting the needs of gifted and talented students.
-
-Generally, gifted and talented students demonstrate the following characteristics:
-* the capacity to learn at faster rates
-* the capacity to find and solve problems
-* the capacity to make connections and manipulate abstract ideas.
-
-There are different kinds and levels of giftedness and talent. Gifted and talented students may also have learning disabilities and/or English as an additional language or dialect. These needs should be addressed when planning appropriate teaching, learning and assessment activities.
-
-
-Curriculum strategies for gifted and talented students may include:
-* differentiation: modifying the pace, level and content of teaching, learning and assessment activities
-* acceleration: promoting a student to a level of study beyond their age group
-* curriculum compacting: assessing a student's current level of learning and addressing aspects of the curriculum that have not yet been mastered.
-
-School decisions about appropriate strategies are generally collaborative and involve teachers, parents/carers and students, with reference to documents and advice available from NESA and the education sectors.
-
-Gifted and talented students may also benefit from individual planning to determine the curriculum options, as well as teaching, learning and assessment strategies, most suited to their needs and abilities.
-Students Learning English as an Additional Language or Dialect (EAL/D)
-Many students in Australian schools are learning English as an additional language or dialect (EAL/D). EAL/D students are those whose first language is a language or dialect other than Standard Australian English and who require additional support to assist them to develop English language proficiency.
-
-EAL/D students come from diverse backgrounds and may include:
-* overseas and Australian-born students whose first language is a language other than English, including creoles and related varieties
-* Aboriginal and/or Torres Strait Islander students whose first language is an Aboriginal or Torres Strait Islander language, including Kriols/creoles and related varieties, or Aboriginal English.
-
-EAL/D students enter Australian schools at different ages and stages of schooling and at different stages of English language learning. They have diverse talents and capabilities and a range of prior learning experiences and levels of literacy in their first language and in Standard Australian English. EAL/D students represent a significant and growing percentage of learners in NSW schools. For some, school is the only place they use Standard Australian English.
-
-EAL/D students are simultaneously learning a new language and the knowledge, understanding and skills of a syllabus through that new language. They require additional time and support, along with informed teaching that explicitly addresses their language needs, and assessments that take into account their developing language proficiency.
-
-The ESL scales and the English as an Additional Language or Dialect: Teacher Resource provide information about the English language development phases of EAL/D students. These materials and other resources can be used to support the specific needs of EAL/D students and to assist students to access syllabus outcomes and content.
-
-
-Mathematics Standard Key
-The following codes and icons are used in the Mathematics Standard Stage 6 Syllabus.
-Outcome Coding
-Syllabus outcomes have been coded in a consistent way. The code identifies the subject, Year and outcome number. For example:
-
-
-Outcome codeInterpretationMS11-1Mathematics Standard, Year 11 - Outcome number 1MS1-12-4Mathematics Standard 1, Year 12 - Outcome number 4MS2-12-5Mathematics Standard 2, Year 12 - Outcome number 5MALS6-6Mathematics Life Skills, Stage 6 - Outcome number 6Coding of Australian Curriculum Content
-Australian Curriculum content descriptions included in the syllabus are identified by an Australian Curriculum code which appears in brackets at the end of each content description, for example:
-Calculate payments based on government allowances and pensions (ACMGM003).
-
-
-
-Where a number of content descriptions are jointly represented, all description codes are included, eg (ACMGM001, ACMGM002, ACMMM001).
-
-
-Coding of Year 11 Mathematics Standard
-In Year 11 Mathematics Standard, content that is required to continue to the Year 12 Mathematics Standard 1 course or to meet the Australian Core Skills Framework numeracy level 3, has been identified using the symbol ?.
-
-This ? symbol can be used to aid schools programming for students who are yet to fulfil their numeracy requirement for the Higher School Certificate, or who wish to continue to the Year 12 Mathematics Standard 1 course.
-
-Coding of Applications and Modelling
-The syllabus provides many opportunities for students to apply and further develop the knowledge, skills and understanding initially described in the topics.
-
-In considering various applications of mathematics, students will be required to construct and use mathematical models. Mathematical modelling gives structure to what we perceive and how we perceive. In following a modelling process, students view a problem through their past experience, prior knowledge and areas of confidence. As a model emerges, it extends their thinking in new ways as well as enhancing what they have observed.
-
-Modelling opportunities will involve a wide variety of approaches such as generating equations or formulae that describe the behaviour of an object, or alternatively displaying, analysing and interpreting data values from a real-life situation.
-
-In the process of modelling, teachers should provide students with opportunities to make choices, state and question assumptions and make generalisations. Teachers can draw upon problems from a wide variety of sources to reinforce the skills developed, enhance students' understanding of mathematics and where appropriate, expand their use of technology.
-
-Explicit application and modelling opportunities are identified within the syllabus by the code AAM.
-
-For example: use units of energy to solve problems involving the consumption of electricity such as kilowatt hours, and investigate common appliances in terms of their energy consumption AAM  
-Coding of Common Content
-In the Mathematics Standard and Mathematics Advanced syllabuses the symbol  denotes common content. For example:
-classify data relating to a single random variable ? 
-
-
-Learning Across the Curriculum Icons
-Learning across the curriculum content, including cross-curriculum priorities, general capabilities and other areas identified as important learning for all students, is incorporated and identified by icons in the syllabus.
-
-Cross-curriculum priorities
- 	Aboriginal and Torres Strait Islander histories and cultures
- 	Asia and Australia's engagement with Asia
- 	Sustainability
-
-General capabilities
- 	Critical and creative thinking
- 	Ethical understanding
- 	Information and communication technology capability
- 	Intercultural understanding
- 	Literacy
- 	Numeracy
- 	Personal and social capability
-
-Other learning across the curriculum areas
- 	Civics and citizenship
- 	Difference and diversity
- 	Work and enterprise
-
-
-Rationale
-Mathematics is the study of order, relation, pattern, uncertainty and generality and is underpinned by observation, logical reasoning and deduction. From its origin in counting and measuring, its development throughout history has been catalysed by its utility in explaining real-world phenomena and its inherent beauty. It has evolved in sophisticated ways to become the language now used to describe many aspects of the modern world.
-
-Mathematics is an interconnected subject that involves understanding and reasoning about concepts and the relationships between those concepts. It provides a framework for thinking and a means of communication that is powerful, logical, concise and precise.
-
-The Mathematics Stage 6 syllabuses are designed to offer opportunities for students to think mathematically. Mathematical thinking is supported by an atmosphere of questioning, communicating, reasoning and reflecting and is engendered by opportunities to generalise, challenge, find connections and to think critically and creatively.
-
-All Mathematics Stage 6 syllabuses provide opportunities for students to develop 21st-century knowledge, skills, understanding, values and attitudes. As part of this, in all courses students are encouraged to learn to use appropriate technology as an effective support for mathematical activity.
-
-The Mathematics Life Skills course focuses on developing fundamental mathematics skills for life 
-and applying these effectively in meaningful contexts. Students engage with numbers to develop number sense and basic numeracy skills, which they can use to solve problems in a range of contexts. The course allows students to further develop and apply their knowledge, skills and understanding in real-life situations, further increasing the relevance of the course for students in everyday life and post-school.
-
-The Mathematics Standard courses are focused on enabling students to use mathematics effectively, efficiently and critically to make informed decisions in their daily lives. They provide students with the opportunities to develop an understanding of, and competence in, further aspects of mathematics through a large variety of real-world applications for a range of concurrent HSC subjects.
-
-Mathematics Standard 1 is designed to help students improve their numeracy by building their confidence and success in making mathematics meaningful. Numeracy is more than being able to operate with numbers. It requires mathematical knowledge and understanding, mathematical problem solving skills and literacy skills, as well as positive attitudes. When students become numerate they are able to manage a situation or solve a problem in real contexts, such as everyday life, work or further learning. This course offers students the opportunity to prepare for post-school options of employment or further training.
-
-Mathematics Standard 2 is designed for those students who want to extend their mathematical skills beyond Stage 5 but are not seeking the in-depth knowledge of higher mathematics that the study of calculus would provide. This course offers students the opportunity to prepare for a wide range of educational and employment aspirations, including continuing their studies at a tertiary level.
-
-
-Mathematics in Stage 6
-There are six Board-developed Mathematics courses of study for the Higher School Certificate: Mathematics Standard 1, Mathematics Standard 2, Mathematics Advanced, Mathematics 
-Extension 1, Mathematics Extension 2 and Mathematics Life Skills.
-
-Students studying the Mathematics Standard syllabus undertake a common course in Year 11. For the Year 12 course students can elect to study either Mathematics Standard 1 or Mathematics Standard 2.
-
-Students who intend to study the Mathematics Standard 2 course in Year 12 must study all Mathematics Standard Year 11 course content.
-
-Students who intend to study the Mathematics Standard 1 course in Year 12 must have studied the content identified by the symbol ? which forms the foundation of course. This content is important for the development and consolidation of numeracy skills.
-
-Mathematics Advanced consists of the courses Mathematics Advanced Year 11 and Mathematics Advanced Year 12. Students studying one or both Extension courses must study both Mathematics Advanced Year 11 and Mathematics Extension Year 11 courses before undertaking the study of Mathematics Extension 1 Year 12, or both Mathematics Extension 1 Year 12 and Mathematics Extension 2 Year 12. An alternative approach is for students to study both Mathematics Advanced Year 11 and Mathematics Advanced Year 12 before undertaking the study of Mathematics Extension Year 11 and Mathematics Extension 1 Year 12, or both Mathematics Extension 1 Year 12 and Mathematics Extension 2 Year 12.
-
-The Year 11 and Year 12 course components undertaken by students who study Mathematics Standard 1, Mathematics Standard 2, or Mathematics Advanced, Mathematics Extension 1 or Mathematics Extension 2 are illustrated below.
-
-
-Mathematics Standard 1 - Year 11 and Year 12 course components
-
-Mathematics Standard 1 or 2 - Year 11 and Year 12 course components
-
-Mathematics Advanced - Year 11 and Year 12 course components
-
-Mathematics Extension 1 - Co-requisites + Year 11 and Year 12 course components
-
-Mathematics Extension 2 - Co-requisites (Year 11 and Year 12 courses) + Year 12 course components
-
-
-The Place of the Mathematics Standard Stage 6 Syllabus in the K-12 Curriculum
-
-
-
-
-Building on Mathematics Learning in Stage 5
-The outcomes and content in the Mathematics Standard Stage 6 syllabus are written with the assumption that students studying this course will have engaged with all substrands of Stage 5.1 and with the following substrands of Stage 5.2 - Financial Mathematics, Linear Relationships, Non-Linear Relationships, Area and Surface Area, Volume, Right-Angled Triangles (Trigonometry) and Single Variable Data Analysis, and at least some of the content from the following Stage 5.2 substrands - Equations and Probability. Consequently, content in the NSW Mathematics K-10 Syllabus up to and including this level is also implicit in this syllabus. In a number of cases where content from Stage 5 is included it is in the context of review for clarity and completeness. Schools have the opportunity to review other areas of Stage 5 content as appropriate to meet the needs of students.
-
-
-Aim
-The study of Mathematics Standard in Stage 6 enables students to develop their knowledge and understanding of what it means to work mathematically, improve their skills to solve problems relating to their present and future needs and aspirations, and improve their understanding of how to communicate in a concise and systematic manner.
-
-
-Objectives
-Knowledge, Skills and Understanding
-Students:
-* develop the ability to apply reasoning, and the use of appropriate language, in the evaluation and construction of arguments and the interpretation and use of models based on mathematical concepts
-* develop the ability to use concepts and apply techniques to the solution of problems in algebra and modelling, measurement, financial mathematics, data and statistics, probability and networks
-* develop the ability to use mathematical skills and techniques, aided by appropriate technology, to organise information and interpret practical situations
-* develop the ability to interpret and communicate mathematics in a variety of written and verbal forms, including diagrams and graphs.
-Values and Attitudes
-Students value and appreciate:
-* mathematics as an essential and relevant part of life, recognising that its development and use have been largely in response to human needs by societies all around the globe
-* the importance of resilience in undertaking mathematical challenges, taking responsibility for their own learning and evaluating their mathematical development.
-
-
-Outcomes
-Table of Objectives and Outcomes - Continuum of Learning
-All aspects of Working Mathematically, as described within this syllabus, are integral to the outcomes of the Mathematics Standard Stage 6 course, in particular outcomes MS11-9, MS12-9, MS11-10 and MS12-10.
-Objective
-Students:
-* develop the ability to apply reasoning, and the use of appropriate language, in the evaluation and construction of arguments and the interpretation and use of models based on mathematical conceptsYear 11 Mathematics Standard outcomes
-A student:Year 12 Mathematics Standard 1 outcomes
-A student:Year 12 Mathematics Standard 2 outcomes
-A student:MS11-1
-uses algebraic and graphical techniques to compare alternative solutions to contextual problemsMS1-12-1
-uses algebraic and graphical techniques to evaluate and construct arguments in a range of familiar and unfamiliar contextsMS2-12-1
-uses detailed algebraic and graphical techniques to critically evaluate and construct arguments in a range of familiar and unfamiliar contextsMS11-2
-represents information in symbolic, graphical and tabular formMS1-12-2
-analyses representations of data in order to make predictions and draw conclusionsMS2-12-2
-analyses representations of data in order to make inferences, predictions and draw conclusions
-
-Objective
-Students:
-* develop the ability to use concepts and apply techniques to the solution of problems in algebra and modelling, measurement, financial mathematics, data and statistics, probability and networksYear 11 Mathematics Standard outcomes
-A student:Year 12 Mathematics Standard 1 outcomes
-A student:Year 12 Mathematics Standard 2 outcomes
-A student:MS11-3
-solves problems involving quantity measurement, including accuracy and the choice of relevant unitsMS1-12-3
-interprets the results of measurements and calculations and makes judgements about their reasonablenessMS2-12-3
-interprets the results of measurements and calculations and makes judgements about their reasonableness, including the degree of accuracy and the conversion of units where appropriateMS11-4
-performs calculations in relation to two-dimensional and three-dimensional figuresMS1-12-4
-analyses simple two-dimensional and three-dimensional models to solve practical problemsMS2-12-4
-analyses two-dimensional and three-dimensional models to solve practical problemsMS11-5
-models relevant financial situations using appropriate toolsMS1-12-5
-makes informed decisions about financial situations likely to be encountered post-schoolMS2-12-5
-makes informed decisions about financial situations, including annuities and loan repaymentsMS11-6
-makes predictions about everyday situations based on simple mathematical modelsMS1-12-6
-represents the relationships between changing quantities in algebraic and graphical formsMS2-12-6
-solves problems by representing the relationships between changing quantities in algebraic and graphical formsMS11-7
-develops and carries out simple statistical processes to answer questions posedMS1-12-7
-solves problems requiring statistical processesMS2-12-7
-solves problems requiring statistical processes, including the use of the normal distribution and the correlation of bivariate dataMS11-8
-solves probability problems involving multistage eventsMS1-12-8
-applies network techniques to solve network problemsMS2-12-8
-solves problems using networks to model decision-making in practical problems
-
-Objective
-Students:
-* develop the ability to use mathematical skills and techniques, aided by appropriate technology, to organise information and interpret practical situationsYear 11 Mathematics Standard outcomes
-A student:Year 12 Mathematics Standard 1 outcomes
-A student:Year 12 Mathematics Standard 2 outcomes
-A student:MS11-9
-uses appropriate technology to investigate, organise and interpret information in a range of contextsMS1-12-9
-chooses and uses appropriate technology effectively and recognises appropriate times for such useMS2-12-9
-chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use
-Objective
-Students:
-* develop the ability to interpret and communicate mathematics in a variety of written and verbal forms, including diagrams and graphsYear 11 Mathematics Standard outcomes
-A student:Year 12 Mathematics Standard 1 outcomes
-A student:Year 12 Mathematics Standard 2 outcomes
-A student:MS11-10
-justifies a response to a given problem using appropriate mathematical terminology and/or calculationsMS1-12-10
-uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to othersMS2-12-10
-uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response
-
-Year 11 Course Structure and Requirements
-The Year 11 course is organised in topics, with the topics divided into subtopics. The Year 11 course is undertaken by all students intending to study either the Mathematics Standard 1 Year 12 course or the Mathematics Standard 2 Year 12 course.
-
-Year 11 course
-(120 hours)Mathematics StandardTopicsSubtopicsAlgebra	MS-A1 Formulae and Equations
- 	MS-A2 Linear RelationshipsMeasurement 	MS-M1 Applications of Measurement
-	MS-M2 Working with TimeFinancial Mathematics	MS-F1 Money MattersStatistical Analysis 	MS-S1 Data Analysis
- 	MS-S2 Relative Frequency and Probability
-* Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
-* Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
-
-Year 12 Course Structure and Requirements
-The courses are organised into topics, with the topics divided into subtopics.
-
-Year 12 course
-(120 hours)Mathematics Standard 1TopicsSubtopicsAlgebra 	MS-A3 Types of RelationshipsMeasurement 	MS-M3 Right-angled Triangles
-	MS-M4 Rates
-	MS-M5 Scale DrawingsFinancial Mathematics 	MS-F2 Investment
- 	MS-F3 Depreciation and LoansStatistical Analysis 	MS-S3 Further Statistical AnalysisNetworks	MS-N1 Networks and Paths
-Year 12 course
-(120 hours)Mathematics Standard 2TopicsSubtopicsAlgebra 	MS-A4 Types of RelationshipsMeasurement 	MS-M6 Non-right-angled Trigonometry
-	MS-M7 Rates and RatiosFinancial Mathematics 	MS-F4 Investments and Loans
- 	MS-F5 AnnuitiesStatistical Analysis 	MS-S4 Bivariate Data Analysis
- 	MS-S5 The Normal DistributionNetworks	MS-N2 Network Concepts
-	MS-N3 Critical Path Analysis
-* Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
-* Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
-
-Assessment and Reporting
-Information about assessment in relation to the Mathematics Standard syllabus is contained in Assessment and Reporting in Mathematics Standard Stage 6. It outlines course-specific advice and requirements regarding:
-* Year 11 and Year 12 school-based assessment requirements
-* Year 11 and Year 12 mandatory components and weightings
-* External assessment requirements including Higher School Certificate examination specifications.
-
-This information should be read in conjunction with requirements on the Assessment Certification Examination (ACE) website.
-
-Additional advice is available in the Principles of Effective Assessment.
-
-
-Content
-Content defines what students are expected to know and do as they work towards syllabus outcomes. It provides the foundations for students to successfully progress to the next stage of schooling or post-school opportunities.
-Teachers will make decisions about content regarding the sequence, emphasis and any adjustments required based on the needs, interests, abilities and prior learning of students.
-Content in Stage 6 syllabuses defines learning expectations that may be assessed in Higher School Certificate examinations.
-
-Students who undertake the Mathematics Standard course have a diverse range of numeracy needs. The outcomes and content in the Mathematics Standard course provide opportunities for students to demonstrate knowledge, skills and understanding commensurate with Level 3 on the Australian Core Skills Framework (ACSF) in Numeracy. The ACSF provides a way of describing the generic skills identified as being critical to operating effectively in personal and community contexts, including the workplace.
-
-
-Organisation of Content
-The following diagram provides an illustrative representation of elements of the course and their relationship.
-
-
-
-
-Working Mathematically
-Working Mathematically is integral to the learning process in mathematics. It provides students with the opportunity to engage in genuine mathematical activity and develop the skills to become flexible, critical and creative users of mathematics. In this syllabus, Working Mathematically builds on the skills developed in Stage 5, and encompasses six interrelated aspects which form the focus of the syllabus.
-
-These six aspects of Working Mathematically are embedded across the range of syllabus objectives, outcomes and topics. Teachers can extend students' level of proficiency in Working Mathematically by creating opportunities for development through a range of teaching and learning activities.
-
-The two key components of assessment are created from these aspects:
-Understanding, Fluency and Communicating
-Problem Solving, Reasoning and Justification
-
-Learning Across the Curriculum
-Learning across the curriculum content, including the cross-curriculum priorities and general capabilities, assists students to achieve the broad learning outcomes defined in the NESA Statement of Equity Principles, the Melbourne Declaration on Educational Goals for Young Australians (December 2008) and in the Australian Government's Core Skills for Work Developmental Framework (2013).
-
-Cross-curriculum priorities enable students to develop understanding about and address the contemporary issues they face.
-
-The cross-curriculum priorities are:
-* Aboriginal and Torres Strait Islander histories and cultures 
-* Asia and Australia's engagement with Asia 
-* Sustainability 
-
-General capabilities encompass the knowledge, skills, attitudes and behaviours to assist students to live and work successfully in the 21st century.
-
-The general capabilities are:
-* Critical and creative thinking 
-* Ethical understanding 
-* Information and communication technology capability 
-* Intercultural understanding 
-* Literacy 
-* Numeracy 
-* Personal and social capability 
-
-NESA syllabuses include other areas identified as important learning for all students:
-* Civics and citizenship 
-* Difference and diversity 
-* Work and enterprise 
-
-Learning across the curriculum content is incorporated, and identified by icons, in the content of the Mathematics Standard Stage 6 Syllabus in the following ways.
-
-
-Aboriginal and Torres Strait Islander Histories and Cultures 
-Through application and modelling across the topics of the syllabus, students have the opportunity to experience the significance of mathematics in Aboriginal and Torres Strait Islander histories and cultures. Opportunities are provided to connect mathematics with Aboriginal and Torres Strait Islander Peoples' cultural, linguistic and historical experiences. The narrative of the development of mathematics and its integration with cultural development can be explored in the context of some topics. Through the evaluation of statistical data where appropriate, students can deepen their understanding of the lives of Aboriginal and Torres Strait Islander Peoples.
-
-When planning and programming content relating to Aboriginal and Torres Strait Islander histories and cultures teachers are encouraged to:
-* involve local Aboriginal communities and/or appropriate knowledge holders in determining suitable resources, or to use Aboriginal or Torres Strait Islander authored or endorsed publications
-* read the Principles and Protocols relating to teaching and learning about Aboriginal and Torres Strait Islander histories and cultures and the involvement of local Aboriginal communities.
-Asia and Australia's Engagement with Asia 
-Students have the opportunity to learn about the understandings and applications of mathematics 
-in Asia and the way mathematicians from Asia continue to contribute to the ongoing development 
-of mathematics. By drawing on knowledge of and examples from the Asia region, such as calculation, money, art, architecture, design and travel, students have the opportunity to develop mathematical understanding in fields such as number, patterns, measurement, symmetry and statistics. Through the evaluation of statistical data, students have the opportunity to examine issues pertinent to 
-the Asia region.
-Sustainability 
-Mathematics provides a foundation for the exploration of issues of sustainability. Students have the opportunity to learn about the mathematics underlying topics in sustainability, such as energy use and how to reduce consumption, alternative energy using solar cells and wind turbines, climate science and mathematical modelling. Through measurement and the reasoned use of data, students have the opportunity to measure and evaluate sustainability changes over time and develop a deeper appreciation of the world around them. Mathematical knowledge, skills and understanding are necessary to monitor and quantify both the impact of human activity on ecosystems and changes to conditions in the biosphere.
-Critical and Creative Thinking 
-Critical and creative thinking are key to the development of mathematical understanding. Mathematical reasoning and logical thought are fundamental elements of critical and creative thinking. Students are encouraged to be critical thinkers when justifying their choice of a calculation strategy or identifying relevant questions during an investigation. They are encouraged to look for alternative ways to approach mathematical problems, for example identifying when a problem is similar to a previous one, drawing diagrams or simplifying a problem to control some variables. Students are encouraged to be creative in their approach to solving new problems, combining the skills and knowledge they have acquired in their study of a number of different topics, within a new context.
-
-
-Ethical Understanding 
-Mathematics makes a clear distinction between the deductions made from basic principles and their consequences in different circumstances. Students have opportunities to explore, develop and apply ethical understanding to mathematics in a range of contexts. Examples include: collecting, displaying and interpreting data; examining selective use of data by individuals and organisations; detecting and eliminating bias in the reporting of information; exploring the importance of fair comparison and interrogating financial claims and sources.
-Information and Communication Technology Capability 
-Mathematics provides opportunities for students to develop their information and communication technology (ICT) capability when they investigate, create and communicate mathematical ideas and concepts using fast, automated, interactive and multimodal technologies. Students can use their ICT capability to perform calculations; draw graphs; collect, manage, analyse and interpret data; share and exchange information and ideas; and investigate and model concepts and relationships. Digital technologies, such as calculators, spreadsheets, dynamic geometry software, graphing software and computer algebra software, can engage students and promote understanding of key concepts.
-Intercultural Understanding 
-Students have opportunities to understand that mathematical expressions use universal symbols, while mathematical knowledge has its origin in many cultures. Students are provided with opportunities to realise that proficiencies such as understanding, fluency, reasoning and problem solving are not culture or language-specific, but that mathematical reasoning and understanding can find different expression in different cultures and languages. The curriculum provides contexts for exploring mathematical problems from a range of cultural perspectives and within diverse cultural contexts. Students can apply mathematical thinking to identify and resolve issues related to living with diversity.
-Literacy 
-Literacy is used throughout mathematics to understand and interpret word problems and instructions containing particular language featured in mathematics. Students have the opportunity to learn the vocabulary associated with mathematics, including synonyms, technical terminology, passive voice and common words with specific meanings in a mathematical context. Literacy is used to pose and answer questions, engage in mathematical problem solving and to discuss, produce and explain solutions. There are opportunities for students to develop the ability to create and interpret a range of media typical of mathematics ranging from calendars and maps to complex data displays.
-Numeracy 
-Numeracy is embedded throughout the Mathematics Stage 6 syllabuses. It relates to a high proportion of the content descriptions across Years 11 and 12. Consequently, this particular general capability is not tagged in this syllabus.
-
-Numeracy involves drawing on knowledge of particular contexts and circumstances in deciding when to use mathematics, choosing the mathematics to use and critically evaluating its use. To be numerate is to use mathematics effectively to meet the general demands of life at home, at work, and for participation in community and civic life. It is therefore important that the Mathematics curriculum provides the opportunity to apply mathematical understanding and skills in context, in other learning areas and in real-world scenarios.
-Personal and Social Capability 
-Students are provided with opportunities to develop personal and social competence as they learn to understand and manage themselves, their relationships and their lives more effectively. Mathematics enhances the development of students' personal and social capabilities by providing opportunities for initiative-taking, decision-making, communicating their processes and findings, and working independently and collaboratively in the mathematics classroom. Students have the opportunity to apply mathematical skills in a range of personal and social contexts. This may be through activities that relate learning to their own lives and communities, such as time management, budgeting and financial management, and understanding statistics in everyday contexts.
-Civics and Citizenship 
-Mathematics has an important role in civics and citizenship education because it has the potential to help us understand our society and our role in shaping it. The role of mathematics in society has expanded significantly in recent decades as almost all aspects of modern-day life are now quantified. Through modelling reality using mathematics and then manipulating the mathematics in order to understand and/or predict reality, students have the opportunity to learn mathematical knowledge, skills and understanding that are essential for active participation in the world in which we live.
-Difference and Diversity 
-Difference and diversity comprises gender, ethnicity, ability and socio-economic circumstances.
-Students make sense of and construct mathematical ideas in different ways, drawing upon their own unique experiences in life and prior learning. By valuing students' diversity of ideas, teachers foster students' efficacy in learning mathematics.
-Work and Enterprise 
-Students have the opportunity to develop work and enterprise knowledge, skills and understanding through their study of mathematics in a work-related context. Students are encouraged to select and apply appropriate mathematical techniques and problem solving strategies through work-related experiences in the financial mathematics and statistical analysis topics. This allows them to make informed financial decisions by selecting and analysing relevant information.
-Mathematics Standard Year 11 Course Content
-Year 11 Course Structure and Requirements
-The Year 11 course is organised in topics, with the topics divided into subtopics. The Year 11 course is undertaken by all students intending to study either the Mathematics Standard 1 Year 12 course or the Mathematics Standard 2 Year 12 course.
-
-Year 11 course
-(120 hours)Mathematics StandardTopicsSubtopicsAlgebra	MS-A1 Formulae and Equations
- 	MS-A2 Linear RelationshipsMeasurement 	MS-M1 Applications of Measurement
-	MS-M2 Working with TimeFinancial Mathematics	MS-F1 Money MattersStatistical Analysis 	MS-S1 Data Analysis
- 	MS-S2 Relative Frequency and Probability
-* Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
-* Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
-
-Topic: Algebra
-Outcomes
-A student:
-› uses algebraic and graphical techniques to compare alternative solutions to contextual problems MS11-1
-› represents information in symbolic, graphical and tabular form MS11-2
-› makes predictions about everyday situations based on simple mathematical models MS11-6
-› uses appropriate technology to investigate, organise and interpret information in a range of contexts MS11-9
-› justifies a response to a given problem using appropriate mathematical terminology and/or calculations MS11-10
-Related Life Skills outcomes: MALS6-1, MALS6-7, MALS6-8, MALS6-13, MALS6-14
-Topic Focus
-Algebra involves the use of symbols to represent numbers or quantities and to express relationships, using mathematical models and applications.
-
-Knowledge of algebra enables the modelling of a problem conceptually so that it is simpler to solve.
-
-Study of algebra is important in developing students' reasoning skills and logical thought processes, as well as their ability to represent and solve problems.
-Subtopics
-MS-A1: Formulae and Equations
-MS-A2: Linear Relationships 
-
-
-Algebra
-MS-A1 Formulae and Equations
-Outcomes
-A student:
-› uses algebraic and graphical techniques to compare alternative solutions to contextual problems MS11-1
-› makes predictions about everyday situations based on simple mathematical models MS11-6
-› uses appropriate technology to investigate, organise and interpret information in a range of contexts MS11-9
-› justifies a response to a given problem using appropriate mathematical terminology and/or calculations MS11-10
-Related Life Skills outcomes: MALS6-1, MALS6-7, MALS6-8, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to provide a solid foundation in algebraic skills, including finding solutions to a variety of equations in work-related and everyday contexts.
-
-Students develop awareness of the applicability of algebra in their approach to everyday life.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-* review substitution of numerical values into linear and non-linear algebraic expressions and equations ?
-- review evaluating the subject of a formula, given the value of other pronumerals in the formula
-- change the subject of a formula
-- solve problems involving formulae, including calculating distance, speed and time (with change of units of measurement as required) or calculating stopping distances of vehicles using a suitable formula AAM 
-* develop and solve linear equations, including those derived from substituting values into a formula, or those developed from a word description AAM ?   
-* calculate and interpret blood alcohol content (BAC) based on drink consumption and body weight AAM  
-- use formulae, both in word form and algebraic form, to calculate an estimate for blood alcohol content (BAC), including ?BAC?_Male=(10N-7.5H)/6.8M and ?BAC?_Female=(10N-7.5H)/5.5M where N is the number of standard drinks consumed, H is the number of hours of drinking, and M is the person's weight in kilograms
-- determine the number of hours required for a person to stop consuming alcohol in order to reach zero BAC, eg using the formula time=BAC/0.015
-- describe limitations of methods estimating BAC
-
-
-* calculate required medication dosages for children and adults from packets, given age or weight, using Fried's, Young's or Clark's formula as appropriate AAM 
-- Fried's formula: Dosage for children 1-2 years=(age (in months) × adult dosage)/150
-- Young's formula: Dosage for children 1-12 years=(age of child (in years) × adult dosage)/(age of child (in years) + 12)
-- Clark's formula: Dosage=  (weight in kg × adult dosage)/70
-
-
-Algebra
-MS-A2 Linear Relationships 
-Outcomes
-A student:
-› uses algebraic and graphical techniques to compare alternative solutions to contextual problems MS11-1
-› represents information in symbolic, graphical and tabular form MS11-2
-› makes predictions about everyday situations based on simple mathematical models MS11-6
-› uses appropriate technology to investigate, organise and interpret information in a range of contexts MS11-9
-› justifies a response to a given problem using appropriate mathematical terminology and/or calculations MS11-10
-Related Life Skills outcomes: MALS6-1, MALS6-7, MALS6-8, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is the graphing and interpretation of practical linear and direct variation relationships.
-
-Students develop fluency in the graphical approach to linear modelling and its representativeness in common facets of their life.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-? model, analyse and solve problems involving linear relationships, including constructing a straight-line graph and interpreting features of a straight-line graph, including the gradient and intercepts AAM ?   
-- recognise that a direct variation relationship produces a straight-line graph
-- determine a direct variation relationship from a written description, a straight-line graph passing through the origin, or a linear function in the form y=mx  
-- review the linear function y=mx+c  and understand the geometrical significance of m and c
-- recognise the gradient of a direct variation graph as the constant of variation AAM   
-- construct straight-line graphs both with and without the aid of technology (ACMGM040) 
-* construct and analyse a linear model, graphically or algebraically, to solve practical direct variation problems, including the cost of filling a car with fuel or a currency conversion graph AAM ?   
-- identify and evaluate the limitations of a linear model in a practical context
-
-
-Topic: Measurement
-Outcomes
-A student:
-› solves problems involving quantity measurement, including accuracy and the choice of relevant units MS11-3
-› performs calculations in relation to two-dimensional and three-dimensional figures MS11-4
-› uses appropriate technology to investigate, organise and interpret information in a range of contexts MS11-9
-› justifies a response to a given problem using appropriate mathematical terminology and/or calculations MS11-10
-Related Life Skills outcomes: MALS6-3, MALS6-4, MALS6-13, MALS6-14
-Topic Focus
-Measurement involves the application of knowledge, skills and understanding of numbers and geometry to quantify and solve problems in practical situations.
-
-Knowledge of measurement enables completion of daily tasks such as making time estimations, measuring medicine, finding weights and understanding areas of materials or substances.
-
-Study of measurement is important in developing students' ability to make reasonable estimates for quantities, apply appropriate levels of accuracy to particular situations, and apply understanding of aspects of measurement such as length, area, volume and similarity to a variety of problems.
-Subtopics
-MS-M1: Applications of Measurement 
-MS-M2: Working with Time
-
-
-Measurement
-MS-M1 Applications of Measurement 
-Outcomes
-A student:
-› solves problems involving quantity measurement, including accuracy and the choice of relevant units MS11-3
-› performs calculations in relation to two-dimensional and three-dimensional figures MS11-4
-› uses appropriate technology to investigate, organise and interpret information in a range of contexts MS11-9
-› justifies a response to a given problem using appropriate mathematical terminology and/or calculations MS11-10
-Related Life Skills outcomes: MALS6-3, MALS6-4, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to develop an awareness of the inherent error in measurements and to become competent in solving practical problems involving energy, mass, perimeter, area, volume and capacity.
-
-Students develop knowledge of the concepts of measurement and demonstrate fluency with its application.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-M1.1: Practicalities of measurement
-Students:
-* review the use of different metric units of measurement including units of area, take measurements, and calculate conversions between common units of measurement, for example kilometres to metres or litres to millilitres ?
-* calculate the absolute error of a reported measurement using Absolute error=1/2×Precision and state the corresponding limits of accuracy ?
-- find the limits of accuracy as given by:
-Upper bound=Measurement+Absolute error
-Lower bound=Measurement-Absolute error
-- investigate types of errors, eg human error or device limitations 
-- calculate the percentage error of a reported measurement using 
-Percentage error=(Absolute error)/Measurement×100%
-* use standard form and standard metric prefixes in the context of measurement, with and without a required number of significant figures ? 
-- standard prefixes include nano-, micro-, milli-, centi-, kilo-, mega-, giga- and tera-
-
-
-M1.2: Perimeter, area and volume
-Students:
-* review and extend how to solve practical problems requiring the calculation of perimeters and areas of triangles, rectangles, parallelograms, trapezia, circles, sectors of circles and composite shapes ?  
-- review the use of Pythagoras' theorem to solve problems involving right-angled triangles
-- review the use of a scale factor to find unknown lengths in similar figures
-* solve problems involving surface area of solids including prisms, cylinders, spheres and composite solids
-* solve problems involving volume and capacity of solids including prisms, cylinders, spheres, pyramids and composite solids
-- convert between units of volume and capacity
-* calculate perimeters and areas of irregularly shaped blocks of land by dissection into regular shapes including triangles and trapezia AAM 
-- derive the Trapezoidal rule for a single application, A˜h/2(d_f+d_(l ))
-- use the Trapezoidal rule to solve a variety of practical problems with and without technology, eg the volume of water in a swimming pool 
-* solve problems involving perimeters, area, surface area, volumes and capacity in a variety of contexts AAM
-
-M1.3: Units of energy and mass
-Students:
-* review the use of metric units of mass in solving problems, including grams, kilograms and tonnes, their abbreviations and how to convert between them ? 
-* use metric units of energy to solve problems, including calories, kilocalories, joules and kilojoules, their abbreviations and how to convert between them ?
-* use units of energy and mass to solve problems related to food and nutrition, including calories ? 
-* use units of energy to solve problems involving the amount of energy expended in activities, for example kilojoules ? 
-* use units of energy to solve problems involving the consumption of electricity, for example kilowatt hours, and investigate common appliances in terms of their energy consumption AAM ?  
-
-
-Measurement
-MS-M2 Working with Time
-Outcomes
-A student:
-› solves problems involving quantity measurement, including accuracy and the choice of relevant units MS11-3
-› performs calculations in relation to two-dimensional and three-dimensional figures MS11-4
-› uses appropriate technology to investigate, organise and interpret information in a range of contexts MS11-9
-› justifies a response to a given problem using appropriate mathematical terminology and/or calculations MS11-10
-Related Life Skills outcomes: MALS6-3, MALS6-4, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to understand concepts related to locations on Earth's surface and calculation of time differences.
-
-Students develop awareness of being a global citizen and the relationships between different countries in terms of location, distance and time.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-* indicate positions on the Earth's surface ?
-- locate points on Earth's surface using latitude, longitude or position coordinates with a globe, an atlas and digital technologies, eg a smartphone or GPS device 
-- understand and use the link between longitude and time to find time differences
-* calculate times and time differences around the world AAM ?
-- review using units of time, converting between 12-hour and 24-hour clocks and calculating time intervals
-- understand and use the link between longitude and time to find time differences
-- solve problems involving time zones in Australia and in neighbouring nations, making any necessary allowances for daylight saving (ACMEM163)   
-- solve problems involving Coordinated Universal Time (UTC), and the International Date Line (IDL)
-- find time differences between two places on Earth using recognised international time zones (ACMEM165)  
-- review how to interpret timetables, eg bus, train and ferry timetables, and use them to solve problems  
-- solve practical problems, eg travelling east and west, incorporating time zones, or internet and phone usage across time zones, or the timing of events broadcast live from states of countries between different time zones    
-
-
-Financial Mathematics
-Outcomes
-A student:
-› represents information in symbolic, graphical and tabular form MS11-2
-› models relevant financial situations using appropriate tools MS11-5
-› makes predictions about everyday situations based on simple mathematical models MS11-6
-› uses appropriate technology to investigate, organise and interpret information in a range of contexts MS11-9
-› justifies a response to a given problem using appropriate mathematical terminology and/or calculations MS11-10
-Related Life Skills outcomes: MALS6-2, MALS6-5, MALS6-6, MALS6-7, MALS6-8, MALS6-13, MALS6-14
-Topic Focus
-Financial Mathematics involves the application of knowledge, skills and understanding of numbers to earning, spending, investing, saving and borrowing money.
-
-Knowledge of financial mathematics enables students to analyse different financial situations, to calculate the best options for given circumstances, and to solve financial problems.
-
-Study of financial mathematics is important in developing students' ability to make informed financial decisions, to be aware of the consequences of such decisions, and to manage personal financial resources effectively.
-Subtopics
-MS-F1: Money Matters
-
-
-Financial Mathematics
-MS-F1 Money Matters
-Outcomes
-A student:
-› represents information in symbolic, graphical and tabular form MS11-2
-› models relevant financial situations using appropriate tools MS11-5
-› makes predictions about everyday situations based on simple mathematical models MS11-6
-› uses appropriate technology to investigate, organise and interpret information in a range of contexts MS11-9
-› justifies a response to a given problem using appropriate mathematical terminology and/or calculations MS11-10
-Related Life Skills outcomes: MALS6-2, MALS6-5, MALS6-6, MALS6-7, MALS6-8, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to calculate and graph simple interest, manage earnings, wages and taxation, and develop an appropriate budget for a given situation.
-
-Students develop an ability to justify various types of financial decisions which will affect their life now and into the future.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-F1.1: Interest and depreciation
-Students:
-* apply percentage increase or decrease in various contexts, eg calculating the goods and services tax (GST) payable on a range of goods and services, and calculating profit or loss in absolute and percentage terms ?  
-* calculate simple interest for different rates and periods (ACMEM064) ? 
-- use technology or otherwise to compare simple interest graphs for different rates and periods 
-* calculate the depreciation of an asset using the straight-line method as an application of the simple interest formula AAM ?
-- use S=V_0-Dn, where S is the salvage value of the asset after n periods, V_0 is the initial value of the asset, D is the amount of depreciation per period, and n is the number of periods
-* use a spreadsheet to calculate and graph compound interest as a recurrence relation involving repeated applications of simple interest AAM ? 
-
-
-F1.2: Earning and managing money
-Students:
-* calculate monthly, fortnightly, weekly, daily or hourly pay rates from a given salary, wages involving hourly rates and penalty rates, including situations involving overtime and other special allowances, and earnings based on commission (including commission based on a sliding scale), piecework or royalties ?    
-- calculate annual leave loading
-- calculate payments based on government allowances and pensions (ACMGM003)
-* calculate income tax ?
-- identify allowable tax deductions    
-- calculate taxable income after allowable tax deductions are taken from gross pay 
-- calculate the Medicare levy (basic levy only)
-- calculate the amount of Pay As You Go (PAYG) tax payable per fortnight or week using current tax scales, and use this to determine if more tax is payable or if a refund is owing after completing a tax return 
-* calculate net pay following deductions from income ?
-* use technology to perform financial computations, for example calculating percentage change, calculating tax payable and preparing a wage-sheet ?  
-
-F1.3: Budgeting and household expenses
-Students:
-* interpret and use information about a household's electricity, water or gas usage and related charges and costs from household bills AAM ?  
-* plan for the purchase of a car AAM ?  
-- investigate on-road costs for new and used vehicles, including sale price (or loan repayments), registration, insurance and stamp duty at current rates  
-- consider sustainability when choosing a vehicle to purchase, eg fuel consumption rates 
-- calculate and compare the cost of purchasing different vehicles using a spreadsheet  
-* plan for the running and maintenance of a car AAM ?  
-- describe the different types of insurance available, including compulsory and non-compulsory third-party insurance, and comprehensive insurance  
-- investigate other running costs associated with ownership of a vehicle, eg cost of servicing, repairs and tyres  
-- calculate and compare the cost of running different vehicles using a spreadsheet  
-* prepare a personal budget for a given income, taking into account fixed and discretionary spending (ACMGM004) AAM ?   
-
-
-Topic: Statistical Analysis
-Outcomes
-A student:
-› represents information in symbolic, graphical and tabular form MS11-2
-› develops and carries out simple statistical processes to answer questions posed MS11-7
-› solves probability problems involving multistage events MS11-8
-› uses appropriate technology to investigate, organise and interpret information in a range of contexts MS11-9
-› justifies a response to a given problem using appropriate mathematical terminology and/or calculations MS11-10
-Related Life Skills outcomes: MALS6-2, MALS6-9, MALS6-10, MALS6-13, MALS6-14
-Topic Focus
-Statistical Analysis involves the collection, exploration, display, analysis and interpretation of data to identify and communicate key information.
-
-Knowledge of statistical analysis enables the careful interpretation of situations and raises awareness of contributing factors when presented with information by third parties, including the possible misrepresentation of information.
-
-Study of statistics is important in developing students' understanding of the contribution that statistical thinking makes to decision-making in society and in the professional and personal lives of individuals.
-Subtopics
-MS-S1: Data Analysis 
-MS-S2: Relative Frequency and Probability 
-
-
-Statistical Analysis
-MS-S1 Data Analysis 
-Outcomes
-A student:
-› represents information in symbolic, graphical and tabular form MS11-2
-› develops and carries out simple statistical processes to answer questions posed MS11-7
-› uses appropriate technology to investigate, organise and interpret information in a range of contexts MS11-9
-› justifies a response to a given problem using appropriate mathematical terminology and/or calculations MS11-10
-Related Life Skills outcomes: MALS6-2, MALS6-9, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is planning and management of data collection, classification and representation of data, calculation of summary statistics for single datasets and their use in the interpretation of data.
-
-Students develop awareness of the importance of statistical processes and inquiry in society.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-S1.1: Classifying and representing data (grouped and ungrouped)
-Students:
-* describe and use appropriate data collection methods for a population or samples ?
-- investigate whether a sample obtained from a population may or may not be representative of the population by considering different kinds of sampling methods: systematic sampling, self-selected sampling, capture-recapture, simple random sampling and stratified sampling
-- investigate the advantages and disadvantages of each type of sampling
-- describe the potential faults in the design and practicalities of data collection processes, eg surveys, experiments and observational studies, misunderstandings and misrepresentations, including examples from the media
-* classify data relating to a single random variable ? 
-- classify a categorical variable as either ordinal, eg income level (low, medium, high) or nominal, eg place of birth (Australia, overseas)
-- classify a numerical variable as either discrete, eg the number of rooms in a house, or continuous, eg the temperature in degrees Celsius
-
-
-* review how to organise and display data into appropriate tabular and/or graphical representations AAM ?   
-- display categorical data in tables and, as appropriate, in both bar charts or Pareto charts
-- display numerical data as frequency distribution tables and histograms, cumulative frequency distribution tables and graphs, dot plots and stem and leaf plots (including back-to-back where comparing two datasets)
-- construct and interpret tables and graphs related to real-world contexts, including: motor vehicle safety including driver behaviour, accident statistics, blood alcohol content over time, running costs of a motor vehicle, costs of purchase and insurance, vehicle depreciation, rainfall, hourly temperature, household and personal water usage  
-* interpret and compare data by considering it in tabular and/or graphical representations AAM ?   
-- choose appropriate tabular and/or graphical representations to enable comparisons
-- compare the suitability of different methods of data presentation in real-world contexts, including their visual appeal, eg a heat map to illustrate climate change data or the median house prices across suburbs   
-
-S1.2: Summary statistics
-Students:
-* describe the distinguishing features of a population and sample ?
-- define notations associated with population values (parameters) and sample-based estimates (statistics), including population mean µ, population standard deviation s, sample mean x ¯ and sample standard deviation s
-* summarise and interpret grouped and ungrouped data through appropriate graphs and summary statistics AAM ? 
-- discuss the mode and determine where possible
-- calculate measures of central tendency, including the arithmetic mean and the median (ACMEM050)
-- investigate the suitability of measures of central tendency in real-world contexts and use them to compare datasets  
-- calculate measures of spread including the range, quantiles (including quartiles, deciles and percentiles), interquartile range (IQR) and standard deviation (calculations for standard deviation are only required by using technology) 
-* investigate and describe the effect of outliers on summary statistics ? 
-- use different approaches for identifying outliers, including consideration of the distance from the mean or median, or the use of Q_1-1.5×IQR and Q_3+1.5×IQR as criteria, recognising and justifying when each approach is appropriate
-- investigate and recognise the effect of outliers on the mean and median
-* investigate real-world examples from the media illustrating appropriate and inappropriate uses or misuses of measures of central tendency and spread (ACMEM056) AAM 
-* describe, compare and interpret the distributions of graphical displays and/or numerical datasets and report findings in a systematic and concise manner AAM ?    
-- identify modality (unimodal, bimodal or multimodal)
-- identify shape (symmetric or positively or negatively skewed)
-- identify central tendency, spread and outliers, using and justifying appropriate criteria
-- calculate measures of central tendency or measures of spread where appropriate
-
-
-* construct and compare parallel box-plots AAM  
-- complete a five-number summary for different datasets (ACMEM058)
-- compare groups in terms of central tendency (median), spread (IQR and range) and outliers (using appropriate criteria)
-- interpret and communicate the differences observed between parallel box-plots in the context of the data
-
-
-Statistical Analysis
-MS-S2 Relative Frequency and Probability 
-Outcomes
-A student:
-› solves probability problems involving multistage events MS11-8
-› uses appropriate technology to investigate, organise and interpret information in a range of contexts MS11-9
-› justifies a response to a given problem using appropriate mathematical terminology and/or calculations MS11-10
-Related Life Skills outcomes: MALS6-10, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to draw conclusions related to the chance that an event will occur.
-
-Students develop awareness of the broad range of applications of probability concepts in everyday life and their use in decision-making.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-* review, understand and use the language associated with theoretical probability and relative frequency ?  
-- construct a sample space for an experiment and use it to determine the number of outcomes (ACMEM154)
-- review probability as a measure of the 'likely chance of occurrence' of an event (ACMMM052)
-- review the probability scale: 0=P(A)=1 for each event A, with P(A)=0 if A is an impossibility and P(A)=1 if A is a certainty (ACMMM053)
-* determine the probabilities associated with simple games and experiments ? 
-- use the following definition of probability of an event where outcomes are equally likely: P(event)=(number of favourable outcomes)/(total number of outcomes)
-- calculate the probability of the complement of an event using the relationship P(an event does not occur)=1-P(the event does occur)=P((the event does occur) ¯)=P(event^c)
-* use arrays and tree diagrams to determine the outcomes and probabilities for multistage experiments (ACMEM156) AAM 
-- construct and use tree diagrams to establish the outcomes for a simple multistage event
-- use probability tree diagrams to solve problems involving two-stage events
-
-
-* solve problems involving simulations or trials of experiments in a variety of contexts AAM ? 
-- perform simulations of experiments using technology (ACMEM150) 
-- use relative frequency as an estimate of probability (ACMEM152)
-- recognise that an increasing number of trials produces relative frequencies that gradually become closer in value to the theoretical probability 
-- identify factors that could complicate the simulation of real-world events (ACMEM153)
-* solve problems involving probability and/or relative frequency in a variety of contexts AAM 
-- use existing known probabilities, or estimates based on relative frequencies to calculate expected frequency for a given sample or population, eg predicting, by calculation, the number of people of each blood type in a population given a two-way table of percentage breakdowns
-- calculate the expected frequency of an event occurring using np where n represents the number of times an experiment is repeated, and on each of those times the probability that the event occurs is p
-- 
-Mathematics Standard 1 Year 12 Course Content
-Mathematics Standard 1 Year 12 Course Structure and Requirements
-The courses are organised into topics, with the topics divided into subtopics.
-
-Year 12 course
-(120 hours)Mathematics Standard 1TopicsSubtopicsAlgebra 	MS-A3 Types of RelationshipsMeasurement 	MS-M3 Right-angled Triangles
-	MS-M4 Rates
-	MS-M5 Scale DrawingsFinancial Mathematics 	MS-F2 Investment
- 	MS-F3 Depreciation and LoansStatistical Analysis 	MS-S3 Further Statistical AnalysisNetworks	MS-N1 Networks and Paths
-* Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
-* Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
-
-
-Topic: Algebra
-Outcomes
-A student:
-› uses algebraic and graphical techniques to evaluate and construct arguments in a range of familiar and unfamiliar contexts MS1-12-1
-› represents the relationships between changing quantities in algebraic and graphical forms 
-MS1-12-6
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-1, MALS6-7, MALS6-8, MALS6-13, MALS6-14
-Topic Focus
-Algebra involves the use of symbols to represent numbers or quantities and to express relationships, using mathematical models and applications.
-
-Knowledge of algebra enables the modelling of a problem conceptually so that it is simpler to solve, before returning the solution to its more complex practical form.
-
-Study of algebra is important in developing students' reasoning skills and logical thought processes, as well as their ability to represent and solve problems.
-Subtopics
-MS-A3: Types of Relationships 
-
-
-Algebra
-MS-A3 Types of Relationships 
-Outcomes
-A student:
-› uses algebraic and graphical techniques to evaluate and construct arguments in a range of familiar and unfamiliar contexts MS1-12-1
-› represents the relationships between changing quantities in algebraic and graphical forms 
-MS1-12-6
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-1, MALS6-7, MALS6-8, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is the graphing and interpretation of relationships, and the use of simultaneous linear equations in solving practical problems.
-
-Students develop their ability to communicate concisely, use equations to describe and solve practical problems, and use algebraic or graphical representations of relationships to predict future outcomes.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-A3.1: Simultaneous linear equations
-Students:
-* solve a pair of simultaneous linear equations graphically, by finding the point of intersection between two straight-line graphs, with and without technology  
-* develop a pair of simultaneous linear equations to model a practical situation AAM   
-* solve practical problems that involve determining and interpreting the point of intersection of two straight-line graphs, including the break-even point of a simple business problem where cost and revenue are represented by linear equations AAM  
-
-
-A3.2: Graphs of practical situations
-Students:
-* construct a graph from a table of values both with and without technology 
-- use values of physical phenomena, eg the growth of algae in a pond over time, or the rise and fall of the tide against a harbour wall over time to plot graphs and make predictions
-* sketch the shape of a graph from a description of a situation, for example the time passed and the depth of water in different shaped containers, or the speed of a race car as it moves around different shaped tracks 
-* determine the best model (linear or exponential) to approximate a graph by considering its shape, using technology where appropriate AAM   
-* identify the strengths and limitations of linear and non-linear models in given practical contexts AAM 
-
-
-Topic: Measurement
-Outcomes
-A student:
-› interprets the results of measurements and calculations and makes judgements about their reasonableness MS1-12-3
-› analyses simple two-dimensional and three-dimensional models to solve practical problems MS1-12-4
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-3, MALS6-4, MALS6-13, MALS6-14
-Topic Focus
-Measurement involves the application of knowledge, skills and understanding of numbers and geometry to quantify and solve problems in practical situations.
-
-Knowledge of measurement enables an understanding of basic daily situations involving rates and ratios, such as speed and the interpretation of maps and plans, effectively in a variety of situations.
-
-Study of measurement is important in developing students' ability to solve problems related to two-dimensional and three-dimensional models and representations and to work effectively with a variety of rates and ratios.
-Subtopics
-MS-M3: Right-angled Triangles 
-MS-M4: Rates
-MS-M5: Scale Drawings
-
-
-Measurement
-MS-M3 Right-angled Triangles 
-Outcomes
-A student:
-› interprets the results of measurements and calculations and makes judgements about their reasonableness MS1-12-3
-› analyses simple two-dimensional and three-dimensional models to solve practical problems MS1-12-4
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-3, MALS6-4, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to solve problems involving right-angled triangles in a range of practical contexts using Pythagoras' theorem and basic trigonometric ratios.
-
-Students develop their ability to justify mathematical thinking and to communicate solutions.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-* review the application of Pythagoras' theorem to solve practical problems in two dimensions AAM   
-* review and extend the use of trigonometric ratios (sin, cos, tan) to solve practical problems AAM 
-- work with angles correct to the nearest degree and/or minute
-* understand various navigational methods
-- understand the difference between compass and true bearings
-- investigate navigational methods used by different cultures, including those of Aboriginal and Torres Strait Islander Peoples  
-* solve practical problems involving angles of elevation and depression and bearings AAM    
-- convert between compass and true bearings, eg convert N35°W into a true bearing
-
-
-Measurement
-MS-M4 Rates
-Outcomes
-A student:
-› interprets the results of measurements and calculations and makes judgements about their reasonableness MS1-12-3
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-3, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is the use of rates to solve problems in practical contexts.
-
-Students develop awareness of the use of rates and solve problems in everyday situations such as health sciences, travel and finance.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-* use, simplify and convert between units of rates, for example km/h and m/s, mL/min and L/h (ACMEM071, ACMEM072)
-* use rates to solve practical problems AAM
-- use rates to make comparisons, eg using unit prices to compare best buys, comparing heart rates after exercise (ACMEM016, ACMEM074)   
-- use rates to determine costs, eg calculating the cost of a trade professional using rates per hour and call-out fees (ACMEM075)   
-- work with speed as a rate, including interpreting distance-time graphs (travel graphs) and use them to solve problems related to speed, distance and time   
-- calculate the amount of fuel used on a trip, given the fuel consumption rate, and compare fuel consumption statistics for various vehicles
-* solve problems involving heart rates and blood pressure AAM
-- describe heart rate as a rate expressed in beats per minute
-- measure and graph a person's heart rate over time under different conditions and identify mathematical trends 
-- calculate target heart rate ranges during training 
-- express blood pressure using measures of systolic pressure and diastolic pressure
-- measure blood pressure over time and under different conditions
-- use a blood pressure chart and interpret the 'healthiness' of a reading 
-
-
-Measurement
-MS-M5 Scale Drawings
-Outcomes
-A student:
-› interprets the results of measurements and calculations and makes judgements about their reasonableness MS1-12-3
-› analyses simple two-dimensional and three-dimensional models to solve practical problems MS1-12-4
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-3, MALS6-4, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to interpret and use scale drawings and use similarity in solutions to practical problems involving measurement.
-
-Students develop their ability to interpret and use house plans, designs and maps in the calculation of a range of measurements and solve related problems.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-* solve practical problems involving ratio, for example map scales, mixtures for building materials or cost per item AAM  
-- work with ratio to express a ratio in simplest form, to find the ratio of two quantities and to divide a quantity in a given ratio
-- use ratio to describe map scales
-* use the conditions for similarity of two-dimensional figures, including similar triangles, to solve related problems
-* use the linear scale factor for two similar figures to solve problems (ACMGM022)
-* obtain measurements from scale drawings, including maps (including cultural mappings or models) or building plans, to solve problems AAM  
-- interpret commonly used symbols and abbreviations on building plans and elevation views 
-* estimate and compare quantities, materials and costs using actual measurements from scale drawings, for example using measurements for packaging, clothing, cooking, painting, bricklaying and landscaping including sustainability issues AAM  
-
-
-Topic: Financial Mathematics
-Outcomes
-A student:
-› makes informed decisions about financial situations likely to be encountered post-school MS1-12-5
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-5, MALS6-6, MALS6-13, MALS6-14
-Topic Focus
-Financial Mathematics involves the application of knowledge, skills and understanding of numbers to earning, spending, investing, saving and borrowing money.
-
-Knowledge of financial mathematics enables students to analyse different financial situations, to calculate the best options for given circumstances, and to solve financial problems.
-
-Study of financial mathematics is important in developing students' ability to make informed financial decisions, to be aware of the consequences of such decisions, and to manage personal financial resources effectively.
-Subtopics
-MS-F2: Investment 
-MS-F3: Depreciation and Loans 
-
-
-Financial Mathematics
-MS-F2 Investment 
-Outcomes
-A student:
-› makes informed decisions about financial situations likely to be encountered post-school MS1-12-5
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-5, MALS6-6, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to calculate and compare the value of different types of investments over a period of time.
-
-Students develop awareness of mechanisms to optimise their financial position, both now and into the future, justifying their thinking and reasoning mathematically.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-* calculate the future value (FV) or present value (PV) and the interest rate (r) of a compound interest investment using the formula FV=PV(1+r)^n  
-- compare the growth of simple interest and compound interest investments numerically and graphically, using technology  
-- investigate the effect of varying the interest rate, the term or the compounding period on the future value of an investment, using technology 
-- compare and contrast different investment strategies, performing appropriate calculations when needed   
-* solve practical problems involving compounding, for example determine the impact of inflation on prices and wages or calculate the appreciated value of items, for example antiques AAM    
-
-
-Financial Mathematics
-MS-F3 Depreciation and Loans 
-Outcomes
-A student:
-› makes informed decisions about financial situations likely to be encountered post-school MS1-12-5
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-5, MALS6-6, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to gain an understanding of credit cards and reducing balance loans and that an asset may depreciate in value over time rather than appreciate.
-
-Students develop their understanding of credit and loans in order to make informed financial decisions.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-* calculate the depreciation of an asset using the declining-balance method, using the formula S=?V_0 (1-r)?^n, where S is the salvage value of the asset after n periods, V_0 is the initial value of the asset, r is the depreciation rate per period, expressed as a decimal, and n is the number of periods, and realise that this is the compound interest formula, with a negative value for r AAM  
-- use technology to investigate depreciating values, numerically and graphically  
-* recognise a reducing balance loan as a compound interest loan with periodic repayments and use a spreadsheet to model a reducing balance loan   
-- recognise that a smaller or additional repayment may affect the term and cost of your loan 
-- use an online calculator to investigate the effect of the interest rate, the repayment amount or the making of an additional lump-sum payment, on the time taken to repay a loan 
-
-
-* recognise credit cards as an example of a reducing balance loan and solve practical problems relating to credit cards
-- identify the various fees and charges associated with credit card usage  
-- compare credit card interest rates with interest rates for other loans 
-- interpret credit card statements, recognising the implications of only making the minimum payment  
-- understand what is meant by an interest-free period
-- calculate the compounding interest charged on a retail purchase, transaction or the outstanding balance for a given number of days, both with and without the use of technology AAM 
-
-
-Topic: Statistical Analysis
-Outcomes
-A student:
-› analyses representations of data in order to make predictions and draw conclusions MS1-12-2
-› solves problems requiring statistical processes MS1-12-7
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-2, MALS6-7, MALS6-8, MALS6-13, MALS6-14
-Topic Focus
-Statistical Analysis involves the collection, display, analysis and interpretation of data to identify and communicate key information.
-
-Knowledge of statistical analysis enables the careful interpretation of situations and raises awareness of contributing factors when presented with information by third parties, including the possible misrepresentation of information.
-
-Study of statistical analysis is important in developing students' appreciation of how conclusions drawn from data can be used to inform decisions made by groups such as scientific investigators, business people and policy-makers.
-Subtopics
-MS-S3: Further Statistical Analysis 
-
-
-Statistical Analysis
-MS-S3 Further Statistical Analysis 
-Outcomes
-A student:
-› analyses representations of data in order to make predictions and draw conclusions MS1-12-2
-› solves problems requiring statistical processes MS1-12-7
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-2, MALS6-7, MALS6-8, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is the development of students' understanding of the purpose and process of statistical investigation, taking into account appropriate basic design principles.
-
-Students develop understanding of the complex nature of questionnaire design and potential misconceptions in statistical representations and reasoning.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-S3.1: The statistical investigation process for a survey
-Students:
-* understand and use the statistical investigation process: identifying a problem and posing a statistical question, collecting or obtaining data, representing and analysing that data, then communicating and interpreting findings
-- identify the target population to be represented (ACMEM132)
-- investigate questionnaire design principles, eg simple language, unambiguous questions, consideration of number of choices, how data may be analysed to address the original question, issues of privacy and bias, ethics, and responsiveness to diverse groups and cultures AAM     
-- implement the statistical investigation process to answer questions that involve comparing the data across two or more groups  
-
-
-S3.2: Exploring and describing data arising from two quantitative variables
-Students:
-* construct a bivariate scatterplot to identify patterns in the data that suggest the presence of an association (ACMGM052) AAM  
-* use bivariate scatterplots (constructing them when needed) to describe the patterns, features and associations of bivariate datasets, justifying any conclusions AAM 
-- describe bivariate datasets in terms of form (linear/non-linear) and, in the case of linear, the direction (positive/negative) and strength of any association (strong/moderate/weak)
-- identify the dependent and independent variables within bivariate datasets where appropriate
-- describe and interpret a variety of bivariate datasets involving two numerical variables using real-world examples from the media, or freely available from government and business datasets  
-* model a linear relationship to the data by fitting a line of best fit by eye and by using technology (ACMEM141, ACMEM142) AAM  
-* use the line of best fit to make predictions by either interpolation or extrapolation (ACMEM145) AAM  
-- recognise the limitations of interpolation and extrapolation (ACMEM146)
-* collect data, interpret and construct graphs using contexts, for example sustainability, household finance and the human body AAM  
-
-
-Topic: Networks
-Outcomes
-A student:
-› applies network techniques to solve network problems MS1-12-8
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-11, MALS6-12, MALS6-13, MALS6-14
-Topic Focus
-Networks involve the graphical representation and modelling of situations as an approach to decision-making processes.
-
-Knowledge of networks enables development of a logical sequence of tasks or a clear understanding of connections between people or items.
-
-Study of networks is important in developing students' ability to interpret a set of connections or sequence of tasks as a concise diagram in order to solve related problems.
-Subtopics
-MS-N1: Networks and Paths
-
-
-Networks
-MS-N1 Networks and Paths
-Outcomes
-A student:
-› applies network techniques to solve network problems MS1-12-8
-› chooses and uses appropriate technology effectively and recognises appropriate times for such use MS1-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others MS1-12-10
-Related Life Skills outcomes: MALS6-11, MALS6-12, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to identify and use network terminology and to solve problems involving networks.
-
-Students develop their awareness of the applicability of networks throughout their lives, for example social media networks, and their ability to use associated techniques to optimise practical problems.
-Content
-N1.1: Networks
-Students:
-* identify and use network terminology: vertices, edges, paths, the degree of a vertex, directed networks and weighted edges 
-* solve problems involving network diagrams AAM
-- recognise circumstances in which networks could be used, eg the cost of connecting various locations on a university campus with computer cables    
-- given a map, draw a network to represent the map, eg travel times for the stages of a planned journey 
-- draw a network diagram to represent information given in a table
-
-N1.2: Shortest paths
-Students:
-* determine the minimum spanning tree of a given network with weighted edges, AAM
-- determine the minimum spanning tree by using Kruskal's or Prim's algorithms or by inspection
-- determine the definition of a tree and a minimum spanning tree for a given network
-* find a shortest path from one place to another in a network with no more than 10 vertices AAM 
-- identify a shortest path on a network diagram
-- recognise a circumstance in which a shortest path is not necessarily the best path or contained in any minimum spanning tree 
-
-Mathematics Standard 2 Year 12 Course Content
-Mathematics Standard 2 Year 12 Course Structure and Requirements
-The courses are organised into topics, with the topics divided into subtopics.
-
-Year 12 course
-(120 hours)Mathematics Standard 2TopicsSubtopicsAlgebra 	MS-A4 Types of RelationshipsMeasurement 	MS-M6 Non-right-angled Trigonometry
-	MS-M7 Rates and RatiosFinancial Mathematics 	MS-F4 Investments and Loans
- 	MS-F5 AnnuitiesStatistical Analysis 	MS-S4 Bivariate Data Analysis
- 	MS-S5 The Normal DistributionNetworks	MS-N2 Network Concepts
-	MS-N3 Critical Path Analysis
-* Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
-* Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
-
-
-Topic: Algebra
-Outcomes
-A student:
-› uses detailed algebraic and graphical techniques to critically evaluate and construct arguments in a range of familiar and unfamiliar contexts MS2-12-1
-› solves problems by representing the relationships between changing quantities in algebraic and graphical forms MS2-12-6
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-1, MALS6-7, MALS6-8, MALS6-13, MALS6-14
-Topic Focus
-Algebra involves the use of symbols to represent numbers or quantities and to express relationships. It is an essential tool in problem solving through the solution of equations, graphing of relationships and modelling with functions.
-
-Knowledge of algebra enables the modelling of a problem conceptually so that it is simpler to solve, before returning the solution to its more complex practical form.
-
-Study of algebra is important in developing students' reasoning skills and logical thought processes, as well as their ability to represent and solve problems.
-Subtopics
-MS-A4: Types of Relationships 
-
-
-Algebra
-MS-A4 Types of Relationships 
-Outcomes
-A student:
-› uses detailed algebraic and graphical techniques to critically evaluate and construct arguments in a range of familiar and unfamiliar contexts MS2-12-1
-› solves problems by representing the relationships between changing quantities in algebraic and graphical forms MS2-12-6
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-1, MALS6-7, MALS6-8, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is the graphing and interpretation of relationships, and the use of simultaneous linear equations in solving practical problems.
-
-Students develop their ability to communicate concisely, use equations to describe and solve practical problems, and use algebraic or graphical representations of relationships to predict future outcomes.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-A4.1: Simultaneous linear equations
-Students:
-* solve a pair of simultaneous linear equations graphically, by finding the point of intersection between two straight-line graphs, with and without technology  
-* develop a pair of simultaneous linear equations to model a practical situation AAM   
-* solve practical problems that involve determining and interpreting the point of intersection of two straight-line graphs, including the break-even point of a simple business problem where cost and revenue are represented by linear equations AAM  
-
-
-A4.2: Non-linear relationships
-Students:
-* use an exponential model to solve problems AAM 
-- graph and recognise an exponential function in the form y=a^x and y=a^(-x) (a>0) with and without technology 
-- interpret the meaning of the intercepts of an exponential graph in a variety of contexts 
-- construct and analyse an exponential model of the form y=?ka?^x and y=?ka?^(-x) (a>0) where k is a constant, to solve a practical growth or decay problem 
-* construct and analyse a quadratic model to solve practical problems involving quadratic functions or expressions of the form y=ax^2+bx+c, for example braking distance against speed AAM   
-- recognise the shape of a parabola and that it always has a turning point and an axis of symmetry
-- graph a quadratic function with and without technology 
-- interpret the turning point and intercepts of a parabola in a practical context
-- consider the range of values for x and y for which the quadratic model makes sense in a practical context
-* recognise that reciprocal functions of the form y=k/x , where k is a constant, represent inverse variation, identify the rectangular hyperbolic shape of these graphs and their important features AAM  
-- use a reciprocal model to solve practical inverse variation problems algebraically and graphically, eg the amount of pizza received when sharing a pizza between increasing numbers of people
-
-
-Topic: Measurement
-Outcomes
-A student:
-› interprets the results of measurements and calculations and makes judgements about their reasonableness, including the degree of accuracy and the conversion of units where appropriate MS2-12-3
-› analyses two-dimensional and three-dimensional models to solve practical problems MS2-12-4
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-3, MALS6-4, MALS6-13, MALS6-14
-Topic Focus
-Measurement involves the application of knowledge, skills and understanding of numbers and geometry to quantify and solve problems in practical situations.
-
-Knowledge of measurement enables an understanding of basic daily situations involving rates and ratios, such as speed and the interpretation of maps and plans, effectively in a variety of situations.
-
-Study of measurement is important in developing students' ability to solve problems related to two-dimensional and three-dimensional models and representations and to work effectively with a variety of rates and ratios.
-Subtopics
-MS-M6: Non-right-angled Trigonometry 
-MS-M7: Rates and Ratios
-
-
-Measurement
-MS-M6 Non-right-angled Trigonometry 
-Outcomes
-A student:
-› interprets the results of measurements and calculations and makes judgements about their reasonableness, including the degree of accuracy and the conversion of units where appropriate MS2-12-3
-› analyses two-dimensional and three-dimensional models to solve practical problems MS2-12-4
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-3, MALS6-4, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to solve problems involving right-angled and non-right-angled triangles in a variety of contexts.
-
-Students develop their ability to justify mathematical thinking and communicate solutions in an ordered and concise fashion.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-* review and use the trigonometric ratios to find the length of an unknown side or the size of an unknown angle in a right-angled triangle AAM 
-* use technology to investigate the sign of sin?A and cos?A for 0°=A=180°   
-* determine the area of any triangle, given two sides and an included angle, by using the rule 
-A=1/2 absinC, and solve related practical problems AAM  
-* solve problems involving non-right-angled triangles using the sine rule, a/(sin A)=b/(sin B)=c/(sin C) (ambiguous case excluded) AAM 
-- find the size of an obtuse angle, given that it is obtuse
-* solve problems involving non-right-angled triangles using the cosine rule, c^2=a^2+b^2-2ab cos?C AAM 
-* understand various navigational methods
-- understand the difference between compass and true bearings
-- investigate navigational methods used by different cultures, including those of Aboriginal and Torres Strait Islander Peoples  
-
-
-* solve practical problems involving Pythagoras' theorem, the trigonometry of right-angled and non-right-angled triangles, angles of elevation and depression and the use of true bearings and compass bearings AAM  
-- work with angles correct to the nearest degree and/or minute
-* construct and interpret compass radial surveys and solve related problems   
-
-
-Measurement
-MS-M7 Rates and Ratios
-Outcomes
-A student:
-› interprets the results of measurements and calculations and makes judgements about their reasonableness, including the degree of accuracy and the conversion of units where appropriate MS2-12-3
-› analyses two-dimensional and three-dimensional models to solve practical problems MS2-12-4
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-3, MALS6-4, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is the use of rates and ratios to solve problems in practical contexts, including the interpretation of scale drawings.
-
-Students develop awareness of the use of rates and ratios and solve problems in everyday situations, such as health sciences, energy and finance.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-* use rates to solve and describe practical problems AAM
-- use rates to make comparisons, eg using unit prices to compare best buys, working with speed, comparing heart rates after exercise and considering target heart rate ranges during training   
-- know that a watt (W) is the International System of Units (SI) derived unit of power and is equal to one joule per second
-- interpret the energy rating of household appliances and compare running costs of different models of the same type of appliance, considering costs of domestic electricity, eg calculate the cost of running a 200-watt television for six hours if the average peak rate for domestic electricity is $0.15/kWh 
-- investigate local council requirements for energy-efficient housing 
-- calculate the amount of fuel used on a trip, given the fuel consumption rate, and compare fuel consumption statistics for various vehicles
-* solve practical problems involving ratio, for example capture-recapture, mixtures for building materials or cost per item AAM  
-- work with ratio to express a ratio in simplest form, to find the ratio of two quantities and to divide a quantity in a given ratio
-- use ratio to describe map scales
-
-
-* obtain measurements from scale drawings, including maps (including cultural mappings or models) or building plans, to solve problems AAM  
-- interpret commonly used symbols and abbreviations on building plans and elevation views 
-- calculate the perimeter or area of a section of land, using the Trapezoidal rule where appropriate, from a variety of sources, including a site plan, an aerial photograph, radial surveys or maps that include a scale 
-- calculate the volume of rainfall over an area, using V=Ah, from a variety of sources, including a site plan, an aerial photograph, radial surveys or maps that include a scale 
-
-
-Topic: Financial Mathematics
-Outcomes
-A student:
-› makes informed decisions about financial situations, including annuities and loan repayments MS2-12-5
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-5, MALS6-6, MALS6-13, MALS6-14
-Topic Focus
-Financial Mathematics involves the application of knowledge, skills and understanding of numbers to earning, spending, investing, saving and borrowing money.
-
-Knowledge of financial mathematics enables students to analyse different financial situations, to calculate the best options for given circumstances, and to solve financial problems.
-
-Study of financial mathematics is important in developing students' ability to make informed financial decisions, to be aware of the consequences of such decisions, and to manage personal financial resources effectively.
-Subtopics
-MS-F4: Investments and Loans 
-MS-F5: Annuities 
-
-
-Financial Mathematics
-MS-F4 Investments and Loans 
-Outcomes
-A student:
-› makes informed decisions about financial situations, including annuities and loan repayments MS2-12-5
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-5, MALS6-6, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to calculate and compare the value of different types of investments, including shares, over a period of time and to gain an understanding of reducing balance loans and that an asset may depreciate in value over time rather than appreciate.
-
-Students develop awareness of mechanisms to optimise their financial position, both now and into the future, justifying their thinking and reasoning mathematically.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-F4.1: Investments
-Students:
-* calculate the future value (FV) or present value (PV) and the interest rate (r)  of a compound interest investment using the formula FV=PV(1+r)^n  
-- compare the growth of simple interest and compound interest investments numerically and graphically, linking graphs to linear and exponential modelling using technology  
-- investigate the effect of varying the interest rate, the term or the compounding period on the future value of an investment, using technology 
-- compare and contrast different investment strategies, performing appropriate calculations when needed 
-* solve practical problems involving compounding, for example determine the impact of inflation on prices and wages AAM   
-* work with shares and calculate the appreciated value of items, for example antiques AAM  
-- record and graph the price of a share over time
-- calculate the dividend paid on a portfolio of shares, and the dividend yield (excluding franked dividends)
-
-
-F4.2: Depreciation and loans
-Students:
-* calculate the depreciation of an asset using the declining-balance method using the formula S=?V_0 (1-r)?^n, where S is the salvage value of the asset after n periods, V_0 is the initial value of the asset, r is the depreciation rate per period, expressed as a decimal, and n is the number of periods, as an application of the compound interest formula AAM 
-* solve practical problems involving reducing balance loans, for example determining the total loan amount and monthly repayments AAM   
-* recognise credit cards as an example of a reducing balance loan and solve practical problems relating to credit cards AAM
-- identify the various fees and charges associated with credit card usage  
-- compare credit card interest rates with interest rates for other loan types 
-- interpret credit card statements, recognising the implications of only making the minimum payment  
-- understand what is meant by an interest-free period
-- calculate the compounding interest charged on a retail purchase, transaction or the outstanding balance for a given number of days, using technology or otherwise 
-- 
-
-Financial Mathematics
-MS-F5 Annuities 
-Outcomes
-A student:
-› makes informed decisions about financial situations, including annuities and loan repayments MS2-12-5
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-5, MALS6-6, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is the nature and mathematics of annuities, the processes by which they accrue, and ways of optimising their value as an investment.
-
-Students develop awareness of the use of annuities in their lives, for example superannuation and home loans.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-Students:
-* solve compound interest related problems involving financial decisions, for example a home loan, a savings account, a car loan or an annuity AAM     
-- identify an annuity as an investment account with regular, equal contributions and interest compounding at the end of each period, or as a single sum investment from which regular, equal withdrawals are made 
-- using technology, model an annuity as a recurrence relation, and investigate (numerically or graphically) the effect of varying the amount and frequency of each contribution, the interest rate or the payment amount on the duration and/or future value of the annuity 
-- use a table of interest factors to perform annuity calculations, eg calculating the present or future value of an annuity, the contribution amount required to achieve a given future value or the single sum that would produce the same future value as a given annuity   
-
-
-Topic: Statistical Analysis
-Outcomes
-A student:
-› analyses representations of data in order to make inferences, predictions and draw conclusions MS2-12-2
-› solves problems requiring statistical processes, including the use of the normal distribution, and the correlation of bivariate data MS2-12-7
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-2, MALS6-9, MALS6-13, MALS6-14
-Topic Focus
-Statistical Analysis involves the collection, display, analysis and interpretation of data to identify and communicate key information.
-
-Knowledge of statistical analysis enables the careful interpretation of situations and raises awareness of contributing factors when presented with information by third parties, including the possible misrepresentation of information.
-
-Study of statistical analysis is important in developing students' understanding of how conclusions drawn from data can be used to inform decisions made by groups, such as scientific investigators, business people and policy-makers.
-Subtopics
-MS-S4: Bivariate Data Analysis 
-MS-S5: The Normal Distribution 
-
-
-Statistical Analysis
-MS-S4 Bivariate Data Analysis 
-Outcomes
-A student:
-› analyses representations of data in order to make inferences, predictions and draw conclusions MS2-12-2
-› solves problems requiring statistical processes, including the use of the normal distribution, and the correlation of bivariate data MS2-12-7
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-2, MALS6-9, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to introduce students to a variety of methods for identifying, analysing and describing associations between pairs of numerical variables.
-
-Students develop the ability to display, interpret and analyse statistical relationships related to bivariate numerical data analysis and use this ability to make informed decisions.
-Content
-Students:
-* construct a bivariate scatterplot to identify patterns in the data that suggest the presence of an association (ACMGM052) AAM  
-* use bivariate scatterplots (constructing them when needed) to describe the patterns, features and associations of bivariate datasets, justifying any conclusions AAM 
-- describe bivariate datasets in terms of form (linear/non-linear) and, in the case of linear, the direction (positive/negative) and strength of any association (strong/moderate/weak)
-- identify the dependent and independent variables within bivariate datasets where appropriate
-- describe and interpret a variety of bivariate datasets involving two numerical variables using real-world examples from the media or freely available from government or business datasets  
-- calculate and interpret Pearson's correlation coefficient (r) using technology to quantify the strength of a linear association of a sample (ACMGM054) 
-* model a linear relationship by fitting an appropriate line of best fit to a scatterplot and using it to describe and quantify associations AAM 
-- fit a line of best fit both by eye and by using technology to the data (ACMEM141, ACMEM142) 
-- fit a least-squares regression line to the data using technology 
-- interpret the intercept and gradient of the fitted line (ACMGM059)
-
-
-* use the appropriate line of best fit, both found by eye and by applying the equation, to make predictions by either interpolation or extrapolation 
-- recognise the limitations of interpolation and extrapolation, and interpolate from plotted data to make predictions where appropriate (ACMGM062) 
-* solve problems that involve identifying, analysing and describing associations between two numerical variables AAM 
-* construct, interpret and analyse scatterplots for bivariate numerical data in practical contexts AAM     
-- demonstrate an awareness of issues of privacy and bias, ethics, and responsiveness to diverse groups and cultures when collecting and using data
-- investigate using biometric data obtained by measuring the body or by accessing published data from sources including government organisations, and determine if any associations exist between identified variables  
-
-
-Statistical Analysis
-MS-S5 The Normal Distribution 
-Outcomes
-A student:
-› analyses representations of data in order to make inferences, predictions and draw conclusions MS2-12-2
-› solves problems requiring statistical processes, including the use of the normal distribution, and the correlation of bivariate data MS2-12-7
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-2, MALS6-9, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to develop an understanding of the properties of the normal distribution and the value of relative measure in the analysis and comparison of datasets arising from random variables that are normally distributed.
-
-Students develop techniques to analyse normally distributed data and make judgements in individual cases justifying the reasonableness of their solutions.
-Content
-Students:
-* recognise a random variable that is normally distributed, justifying their reasoning, and draw an appropriate 'bell-shaped' frequency distribution curve to represent it 
-- identify that the mean and median are approximately equal for data arising from a random variable that is normally distributed
-* calculate the z-score (standardised score) corresponding to a particular value in a dataset AAM 
-- use the formula z=(x-µ)/s, where µ is the mean and s is the standard deviation 
-- describe the z-score as the number of standard deviations a value lies above or below the mean
-- recognise that the set of z-scores for data arising from a random variable that is normally distributed has a mean of 0 and standard deviation of 1
-* use calculated z-scores to compare scores from different datasets, for example comparing students' subject examination scores AAM 
-* use collected data to illustrate that, for normally distributed random variables, approximately 68% of data will have z-scores between -1 and 1, approximately 95% of data will have z-scores between -2 and 2 and approximately 99.7% of data will have z-scores between -3 and 3 (known as the empirical rule) 
-- apply the empirical rule to a variety of problems
-- indicate by shading where results sit within the normal distribution, eg where the top 10% of data lies
-
-
-* use z-scores to identify probabilities of events less or more extreme than a given event AAM 
-- use statistical tables to determine probabilities 
-- use technology to determine probabilities 
-* use z-scores to make judgements related to outcomes of a given event or sets of data AAM  
-
-
-Topic: Networks
-Outcomes
-A student:
-› solves problems using networks to model decision-making in practical problems MS2-12-8
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-11, MALS6-12, MALS6-13, MALS6-14
-Topic Focus
-Networks involve the graphical representation and modelling of situations as an approach to decision-making processes.
-
-Knowledge of networks enables development of a logical sequence of tasks or a clear understanding of connections between people or items.
-
-Study of networks is important in developing students' ability to interpret a set of connections or sequence of tasks as a concise diagram in order to solve related problems.
-Subtopics
-MS-N2: Network Concepts
-MS-N3: Critical Path Analysis
-
-
-Networks
-MS-N2 Network Concepts
-Outcomes
-A student:
-› solves problems using networks to model decision-making in practical problems MS2-12-8
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-11, MALS6-12, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to identify and use network terminology and to solve problems involving networks.
-
-Students develop their awareness of the applicability of networks throughout their lives, for example social media networks, and their ability to use associated techniques to optimise practical problems.
-Content
-N2.1: Networks
-Students:
-* identify and use network terminology: vertices, edges, paths, the degree of a vertex, directed networks and weighted edges  
-* solve problems involving network diagrams AAM
-- recognise circumstances in which networks could be used, eg the cost of connecting various locations on a university campus with computer cables   
-- given a map, draw a network to represent the map, eg travel times for the stages of a planned journey 
-- draw a network diagram to represent information given in a table
-- investigate and solve practical problems, eg planning a garbage bin collection route
-
-N2.2: Shortest paths
-Students:
-* determine the minimum spanning tree of a given network with weighted edges AAM
-- determine the minimum spanning tree by using Kruskal's or Prim's algorithms or by inspection
-- determine the definition of a tree and a minimum spanning tree for a given network
-- use minimum spanning trees to solve minimal connector problems, eg minimising the length of cable needed to provide power from a single power station to substations in several towns (ACMGM103) 
-* find a shortest path from one place to another in a network with no more than 10 vertices AAM 
-- identify a shortest path on a network diagram
-- recognise a circumstance in which a shortest path is not necessarily the best path or contained in any minimum spanning tree 
-
-Networks
-MS-N3 Critical Path Analysis
-Outcomes
-A student:
-› solves problems using networks to model decision-making in practical problems MS2-12-8
-› chooses and uses appropriate technology effectively in a range of contexts, and applies critical thinking to recognise appropriate times and methods for such use MS2-12-9
-› uses mathematical argument and reasoning to evaluate conclusions, communicating a position clearly to others and justifying a response MS2-12-10
-Related Life Skills outcomes: MALS6-11, MALS6-12, MALS6-13, MALS6-14
-Subtopic Focus
-The principal focus of this subtopic is to use critical path analysis in the optimisation of real-life problems.
-
-Students develop awareness that critical path analysis is a useful tool in project planning, management and logistics.
-Content
-Students:
-* construct a network to represent the duration and interdependencies of activities that must be completed during a particular project, for example a student schedule, or preparing a meal AAM    
-* given activity charts, prepare network diagrams and use critical path analysis to determine the minimum time for a project to be completed AAM
-- use forward and backward scanning to determine the earliest starting time (EST) and latest starting time (LST) for each activity in the project (ACMGM105)
-- understand why the EST for an activity could be zero, and in what circumstances it would be greater than zero 
-- calculate float times of non-critical activities (ACMGM108) 
-- understand what is meant by critical path
-- use ESTs and LSTs to locate the critical path(s) for the project (ACMGM106)
-* solve small-scale network flow problems, including the use of the 'maximum-flow minimum-cut' theorem, for example determining the maximum volume of oil that can flow through a network of pipes from an oil storage tank (the source) to a terminal (the sink) (ACMGM109) AAM
-- convert information presented in a table into a network diagram
-- determine the flow capacity of a network and whether the flow is sufficient to meet the demand in various contexts
-
-Glossary
-
-Glossary termElaborationAboriginal and Torres Strait Islander PeoplesAboriginal Peoples are the first peoples of Australia and are represented by over 250 language groups each associated with a particular Country or territory. Torres Strait Islander Peoples whose island territories to the north east of Australia were annexed by Queensland in 1879 are also Indigenous Australians and are represented by five cultural groups.
-
-An Aboriginal and/or Torres Strait Islander person is someone who:
-* is of Aboriginal and/or Torres Strait Islander descent
-* identifies as an Aboriginal person and/or Torres Strait Islander person, and
-* is accepted as such by the Aboriginal and/or Torres Strait Islander community in which they live.absolute errorThe absolute error of a measurement is half of the smallest unit on the measuring device. The smallest unit is called the precision of the device.allowable tax deductionsAllowable tax deductions are expenses incurred that are related to your job and profession and can be deducted from your salary to obtain your taxable income. These form part of an individual's or company's tax return.ambiguous case in trigonometryIn trigonometry, the ambiguous case refers to using the sine rule to calculate the size of an angle in a triangle where there are two possibilities for the angle, one obtuse and one acute, leading to two possible triangles.annuityAn annuity is a compound interest investment from which payments are made or received on a regular basis for a fixed period of time.appreciated valueAppreciation is an increase in the value of an asset over time. An appreciated value is the value an asset has increased to over that time.arrayAn array is an ordered collection of objects or numbers arranged in rows and columns.asymptoteAn asymptote is a line.
-* A horizontal asymptote is a horizontal line whose distance from the curve becomes as small as we please for all large values on the horizontal axis.
-* The line x=a is a vertical asymptote if the curve is not defined at x=a and the vertical values of the curve become as large as we please (positive or negative) as x approaches a.bearingA bearing is a direction from one point on the Earth's surface to another. Two types of bearings may be used: compass bearing and true bearings.biasBias generally refers to a systematic favouring of certain outcomes more than others, due to unfair influence (knowingly or otherwise).bivariate dataBivariate data is data relating to two variables that have both been measured on the same set of items or individuals. For example the arm spans and heights of 16-year-olds, the sex of primary school students and their attitude to playing sport.blood alcohol content (BAC)Blood alcohol content measures the amount of alcohol present in the bloodstream, and may be used for legal purposes.blood pressureBlood pressure is the pressure exerted by circulating blood upon the walls of blood vessels. It is usually measured at a person's upper arm. Blood pressure is expressed in terms of the systolic (maximum) pressure over diastolic (minimum) pressure and is measured in millimetres of mercury (mm Hg).box-plotA box-plot is a graphical display of a five-number summary.
-
-In a box-plot, the 'box' (a rectangle) represents the interquartile range (IQR) with 'whiskers' reaching out from each end of the box towards maximum and minimum values in the dataset. A line in the box is used to indicate the location of the median. Also known as a box-and-whisker plot.break-even pointThe break-even point is the point at which income and cost of production are equal.categorical dataData associated with a categorical variable is called categorical data. Also known as qualitative data.categorical variableA categorical variable is a variable whose values are categories.
-
-Examples include major blood type (A, B, AB or O) or principal construction type (brick, concrete, timber, steel, other).
-
-Categories may have numerical labels, for example postcodes, but these labels have no numerical significance, they merely serve as labels.compass bearingCompass bearings are specified as angles either side of north or south. For example a compass bearing of N50°E is found by facing north and moving through an angle of 50° to the east.complementThe complement of an event refers to when the event does NOT occur. For example if A is the event of throwing a 5 on a die, then the complement of A, denoted by  A ¯ or A^c, is throwing a number that is NOT 5 on a die.constant of variationAlso known as the constant of proportionality. See direct or inverse variation.continuous dataContinuous data is data associated with continuous variables and is a type of numerical data.continuous variableA continuous variable is a numerical variable that can take any value that lies along a continuum. In practice, the observed values are subject to the accuracy of the measurement instrument used to obtain these values.
-
-Examples include height, reaction time to a stimulus and systolic blood pressure.critical pathThe critical path is the sequence of network activities which combine to have the longest overall duration so as to determine the shortest possible time needed to complete a project.cumulative frequencyThe cumulative frequency is the accumulating total of frequencies within an ordered dataset.cumulative frequency graphA cumulative frequency graph or 'ogive' is a curve or series of straight lines representing the cumulative frequency for a given dataset.decilesDeciles divide an ordered dataset into ten equal parts. See also quantiles.dependent variableA dependent variable within a statistical model is one whose value depends upon that of another. It is represented on the vertical axis of a scatterplot. The dependent variable is also known as the outcome variable or the output of a function.depreciationDepreciation is a decrease in the value of an asset over time.diastolic pressureDiastolic pressure is the blood pressure in the arteries when the heart muscle is relaxed between beats.direct variationTwo variables are in direct variation if one is a constant multiple of the other. This can be represented by the equation y=kx, where k is the constant of variation (or proportion). Also known as direct proportion, it produces a linear graph through the origin.directed networksA directed network is a network whose edges have arrows and travel is only possible in the direction of the arrows.discrete dataDiscrete data is data associated with discrete variables and is a type of numerical data.discrete variableA discrete variable is a numerical variable whose values can be listed.
-
-Examples include the number of children in a family, shoe size or the number of days in a month.dividendA dividend of a share is a sum of money paid by a company to its shareholders out of its profits.dividend yieldA dividend yield is the dividend expressed as a percentage of the current share price.earliest starting time (EST)The earliest starting time is the earliest time that any activity can be started after all prior activities have been completed.edge (in networks)In a network diagram, an edge refers to a line which joins vertices to each other. Also called an arc.elevation viewsElevation views are scale drawings showing what a building looks like from the front, back and sides.eventAn event is a set of outcomes for a random experiment.exponential functionAn exponential function is a function in which the independent variable occurs as an exponent (or power/index) with a positive base. For example y=2^x is an exponential function where x is the independent variable.exponential modelCreating an exponential model involves fitting an exponential graph and/or function to a practical situation or set of data.extrapolationExtrapolation occurs when the fitted model is used to make predictions using values that are outside the range of the original data upon which the fitted model was based. Extrapolation far beyond the range of the original data is a dangerous process as it can sometimes lead to quite erroneous predictions.five-number summaryA five-number summary is a method for summarising a dataset using five statistics: the minimum value, the first quartile, the median, the third quartile and the maximum value.float timeFloat time is the amount of time that a task in a project network can be delayed without causing a delay to subsequent tasks.flow capacityThe flow capacity of a network can be found using the maximum-flow minimum-cut theorem and depends upon the capacity of each edge in the network.fuel consumption rateThe fuel consumption rate of a vehicle measures how much fuel it uses and is usually measured in litres per 100 kilometres (L/100 km).future valueThe future value of an investment or annuity is the total value of the investment at the end of the term of the investment, including all contributions and interest earned.future value interest factorsFuture value interest factors are the values of an investment at a specific date. A table of these factors can be used to calculate the future value of different amounts of money that are invested at a certain interest rate for a specified period of time.gross payGross pay is the total income per pay period (weekly, fortnightly, monthly as appropriate).GSTGST is an abbreviation for the Goods and Services Tax which, in Australia, is a flat percentage of tax levied on most goods and services.heart rateHeart rate is the speed of a heartbeat in beats per minute (bpm) and measures the number of contractions of the heart per minute.income taxIncome tax is a government tax levied on taxable income.independent variableAn independent variable within a statistical model is one whose outcomes are not due to those of another variable and is represented on the horizontal axis of a scatterplot. The independent variable is also referred to as the input of a function.interpolationInterpolation occurs when a fitted model is used to make predictions using values that lie within the range of the original data.interquartile range (IQR)The interquartile range is a measure of the spread within a numerical dataset. It is equal to the difference between the upper quartile (Q_3) and the lower quartile (Q_1); that is, IQR=Q_3-Q_1inverse variationTwo variables are in inverse variation (or inverse proportion) if one is a constant multiple of the reciprocal of the other. Hence, as one variable increases, the other variable decreases.
-
-For example if y is inversely proportional to x, they are connected by the equation y=k/x, where k is a constant of variation (or proportion).Kruskal's algorithmKruskal's algorithm finds a minimum spanning tree for a connected weighted network graph.latest starting time (LST)The latest starting time is the latest time an activity may be started after all prior activities have been completed and without delaying the project.least-squares regression lineLeast-squares regression is a method for finding a straight line that summarises the relationship between two variables, within the range of the dataset.
-
-The least-squares regression line is the line that minimises the sum of the squares of the residuals. Also known as the least-squares line of best fit.limits of accuracyThe limits of accuracy for a recorded measurement are the possible upper and lower bounds for the actual measurement.line of best fitA line of best fit is a line drawn through a scatterplot of data points that most closely represents the relationship between two variables.maximum-flow minimum-cut theoremThe maximum-flow minimum-cut theorem states that the flow through a network cannot exceed the value of any cut in the network and that the maximum flow equals the value of the minimum cut, ie it identifies the 'bottle-neck' in the system.measures of central tendencyMeasures of central tendency are the values about which the set of data values for a particular variable are scattered. They are a measure of the centre or location of the data.
-
-The two most common measures of central tendency are the mean and the median.measures of spreadMeasures of spread describe how similar or varied the set of data values are for a particular variable.
-
-Common measures of spread include the range, combinations of quantiles (deciles, quartiles, percentiles), the interquartile range, variance and standard deviation.minimum spanning treeA minimum spanning tree is a spanning tree of minimum length in a connected, undirected network. It connects all the vertices together with the minimum total weighting for the edges.modalityModality describes the number of peaks in a set of data.
-
-For example data can be unimodal (having one peak), bimodal (having two peaks) or multimodal (having many peaks).net payNet pay is the remaining amount of gross pay after tax and other deductions have been made.networkA network is a group or system of interconnecting objects which can be represented as a diagram of connected lines (called edges) and points (called vertices). For example a rail network.network diagramA network diagram is a representation of a group of objects called vertices that are connected together by lines called edges. Also known as a network graph.nominal dataNominal data is a type of categorical data that has no natural order in which the categories may be placed, for example eye colour.normal distributionThe normal distribution is a type of continuous distribution where the mean, median and mode are equal and the scores are symmetrically arranged either side of the mean. The graph of a normal distribution is often called a 'bell curve' due to its shape, as shown below.
-numerical dataNumerical data is data associated with a numerical variable.
-
-Also known as quantitative data.numerical variableNumerical variables are variables whose values are numbers. Numerical variables can be either discrete or continuous.ordinal dataOrdinal data is a type of categorical data where the possible categorical responses have a natural order. For example level of happiness: very unhappy, unhappy, neutral, happy, very happy.outcomeAn outcome is a single possible result from a chance experiment.outlierAn outlier in a dataset is a data value that appears to be inconsistent with the remainder of that dataset.parabolaA parabola is the graph of a quadratic function. The vertex of a parabola is its highest or lowest point (or turning point). The parabola has an axis of symmetry through its vertex.Pareto chartA Pareto chart is a type of chart that contains both a bar and a line graph, where individual values are represented in descending order by the bars and the cumulative total is represented by the line graph.pathA path in a network diagram is a walk in which all of the edges and all the vertices are different. A path that starts and finishes at different vertices is said to be open, while a path that starts and finishes at the same vertex is said to be closed. There may be multiple paths between the same two vertices.Pay As You Go (PAYG) taxPay As You Go tax is a system for making regular tax instalments which are removed from gross pay towards the expected income tax liability for that financial year.Pearson's correlation coefficientPearson's correlation coefficient is a statistic that measures the strength of the linear relationship between a pair of variables or datasets. Its value lies between -1 and 1 (inclusive). Also known as simply the correlation coefficient. For a sample, it is denoted by r.percentage errorThe percentage error of a measurement is the absolute error expressed as a percentage of the recorded measurement.percentilesPercentiles divide an ordered dataset into 100 equal parts. See also quantiles.
-
-More formally, it is a statistical measure indicating the value below which a given percentage of observations in a group of observations lie. For example the 20th percentile is the value below which 20% of the observations may be found.pieceworkPiecework is employment where a worker is paid a fixed rate for each item produced or action performed regardless of the time taken.populationThe population in statistics is the entire dataset from which a statistical sample may be drawn.present valueThe present value of an investment is the single sum of money (or principal) that could be initially invested to produce a future value over a given period of time.Prim's algorithmPrim's algorithm determines a minimum spanning tree for a connected weighted network.quadratic functionA quadratic function is a function of the form  y=ax^2+bx+c where a?0. For example: y=3x^2+7quadratic modelCreating a quadratic model involves fitting a quadratic graph and/or function to a set of data or creating a model to describe a practical situation.quantilesQuantiles are a set of values that divide an ordered dataset into equal groups. Examples include quartiles, deciles and percentiles.
-
-Formally in statistics, quantiles are cutpoints dividing the range of a probability distribution into continuous intervals with equal probabilities, or dividing the observations in a sample in the same way.quartilesQuartiles divide an ordered dataset into four equal parts.
-
-There are three quartiles. The first or lower quartile (Q_1), divides off (approximately) the lowest 25% of data values. The second quartile (Q_2) is the median. The third or upper quartile (Q_3), divides off (approximately) the highest 25% of data values. See also quantiles.radial surveyA radial survey can be used to measure the area of an irregular block of land. In a radial survey, a central point is chosen within the block of land and measurements are taken along intervals from this point to each vertex. The angles between these intervals at the central point are also measured and recorded.rateA rate is a particular kind of ratio in which the two quantities are measured in different units. For example the ratio of distance to time, known as speed, is a rate because distance and time are measured in different units (such as kilometres and hours). The value of the rate depends on the units in which the quantities are expressed.ratioA ratio is a quotient or proportion of two numbers, magnitudes or algebraic expressions. It is often used as a measure of the relative size of two objects. For example the ratio of the length of a side of a square to the length of a diagonal is 1: v2 that is:  1/( v2)reciprocal functionA function where the independent variable, x, is the denominator in a fraction. Examples of reciprocal functions include those of the form: y=k/x See also inverse variation.reciprocal modelCreating a reciprocal model involves fitting a reciprocal graph and/or a function to a practical situation or set of data.rectangular hyperbolaThe graph of a reciprocal function is a type of rectangular hyperbola.
-
-A rectangular hyperbola is a hyperbola for which the asymptotes are perpendicular.recurrence relationA recurrence relation occurs when each successive application uses the resultant value of the previous application to generate the next value. Examples include compound interest and annuities.reducing balance loanA reducing balance loan is a compound interest loan where the loan is repaid by making regular payments and the interest paid is calculated on the amount still owing (the reducing balance of the loan) after each payment is made.relative frequencyRelative frequency is a measure of the number of times that an event has occurred in a repeated experiment. If an event E occurs r times when a chance experiment has been repeated n times, then the relative frequency of E is:  r/nsample spaceThe sample space of a chance experiment is the set of all possible outcomes for that experiment.samplingSampling is the selection of a subset of data from a statistical population. Methods of sampling include:
-* systematic sampling ? sample data is selected from a random starting point and using a fixed periodic interval
-* self-selecting sampling ? non-probability sampling where individuals volunteer themselves to be part of a sample
-* simple random sampling ? sample data is chosen at random where each member has an equal probability of being chosen
-* stratified sampling ? after dividing the population into separate groups or strata, a random sample is then taken from each group/strata in an equivalent proportion to the size of that group/strata in the population.
-
-A sample can be used to estimate the characteristics of the statistical population.scale factorA scale factor is a number that scales, or multiplies, or reduces some quantity.
-
-If two or more figures are similar, their sizes can be compared. The scale factor is the ratio of the length of one side on one figure to the length of the corresponding side on the other figure. It is a measure of magnification or reduction, the change of size.scatterplotA scatterplot is a two-dimensional data plot using Cartesian coordinates to display the values of two variables in a bivariate dataset. Also known as a scatter graph.shareA share is one of the equal parts into which a company's capital is divided, entitling the shareholder to a portion of the company's profits.shortest pathA shortest path in a network diagram is a path between two vertices in a network where the sum of the weights of its edges are minimised.sketchA sketch is an approximate representation of a graph, including labelled axes, intercepts and any other important relevant features. Compared to the corresponding graph, a sketch should be recognisably similar but does not need to be exact.spanning treeA spanning tree of an undirected network diagram is a tree which includes all the vertices of the original network connected together, but not necessarily all the edges of the original network diagram. A network can have many different spanning trees.standard deviationStandard deviation is a measure of the spread of a dataset. It gives an indication of how far, on average, individual data values are spread from the mean.standard drinkA drink that contains 10 grams of alcohol is called a standard drink.standard formA real number is expressed in standard form when it is written in the form a×10^n where 1=a<10 and n is an integer. Also known as scientific notation.straight-line method of depreciationIn straight-line method of depreciation, the value of the depreciating asset decreases by the same amount during each time period.
-
-Also known as the 'Prime Cost method'.summary statisticsSummary statistics refers to numbers that summarise a given dataset. For example a five-number summary.target heart rateThe target heart rate is defined as the minimum number of heartbeats in a given amount of time in order to reach the level of exertion necessary for cardiovascular fitness and is specific to a person's age, gender or physical fitness. An example of a target heart rate is 150 bpm to burn fat for a woman in her 30s.tax returnA tax return is an annual statement of all income, allowable deductions, PAYG tax paid and other personal financial information so as to allow the Australian Taxation Office to calculate the amount of income tax an individual should pay for the financial year.taxable incomeTaxable income is the amount of yearly income that is used to calculate an individual's payable income tax equal to gross income less allowable tax deductions.Trapezoidal ruleThe Trapezoidal rule uses trapezia to approximate the area of an irregular shape, often with a curved boundary. Given a transverse line of length h and two perpendicular offset lengths d_f and d_l, one application of the Trapezoidal rule is given by: A˜h/2(d_f+d_l)tree (networks)A tree is an undirected network in which any two vertices are connected by exactly one path.tree diagram
-(probability)A tree diagram is a diagram that can be used to determine the outcomes of a multistep random experiment. A probability tree diagram has the probability for each stage written on the branches.true bearingTrue bearings are measured in degrees clockwise from true north and are written with three digits being used to specify the direction.
-
-For example the direction of north is specified 000°, east is specified as 090°, south is specified as 180° and north-west is specified as 315°.vertex (in networks)A vertex is a point in a network diagram at which lines of pathways (called edges) intersect or branch. Also called a node.weighted edgeA weighted edge is an edge of a network diagram that has a number assigned to it which implies some numerical value such as cost, distance or time.z-scoreA z-score is a statistical measure of how many standard deviations a raw score is above or below the mean. A z-score can be positive or negative, indicating whether it is above or below the mean, or zero. Also known as a standardised score.
-Mathematics Standard Stage 6 Syllabus	(2017)	29
-
-Year 11
-
-Standard 1 Year 12
-
-Standard 2 Year 12
-
-
-

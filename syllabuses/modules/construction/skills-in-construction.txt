@@ -1,183 +1,0 @@
-﻿=== Skills in construction ===
-Subject: construction
-============================================================
-
-3.2	Skills in construction - mandatory focus area
-3.2.1	Outcomes
-The student:
-* reads and interprets plans using Australian Standards 
-* understands and applies construction industry processes to plan and sequence work task components safely and to ensure quality outcomes
-* uses measurements and calculations.
-3.2.2	Associated units of competency
-The scope of learning for the HSC must be read and delivered in conjunction with the following associated units of competency:
-* CPCCOM1015	Carry out measurements and calculations
-and
-* CPCCOM2001	Read and interpret plans and specifications
-or
-* CPCCCA3025	Read and interpret plans, specifications and drawings for carpentry work
-The application and elements for each of these units of competency are provided below.
-CPCCOM1015	Carry out measurements and calculations
-Application	This unit of competency specifies the skills and knowledge required to undertake basic measurements and calculations to determine task and material requirements in a construction work environment. 
-Elements	1.	Obtain measurements
-2.	Perform basic calculations.
-Assessment requirements for CPCCOM1015 Carry out measurements and calculations are detailed in the Training Package.
-CPCCOM2001	Read and interpret plans and specifications
-Application	This unit of competency specifies the skills and knowledge required to read and interpret plans and specifications relevant to construction operations at a basic level.
-Elements	1.	Explain features and functions of plans/drawings and specifications
-2.	Locate key features on a site from site plan/drawings
-3.	Identify project requirements from plans/drawings and specifications.
-Assessment requirements for CPCCOM2001 Read and interpret plans and specifications are detailed in the Training Package.
-
-CPCCCA3025	Read and interpret plans, specifications and drawings for carpentry work
-Application	This unit of competency specifies the skills and knowledge required to read and interpret plans and specifications for carpentry work in order to plan and sequence the work, meeting all relevant requirements of the National Construction Code (NCC), Australian Standards, work health and safety (WHS), and Commonwealth and state or territory legislation.
-Elements	1.	Plan and prepare
-2.	Interpret construction plans, drawings and their features
-3.	Locate key features on site plan
-4.	Determine project requirements and plan project.
-Assessment requirements for CPCCCA3025 Read and interpret plans, specifications and drawings for carpentry work are detailed in the Training Package.
-
-
-3.2.3	Scope of learning for the HSC
-project documentation* purpose of project documentation, and the main types of plans, drawings and specifications used in a construction work environment * construction project documentation:
-- building/engagement contracts:
-* costing/itemised quote
-* inclusions
-* material/finish specifications
-* stage schedule
-* payment schedule
-- environmental plan:
-* link to legislation and industry and company/workplace policy
-* requirements and controls for:
-o bush fire
-o coastal management
-o flood zones
-o protecting significant cultural and historical sites
-o rehabilitation management
-o waste management and disposalplans, drawings and specifications* components of the title panel:
-- architect/drafting company
-- client
-- contractor
-- date/version, including amendments
-- drawing number
-- north indicator
-- number of pages
-- scale
-- site location/address* conventions for a range of symbols and abbreviations used on construction plans and drawings:
-- contours 
-- datum
-- dimensions
-- direction
-- inclusions
-- levels
-- material types
-- orientation/direction of north
-- projection
-- scale
-- services (such as electricity, gas and plumbing)
-- situation of structures on siteplans, drawings and specifications, continued* types and purpose of pictorial drawings:
-- illustrations, concept drawings, sketches
-- initial planning
-- major features of a project* types and features of working drawings:
-- location plan:
-* orientation
-* scale
-* address
-* street names/lot number
-* other block numbers
-- site/block plan:
-* orientation
-* scale
-* position of structures, easements and ancillary works/other buildings
-* boundary dimensions
-* street and boundary setbacks
-* contour lines and datum
-* utilities including power, gas, sewer and stormwater
-- floor plan:
-* scale
-* overall internal and external dimensions of the building
-* position, size and function of doors and windows
-* thickness and type of wall structures
-* positions of services, including outlets and switches
-* position of building features including baths, showers, toilets and cupboards
-* roofline
-* legend outlining symbols and abbreviations
-- longitudinal plans and elevations:
-* fa�ade
-* roof shape, pitch and height
-* position of doors and windows
-* ground, floor and ceiling levels
-* window sill heights
-* roof and external wall finishes
-- sections:
-* detail of features at the position of sections
-* wall, floor and subfloor structure and dimensions
-* roof structure and dimensions
-* structural members* features of detail drawings:
-- sections
-- tolerances
-- notes, including dimensions and adherence to standards * importance of ensuring currency of version and status of amendmentsplans, drawings and specifications, continued* procedures for checking amendment status on plans, drawings and specifications, and reporting inconsistencies* read and interpret a range of plans, drawings and specifications relevant to construction operations in order to describe the requirements for proposed construction projectsmeasurement and calculation terminology and equipment* measurement and calculation terminology:
-- area
-- estimation
-- linear
-- metric
-- quantity
-- ratio
-- scale
-- tolerance
-- volume
-- waste minimisation* for a range of measuring equipment:
-- name and general features/characteristics
-- use and limitations
-- selection appropriate for task/job requirements
-- operation
-- cleaning, maintenance and storage (where appropriate)* equipment used to perform measurements in a construction environment:
-- digital devices, including laser measure
-- retractable tape measure
-- rule
-- scales
-- squares
-- trundle wheeltaking measurements and performing calculations* importance of accurate measurements and calculations* consequences of incorrect measurements and calculations for the client/customer, workplace/ company and environment* units for measurement and calculations:
-- gram (g) and kilogram (kg)
-- millilitre (mL) and litre (L)
-- millimetre (mm) and metre (m), including m2 and m3
-- tonnes (t)* conversion of units:
-- g to kg and kg to g
-- mL to L and L to mLtaking measurements and performing calculations, continued- mm to m and m to mm
-- kg to t and t to kg* linear measurements of length, width, depth and height using a rule or retractable tape measure:
-- measurement start and end point
-- units and scale
-- safe and correct use of retractable tape measure (end hook and lock button)
-- accuracy to 1mm* calculations in a construction environment:
-- arithmetic operations - addition, subtraction, division, multiplication
-- mathematical concepts - decimals, fractions, percentages 
-- method:
-* manual
-* electronic:
-o calculator (hand held and online) and other digital devices
-o general features/characteristics, use and limitations, and operation of equipment* mathematical formulae to calculate:
-- area
-- circumference
-- percentage
-- perimeter
-- ratio
-- volume
-- weight* calculating the area and volume of regular and irregular shapes in a construction environment:
-- rectangles, squares, circles, equilateral triangles, cubes and cylinders
-- triangles, trapezium, pyramids and cones
-- 3:4:5 method* determine material quantities for construction work:
-- a range of materials:
-* packed
-* loose
-* compacted
-- standard quantities for particular materials: 
-* 300mm increments (timber)
-* m2 
-* lineal metres (Lm)* perform measurements and calculations for a range of work tasks in a construction work environment* estimate material quantities within industry and workplace tolerances for a range of work tasks in a construction work environmentcommunicate and record measurements, calculations and material requirements * recording measurements, calculation workings and results, and material requirements for work task/projects:
-- placed in an appropriate location:
-* ground spray
-* written or digital record:
-o work plan
-o job card
-o sketches and diagrams
-- concise, legible and accurate and using appropriate industry abbreviations, symbols and standards
-- confirmed and checked against drawings, plans and specifications
