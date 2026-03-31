@@ -1,0 +1,55 @@
+﻿=== The Object-Oriented Paradigm ===
+Subject: software-engineering
+============================================================
+
+The object-oriented paradigm
+Outcomes
+A student:
+* describes methods used to plan, develop and engineer software solutions SE-11-01
+* explains how structural elements are used to develop programming code SE-11-02
+* describes how current hardware, software and emerging technologies influence the development of software engineering solutions SE-11-03
+* applies safe and secure practices to collect, use and store data SE-11-04
+* applies tools and resources to design, develop, manage and evaluate software SE-11-06
+* implements safe and secure programming solutions SE-11-07
+* applies language structures to refine code SE-11-08
+* manages and documents the development of a software project SE-11-09
+Content
+Understanding OOP
+* Apply the key features of an object-oriented programming (OOP) language
+Including:
+* objects
+* classes
+* encapsulation
+* abstraction
+* inheritance
+* generalisation
+* polymorphism* Compare procedural programming with OOP
+* Use data flow diagrams, structure charts and class diagrams to represent a system
+* Describe the process of design used to develop code in an OOP language
+Including:
+* task definition
+* top-down and bottom-up
+* facade pattern
+* agility* Assess the effectiveness of programming code developed to implement an algorithm
+* Investigate how OOP languages handle message-passing between objects
+* Explain code optimisation in software engineering
+* Outline the features of OOP that support collaborative code development
+Including:
+* consistency
+* code commenting
+* version control
+* feedbackProgramming in OOP
+* Design and implement computer programs involving branching, iteration and functions in an OOP language for an identified need or opportunity
+* Implement and modify OOP programming code
+Including:
+* clear and uncluttered mainline
+* one logical task per subroutine
+* use of stubs
+* use of control structures and data structures
+* ease of maintenance
+* version control
+* regular backup* Apply methodologies to test and evaluate code
+Including:
+* unit, subsystem and system testing
+* black, white and grey box testing
+* quality assurance

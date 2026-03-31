@@ -1,0 +1,15 @@
+﻿=== Industry Study ===
+Subject: industrial-tech-graphics
+============================================================
+
+The Preliminary course, of 120 indicative hours, consists of project work and an industry study that provide a broad range of skills and knowledge related to the focus area chosen and an introduction to industrial processes and practices.
+The HSC course, of 120 indicative hours, consists of the development of a Major Project and industry study.
+Students choose to study ONE of SIX focus areas. The same area is to be studied in both the Preliminary and HSC courses. The focus areas are:
+* Automotive Technologies
+* Electronics Technologies
+* Graphics Technologies
+* Metal and Engineering Technologies
+* Multimedia Technologies
+* Timber Products and Furniture Technologies.
+Both the Preliminary and HSC courses are organised around four sections:
+A. Industry Study

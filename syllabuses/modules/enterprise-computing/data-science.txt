@@ -1,0 +1,106 @@
+﻿=== Data Science ===
+Subject: enterprise-computing
+============================================================
+
+Data science 
+Outcomes
+A student:
+    • explains how systems meet the needs of a range of enterprises EC-12-01
+    • explains the function of data and information within enterprise computing systems EC-12-02
+    • explains and evaluates how data is safely and securely collected, stored and manipulated when developing enterprise computing systems EC-12-03
+    • explains how data is used in enterprise computing systems EC-12-04
+    • applies tools and resources to analyse complex datasets EC-12-05
+    • analyses how innovative technologies have influenced enterprise computing systems EC-12-06
+    • explains the social, ethical and legal implications of the application of enterprise computing systems on the individual, society and the environment EC-12-07
+    • justifies the selection and use of tools and resources to design and develop an enterprise computing system EC-12-08
+    • evaluates the effectiveness of an enterprise computing system EC-12-10
+    • communicates an enterprise computing solution to a specific audience EC-12-11
+Related Life Skills outcomes: CT-LS-01, CT-LS-02, CT-LS-03, CT-LS-04, CT-LS-05, CT-LS-06, CT-LS-07, CT-LS-08, CT-LS-09, CT-LS-10, CT-LS-11, CT-LS-12, CT-LS-13
+Content
+Collecting, storing and analysing data
+    • Explore the difference between quantitative and qualitative data
+    • Determine which data types are used to represent quantitative and qualitative data
+    • Explore nominal, ordinal, interval and ratio levels of measurement applied to data
+    • Investigate data sampling, including manual and computerised methods of active and passive data collection
+    • Assess the relevance, accuracy, validity and reliability of primary and secondary data
+    • Investigate how informatics supports the development of a deeper understanding of data
+    • Interpret and present data using graphs, infographics, dashboards, reports, network diagrams and maps
+    • Investigate structured and unstructured datasets
+    • Explore the use of likes, emoticons and memes as forms of alternative data as sources of feedback
+    • Examine the impact of errors, uncertainty and limitations in data
+Including:
+    • data sources
+    • raw data versus processed data
+    • data bias
+    • Explain how blockchain technology is used to manage and verify data
+Including:
+    • online voting
+    • online identities
+    • tracking items of value
+    • recordkeeping
+    • Examine software features that affect the privacy and security of data
+Including:
+    • autofill
+    • public or private connections
+    • checkbox
+    • terms of agreement
+    • Explore the use of big data and data warehousing, considering volume, variety and velocity
+    • Explore the risks and benefits of data mining
+    • Analyse the impact of data scale
+Including:
+    • volume of raw data
+    • storage
+    • real-time and continuous streaming
+    • opportunities for machine learning (ML)
+    • changes in human behaviour
+    • ethical implications, including digital footprints
+    • Evaluate the effectiveness of different methods for data storage
+Including:
+    • local storage
+    • cloud storage
+    • portable storage media
+    • data warehouses
+Data quality
+    • Investigate the ethical use of data for social or enterprise research purposes
+    • Explore social, ethical and legal issues associated with using data
+Including:
+    • bias
+    • accuracy of the collected data
+    • metadata
+    • copyright and acknowledgement of source data
+    • intellectual property and respect for ownership, including Indigenous Cultural and Intellectual Property (ICIP)
+    • permissions, rights and privacy of individuals, including cultural responsibility
+    • security
+    • Investigate the legal issues surrounding data collection and handling
+Including:
+    • legislation
+    • authorities responsible for data protection
+    • data sovereignty of Aboriginal and Torres Strait Islander Peoples
+    • Investigate the influence of curated and communicated data on social behaviour
+Including:
+    • data literacy
+    • timeframes
+    • signals impacting on behaviour
+    • data swamps
+    • educating users
+Processing and presenting data
+    • Summarise data using a spreadsheet
+    • Collate information using spreadsheet analysis features, including charts, statistical analysis and what-if modelling
+    • Filter, group and sort data in a spreadsheet to process and display information
+Including:
+    • linking multiple sheets to extract data and create summaries
+    • applying conditional formatting
+    • making data comparisons
+    • designing forms and reports
+    • Apply spreadsheet analysis features to develop a data dashboard
+Including:
+    • graphs
+    • pivot tables and slicers
+    • Develop a flat-file database
+    • Apply computational thinking to design a relational database with appropriate user views
+Including:
+    • develop a data dictionary
+    • linking tables via key fields
+    • sort and search data, including using structured query language (SQL)
+    • using forms and reports
+    • Explore how machine learning and statistical modelling are used in data analytics to analyse big data, and as a prediction tool

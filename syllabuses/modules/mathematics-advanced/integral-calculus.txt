@@ -1,0 +1,101 @@
+﻿=== Integral calculus ===
+Subject: mathematics-advanced
+============================================================
+
+MA-C4 Integral CalculusFinancial Mathematics	MA-M1 Modelling Financial SituationsStatistical Analysis	MA-S2 Descriptive Statistics and Bivariate Data Analysis
+	MA-S3 Random Variables
+? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
+? Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
+
+
+Topic: Functions
+Outcomes
+A student:
+� uses detailed algebraic and graphical techniques to critically construct, model and evaluate arguments in a range of familiar and unfamiliar contexts MA12-1
+� chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
+� constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
+Topic Focus
+The topic Functions involves the use of both algebraic and graphical conventions and terminology to describe, interpret and model relationships of and between changing quantities.
+
+A knowledge of functions enables students to discover, recognise and generalise connections between algebraic and graphical representations of the same expression and to describe interactions between dependent and independent variables.
+
+The study of functions is important in developing students' ability to find and recognise connections and patterns, to communicate concisely and precisely, to use algebraic techniques and manipulations to describe and solve problems, and predict future outcomes in areas such as finance, economics and weather.
+Subtopics
+MA-F2 Graphing Techniques 
+
+
+Functions
+MA-F2 Graphing Techniques 
+Outcomes
+A student:
+� uses detailed algebraic and graphical techniques to critically construct, model and evaluate arguments in a range of familiar and unfamiliar contexts MA12-1
+� chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
+� constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
+Subtopic Focus
+The principal focus of this subtopic is to become more familiar with key features of graphs of functions, as well as develop an understanding of and use of the effect of basic transformations of these graphs to explain graphical behaviour.
+
+Students develop an understanding of transformations from a graphical and algebraic approach, including the use of technology, and thus develop a deeper understanding of the properties of functions. As graphing software becomes more widely accessible, skills in reading scales and interpreting magnification effects become essential.
+Content
+Students:
+? apply transformations to sketch functions of the form y=kf(a(x+b))+c, where f(x) is a polynomial, reciprocal, absolute value, exponential or logarithmic function and a, b,c and k are constants
+- examine translations and the graphs of y=f(x)+c and y=f(x+b) using technology 
+- examine dilations and the graphs of y=kf(x) and y=f(ax) using technology 
+- recognise that the order in which transformations are applied is important in the construction of the resulting function or graph
+? use graphical methods with supporting algebraic working to solve a variety of practical problems involving any of the functions within the scope of this syllabus, in both real-life and abstract contexts AAM   
+- select and use an appropriate method to graph a given function, including finding intercepts, considering the sign of f(x) and using symmetry 
+- determine asymptotes and discontinuities where appropriate (vertical and horizontal asymptotes only) 
+- determine the number of solutions of an equation by considering appropriate graphs 
+- solve linear and quadratic inequalities by sketching appropriate graphs  
+
+
+Topic: Trigonometric Functions
+Outcomes
+A student:
+� uses detailed algebraic and graphical techniques to critically construct, model and evaluate arguments in a range of familiar and unfamiliar contexts MA12-1
+� applies the concepts and techniques of periodic functions in the solution of problems involving trigonometric graphs MA12-5
+� chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
+� constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
+Topic Focus
+The topic Trigonometric Functions involves the study of periodic functions in geometric, algebraic, numerical and graphical representations.
+
+A knowledge of trigonometric functions enables the solving of practical problems involving the manipulation of trigonometric expressions to model behaviour of naturally occurring periodic phenomena such as waves and signals and to predict future outcomes.
+
+Study of trigonometric functions is important in developing students' understanding of periodic functions. Utilising the properties of periodic functions, mathematical models have been developed that describe the behaviour of many naturally occurring periodic phenomena, such as vibrations or waves, as well as oscillatory behaviour found in pendulums, electric currents and radio signals.
+Subtopics
+MA-T3 Trigonometric Functions and Graphs
+
+
+Trigonometric Functions
+MA-T3 Trigonometric Functions and Graphs
+Outcomes
+A student:
+� uses detailed algebraic and graphical techniques to critically construct, model and evaluate arguments in a range of familiar and unfamiliar contexts MA12-1
+� applies the concepts and techniques of periodic functions in the solution of problems involving trigonometric graphs MA12-5
+� chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
+� constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
+Subtopic Focus
+The principal focus of this subtopic is to explore the key features of the graphs of trigonometric functions and to understand and use basic transformations to solve trigonometric equations.
+
+Students develop an understanding of the way that graphs of trigonometric functions change when the functions are altered in a systematic way. This is important in understanding how mathematical models of real-world phenomena can be developed.
+Content
+Students:
+? examine and apply transformations to sketch functions of the form y=kf(a(x+b))+c, where a,b,c and k are constants, in a variety of contexts, where f(x) is one of sin x, cos x or tan x, stating the domain and range when appropriate
+- use technology or otherwise to examine the effect on the graphs of changing the amplitude (where appropriate), y=kf(x), the period, y=f(ax), the phase, y=f(x+b), and the vertical shift, y=f(x)+c 
+- use k, a, b,c to describe transformational shifts and sketch graphs  
+? solve trigonometric equations involving functions of the form kf(a(x+b))+c, using technology or otherwise, within a specified domain AAM 
+? use trigonometric functions of the form kf(a(x+b))+c to model and/or solve practical problems involving periodic phenomena AAM 
+
+
+Topic: Calculus
+Outcomes
+A student:
+� applies calculus techniques to model and solve problems MA12-3
+� applies appropriate differentiation methods to solve problems MA12-6
+� applies the concepts and techniques of indefinite and definite integrals in the solution of problems MA12-7
+� chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
+� constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
+Topic Focus
+The topic Calculus involves the study of how things change and provides a framework for developing quantitative models of change and deducing their consequences. It involves the development of two key aspects of calculus, namely differentiation and integration.
+
+The study of calculus is important in developing students' capacity to operate with and model situations involving change, using algebraic and graphical techniques to describe and solve problems and to predict outcomes in fields such as biomathematics, economics, engineering and the construction industry.
+Subtopics

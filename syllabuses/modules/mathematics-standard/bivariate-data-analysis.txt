@@ -1,0 +1,268 @@
+﻿=== Bivariate data analysis ===
+Subject: mathematics-standard
+============================================================
+
+Bivariate data analysis
+Outcomes
+A student:
+    • develops understanding and fluency in mathematics through exploring and connecting mathematical concepts, choosing and applying mathematical techniques to solve problems, and communicating their thinking and reasoning coherently and clearly MAO-WM-01
+    • displays and interprets bivariate datasets to solve problems and make predictions MST-12-S1-06
+Related Life Skills outcomes: MA-LS-13, MA-LS-14, MA-LS-15
+Content
+Bivariate datasets
+    • Distinguish between situations involving one variable data and bivariate data and explain when each is needed
+    • Explain the difference between variables that show correlation and those that have a causal relationship
+    • Identify the independent and dependent variables within a bivariate dataset where appropriate
+    • Analyse relationships between independent and dependent variables that may be described as causal
+Scatter plots and lines of best fit
+    • Represent a bivariate dataset using a scatter plot
+    • Create a line of best fit on a scatter plot for a bivariate dataset, by eye and with digital tools
+    • Describe the form of a dataset as linear or non-linear based on the association between two variables
+    • Describe the strength of a linear relationship between two variables as strong, moderate or weak, and its direction as positive or negative
+    • Examine lines of best fit to make predictions and recognise limitations of interpolation and extrapolation for bivariate datasets within a variety of contexts
+Relative frequency and probability
+Outcomes
+A student:
+    • develops understanding and fluency in mathematics through exploring and connecting mathematical concepts, choosing and applying mathematical techniques to solve problems, and communicating their thinking and reasoning coherently and clearly MAO-WM-01
+    • models and solves problems involving the probabilities of simple and compound events MST-12-S1-07
+Related Life Skills outcomes: MA-LS-13, MA-LS-14, MA-LS-15
+Content
+    • Recognise that probabilities range from 0 (impossible) to 1 (certain) and can be represented as fractions, decimals and percentages
+    • Identify and define the sample space as the set of all possible outcomes of a chance experiment
+Example(s):
+Explain why the sample space for a spinner with 6 equal segments (2 of which are red, 3 are green and 1 is white) is
+  and not .
+
+    • Determine the number of outcomes for an experiment
+    • Express the probability of an event that has a finite number of equally likely outcomes, as 
+    • Apply to calculate the probability of the complement of an event
+    • Represent equally likely outcomes using arrays and tree diagrams to solve problems, involving replacement where applicable, in two-stage events
+    • Use relative frequency as an estimate of probability
+    • Recognise that increasing the number of trials produces relative frequencies that become closer in value to the theoretical probability
+    • Calculate the expected frequency of an event occurring using  where  is the number of times an experiment is repeated, and  is the probability that the event occurs each of those times
+    • Examine the use of statistics and the associated probabilities in shaping decisions made by the media, governments and companies
+Outcomes and content for Year 12 – Standard 2
+Algebraic relationships
+Outcomes
+A student:
+    • develops understanding and fluency in mathematics through exploring and connecting mathematical concepts, choosing and applying mathematical techniques to solve problems, and communicating their thinking and reasoning coherently and clearly MAO-WM-01
+    • represents the relationships between quantities algebraically and graphically to solve problems and make predictions in practical contexts MST-12-S2-01
+Related Life Skills outcomes: MA-LS-01, MA-LS-02, MA-LS-03, MA-LS-04
+Content
+Simultaneous linear equations
+    • Graph two linear equations and identify the point of intersection, with and without using graphing applications
+    • Solve a pair of simultaneous linear equations using graphical and algebraic methods
+    • Develop a pair of simultaneous linear equations to model a practical situation
+    • Solve practical problems that involve simultaneous linear equations
+    • Use simultaneous equations to model and analyse the break-even point where cost and revenue are represented by linear equations
+    • Identify the break-even point and solve problems involving profit and loss using a spreadsheet
+Exponential relationships
+    • Recognise that an exponential relationship can be represented by an equation, a table of values, a set of ordered pairs or a graph, and move flexibly between these representations
+    • Graph an exponential relationship of the form  and , where , with and without using graphing applications 
+    • Construct and analyse an exponential model of the form  and  , where  and is a constant, to solve practical growth or decay problems
+    • Interpret the meaning of the intercept of an exponential graph in a variety of contexts
+    • Explain the limitations of exponential models in practical contexts
+Quadratic relationships
+    • Recognise that a quadratic relationship can be represented by an equation, a table of values, a set of ordered pairs or a graph, and move flexibly between these representations
+    • Recognise the parabolic shape of a quadratic relationship, noting its vertex and axis of symmetry
+    • Graph a quadratic relationship of the form  using graphing applications
+    • Identify the -intercepts and -intercept of a parabola from a graph 
+    • Determine the axis of symmetry and vertex of a parabola using the midpoint of the -intercepts shown on a graph
+    • Analyse a given graph of a quadratic relationship and use it to solve practical problems
+    • Interpret the meaning of the intercepts and vertex of a parabola in a variety of contexts
+    • Explain the limitations of a model of a quadratic relationship in a practical context and consider the values for  and  for which the quadratic model is valid 
+Reciprocal relationships
+    • Recognise that inverse variation is represented by a reciprocal relationship of the form , where is the constant of variation 
+    • Identify the hyperbolic shape of a reciprocal graph
+    • Graph a reciprocal relationship of the form , with and without using graphing applications
+    • Construct a reciprocal model of the form  to analyse inverse variation problems 
+    • Solve inverse variation problems graphically, or algebraically given the value of two of the variables in 
+    • Explain the limitations of reciprocal models in practical inverse variation problems
+Investment and loans
+Outcomes
+A student:
+    • develops understanding and fluency in mathematics through exploring and connecting mathematical concepts, choosing and applying mathematical techniques to solve problems, and communicating their thinking and reasoning coherently and clearly MAO-WM-01
+    • models financial situations and solves problems involving interest, depreciation and borrowing money MST-12-S2-02
+Related Life Skills outcomes: MA-LS-05, MA-LS-06
+Content
+Investment
+    • Calculate simple interest for different rates and time periods using the formula where  = simple interest,  = principal,  = interest rate per time period and  = number of time periods
+    • Solve problems involving simple interest in a variety of contexts
+    • Compare simple interest graphs for different interest rates and time periods, with and without using digital tools
+    • Calculate the future value, present value or interest rate of a compound interest investment using the formula  where  = future value of the investment,  = present value of the investment,  = interest rate per time period and  = number of time periods
+    • Solve problems involving compound interest in a variety of contexts, including inflation and appreciation
+    • Examine the effect of varying the interest rate, the term or the compounding period on the future value of an investment, with and without using digital tools
+    • Compare the growth of simple interest and compound interest investments numerically and graphically, with and without using digital tools
+    • Recognise that simple interest graphs are linear and compound interest graphs are exponential
+    • Use a spreadsheet to numerically and graphically model investments using both simple and compound interest
+    • Interpret and analyse tables and graphs about the value of share
+    • Graph and interpret the value of a share over time, with and without using digital tools
+    • Calculate the dividend paid and the dividend yield on shares (excluding franked dividends)
+    • Solve problems involving calculation of brokerage costs and total costs of purchasing shares
+    • Compare and contrast savings accounts, term deposits, shares and buying property as investment strategies
+Example(s):
+A person has saved $10 000 and is thinking about how to invest their money. Use the internet to research different investment options, compare the strengths and weaknesses of each and make a recommendation for how they should invest their money.
+
+Depreciation
+    • Apply the straight-line depreciation method to calculate the depreciation of an asset using the formula  where  = salvage value, = initial value of the asset,  = depreciation amount per time period and  = number of time periods
+    • Apply the declining balance method to calculate the depreciation of an asset using the formula  where  = salvage value,  = initial value of the asset,  = depreciation rate per time period and  = number of time periods
+    • Compare straight-line depreciation and declining balance depreciation both numerically and graphically, with and without using digital tools
+    • Use a spreadsheet to numerically and graphically model depreciation using the straight-line and declining balance methods
+Example(s):
+A new car is purchased for $45 000. It depreciates at a rate of 20% per year. A spreadsheet is to be used to model the first 5 years of depreciation. What formula could be entered into cell C7 to calculate the dollar value of depreciation for year 1?
+
+Image long description: A table that is used to calculate the depreciation amount and the value of a car at the end of a specific time period using the initial car value as well as the rate of depreciation. Row 3 is the Car Value, $45 000 and Row 4 is the rate of depreciation, 20%. Row 6 has the headings Year, Value at start of year, Depreciation ($) and Value at end of year.
+
+Loans
+    • Compare and analyse the costs associated with buy now, pay later, short term and long term loans
+    • Model a reducing balance loan as an application of compound interest with periodic repayments in tabular form for up to four time periods, with and without using digital tools
+    • Use a spreadsheet to model and solve problems involving a reducing balance loan in a variety of contexts
+Example(s):
+A person borrows $15 000 for a holiday using a reducing balance loan with an interest rate of 4.50% p.a. They can afford to pay back a monthly repayment of $500. Use a spreadsheet to model the loan and determine how long it will take to pay back.
+
+Image long description: Table 1, first row is Loan amount ($), $15 000. Second row is Interest rate (% p.a.), 4.50%. Third row is Monthly repayment, $500. Table 2 models the repayments of the first 4 months.
+
+    • Examine the effect of changing the repayment frequency, additional repayments or a lump-sum payment on the term and cost of a loan using a graph or by calculation
+    • Solve problems involving reducing balance loans including calculating the total amount paid, monthly repayments, amount still owing and the time taken to repay the loan
+Credit cards
+    • Explain how credit cards are an example of a reducing balance loan
+    • Compare credit card interest rates with interest rates for other loan types
+    • Identify the various fees and charges associated with credit card usage, and understand the meaning of an interest-free period
+    • Interpret a credit card statement, examining the implications of only making the minimum payment
+    • Calculate the compound interest charged on a purchase, transaction or outstanding balance for a given number of days, with and without using digital tools
+    • Compare credit options to best manage finances to meet short-term, medium-term and long-term goals, such as credit cards and personal loans
+Annuities
+Outcomes
+A student:
+    • develops understanding and fluency in mathematics through exploring and connecting mathematical concepts, choosing and applying mathematical techniques to solve problems, and communicating their thinking and reasoning coherently and clearly MAO-WM-01
+    • solves financial problems involving annuities MST-12-S2-03
+Related Life Skills outcomes: MA-LS-05, MA-LS-06
+Content
+    • Identify an annuity as an investment account with regular, equal contributions and interest compounding at the end of each period, or as a single sum investment from which regular equal withdrawals are made
+    • Model an annuity in tabular form for up to four time periods
+    • Use a spreadsheet to model an annuity
+    • Using a table of interest factors, calculate the future value or present value of an annuity
+    • Using a table of interest factors, determine the contribution amount required to achieve a given future value or the single sum contribution required to produce an equivalent future value for any given annuity
+    • Examine the effect of varying the amount initially invested, the value of the periodic payment, the interest rate and the duration of the annuity on the total value of the investment, using digital tools
+    • Solve annuity problems involving financial decisions regarding superannuation, savings accounts and loans
+Trigonometry
+Outcomes
+A student:
+    • develops understanding and fluency in mathematics through exploring and connecting mathematical concepts, choosing and applying mathematical techniques to solve problems, and communicating their thinking and reasoning coherently and clearly MAO-WM-01
+    • applies trigonometry to solve problems involving right-angled and non-right-angled triangles MST-12-S2-04
+Related Life Skills outcomes: MA-LS-07, MA-LS-08, MA-LS-09, MA-LS-10
+Content
+    • Apply trigonometric ratios to right-angled triangles to find either the lengths of unknown sides or the size of unknown angles in both degrees, and degrees and minutes
+    • Apply the sine rule   in a given triangle to find the value of an unknown side
+    • Apply the sine rule   in a given triangle to find the value of an unknown angle, excluding the ambiguous case
+    • Apply the sine rule in a given triangle to find the value of an unknown angle, given that the unknown angle is obtuse
+    • Apply the cosine rule  in a given triangle to find the value of an unknown side 
+    • Apply the cosine rule   in a given triangle  to find the value of an unknown angle
+    • Apply the formula , where and are the sides that form the included angle  in a given triangle , to solve problems in a range of contexts
+    • Identify and interpret true bearings and compass bearings and convert between them
+    • Construct and interpret compass radial surveys and solve related problems
+    • Solve practical problems involving Pythagoras’ theorem, the trigonometry of right-angled and non-right-angled triangles, angles of elevation and depression, and true bearings and compass bearings
+Ratios and rates
+Outcomes
+A student:
+    • develops understanding and fluency in mathematics through exploring and connecting mathematical concepts, choosing and applying mathematical techniques to solve problems, and communicating their thinking and reasoning coherently and clearly MAO-WM-01
+    • solves practical problems involving ratios and rates MST-12-S2-05
+Related Life Skills outcomes: MA-LS-07, MA-LS-08, MA-LS-09, MA-LS-10
+Content
+Ratios
+    • Recognise ratios and explain their relationship with fractions
+    • Express a ratio in simplest form
+    • Determine the ratio of two quantities
+    • Divide a quantity in a given ratio
+    • Solve practical problems involving ratios
+    • Solve practical ratio problems involving the capture-recapture technique
+    • Explain the relationship between ratios and map scales and apply this relationship to solve problems in a variety of practical contexts
+    • Construct scale drawings, with and without using digital tools
+    • Estimate and compare quantities, materials and costs using measurements taken from scale drawings and building plans with commonly used symbols
+    • Calculate the perimeter, or area of a section of land using the Trapezoidal rule where appropriate, from a site plan, an aerial photograph, a radial survey or a map that includes a scale
+    • Calculate the volume of rainfall over an area using , where  is the volume,  is the area of land and  is the depth of rain, from a site plan, an aerial photograph, a radial survey or a map that includes a scale 
+Rates
+    • Explain the difference between ratios and rates
+Example(s):
+Describe ratios as a comparison of quantities measured in the same units. Describe rates as a comparison of quantities measured in different units.
+
+    • Represent given information as a unit rate
+    • Convert between rates
+Example(s):
+Convert between km/h and m/s, mL/min and L/h.
+
+    • Make comparisons between rates in a variety of practical contexts
+    • Compare unit prices to determine best buys
+    • Use rates to solve problems in a variety of practical contexts
+    • Interpret and analyse distance–time graphs to solve problems related to speed, distance and time
+    • Examine fuel consumption rates to compare the efficiency of vehicles
+    • Recognise and convert between watts (W) and kilowatts (kW) using 
+    • Apply units of energy to calculate kilowatt hours and solve problems involving the consumption of energy
+Example(s):
+Calculate the running costs of different models of the same appliance.
+
+Network flow
+Outcomes
+A student:
+    • develops understanding and fluency in mathematics through exploring and connecting mathematical concepts, choosing and applying mathematical techniques to solve problems, and communicating their thinking and reasoning coherently and clearly MAO-WM-01
+    • applies network flow concepts to solve problems and model decision-making in practical contexts MST-12-S2-06
+Related Life Skills outcomes: MA-LS-11, MA-LS-12
+Content
+    • Define and use network flow terminology including source, sink, outflow, inflow and cut
+    • Convert information presented in a table to a weighted and directed network diagram
+Example(s):
+The weighted and directed network diagram represents water flowing from the main dam () to 3 smaller dams () which supply the town () with water. The capacities are given in thousands of litres per minute (L/m). 
+
+Image long description: A directed network diagram is shown. From  to  the capacity is 22 000 L/m, from to the capacity is 16 000 L/m, and from  to the capacity is 14 000 L/m. From  to  the capacity is 11 000 L/m, from  to  the capacity is 20 000 L/m, from  to  the capacity is 18 000 L/m and from  to  the capacity is 17 000 L/m.
+
+    • Calculate and analyse the flow capacity of a network including the use of the saturated edges method
+    • Solve small-scale network flow problems including the use of applying the maximum-flow minimum-cut theorem
+Example(s):
+The network diagram represents the flow of oil from an oil storage tank (the source ) to a terminal (the sink ). The maximum volume of oil that can flow through this network can be determined by:
+
+
+Image long description: A directed network diagram is shown. Between source ( and sink  there are 4 nodes, , , , and . From  to  is 8, from to is 7 and from  to is 5. From  to  is 8, from  to  is 6, from  to  is 6, from  to  is 9 and from  to  is 7.
+
+    • Examine the impact of increasing or reducing the flow capacity of an edge in a network diagram
+    • Explain why the flow capacity of a network is or is not sufficient to meet demand in a variety of contexts
+Example(s):
+Determine whether a road network will meet the demand of traffic flow during peak hour.
+
+Critical path analysis
+Outcomes
+A student:
+    • develops understanding and fluency in mathematics through exploring and connecting mathematical concepts, choosing and applying mathematical techniques to solve problems, and communicating their thinking and reasoning coherently and clearly MAO-WM-01
+    • applies critical path analysis to solve problems and model decision-making in practical contexts MST-12-S2-07
+Related Life Skills outcomes: MA-LS-11, MA-LS-12
+Content
+    • Construct a network diagram from a precedence table or equivalent, including those involving dummy activities, limited to 10 activities
+Example(s):
+A directed network diagram representing 6 activities is shown below. The network diagram can be used to complete the missing immediate predecessors in the precedence table below.
+
+
+Image long description: A directed network diagram with activities A, B, C, D, E, F, represented by edges. One dummy edge connects Activity A to Activity C. One dummy edge connects Activity E to Activity F. A precedence table with column headings: Activity, Time and Immediate Predecessors. First row is Activity A, Time 3, Immediate predecessors ?. Second row is Activity B, Time 2, Immediate predecessors None. Third row is Activity C, Time 5, Immediate predecessors ?. Fourth row is Activity D, Time 3, Immediate predecessors C. Fifth row is Activity E, Time 3, Immediate predecessors ?. Sixth row is Activity F, Time 3, Immediate predecessors D, E.
+
+    • Explain the term critical path
+    • Apply forward and backward scanning to determine the earliest starting time (EST) and latest starting time (LST) for each activity in a project
+    • Calculate float times to identify critical and non-critical activities
+    • Analyse ESTs and LSTs to locate the critical path(s) for the project
+Example(s):
+The network diagram for a project is shown below. A forward scan and backward scan can be used to determine the critical path.
+
+Image long description: A network diagram with activities A, B, C, D, E, F and G, represented by edges. One dummy edge connects Activity B to Activity C. One dummy edge connects Activities F and D to Activity G. Empty boxes for the earliest starting time and latest starting time are shown at each vertex.
+
+    • Apply critical path analysis to determine the minimum completion time for a project
+    • Construct a Gantt chart to represent a project from a network diagram indicating the critical path
+Example(s):
+A Gantt chart for a project with activities A, B, C, D, E, F, G and H has been created. The Gantt chart can be used to complete the missing information on the edges in the network diagram.
+
+Image long description: A timeline from 0 to 26 hours, with activities A, B, C, D, E, F, G, H, represented by rectangles. Each rectangle represents a number of hours. For example, from the start point activity A has a duration of 7 hours, C is 4 hours, F is 7 hours and H is 8 hours. The total of the pathway A, C, F, H to the finish point equals 26 hours.
+
+Image long description: A network diagram with activities A, B, C, D, E, F, G, H and their corresponding time allocations are represented by edges. Activities are connected by a series of lines and corresponding completion times until the finish point is reached. Missing values are on the edges between activities A and F, B and G, and B and H. 
+
+    • Examine the impact of increasing or reducing the duration of an activity on the completion time of the project or task being modelled
+    • Use a spreadsheet to model a project involving precedence tables and solve related problems
+Example(s):
+A small business needs to plan how long it will take to remodel their staff kitchen. Model the project using a spreadsheet and determine the length of time that the project will take.
+
+Image long description: The first table is an activity table with titles Activity, Predecessor and Duration. Second row: A, -, 3. Third row: B, A, 1. Fourth row: C, A, 4. Fifth row: D, B, 2. The second table shows a timeline of 7 days with activity A highlighted from day 1 to day 3, activity B highlighted for day 4, activity C highlighted from day 4 to 7, and activity D highlighted from day 5 to 6.

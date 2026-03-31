@@ -1,0 +1,1186 @@
+NSW Syllabus
+for the Australian
+curriculum
+Earth and
+Environmental Science
+Stage 6
+Syllabus
+
+
+Original published version updated:
+June 2017 - NESA Official Notice 22 June 2017 (NESA 23/17)
+
+(c) 2017 NSW Education Standards Authority (NESA) for and on behalf of the Crown in right of the State of New South Wales.
+
+The NESA website holds the ONLY official and up-to-date versions of these documents available on the internet. ANY other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are NOT authorised. You CANNOT rely on copies from any other source.
+
+The documents on this website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright.
+
+All rights reserved. No part of the Material may be reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form, or transmitted to any other person or stored electronically in any form without the prior written permission of NESA, except as permitted by the Copyright Act 1968.
+
+When you access the material you agree:
+* to use the material for information purposes only
+* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the prior permission of NESA.
+* to acknowledge that the material is provided by NESA.
+* to include this copyright notice in any copy made
+* not to modify the material or any part of the material without the express prior written permission of NESA.
+The material may contain third-party copyright materials such as photos, diagrams, quotations, cartoons and artworks. These materials are protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's specific permission. Unauthorised reproduction, transmission or commercial use of such copyright materials may result in prosecution.
+
+NESA has made all reasonable attempts to locate owners of third-party copyright material and invites anyone from whom permission has not been sought to contact the Copyright Officer.
+
+Phone: (02) 9367 8289
+Fax: (02) 9279 1482
+Email: copyright@nesa.nsw.edu.au
+
+Published by
+NSW Education Standards Authority
+GPO Box 5300
+Sydney NSW 2001
+Australia
+
+www.educationstandards.nsw.edu.au
+
+DSSP-27616
+D2016/58516
+
+Contents
+Introduction	4
+Earth and Environmental Science Key	7
+Rationale	10
+The Place of the Earth and Environmental Science Stage 6 Syllabus in the K-12 Curriculum	11
+Aim	12
+Objectives	13
+Outcomes	14
+Year 11 Course Structure and Requirements	16
+Year 12 Course Structure and Requirements	17
+Assessment and Reporting	18
+Content	19
+Earth and Environmental Science Year 11 Course Content	32
+Earth and Environmental Science Year 12 Course Content	45
+Glossary	59
+
+
+Introduction
+Stage 6 Curriculum
+NSW Education Standards Authority (NESA) Stage 6 syllabuses have been developed to provide students with opportunities to further develop skills which will assist in the next stage of their lives.
+
+The purpose of Stage 6 syllabuses is to:
+? develop a solid foundation of literacy and numeracy
+? provide a curriculum structure which encourages students to complete secondary education at their highest possible level
+? foster the intellectual, creative, ethical and social development of students, in particular relating to:
+- application of knowledge, understanding, skills, values and attitudes in the fields of study they choose
+- capacity to manage their own learning and to become flexible, independent thinkers, problem-solvers and decision-makers
+- capacity to work collaboratively with others
+- respect for the cultural diversity of Australian society
+- desire to continue learning in formal or informal settings after school
+? provide a flexible structure within which students can meet the challenges of and prepare for:
+- further academic study, vocational training and employment
+- changing workplaces, including an increasingly STEM-focused (Science, Technology, Engineering and Mathematics) workforce
+- full and active participation as global citizens
+? provide formal assessment and certification of students' achievements
+? promote the development of students' values, identity and self-respect.
+
+The Stage 6 syllabuses reflect the principles of the NESA K-10 Curriculum Framework and Statement of Equity Principles, the reforms of the NSW Government Stronger HSC Standards (2016), and nationally agreed educational goals. These syllabuses build on the continuum of learning developed in the K-10 syllabuses.
+
+The syllabuses provide a set of broad learning outcomes that summarise the knowledge, understanding, skills, values and attitudes important for students to succeed in and beyond their schooling. In particular, the attainment of skills in literacy and numeracy needed for further study, employment and active participation in society are provided in the syllabuses in alignment with the Australian Core Skills Framework (ACSF).
+
+The Stage 6 syllabuses include the content of the Australian curriculum and additional descriptions that clarify the scope and depth of learning in each subject.
+
+NESA syllabuses support a standards-referenced approach to assessment by detailing the important knowledge, understanding, skills, values and attitudes students will develop and outlining clear standards of what students are expected to know and be able to do. The syllabuses take into account the diverse needs of all students and provide structures and processes by which teachers can provide continuity of study for all students.
+
+
+
+Diversity of Learners
+NSW Stage 6 syllabuses are inclusive of the learning needs of all students. Syllabuses accommodate teaching approaches that support student diversity including students with special education needs, gifted and talented students, and students learning English as an additional language or dialect (EAL/D). Students may have more than one learning need.
+Students with Special Education Needs
+All students are entitled to participate in and progress through the curriculum. Schools are required to provide additional support or adjustments to teaching, learning and assessment activities for some students with special education needs. Adjustments are measures or actions taken in relation to teaching, learning and assessment that enable a student with special education needs to access syllabus outcomes and content, and demonstrate achievement of outcomes.
+
+Students with special education needs can access the outcomes and content from Stage 6 syllabuses in a range of ways. Students may engage with:
+? Stage 6 syllabus outcomes and content with adjustments to teaching, learning and/or assessment activities; or
+? selected Stage 6 Life Skills outcomes and content from one or more Stage 6 Life Skills syllabuses.
+
+Decisions regarding curriculum options, including adjustments, should be made in the context of collaborative curriculum planning with the student, parent/carer and other significant individuals to ensure that decisions are appropriate for the learning needs and priorities of individual students.
+
+The Science Life Skills Stage 6 Syllabus has been developed from the rationale, aim and objectives of the Investigating Science Stage 6 Syllabus.
+
+Further information can be found in support materials for:
+? Earth and Environmental Science
+? Special education needs
+? Life Skills.
+Gifted and Talented Students
+Gifted students have specific learning needs that may require adjustments to the pace, level and content of the curriculum. Differentiated educational opportunities assist in meeting the needs of gifted students.
+
+Generally, gifted students demonstrate the following characteristics:
+? the capacity to learn at faster rates
+? the capacity to find and solve problems
+? the capacity to make connections and manipulate abstract ideas.
+
+There are different kinds and levels of giftedness. Gifted and talented students may also possess learning difficulties and/or disabilities that should be addressed when planning appropriate teaching, learning and assessment activities.
+
+
+Curriculum strategies for gifted and talented students may include:
+? differentiation: modifying the pace, level and content of teaching, learning and assessment activities
+? acceleration: promoting a student to a level of study beyond their age group
+? curriculum compacting: assessing a student's current level of learning and addressing aspects of the curriculum that have not yet been mastered.
+
+School decisions about appropriate strategies are generally collaborative and involve teachers, parents and students with reference to documents and advice available from NESA and the education sectors.
+
+Gifted and talented students may also benefit from individual planning to determine the curriculum options, as well as teaching, learning and assessment strategies, most suited to their needs and abilities.
+Students Learning English as an Additional Language or Dialect (EAL/D)
+Many students in Australian schools are learning English as an additional language or dialect (EAL/D). EAL/D students are those whose first language is a language or dialect other than Standard Australian English and who require additional support to assist them to develop English language proficiency.
+
+EAL/D students come from diverse backgrounds and may include:
+? overseas and Australian-born students whose first language is a language other than English, including creoles and related varieties
+? Aboriginal and Torres Strait Islander students whose first language is Aboriginal English, including Kriol and related varieties.
+
+EAL/D students enter Australian schools at different ages and stages of schooling and at different stages of English language learning. They have diverse talents and capabilities and a range of prior learning experiences and levels of literacy in their first language and in English. EAL/D students represent a significant and growing percentage of learners in NSW schools. For some, school is the only place they use Standard Australian English.
+
+EAL/D students are simultaneously learning a new language and the knowledge, understanding and skills of the Earth and Environmental Science Stage 6 Syllabus through that new language. They may require additional support, along with informed teaching that explicitly addresses their language needs.
+
+The ESL Scales and the English as an Additional Language or Dialect: Teacher Resource provide information about the English language development phases of EAL/D students. These materials and other resources can be used to support the specific needs of English language learners and to assist students to access syllabus outcomes and content.
+
+
+Earth and Environmental Science Key
+The following codes and icons are used in the Earth and Environmental Science Stage 6 Syllabus.
+Outcome coding
+Syllabus outcomes have been coded in a consistent way. The code identifies the subject, Year and outcome number. For example:
+
+
+Outcome codeInterpretationEES11/12-1Earth and Environmental Science - outcome number 1EES11-8Year 11 Earth and Environmental Science - outcome number 8EES12-12Year 12 Earth and Environmental Science - outcome number 12
+Working Scientifically outcomes 1-7 are common across Year 11 and Year 12.
+
+Knowledge and Understanding outcomes in Year 11 are numbered 8-11.
+
+Knowledge and Understanding outcomes in Year 12 are numbered 12-15.
+
+Coding of Australian Curriculum Content
+Australian curriculum content descriptions included in the syllabus are identified by an Australian curriculum code which appears in brackets at the end of each content description, for example:
+Conduct investigations, including using map and field location techniques and rock and soil sampling and identification procedures, safely, competently and methodically for the collection of valid and reliable data (ACSES003).
+
+
+Where a number of content descriptions are jointly represented, all description codes are included, for example (ACSES001, ACSES002, ACSES003).
+
+
+Learning Across the Curriculum Icons
+Learning across the curriculum content, including cross-curriculum priorities, general capabilities and other areas identified as important learning for all students, is incorporated and identified by icons in the syllabus.
+
+Cross-curriculum priorities
+ 	Aboriginal and Torres Strait Islander histories and cultures
+ 	Asia and Australia's engagement with Asia
+ 	Sustainability
+
+General capabilities
+ 	Critical and creative thinking
+ 	Ethical understanding
+ 	Information and communication technology capability
+ 	Intercultural understanding
+ 	Literacy
+ 	Numeracy
+ 	Personal and social capability
+
+Other learning across the curriculum areas
+ 	Civics and citizenship
+ 	Difference and diversity
+ 	Work and enterprise
+
+
+Rationale
+The Earth and Environmental Science Stage 6 Syllabus explores the Earth's renewable and non-renewable resources and also environmental issues. An understanding of the Earth's resources and the ability to live sustainably on the planet is a central purpose of the study of Earth and Environmental Science.
+
+The course uses the Working Scientifically skills to develop knowledge through the application of those skills. Students engage with inquiry questions to explore knowledge of the Earth. They also undertake practical and secondary-sourced investigations to acquire a deeper understanding of the Earth's features and naturally occurring phenomena and cycles. Fieldwork is an integral part of these investigation processes.
+
+Earth and Environmental Science involves the analysis, processing and evaluation of qualitative and quantitative data in order to formulate explanations and solve problems. In conjunction with knowledge and understanding, communication skills are essential in forming evidence-based conclusions or arguments.
+
+The Earth and Environmental Science course builds on the knowledge and skills of Earth and Space gained in the Science Stage 5 course. The course maintains a practical emphasis in the delivery of the course content, and engages with technologies that assist in developing earth and environmental science applications.
+
+The course provides the foundation knowledge and skills required to study earth and environmental science after completing school, and supports participation in careers in a range of related industries. The application of earth and environmental science is essential in addressing current and future environmental issues and challenges. It is also necessary for the use and management of geological resources that are important to Australia's sustainable future.
+
+
+The Place of the Earth and Environmental Science Stage 6 Syllabus in the K-12 Curriculum
+
+
+
+
+Aim
+The study of Earth and Environmental Science in Stage 6 enables students to develop an appreciation and understanding of geological and environmental concepts that help explain the changing face of the Earth over time. Through applying Working Scientifically skills processes, the course aims to examine how earth and environmental science models and practices are used and developed.
+
+
+Objectives
+Skills
+Students:
+? develop skills in applying the processes of Working Scientifically.
+Knowledge and Understanding
+Year 11 students:
+? develop knowledge and understanding of the Earth's systems
+? develop knowledge and understanding of the Earth's processes and human impacts.
+
+Year 12 students:
+? develop knowledge and understanding of the evolving Earth
+? develop knowledge and understanding of the impacts of living on the Earth.
+Values and Attitudes
+Students:
+? develop positive, informed values and attitudes towards earth and environmental science
+? recognise the importance and relevance of earth and environmental science in their lives
+? recognise the influence of economic, political and societal impacts on the development of scientific knowledge
+? develop an appreciation of the influence of imagination and creativity in scientific research.
+
+
+Outcomes
+Table of Objectives and Outcomes - Continuum of Learning
+Skills
+Objective
+Students:
+? develop skills in applying the processes of Working ScientificallyStage 6 course outcomes
+A student:Questioning and predicting
+EES11/12-1 develops and evaluates questions and hypotheses for scientific investigationPlanning investigations
+EES11/12-2 designs and evaluates investigations in order to obtain primary and secondary data and informationConducting investigations
+EES11/12-3 conducts investigations to collect valid and reliable primary and secondary data and informationProcessing data and information
+EES11/12-4 selects and processes appropriate qualitative and quantitative data and information using a range of appropriate mediaAnalysing data and information
+EES11/12-5 analyses and evaluates primary and secondary data and information Problem solving
+EES11/12-6 solves scientific problems using primary and secondary data, critical thinking skills and scientific processesCommunicating
+EES11/12-7 communicates scientific understanding using suitable language and terminology for a specific audience or purpose
+The Working Scientifically outcomes at the beginning of each module are targeted for emphasis. The other Working Scientifically outcomes may also be addressed in each module.
+
+
+Knowledge and Understanding
+Year 11 courseYear 12 courseObjective
+Students:
+? develop knowledge and understanding of the Earth's systemsObjective
+Students:
+? develop knowledge and understanding of the evolving EarthYear 11 course outcomes
+A student:Year 12 course outcomes
+A student:EES11-8 describes the key features of the Earth's systems, including the geosphere, atmosphere, hydrosphere and biosphere and how they are interrelatedEES12-12 describes and evaluates the models that show the structure and development of the Earth over its history
+ EES11-9 describes the evidence for the theory of plate tectonics and the energy and geological changes that occur at plate boundariesEES12-13 describes and evaluates the causes of the Earth's hazards and the ways in which they affect, and are affected by, the Earth's systemsObjective
+Students:
+? develop knowledge and understanding of the Earth's processes and human impactsObjective
+Students:
+? develop knowledge and understanding of the impacts of living on the EarthYear 11 course outcomes
+A student:Year 12 course outcomes
+A student:EES11-10 describes the factors that influence how energy is transferred and transformed in the Earth's systemsEES12-14 analyses the natural processes and human influences on the Earth, including the scientific evidence for changes in climateEES11-11 describes human impact on the Earth in relation to hydrological processes, geological processes and biological changesEES12-15 describes and assesses renewable and non-renewable Earth resources and how their extraction, use, consumption and disposal affect the Earth's systems
+
+Year 11 Course Structure and Requirements
+Year 11 course
+
+(120 hours)Working Scientifically SkillsModulesIndicative hoursDepth studiesModule 1
+Earth's Resources 60*15 hours
+in Modules 1-4Module 2
+Plate Tectonics Module 3
+Energy Transformations60Module 4
+Human Impacts
+*15 hours must be allocated to depth studies within the 120 indicative course hours.
+Requirements for Practical Investigations
+Scientific investigations include both practical investigations and secondary-sourced investigations. Practical investigations are an essential part of the Year 11 course and must occupy a minimum of 35 hours of course time, including time allocated to practical investigations in depth studies.
+
+Practical investigations include:
+? undertaking laboratory experiments, including the use of appropriate digital technologies
+? fieldwork.
+
+Secondary-sourced investigations include:
+? locating and accessing a wide range of secondary data and/or information 
+? using and reorganising secondary data and/or information.
+
+One fieldwork exercise must be included in Year 11.
+
+
+Year 12 Course Structure and Requirements
+Year 12 course
+
+(120 hours)Working Scientifically SkillsModulesIndicative hoursDepth studiesModule 5
+Earth's Processes60*15 hours
+in Modules 5-8Module 6
+HazardsModule 7
+Climate Science60Module 8
+Resource Management
+*15 hours must be allocated to depth studies within the 120 indicative course hours.
+Requirements for Practical Investigations 
+Scientific investigations include both practical investigations and secondary-sourced investigations. Practical investigations are an essential part of the Year 12 course and must occupy a minimum of 35 hours of course time, including time allocated to practical investigations in depth studies.
+
+Practical investigations include:
+? undertaking laboratory experiments, including the use of appropriate digital technologies
+? fieldwork.
+
+Secondary-sourced investigations include:
+? locating and accessing a wide range of secondary data and/or information 
+? using and reorganising secondary data and/or information.
+
+One fieldwork exercise must be included in Year 12.
+
+
+Assessment and Reporting
+Information about assessment in relation to the Earth and Environmental Science syllabus is contained in Assessment and Reporting in Earth and Environmental Stage 6. It outlines course-specific advice and requirements regarding:
+? Year 11 and Year 12 school-based assessment requirements
+? Year 11 and Year 12 mandatory components and weightings
+? External assessment requirements including HSC examination specifications.
+
+This information should be read in conjunction with requirements on the Assessment Certification Examination (ACE) website.
+
+Additional advice is available in the Principles of Assessment for Stage 6.
+
+
+Content
+Content defines what students are expected to know and do as they work towards syllabus outcomes. It provides the foundations for students to successfully progress to the next stage of schooling or post-school opportunities.
+Teachers will make decisions about content regarding the sequence, emphasis and any adjustments required based on the needs, interests, abilities and prior learning of students.
+Content in Stage 6 syllabuses defines learning expectations that may be assessed in Higher School Certificate examinations.
+
+Organisation of Content
+The following diagram provides an illustrative representation of elements of the course and their relationship.
+
+The Year 11 and Year 12 courses each comprise four modules. The skills of Working Scientifically are integrated as course content throughout the syllabus. Each module includes a specific focus on some of the Working Scientifically skills. However, there is scope within each module to engage with all of the Working Scientifically skills.
+
+
+
+The Working Scientifically outcomes and content are integrated into each module wherever students undertake an investigation.
+
+
+Working Scientifically
+Working Scientifically skills are at the core of conducting practical and secondary-sourced investigations in science.
+
+Opportunities should be provided for students to engage with all the Working Scientifically skills in investigations. In each module, particular outcomes have been identified as those that are most relevant to the intended learning.
+
+Students are challenged to further develop their understanding of Working Scientifically as a group of dynamic and interdependent processes that are applied in each scientific investigation in a way that is appropriate and determined by the activity. This dynamism and interrelatedness adds a level of sophistication to students' understanding of the true nature and practice of science. Through regular involvement in these processes, applying them as appropriate, in a range of varied practical investigations, students can broaden their interpretation of Working Scientifically beyond the common linear model. 
+
+Students are encouraged to select the most appropriate gateway to the Working Scientifically processes. The pathways within the processes become self-evident through the nature of the investigation. An investigation may be instigated by, for example: 
+? direct observation of a phenomenon
+? inconsistencies arising from results of a related investigation 
+? the qualitative and quantitative analysis of data 
+? secondary-sourced research.
+
+Students are challenged to be open to: 
+? refining or redeveloping their chosen procedures
+? redefining their questions and/or hypotheses
+? modifying their methodologies or designs
+? conducting further practical investigations
+? conducting further secondary research. 
+
+Students are also encouraged to communicate evidence-based conclusions and suggest ideas for future research. Unexpected results are to be welcomed to refine methodologies and to generate further investigation. Knowledge and understanding of science is essential to these processes. Through this practice of science, students can acquire a deeper knowledge and understanding of scientific concepts.
+
+
+
+Each of the seven Working Scientifically outcomes represents one of the interdependent dynamic processes that are central to the study of Science and the acquisition of scientific knowledge and skills. This course is structured to provide ongoing opportunities for students to implement these processes, particularly through the depth study provision. The following descriptions of the Working Scientifically outcomes provide further information about the skills students are expected to develop throughout the course.
+Questioning and Predicting
+Developing, proposing and evaluating inquiry questions and hypotheses challenge students to identify an issue or phenomenon that can be investigated scientifically by gathering primary and/or secondary-sourced data. Students develop inquiry question(s) that require observations, experimentation and/or research to aid in constructing a reasonable and informed hypothesis. The consideration of variables is to be included in the questioning process.
+
+
+Planning Investigations
+Students justify the selection of equipment, resources chosen and design of an investigation. They ensure that all risks are assessed, appropriate materials and technologies are sourced, and all ethical concerns are considered. Variables are to be identified as independent, dependent and controlled to ensure a valid procedure is developed that will allow for the reliable collection of data. Investigations should include strategies that ensure controlled variables are kept constant and an experimental control is used as appropriate.
+Conducting Investigations
+Students are to select appropriate equipment, employ safe work practices and ensure that risk assessments are conducted and followed. Appropriate technologies are to be used and procedures followed when disposing of waste. The selection and criteria for collecting valid and reliable data is to be methodical and, where appropriate, secondary-sourced information referenced correctly.
+Processing Data and Information 
+Students use the most appropriate and meaningful methods and media to organise and analyse data and information sources, including digital technologies and the use of a variety of visual representations as appropriate. They process data from primary and secondary sources, including both qualitative and quantitative data and information.
+Analysing Data and Information
+Students identify trends, patterns and relationships; recognise error, uncertainty and limitations in data; and interpret scientific and media texts. They evaluate the relevance, accuracy, validity and reliability of the primary or secondary-sourced data in relation to investigations. They evaluate processes, claims and conclusions by considering the quality of available evidence, and use reasoning to construct scientific arguments. Where appropriate, mathematical models are to be applied, to demonstrate the trends and relationships that occur in data.
+Problem Solving
+Students use critical thinking skills and creativity to demonstrate an understanding of scientific principles underlying the solutions to inquiry questions and problems posed in investigations. Appropriate and varied strategies are employed including the use of models to qualitatively and quantitatively explain and predict cause-and-effect relationships. In Working Scientifically, students synthesise and use evidence to construct and justify conclusions. To solve problems, students: interpret scientific and media texts; evaluate processes, claims and conclusions; and consider the quality of available evidence.
+Communicating
+Communicating all components of the Working Scientifically processes with clarity and accuracy is essential. Students use qualitative and quantitative information gained from investigations using primary and secondary sources, including digital, visual, written and/or verbal forms of communication as appropriate. They apply appropriate scientific notations and nomenclature. They also appropriately apply and use scientific language that is suitable for specific audiences and contexts.
+
+
+Investigations
+An investigation is a scientific process to answer a question, explore an idea or solve a problem. Investigations include activities such as planning a course of action, collecting data, processing and analysing data, reaching a conclusion and communicating. Investigations may include the collection of primary and/or secondary-sourced data or information.
+
+Practical investigations involve the collection of primary data. They may include:
+? undertaking laboratory investigations, including fair tests and controlled experiments
+? undertaking fieldwork and surveys
+? constructing models.
+
+Secondary-sourced investigations can include:
+? researching by using a variety of media
+? extracting and reorganising secondary-sourced information in the form of flow charts, tables, graphs, diagrams, prose, keys, spreadsheets and databases
+? using models to inform understanding.
+Safety
+Schools have a legal obligation in relation to safety. Teachers will need to ensure that they comply with relevant legislation as well as system and school requirements in relation to safety when implementing their programs. This includes legislation and guidelines relating to Work Health and Safety, and the handling and storage of chemical and dangerous goods.
+Animal Search
+Schools have a legal responsibility in relation to the welfare of animals. The keeping of animals and all practical activities involving animals must comply with relevant guidelines or legislation.
+Inquiry Questions
+Inquiry questions are included in the course content and used to frame the syllabus content within each module. The depth of knowledge and understanding and skill development required to fully address the inquiry questions may vary. This allows for differentiation of the course content to cater for the diversity of learners.
+
+
+Depth Studies: Year 11 and Year 12
+What are Depth Studies?
+A depth study is any type of investigation/activity that a student completes individually or collaboratively that allows the further development of one or more concepts found within or inspired by the syllabus. It may be one investigation/activity or a series of investigations/activities.
+
+Depth studies provide opportunities for students to pursue their interests in earth and environmental science, acquire a depth of understanding, and take responsibility for their own learning. Depth studies promote differentiation and engagement, and support all forms of assessment, including assessment for, as and of learning. Depth studies allow for the demonstration of a range of Working Scientifically skills.
+
+A depth study may be, but is not limited to:
+? a practical investigation or series of practical investigations and/or a secondary-sourced investigation or series of secondary-sourced investigations
+? presentations, research assignments or fieldwork reports
+? the extension of concepts found within the course, either qualitatively and/or quantitatively.
+
+The length of time for any individual study and the pedagogies employed are not prescribed. The time for the depth studies may be allocated to a single study or spread over the year, and incorporate several studies depending on individual school and/or class requirements.
+Requirements for Depth Studies
+? A minimum of 15 hours of in-class time is allocated in both Year 11 and Year 12.
+? At least one depth study must be included in both Year 11 and Year 12.
+? The two Working Scientifically outcomes of Questioning and Predicting, and Communicating must be addressed in both Year 11 and Year 12.
+? A minimum of two additional Working Scientifically skills outcomes, and further development of at least one Knowledge and Understanding outcome, are to be addressed in all depth studies.
+Ideas for Depth Studies
+Practical Investigations
+? Design and conduct experiments
+? Test a claim
+? Test a device.
+Secondary-sourced Investigations
+? Make a documentary or media report
+? Conduct a literature review
+? Develop an evidence-based argument 
+? Write a journal article
+? Write an essay - historical or theoretical
+? Develop an environmental management plan
+? Analyse a work of fiction or film for scientific relevance
+? Create a visual presentation
+? Investigate emerging technologies.
+Creating
+? Design and invent
+? Create a working model
+? Create a portfolio.
+Fieldwork
+Fieldwork may be a starting point for a practical investigation or secondary-sourced study and could be initiated by the following stimuli:
+? an excursion
+? engagement with community experts.
+Data Analysis
+Data analysis may be incorporated into a practical investigation or secondary-sourced investigation. For example:
+? construction and analysis of graphs/tables
+? data analysis from a variety of sources
+? research analysis, eg of longitudinal data, resource management data.
+
+
+
+
+Learning Across the Curriculum
+Learning across the curriculum content, including the cross-curriculum priorities and general capabilities, assists students to achieve the broad learning outcomes defined in the NESA Statement of Equity Principles, the Melbourne Declaration on Educational Goals for Young Australians (December 2008) and in the Australian Government's Core Skills for Work Developmental Framework (2013).
+
+Cross-curriculum priorities enable students to develop understanding about and address the contemporary issues they face.
+
+The cross-curriculum priorities are:
+? Aboriginal and Torres Strait Islander histories and cultures 
+? Asia and Australia's engagement with Asia 
+? Sustainability. 
+
+General capabilities encompass the knowledge, skills, attitudes and behaviours required to assist students to live and work successfully in the 21st century.
+
+The general capabilities are:
+? Critical and creative thinking 
+? Ethical understanding 
+? Information and communication technology capability 
+? Intercultural understanding 
+? Literacy 
+? Numeracy 
+? Personal and social capability. 
+
+NESA syllabuses include other areas identified as important learning for all students:
+? Civics and citizenship 
+? Difference and diversity 
+? Work and enterprise. 
+
+Learning across the curriculum content is incorporated, and identified by icons, in the content of the Earth and Environmental Science Stage 6 Syllabus in the following ways.
+
+
+Aboriginal and Torres Strait Islander Histories and Cultures 
+Aboriginal and Torres Strait Islander communities have diverse cultures, social structures and a history of unique, complex knowledge systems. In Earth and Environmental Science students are provided with opportunities to learn about how Aboriginal and Torres Strait Islander Peoples have developed and refined knowledge about the world through observation, making predictions, testing (trial and error) and responding to environmental factors within specific contexts. Students investigate examples of Aboriginal and Torres Strait Islander Peoples' understanding of the environment and the ways in which traditional knowledge and Western scientific knowledge can be complementary.
+
+When planning and programming content relating to Aboriginal and Torres Strait Islander histories and cultures teachers are encouraged to:
+? involve local Aboriginal communities and/or appropriate knowledge holders in determining suitable resources, or to use Aboriginal or Torres Strait Islander authored or endorsed publications
+? read the Principles and Protocols relating to teaching and learning about Aboriginal and Torres Strait Islander histories and cultures and the involvement of local Aboriginal communities.
+Asia and Australia's Engagement with Asia 
+Asia and Australia's engagement with Asia provides rich and engaging contexts for developing students' science and technology knowledge, understanding and skills. In Earth and Environmental Science students are provided with opportunities to recognise that the Asia region includes diverse environments. They are provided with opportunities to appreciate how interactions within and between these environments and the impacts of human activity influence the region, including Australia, and have significance for the rest of the world.
+
+Asia plays an important role in scientific and technological research and development in areas such as medicine, natural resource management and natural disaster prediction and management.
+Sustainability 
+Sustainability is concerned with the ongoing capacity of the Earth to maintain all life. It provides authentic contexts for exploring, investigating and understanding systems in the natural and made environments. In Earth and Environmental Science students are provided with opportunities to investigate relationships between systems and system components, and consider the sustainability of food sources and the natural and human environments. They engage in ethical debate and with different perspectives in solving ethical problems.
+Critical and Creative Thinking 
+Critical and creative thinking are integral to activities where students learn to generate and evaluate knowledge, clarify concepts and ideas, seek possibilities, consider alternatives and solve problems. Critical and creative thinking are embedded in the skills and processes of Working Scientifically. In order to make evidence-based decisions, students are provided with opportunities to develop critical and creative thinking skills through: asking and posing questions; making predictions; engaging in practical and secondary-sourced investigations; and analysing and evaluating evidence.
+
+
+Ethical Understanding 
+Students are provided with opportunities to develop the capability to assess ethical values and principles, and to understand how reasoning can assist ethical judgement. In Earth and Environmental Science students are provided with opportunities to form and make ethical judgements in relation to scientific investigations, design, codes of practice, and the use of scientific information and applications. Students explore the importance of reporting honestly based on evidence. They apply ethical guidelines in their investigations, particularly in regard to the implications for others and the environment.
+Information and Communication Technology Capability 
+Information and communication technology (ICT) can be used effectively and appropriately to access, create and communicate information and ideas, solve problems and work collaboratively. In Earth and Environmental Science students are provided with opportunities to develop ICT capability when they: develop ideas and solutions; research science concepts and applications; investigate scientific phenomena; and communicate their scientific and technological understandings. In particular, they have opportunities to learn to: access information; collect, analyse and represent data; model and investigate relationships; and communicate scientific and technological ideas, processes and information. 
+Intercultural Understanding 
+Students develop intercultural understanding as they learn to understand themselves in relation to others. This involves students valuing their own cultures and those of others, and engaging with people of diverse cultures in ways that recognise commonalities and differences, create connections and cultivate respect. Students are provided with opportunities to appreciate how diverse cultural perspectives have impacted on the development, breadth and diversity of scientific knowledge and applications. They learn about and engage with issues requiring cultural sensitivity, and learn that scientists work in culturally diverse teams to address issues and solve problems of national and international importance.
+Literacy 
+Literacy is the ability to use a repertoire of knowledge and skills to communicate and comprehend effectively, using a variety of modes and media. Being 'literate' is more than the acquisition of technical skills - it includes the ability to identify, understand, interpret, create and communicate effectively using written, visual and digital forms of expression and communication for a number of purposes. In Earth and Environmental Science students are provided with opportunities to understand that language varies according to the context and engage with different forms of written and spoken language to communicate scientific concepts. They learn that scientific information can also be presented in the form of diagrams, flow charts, tables, graphs and models.
+Numeracy 
+Numeracy involves recognising and understanding the role of mathematics in the world. Students become numerate as they develop the confidence, willingness and ability to apply mathematics in their lives in constructive and meaningful ways. In Earth and Environmental Science students are provided with opportunities to develop numeracy skills through practical measurement and the collection, representation and interpretation of data from first-hand investigations and secondary sources. Students consider issues of uncertainty and reliability in measurement and have opportunities to learn data analysis skills, identifying trends and patterns from numerical data and graphs. They apply mathematical equations and concepts in order to solve problems.
+Personal and Social Capability 
+Students develop personal and social capability as they learn to understand and manage themselves, their relationships and their lives more effectively. This includes establishing positive relationships, making responsible decisions, working effectively individually and in teams, and constructively handling challenging situations. Through applying the processes of Working Scientifically, students can develop skills in collaboration, peer assessment and review. They plan and conduct a depth study either individually or in a team.
+Civics and Citizenship 
+Civics and citizenship content involves knowledge and understanding of how our Australian society operates. In Earth and Environmental Science students are provided with opportunities to broaden their understanding of aspects of civics and citizenship related to the application of scientific ideas and technological advances, including ecological sustainability and the development of environmental and sustainable practices at a local, regional and national level.
+Difference and Diversity 
+Difference and diversity comprise gender, race and socio-economic circumstances. Students are provided with opportunities to understand and appreciate the difference and diversity they experience in their everyday lives. Working Scientifically provides opportunities for students to work collaboratively, where they can develop an appreciation of the values and ideas of all group members. This appreciation also enables students to identify individual rights, challenge stereotypes and engage with opinions that are different to their own.
+Work and Enterprise 
+Students can develop work-related skills and an appreciation of the value of working individually and collaboratively when conducting investigations. In Earth and Environmental Science students are provided with opportunities for students to prioritise safe practices and understand the potential risks and hazards present when conducting investigations. They engage with risk assessment while working safely in the laboratory or the field.
+
+Earth and Environmental Science Year 11 Course Content
+Year 11 Course Structure and Requirements
+Year 11 course
+
+(120 hours)Working Scientifically SkillsModulesIndicative hoursDepth studiesModule 1
+Earth's Resources 60*15 hours
+in Modules 1-4Module 2
+Plate Tectonics Module 3
+Energy Transformations60Module 4
+Human Impacts
+*15 hours must be allocated to depth studies within the 120 indicative course hours.
+Requirements for Practical Investigations
+Scientific investigations include both practical investigations and secondary-sourced investigations. Practical investigations are an essential part of the Year 11 course and must occupy a minimum of 35 hours of course time, including time allocated to practical investigations in depth studies.
+
+Practical investigations include:
+? undertaking laboratory experiments, including the use of appropriate digital technologies
+? fieldwork.
+
+Secondary-sourced investigations include:
+? locating and accessing a wide range of secondary data and/or information 
+? using and reorganising secondary data and/or information.
+
+One fieldwork exercise must be included in Year 11.
+
+
+Working Scientifically Skills
+It is expected that the content of each skill will be addressed by the end of the Stage 6 course.
+Questioning and Predicting
+Outcomes
+A student:
+› develops and evaluates questions and hypotheses for scientific investigation EES11/12-1
+Content
+Students:
+? develop and evaluate inquiry questions and hypotheses to identify a concept that can be investigated scientifically, involving primary and secondary data (ACSES001, ACSES061, ACSES096) 
+? modify questions and hypotheses to reflect new evidence 
+Planning Investigations
+Outcomes
+A student:
+› designs and evaluates investigations in order to obtain primary and secondary data and information EES11/12-2
+Content
+Students:
+? assess risks, consider ethical issues and select appropriate materials and technologies when designing and planning an investigation (ACSES031, ACSES097)  
+? justify and evaluate the use of variables and experimental controls to ensure that a valid procedure is developed that allows for the reliable collection of data (ACSES002)
+? evaluate and modify an investigation in response to new evidence 
+
+
+Conducting Investigations
+Outcomes
+A student:
+› conducts investigations to collect valid and reliable primary and secondary data and information EES11/12-3
+Content
+Students:
+? employ and evaluate safe work practices and manage risks (ACSES031)  
+? use appropriate technologies to ensure and evaluate accuracy  
+? select and extract information from a wide range of reliable secondary sources and acknowledge them using an accepted referencing style  
+Processing Data and Information
+Outcomes
+A student:
+› selects and processes appropriate qualitative and quantitative data and information using a range of appropriate media EES11/12-4
+Content
+Students:
+? select qualitative and quantitative data and information and represent them using a range of formats, digital technologies and appropriate media (ACSES004, ACSES007, ACSES064, ACSES101)   
+? apply quantitative processes where appropriate 
+? evaluate and improve the quality of data  
+Analysing Data and Information
+Outcomes
+A student:
+› analyses and evaluates primary and secondary data and information EES11/12-5
+Content
+Students:
+? derive trends, patterns and relationships in data and information
+? assess error, uncertainty and limitations in data (ACSES004, ACSES005, ACSES033, ACSES099) 
+? assess the relevance, accuracy, validity and reliability of primary and secondary data and suggest improvements to investigations (ACSES005)  
+Problem Solving
+Outcomes
+A student:
+› solves scientific problems using primary and secondary data, critical thinking skills and scientific processes EES11/12-6
+Content
+Students:
+? use modelling (including mathematical examples) to explain phenomena, make predictions and solve problems using evidence from primary and secondary sources (ACSES006, ACSES010) 
+? use scientific evidence and critical thinking skills to solve problems 
+Communicating
+Outcomes
+A student:
+› communicates scientific understanding using suitable language and terminology for a specific audience or purpose EES11/12-7
+Content
+Students:
+? select and use suitable forms of digital, visual, written and/or oral forms of communication  
+? select and apply appropriate scientific notations, nomenclature and scientific language to communicate in a variety of contexts (ACSES008, ACSES036, ACSES067, ACSES102)  
+? construct evidence-based arguments and engage in peer feedback to evaluate an argument or conclusion (ACSES034, ACSES036)  
+
+
+Module 1: Earth's Resources
+Outcomes
+A student:
+› conducts investigations to collect valid and reliable primary and secondary data and information EES11/12-3
+› selects and processes appropriate qualitative and quantitative data and information using a range of appropriate media EES11/12-4
+› analyses and evaluates primary and secondary data and information EES11/12-5
+› describes the key features of the Earth's systems, including the geosphere, atmosphere, hydrosphere and biosphere and how they are interrelated EES11-8
+Content Focus
+This module investigates compositional layers of the Earth. Students engage with rock composition and the origins of the component materials, including minerals. They extend their knowledge of the Earth and space from Science Stage 5 by learning about soil, the Rock Cycle and technologies used to gather geological data. 
+
+Students explore science as a human endeavour in relation to the work of geologists, including the significance of this work to the mining of non-renewable resources. They also explore technologies used to gather and interpret data, including absolute and relative dating of rocks.
+Working Scientifically
+In this module, students focus on conducting investigations to collect, process and analyse data in order to identify trends, patterns and relationships in the Earth's resources. Students should be provided with opportunities to engage with all Working Scientifically skills throughout the course.
+Content
+Structure of the Earth, the Early Geosphere, Atmosphere and Hydrosphere
+Inquiry question: How did the compositional layers of the Earth develop?
+
+Students:
+? investigate and model the processes that formed the geosphere (ACSES018), atmosphere (ACSES022) and hydrosphere (ACSES023) 
+? investigate evidence for the structure of the Earth using technologies, including:   
+- seismic wave velocities
+- meteorite evidence to demonstrate differences in density and composition  (ACSES009, ACSES018) 
+? describe the compositional layers and thickness of the Earth's layers, including:   
+- lithosphere (ACSES015)
+- asthenosphere
+- crust, mantle and core and their compositional layers (ACSES006)
+? conduct a practical investigation to compare the differences in the density of representative rock samples found in the crust, mantle and core (ACSES003) 
+
+
+? analyse evidence of the Earth's age, including: 
+- formation and age of zircon crystals 
+- radiometric techniques 
+- meteorite evidence (ACSES009)
+Rocks, Minerals and the Rock Cycle
+Inquiry question: What are the components of rocks and soils?
+
+Students:
+? investigate methods of classifying rocks and minerals used by Aboriginal and Torres Strait Islander Peoples 
+? investigate the chemical composition of a variety of minerals and explain their formation, including:
+- felsic minerals
+- mafic minerals
+? investigate the physical properties of minerals that are used to assist in classification
+? investigate a range of rocks and minerals and classify samples using dichotomous keys   
+? explain the formation of rocks as characteristic assemblages of mineral crystals or grains that are formed through igneous, sedimentary and metamorphic processes, as part of the Rock Cycle (ACSES019) 
+? explain the formation of soil in terms of the interaction of atmospheric, geologic, hydrologic and biotic processes (ACSES020) 
+? conduct a practical investigation to examine soil types and component materials (ACSES020) 
+Geological Timescale
+Inquiry question: How is the age of geological materials determined?
+
+Students:
+? describe relative and absolute dating of the geosphere (ACSES017)
+? use data of both relative and absolute dating from secondary sources to determine the age of geological materials (ACSES013, ACSES015, ACSES016, ACSES017)  
+
+
+Geological Resources
+Inquiry question: How are non-renewable geological resources discovered and extracted? 
+
+Students:
+? investigate traditional Aboriginal quarrying and mining methods 
+? locate and relate a range of non-renewable resources to their location, for example:  
+- minerals
+- fossil fuels (ACSES072)
+- ores of economic significance (ACSES071, ACSES072)
+? analyse the economic importance of Australia's non-renewable resources (ACSES061)    
+? investigate and assess the appropriateness of direct sampling techniques and remote sensing techniques in discovering non-renewable resources (ACSES073), including but not limited to:   
+- satellite images
+- aerial photographs
+- geophysical data
+? investigate the locations and extraction methods of, for example: (ACSES074)    
+- open-pit mining
+- underground mining methods
+- offshore and onshore drilling
+
+Module 2: Plate Tectonics
+Outcomes
+A student:
+› develops and evaluates questions and hypotheses for scientific investigation EES11/12-1
+› designs and evaluates investigations in order to obtain primary and secondary data and information EES11/12-2
+› conducts investigations to collect valid and reliable primary and secondary data and information EES11/12-3
+› selects and processes appropriate qualitative and quantitative data and information using a range of appropriate media EES11/12-4
+› analyses and evaluates primary and secondary data and information EES11/12-5
+› describes the evidence for the theory of plate tectonics and the energy and geological changes that occur at plate boundaries EES11-9
+Content Focus
+The Earth's surface is made of a series of tectonic plates that move and interact with one another. Solid evidence for the theory of plate tectonics was not proposed until the early 20th century. Initially, the theory was dismissed because of a lack of evidence. Eventually, however, the work of a series of scientists was combined to produce enough evidence to support acceptance of the theory. In many cases, the development of new technologies has allowed the individual pieces of this scientific puzzle be put together.
+
+The theory of plate tectonics can explain not only the location and causes of earthquakes and volcanoes, but also the location of mountain ranges (both above and under the oceans) and deep ocean floor trenches. This theory also helps to explain many aspects of climate, evolution and extinction, and supports predictions about the future.
+Working Scientifically
+In this module, students focus on developing questions and hypotheses when processing data while conducting investigations to analyse trends, patterns and relationships in plate tectonics, and the energy transformations and geological changes that continue to occur. Students should be provided with opportunities to engage with all Working Scientifically skills throughout the course.
+
+
+Content
+Evidence for the Theory of Plate Tectonics
+Inquiry question: What is the current evidence for the theory of plate tectonics and how did the theory develop?
+
+Students:
+? analyse evidence, including data and models, that supports the theory of plate tectonics, including but not limited to:   
+- the 'jigsaw fit' of the continental shelves (ACSES004, ACSES006)
+- matching up identical fossils on different continents (ACSES004, ACSES006)
+- the profile of the ocean floor
+- the age of sea floor rocks (ACSES004)
+- magnetic reversals in sea floor rocks (ACSES035)
+? evaluate the contributions of the following theories, models and research to our understanding of the movement of plates, including but not limited to: (ACSES005, ACSES009, ACSES035, ACSES038)  
+- Wegener - continental drift
+- Holmes - convection in the mantle 
+- Hess - sea floor spreading 
+- Vine and Matthews - magnetic reversals (ACSES004)
+- Glomar Challenger - age of oceanic floors
+Plate Boundaries
+Inquiry question: What occurs at plate boundaries?
+
+Students:
+? use geological maps of the Earth to locate boundary types and model the processes that have contributed to their formation, including: (ACSES006, ACSES035, ACSES099)   
+- divergent boundaries
+- convergent boundaries
+- transform boundaries
+Plate Boundaries and Tectonic Structures
+Inquiry question: What are the geological and topographic features that have resulted from plate tectonics at each plate boundary type?
+
+Students:
+? model types of plate boundaries showing the dominant topographic and geological features, including: (ACSES006)   
+- divergent boundaries: rift valley, mid-ocean ridge, normal and transform faults
+- convergent boundaries: mountain range, trench, reverse faults and folds 
+
+
+Module 3: Energy Transformations
+Outcomes
+A student:
+› analyses and evaluates primary and secondary data and information EES11/12-5
+› solves scientific problems using primary and secondary data, critical thinking skills and scientific processes EES11/12-6
+› communicates scientific understanding using suitable language and terminology for a specific audience or purpose EES11/12-7
+› describes the factors that influence how energy is transferred and transformed in the Earth's systems EES11-10
+Content Focus
+Earth's processes require energy. This energy may be transformed from one form into another or transferred between objects. Energy from the Sun and the Earth's interior control processes within and between the Earth's spheres. Heat and gravitational energy in the Earth's interior also drives the movements of tectonic plates. Energy transfers that occur on different timescales between the atmosphere, oceans and land generate weather and climate phenomena. The influence of cyclic phenomena, including El Niño and La Niña, affect global weather patterns.
+
+Knowledge of the Earth's processes and of energy transfer allows scientists to explain phenomena and predict areas at risk.
+Working Scientifically
+In this module, students focus on collecting, processing and analysing data and information in order to solve problems and communicate ideas about energy transformations in the Earth's systems. Students should be provided with opportunities to engage with all Working Scientifically skills throughout the course.
+Content
+Role of Energy in the Earth's Processes
+Inquiry question: How does energy drive the Earth's processes?
+
+Students:
+? conduct a practical investigation to demonstrate convection currents (ACSES031) 
+? analyse the role of solar radiation in driving the Earth's processes, eg photosynthesis and the water cycle (ACSES046, ACSES048)
+? investigate the role of gravity and heat in tectonic plate movements, including: (ACSES033, ACSES047)  
+- comparing the movement of the Earth's plates to surface movements of other bodies in the solar system 
+- modelling movement caused by gravity and heat (ACSES048, ACSES049)
+- describing the contributions of convection and slab pull to plate speed 
+
+
+Geological Transformations: Earthquakes, Volcanoes and Mountain Ranges
+Inquiry question: How do energy transfers and transformations alter the lithosphere? (ACSES055,
+ACSES056)
+
+Students:
+? explain how the release of elastic potential energy in rock leads to earthquakes (ACSES044, ACSES047) 
+? describe the role of heat and its interactions with the lithosphere in creating different types of volcanic eruptions and magma compositions, including but not limited to: (ACSES099)  
+- thermal plumes resulting in effusive mafic eruptions
+- partial melting of subducted oceanic plates resulting in explosive felsic eruptions
+- interactions of magma and overlying ice resulting in ash clouds
+? represent these energy transformations in the formation of mountains due to:   
+- thermal expansion
+- deformation of the lithosphere (ACSES035)
+Transformations in the Oceans, Biosphere and Cryosphere
+Inquiry question: How do energy transformations influence the atmosphere, oceans, biosphere and cryosphere?
+
+Students:
+? investigate the unique properties of water that make it such an important component of the Earth's systems, including: (ACSES024)   
+- boiling point
+- ability to act as a solvent
+- density
+- thermal capacity
+- surface tension
+? outline the roles of energy, water masses and salinity in producing ocean currents (ACSES051)
+? explain the role of heat transfer by ocean currents and atmospheric movement in causing phenomena, eg El Niño and La Niña (ACSES052)  
+? extract information from secondary sources to document and investigate changes in the cryosphere (ACSES034)  
+
+
+Module 4: Human Impacts
+Outcomes
+A student:
+› develops and evaluates questions and hypotheses for scientific investigation EES11/12-1
+› designs and evaluates investigations in order to obtain primary and secondary data and information EES11/12-2
+› conducts investigations to collect valid and reliable primary and secondary data and information EES11/12-3
+› describes human impact on the Earth in relation to hydrological processes, geological processes and biological changes EES11-11
+Content Focus
+Humans use the Earth's resources to maintain life and provide infrastructure. However, natural resources are not infinite. Renewable resources such as water, soil, plants and animals can be managed sustainably using scientific knowledge. Incomplete information or failure to consider the impact of resources use may cause environmental damage.
+
+Scientific knowledge enables efficient use of resources and also the rehabilitation of damaged ecosystems. Healthy ecosystems provide renewable resources, purify air and water, regulate climate and provide cultural services. 
+Working Scientifically
+In this module, students focus on developing questions and hypotheses when planning and conducting investigations about human impacts on the Earth. Students should be provided with opportunities to engage with all Working Scientifically skills throughout the course.
+Content
+Water Management
+Inquiry question: How can water be managed for use by humans and ecosystems?
+
+Students:
+? represent the distribution of the Earth's water, including the amount available to plants and animals (ACSES060)    
+? investigate the treatment and potential reuse of different types of water, including but not limited to: (ACSES058)    
+- industrial wastewater
+- sewage
+- stormwater
+? Describe ways in which human activity can influence the availability and quality of water both directly (eg over-extraction) or indirectly (eg algal blooms) (ACSES080)  
+
+
+Salinity and Erosion
+Inquiry question: How does human use of land affect soil?
+
+Students:
+? explain causes of salinisation, including but not limited to: (ACSES024)
+- land clearing
+- irrigation
+? investigate the rehabilitation of salinity-affected area(s) by preparing a case study (ACSES070)    
+? conduct a practical investigation into soil erosion prevention and analyse the efficacy of the method(s) used (ACSES060, ACSES102)   
+? investigate sources and effects of soil contamination, including but not limited to:     
+- heavy metal contamination
+Effects of Introduced Species
+Inquiry question: How do introduced species affect the Australian environment and ecosystems? 
+
+Students:
+? outline the biotic and abiotic effects of introduced species
+? conduct an investigation into a local introduced species, including:     
+- reason for introducing the species
+- biotic and abiotic effects of the species
+- area affected by the species
+- human impacts that favour the introduced species
+- control or mitigation methods
+- economic impact of the species
+- different views about the value of and/or harm caused by the introduced species, including the views of Aboriginal and Torres Strait Islander Peoples  
+? analyse ways in which human activity can upset the balance of ecosystems and favour introduced species (ACSES027)   
+? describe ways in which introduced species contribute to the decline or extinction of native Australian species (ACSES081)    
+
+
+Earth and Environmental Science Year 12 Course Content
+Year 12 Course Structure and Requirements
+Year 12 course
+
+(120 hours)Working Scientifically SkillsModulesIndicative hoursDepth studiesModule 5
+Earth's Processes60*15 hours
+in Modules 5-8Module 6
+HazardsModule 7
+Climate Science60Module 8
+Resource Management
+*15 hours must be allocated to depth studies within the 120 indicative course hours.
+Requirements for Practical Investigations 
+Scientific investigations include both practical investigations and secondary-sourced investigations. Practical investigations are an essential part of the Year 12 course and must occupy a minimum of 35 hours of course time, including time allocated to practical investigations in depth studies.
+
+Practical investigations include:
+? undertaking laboratory experiments, including the use of appropriate digital technologies
+? fieldwork.
+
+Secondary-sourced investigations include:
+? locating and accessing a wide range of secondary data and/or information 
+? using and reorganising secondary data and/or information.
+
+One fieldwork exercise must be included in Year 12.
+
+
+Working Scientifically Skills
+It is expected that the content of each skill will be addressed by the end of the Stage 6 course.
+Questioning and Predicting
+Outcomes
+A student:
+› develops and evaluates questions and hypotheses for scientific investigation EES11/12-1
+Content
+Students:
+? develop and evaluate inquiry questions and hypotheses to identify a concept that can be investigated scientifically, involving primary and secondary data (ACSES001, ACSES061, ACSES096) 
+? modify questions and hypotheses to reflect new evidence 
+Planning Investigations
+Outcomes
+A student:
+› designs and evaluates investigations in order to obtain primary and secondary data and information EES11/12-2
+Content
+Students:
+? assess risks, consider ethical issues and select appropriate materials and technologies when designing and planning an investigation (ACSES031, ACSES097)  
+? justify and evaluate the use of variables and experimental controls to ensure that a valid procedure is developed that allows for the reliable collection of data (ACSES002) 
+? evaluate and modify an investigation in response to new evidence 
+
+
+Conducting Investigations
+Outcomes
+A student:
+› conducts investigations to collect valid and reliable primary and secondary data and information EES11/12-3
+Content
+Students:
+? employ and evaluate safe work practices and manage risks (ACSES031)  
+? use appropriate technologies to ensure and evaluate accuracy  
+? select and extract information from a wide range of reliable secondary sources and acknowledge them using an accepted referencing style 
+Processing Data and Information
+Outcomes
+A student:
+› selects and processes appropriate qualitative and quantitative data and information using a range of appropriate media EES11/12-4
+Content
+Students:
+? select qualitative and quantitative data and information and represent them using a range of formats, digital technologies and appropriate media (ACSES004, ACSES007, ACSES064, ACSES101)   
+? apply quantitative processes where appropriate 
+? evaluate and improve the quality of data  
+Analysing Data and Information
+Outcomes
+A student:
+› analyses and evaluates primary and secondary data and information EES11/12-5
+Content
+Students:
+? derive trends, patterns and relationships in data and information
+? assess error, uncertainty and limitations in data (ACSES004, ACSES005, ACSES033, ACSES099) 
+? assess the relevance, accuracy, validity and reliability of primary and secondary data and suggest improvements to investigations (ACSES005)   
+Problem Solving
+Outcomes
+A student:
+› solves scientific problems using primary and secondary data, critical thinking skills and scientific processes EES11/12-6
+Content
+Students:
+? use modelling (including mathematical examples) to explain phenomena, make predictions and solve problems using evidence from primary and secondary sources (ACSES006, ACSES010) 
+? use scientific evidence and critical thinking skills to solve problems 
+Communicating
+Outcomes
+A student:
+› communicates scientific understanding using suitable language and terminology for a specific audience or purpose EES11/12-7
+Content
+Students:
+? select and use suitable forms of digital, visual, written and/or oral forms of communication  
+? select and apply appropriate scientific notations, nomenclature and scientific language to communicate in a variety of contexts (ACSES008, ACSES036, ACSES067, ACSES102)   
+? construct evidence-based arguments and engage in peer feedback to evaluate an argument or   conclusion (ACSES034, ACSES036)  
+
+
+Module 5: Earth's Processes
+Outcomes
+A student:
+› analyses and evaluates primary and secondary data and information EES11/12-5
+› solves scientific problems using primary and secondary data, critical thinking skills and scientific processes EES11/12-6
+› communicates scientific understanding using suitable language and terminology for a specific audience or purpose EES11/12-7
+› describes and evaluates the models that show the structure and development of the Earth over its history EES12-12
+Content Focus
+Since the formation of the Earth, both the atmosphere and lithosphere have been continually changing, each influencing the other. The processes of plate tectonics, together with the formation of water and the introduction of life, have further contributed to these changes. All three, in combination, have altered and continue to alter both the atmosphere and lithosphere.
+
+With the discovery of fossils, it became possible to develop the geological timescale and to determine when mass evolution and extinction events occurred. Both were and are strongly influenced by the phases of the plate tectonic supercycle, which has a significant effect on climate. This knowledge gives us new information about climate and natural cycles of change.
+Working Scientifically
+In this module, students focus on analysing trends, patterns and relationships in data to solve problems and communicate ideas about the evolution of the Earth. Students should be provided with opportunities to engage with all Working Scientifically skills throughout the course.
+
+
+Content
+Development of the Biosphere
+Inquiry question: How did today's biosphere originate and develop?
+
+Students: 
+? investigate evidence for the origin of organic molecules on the Earth, including: (ACSES025)  
+- Urey and Miller's experiments (ACSES026)
+- communities around Black smokers (ACSES026, ACSES027)
+- meteorites/panspermia
+? investigate the evidence for the development of photosynthetic life, including cyanobacteria and stromatolites (ACSES021, ACSES028) 
+? evaluate the evidence for the origin of multicellular life and resulting changes to ecosystems, for example, the Ediacaran and Cambrian fauna (ACSES029)   
+? investigate the conquest of land by both plants and animals (ACSES029) 
+Changes in the Geosphere, Atmosphere and Hydrosphere
+Inquiry question: How did the changes to the biosphere affect the Earth's geosphere, atmosphere and hydrosphere?
+
+Students:
+? analyse the changes in the geosphere, atmosphere and hydrosphere that resulted from the development and evolution of the biosphere, for example: (ACSES022, ACSES023)  
+- effect of photosynthesising cyanobacteria on each of the spheres (ACSES021, ACSES025)
+- role of oxygen in the production of banded iron formations
+Plate Tectonic Supercycle
+Inquiry question: What effect does the plate tectonic supercycle have on the Earth?
+
+Students: 
+? model the plate tectonic supercycle (ACSES025, ACSES038)  
+? outline the effect of the plate tectonic supercycle on large-scale phenomena, including climate and evolution (ACSES003, ACSES010, ACSES013, ACSES014)  
+Fossil Formation and Stratigraphy
+Inquiry question: What is the role of fossils in expanding what is known of geological time and past life on Earth?
+
+Students:
+? investigate and model processes of fossil formation by examining a variety of methods in rock, including: (ACSES028) 
+- mould formations
+- cast formations
+- trace fossils
+? discuss the significance of index fossils in generating a geological timescale 
+? extrapolate how the principles of uniformitarianism and superposition as well as fossils and absolute dating can be used to date events of geological significance, for example: (ACSES006, ACSES015, ACSES016)   
+- the evolution of the Cambrian fauna (ACSES029)
+- mass extinction events (ACSES029)
+
+Module 6: Hazards
+Outcomes
+A student:
+› develops and evaluates questions and hypotheses for scientific investigation EES11/12-1
+› designs and evaluates investigations in order to obtain primary and secondary data and information EES11/12-2
+› conducts investigations to collect valid and reliable primary and secondary data and information EES11/12-3
+› selects and processes appropriate qualitative and quantitative data and information using a range of appropriate media EES11/12-4
+› describes and evaluates the causes of the Earth's hazards and the ways in which they affect, and are affected by, the Earth's systems EES12-13
+Content Focus
+Natural disasters such as earthquakes, volcanic activity and cyclones have a significant impact on the Earth's environment, and often affect thousands of people, causing enormous damage. In many cases, the probability of such an event occurring is closely linked to an area's proximity to a plate boundary. The type of plate boundary can also influence the severity of the event.
+
+To some extent, technologies can be used to predict hazardous events and mitigate their effects. However, humans are still not able to prevent these events from occurring. Whether the climate alters the frequency and magnitude of these events is also uncertain. Students will explore the use, development and analysis of seismic data in order to examine significant seismic events.
+Working Scientifically
+In this module, students focus on developing and evaluating questions and hypotheses when designing and conducting investigations. They analyse qualitative and quantitative data about the evolving Earth. Students should be provided with opportunities to engage with all Working Scientifically skills throughout the course.
+Content 
+Geological Natural Disasters
+Inquiry question: How and why do geological disasters occur?
+
+Students:
+? using data, predict the zones along which earthquakes and both effusive and explosive volcanic eruptions are likely to occur and relate these to plate boundaries (ACSES094)    
+? using secondary sources, investigate and model the changing depth of the focus of earthquakes at convergent and divergent boundaries (ACSES100)    
+? using secondary sources, investigate and explain the hazards associated with earthquakes, including ground motion and tsunamis (ACSES100)    
+? using secondary sources, investigate and explain the hazards associated with volcanoes, for example:
+- ash eruptions and lava flows 
+- lahars and poisonous gas emissions   
+? account for the types of magma in each of the above types of volcanoes, and analyse how this affects the explosivity of their eruptions
+? investigate the point at which a geological hazard becomes a disaster 
+Impact of Natural Disasters on the Biosphere
+Inquiry question: How do natural disasters such as explosive volcanic eruptions, earthquakes and extreme weather events influence the biosphere and atmosphere?
+
+Students:
+? using data from secondary sources, compare the eruptions that occur at explosive and effusive volcanoes in terms of the impact on the biosphere and atmosphere (ACSES099)   
+? analyse the effects of a major volcanic eruption on the atmosphere in terms of changing the climate (both warming and cooling) (ACSES099)  
+? in a case study, investigate one eruption that has had a significant effect on the biosphere and atmosphere and assess its impact, including but not limited to:
+-  Mount Pinatubo (ACSES099)      
+? evaluate the causes and physical impact of climatic phenomena on a local ecosystem, including: (ACSES101, ACSES103)     
+- hailstorms
+- east coast lows
+- droughts or floods
+- bushfires
+? investigate how human activities can contribute to the frequency and magnitude of some natural disasters, including: (ACSES102)    
+- droughts or floods
+- bushfires
+- landslides
+Prediction and Prevention of Natural Disasters
+Inquiry question: What technologies enable prediction of natural disasters and minimisation of their effects on the biosphere?
+
+Students:
+? using secondary sources, evaluate the effectiveness of technologies in predicting natural disasters, for example:
+- volcanoes: three-dimensional imaging, seismic data, early-warning systems, ground-movement data, analysis of historical data (ACSES095, ACSES098, ACSES100)    
+- earthquakes: ground movement detectors, anomalous animal behaviour, strain meters
+- east coast lows: temperatures, pressure systems
+? investigate and evaluate the technologies used to minimise the effect of natural disasters associated with volcanoes and earthquakes, including building codes, disaster warning systems and education (ACSES103)     
+? using secondary sources, assess the accuracy of technologies used in meteorology to predict and prevent damage to life and infrastructure as a result of natural weather events     
+? 
+
+Module 7: Climate Science
+Outcomes
+A student:
+› develops and evaluates questions and hypotheses for scientific investigation EES11/12-1
+› solves scientific problems using primary and secondary data, critical thinking skills and scientific processes EES11/12-6
+› communicates scientific understanding using suitable language and terminology for a specific audience or purpose EES11/12-7
+› analyses the natural processes and human influences on the Earth, including the scientific evidence for changes in climate EES12-14
+Content Focus
+A significant global concern of governments and non-government bodies relates to natural and scientific evidence of anthropogenic climate variation. The acidification and warming of oceans can impact on marine life, and evidence indicates that rising sea levels could also impact on human communities in low-lying locations around the world.
+
+Students examine the mechanisms and scientific evidence for climate variation. They distinguish between evidence of natural processes and scientific evidence of anthropogenic influences, which both cause the Earth's climate to change. Students are provided with opportunities to form evidence-based opinions on, and develop strategies to manage, the effects of climate variation in the future.
+Working Scientifically
+In this module, students focus on developing and evaluating questions and hypotheses, analysing primary and secondary data, and solving problems to communicate scientific understanding about climate science. Students should be provided with opportunities to engage with all Working Scientifically skills throughout the course.
+
+
+Content
+Natural Processes of Variations in Climate 
+Inquiry question: How long does it take for the climate to change naturally and what causes these changes?
+
+Students:
+? use modelling to explain the causes of the natural greenhouse effect and examine the timescales in which changes occur (ACSES049, ACSES084)    
+? using secondary sources, assess the different causes of natural climate variation and the timescales in which changes occur, including: (ACSES104, ACSES105)   
+- the plate tectonic supercycle
+- massive volcanic eruptions, in the Deccan and Siberian Traps
+- changes in the Earth's orbit around the Sun
+- changes in ocean currents and ocean circulation
+Evidence for Climate Variation
+Inquiry question: What scientific evidence is there of climate variations in the past? 
+
+Students:
+? describe and discuss ancient evidence of variations in global temperature, including but not limited to: (ACSES088, ACSES108)  
+- pollen grains in sedimentary rocks
+- changes in rock types
+- fossils and microfossils
+- changing isotope ratios in rocks and deep sea sediments
+? identify and explain more recent evidence of climate variation, including but not limited to: (ACSES091, ACSES107, ACSES108)    
+- ice cores containing gas bubbles and oxygen isotopes
+- dendrochronology
+- Aboriginal art sites showing now-extinct species and environments (ACSES107) 
+- human instrumental records (ACSES087, ACSES107)
+- isotope ratios shown in stalagmites, stalactites and corals
+Influence of Human Activities on Changes to Climate
+Inquiry question: Is there scientific evidence to show that human activity has led to a variation in the Earth's climate since the Industrial Revolution?
+
+Students: 
+? distinguish between the natural greenhouse effect and any anthropogenic greenhouse effects  
+? investigate any influence that human activities may have had on the environment since the Industrial Revolution, for example:    
+- increases in greenhouse gases (ACSES104)
+- ocean acidification (ACSES105)
+? investigate flow-on effects of changes to climate, including but not limited to: (ACSES106, ACSES108)       
+- changing weather patterns (ACSES049, ACSES050, ACSES052)
+- changes in glaciers, sea ice and ice sheets
+- changing range of species due to rising sea level
+Mitigation and Adaptation Strategies
+Inquiry question: Is there scientific evidence that demonstrates how humans could minimise and respond to the effects of increased global temperatures?
+
+Students:
+? investigate possible human-induced causes for the enhanced greenhouse effect, including: 
+- the burning of fossil fuels for energy 
+- land use and land cover change (ACSES092, ACSES093, ACSES094, ACSES105)
+? investigate scientific evidence suggesting ways in which humans may assist to minimise any human contribution to the greenhouse effect in their daily lives (ACSES098, ACSES108)    
+? evaluate scientific evidence for the usefulness of a range of mitigation and adaptation strategies, including but not limited to: (ACSES090, ACSES097, ACSES108)      
+- urban design
+- geo-engineering strategies
+- alternative energy sources
+- using or changing agricultural practices of a range of cultural groups, including those of Aboriginal and Torres Strait Islander Peoples 
+
+
+Module 8: Resource Management
+Outcomes
+A student:
+› analyses and evaluates primary and secondary data and information EES11/12-5
+› solves scientific problems using primary and secondary data, critical thinking skills and scientific processes EES11/12-6
+› communicates scientific understanding using suitable language and terminology for a specific audience or purpose EES11/12-7
+› describes and assesses renewable and non-renewable Earth resources and how their extraction, use, consumption and disposal affect the Earth's systems EES12-15
+Content Focus
+Australia is rich in both renewable natural resources (eg agricultural production, sunlight) and non-renewable natural resources (eg minerals, fossil fuels). Students examine how the extraction and disposal of waste can greatly impact on the surrounding environment, affecting the quality and availability of renewable resources such as water and living organisms. The extent of this impact is referred to as an 'ecological footprint'.
+
+Scientific models of resource extraction, use and management have developed over time in response to new discoveries and through the incorporation of sustainable practices, many of which have been developed by Aboriginal and Torres Strait Islander Peoples. The world's population is increasing and more natural resources are being extracted to provide food, consumer goods, energy and infrastructure. Sustainable management of both natural resources and waste is vital for human long-term survival.
+Working Scientifically
+In this module, students focus on collecting and representing data to analyse trends and patterns and solve problems while communicating ideas about resource management. Students should be provided with opportunities to engage with all Working Scientifically skills throughout the course.
+
+
+Content
+Using Australia's Natural Resources
+Inquiry question: How are Australia's natural resources extracted, used and managed?
+
+Students:
+? identify Australian renewable resources and where they are located, including but not limited to: (ACSES062, ACSES072)   
+- agricultural resources: terrestrial and aquatic
+- water
+- energy sources
+? investigate how mining sites affect the environment, including Aboriginal cultural sites, and examine methods of reclamation of the environment and those sites after mining operations cease, including:     
+- open-pit mining
+- underground mining methods
+- offshore and onshore drilling
+? prepare a case study to investigate the involvement of traditional owners in the planning procedures, mining practices and restoration of damaged lands after mining operations cease    
+? prepare a case study of an important Australian renewable or non-renewable resource, including but not limited to:      
+- how the resource is found, extracted and/or managed (ACSES073, ACSES074)
+- how the resource is used (ACSES078)
+- whether the resource can be extracted and/or used sustainably (ACSES075, ACSES076) 
+- the past, present and future use and importance of the resource (ACSES079)
+Waste Management
+Inquiry question: How is waste managed?
+
+Students:
+? conduct a practical investigation of the composition of household or organisational waste (ACSES058)  
+? outline the management options for different types of solid waste (ACSES062)
+? evaluate the sustainability of a named waste management option, for example: (ACSES061, ACSES083)    
+- energy used to produce and/or recycle the waste
+- environmental impact of waste disposal
+- space for disposal or storage of waste
+- local waste management facilities
+- demand for reused or recycled waste
+
+
+Sustainability
+Inquiry question: How can humans manage the Earth's natural resources sustainably?
+
+Students:
+? investigate different definitions of sustainability and the rationales that underpin those definitions (ACSES066)    
+? investigate human activities that affect sustainability, including but not limited to: 
+- overharvesting (ACSES082, ACSES083)
+- water pollution (ACSES080)
+- habitat removal or destruction (ACSES081)
+? investigate the processes used by Aboriginal and Torres Strait Islander Peoples as sustainable resource managers, for example: (ACSES040)   
+- cultural traditions that preserve Country and Place and the resources located in those spaces 
+- ongoing engagement with groups such as land councils, national parks and municipal councils to improve resource management 
+- legislation and actions to protect significant areas of Country and Place 
+? research and present information about a sustainability initiative in their community (ACSES063)       
+
+
+Glossary
+Glossary termDefinitionAboriginal and Torres Strait Islander PeoplesAboriginal Peoples are the first peoples of Australia and are represented by over 250 language groups each associated with a particular Country or territory. Torres Strait Islander Peoples whose island territories to the north east of Australia were annexed by Queensland in 1879 are also Indigenous Australians and are represented by five cultural groups.
+
+An Aboriginal and/or Torres Strait Islander person is someone who:
+* is of Aboriginal and/or Torres Strait Islander descent
+* identifies as an Aboriginal person and/or Torres Strait Islander person, and 
+* is accepted as such by the Aboriginal and/or Torres Strait Islander community in which they live.abioticThe non-living components of the environment.anthropogenic climate variationVariation in the climate that is caused or influenced by human activity.biota (biotic)All of the living organisms in a specific region or area, including animals, plants and microorganisms.conclusionA judgement based on evidence.controlled variableA variable that is kept constant (or changed in constant ways) during an investigation.CountryAn area that is traditionally owned and looked after by an Aboriginal language group or community or certain people within that group. The term may indicate more than simply a geographical area ? it is also a concept that can encompass the spiritual meanings and feelings of attachment associated with that area.cryosphereThe frozen water part of the Earth's system.dendrochronologyThe method of using the annual rings of trees to gather evidence of past events.dependent variableA variable that changes in response to changes to the independent variable in an investigation.digital technologiesSystems that handle digital data, including hardware and software, for specific purposes.environmentAll surroundings, both living and non-living.geo-engineeringLarge-scale manipulation of global climate systems to reduce harmful variations in the Earth's climate. This manipulation, or intervention, is based on carbon dioxide removal or solar radiation management.hypothesisA tentative explanation for an observed phenomenon, expressed as a precise and unambiguous statement that can be supported or refuted by experiment.independent variableA variable that is changed in an investigation to see what effect it has on the dependent variable.inquiry questionA driving question for an investigation.investigationA scientific process of answering a question, exploring an idea or solving a problem, which requires activities such as planning a course of action, collecting data, interpreting data, reaching a conclusion and communicating these activities. Investigations can include practical and/or secondary-sourced data or information.modelA representation that describes, simplifies, clarifies or provides an explanation of the workings, structure or relationships within an object, system or idea.PlaceA space mapped out by physical or intangible boundaries that individuals or groups of Torres Strait Islander Peoples occupy and regard as their own. It is a space with varying degrees of spirituality.practical investigationsAn investigation that involves systematic scientific inquiry by planning a course of action and using equipment to collect data and/or information. Practical investigations include a range of hands-on activities, and can include laboratory investigations and fieldwork. primary sources/primary dataInformation created by a person or persons directly involved in a study or observing an event.reliabilityAn extent to which repeated observations and/or measurements taken under identical circumstances will yield similar results.secondary-sourced investigation/dataAn investigation that involves systematic scientific inquiry by planning a course of action and sourcing data and/or information from other people, including written information, reports, graphs, tables, diagrams and images.superpositionIn layers of stratified sedimentary rocks, the lowest layer is the first to be deposited.technologyAll types of human-made systems, tools, machines and processes that can help solve human problems or satisfy needs or wants, including modern computational and communication devices.theoryA set of concepts, claims and/or laws that can be used to explain and predict a wide range of related observed phenomena. Theories are typically founded on clearly identified assumptions, are testable, produce reproducible results and have explanatory power.uniformitarianismThe Earth's geologic processes acted in the same manner and with the same intensity in the past as they do at present.validityAn extent to which tests measure what was intended, or to which data, inferences and actions produced from tests and other processes are accurate.variableIn an investigation, a factor that can be changed, maintained or measured, eg time, distance, light, temperature.
+
+
+Earth and Environmental Science Stage 6 Syllabus	61
+
+
+
+Year 11
+
+Year 12
+
+
+

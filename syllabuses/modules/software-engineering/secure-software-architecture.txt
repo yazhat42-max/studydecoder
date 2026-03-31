@@ -1,0 +1,82 @@
+﻿=== Secure Software Architecture ===
+Subject: software-engineering
+============================================================
+
+Secure software architecture
+Outcomes
+A student:
+* justifies methods used to plan, develop and engineer software solutions SE-12-01
+* applies structural elements to develop programming code SE-12-02
+* analyses how current hardware, software and emerging technologies influence the development of software engineering solutions SE-12-03
+* evaluates practices to safely and securely collect, use and store data SE-12-04
+* explains the social, ethical and legal implications of software engineering on the individual, society and the environment SE-12-05
+* justifies the selection and use of tools and resources to design, develop, manage and evaluate software SE-12-06
+* designs, develops and implements safe and secure programming solutions SE-12-07
+* tests and evaluates language structures to refine code SE-12-08
+Content
+Designing software
+* Describe the benefits of developing secure software
+Including:
+* data protection
+* minimising cyber attacks and vulnerabilities* Interpret and apply fundamental software development steps to develop secure code
+Including:
+* requirements definition
+* determining specifications
+* design
+* development
+* integration
+* testing and debugging
+* installation
+* maintenance* Describe how the capabilities and experience of end users influence the secure design features of software
+Developing secure code
+* Explore fundamental software design security concepts when developing programming code
+Including:
+* confidentiality
+* integrity
+* availability
+* authentication
+* authorisation
+* accountability* Apply security features incorporated into software including data protection, security, privacy and regulatory compliance
+* Use and explain the contribution of cryptography and sandboxing to the 'security by design' approach in the development of software solutions
+* Use and explain the 'privacy by design' approach in the development of software solutions
+Including:
+* proactive not reactive approach
+* embed privacy into design
+* respect for user privacy* Test and evaluate the security and resilience of software by determining vulnerabilities, hardening systems, handling breaches, maintaining business continuity and conducting disaster recovery
+* Apply and evaluate strategies used by software developers to manage the security of programming code
+Including:
+* code review
+* static application security testing (SAST)
+* dynamic application security testing (DAST)
+* vulnerability assessment
+* penetration testing* Design, develop and implement code using defensive data input handling practices, including input validation, sanitisation and error handling
+* Design, develop and implement a safe application programming interface (API) to minimise software vulnerabilities
+* Design, develop and implement code considering efficient execution for the user
+Including:
+* memory management
+* session management
+* exception management* Design, develop and implement secure code to minimise vulnerabilities in user action controls
+Including:
+* broken authentication and session management
+* cross-site scripting (XSS) and cross-site request forgery (CSRF)
+* invalid forwarding and redirecting
+* race conditions* Design, develop and implement secure code to protect user file and hardware vulnerabilities from file attacks and side channel attacks
+Impact of safe and secure software development
+* Apply and describe the benefits of collaboration to develop safe and secure software
+Including:
+* considering various points of view
+* delegating tasks based on expertise
+* quality of the solution* Investigate and explain the benefits to an enterprise of the implementation of safe and secure development practices
+Including:
+* improved products or services
+* influence on future software development
+* improved work practices
+* productivity
+* business interactivity* Evaluate the social, ethical and legal issues and ramifications that affect people and enterprises resulting from the development and implementation of safe and secure software
+Including:
+* employment
+* data security
+* privacy
+* copyright
+* intellectual property
+* digital disruption

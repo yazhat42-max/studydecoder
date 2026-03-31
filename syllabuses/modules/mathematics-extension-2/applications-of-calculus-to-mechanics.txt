@@ -1,0 +1,184 @@
+﻿=== Applications of calculus to mechanics ===
+Subject: mathematics-extension-2
+============================================================
+
+Applications of calculus to mechanics
+Outcomes
+A student:
+    • develops understanding and fluency in mathematics through exploring and connecting mathematical concepts, choosing and applying mathematical techniques to solve problems, and communicating their thinking and reasoning coherently and clearly MAO-WM-01
+    • uses mechanics to model and solve practical problems ME2-12-05
+Content
+Forces and further motion in a straight line
+    • Derive expressions for acceleration: , where  is a function of , as well as  and , where  is a function of 
+    • Solve problems involving velocity and acceleration expressed in terms of displacement, and acceleration expressed in terms of velocity
+    • Examine Newton’s three laws of motion, including force, acceleration, action and reaction under a constant and non-constant force
+    • Find acceleration, , using the formula , where  is the force acting on a mass, 
+    • Recognise that forces are vector quantities, analyse concurrent forces on a body by resolving them into perpendicular components and use vector projections to determine how much of a given force acts in a given direction in both 2D and 3D contexts
+Simple harmonic motion
+    • Define simple harmonic motion as motion in which acceleration is proportional to, and in the opposite direction to, displacement, that is , where  is the displacement of a particle from the centre of motion at  and  is the acceleration
+    • Recognise that the force  acting on a body of mass, , executing simple harmonic motion according to the equation , is a restoring force which acts towards the centre of motion causing the body to oscillate around the centre of motion
+    • Verify that , , or  are solutions to the differential equation defining simple harmonic motion
+    • Describe simple harmonic motion using displacement, velocity, acceleration, force, amplitude and period
+    • Prove that motion is simple harmonic by obtaining an equation of the form , when given an equation for acceleration, velocity or displacement
+    • Graph ,  and  as functions of  with and without graphing applications for a particle moving in simple harmonic motion where  is of the form  or 
+    • Determine equations for simple harmonic motion when given graphs of acceleration, velocity or displacement in terms of time
+    • Derive  for a particle moving in simple harmonic motion according to , where  is the amplitude
+    • Determine equations for the displacement, , and velocity, , in terms of time for an object executing simple harmonic motion according to a given equation  and satisfying given initial conditions
+    • Model and solve problems involving simple harmonic motion using relevant formulas and graphs
+Modelling motion without resistance
+    • Derive the equations of motion for a particle travelling, without resistance, in a straight line with constant and variable acceleration and use the equations of motion to solve problems
+    • Analyse and solve problems relating to motion on a smooth inclined plane by resolving forces into components parallel and perpendicular to the inclined plane
+    • Solve motion problems involving a single smooth pulley and a smooth inclined plane where a body hangs vertically or lies on a smooth horizontal or inclined plane
+Rectilinear resisted motion
+    • Derive, from Newton’s laws of motion, , the equation for acceleration of a particle moving in a straight line and in the absence of external forces, except for a resistance oppositely directed to the motion and with a magnitude proportional to a power of the speed
+    • Derive an expression for velocity as a function of time of a particle moving in a straight line and in the absence of external forces, except for a resistance oppositely directed to the motion and with a magnitude proportional to a power of the speed
+    • Derive an expression for velocity as a function of displacement of a particle moving in a straight line and in the absence of external forces, except for a resistance oppositely directed to the motion and with a magnitude proportional to a power of the speed
+    • Derive an expression for displacement as a function of time of a particle moving in a straight line and in the absence of external forces, except for a resistance oppositely directed to the motion and with a magnitude proportional to a power of the speed
+    • Solve problems, excluding those with pulley systems, involving a particle moving in a straight line subject to a resistance oppositely directed to the motion and with a magnitude proportional to a power of the speed
+Vertical resisted motion
+    • Derive, from Newton’s laws of motion, , the equation for acceleration of a particle moving vertically (upwards or downwards) in a resistive medium and under the influence of constant gravity, where the particle experiences a resistance, , oppositely directed to the motion, whose magnitude is proportional to the first or second power of the speed
+    • Derive expressions for velocity both as a function of time and of displacement for vertical resisted motion under the influence of constant gravity, with a resistance, , oppositely directed to the motion, whose magnitude is proportional to the first or second power of the speed
+    • Derive an expression for displacement as a function of time for vertical resisted motion under the influence of constant gravity, with a resistance, , oppositely directed to the motion, whose magnitude is proportional to the first or second power of the speed
+    • Define the terminal velocity of a particle falling through a medium as the constant velocity the particle reaches when the resistance of the medium prevents further acceleration
+    • Determine the terminal velocity of a falling particle from its equation of motion for vertical resisted motion under the influence of constant gravity, with a resistance, , oppositely directed to the motion, and whose magnitude is proportional to the first or second power of the speed
+    • Solve vertical resisted motion problems using the expressions derived for acceleration, velocity and displacement, including finding the maximum height reached by a particle projected vertically upwards and the time taken to reach this maximum height, and finding the time taken for a particle to return to the level from which it was projected and its terminal velocity
+Projectiles and resisted motion
+    • Distinguish between the shape of the trajectory of a projectile moving under the influence of gravity and with negligible resistance and the shape of the trajectory of a projectile moving under the influence of gravity subject to resistance whose magnitude is proportional to the speed
+    • Establish and use the equations for acceleration for a projectile moving under the influence of gravity, projected at an angle to the horizontal, and subject to a resistance whose magnitude is proportional to the speed, to solve problems
+Example(s):
+Derive equations for horizontal and vertical displacement in terms of time for a projectile. The projectile is projected at an angle of  to the horizontal and moving in a resisting medium. The magnitude of resistance is proportional to the speed and under the influence of gravity.
+
+Assessment
+Course standards
+Course standards are comprised of syllabus standards and performance standards. Syllabus outcomes and content form the syllabus standards that describe what students are expected to know, understand and do. Performance standards, including the Common Grade Scale for Preliminary courses, HSC Performance Band Descriptions and Achievement Level Descriptions (for HSC courses with grades only) describe how well students have achieved in relation to syllabus standards. Performance standards are used to report student achievement on NESA credentials.
+Performance Band Descriptions for Mathematics Extension 2
+Stage 6 – Year 12
+HSC performance band descriptions summarise the knowledge, understanding and skills typically demonstrated by students at each band level in a particular course. NESA uses these holistic descriptions to report a student's overall level of achievement in an HSC course.
+Band E4
+A student who performs at this level typically:
+    • demonstrates extensive knowledge, understanding and skills appropriate to the course
+    • creatively synthesises mathematical concepts, techniques and results to efficiently solve problems
+    • demonstrates sophisticated multi-step logic and mathematical insight to solve problems and prove results in familiar and unfamiliar situations
+    • constructs, analyses and applies mathematical models effectively to solve problems in a wide variety of situations
+    • communicates complex reasoning, justification and arguments effectively, using appropriate mathematical language, concise notation, diagrams, and algebraic and graphical techniques.
+Band E3
+A student who performs at this level typically:
+    • demonstrates thorough knowledge, understanding and skills appropriate to the course
+    • synthesises mathematical concepts, techniques and results to solve problems
+    • demonstrates complex multi-step logic to solve problems and prove results in familiar and unfamiliar situations
+    • constructs, analyses and applies mathematical models to solve problems in a variety of situations
+    • communicates reasoning and justification effectively, using appropriate mathematical language, notation, diagrams, and algebraic and graphical techniques.
+Band E2
+A student who performs at this level typically:
+    • demonstrates sound knowledge, understanding and skills appropriate to the course
+    • uses mathematical concepts, techniques and results to solve problems
+    • constructs and applies mathematical models to solve problems in a range of situations
+    • communicates reasoning and justification effectively, using mathematical language, notation, diagrams and graphs.
+Band E1
+Performance reported as Band E1 indicates that the minimum standard expected was not demonstrated.
+School-based assessment
+Schools are required to develop an assessment program for each Year 11 and Year 12 course. NESA provides information about the responsibilities of schools in developing assessment programs in course-specific assessment requirements and in the Assessment Certification Examination (ACE) rules and requirements.
+Year 12 Mathematics Extension 2 school-based assessment
+Stage 6 – Year 12
+NESA requires schools to submit a school-based assessment mark for each Year 12 student who completes this course. Formal school-based assessment tasks should reflect the syllabus outcomes and content. The mark submitted by the school provides a summation of each student’s achievement measured at several points throughout the course.  
+A school’s program of school-based assessment includes both mandatory and non-mandatory elements. 
+See Assessment Certification Examination (ACE) rules and requirements for further information. 
+Assessment programs must reflect course components and weightings 
+The course components and component weightings for Year 12 are mandatory. 
+Course component
+Weighting %
+Knowledge and understanding of course content
+50
+Skills in Working mathematically
+50
+Schools may determine specific elements of their assessment program  
+Schools have authority to determine the number, type of task and the weighting allocated to an assessment task. Schools may also follow the sample assessment programs provided by NESA.  
+Sample assessment program 
+NESA's sample Year 12 formal school-based assessment program for Mathematics Extension 2 is: 
+    • 4 assessment tasks, including:  
+        ◦ a formal written examination 
+        ◦ a weighting for any individual task of 10% to 40%. 
+Some students with disability may require adjustments in order to access assessment opportunities and demonstrate achievement of outcomes.
+Formal school-based assessment in this course should focus on the Year 12 outcomes. The Year 11 course is assumed knowledge and may be assessed. 
+Sample assessment schedules
+Stage 6 – Year 12
+    • Sample assessment schedule Year 12
+Sample assessment task notifications
+Stage 6
+    • Sample formal assessment task notification: Year 12 (Modelling with integration and geometrical applications of vectors)
+HSC examinations
+The external HSC examination measures student achievement in a range of syllabus outcomes.
+The external examination and its marking relate to the syllabus by:
+    • providing clear links to syllabus outcomes
+    • enabling students to demonstrate the levels of achievement outlined in the Performance Band Descriptions
+    • applying marking guidelines based on criteria that relate to the quality of the response
+    • aligning performance in the examination each year to the standards established for the course.
+Examination questions may require students to integrate knowledge, understanding and skills developed through studying the course.
+Some students with disability may be eligible for disability provisions when completing the HSC examination.
+The examination will be based on the Mathematics Extension 2 Year 12 course and will focus on the course outcomes. The Mathematics Advanced and Mathematics Extension 1 courses will be assumed knowledge for this examination.
+Students will also be required to complete the Mathematics Extension 1 paper in addition to the Mathematics Extension 2 paper.
+Mathematics Extension 2 HSC examination specifications
+Stage 6 – Year 12
+The examination will consist of a written paper worth 100 marks.
+Time allowed: 3 hours plus 10 minutes reading time.
+A reference sheet will be provided.
+NESA-approved calculators may be used.
+The paper will consist of two sections.
+Section I (10 marks)
+    • There will be objective-response questions to the value of 10 marks.
+Section II (90 marks)
+    • Questions may contain parts.
+    • There will be 37 to 42 items.
+    • At least two items will be worth 4 or 5 marks.
+HSC Mathematics Extension 2 – annotated sample examination materials
+Stage 6 – Year 12
+    • HSC Mathematics Extension 2 – annotated sample examination materials
+    • Mathematics Extension 2 – HSC reference sheet
+Further information
+Stage 6 – Year 12
+    • Assessment in Stage 6
+    • Principles of effective assessment
+    • Assessment in practice
+    • School-based assessment requirements
+    • Adjustments to assessment for students with disability
+    • Life Skills
+    • Assessment Certification Examination (ACE) website
+ 
+
+
+NSW Education Standards Authority
+
+Mathematics Extension 2 11–12 (2024)
+Syllabus Support
+curriculum.nsw.edu.au
+Generated Dec 2025
+Downloaded December 2025
+© 2025 NSW Education Standards Authority 
+NESA acknowledges Traditional Owners and Custodians of Country throughout NSW, and pays respect to Elders past and present. NESA recognises Aboriginal Peoples’ continuing Cultures and Connections to lands, waters, skies and Community.
+The documents on the NSW Education Standards Authority (NESA) website and the NSW Curriculum website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright. 
+These websites hold the only official and up-to-date versions of the documents available on the internet. Any other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are not authorised. You cannot rely on copies from any other source. 
+All rights are reserved. No part of the material may be: 
+    • reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form 
+    • transmitted to any other person or stored electronically in any form without the written permission of NESA except as permitted by the Copyright Act 1968 (Cth). 
+When you access the material, you agree: 
+    • to use the material for research or study, criticism or review, reporting news and parody or satire 
+    • to use the material for information purposes only 
+    • not to modify the material or any part of the material without the written permission of NESA 
+    • to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the permission of NESA 
+    • to include this copyright notice in any copy made 
+    • to acknowledge that NESA is the source of the material. 
+The documents may include third-party copyright material such as photos, diagrams, quotations, cartoons and artworks. This material is protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner’s permission. Unauthorised reproduction, transmission or commercial use of such copyright material may result in prosecution. 
+NESA has made all reasonable attempts to locate the owners of third-party copyright material. NESA invites anyone from whom permission has not been sought to contact the Copyright Officer.
+Special arrangements applying to the NSW Curriculum Reform 
+As part of the NSW Curriculum Reform process, NESA grants a limited non-exclusive licence to: 
+    • teachers employed in NSW government schools and registered non-government schools 
+    • representatives from peak school education bodies, such as the NSW Department of Education, Catholic Schools NSW, the Association of Independent Schools of NSW and TAFE NSW
+    • parents of children registered for home schooling 
+to use, modify and adapt the NSW syllabuses for non-commercial educational use only. The adaptation must not have the effect of bringing NESA into disrepute. 
+Note: The above arrangements do not apply to private/home tutoring companies, professional learning service providers, publishers, and other organisations.
+For more information on the above or for commercial use or any other purpose, please contact the Copyright Officer for permission. 
+Email: copyright@nesa.nsw.edu.au
+Table of contents
+Table of contents	4
+Mathematics Extension 2 11–12 (2024)	5
+Teaching advice for Stage 6	5

@@ -1,0 +1,160 @@
+ NSW Education Standards Authority 
+2025 HIGHER SCHOOL CERTIFICATE EXAMINATION 
+Industrial Technology  
+Multimedia Technologies Centre Number 
+Student Number 
+General 
+Instructions • Reading time – 5 minutes 
+• Working time – 1 hour and 30 minutes 
+• Write using black pen 
+• Draw diagrams using pencil 
+• Calculators approved by NESA may be used 
+• Write your Centre Number and Student Number at the top of thispage and page 5 
+Total marks: 40 Section I – 10 marks
+ (pages 2–4) 
+• Attempt Questions 1–10 
+• Allow about 20 minutes for this section 
+Section II – 15 marks (pages 5–7) 
+• Attempt Questions 11–15 
+• Allow about 35 minutes for this section 
+Section III – 15 marks (page 9) 
+• Attempt Question 16 
+• Allow about 35 minutes for this section 
+2380 
+
+ Section I 
+10 marks 
+Attempt Questions 1–10Allow about 20 minutes for this section 
+Use the multiple-choice answer sheet for Questions 1–10. 
+1  
+What is the primary purpose of paragraph formatting in a word processing document? 
+A. To ensure documents have a unique appearance 
+B. To add special effects like animations and transitions 
+C. To make documents easier to read and visually appealing 
+D. To aid in creating complex layouts with images and tables 
+2  What is the primary advantage of using dedicated screenshot tools over keyboard
+shortcuts? 
+A. They are faster and more efficient. 
+B. They improve computer processing speeds. C. They offer a visual interface for selecting capture areas and settings. D. They are more readily available on a wide variety of operating systems. 
+3  Which factor most commonly affects sound quality when streaming audio on the World
+Wide Web? 
+A. The popularity of the audio file 
+B. The file’s original recording location 
+C. The type of speakers used by the listener 
+D. The compression methods applied to reduce file size 
+– 2 – 
+
+4  Which of the following best describes the effect of using a contrast filter in multimedia
+design? 
+A. The transitions between colours are smoothed out. 
+B. A uniform colour tone is applied across the entire image. C. The brightness levels are adjusted without altering the colour balance. D. The difference between the light and dark areas of an image is increased. 
+5  Which of the following post-editing techniques is commonly used to create slow-motion
+effects in video? 
+A. Using software to generate additional frames between existing frames 
+B. Increasing the frame rate of the original footage during playback 
+C. Applying a digital filter to reduce the video resolution 
+D. Reversing the playback direction of the footage 
+6  Which of the following is a characteristic of rigging in 3D animation? 
+A. Modelling characters and objects in a scene 
+B. Setting up a skeleton structure for character movement 
+C. Creating realistic backgrounds and environments in a scene 
+D. Creating detailed textures and lighting effects for the final render 
+7  Which of the following is most important for video player software to play videossmoothly? 
+A. High screen brightness for better visibility 
+B. A high-quality sound card for clearer audio 
+C. A faster processor to handle video playback 
+D. Extra storage space to keep more video files 
+– 3 – 
+
+ 
+ 
+ 8  What is a key limitation of PDF files that hinders collaboration and editing? 
+A. Dependence on proprietary software limits accessibility. 
+B. They are difficult to modify without specialised software. C. They are unable to embed fonts, images and other multimedia elements. D.  They lack security features, making them unsuitable for sharing sensitive
+information. 
+9  Which of the following best describes animation as a multimedia element? 
+A. A special effect used to enhance the appearance of static images 
+B. A method of displaying still images to convey a single idea or message C. A process where images are displayed in quick succession to simulate movemenD. A technique that combines visual and audio elements to create an immersi
+experience 
+t 
+ve
+10  A website wants to implement an age verification system to restrict access to adult
+content. 
+Which of the following methods would be the most reliable for ensuring accurate age
+control? 
+A. 
+Using facial recognition software to estimate age 
+B. Sending a verification code to the user’s email address 
+C. Requiring users to upload a government-issued ID for verification D. Using CAPTCHA tests to ensure the user is human before age verification 
+– 4 – 
+© 2025 NSW Education Standards Authority 
+
+ 
+ 2381 15200 1943310225 
+2025 HIGHER SCHOOL CERTIFICATE EXAMINATION 
+Centre NumberIndustrial Technology 
+Multimedia Technologies 
+Student NumberSection II 
+15 marks 
+Attempt Questions 11–15Allow about 35 minutes for this section 
+Answer the questions in the spaces provided. These spaces provide guidance for the expected
+length of response. 
+Show all relevant working in questions involving calculations. 
+Question 11 (2 marks) 
+Why would a PNG file format be used instead of a JPEG file format? 
+....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... 
+Question 12 (2 marks) 
+The home page of a website includes a banner image that needs to be adjusted to match the
+site’s overall colour scheme and style guide. 
+Outline steps to manipulate the banner image to ensure that it aligns with the website design. 
+....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... 
+– 5 – 
+
+Question 13 (2 marks) 
+How do analogue and digital video types differ? 
+...............................................................................................................................
+........................ 
+....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... 
+Question 14 (4 marks) 
+Explain the potential advantages of using motion capture technology in a short, animated film. 
+...............................................................................................................................
+........................ 
+....................................................................................................................................................... 
+....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... 
+– 6 – 
+
+4098310229 
+Question 15 (5 marks) 
+Describe the ethical implications of image manipulation and enhancement. 
+....................................................................................................................................................... 
+...............................................................................................................................
+........................ 
+....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... ....................................................................................................................................................... 
+– 7 – 
+
+ BLANK PAGE 
+– 8 – 
+© 2025 NSW Education Standards Authority 
+
+ 
+ 2025 HIGHER SCHOOL CERTIFICATE EXAMINATION 
+Industrial Technology 
+Multimedia Technologies 
+Section III 
+15 marks 
+Attempt Question 16Allow about 35 minutes for this section 
+Answer the question in the Section III Writing Booklet. Extra writing booklets are available. 
+Question 16 (15 marks) 
+(a) 
+Describe the effects of legislative requirements on the sustainable practices and
+environmental impacts of the multimedia industry. 5 
+(b) Analyse how historical developments and advancements in manufacturing
+processes have affected the multimedia industry. Support your answer with
+relevant examples.  10 
+End of paper 
+2382 – 9 – 
+
+ BLANK PAGE 
+– 10 – 
+© 2025 NSW Education Standards Authority 
+

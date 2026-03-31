@@ -1,0 +1,209 @@
+﻿=== Safety ===
+Subject: construction
+============================================================
+
+- job safety analysis (JSA)/safe work method statement
+- legislation, regulations and codes of practice
+- manufacturer specifications and instructions
+- plans and specifications
+- safety data sheets (SDS)
+- standard operating procedures (SOP)
+- work schedule
+- workplace bulletins/memos
+- workplace/site policies and procedures* strategies for obtaining, understanding and clarifying work goals, plans and instructions:
+- correct sourcing and selection of information
+- consulting appropriate personnel
+- active listening
+- asking open and closed questionstask planning * work sequencing (task management):
+- receiving instruction
+- organising and/or coordinating the task
+- carry out the task:
+* in a logical order
+* maximising efficient use of resources
+* within completion timeframes
+* according to quality measures
+- final checks and notification of completion
+- clean up after task completion* planning and organising work on a construction site:
+- understand overall goals, objectives, priorities, and outcomes
+- determine the component tasks of the work task
+- assess what needs to be done for each component task and how it is to be done:
+* estimate time and number of personnel required 
+* identify tools and equipment (including PPE) and materials and consumables needed
+* plan and sequence tasks within a construction schedule (including coordination with other work processes)
+- prepare written work plan and resource list to complete the overall work task* safe work procedures and practices for a range of work tasks common to a construction site* adherence to quality requirements, standards and practices:
+- Australian standards
+- workplace/company quality policy and standards
+- local council regulationstask planning, continued- manufacturers' specifications
+- workplace procedures and operations* planning and preparation for a range of tasks/activities applicable to daily work routines on a construction site and specific industry sector/area* collaborate with team members to perform work tasks:
+- review the work plan
+- schedule the work
+- allocate roles and responsibilities
+- review WHS requirements
+- access required tools and equipment, including PPEteamwork * meaning of 'team' and 'teamwork' in the context of the construction industry:
+- industrially acceptable terms
+- team types:
+* executive teams
+* project teams
+* committees
+- characteristics of effective teamwork* importance of:
+- developing effective collegial working relationships
+- teamwork for the construction industry, including cross-trade cooperation* communication in the workplace with colleagues and clients/customers:
+- communication process/cycle:
+* sender (idea)
+* message (encoding)
+* transmission
+* receiver (decodes message and interprets meaning)
+* feedback
+- effective verbal, non-verbal and written communication
+- effective questioning and listening techniques
+- barriers to effective communication and strategies to overcome them
+- selection and use of a range of communication methods/equipment used in the construction industry* causes of misunderstandings and conflict when working with others, and conflict resolution techniques* importance of an individual's contribution to effective teamwork in the construction industry: 
+- work collaboratively in a team to:
+* review the purpose and goals/objectives of planning
+* participate in planning, information and skill sharing
+* understand the roles and responsibilities of personnel and other members
+* assist others with organisation and cross trade co-operation
+- use resources efficientlyteamwork, continued- adhere to timelines and schedules
+- adhere to guidelines, directions and instructions
+- resolve problems that impede performancecultural diversity * concepts of cultural diversity, cultural awareness and inclusivity* workplace diversity:
+- benefits
+- need for understanding and acceptance in the workplace
+- importance of respect and sensitivity
+- proactive strategies for promoting workplace diversity and accommodating individual differences
+- culturally appropriate work practices
+- effective cross-cultural communication skillsanti-discrimination * bullying and harassment in the workplace:
+- indirect
+- direct
+- types:
+* verbal
+* physical
+* psychological
+* sexual* principles of anti-discrimination and intent of anti-discrimination legislation* reciprocal rights and responsibilities and employers and employees in relation to anti-discrimination* workplace policy and procedures relating to anti-discrimination* strategies to eliminate bias and harassment in the workplace* consequences, including legal ramifications, of discriminatory workplace behaviour* recourse available to individuals in the event of inappropriate workplace behaviourworking sustainably* current environmental issues affecting the construction industry:
+- conservation
+- energy use and efficiency
+- fire management
+- pollution
+- recycling/re-use
+- resource use and efficiencyworking sustainably, continued- sustainability
+- waste management
+- water and other natural resource management* concept of sustainability in the workplace, and environmentally sustainable workplaces and work practices* potential effect of construction workplace practices on the environment* consequences of poor environmental work practices* a range of environmental hazards and risks typical to a construction workplace* personnel responsible for environmental hazard identification and risk control in a construction workplace* minimising negative impacts on the environment through environmentally sustainable work practices:
+- approved disposal of waste
+- complying with Basix requirements
+- limiting noise and dust
+- maintenance of tools, equipment and machinery
+- management of chemical/gas spillage/leakage and clean-up processes
+- monitoring vibrations
+- protecting discharge into waterways/stormwater
+- safe handling and storage of hazardous materials
+- testing pipes and using efficient fittings
+- utilising alternative energy sources
+- protecting wildlife habitats
+- reducing soil erosion
+- using resources that are biodegradable, non-toxic, recoverable, recyclable, renewable, reusable* resources used in the construction industry:
+- energy
+- equipment and associated consumables
+- facilities
+- human
+- materials* concept of 'resource efficiency' in a construction work environment* techniques to collect and measure resource consumption within a construction workplace:
+- documenting resources in work area
+- examining invoices from suppliers
+- measuring resource usage under different conditions
+- monitoring relevant information and data* tools to measure and document resources and their consumption:
+- checklists
+- stock control toolsworking sustainably, continued- software:
+* databases
+* spreadsheets
+* graphs* reporting environmental hazards and resource efficiency issues in a construction workplace:
+- to appropriate person(s)
+- verbal and written reporting:
+* checklists, registers and logs
+* inspection, incident and accident reports
+* adhering to government legislation and workplace/company policy* propose improvements for environmentally sustainable work practices, including improved resource efficiency:
+- individual construction worker
+- construction team
+- construction workplacesite clean up * understanding the appearance of the site impacts perception of company/corporate reputation* clean up procedures to minimise impact on the environment:
+- replacing disturbed or removed soil
+- removal and disposal of non-reusable materials in a responsible manner:
+* work materials
+* plant debris and other organic matter
+* chemicals
+- safe storage of reusable materials in accordance with workplace/company policy
+- containment of loose materials on site (such as mud, dust, litter and waste material)
+- control of run-off 
+
+4	HSC exam
+The Construction Curriculum Framework includes an HSC exam which provides the opportunity for students to have this HSC exam mark contribute to the calculation of their Australian Tertiary Admission Rank (ATAR).
+The Construction HSC exam can contribute up to 2 units towards the calculation of a student's ATAR.
+Students who have completed the Construction (240 indicative hours) course are eligible to sit for the Construction HSC exam. 
+Students who want to sit for the Construction HSC exam must be entered for both the Construction (240 indicative hours) course and the Construction exam in Schools Online.
+For the HSC exam specifications, which describe the format of the external HSC exam, see Assessment and Reporting in Construction.
+The HSC exam is independent of the competency-based assessment undertaken during the course and has no impact on student eligibility for AQF VET qualifications.
+4.1	Examinable outcomes and content
+The HSC exam in Construction is based on the HSC Content (focus areas) in this Framework.
+The HSC Content is detailed in Section 3 of this syllabus.
+4.2	Relationship of the Construction 240-hour course to the HSC exam 
+For a description of the relationship between the Construction (240 indicative hours) course, the HSC Content and the HSC exam see Assessment and Reporting in Construction.
+
+
+5	Other important information
+5.1	Exclusions
+Where there is significant overlap between an HSC VET course and other HSC VET or general education courses, NESA has an exclusion between the courses. Exclusions are generally applied at a course level rather than at the unit of competency level.
+Students can only undertake the Construction (120 indicative hours) course or the Construction (240 indicative hours) course.
+Schools should check all course exclusions when determining an appropriate pattern of study for their students.
+5.2	Recognition of  credit transfer and prior learning (RPL) within VET courses
+Students who have current knowledge, skills or experience relevant to a VET course may be granted credit towards the course requirements (ACE Rule 14.4.2).
+Find out more about arrangements for credit transfer and RPL within VET courses, including processes, application form and examples of possible scenarios.
+5.3	School-based apprentices and trainees
+Read information about provision for school-based apprentices and trainees within the HSC. 
+Information on requirements and arrangements for NSW school-based apprenticeships and traineeships is available on the NSW government website under Apprentices and trainees.
+5.4	Industries related to construction
+VET qualifications consist of technical skills that prepare you for work or further study in a specific job or industry, as well as employability skills that can be applied across a range of industry (or career) pathways.
+Industries related to this course include, but are not limited to the following outlined on the Your Career website:
+* Administrative and Support Services
+* Construction
+* Electricity, Gas, Water and Waste Services
+* Public Administration and Safety
+
+
+5.5	Students with disability
+Students with disability may access a VET course in one of 2 ways:
+* by undertaking the course under regular course arrangements, or 
+* by undertaking selected units of competency within the course that have been identified through the collaborative curriculum planning process.
+For more information see VET courses and students with disability and collaborative curriculum planning advice.
+5.6	Students in Years 9 and 10 (Stage 5)
+In certain circumstances students in Years 9 and 10 (Stage 5) may access Stage 6 VET courses. Further information is available in the Stage 5 VET section.
+
+
+6 	Glossary
+AQFAustralian Qualifications Framework 
+The AQF is the policy framework that defines all qualifications recognised nationally in post-compulsory education and training in Australia. The AQF comprises titles and guidelines that define each qualification, as well as the principles and protocols covering cross-sectoral qualification links and the issuing of qualifications and statements of attainment.Australian ApprenticeshipsAustralian Apprenticeships encompass all apprenticeships and traineeships. They combine time at work with training and can be full-time, part-time or school-based.
+www.apprenticeships.gov.aucompetencyThe broad concept of industry competency concerns the ability to perform particular tasks and duties to the standard of performance expected in the workplace. Competency requires the application of specified skills, knowledge and attitudes relevant to effective participation in an industry, industry sector or enterprise.core units of competencyUnits of competency required by the Training Package to be eligible for an AQF VET qualification.elements of competencyThe basic building blocks of a unit of competency which describe the key activities or elements of the work covered by the unit.focus areasHSC Content is organised into focus areas. HSC Content prescribes the scope of learning for the HSC.mandatory units of competencyUnits of competency that must be studied for an HSC VET course.recognition of prior learning (RPL)The result of an assessment of an individual's formal, non-formal and informal learning to determine the extent to which that individual has achieved the required learning outcomes, competency outcomes, or standards for entry to, and/or partial or total completion of, a qualification.RTORegistered Training Organisation 
+A training organisation registered by a registering body in accordance with the VET Quality Framework, within a defined scope of registration (including school system/sector RTOs, TAFE NSW and other providers).scope of registrationThe particular services and products an RTO is registered to provide. The RTO's scope defines the specific AQF VET qualifications, units of competency and accredited courses it is registered to provide, and whether it is registered to provide: 
+* both training delivery and assessment services, and to issue the relevant AQF VET qualifications and statements of attainment, or 
+* only assessment services, and to issue the relevant AQF VET qualifications and statements of attainment.Stage 5In NSW, Stage 5 relates to Years 9 and 10 of schooling.Stage 6In NSW, Stage 6 relates to Years 11 and 12 of schooling.Statement of AttainmentMay be issued in the vocational education and training sector by an RTO when an individual has completed one or more units of competency from nationally recognised qualification(s)/course(s).training.gov.auhttps://training.gov.au 
+The national register for recording information about RTOs, Training Packages and accredited courses.Training PackageA nationally endorsed, integrated set of competency standards, assessment guidelines and AQF VET qualifications for a specific industry, industry sector or enterprise.training planA documented program of training and assessment required for an apprenticeship/traineeship training contract. It is developed by an RTO in consultation with the parties to the contract as the basis for training and assessing a person undertaking an apprenticeship or traineeship.unit of competencySpecification of industry knowledge and skill and the application of that knowledge and skill to the standard of performance expected in the workplace.VETVocational Education and TrainingVET qualificationFormal certification in the VET sector by an RTO that a person has satisfied all requirements of the units of competency or modules that comprise an AQF VET qualification, as specified by:
+* a nationally endorsed Training Package, or
+* an accredited course that provides training for the qualification.VET Quality FrameworkThe VET Quality Framework comprises:
+* the Standards for Registered Training Organisations
+* the Fit and Proper Person Requirements
+* the Financial Viability Risk Assessment Requirements
+* the Data Provision Requirements, and
+* the Australian Qualifications Framework.
+1	National Industry Insights Report - Construction (nationalindustryinsights.aisc.net.au/industries/construction)
+2	Artibus Skills Forecast 2020 (artibus.com.au)
+3	The Specialisation Study would only be required if the selection of units of competency meant that Stage 1/Year 1 of the apprenticeship could not be completed within the 240-hour Construction course.
+---------------
+
+------------------------------------------------------------
+
+---------------
+
+------------------------------------------------------------
+
+NSW Education Standards Authority 	
+
+
+
+
+
+Construction Curriculum Framework syllabus 	Page 2 of 4

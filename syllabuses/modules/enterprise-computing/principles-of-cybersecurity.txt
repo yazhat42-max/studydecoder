@@ -1,0 +1,99 @@
+﻿=== Principles of Cybersecurity ===
+Subject: enterprise-computing
+============================================================
+
+• Sample formal assessment task notification: Year 11 (Principles of cybersecurity)
+    • Sample formal assessment task notification: Year 12 (Enterprise computing project)
+HSC examinations
+The HSC examination is an external examination that measures student achievement in a range of syllabus outcomes.
+The HSC examination and its marking relate to the syllabus by:  
+    • providing clear links to syllabus outcomes
+    • enabling students to demonstrate the levels of achievement outlined in the Performance Band Descriptions
+    • applying marking guidelines based on criteria that relate to the quality of the response
+    • aligning performance in the examination each year to the standards established for the course.
+Enterprise Computing HSC examination specifications
+Stage 6 – Year 12
+Examination questions may require students to integrate knowledge, understanding and skills developed through studying the course.
+The Year 11 course is assumed knowledge for the Year 12 course.
+The examination will be worth 80 marks.
+It will be undertaken by students using a computer.
+The time allowed is 2 hours and 30 minutes including 10 minutes reading time.
+Questions may contain stimulus material.
+Headphones will be required for questions with video and audio stimulus.
+The examination will consist of two types of test item.
+Objective-response items (approx. 20 marks)
+    • Objective-response items may share stimulus with other objective-response items or short-answer items.
+    • Each item will be worth 1 to 4 marks.
+    • There will be 14 to 18 items in total.
+Short-answer items (approx. 60 marks)
+    • Short-answer items may share stimulus with other short-answer items or objective-response items.
+    • At least three items will be worth 4 to 8 marks.
+    • There will be 16 to 18 items in total.
+Features of online HSC exams
+Stage 6 – Year 12
+To learn more about the format and features of online HSC exams, see our collection of videos.
+Tools available in the Enterprise Computing online exam
+There are specific tools available for this online exam as demonstrated in these videos.
+    • Drawing tool
+    • Drawing tool video transcript
+    • Screen design tool
+    • Screen design tool video transcript
+    • Spreadsheet tool
+    • Spreadsheet tool video transcript
+HSC examination materials
+Stage 6 – Year 12
+An online sample exam for Enterprise Computing 11–12 is now available. Schools can enrol students in the sample exam via Schools Online. A guide on how to enrol students and conduct the exams is available in Schools Online > Downloads > Memos and Documents > HSC Online Exam Resources. Schools can determine the most appropriate time to enrol students and for the students to sit the sample exams.
+The marking guidelines for the online sample exam are also available.
+    • Enterprise Computing HSC exam papers
+    • HSC familiarisation questions
+    • Marking guidelines for HSC familiarisation questions
+    • Marking guidelines for the online HSC sample exam
+    • Past HSC exam papers archive (see Information Processes and Technology)
+Further information
+Stage 6 – Year 12
+    • Assessment in Stage 6
+    • Principles of effective assessment
+    • Assessment in practice
+    • School-based assessment requirements
+    • Adjustments to assessment for students with disability
+    • Life Skills
+    • Assessment Certification Examination (ACE) website
+ 
+
+
+NSW Education Standards Authority
+
+Enterprise Computing 11–12 (2022)
+Syllabus Support
+curriculum.nsw.edu.au
+Generated Dec 2025
+Downloaded December 2025
+© 2025 NSW Education Standards Authority 
+NESA acknowledges Traditional Owners and Custodians of Country throughout NSW, and pays respect to Elders past and present. NESA recognises Aboriginal Peoples’ continuing Cultures and Connections to lands, waters, skies and Community.
+The documents on the NSW Education Standards Authority (NESA) website and the NSW Curriculum website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright. 
+These websites hold the only official and up-to-date versions of the documents available on the internet. Any other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are not authorised. You cannot rely on copies from any other source. 
+All rights are reserved. No part of the material may be: 
+    • reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form 
+    • transmitted to any other person or stored electronically in any form without the written permission of NESA except as permitted by the Copyright Act 1968 (Cth). 
+When you access the material, you agree: 
+    • to use the material for research or study, criticism or review, reporting news and parody or satire 
+    • to use the material for information purposes only 
+    • not to modify the material or any part of the material without the written permission of NESA 
+    • to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the permission of NESA 
+    • to include this copyright notice in any copy made 
+    • to acknowledge that NESA is the source of the material. 
+The documents may include third-party copyright material such as photos, diagrams, quotations, cartoons and artworks. This material is protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner’s permission. Unauthorised reproduction, transmission or commercial use of such copyright material may result in prosecution. 
+NESA has made all reasonable attempts to locate the owners of third-party copyright material. NESA invites anyone from whom permission has not been sought to contact the Copyright Officer.
+Special arrangements applying to the NSW Curriculum Reform 
+As part of the NSW Curriculum Reform process, NESA grants a limited non-exclusive licence to: 
+    • teachers employed in NSW government schools and registered non-government schools 
+    • representatives from peak school education bodies, such as the NSW Department of Education, Catholic Schools NSW, the Association of Independent Schools of NSW and TAFE NSW
+    • parents of children registered for home schooling 
+to use, modify and adapt the NSW syllabuses for non-commercial educational use only. The adaptation must not have the effect of bringing NESA into disrepute. 
+Note: The above arrangements do not apply to private/home tutoring companies, professional learning service providers, publishers, and other organisations.
+For more information on the above or for commercial use or any other purpose, please contact the Copyright Officer for permission. 
+Email: copyright@nesa.nsw.edu.au
+Table of contents
+Table of contents	4
+Enterprise Computing 11–12 (2022)	5
+Teaching advice for Stage 6	5

@@ -1,0 +1,397 @@
+{
+  "papers": [
+    {
+      "id": "agriculture",
+      "name": "Agriculture",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-agriculture.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-agriculture-mg.txt" }
+      ]
+    },
+    {
+      "id": "ancient-history",
+      "name": "Ancient History",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-ancient-history.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-ancient-history-mg.txt" }
+      ]
+    },
+    {
+      "id": "biology",
+      "name": "Biology",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-biology.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-biology-mg.txt" }
+      ]
+    },
+    {
+      "id": "business-studies",
+      "name": "Business Studies",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-business-studies.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-business-studies-mg.txt" }
+      ]
+    },
+    {
+      "id": "chemistry",
+      "name": "Chemistry",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-chemistry.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-chemistry-mg.txt" }
+      ]
+    },
+    {
+      "id": "construction",
+      "name": "Construction",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-vet-construction.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-vet-construction-mg.txt" }
+      ]
+    },
+    {
+      "id": "dance",
+      "name": "Dance",
+      "papers": [
+        { "year": 2025, "type": "Section 1 Core", "file": "past-papers/2025-hsc-dance-s1-core.txt" },
+        { "year": 2025, "type": "Section 2 Major", "file": "past-papers/2025-hsc-dance-s2-major.txt" },
+        { "year": 2025, "type": "Written MG", "file": "past-papers/2025-hsc-dance-written-mg.txt" }
+      ]
+    },
+    {
+      "id": "design-technology",
+      "name": "Design and Technology",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-design-and-tech.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-design-and-technology-mg.txt" }
+      ]
+    },
+    {
+      "id": "drama",
+      "name": "Drama",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-drama.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-drama-mg.txt" }
+      ]
+    },
+    {
+      "id": "earth-environmental-science",
+      "name": "Earth and Environmental Science",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-earth-and-environmental-science.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-earth-and-environment-science-mg.txt" }
+      ]
+    },
+    {
+      "id": "economics",
+      "name": "Economics",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-economics.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-economics-mg.txt" }
+      ]
+    },
+    {
+      "id": "engineering-studies",
+      "name": "Engineering Studies",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-engineering-studies.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-engineering-studies-mg_0.txt" }
+      ]
+    },
+    {
+      "id": "english-advanced",
+      "name": "English Advanced",
+      "papers": [
+        { "year": 2025, "type": "Paper 1", "file": "past-papers/2025-hsc-english-advanced-paper-1.txt" },
+        { "year": 2025, "type": "Paper 1 MG", "file": "past-papers/2025-hsc-english-advanced-paper-1-mg.txt" },
+        { "year": 2025, "type": "Paper 2", "file": "past-papers/2025-hsc-english-advanced-paper-2.txt" },
+        { "year": 2025, "type": "Paper 2 MG", "file": "past-papers/2025-hsc-english-advanced-paper-2-mg.txt" }
+      ]
+    },
+    {
+      "id": "english-eald",
+      "name": "English EAL/D",
+      "papers": [
+        { "year": 2025, "type": "Listening", "file": "past-papers/2025-hsc-english-eald-listening.txt" },
+        { "year": 2025, "type": "Listening MG", "file": "past-papers/2025-hsc-english-eald-listening-mg.txt" },
+        { "year": 2025, "type": "Paper 1", "file": "past-papers/2025-hsc-english-eald-paper-1.txt" },
+        { "year": 2025, "type": "Paper 1 MG", "file": "past-papers/2025-hsc-english-eald-paper-1-mg.txt" },
+        { "year": 2025, "type": "Paper 2", "file": "past-papers/2025-hsc-english-eald-paper-2.txt" },
+        { "year": 2025, "type": "Paper 2 MG", "file": "past-papers/2025-hsc-english-eald-paper-2-mg.txt" }
+      ]
+    },
+    {
+      "id": "english-extension",
+      "name": "English Extension 1",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-english-extension-1.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-english-ext-1-mg.txt" }
+      ]
+    },
+    {
+      "id": "english-standard",
+      "name": "English Standard",
+      "papers": [
+        { "year": 2025, "type": "Paper 1", "file": "past-papers/2025-hsc-english-standard-paper-1.txt" },
+        { "year": 2025, "type": "Paper 1 MG", "file": "past-papers/2025-hsc-english-standard-paper-1-mg.txt" },
+        { "year": 2025, "type": "Paper 2", "file": "past-papers/2025-hsc-english-standard-paper-2.txt" },
+        { "year": 2025, "type": "Paper 2 MG", "file": "past-papers/2025-hsc-english-standard-paper-2-mg.txt" }
+      ]
+    },
+    {
+      "id": "english-studies",
+      "name": "English Studies",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-english-studies.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-english-studies-mg.txt" }
+      ]
+    },
+    {
+      "id": "enterprise-computing",
+      "name": "Enterprise Computing",
+      "papers": [
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-enterprise-computing-mg.txt" }
+      ]
+    },
+    {
+      "id": "food-technology",
+      "name": "Food Technology",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-food-technology.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-food-technology-mg.txt" }
+      ]
+    },
+    {
+      "id": "geography",
+      "name": "Geography",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-geography.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-geography-mg.txt" }
+      ]
+    },
+    {
+      "id": "history-extension",
+      "name": "History Extension",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-history-extension.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-history-ext-mg.txt" }
+      ]
+    },
+    {
+      "id": "hospitality",
+      "name": "Hospitality",
+      "papers": [
+        { "year": 2025, "type": "Food Paper", "file": "past-papers/2025-hsc-vet-hospitality-food.txt" },
+        { "year": 2025, "type": "Food MG", "file": "past-papers/2025-hsc-vet-hospitality-food-mg.txt" },
+        { "year": 2025, "type": "Kitchen Paper", "file": "past-papers/2025-hsc-vet-hospitality-kitchen.txt" },
+        { "year": 2025, "type": "Kitchen MG", "file": "past-papers/2025-hsc-vet-hospitality-kitchen-mg.txt" }
+      ]
+    },
+    {
+      "id": "industrial-tech-automotive",
+      "name": "Industrial Technology - Automotive",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-ind-tech-automotive.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-indus-tech-automotive-mg.txt" }
+      ]
+    },
+    {
+      "id": "industrial-tech-electronics",
+      "name": "Industrial Technology - Electronics",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-ind-tech-electronics.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-indus-tech-electronics-mg.txt" }
+      ]
+    },
+    {
+      "id": "industrial-tech-graphics",
+      "name": "Industrial Technology - Graphics",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-ind-tech-graphics.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-indus-tech-graphics-mg.txt" }
+      ]
+    },
+    {
+      "id": "industrial-tech-metals",
+      "name": "Industrial Technology - Metal and Engineering",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-ind-tech-metal.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-indus-tech-metal-mg.txt" }
+      ]
+    },
+    {
+      "id": "industrial-tech-multimedia",
+      "name": "Industrial Technology - Multimedia",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-ind-tech-multimedia.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-indus-tech-multimedia-mg.txt" }
+      ]
+    },
+    {
+      "id": "industrial-tech-timber",
+      "name": "Industrial Technology - Timber and Furniture",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-ind-tech-timber.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-indus-tech-timber-mg.txt" }
+      ]
+    },
+    {
+      "id": "investigating-science",
+      "name": "Investigating Science",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-investigating-science.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-investigating-science-mg.txt" }
+      ]
+    },
+    {
+      "id": "legal-studies",
+      "name": "Legal Studies",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-legal-studies.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-legal-studies-mg.txt" }
+      ]
+    },
+    {
+      "id": "mathematics-advanced",
+      "name": "Mathematics Advanced",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-maths-advanced.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-maths-adv-mg.txt" }
+      ]
+    },
+    {
+      "id": "mathematics-extension-1",
+      "name": "Mathematics Extension 1",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-maths-extension-1.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-maths-extension-1-mg.txt" }
+      ]
+    },
+    {
+      "id": "mathematics-extension-2",
+      "name": "Mathematics Extension 2",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-maths-extension-2.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-maths-extension-2-mg.txt" }
+      ]
+    },
+    {
+      "id": "mathematics-standard",
+      "name": "Mathematics Standard",
+      "papers": [
+        { "year": 2025, "type": "Standard 2 Paper", "file": "past-papers/2025-hsc-maths-standard-2.txt" },
+        { "year": 2025, "type": "Standard 2 MG", "file": "past-papers/2025-hsc-maths-standard-2-mg.txt" },
+        { "year": 2025, "type": "Standard 1 Paper", "file": "past-papers/2025-hsc-maths-standard-1.txt" },
+        { "year": 2025, "type": "Standard 1 MG", "file": "past-papers/2025-hsc-maths-standard-1-mg.txt" }
+      ]
+    },
+    {
+      "id": "modern-history",
+      "name": "Modern History",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-modern-history.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-modern-history-mg.txt" }
+      ]
+    },
+    {
+      "id": "music-1",
+      "name": "Music 1",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-music-1.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-music-1-mg.txt" }
+      ]
+    },
+    {
+      "id": "music-2",
+      "name": "Music 2",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-music-2.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-music-2-mg.txt" },
+        { "year": 2025, "type": "Sight Singing", "file": "past-papers/2025-hsc-music-2-sight-singing.txt" }
+      ]
+    },
+    {
+      "id": "physics",
+      "name": "Physics",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-physics.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-physics-mg.txt" }
+      ]
+    },
+    {
+      "id": "society-culture",
+      "name": "Society and Culture",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-society-and-culture.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-society-and-culture-mg.txt" }
+      ]
+    },
+    {
+      "id": "software-engineering",
+      "name": "Software Engineering",
+      "papers": [
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-software-engineering-mg.txt" }
+      ]
+    },
+    {
+      "id": "studies-of-religion",
+      "name": "Studies of Religion",
+      "papers": [
+        { "year": 2025, "type": "1 Unit Paper", "file": "past-papers/2025-hsc-studies-of-religion-1.txt" },
+        { "year": 2025, "type": "2 Unit Paper", "file": "past-papers/2025-hsc-studies-of-religion-2.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-studies-of-religion-mg.txt" }
+      ]
+    },
+    {
+      "id": "visual-arts",
+      "name": "Visual Arts",
+      "papers": [
+        { "year": 2025, "type": "Paper", "file": "past-papers/2025-hsc-visual-arts.txt" },
+        { "year": 2025, "type": "MG", "file": "past-papers/2025-hsc-visual-arts-mg.txt" }
+      ]
+    }
+  ],
+  "subjectMapping": {
+    "agriculture": ["agriculture"],
+    "ancient-history": ["ancient-history"],
+    "biology": ["biology"],
+    "business-studies": ["business-studies"],
+    "chemistry": ["chemistry"],
+    "construction": ["construction"],
+    "dance": ["dance"],
+    "design-technology": ["design-technology"],
+    "drama": ["drama"],
+    "earth-environmental-science": ["earth-environmental-science"],
+    "economics": ["economics"],
+    "engineering-studies": ["engineering-studies"],
+    "english-advanced": ["english-advanced"],
+    "english-eald": ["english-eald"],
+    "english-extension": ["english-extension"],
+    "english-standard": ["english-standard"],
+    "english-studies": ["english-studies"],
+    "enterprise-computing": ["enterprise-computing"],
+    "food-technology": ["food-technology"],
+    "geography": ["geography"],
+    "history-extension": ["history-extension"],
+    "hospitality": ["hospitality"],
+    "industrial-tech-automotive": ["industrial-tech-automotive"],
+    "industrial-tech-electronics": ["industrial-tech-electronics"],
+    "industrial-tech-graphics": ["industrial-tech-graphics"],
+    "industrial-tech-metals": ["industrial-tech-metals"],
+    "industrial-tech-multimedia": ["industrial-tech-multimedia"],
+    "industrial-tech-timber": ["industrial-tech-timber"],
+    "investigating-science": ["investigating-science"],
+    "legal-studies": ["legal-studies"],
+    "mathematics-advanced": ["mathematics-advanced"],
+    "mathematics-extension-1": ["mathematics-extension-1"],
+    "mathematics-extension-2": ["mathematics-extension-2"],
+    "mathematics-standard": ["mathematics-standard"],
+    "modern-history": ["modern-history"],
+    "music-1": ["music-1"],
+    "music-2": ["music-2"],
+    "physics": ["physics"],
+    "society-culture": ["society-culture"],
+    "software-engineering": ["software-engineering"],
+    "studies-of-religion": ["studies-of-religion"],
+    "visual-arts": ["visual-arts"]
+  }
+}

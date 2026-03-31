@@ -1,0 +1,869 @@
+﻿=== Extension History Topics (FULL SYLLABUS) ===
+Subject: history-extension
+Focus ONLY on content related to: Extension History Topics
+============================================================
+
+NSW Syllabus
+for the Australian
+curriculum
+History Extension
+Stage 6
+Syllabus
+
+
+(c) 2017 NSW Education Standards Authority (NESA) for and on behalf of the Crown in right of the State of New South Wales.
+
+The NESA website holds the ONLY official and up-to-date versions of these documents available on the internet. ANY other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are NOT authorised. You CANNOT rely on copies from any other source.
+
+The documents on this website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright.
+
+All rights reserved. No part of the Material may be reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form, or transmitted to any other person or stored electronically in any form without the prior written permission of NESA, except as permitted by the Copyright Act 1968.
+
+When you access the material you agree:
+* to use the material for information purposes only
+* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the prior permission of NESA.
+* to acknowledge that the material is provided by NESA.
+* to include this copyright notice in any copy made
+* not to modify the material or any part of the material without the express prior written permission of NESA.
+The material may contain third-party copyright materials such as photos, diagrams, quotations, cartoons and artworks. These materials are protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's specific permission. Unauthorised reproduction, transmission or commercial use of such copyright materials may result in prosecution.
+
+NESA has made all reasonable attempts to locate owners of third-party copyright material and invites anyone from whom permission has not been sought to contact the Copyright Officer.
+
+Phone: (02) 9367 8289
+Fax: (02) 9279 1482
+Email: copyright@nesa.nsw.edu.au
+
+Published by
+NSW Education Standards Authority
+GPO Box 5300
+Sydney NSW 2001
+Australia
+
+www.educationstandards.nsw.edu.au
+
+DSSP-27617
+D2016/57587
+
+Contents
+Introduction	4
+History Extension Key	7
+Rationale	9
+The Place of the History Extension Stage 6 Syllabus in the K-12 Curriculum	10
+Aim	11
+Objectives	12
+Outcomes	13
+Course Structure and Requirements	14
+Assessment and Reporting	17
+Content	18
+History Extension Year 12 Course Content	24
+Glossary	42
+
+
+Introduction
+Stage 6 Curriculum
+NSW Education Standards Authority (NESA) Stage 6 syllabuses have been developed to provide students with opportunities to further develop skills which will assist in the next stage of their lives.
+
+The purpose of Stage 6 syllabuses is to:
+? develop a solid foundation of literacy and numeracy
+? provide a curriculum structure which encourages students to complete secondary education at their highest possible level
+? foster the intellectual, creative, ethical and social development of students, in particular relating to:
+- application of knowledge, skills, understanding, values and attitudes in the fields of study they choose
+- capacity to manage their own learning and to become flexible, independent thinkers, problem-solvers and decision-makers
+- capacity to work collaboratively with others
+- respect for the cultural diversity of Australian society
+- desire to continue learning in formal or informal settings after school
+? provide a flexible structure within which students can meet the challenges of and prepare for:
+- further academic study, vocational training and employment
+- changing workplaces, including an increasingly STEM-focused (Science, Technology, Engineering and Mathematics) workforce
+- full and active participation as global citizens
+? provide formal assessment and certification of students' achievements
+? promote the development of students' values, identity and self-respect.
+
+The Stage 6 syllabuses reflect the principles of the NESA K-10 Curriculum Framework and Statement of Equity Principles, the reforms of the NSW Government Stronger HSC Standards (2016), and nationally agreed educational goals. These syllabuses build on the continuum of learning developed in the K-10 syllabuses.
+
+The syllabuses provide a set of broad learning outcomes that summarise the knowledge, understanding, skills, values and attitudes important for students to succeed in and beyond their schooling. In particular, the attainment of skills in literacy and numeracy needed for further study, employment and active participation in society are provided in the syllabuses in alignment with the Australian Core Skills Framework (ACSF).
+
+The Stage 6 syllabuses include the content of the Australian curriculum and additional descriptions that clarify the scope and depth of learning in each subject.
+
+NESA syllabuses support a standards-referenced approach to assessment by detailing the important knowledge, understanding, skills, values and attitudes students will develop and outlining clear standards of what students are expected to know and be able to do. The syllabuses take into account the diverse needs of all students and provide structures and processes by which teachers can provide continuity of study for all students.
+
+
+Diversity of Learners
+NSW Stage 6 syllabuses are inclusive of the learning needs of all students. Syllabuses accommodate teaching approaches that support student diversity including students with special education needs, gifted and talented students, and students learning English as an additional language or dialect (EAL/D). Students may have more than one learning need.
+Students with Special Education Needs
+All students are entitled to participate in and progress through the curriculum. Schools are required to provide additional support or adjustments to teaching, learning and assessment activities for some students with special education needs. Adjustments are measures or actions taken in relation to teaching, learning and assessment that enable a student with special education needs to access syllabus outcomes and content, and demonstrate achievement of outcomes.
+
+Students with special education needs can access the outcomes and content from Stage 6 syllabuses in a range of ways. Students may engage with:
+? Stage 6 syllabus outcomes and content with adjustments to teaching, learning and/or assessment activities; or
+? selected Stage 6 syllabus outcomes and content appropriate to their learning needs.
+
+Decisions regarding curriculum options, including adjustments, should be made in the context of collaborative curriculum planning with the student, parent/carer and other significant individuals to ensure that decisions are appropriate for the learning needs and priorities of individual students.
+
+Further information can be found in support materials for:
+? History Extension
+? Special education needs.
+Gifted and Talented Students
+Gifted students have specific learning needs that may require adjustments to the pace, level and content of the curriculum. Differentiated educational opportunities assist in meeting the needs of gifted students.
+
+Generally, gifted students demonstrate the following characteristics:
+? the capacity to learn at faster rates
+? the capacity to find and solve problems
+? the capacity to make connections and manipulate abstract ideas.
+
+There are different kinds and levels of giftedness. Gifted and talented students may also possess learning difficulties and/or disabilities that should be addressed when planning appropriate teaching, learning and assessment activities.
+
+
+Curriculum strategies for gifted and talented students may include:
+? differentiation: modifying the pace, level and content of teaching, learning and assessment activities
+? acceleration: promoting a student to a level of study beyond their age group
+? curriculum compacting: assessing a student's current level of learning and addressing aspects of the curriculum that have not yet been mastered.
+
+School decisions about appropriate strategies are generally collaborative and involve teachers, parents and students with reference to documents and advice available from NESA and the education sectors.
+
+Gifted and talented students may also benefit from individual planning to determine the curriculum options, as well as teaching, learning and assessment strategies, most suited to their needs and abilities.
+Students Learning English as an Additional Language or Dialect (EAL/D)
+Many students in Australian schools are learning English as an additional language or dialect (EAL/D). EAL/D students are those whose first language is a language or dialect other than Standard Australian English and who require additional support to assist them to develop English language proficiency.
+
+EAL/D students come from diverse backgrounds and may include:
+? overseas and Australian-born students whose first language is a language other than English, including creoles and related varieties
+? Aboriginal and Torres Strait Islander students whose first language is Aboriginal English, including Kriol and related varieties.
+
+EAL/D students enter Australian schools at different ages and stages of schooling and at different stages of English language learning. They have diverse talents and capabilities and a range of prior learning experiences and levels of literacy in their first language and in English. EAL/D students represent a significant and growing percentage of learners in NSW schools. For some, school is the only place they use Standard Australian English.
+
+EAL/D students are simultaneously learning a new language and the knowledge, understanding and skills of the History Extension Stage 6 Syllabus through that new language. They may require additional support, along with informed teaching that explicitly addresses their language needs.
+
+The ESL Scales and the English as an Additional Language or Dialect: Teacher Resource provide information about the English language development phases of EAL/D students. These materials and other resources can be used to support the specific needs of English language learners and to assist students to access syllabus outcomes and content.
+
+
+History Extension Key
+The following codes and icons are used in the History Extension Stage 6 Syllabus.
+Outcome Coding
+Syllabus outcomes have been coded in a consistent way. The code identifies the subject, Year and outcome number. For example:
+
+
+Outcome codeInterpretationHE12-1History Extension, Year 12 - Outcome number 1HE12-4History Extension, Year 12 - Outcome number 4Coding of Australian Curriculum Content
+In History Extension, relevant Australian curriculum content for Ancient History and Modern History has been included in a range of case studies as appropriate. Australian curriculum content descriptions included in the syllabus are identified by an Australian curriculum code, for either Ancient History or Modern History, which appears in brackets at the end of each content description for example:
+
+The different interpretations and representations of Cleopatra (from the ancient past to the present), including how Cleopatra represented herself in monuments and inscriptions; her portrayals as the enemy, a femme fatale, the saviour of Egypt, and a victim; and modern feminist representations (ACHAH071)
+
+
+
+The significant changes that occurred during the French Revolution, including the overturning of the 'ancien r�gime', changes to the social structure of France, foreign policy and the revolutionary wars (ACHMH031)
+
+
+Where a number of content descriptions are jointly represented, all description codes are included, eg (ACHMH031, ACHMH032).
+
+Learning Across the Curriculum Icons
+Learning across the curriculum content, including cross-curriculum priorities, general capabilities and other areas identified as important learning for all students, is incorporated and identified by icons in the syllabus.
+
+Cross-curriculum priorities
+ 	Aboriginal and Torres Strait Islander histories and cultures
+ 	Asia and Australia's engagement with Asia
+ 	Sustainability
+
+General capabilities
+ 	Critical and creative thinking
+ 	Ethical understanding
+ 	Information and communication technology (ICT) capability
+ 	Intercultural understanding
+ 	Literacy
+ 	Numeracy
+ 	Personal and social capability
+
+Other learning across the curriculum areas
+ 	Civics and citizenship
+ 	Difference and diversity
+ 	Work and enterprise
+
+
+Rationale
+The History Extension course is about the nature of history, and how and why historical interpretations are developed from different perspectives and approaches over time. It offers a higher level of challenge than the Ancient History and Modern History courses with its greater emphasis on historiography. 
+
+The History Extension course requires students to examine the way history is constructed and the role of historians. This involves reviewing the types of history that have been produced over time and the contexts in which they were developed. Students explore problems and issues associated with the construction of history through sampling the works of various writers, historians and others involved in the practice of history from ancient times to the present day. Students focus on an area of debate to consider how an historian's context, methodology and purpose shape their interpretation of a person, group, event or issue. Students apply their understanding and skills of historical inquiry by designing and conducting their own historical investigation.
+
+History Extension requires students to engage with complex historiographical ideas and methodologies and to communicate sophisticated, sustained and coherent historical arguments about the nature and construction of history.
+
+History Extension appeals to students who appreciate the intellectual challenge of grappling with an area of debate, and constructing and defending a position through a reasoned and cohesive argument. It offers students the opportunity to work independently and apply the historiographical understanding developed through the course to an individual project of personal interest.
+
+The History Extension course is designed to enhance the development of critical and reflective thinking skills essential for effective participation in work, higher learning and the broader community. It fosters the ability of students to approach complex tasks flexibly, analyse and synthesise information from a range of sources and situations, explore a range of perspectives, develop considered responses and reflect on the methodologies with which they engage.
+ 
+These experiences are of particular value to those students intending to undertake tertiary study, by providing an introduction to the issues of how a discipline is structured and practised. The History Extension course lays a foundation for such tertiary study by raising awareness of these issues and facilitating the transfer of higher-order thinking skills from one area of study to another.
+
+The Place of the History Extension Stage 6 Syllabus in the K-12 Curriculum
+
+
+
+Aim
+The study of History Extension in Stage 6 enables students to: 
+? evaluate the ideas and methodologies that are used by historians and others to construct and represent history
+? apply what they have learned to inquire into areas of historical debate and interest critically, with independence and insight 
+? develop skills that support active and informed citizenship.
+
+
+Objectives
+Knowledge and Understanding
+Students:
+? develop knowledge and understanding about significant historiographical ideas and methodologies
+Skills
+Students:
+? design, undertake and evaluate historical inquiry
+? communicate their understanding of historiography, changing interpretations and the results of historical inquiry 
+Values and Attitudes
+Students will value and appreciate:
+? the study of history for critical interpretation of the past and present
+? the contribution of the study of history towards lifelong learning and informed, responsible and active citizenship
+
+
+Outcomes
+Table of Objectives and Outcomes - Continuum of Learning
+Knowledge and Understanding
+Objectives
+Students:
+? develop knowledge and understanding about significant historiographical ideas and methodologiesYear 12 course outcomes
+A student:HE12-1 analyses and evaluates different approaches to history and the complexity of factors that shape historical interpretationsSkills
+Objectives
+Students:
+? design, undertake and evaluate historical inquiry
+? communicate their understanding of historiography and the results of historical inquiryYear 12 course outcomes
+A student:HE12-2 plans, conducts and presents a substantial historical investigation involving analysis, synthesis and evaluation of information from historical sources of differing perspectives and historical approaches
+
+HE12-3 communicates through detailed, well-structured texts to explain, argue, discuss, analyse and evaluate historical issues
+
+HE12-4 constructs an historical position about an area of historical inquiry, and discusses and challenges other positions
+
+Course Structure and Requirements
+Year 12 course
+(60 hours)History ExtensionIndicative hoursConstructing History
+? Key Questions
+? Case Studies40
+(minimum)History Project20
+(maximum)
+Year 11 Ancient History or Modern History is a prerequisite for entry into Year 12 History Extension.
+Year 12 Ancient History or Modern History is a co-requisite for Year 12 History Extension.
+Constructing History - Key Questions
+Four key questions provide a framework for investigating the construction of history with a focus on historiography. Students engage in the complex and intellectually demanding study of History Extension by applying significant historiographical ideas and methodologies, which have evolved over time, to the investigation of these key questions:
+? Who are historians?
+? What are the purposes of history?
+? How has history been constructed, recorded and presented over time?
+? Why have approaches to history changed over time?
+Constructing History - Case Studies 
+Students develop their understanding of significant historiographical ideas and methodologies by exploring ONE case study, with reference to THREE identified areas of debate and the key questions above. The case study provides for an examination of historiography within a specific historical context.
+History Project
+Students will undertake an individual investigative project, focusing on an area of changing historical interpretation.
+
+1. Designing an Investigation
+The topic should be developed from one or more of the following areas:
+? changing interpretations of an historical debate or controversy
+? a critical analysis of an historian's or archaeologist's work
+? changing analysis of an archaeological site over time
+? contrasting approaches to an historical personality, issue or event
+? museums as history
+? history in the media and different forms of historical communication - for example film, documentary, fiction, docudrama
+? an interdisciplinary approach to the study of the history of a personality, issue or event
+? oral history
+? historical biography
+? local history
+? critical analysis of a major historical work
+? the use and misuse of history in either a specific context or over time.
+
+The topic of the project should reflect an area of student interest; however, the topic:
+? must focus on the fundamental historiographical concepts and issues of History Extension and should allow students to address some of the key questions
+? may be developed from a case study but must cover substantially different ground
+? must not overlap significantly with the examinable content of any Stage 6 course.
+
+2. Documenting the Project
+The History Project should be a product of the student's own work. It should be a piece of work that is free of plagiarism. Plagiarism may be broadly defined as presenting as one's own, the thoughts, writings or inventions of another. While students may draw on the assistance of other people in developing the project, care must be taken to avoid practices that may be the subject of claims of academic misconduct, including plagiarism.
+
+Students in their process log should keep a record of:
+? the proposal for the investigation
+? an explanation of their topic choice
+? sequentially dated records or digital recordings of the inquiry process
+? dated notes/digital audio files and progressive drafts of work
+? all sources used in preliminary notes and drafts
+? teacher feedback.
+
+Teachers are required to monitor the process log at regular intervals and sign/initial and date any comments.
+
+The Proposal
+The proposal should include:
+? description of preliminary research
+? a focus question
+? inquiry questions
+? research intentions in relation to
+- areas/texts to examine
+- methodology.
+
+The Essay
+The essay should include:
+? an argument in response to a focus question with evidence in support, the sources of which are acknowledged. It will be in written form and may be accompanied by appropriate graphic texts only as appendices (apart from short explanatory captions). The essay must not exceed 2500 words. The essay should contain material from a range of perspectives, including the student's own views. A consistent system of referencing should be used to acknowledge the use of sources.
+
+
+The Bibliography
+The bibliography should include:
+? a consistently formatted alphabetical list of all sources used within the project.
+
+The Annotated Sources
+The annotated sources should:
+? be selected for their value to the History Project
+? not exceed 600 words in total
+? explain the strengths and weaknesses of each source, considering their usefulness and reliability for the question(s) asked and the reasons for their value to the project and the central argument of the essay.
+
+The Process Log
+The process log should include:
+? an explanation of the topic choice
+? a description of procedures
+? a log of sequential development of the topic
+? a record of major decisions of the project
+? reviews of cumulative self, peer and teacher evaluation of the project, and record of interviews
+? draft responses.
+
+All My Own Work
+The History Project must adhere to the principles and practices of good scholarship, as identified in the HSC: All My Own Work program.
+
+Assessment and Reporting
+Information about assessment in relation to the History Extension syllabus is contained in Assessment and Reporting in History Extension Stage 6. It outlines course-specific advice and requirements regarding:
+? Year 12 school-based assessment requirements
+? Year 12 mandatory components and weightings
+? External assessment requirements including HSC examination specifications.
+
+This information should be read in conjunction with requirements on the Assessment Certification Examination (ACE) website.
+
+Additional advice is available in the Principles of Assessment for Stage 6.
+
+
+Content
+Content defines what students are expected to know and do as they work towards syllabus outcomes. It provides the foundations for students to successfully progress to the next stage of schooling or post-school opportunities.
+
+Teachers will make decisions about content regarding the sequence, emphasis and any adjustments required based on the needs, interests, abilities and prior learning of students.
+
+Content in Stage 6 syllabuses defines learning expectations that may be assessed in Higher School Certificate examinations.
+
+Organisation of Content
+The following diagram provides an illustrative representation of elements of the course and their relationship.
+
+
+
+Learning Across the Curriculum
+Learning across the curriculum content, including the cross-curriculum priorities and general capabilities, assists students to achieve the broad learning outcomes defined in the NESA Statement of Equity Principles, the Melbourne Declaration on Educational Goals for Young Australians (December 2008) and in the Australian Government's Core Skills for Work Developmental Framework (2013).
+
+Cross-curriculum priorities enable students to develop understanding about and address the contemporary issues they face.
+
+The cross-curriculum priorities are:
+? Aboriginal and Torres Strait Islander histories and cultures 
+? Asia and Australia's engagement with Asia 
+? Sustainability 
+
+General capabilities encompass the knowledge, skills, attitudes and behaviours to assist students to live and work successfully in the 21st century.
+
+The general capabilities are:
+? Critical and creative thinking 
+? Ethical understanding 
+? Information and communication technology capability 
+? Intercultural understanding 
+? Literacy 
+? Numeracy 
+? Personal and social capability 
+
+NESA syllabuses include other areas identified as important learning for all students:
+? Civics and citizenship 
+? Difference and diversity 
+? Work and enterprise 
+
+Learning across the curriculum content is incorporated, and identified by icons, in the content of the History Extension Stage 6 Syllabus in the following ways.
+
+
+Aboriginal and Torres Strait Islander Histories and Cultures 
+Aboriginal and Torres Strait Islander histories and cultures includes the study of oral history and communication as a type of history. History Extension provides an opportunity to investigate the responses of Aboriginal and Torres Strait Islander Peoples to non-Aboriginal people on the frontier in Australia. 
+
+When planning and programming content relating to Aboriginal and Torres Strait Islander histories and cultures teachers are encouraged to:
+? involve local Aboriginal communities and/or appropriate knowledge holders in determining suitable resources, or to use Aboriginal or Torres Strait Islander authored or endorsed publications
+? read the Principles and Protocols relating to teaching and learning about Aboriginal and Torres Strait Islander histories and cultures and the involvement of local Aboriginal communities.
+Asia and Australia's Engagement with Asia 
+Students are provided with opportunities to recognise the diversity within the countries of the Asia region through investigations relating to the influence of Genghis Khan, the causes and impact of the Opium Wars, the impact of Western imperialism in Asia, and the partition of India. This enables students to appreciate the events and developments that have shaped the historical perspectives of nations in Asia. 
+Sustainability 
+History Extension provides an opportunity to investigate sustainability through the study of environmental history as a type of history. The differing impact upon, uses of and attitudes towards the environment have had direct consequences for peoples over time and across places.
+Critical and Creative Thinking 
+Critical and creative thinking is integral to the study of historiography. There are opportunities for students to develop sophisticated judgements about complex problems and issues associated with the construction of history. In History Extension, there is the opportunity for students to design their own historical inquiry. This allows students to pose precise questions, interrogate, select and cross-reference sources and develop interpretations based on an assessment of how historians approach history. Students construct and defend a position, and analyse, evaluate and synthesise differing historical interpretations.
+
+Ethical Understanding 
+In History Extension, ethical understanding provides opportunities for students to explore and understand the diverse perspectives and contexts that have shaped historical debates. Students have opportunities to explore the values, beliefs and principles that were the basis for the judgements and philosophies of historians over time. Students have the opportunity to explore the ethical implications of the use and misuse of history over time.
+
+
+Information and Communication Technology Capability 
+Information and communication technology (ICT) capability is important in the study of History Extension, particularly in relation to historical investigation and understanding the changing forms of historical communication in the 21st century. Students use digital tools and strategies to locate, access, process and analyse information for the purpose of conducting an independent historical investigation. Students have the opportunity to study how some historians use digital tools and media as forms of historical communication. They can develop an understanding of the issues involved in the use of ICT, including practising ethical scholarship when conducting their historical investigation.
+Intercultural Understanding 
+Intercultural understanding is a vital part of learning about historiography. In History Extension, students acquire an understanding of culturally diverse perspectives and learn how these can shape historical interpretations over time. They explore different perspectives, the contexts for those perspectives and how they inform historical debates.
+Literacy 
+Literacy is of fundamental importance to the study of historiography. In History Extension, students explore issues associated with the nature of history and its construction by accessing the works of historians and others who construct history. These works are communicated in a variety of forms including print, oral, visual and digital. They have opportunities to learn to interpret and extrapolate meaning from a range of sources. Students have the opportunity to create complex texts and to discuss, explain and evaluate historiographical issues. They can learn to monitor their own language use for clarity and conciseness, and how to use language to articulate a position.
+Numeracy 
+History Extension provides opportunities to develop numeracy capability through the process of historical inquiry, allowing students to recognise patterns and relationships chronologically and spatially. Students have opportunities to support their views with data, some of which may be numerical in nature.
+Personal and Social Capability 
+Personal and social capability skills are developed and practised in History Extension, particularly when undertaking the History Project. Students have opportunities to work collaboratively and independently, and develop advanced research and communication skills to justify their views to others.
+
+Civics and Citizenship 
+Students' understanding of civics and citizenship is enhanced in History Extension through the opportunity to investigate the historical experiences and struggles of Indigenous peoples in South America, Europe or Asia, and of Aboriginal and Torres Strait Islander Peoples in Australia. 
+Difference and Diversity 
+Through History Extension students have the opportunity to investigate how the marginalisation of groups, because of their gender, race and socioeconomic status gave rise to different schools of historical interpretation. Students also have the opportunity to investigate the impact of imperialism and colonisation on diverse societies over time.
+Work and Enterprise 
+In History Extension students have the opportunity to investigate how the changing social and economic contexts of people of the past gave rise to different schools of historical interpretation.
+
+History Extension Year 12 Course Content
+Course Structure and Requirements
+Year 12 course
+(60 hours)History ExtensionIndicative hoursConstructing History
+? Key Questions
+? Case Studies40
+(minimum)History Project20
+(maximum)
+Year 11 Ancient History or Modern History is a prerequisite for entry into Year 12 History Extension.
+Year 12 Ancient History or Modern History is a co-requisite for Year 12 History Extension.
+Constructing History - Key Questions
+Four key questions provide a framework for investigating the construction of history with a focus on historiography. Students engage in the complex and intellectually demanding study of History Extension by applying significant historiographical ideas and methodologies, which have evolved over time, to the investigation of these key questions:
+? Who are historians?
+? What are the purposes of history?
+? How has history been constructed, recorded and presented over time?
+? Why have approaches to history changed over time?
+Constructing History - Case Studies 
+Students develop their understanding of significant historiographical ideas and methodologies by exploring ONE case study, with reference to THREE identified areas of debate and the key questions above. The case study provides for an examination of historiography within a specific historical context.
+History Project
+Students undertake an individual investigative project, focusing on an area of changing historical interpretation.
+
+1. Designing an Investigation
+The topic should be developed from one or more of the following areas:
+? changing interpretations of an historical debate or controversy
+? a critical analysis of an historian's or archaeologist's work
+? changing analysis of an archaeological site over time
+? contrasting approaches to an historical personality, issue or event
+? museums as history
+? history in the media and different forms of historical communication - for example film, documentary, fiction, docudrama
+? an interdisciplinary approach to the study of the history of a personality, issue or event
+? oral history
+? historical biography
+? local history
+? critical analysis of a major historical work
+? the use and misuse of history in either a specific context or over time.
+
+The topic of the project should reflect an area of student interest; however, the topic:
+? must focus on the fundamental historiographical concepts and issues of History Extension and should allow students to address some of the key questions
+? may be developed from a case study but must cover substantially different ground
+? must not overlap significantly with the examinable content of any Stage 6 course.
+
+2. Documenting the Project
+The History Project should be a product of the student's own work. It should be a piece of work that is free of plagiarism. Plagiarism may be broadly defined as presenting as one's own, the thoughts, writings or inventions of another. While students may draw on the assistance of other people in developing the project, care must be taken to avoid practices that may be the subject of claims of academic misconduct, including plagiarism.
+
+Students in their process log should keep a record of:
+? the proposal for the investigation
+? an explanation of their topic choice
+? sequentially dated records or digital recordings of the inquiry process
+? dated notes/digital audio files and progressive drafts of work
+? all sources used in preliminary notes and drafts
+? teacher feedback.
+
+Teachers are required to monitor the process log at regular intervals and sign/initial and date any comments.
+
+The Proposal
+The proposal should include:
+? description of preliminary research
+? a focus question
+? inquiry questions
+? research intentions in relation to
+- areas/texts to examine
+- methodology.
+
+The Essay
+The essay should include:
+? an argument in response to a precise question with evidence in support, the sources of which are acknowledged. It will be in written form and may be accompanied by appropriate graphic texts only as appendices (apart from short explanatory captions). The essay must not exceed 2500 words. The essay should contain material from a range of perspectives, including the student's own views. A consistent system of referencing should be used to acknowledge the use of sources.
+
+
+The Bibliography
+The bibliography should include:
+? a consistently formatted alphabetical list of all sources used within the project.
+
+The Annotated Sources
+The annotated sources should:
+? be selected for their value to the History Project
+? not exceed 600 words in total
+? explain the strengths and weaknesses of each source, considering their usefulness and reliability for the question(s) asked and the reasons for their value to the project and the central argument of the essay.
+
+The Process Log
+The process log should include:
+? an explanation of the topic choice
+? a description of procedures
+? a log of sequential development of the topic
+? a record of major decisions of the project
+? reviews of cumulative self, peer and teacher evaluation of the project, and record of interviews
+? draft responses.
+
+All My Own Work
+The History Project must adhere to the principles and practices of good scholarship, as identified in the HSC: All My Own Work program.
+
+
+Constructing History - Key Questions
+Outcomes
+A student:
+� analyses and evaluates different approaches to history and the complexity of factors that shape historical interpretations HE12-1
+� communicates through detailed, well-structured texts to explain, argue, discuss, analyse and evaluate historical issues HE12-3
+� constructs an historical position about an area of historical inquiry, and discusses and challenges other positions HE12-4
+Content Focus
+Students investigate the nature of history and changing approaches to its construction.  
+Content
+? To investigate 'Constructing History', students use the case study and relevant historiographical sources to:
+- identify different historical and historiographical perspectives evident in sources   
+- analyse interpretations of a particular historical or historiographical issue   
+- explain why different historians have different perspectives    
+- compare and contrast different interpretations of a particular historical or historiographical issue  
+- use a variety of sources to develop a view about an historical or historiographical issue  
+- use a variety of sources to challenge views on an historical or historiographical issue  
+- communicate through detailed, well-structured texts to explain, argue, discuss, analyse and evaluate an historical or historiographical issue 
+
+Key questions
+? Who are historians?
+- the producers of history over time - from ancient times to the present day
+- the identity of historians: biographical details, personal values and beliefs, philosophy of history, approaches to the construction of history, bias  
+- the context of historians: gender, class, ethnicity, time, place, social and economic structures/change, political constraints, official and unofficial status, academic background   
+? What are the purposes of history?
+- the aims and purposes of specific historical works and historians   
+- changing interpretations and perspectives of the aims and purposes of history 
+- changing interpretations and perspectives of the role of history   
+- the use and misuse of history 
+? How has history been constructed, recorded and presented over time? - from ancient times to the present day
+- changing methods of historians  
+- how historians work  
+- forms of historical communication: written, oral, visual, audiovisual, multimedia, digital  
+- types of history, eg political, social, economic, environmental, military, academic, popular, national, local, surveys, macrohistories, microhistories, biographies, psychohistories, historical fiction 
+
+
+? Why have approaches to history changed over time? - from ancient times to the present day
+- the availability of historical evidence  
+- the contexts of historians  
+- changing perspectives about approaches to the construction of history   
+- changing philosophies of history   
+- changing technology  
+- changing audiences  
+
+
+Constructing History - Case Studies 
+Outcomes
+A student:
+� analyses and evaluates different approaches to history and the complexity of factors that shape historical interpretations HE12-1
+� communicates through detailed, well-structured texts to explain, argue, discuss, analyse and evaluate historical issues HE12-3
+� constructs an historical position about an area of historical inquiry and discusses and challenges other positions HE12-4
+Content Focus
+The focus of the case study is how and why historical debates are developed from different perspectives and approaches over time. Students develop their understanding of significant historiographical ideas and methodologies by exploring a case study. 
+Students must investigate ONE of the following case studies with reference to the THREE identified areas of debate, and the key questions:
+Key areasCase studiesAncientCleopatra VII
+Athenian Democracy
+Rome's Impact on the Provinces
+The Origins of Early Christianity
+The Collapse of the Western Roman EmpireMedieval and Early ModernThe Crusades
+Witch Hunts and Witch Trials
+Elizabeth I and the Elizabethan Age
+Spain and the Aztec EmpireModernNapoleon
+Western Imperialism in the 19th Century
+A British Prime Minister: Winston Churchill OR Margaret Thatcher
+Appeasement
+John Fitzgerald KennedyAsiaGenghis Khan
+The Opium Wars
+The Partition of IndiaAustraliaThe Frontier in Australia
+Women Convicts in New South Wales
+An Australian Prime Minister: Robert Menzies OR Gough Whitlam
+Representations of Anzac
+The study selected must address the outcomes listed above.
+
+
+Content
+The following content is to be integrated within the case study.
+
+? What are the historical debates in the case study?
+- historical interpretations and perspectives (including recent historiography) of the areas of debate   
+- popular interpretations and perspectives of the areas of debate 
+- changing approaches to the construction of history  
+- the shaping of interpretations: the role of context, methodology, purpose, sources and form of communication  
+
+
+Option 1: Cleopatra VII
+Content Focus
+Students investigate changing interpretations of Cleopatra VII.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- constructions of Cleopatra's identities and gender (ACHAH071, ACHAH072)   
+- role as Pharaoh
+- the relationship with Julius Caesar, Mark Antony and Octavian 
+Option 2: Athenian Democracy
+Content Focus
+Students investigate changing interpretations of Athenian Democracy.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the origins and/or aims of Athenian Democracy   
+- the nature of Athenian Democracy (ACHAH315) 
+- the impact and influence of Athenian Democracy on Athens and the Athenian Empire (ACHAH315, ACHAH340)    
+
+
+Option 3: Rome's Impact on the Provinces
+Content Focus
+Students investigate changing interpretations of the impact of Rome and Roman culture on the western and/or eastern provinces (eg Judea, Britain, Gaul, Germanic).
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the origins and/or aims of Roman imperialism   
+- the benefits and burdens of romanisation for Rome and the provinces    
+- the extent of Rome's influence on provincial cultures (ACHAH204) 
+
+Option 4: The Origins of Early Christianity
+Content Focus
+Students investigate changing interpretations of the origins of early Christianity.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- evidence relating to Jesus Christ  
+- the Messiah or radical figure   
+- the role of Constantine and his impact on the rise of early Christianity  
+Option 5: The Collapse of the Western Roman Empire
+Content Focus
+Students investigate changing interpretations of the 'decline and fall' of the Western Roman Empire.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the reasons for the 'decline and fall' (internal and external) (ACHAH054, ACHAH058)   
+- the nature of the 'decline' (ACHAH056) 
+- the impact of the fall of the Western Roman Empire   
+
+
+Option 6: The Crusades
+Content Focus
+Students investigate changing interpretations of the Crusades. 
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the origins of the Crusades and/or Crusaders  
+- the motivations, aims and actions of the Crusaders  
+- the impact of the Crusades on the Middle Eastern region, Constantinople and Europe   
+Option 7: Witch Hunts and Witch Trials
+Content Focus
+Students investigate changing interpretations of witch hunts and witch trials in early modern Europe and/or New England (the American colonies).
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the origins, causes and nature of witch hunts/trials  
+- gender and persecution   
+- the decline of the witch hunts/trials   
+Option 8: Elizabeth I and the Elizabethan Age
+Content Focus
+Students investigate changing interpretations of Elizabeth I and the Elizabethan Age.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- constructions of Elizabeth's identities and gender    
+- political and administrative leadership 
+- religious beliefs and policies  
+
+
+Option 9: Spain and the Aztec Empire
+Content Focus
+Students investigate changing interpretations of Spain and the Aztec Empire.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the origins and/or nature of Spanish conquest and colonisation   
+- the reasons for the decline of the Aztec Empire 
+- the impact of Spanish colonisation on Indigenous culture   
+Option 10: Napoleon
+Content Focus
+Students investigate changing interpretations of Napoleon.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- Napoleon and the ideas of revolutionary France (ACHMH030, ACHMH033)  
+- military leadership and/or political and administrative leadership 
+- the extent of Napoleonic reform (ACHMH031)   
+Option 11: Western Imperialism in the 19th Century
+Content Focus
+Students investigate changing interpretations of western imperialism in the 19th century.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- origins and/or aims of western imperialism (ACHMH041)  
+- policies, methods and nature of western imperialism (ACHMH042, ACHMH045)   
+- the impact and influence on colonising and Indigenous nations (ACHMH043, ACHMH044, ACHMH045, ACHMH046)   
+
+
+Option 12: A British Prime Minister: Winston Churchill
+Content Focus
+Students investigate changing interpretations of Winston Churchill.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- military, political and administrative leadership during the Great War   
+- Churchill and international affairs in the 1930s  
+- military, political and administrative leadership during World War II  
+Option 13: A British Prime Minister: Margaret Thatcher
+Content Focus
+Students investigate changing interpretations of Margaret Thatcher.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the Falklands War and/or the end of the Cold War (ACHMH192)  
+- leadership and gender (ACHMH192)  
+- domestic and foreign policies (ACHMH192) 
+Option 14: Appeasement
+Content Focus
+Students investigate changing interpretations of appeasement.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- approaches to and/or reactions to appeasement  
+- appeasement and the origins of World War II 
+- the extent of the successes and/or failures of appeasement   
+
+
+Option 15: John Fitzgerald Kennedy
+Content Focus
+Students investigate changing interpretations of John Fitzgerald Kennedy.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the role in the Indochina conflict (ACHMH192)  
+- the role in the Cuban missile crisis and/or dealings with Khrushchev (ACHMH192)  
+- Camelot - man and myth (ACHMH192)  
+Option 16: Genghis Khan
+Content Focus
+Students investigate changing interpretations of Genghis Khan.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- leadership and achievements of Genghis Khan   
+- the Mongol conquests   
+- the legacy of Genghis Khan  
+Option 17: The Opium Wars
+Content Focus
+Students investigate changing interpretations of the Opium Wars between China and the West.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the causes of the Opium Wars   
+- the impact of the Opium Wars on China   
+- representations of the Opium Wars and China's relations with the West  
+
+
+Option 18: The Partition of India
+Content Focus
+Students investigate changing interpretations of the Partition of India.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the causes of the partition (ACHMH149, ACHMH150)   
+- the role of individuals (ACHMH155)   
+- the effects and consequences of the partition (ACHMH154)  
+Option 19: The Frontier in Australia
+Content Focus
+Students investigate changing interpretations of the frontier in Australia.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- terra nullius and land (ACHMH071)     
+- invasion or settlement? (ACHMH071)      
+- the responses of Aboriginal People(s) on the frontier in Australia (ACHMH070)     
+Option 20: Women Convicts in New South Wales
+Content Focus
+Students investigate changing interpretations of women convicts in New South Wales.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the origins and reasons for transportation    
+- the experiences during transportation  
+- the roles and representations in convict society and culture    
+
+
+Option 21: An Australian Prime Minister: Robert Menzies
+Content Focus
+Students investigate changing interpretations of Robert Menzies.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the response to communism (ACHMH126)   
+- domestic policy (ACHMH125)   
+- leadership and legacy (ACHMH127) 
+Option 22: An Australian Prime Minister: Gough Whitlam
+Content Focus
+Students investigate changing interpretations of Gough Whitlam.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the reform agenda   
+- the dismissal 
+- leadership and legacy  
+Option 23: Representations of Anzac
+Content Focus
+Students investigate changing interpretations of the representations of Anzac.
+Content
+? Students examine the historians and approaches to history (including recent historiography) that have contributed to historical debate in the areas of:
+- the birth of a nation?      
+- the role of Anzac in politics in Australia  
+- the role of Anzac in culture in Australia  
+
+History Project
+Outcomes
+A student:
+� analyses and evaluates different approaches to history and the complexity of factors that shape historical interpretations HE12-1
+� plans, conducts and presents a substantial historical investigation involving analysis, synthesis and evaluation of information from historical sources of differing perspectives and historical approaches HE12-2
+� communicates through detailed, well-structured texts to explain, argue, discuss, analyse and evaluate historical issues HE12-3
+� constructs an historical position about an area of historical inquiry, and discusses and challenges other positions HE12-4
+Content Focus
+The History Project provides the opportunity for students to design and conduct an investigation into an area of changing historical interpretation. Students develop and refine specific questions for investigation that contribute to their understanding of some or all of the key questions:
+? Who are historians?
+? What are the purposes of history?
+? How has history been constructed, recorded and presented over time?
+? Why have approaches to history changed over time?
+
+Students work independently to plan and conduct their investigation. The investigation provides opportunities to apply the historiographical understanding developed through the course work and/or develop their own approaches to constructing and representing history.
+Components of the History Project
+ComponentDescriptionPurposeA project in which students investigate one or more significant historical questions in a topic area of their choice. Process? Designing the investigation
+? Conducting the investigation
+? Presenting the findings from the investigation.Presentation? The proposal: outline of focus questions, pre-reading and anticipated research strategies
+? The essay: must not exceed 2500 words
+? The bibliography: source list
+? The annotated sources: selected annotations: must not exceed 600 words
+? The process log: explanation as to why the topic was chosen, sequence of the process, personal reflections on, and evaluation of, methodology, teacher feedback and validation of student work and drafts.AssessmentCriteria for assessing the project are based on:
+? knowledge and understanding of key historical and historiographical terms, concepts and issues
+? knowledge and understanding of significant historiographical methodologies
+? knowledge, understanding and skills in historical inquiry
+? knowledge, understanding and skills in historical communication.
+Designing and documenting the project
+Requirements relating to selecting a topic for the project and documenting the project are set out in the Course Requirements.
+
+Conducting the investigation
+Teachers should provide personal assistance to students on issues such as:
+? topic selection and planning
+? inquiry and research methodologies appropriate to the topics selected by students
+? understanding and interpreting the findings of the research
+? development and preparation of components of the project
+? evaluation of student progress through reviewing drafts of the components of the project and the research log
+? task management of the project.
+
+Students should be introduced to the idea of the project at the beginning of the course. While students will vary in how they define the focus and scope of their precise inquiry question at a particular point in time, and teachers will differ in their programming of the course, students should:
+? finalise their topic area and submit their proposal, which establishes the topic area and possible inquiry questions, methodology and areas of research
+? finalise their focus and specific inquiry questions, and adopt a realistic approach to the scope and depth of their investigations at an early stage of their project
+? consult a wide variety of sources during their research, including written, archaeological, oral, graphic, audiovisual, multimedia and digital
+? choose methodologies that are best suited to their particular topic
+? consider, where relevant, the ethical implications of the topics that are selected 
+? consult with appropriate experts to determine procedures that may need to be followed
+? seek the teacher's or school principal's permission where a controversial topic is selected.
+
+
+Content
+Students:
+? plan and conduct a substantial historical investigation by:
+- developing a proposal for an historical investigation 
+- locating, selecting, analysing, synthesising and evaluating historical information from a range of sources with differing perspectives and interpretations   
+- reflecting on, and evaluating, the process and product of historical inquiry, through a process log 
+? construct an historical position about an area of historical inquiry  
+? communicate through detailed, well-structured texts to:
+- explain and argue for an historical position 
+- discuss and challenge other historical positions  
+- analyse and evaluate historical issues  
+? use appropriate referencing 
+? prepare a bibliography 
+? evaluate key sources of evidence in an area of historical inquiry for usefulness and reliability   
+? develop an understanding of historiographical issues relating to the topic of their History Project   
+? maintain the process and documentation of historical inquiry 
+
+Glossary
+Glossary termDefinitionAboriginal and Torres Strait Islander PeoplesAboriginal Peoples are the first peoples of Australia and are represented by over 250 language groups each associated with a particular Country or territory. Torres Strait Islander Peoples whose island territories to the north east of Australia were annexed by Queensland in 1879 are also Indigenous Australians and are represented by five cultural groups.
+
+An Aboriginal and/or Torres Strait Islander person is someone who:
+
+* is of Aboriginal and/or Torres Strait Islander descent
+* identifies as an Aboriginal person and/or Torres Strait Islander person, and
+* is accepted as such by the Aboriginal and/or Torres Strait Islander community in which they live.Aboriginal Cultural ProtocolsAboriginal Cultural Protocols describe appropriate ways of behaving, communicating and showing respect for diversity of histories and cultures. This involves appreciation of the knowledge, standing and status of people within the local Aboriginal community. Protocols inevitably vary between communities, and between people within a community. In establishing partnerships between Aboriginal communities and industries or professions, it is especially important that protocols are acknowledged and respected.AncientAs defined in the NSW Ancient History Stage 6 Syllabus, the Ancient period covers history from the development of early human communities to the end of late antiquity (around AD 650).ANZACThe word ANZAC refers to the Australian and New Zealand Army Corps (ANZAC) troops who first fought at Gallipoli in Turkey from April to December 1915.causationA process that includes a range of possible reasons for an historical event, situation or development.chronologyA chronology places events and dates in order in time.colonisationIn Modern History - a process by which a different system of government is established by one nation over another group of peoples. It involves the colonial power asserting and enforcing its sovereignty according to its own law, rather than by the laws of the colonised, and may involve dispossession of land.
+
+In Ancient History - a process by which ancient societies establish settlements in other lands and establish trading connections.conceptsThe key ideas that shape the practice of the discipline of history, eg causation, continuity, change, and significance. They provide the scope for judgement, interpretation and argument and are the major means by which knowledge is constructed, analysed, questioned and represented.contestabilityContestability involves examining how interpretations and representations of the past differ, for example, as a result of using differing evidence or resulting from different perspectives.continuity and changeAspects of the past that have remained the same over a period of time or have changed over time. Change can be understood as a 'process'. dispossessionThe removal of people from their lands which had been occupied and cared for by their ancestors over thousands of years. evidenceThe information elicited and interpreted from a source that is used to support an historical argument or inform a specific historical inquiry. heritageTangible or intangible aspects of the past that are valued by an individual, group, community or nation as a result of birth, inheritance or membership. It can also be applied to significant examples of the human or natural environment.historical authenticationA process of verifying the origins of an artefact or object and establishing it as genuine. historical inquiryThe process of developing knowledge and understanding by posing questions about the past, and applying skills associated with locating, analysing, evaluating and using sources as evidence to develop an informed argument or interpretation. historiographyThe study of how history is constructed. It involves the critical analysis and evaluation of historical methodologies and the way history has been written over time. ideologyA framework of beliefs that guides actions, for example fascism and communism.Indigenous cultural and intellectual propertyIncludes objects, sites, cultural knowledge, cultural expression and the arts, that have been transmitted or continue to be transmitted through generations as belonging to a particular Indigenous group or Indigenous people as a whole or their territory. Indigenous peoplesThis term is used when referring collectively to the first peoples of a land in international communities.interpretationA way of understanding and explaining what has happened in the past. The discipline of History acknowledges that there is often more than one view of what has happened in the past.ModernAs defined in the NSW Modern History Stage 6 Syllabus, the period of time in the modern world generally between 1750 and the present.perspectiveA point of view from which historical events, problems and issues can be analysed, for example the perspective of an individual or group in the past. This may involve empathetic understanding - the capacity to enter into the world of the past from the point of view of a particular individual or group from that time, including an appreciation of the circumstances they faced, and the motivations, values and attitudes behind their actions.reconstructionA process of piecing together evidence from sources to develop an understanding or picture of the past. It may include the physical reconstruction of ancient sites. reliabilityConsideration of the context, purpose, origin and audience of a source, in order to determine how accurately an area of historical study is represented. A source is neither reliable or unreliable in and of itself. It can only be judged reliable or useful for the question that is asked. Reliability requires an understanding of perspective.representationA portrayal of the past that may reflect a popular view within society, past or present, or that may be constructed by historians.significanceThe importance attributed to a particular aspect of the past such as an individual or event. Significance involves an understanding of the various considerations which cause different groups at different times to judge aspects of the past more or less historically significant.sourceAny written or non-written materials that can be used to investigate the past. A source is used to elicit 'evidence' in order to answer a specific historical question, inform an historical inquiry, or to support or refute an interpretation.termsA word or phrase used to describe abstract aspects or features of the past, eg imperialism, democracy or republic; and more specific features such as trench warfare, or a dictator, gladiator or vizier.terra nulliusA concept in international law meaning 'a territory belonging to no-one' or 'over which no-one claims ownership'.
+
+
+History Extension Stage 6 Syllabus	44
+
+Year 12
+
+
+
+
+

@@ -1,0 +1,612 @@
+    
+ NSW Education Standards Authority 
+2025 HSC Chemistry 
+Marking Guidelines 
+Section I 
+Multiple-choice Answer Key 
+Question Answer 
+1 B 
+2 B 
+3 A 
+4 A 
+5 C 
+6 D 
+7 C 
+8 D 
+9 A 
+10 D 
+11 A 
+12 B 
+13 C 
+14 B 
+15 D 
+16 B 
+17 A 
+18 A 
+19 C 
+20 B 
+Page 1 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines   
+ 
+ 
+  Section II 
+Question 21 
+Criteria Marks 
+• Correctly identifies both the reaction condition AND product 2 
+• Correctly identifies either the reaction condition OR product 1 
+Sample answer: 
+Reaction condition X IUPAC name of organic product 
+UV light 2-bromobutane 
+Question 22 
+Criteria Marks 
+• Outlines the need for both analysis types 2 
+• Provides some relevant information 1 
+Sample answer: 
+Qualitative analysis allows the identification of a pollutant present in the water. Quantitative 
+analysis allows for the amount of the pollutant present to be determined. 
+Page 2 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines   
+ 
+ 
+ Question 23 
+Criteria Marks 
+• Justifies TWO appropriate changes with justifications of both related to 
+accuracy 3 
+• Justifies ONE appropriate change 
+OR 
+• Identifies TWO appropriate changes 2 
+• Provides some relevant information 1 
+Sample answer: 
+Filter out any insoluble components before step 4, or else these will contribute to the mass  
+of the precipitate. 
+Weigh the filter paper, or else the mass of the precipitate will be inaccurate. 
+Answers could include: 
+•  Dry to constant mass (step 6) else water will contribu  te to the mass of precipitate. 
+•  Rinse the precipitate with distilled water during step 5 to prevent soluble  salts from 
+crystallising on the precipitate. 
+•  Add more BaCl2 solution to the filtrate after step 5 to ensure all sulfate has precipitated.  
+•  Use finer filter paper and a Buchner funnel, to ensure solid is captured. 
+Page 3 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines  Question 24 (a) 
+Criteria Marks 
+ • Correctly draws the structural formula AND correctly identifies the shape 2 
+ • Correctly draws the structural formula OR correctly identifies the shape 1 
+Sample answer: 
+Structural formula Shape of molecule 
+H C C H Linear 
+Question 24 (b) 
+Criteria Marks 
+ • Calculates the correct mass of chloroethene AND provides a correct 
+chemical equation 3 
+•  Provides the main steps of the calculation 
+OR 
+•  Provides some steps of the calculation AND a correct chemical equation 2 
+ • Provides some relevant information 1 
+Sample answer: 
+C H   +   2 2 HCl     C2H3Cl 
+65.0Moles of C2H =  =  2 2.50 mol  
+26.04 
+ n  C  2H3Cl = nC2H2  
+ =  2.50 mol  
+ m  C2H3Cl = 2.50  ×  62.50  =  156.25 g  
+  =  156 g  
+Page 4 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines   
+ 
+ 
+ Question 25 
+Criteria Marks 
+• Provides the correct calculations, with correct significant figures 3 
+• Provides substantially correct calculations 
+OR 
+• Provides the correct calculations with incorrect significant figures 2 
+• Provides some relevant information 1 
+Sample answer: 
+Mass of ester  = 12.2 × 0.873 =  10.65 g  
+10.65Moles of ester  =  =  0.0818 moles  
+130.2 
+From the data provided, butanoic acid was in excess, propan-1-ol was limiting, so the 
+theoretical yield is 0.267 moles.  
+0.0818Actual yield =   × 100% = 30.6% (3 significant figures)
+0.267 
+Page 5 of 20 
+
+NESA    2025 HSC    Chemistry    Marking GuidelinesQuestion 26 (a) 
+  Criteria Marks 
+ • Draws a column graph with accurate scales, axes labels and column 
+heights 3 
+ • Draws a substantially correct graph 2 
+ • Provides a relevant graphical feature 1 
+Sample answer: 
+Page 6 of 20 3.5 
+3.0 
+2.5 2.0 
+pK
+a 
+1.5 1.0 0.5 
+0 
+F Cl Br I 
+X (in X–CH2COOH ) 
+
+NESA    2025 HSC    Chemistry    Marking GuidelinesQuestion 26 (b) 
+  Criteria Marks 
+ • Correctly describes the trend between acid strength and the identity of 
+ the halogen X 2 
+ • Provides some relevant information 1 
+Sample answer: 
+From the graph, as the halogen changes going down the group, the strength of the 
+haloethanoic acid decreases. 
+Question 27 (a) 
+Criteria Marks 
+ • Outlines the use AND environmental impact of a named hydrocarbon mixture 2 
+ • Outlines the use OR environmental impact of a named hydrocarbon mixture 1 
+Sample answer: 
+Combustion of petrol used in vehicle engines produces CO2. This leads to increased levels 
+of CO2 in the atmosphere which contributes to climate change. 
+Question 27 (b) 
+Criteria Marks 
+ • Provides a chemical equation with correct structural formulae of organic 
+reactants and product, which includes aqueous acidic conditions 3 
+•  Provides a chemical equation with correct structural formulae of organic reactants and product 
+OR 
+•  Provides a chemical equation with correct formulae of organic reactants 
+OR products, which includes aqueous acidic conditions 2 
+ • Provides some relevant information 1 
+Sample answer: 
+Page 7 of 20 H 
+C C H 
+H+/H2O 
+H H 
+C H 
+C O 
+H H H H H 
+
+NESA    2025 HSC    Chemistry    Marking GuidelinesQuestion 27 (c) 
+  Criteria Marks 
+ • Sketches a graph showing the correct changes to the concentration of 
+ethanol 3 
+ • Sketches a graph showing most of the correct changes to the concentration of ethanol 2 
+ • Provides a relevant graphical feature 1 
+Sample answer: 
+6Ethanol @ 
+t0 t1 t2 
+Time 
+Question 28 (a) 
+Criteria Marks 
+ • Correctly identifies the structure of the monomer 1 
+Sample answer: 
+H2N 
+NH2 
+Page 8 of 20 
+
+NESA    2025 HSC    Chemistry    Marking GuidelinesQuestion 28 (b) 
+Criteria Marks 
+• Explains the intermolecular forces in both polystyrene and Kevlar and 
+relates these forces to the physical properties of the polymers 3 
+• Identifies the correct intermolecular forces in both polystyrene and Kevlar 2 
+• Provides some relevant information 1 
+Sample answer: 
+Polystyrene only has dispersion forces between individual chains. 
+Kevlar has hydrogen bonding between individual chains, as well as dispersion forces. As H-bonds are stronger than dispersion forces for similarly sized molecules, it is harder to 
+pull apart Kevlar polymer chains as compared to polystyrene. 
+Question 29 
+Criteria Marks 
+• Provides a thorough explanation of the impact on the temperature of this system 4 
+• Provides an explanation that shows a sound understanding of equilibrium systems 3 
+• Provides a description of an impact on the system 2 
+• Provides some relevant information 1 
+Sample answer: 
+Addition of argon gas does not change the amount of NO
+2 or N2O4 present. As the volume 
+of the system remains consistent, the concentrations of NO2 and N2O4 are unchanged. 
+Therefore Q  =  Keq and the system remains at equilibrium. Accordingly, the temperature 
+remains constant. 
+Answers could include: The rates of the forward and reverse reaction remain equal, and the system remains at 
+equilibrium. 
+The system is undisturbed and remains at equilibrium, in accordance with Le Châtelier’s 
+Principle. 
+The partial pressures of NO
+2 and N2O4 are unchanged. 
+Page 9 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines  Question 30 (a) 
+Criteria Marks 
+ • Justifies a named precaution 2 
+ • Provides any relevant information 1 
+Sample answer: 
+Phosgene is dangerous to the environment because it is toxic. Therefore, it is important to 
+ensure it does not leak from the reaction vessel, which requires constant monitoring. 
+Answers could include: –  Regular maintenance of reaction vessels 
+–  Sufficient training of industry staff 
+–  Correct PPE for all staff 
+–  Ensuring gas pressures stay below safe limits 
+Question 30 (b) 
+Criteria Marks 
+•  Explains the use of a catalyst 
+AND 
+•  Explains the use of a large excess of CO 3 
+•  Describes how BOTH features affect the reaction but does NOT link 
+cause and effect 
+OR 
+•  Explains how one feature affects the reaction 2 
+ • Provides any relevant information 1 
+Sample answer: 
+The use of a catalyst saves time and money because it increases the rate of reaction by 
+lowering the activation energy. The use of a large excess of CO causes the equilibrium 
+to 
+shift to the products side, therefore improving the yield of phosgene. 
+Page 10 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines  Question 31 (a) 
+Criteria Marks 
+ • Confirms the molecular formula using a substantially correct chemical 
+equation 2 
+•  Provides a partially correct chemical equation 
+OR 
+•  Provides some relevant reasoning 1 
+ Sample answer: 
+Stoichiometry implies that a hydrazine molecule contains 2 nitrogen atoms and 4 hydrogen 
+atoms. 
+N
+)   +   xHy(g 3O2(g)     2NO +2(g)      2H2O(g) 
+2 N 4 H 
+atoms  atoms 
+Answers could include: 
+Given the volumes, the stoichiometry of the reaction is: 
+1NxHy(g)   +   3O2(g)     2NO2(g)   +   2H2O(g) 
+This only balances if   x  =  2,   y  =  4 
+`  N2H4 is correct. 
+Page 11 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines   
+ 
+  
+ 
+ 
+   
+   
+ Question 31 (b) 
+Criteria Marks 
+•Correctly calculates the pH
+•Provides a correct chemical equation4 
+•Provides the main steps of the calculation 3 
+•Provides some steps of the calculation
+OR
+•Provides a correct chemical equation2 
+•Provides some relevant information 1 
+Sample answer: 
+Hydrazinium ion, N+
+2H5 , reacts with water to produce an acidic solution in the following way: 
+                  N2H 5 +(aq) + H 2 O(l)  H3O +(aq) + N2H4(aq)
+R N2H + 
+5 (aq) H2O(l ) H3O+(aq) N2H4(aq) 
+I 0.20 – 0 0 
+C −x – +x +x
+E (0.20 − x) – x x 
+K ×   10−14 
+K   w 1.0   
+=a  = −9   = 5.88 ×     10   
+K 1.7 ×    10−6  b 
+Assume equilibrium concentration of   N + =    0.20 mol L  −1
+2H5  (ie, x is very small)
+8H  H B 
+  3O+B 8N 
+K =2 4   = −9   5.88  ×    10   
+a 8N H +B 2 5 
+x 2
+  =    5.88  ×    10−9   
+0.20 
+ x  =  (5.88  ×  10−9        ×    0.20) 
+ x  =−5    3.43  ×    10    =    8H O+B  3 
+ pH  = −log     10(3.43 ×  10−5)  
+ =    4.46 
+Page 12 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines   
+ 
+ 
+ 
+ 
+  Question 32 
+Criteria Marks 
+•Identifies the correct precipitate, with justification using correct
+calculations5 
+•Identifies the correct precipitate, with justification using substantiallycorrect calculations
+OR 
+•Identifies the order of precipitation supported by substantially correct
+calculations4 
+•Identifies the correct precipitate, supported by some relevant calculations
+OR
+•Identifies the incorrect precipitate(s), supported by substantially correct
+calculations3 
+•Demonstrates some understanding of solubility constants and/orsolubility products2 
+•Provides some relevant information 1 
+Sample answer: 
+6Mg
+2+@  =  6  × 10−3    6OH−@  = 1  × −2   10    8CO2−B  =    10−3 3 2 × 
+6Mg2+@ 6OH−@2  =  6  ×  10−7   K = sp  5.61  ×  10−12 
+6Mg2+@ 8CO2−B  = 3  1.2  ×  10−5   K  =  6.82  ×  10−6
+sp  
+Mg(OH)2 is a lot less soluble than MgCO3.
+Mg(OH)2 will precipitate. The Mg2+ is in excess. Its concentration will drop to approximately
+1  ×  10−2
+6  ×  −3 10−3 −  =  1  ×  10 . 
+2 
+6Mg2+@ 8CO2−B3  becomes 2  ×  10−6 which is less than K sp .
+MgCO3 won’t precipitate. 
+Page 13 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines   
+  
+ 
+ 
+ 
+ 
+  Question 33 
+Criteria Marks 
+•Correctly identifies the brand
+•Provides all correct calculations
+•Provides a balanced chemical equation including states7 
+•Provides substantially correct calculations
+•Provides a balanced chemical equation6 
+•Provides the main steps in the calculation
+•Provides a balanced chemical equation4–5 
+•Provides some steps in the calculation 2–3 
+•Provides some relevant information 1 
+Sample answer: 
+Exclude the outlier. 
+7.10  +  7.20  +  7.15Average volume KOH used excluding Trial 1  =  =  0.00715 L  
+3 
+          
+   
+        HCl(aq) + KOH(aq) KCl(aq) + H2O(l)
+moles KOH =
+ 0.10 × 0.00715 = 0.000715 mol KOH 
+Ratio HCl : KOH = 1:1 ` 0.000715 mol HCl for each sample 
+ `  0.000715  ×  5 = 0.003575  mol total in sampled solution 
+Initial nHCl = 0.550  ×  0.1000  =  0.0550 mol  HCl 
+nHCl that reacted with CaCO  = 0.0550  −  3 0.003575 
+ = 0.051425  mol HCl 
+             2HCl( aq) + CaCO3(s) CaCl2( aq) + H2O(l) + CO2(g ) 
+0.051425Ratio HCl : CaCO   =3    2 : 1  `  =  0.0257125 mol  CaCO
+2 3 
+Mass CaCO =3   0.0257125  ×  MM CaCO3 (100.09) 
+ =  2.5735641  g 
+2.5735641% CaCO3  =  ×  100  =  85.7854%  ≈  85.8% 
+3.00 
+Chalk sample has to be Brand X.  
+Page 14 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines  Question 34 (a) 
+Criteria Marks 
+•  Correctly calculates the K  of the acida3 
+•  Provides a substantially correct calculation 2 
+•  Provides some relevant information 1 
+Sample answer: 
+From the shape of the titration curve, the acid was weak. 
+Halfway to the equivalent point, at 0.012  L, 6HA@
+  =  6A−@  
+Here the pH is approximately 4.4, or 6H+@ is 4.0  ×  10−5 . 
+6
+a  + A−@K =  6H@  ×  6HA@ 
+At this pH, 6A−@  =  6HA@ so K  =  4.0  ×  10−5 
+a .
+Answers could include: 
+Equivalence point is at 0.024  L NaOH added. 
+Shape of curve shows acid is monoprotic. 
+6HA@
+  ×  0.010  =  0.1  ×  0.024 
+6HA@  =  0.24 mol L  −1  
+pH at start is approximately 2.5 
+So, 6H+@  =3.16 × 10−3      
+6H+@ 6A−@K  =    6A− @  = + 6a H@ 6HA@ 
+ 6HA@  =  0.24  −   −3 3.16 × 10  
+ =  0.237 
+(3.16  ×  10−3)2 
+K  =  =  4.2  ×  10−5 
+a  
+0.237 
+Page 15 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines  Question 34 (b) 
+Criteria Marks 
+ • Provides a valid explanation 2 
+ • Provides some relevant information 1 
+  
+ 
+ 
+ 
+ 
+  
+ Sample answer: 
+Some of the hydroxide was neutralised by the acid. 
+The 10  mL of acid also diluted the NaOH. 
+So the NaOH concentration of the mixture will be less than 0.1  mol  L−1 and the pH will be 
+less than 13.   
+Question 35 
+Criteria Marks 
+• Shows how both Le Chatelier’s principle AND collision theory account 
+for the colour change, with reference to the energy profile 5 
+• Demonstrates a sound understanding of how both collision theory AND Le Chatelier’s principle account for the colour change 4 
+• Demonstrates a sound understanding of how collision theory OR Le Chatelier’s principle accounts for the colour change 3 
+• Demonstrates some understanding of collision theory OR Le Chatelier’s principle 2 
+• Provides some relevant information 1 
+Sample answer: 
+The energy profile diagram shows that the forward reaction is exothermic. 
+Le Chatelier’s principle considers heat as a ‘substance’ that the system seeks to replace 
+when lost. As this system is cooled, it responds in a way as to minimise the disturbance. Consequently, the forward reaction is favoured so the solution turns pink. 
+Collision theory considers the proportion of molecules above a particular activation energy. 
+Decreasing the temperature slows the rates of both forward and reverse reactions, due to a drop in the average kinetic energy of all particles. However, the rate of the reverse reaction decreases more than the forward reaction. This is due to a greater proportion of particles falling below the relatively higher activation energy of the reverse reaction, E
+a2, as shown 
+in the reaction profile. Since the forward reaction is faster, 8CoCl2−B4  will decrease, and
+8Co(H2O)2+B6 will increase, and the colour changes to pink. 
+Page 16 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines   
+    Question 36 
+Criteria Marks 
+• Predicts the expected spectroscopic observations of ALL four techniques 
+showing an extensive understanding of the relationship between molecular features and spectroscopic outcomes for these techniques 7 
+• Predicts the expected spectroscopic observations of ALL four techniques showing a thorough understanding of the relationship between molecular features and spectroscopic outcomes for these techniques 6 
+• Predicts the expected spectroscopic outcomes of most techniques showing a sound understanding of the relationship between molecular features and spectroscopic outcomes for these techniques 4–5 
+• Relates the expected spectroscopic outcomes of some techniques showing a basic understanding of the relationship between molecular features and spectroscopic outcomes for these techniques 2–3 
+• Provides some relevant information 1 
+Answers could include: 
+IR 
+–  Strong broad OH signal at approximately 2750  cm
+−1  
+–  Strong sharp CO signal at approximately 1700  cm−1  
+13C NMR 
+–  3 chemical environments (either outright stated or through inference) 
+–  1  signal  at  5−40  ppm  (CH3) 
+–  1  signal  at  20−50  ppm  (CH2) 
+–  1  signal  at  160−185  ppm  (acid  CO) 
+1H NMR 
+–  3 chemical environments (either outright stated or through inference) 
+–  1  signal  at  0.7−2.1  ppm  (CH3), triplet splitting pattern, integration of 3  
+–  1  signal  at  2.1−4.5  ppm  (CH2), quartet splitting pattern, integration of 2  
+–  1  signal  at  9.0−13.0  ppm  (COOH),  singlet,  integration   of  1 
+MS 
+–  Molecular ion at 74  m/z 
+Page 17 of 20 
+
+NESA    2025 HSC    Chemistry    Marking Guidelines    
+ 
+  
+   Question 37 
+Criteria Marks 
+• Correctly determines the structure of compound A 
+• Correctly justifies the structure using all the data provided 4 
+• Correctly determines the structure of compound A AND justifies the 
+structure using some of the data provided 
+OR 
+• Correctly interprets all of the data provided 3 
+• Correctly interprets some of the data provided 2 
+• Provides some relevant information 1 
+Sample answer: 
+Compounds  B and C are alkanols.  
+Compound  B cannot be oxidised – so B must be a tertiary alkanol, therefore there must be 
+branching. 
+Compound  C can be oxidised but not to a carboxylic acid (no reaction with carbonate) – so 
+the oxidation product is a ketone, so compound C is a secondary alkanol.  
+To explain the alkanols produced above, the C   C in compound A is not in the terminal  
+position. Therefore compound A is 2-methylbut-2-ene  
+(C5H10). 
+Page 18 of 20 
+
+      
+        
+  
+ 
+  
+     
+         
+     
+     
+        
+        
+        
+         
+        
+          
+          
+       
+         
+        
+          
+          
+      
+        
+         
+       
+       
+  
+     
+         
+         
+         
+     
+         
+           
+          
+        
+     
+         
+         
+     
+     NESA 2025 HSC Chemistry Marking Guidelines 
+2025 HSC Chemistry
+Mapping Grid 
+Section I 
+Question Marks Content Syllabus outcomes 
+1  1 Mod 6 Properties of Acids and Bases 12-13 
+2  1 Mod 7 Alcohols 12-14 
+3  1 Mod 7 Nomenclature 12-14 
+4  1 Mod 8 Analysis of Inorganic Substances 12-13 
+5  1 Mod 5 Static and Dynamic Equilibrium 12-12 
+6  1 Mod 6 Using Brønsted−Lowry Theory 12-4, 12 -13 
+7  1 Mod 8 Analysis of Inorganic Substances 12-2, 12 -15 
+8  1 Mod 8 Analysis of Organic Substances 12-15 
+9  1 Mod 7 Reactions of Organic Acids and Bases 12-12 
+10  1 Mod 7 Reactions of Organic Acids and Bases 12-14 
+11  1 Mod 6 Using Brønsted−Lowry Theory 12-13 
+12  1 Mod 5 Calculating the Equilibrium Constant 12-4, 12 -12 
+13  1 Mod 5 Static and Dynamic Equilibrium 12-12 
+14  1 Mod 5 Factors that Affect Equilibrium 12-4, 12 -5, 12 -12 
+15  1 Mod 7 Products of Reactions Involving Hydrocarbons 12-5, 12 -14 
+16  1 Mod 7 Polymers 12-4, 12 -14 
+17  1 Mod 8 Analysis of Organic Substances 12-15 
+18  1 Mod 8 Analysis of Inorganic Substances 12-6, 12 -15 
+19  1 Mod 6 Quantitative Analysis 12-4, 12 -13 
+20  1 Mod 5 Solution Equilibria 12-4, 12 -12 
+Section II 
+Question Marks Content Syllabus outcomes 
+21  2 Mod 7 Products of Reactions Involving Hydrocarbons 12-14 
+22  2 Mod 8 Analysis of Inorganic Substances 12-2, 12 -15 
+23  3 Mod 8 Chemical Synthesis and Design 12-2, 12 -15 
+24  (a)  2 Mod 7 Hydrocarbons 12-14 
+24  (b)  3 Mod 7 Products of Reactions Involving Hydrocarbons 12-14 
+25  3 Mod 7 Reactions of Organic Acids and Bases 12-4, 12 -14 
+26  (a)  3 Mod 6 Properties of Acids and Bases 12-4, 12 -13 
+26  (b)  2 Mod 6 Using Brønsted−Lowry Theory 12-5, 12 -13 
+27  (a)  2 Mod 7 Hydrocarbons 12-14 
+27  (b)  3 Mod 7 Products of Reactions Involving Hydrocarbons 12-14 
+27  (c)  3 Mod 5 Static and Dynamic Equilibrium 12-4, 12 -12 
+28  (a)  1 Mod 7 Polymers 12-7, 12-14 
+28  (b)  3 Mod 7 Polymers 12-14 
+Page 19 of 20 
+
+      
+           
+         
+         
+        
+        
+      
+      
+       
+      
+       
+         
+         
+        NESA 2025 HSC Chemistry Marking Guidelines 
+Question Marks Content Syllabus outcomes 
+29  4 Mod 5 Factors that Affect Equilibrium 12-6, 12 -12 
+30  (a)  2 Mod 8 Chemical Synthesis and Design 12-2, 12 -15 
+30  (b)  3 Mod 8 Chemical Synthesis and Design 12-7, 12-15 
+31  (a)  2 Mod 8 Analysis of Inorganic Substances 12-15 
+31  (b)  4 Mod 6 Quantitative Analysis 12-4, 12-13 
+32  5 Mod 5 Solution Equilibria 12-4, 12-6, 12-12 
+33  7 Mod 6 Quantitative Analysis 12-4, 12 -13 
+34  (a)  3 Mod 6 Quantitative Analysis 12-13 
+34  (b)  2 Mod 6 Quantitative Analysis 12-4, 12 -13 
+35  5 Mod 5 Factors that Affect Equilibrium 12-5, 12 -7, 12-12 
+36  7 Mod 8 Analysis of Organic Substances 12-7, 12 -15 
+37  
+ 4 Mod 8 Analysis of Organic Substances 12-15 
+Page 20 of 20 
+

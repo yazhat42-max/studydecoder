@@ -1,0 +1,487 @@
+﻿=== Global sustainability ===
+Subject: geography
+============================================================
+
+Teaching advice for Global sustainability	25
+Teaching advice for Rural and urban places	27
+Teaching advice for Ecosystems and global biodiversity	29
+Glossary	31
+Geography 11-12 (2022) Terms	31
+Global Terms	37
+
+Geography 11-12 (2022)
+Teaching advice for Stage 6
+Teaching advice for Geographical inquiry skills (Year 11)
+Content
+* Geographical inquiry skills
+Teaching advice
+The process of geographical inquiry involves individual or collaborative investigations that start with geographical questions and proceed through the collection, evaluation, interpretation and analysis of information to the development of conclusions and proposals for actions.
+The stages of a complete inquiry in Stage 6 include:
+Acquiring geographical information
+Students develop geographical questions and acquire (either independently or with teacher guidance) primary data and secondary information.
+Processing geographical information
+Students represent, interpret, synthesise and analyse data and information. They should also evaluate data and information for reliability, bias, validity and usefulness.
+Applying geographical understanding
+Students apply the information they have processed to evaluate options, propose actions and predict outcomes. They apply their knowledge and understanding to other geographic contexts.
+Communicating geographical understanding
+Students communicate geographical understanding, findings, conclusions and/or ideas for a range of audiences and reflect on the process and effectiveness of geographical inquiry. Students should be encouraged to use different modes of communication and a range of tools to represent and communicate data and information.
+Teaching advice
+During an inquiry process, students should apply their geographical skills and use geographical tools, including digital and spatial technologies. Inquiries may vary in their scope and geographical context.
+Fieldwork provides opportunities for students to be involved in an active inquiry outside the classroom. This may occur in the school, offsite or in some cases virtually. Accessibility should be a key consideration when selecting sites for fieldwork. There is additional advice on fieldwork in the Teaching and learning support section.
+While the Geographical Investigation offers students the opportunity to apply a broad range of geographical inquiry skills, it is not intended that students would always undertake a complete inquiry process for all focus areas in Year 11 and Year 12. Teachers can provide students with data to represent or analyse rather than have students acquire or collect the information themselves.
+When planning and programming it may be helpful to devise a mapping grid to ensure geographical inquiry skills are distributed across focus areas in Stage 6.
+When undertaking geographical inquiry, students must adhere to ethical practices, including:
+* respecting confidentiality and anonymity
+* avoiding use of deception or misleading information
+* preventing physical and/or emotional risk or harm
+* applying protocols for community consultation and Indigenous Cultural and Intellectual Property (ICIP)
+* obtaining permission to access private property or restricted areas
+* minimising damage to the natural environment
+* observing referencing conventions to avoid plagiarism
+* storing data appropriately, eg securely, depersonalising data collected
+* attributing sources, eg information, data, visual materials.
+Some students with disability may require adjustments and/or additional support to engage in the geographical inquiry process.
+Teaching advice documents
+* Teaching advice (Fieldwork): Geography 11-12
+
+Teaching advice for Geographical tools (Year 11)
+Content
+* Geographical tools
+Teaching advice
+Geographical tools are used during an inquiry to acquire, process, apply and communicate geographical information. Geographical tools enable students to synthesise the findings of a geographical inquiry. There are 5 categories of geographical tools:
+* maps
+* fieldwork
+* graphs and statistics
+* spatial technologies
+* visual representations.
+Maps
+Maps include digital and non-digital mediums, and take many forms, including:
+* large-scale and small-scale maps
+* relief maps
+* choropleth maps
+* flowline maps
+* isoline maps (such as synoptic charts or rainfall maps)
+* land use maps
+* physical maps
+* political maps
+* cultural mapping (spatial representation of Aboriginal perspectives about stories, relationships and/or practices)
+* pr�cis maps (summary maps showing the main features of an area)
+* cadastral maps (showing land ownership boundaries)
+* thematic maps (such as geology or population distribution maps)
+* tactile maps
+* topographic maps
+* special-purpose maps (such as digital elevation models or bike trail maps).
+Maps are used to locate, visualise, represent, display and record spatial data.
+Fieldwork
+Fieldwork is an integral and mandatory part of the study of Geography. It enables an understanding of geographical processes and geographical inquiry. Fieldwork should be an enjoyable experience that enhances learning opportunities for all students because it provides for a variety of teaching and learning approaches.
+The experience of active engagement in fieldwork helps to create and nurture a lifelong interest in, and enthusiasm for the world in which students live. There is further information about fieldwork in the Teaching and learning support section.
+Graphs and statistics
+Graphs - also called charts - take many forms and include digital and non-digital modes, such as:
+* tally charts
+* pictographs
+* column graphs
+* line graphs
+* pie/sector graphs
+* ternary graphs
+* weather maps
+* climate graphs
+* population profiles.
+Statistics also take many forms and include digital and non-digital modes.
+Graphs and statistics are used to collate, organise, illustrate, summarise, compare and predict patterns, relationships and trends in geographical data and information.
+There are several ways to explicitly teach students to analyse the geographical data captured in graphs and statistics. Two common methods are PQE (pattern, quantify, exceptions) and Layers of inference which provide a framework to analyse and interpret geographic tools.
+Spatial technologies
+Spatial technologies include any software or hardware that interacts with real-world locations, such as:
+* virtual maps
+* satellite images
+* global positioning systems (GPS)
+* geographic information systems (GIS)
+* remote sensing
+* augmented reality (overlaying digital information on a map or in the physical world).
+Spatial technologies are used to collect, record, represent, manipulate, analyse and communicate spatial data.
+Visual representations
+Visual representations take many forms and include digital and non-digital mediums, such as:
+* diagrams
+* images
+* photographs
+* paintings
+* illustrations
+* symbols
+* tactile models
+* posters
+* collages
+* cartoons
+* multimedia
+* infographics
+* mind maps.
+Visual representations are used to display, visualise, analyse and communicate geographical data and information. These representations can be used by students to communicate geographic information in a variety of ways.
+Teaching advice
+When planning and programming it may be helpful to devise a mapping grid to ensure the use of geographical tools is distributed across focus areas in Stage 6. Teachers can make decisions about the appropriate tools to support learning in each focus area, taking into consideration students' needs, interests and abilities. Accessibility should be a key consideration when selecting geographical tools. For example, selecting images with alternative text descriptions, infographics with transcripts, or graphs and charts with appropriate colour contrast.
+It is important for teachers to unpack examples of these geographical tools for students and explicitly teach students the various ways they can be used to support geographical inquiry.
+Some students with disability may require adjustments to access geographical tools, eg tactile maps to investigate landforms and features, colour-blind friendly maps, assistive technology such as a screen reader to access geographical information, video/audio recording equipment to capture soundscapes, augmentative and alternative communication to communicate geographical information and using accessible locations for fieldwork.
+Teaching advice documents
+* Teaching advice (Fieldwork): Geography 11-12
+
+Teaching advice for Earth's natural systems
+Content
+* Earth's natural systems
+Teaching advice
+Content focus
+Students investigate the diverse landscapes of the Earth's surface and its distinctive physical features to inspire curiosity and wonder. They examine the cycles, circulations, interconnections and spatial patterns that combine to form the Earth's integrated systems, and investigate natural processes, cycles and circulations that change the Earth's land and water cover. It is a study of the Earth's interdependent systems, the complexities and connectedness of different components.
+This focus area provides opportunities for students to develop a holistic understanding of the natural world. The geographical understanding developed though this focus area can provide a foundation for Stage 6.
+The content is described with examples; however, the outcomes must guide the selection of studies, fieldwork and assessment.
+It is important to revisit the requirements for this focus area in the Course Overview when programming.
+Teaching advice
+This section of the course focuses on processes and systems, not a particular ecosystem. Students could investigate natural cycles and circulations across a variety of global environments and contexts. Alternatively, they may learn about the concept of natural cycles and flows through the study of a particular place such as a mountain environment, or through a natural phenomenon/event such as a cyclone.
+Geographical inquiry skills and tools
+The geographical inquiry skills and tools content are to be integrated as appropriate.
+A broad range of geographical tools should be applied to this topic in various ways. The following examples illustrate some approaches:
+* using spatial technologies to investigate and map physical features across locations
+* identifying, collecting and recording primary data using fieldwork methods in the investigation of natural systems
+* constructing a transect to describe spatial change and associations in a specific area
+* recognising the key features of synoptic charts and climate graphs to describe atmospheric processes
+* orientating a photograph of a local environment to a map.
+Applying geography in the contemporary world
+Students develop an appreciation of the relevance of geographical understanding of the Earth's natural systems to the contemporary world, including to particular professions and responsible management.
+Examples of the application of geographical understanding and methods could include:
+* meteorological forecasting
+* planning hazard mitigation
+* local council maintenance of coastal areas
+* practising environmental law.
+These examples provide opportunities to link geographical inquiry skills and tools to particular areas of employment, such as:
+* meteorologist
+* emergency management planning officer
+* environmental engineer
+* marine biologist
+* land and environmental protection solicitor.
+Examples of fieldwork opportunities
+Examples of fieldwork could include investigating local systems and their associated natural cycles, such as:
+* coasts 
+* wetlands (freshwater or intertidal)
+* flood plains.
+Fieldwork techniques can be used to collect biophysical data (within school grounds or offsite) such as recording and observing weather data or modelling catchment runoff patterns.
+Glossary terms and concepts
+The syllabus glossary includes information to assist with understanding terms and concepts used in this focus area, such as climate, continentality, geomorphic, geomorphic processes, inspirational landscapes, Overview Effect.
+Teaching advice documents
+* Teaching advice (Fieldwork): Geography 11-12
+
+Teaching advice for People, patterns and processes
+Content
+* People, patterns and processes
+Teaching advice
+Content focus
+Students investigate evidence of human diversity across the Earth's surface. They examine the spatial patterns and extent of the human footprint, and the human transformations shaping those patterns. Students investigate the unique character of places and how various human processes are shaping them.
+The content is described with examples; however, the outcomes must guide the selection of studies, fieldwork and assessment.
+It is important to revisit the requirements for this focus area in the Course Overview when programming.
+Teaching advice
+Geographical inquiry skills and tools
+The geographical inquiry skills and tools are to be integrated as appropriate and content can be explored using geographical tools. The following examples illustrate some approaches:
+* calculating density of human features in an area using a map
+* examining tangible and intangible cultural features using a variety of differing types of maps
+* constructing a cultural map that represents human diversity across a nation or continent
+* constructing a national or continental transect, identifying evidence of human diversity, including land use and social or cultural characteristics
+* interpreting population profiles of different places to understand trends, change and future implications
+* representing the movement of people or resources using a diagram or map
+* constructing a pr�cis map to show land use
+* calculating areas of land use as a percentage or ratio using maps, graphs or statistics
+* using a survey or interview to collect primary data
+* applying ethical research practices.
+This focus area provides opportunities to incorporate a variety of geographical tools to develop visual literacy such as using geographic information system (GIS) to investigate change over time.
+Applying geography in the contemporary world
+Students develop an appreciation of the relevance of geographical understanding of people, patterns and processes to the contemporary world, including to particular professions and responsible management.
+Examples of the application of geographical understanding and methods could include:
+* advising diplomats and politicians
+* practising investigative journalism
+* participating in non-government organisations (NGOs)
+* providing background information for tourist agencies.
+These examples provide opportunities to link geographical inquiry skills and tools to particular areas of employment such as:
+* demographer
+* support worker - refugee services
+* tourism operator
+* diplomatic attach�.
+Examples of fieldwork opportunities
+Study 1: Human resilience in diverse environments
+Investigating a local environment using geographical inquiry skills focusing on aspects such as: 
+* observing spatial patterns and characteristics
+* mapping natural resources, including creative use of resources
+* using GIS and analysing data to evaluate impacts and responses to change.
+Study 2: Local places and global economic change
+Investigating changes to local places using geographical inquiry skills focusing on aspects such as:
+* photographing types of infrastructure investment
+* researching changes to employment patterns through interviews or surveys
+* mapping land use and ownership
+* using spatial technologies such as drones to investigate urban growth.
+Study 3: Place and cultural change
+Investigating local places and/or cultures using geographical inquiry skills focusing on aspects such as:
+* observing and recording examples of culture of place - for example, noise, colour, architecture
+* interviewing local Aboriginal Elders about their experiences of cultural maintenance and change
+* surveying local residents on perceptions of cultural change.
+Read about Aboriginal and Torres Strait Islander principles and protocols
+Study 4: Political power and contested spaces
+Investigating political power and contested spaces using geographical inquiry skills focusing on aspects such as:
+* virtual fieldwork - using spatial technologies to investigate spatial patterns and characteristics of a contested space
+* a local contested space such as a cultural heritage site with development prospects.
+Study 5: Technological advances and the transformation of places
+Investigating places using geographical inquiry skills and tools focusing on aspects such as: 
+* visiting a port or airport to observe and collect data on the impact of technological advances and sustainable practices
+* creating field sketches or sketch maps to show transport links within an urban centre
+* using plans such as transport plans to consider or predict what transformation could look like and the potential impacts at a site.
+Glossary terms and concepts
+The syllabus glossary includes information to assist with understanding terms and concepts used in this focus area, such as culture, economic integration, geopolitical, human wellbeing, regional centres, settlement pattern, sociocultural, transformation.
+Teaching advice documents
+* Teaching advice (Fieldwork): Geography 11-12
+
+Teaching advice for Human-environment interactions
+Content
+* Human-environment interactions
+Teaching advice
+Content focus
+Students investigate the global nature of land cover change from a temporal and spatial perspective, as they examine the long-term development of natural systems, compared to the short time frame of human activity. They investigate evidence for, and causes of, climate change, as well as the role of humans in contributing to land cover change. Students investigate the interaction between the Earth's natural systems and people.
+The content is described with examples; however, the outcomes must guide the selection of studies, fieldwork and assessment.
+It is important to revisit the requirements for this focus area in the Course Overview when programming.
+Teaching advice
+When choosing one of the three study options for this focus area, consider areas that support the concepts of local, regional, national and global scale.
+Study 1: A geographic region
+A region is a place that has a commonly recognised identity (although there are varying perspectives in terms of boundaries). Regions can be studied at a variety of scales, for example:  
+* Liverpool Plains
+* Murray-Darling Basin
+* the Caribbean
+* the Arctic.
+Regional boundaries can be fluid and this can depend on perspective. There is likely to be a zone of transition. The selection of a study should consider what makes the region different to surrounding areas.
+Study 2: A contemporary hazard
+The selected hazard should be considered in general and then a case study approach can be used to investigate the management and responses to one specific event. A contemporary hazard should be viewed as one that has occurred this century.  
+Study 3: Climate change
+This is a more in-depth study of climate change than the introductory content in the Overview of change to Earth's natural systems over time section of this focus area. Scale is an important concept in this study option - for example, investigating impacts, challenges and responses at a range of scales. Teachers should consider building on the concepts and selecting different examples to those that may be studied in Stages 4-5.  
+Applying geography in the contemporary world
+Students develop an appreciation of the relevance of geographical understanding of human-environment interactions to the contemporary world, including particular professions and responsible management.
+Examples of the application of geographical understanding and methods could include:
+* community development
+* land development
+* tourism management
+* hazard assessment
+* planning hazard mitigation
+* natural resource management
+* international cooperation in response to melting glaciers and retreating ice sheets.
+This provides opportunities to link the geographical inquiry skills and tools to particular areas of employment such as:
+* mine geologist
+* hydrological engineer  
+* outdoor education trainer
+* climate change analyst
+* bushfire management advisor.
+Geographical inquiry skills and tools
+The geographical inquiry skills and tools content are to be integrated as appropriate.
+The following examples illustrate some approaches:
+* constructing, interpreting and analysing graphs and statistics to describe human-environment interactions
+* constructing mind maps or diagrams to illustrate the impact of natural and human change
+* using photographs to identify spatial associations, interactions and change
+* identifying the location of a place on small and large-scale maps
+* developing geographical questions to investigate challenges and opportunities of human-environment interactions.
+Examples of fieldwork opportunities
+Study 1: A geographic region
+Investigating a region using geographical inquiry skills focusing on aspects such as: 
+* local fieldwork - interview residents to gain perspectives about the character of their region or regional boundaries 
+* virtual fieldwork (international study) - using spatial technologies to investigate unique characteristics and evidence of change.
+Study 2: A contemporary hazard
+Investigating a natural or ecological hazard (in general), then conducting fieldwork to support the management or impacts of one event, using geographical inquiry skills focusing on aspects such as: 
+* photographing evidence of one natural or ecological hazard - for example, flood level signs, burnt vegetation, social distancing signs, QR codes
+* constructing a transect representing an area of forest to measure new growth after a fire
+* drawing pr�cis maps of flood zones to compare with older flood zone maps.
+Study 3: Climate change
+Investigating local environments using geographical inquiry skills focusing on aspects such as: 
+* engaging with climate change experts via social media or virtual meeting platforms to assess varying perspectives
+* measuring surface temperature at locations around a student's local environment to explain concepts (such as albedo or aspect) that link to climate change
+* observing plant communities and predicting change linked to increasing temperatures, reduced precipitation or greater intensity of extreme weather events.
+Key glossary terms and concepts
+The syllabus glossary includes information to assist with understanding terms and concepts used in this focus area, such as climate change, ecological hazard, geographic region, land cover, natural hazard, risk management.
+Teaching advice documents
+* Teaching advice (Fieldwork): Geography 11-12
+
+Teaching advice for Geographical investigation
+Content
+* Geographical investigation
+Teaching advice
+Students plan and conduct ONE Geographical Investigation to develop their understanding of the nature of geographical inquiry through practical research and the application of geographical concepts, skills and tools.
+The Geographical Investigation provides opportunities for all students to apply geographical concepts, skills and tools through practical research in:
+* their local area, or
+* an area that is accessible for the purpose of primary data collection.
+The Geographical Investigation should use active inquiry methodologies to extend an area of individual or group interest that relates to the Year 11 course. It provides opportunity for individual and/or collaborative inquiry. The hours spent on the Geographical Investigation are in addition to the 12 hours of mandatory fieldwork required in Year 11.
+Teaching advice
+There are explicit requirements for undertaking the Geographical Investigation. Each step in the syllabus content for this focus area is an essential part of the process.
+The Geographical Investigation topic/inquiry should be:
+* narrowly focused but with enough scope to apply geographical inquiry skills and tools
+* situated in a convenient location.
+This will enable students to plan, sequence and answer their geographical inquiry questions through the collection of primary data and secondary information that they have sourced themselves.
+Teachers should model the steps in a geographical inquiry process (and how to use a variety of geographical tools) to support students in applying their knowledge and skills to successfully complete the Geographical Investigation.
+For additional information refer to the Geographical skills and tools Teaching advice
+Students are encouraged to be present and communicate their findings using methods that suit their context, skills, preferences and individual circumstances.
+Applying geography in the contemporary world
+Students develop an understanding of the relevance and the nature of geographical inquiry and how it can contribute to effective management of places and environments. This also allows students to engage with geographical opportunities and challenges in the public sphere, including the role and influence of:
+* research institutions
+* government
+* advocacy groups
+* the media
+* the individual.
+This provides an opportunity to link the geographical inquiry skills and tools to particular areas of employment such as:
+* research scientist
+* politician   
+* cartographer
+* town planner
+* environmental lobbyist
+* environmental journalist or filmmaker.
+Key glossary terms and concepts
+The syllabus glossary includes information to assist with understanding terms and concepts used in this focus area, such as cartographic conventions, copyright, ethical practices, Indigenous Cultural and Intellectual Property (ICIP), intellectual property (IP), primary data, secondary information, spatial change.
+Teaching advice documents
+* Teaching advice (Fieldwork): Geography 11-12
+
+Teaching advice for Geographical inquiry skills (Year 12)
+Content
+* Geographical inquiry skills
+Teaching advice
+The process of geographical inquiry involves individual or collaborative investigations that start with geographical questions and proceed through the collection, evaluation, interpretation and analysis of information to the development of conclusions and proposals for actions.
+The stages of a complete inquiry in Stage 6 include:
+Acquiring geographical information
+Students develop geographical questions and acquire (either independently or with teacher guidance) primary data and secondary information.
+Processing geographical information
+Students represent, interpret, synthesise and analyse data and information. They should also evaluate data and information for reliability, bias, validity and usefulness.
+Applying geographical understanding
+Students apply the information they have processed to evaluate options, propose actions and predict outcomes. They apply their knowledge and understanding to other geographic contexts.
+Communicating geographical understanding
+Students communicate geographical understanding, findings, conclusions and/or ideas for a range of audiences and reflect on the process and effectiveness of geographical inquiry. Students should be encouraged to use different modes of communication and a range of tools to represent and communicate data and information.
+Teaching advice
+During an inquiry process, students should apply their geographical skills and use geographical tools, including digital and spatial technologies. Inquiries may vary in their scope and geographical context.
+Fieldwork provides opportunities for students to be involved in an active inquiry outside the classroom. This may occur in the school, offsite or in some cases virtually. Accessibility should be a key consideration when selecting sites for fieldwork. There is additional advice on fieldwork in the Teaching and learning support section.
+While the Geographical Investigation offers students the opportunity to apply a broad range of geographical inquiry skills, it is not intended that students would always undertake a complete inquiry process for all focus areas in Year 11 and Year 12. Teachers can provide students with data to represent or analyse rather than have students acquire or collect the information themselves.
+When planning and programming it may be helpful to devise a mapping grid to ensure geographical inquiry skills are distributed across focus areas in Stage 6.
+When undertaking geographical inquiry, students must adhere to ethical practices, including:
+* respecting confidentiality and anonymity
+* avoiding use of deception or misleading information
+* preventing physical and/or emotional risk or harm
+* applying protocols for community consultation and Indigenous Cultural and Intellectual Property (ICIP)
+* obtaining permission to access private property or restricted areas
+* minimising damage to the natural environment
+* observing referencing conventions to avoid plagiarism
+* storing data appropriately, eg securely, depersonalising data collected
+* attributing sources, eg information, data, visual materials.
+Some students with disability may require adjustments and/or additional support to engage in the geographical inquiry process.
+Teaching advice documents
+* Teaching advice (Fieldwork): Geography 11-12
+
+Teaching advice for Geographical tools (Year 12)
+Content
+* Geographical tools
+Teaching advice
+Geographical tools are used during an inquiry to acquire, process, apply and communicate geographical information. Geographical tools enable students to synthesise the findings of a geographical inquiry. There are 5 categories of geographical tools:
+* maps
+* fieldwork
+* graphs and statistics
+* spatial technologies
+* visual representations.
+Maps
+Maps include digital and non-digital mediums, and take many forms, including:
+* large-scale and small-scale maps
+* relief maps
+* choropleth maps
+* flowline maps
+* isoline maps (such as synoptic charts or rainfall maps)
+* land use maps
+* physical maps
+* political maps
+* cultural mapping (spatial representation of Aboriginal perspectives about stories, relationships and/or practices)
+* pr�cis maps (summary maps showing the main features of an area)
+* cadastral maps (showing land ownership boundaries)
+* thematic maps (such as geology or population distribution maps)
+* tactile maps
+* topographic maps
+* special-purpose maps (such as digital elevation models or bike trail maps).
+Maps are used to locate, visualise, represent, display and record spatial data.
+Fieldwork
+Fieldwork is an integral and mandatory part of the study of Geography. It enables an understanding of geographical processes and geographical inquiry. Fieldwork should be an enjoyable experience that enhances learning opportunities for all students because it provides for a variety of teaching and learning approaches.
+The experience of active engagement in fieldwork helps to create and nurture a lifelong interest in, and enthusiasm for the world in which students live. There is further information about fieldwork in the Teaching and learning support section.
+Graphs and statistics
+Graphs - also called charts - take many forms and include digital and non-digital modes, such as:
+* tally charts
+* pictographs
+* column graphs
+* line graphs
+* pie/sector graphs
+* ternary graphs
+* weather maps
+* climate graphs
+* population profiles.
+Statistics also take many forms and include digital and non-digital modes.
+Graphs and statistics are used to collate, organise, illustrate, summarise, compare and predict patterns, relationships and trends in geographical data and information.
+There are several ways to explicitly teach students to analyse the geographical data captured in graphs and statistics. Two common methods are PQE (pattern, quantify, exceptions) and Layers of inference which provide a framework to analyse and interpret geographic tools.
+Spatial technologies
+Spatial technologies include any software or hardware that interacts with real-world locations, such as:
+* virtual maps
+* satellite images
+* global positioning systems (GPS)
+* geographic information systems (GIS)
+* remote sensing
+* augmented reality (overlaying digital information on a map or in the physical world).
+Spatial technologies are used to collect, record, represent, manipulate, analyse and communicate spatial data.
+Visual representations
+Visual representations take many forms and include digital and non-digital mediums, such as:
+* diagrams
+* images
+* photographs
+* paintings
+* illustrations
+* symbols
+* tactile models
+* posters
+* collages
+* cartoons
+* multimedia
+* infographics
+* mind maps.
+Visual representations are used to display, visualise, analyse and communicate geographical data and information. These representations can be used by students to communicate geographic information in a variety of ways.
+Teaching advice
+When planning and programming it may be helpful to devise a mapping grid to ensure the use of geographical tools is distributed across focus areas in Stage 6. Teachers can make decisions about the appropriate tools to support learning in each focus area, taking into consideration students' needs, interests and abilities. Accessibility should be a key consideration when selecting geographical tools. For example, selecting images with alternative text descriptions, infographics with transcripts, or graphs and charts with appropriate colour contrast.
+It is important for teachers to unpack examples of these geographical tools for students and explicitly teach students the various ways they can be used to support geographical inquiry.
+Some students with disability may require adjustments to access geographical tools, eg tactile maps to investigate landforms and features, colour-blind friendly maps, assistive technology such as a screen reader to access geographical information, video/audio recording equipment to capture soundscapes, augmentative and alternative communication to communicate geographical information and using accessible locations for fieldwork.
+Teaching advice documents
+* Teaching advice (Fieldwork): Geography 11-12
+
+Teaching advice for Global sustainability
+Content
+* Global sustainability
+Teaching advice
+Content focus
+Students investigate the geographic concept of sustainability, with a focus on the global context. They develop an understanding of the role of sustainability in meeting the needs of present and future generations around the world and maintaining the ecological processes on which all life depends. They examine principles of, and actions for, sustainability, including practices of Indigenous Peoples.
+The content is described with examples; however, the outcomes must guide the selection of studies, fieldwork and assessment.
+It is important to revisit the requirements for this focus area in the Course Overview when programming.
+Teaching advice
+The focus is on an economic activity and although visiting a local enterprise, representative of the global activity can be a relevant aspect for fieldwork, the global context and nature of sustainability strategies for the economic activity should be at the forefront when planning and programming this focus area.
+Teachers selecting a global economic activity should consider the need to examine a range of strategies implemented at a global scale, evaluate sustainability using one or more criteria and critically analyse one strategy. In this context, the critical analysis of one strategy would include evaluation.
+There are several evaluation criteria that can be used, such as the Sustainable Development Goal (SDG) indicators and industry certification standards. Teachers may like to use some examples of sustainability criteria in the sample unit of work; however, this list is not comprehensive or prescriptive. Due to the contemporary nature of this focus area, new information on and examples of sustainability are constantly evolving.
+Global sustainability is a complex topic that underpins learning in other areas. A deep exploration of the essential concepts is required. There are various understandings of the difference between sustainability and sustainable development, that help students develop an understanding of the field of sustainability. In the Geography Stage 6 syllabus, the pillars of sustainability are social, economic, environmental and cultural.
+Applying geography in the contemporary world
+Students develop an appreciation of the relevance of geographical understanding of human activities and sustainability to the contemporary world, including to particular areas of employment and responsible management.
+Examples of the application of geographical understanding and methods could include:
+* developing criteria to measure and evaluate sustainability
+* advising diplomats and politicians
+* managing or advising organisations and businesses
+* undertaking sustainability assessments.
+These examples provide opportunities to link geographical inquiry skills and tools to particular areas of employment such as:
+* sustainability consultant
+* environmental scientist
+* environmental health officer
+* non-government organisation (NGO) support worker.
+Geographical inquiry skills and tools
+The geographical inquiry skills and tools content are to be integrated as appropriate.
+A broad range of geographical tools should be applied to this focus area in various ways, including:
+* using conceptual models to examine features of sustainability such as the pillars of sustainability
+* constructing a map locating the spatial pattern of a global economic activity
+* using spatial technologies to determine the scale, connections or impacts of a global economic activity
+* using maps and photographs to calculate the area of an economic activity
+* using graphs, tables, annotated diagrams, multimedia or written descriptions to communicate research findings.
+Opportunities for fieldwork
+These may include:
+* conducting interviews and surveys to determine people's understanding of the SDGs relevant to their personal and local contexts
+* determining the effects of human activity on the environment through interviewing, water-testing and photography
+* investigating a local place that reflects the global economic activity (such as a farm, mine or forest), focusing on the global perspective when evaluating strategies for sustainability
+* examining a range of management strategies for sustainability evident in a global economic activity at the local scale and using whole-class designed criteria to evaluate these.
+Key glossary terms and concepts
+The syllabus glossary includes information to assist with understanding terms and concepts used in this focus area, such as benefit sharing, ecological integrity, range of scales, sociocultural.
+Teaching advice documents
+* Teaching advice (Fieldwork): Geography 11-12

@@ -1,0 +1,85 @@
+﻿=== Data Visualisation ===
+Subject: enterprise-computing
+============================================================
+
+Data visualisation
+Outcomes
+A student:
+    • explains how systems meet the needs of a range of enterprises EC-12-01
+    • explains the function of data and information within enterprise computing systems EC-12-02
+    • explains and evaluates how data is safely and securely collected, stored and manipulated when developing enterprise computing systems EC-12-03
+    • explains how data is used in enterprise computing systems EC-12-04
+    • applies tools and resources to analyse complex datasets EC-12-05
+    • analyses how innovative technologies have influenced enterprise computing systems EC-12-06
+    • explains the social, ethical and legal implications of the application of enterprise computing systems on the individual, society and the environment EC-12-07
+    • justifies the selection and use of tools and resources to design and develop an enterprise computing system EC-12-08
+    • evaluates the effectiveness of an enterprise computing system EC-12-10
+    • communicates an enterprise computing solution to a specific audience EC-12-11
+Related Life Skills outcomes: CT-LS-01, CT-LS-02, CT-LS-03, CT-LS-04, CT-LS-05, CT-LS-06, CT-LS-07, CT-LS-08, CT-LS-09, CT-LS-10, CT-LS-11, CT-LS-12, CT-LS-13
+Content
+Using data to tell a story
+    • Explain the purposes of data visualisation
+Including:
+    • simplifying understanding
+    • telling a story
+    • highlighting significant results
+    • Describe how features of software contribute to a better understanding of datasets through data visualisation, including spreadsheets, creative design applications and combining applications to track trends and forecast
+    • Identify patterns in data by interpreting and comparing datasets for an enterprise, social or ethical issue to highlight trends and for predictive data analytics
+    • Investigate the impact of the evolution of hardware and software on the field of data analytics
+Including:
+    • processing power
+    • storage/memory
+    • communication media
+    • Describe online analytical processing (OLAP)
+    • Assess data integrity in the development of a data visualisation
+Including:
+    • ownership
+    • source
+    • validation
+    • risk
+    • Explain the impact of enterprise data warehousing on data visualisation
+Including:
+    • analysis and use of historical data trends and patterns
+    • correlation with current data
+    • data refinement/optimisation
+    • Explain how big data affects the design and development of data visualisation
+Including:
+    • scope of visible information
+    • types and depth of insight provided by the data
+    • Evaluate bias in data collection, storage and analysis when developing visualisations
+Including:
+    • accuracy
+    • audience
+    • data source
+    • unconscious bias
+Interpreting data visualisations
+    • Evaluate the effectiveness of software tools used to develop data visualisations
+Including:
+    • spreadsheets used to develop dashboards
+    • presentation software used to present data analysis
+    • business analytics services, including ‘as a service’ products
+    • custom software solutions
+    • Interrogate data from a data visualisation
+Including:
+    • interpreting what you see
+    • aggregation
+    • filtering
+    • the effect of outliers
+    • reasoning
+Designing for user experience
+    • Use graphic design tools to assist in the graphic development of a data visualisation
+    • Explain how user experience (UX) influences the development of effective data visualisations
+Including:
+    • relevance to the audience
+    • audience interpretation
+    • customisation
+    • live analysis
+    • Develop and implement criteria for evaluating the effectiveness of user experiences
+    • Investigate the impact of emerging hardware and software technologies on user interface (UI) and UX design and development
+Creating data visualisations
+    • Research, source, organise and store data appropriate for a data visualisation
+    • Design and develop a data visualisation for a specific scenario to represent trends, patterns and relationships, and illustrate predictive analysis incorporating big data
+    • Investigate and implement methods to maintain data security
+Including:
+    • cybersecurity
+    • data backup

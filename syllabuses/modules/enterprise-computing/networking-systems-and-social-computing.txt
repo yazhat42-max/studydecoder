@@ -1,0 +1,127 @@
+﻿=== Networking Systems and Social Computing ===
+Subject: enterprise-computing
+============================================================
+
+Networking systems and social computing
+Outcomes
+A student:
+    • describes how systems are used in a range of enterprises EC-11-01
+    • describes the function of data and information within enterprise computing systems EC-11-02
+    • describes how data is safely and securely collected, stored and manipulated when developing enterprise computing systems EC-11-03
+    • describes how data is used in enterprise computing systems EC-11-04
+    • applies tools and resources to analyse datasets EC-11-05
+    • explains how innovative technologies have influenced enterprise computing systems EC-11-06
+    • explores the social, ethical and legal implications of the application of enterprise computing systems on the individual, society and the environment EC-11-07
+    • selects and uses tools and resources to design and develop an enterprise computing system EC-11-08
+    • documents the management and evaluates the development of an enterprise solution EC-11-09
+    • investigates the effectiveness of an enterprise computing system EC-11-10
+    • communicates an enterprise computing solution to an intended audience EC-11-11
+Related Life Skills outcomes: CT-LS-01, CT-LS-02, CT-LS-03, CT-LS-04, CT-LS-05, CT-LS-06, CT-LS-07, CT-LS-08, CT-LS-09, CT-LS-10, CT-LS-11, CT-LS-12, CT-LS-13
+Content
+Introduction to human-centric computing
+    • Investigate the effects of disruptive technology on everyday computing
+Including:
+    • effects on the individual
+    • innovations in infrastructure, hardware and software
+    • trends and technology buzzwords
+    • Investigate the application of graph and network theory in the design of social networks
+    • Describe how web applications and dedicated apps for mobile devices influence the success of social networking
+    • Investigate how the development of hardware and software has influenced the adoption of the Internet of Things (IoT) and the Internet of Me (IoMe)
+Including:
+    • impact on the individual
+    • impact on enterprise, including edge computing
+    • hardware infrastructure
+    • software protocols
+    • data backup
+    • regulation, compliance and cybersecurity
+    • Outline the business and individual cultural characteristics that contribute to the success of start-ups
+Storage and workflow in enterprise networks
+    • Investigate how the developments in network connectivity and speed have influenced work practices within an enterprise
+Including:
+    • remote working opportunities
+    • file sharing
+    • task delegation and monitoring
+    • Examine the benefits and limitations of digital workflows operating in an enterprise
+    • Investigate data storage requirements for an enterprise
+Including:
+    • capacity
+    • accessibility
+    • location
+    • security
+    • Explore cloud computing services
+Including:
+    • Infrastructure as a Service (IaaS)
+    • Software as a Service (SaaS)
+    • Platform as a Service (PaaS)
+    • Compare different types of cloud-based data storage in terms of access and services
+Including:
+    • public cloud
+    • private cloud
+    • hybrid cloud
+    • non-cloud on premises
+Network architecture and infrastructure
+    • Describe key components of an organisation’s information technology infrastructure
+Including:
+    • networking, including servers, storage and end-point devices
+    • on-premises computing
+    • cloud computing
+    • Describe how transmission media is used in networks
+    • Explain factors that interfere with the transmission of data across a computer and social network
+Including:
+    • distance
+    • topography
+    • physical barriers
+    • environmental barriers
+    • Investigate ways to improve data flow within a system, considering proximity and modes of connectivity
+Including:
+    • size, location and power of antennae when using satellite and microwave
+    • traffic filtering
+    • flow scheduling and traffic monitoring on telecommunications, including wireless broadband for mobile devices (3G→), Bluetooth and wi-fi
+    • Investigate the application of graph theory and network theory in the design of optimised computer networks
+Including:
+    • adjacency
+    • centrality
+    • connectedness
+    • weighted graphs
+    • Explore device interoperability within an Internet of Things (IoT) based enterprise network, including supervisory control and data acquisition (SCADA)
+    • Investigate communication protocols between devices in an Internet of Things (IoT) network
+    • Explore the benefits of interfacing machine learning (ML) with IoT
+Including:
+    • data-driven optimisation to enable predictive maintenance and logistics in manufacturing
+    • data acquired from medical imaging to improve accuracy of diagnosis
+    • improving traffic control through ML and sensors
+    • automating soil moisture data collection to manage farm irrigation
+    • Investigate security measures used to control access to networks
+Including:
+    • password systems
+    • biometric measures
+    • CAPTCHA
+    • trusted Platform Module (TPM)
+    • automatic software updates
+    • Examine data security for an intelligent home network
+Including:
+    • access levels, including universal plug and play (UPnP)
+    • passwords and firewalls
+    • port management on routers and switches
+    • wi-fi device positioning
+    • virtual private networks (VPNs) and hidden networks
+    • backup and disaster recovery
+Creating a network
+    • Design and model a network of interconnected devices for a specific purpose
+    • Apply appropriate project management tools to develop a project
+    • Configure devices within a network
+Including:
+    • naming the device
+    • updating the device
+    • configuring security protocols
+    • connecting to the internet
+    • Implement procedures and security protocols considering cybersecurity
+    • Explore opportunities for optimising network performance
+Including:
+    • improving bandwidth
+    • updating drivers and firmware
+    • Evaluate the role of hardware and software related to the transmission of data
+Including:
+    • unsecured data
+    • encrypted data
+    • infrastructure

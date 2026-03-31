@@ -1,0 +1,73 @@
+﻿=== Formulas and equations ===
+Subject: mathematics-standard
+============================================================
+
+• Mathematics Standard Year 11 Formulas and equations
+    • Mathematics Standard Year 11 Linear relationships
+Making connections
+Connections
+Course/Stage/Focus area
+Exponential graphs are connected to finance graphs such as compound interest and depreciation.    
+Mathematics Standard 2 Year 12
+    • Investment and loans
+    • Annuities
+Non-linear relationships, which are common in science and economics and underlie many physical phenomena, require graphical interpretation and critical evaluation skills for decision-making in various domains.
+Real-world applications
+Considerations
+    • When solving a pair of simultaneous equations algebraically, either the substitution or elimination method could be used. Students should be encouraged to use the method they are most confident in. 
+    • In break-even analysis, students learn that the profit or loss can be calculated using the formula Students should be able to recognise and interpret the income equation and cost equation drawn on the same graph. 
+    • The income formula is a simple linear equation of the form , where  is the number of units sold and  is the selling price per unit sold. The cost formula is of the form , where  is the number of units sold,  is the cost price per unit manufactured, and  is the fixed costs of production. The point of intersection of  and  is the ‘break-even point’. 
+    • When graphing quadratic relationships students are not required to factorise quadratics, use the quadratic formula or understand shifts of the graph. Students are encouraged to use a table of values to graph quadratic relationships. 
+    • The syllabus content refers to identifying the - and -intercepts from the graph. Students are not required to find intercepts using the equation. 
+    • When considering values for  and  for which the quadratic model  is valid, students are not required to use the formal language or notation of the domain and range. Restrictions on the variables are to be considered in the context of the question. For example, when considering a quadratic model with time as a variable, time must be greater than zero, and therefore negative values do not make sense. 
+    • When graphing exponential and reciprocal relationships, some students may benefit from understanding of asymptotes but are not expected to extend their understanding to include it. 
+    • Variation problems should be presented in a number of formats, including in written, tabular and graphical form.
+    • When modelling physical phenomena, the independent variable will usually be limited to positive values and zero.
+Diversity of learners
+    • Teachers should consider the accessibility of tools and resources. Considerations for tools such as spreadsheets, calculators and applications may include compatibility with screen readers and other assistive technologies including alternative input devices and accessible calculators (see approved calculators). Considerations for resources may include the language demands, readability of, and long descriptions for images, and providing alternative text for graphs and diagrams.
+    • Relating mathematics learning to real-world contexts supports learning by providing concrete examples and establishing relevance to facilitate motivation and engagement. Manipulatives and real-world objects may reduce the language load for students.
+    • Students with disability may require adjustments including access to visual or digital aids to communicate and demonstrate knowledge, understanding and skills.
+    • Students for whom English is an additional language or dialect (EAL/D) may require additional support and targeted strategies to support their learning of language specific to mathematics.
+    • The pace and complexity of learning may need to be adjusted for students who progress at different rates.
+Teaching advice for Investment and loans
+Content
+    § Investment and loans
+Teaching advice
+Purpose
+The study of financial mathematics is important in developing students’ ability to analyse different financial situations, make informed financial decisions, be aware of the consequences of such decisions, manage personal finances effectively, and solve financial problems.
+Key terms
+    • appreciation
+    • brokerage
+    • buy now, pay later
+    • compound interest
+    • credit card
+    • declining balance method of depreciation
+    • depreciation
+    • dividend (shares)
+    • dividend yield
+    • exponential relationship
+    • future value
+    • inflation
+    • interest
+    • interest rate
+    • interest-free period
+    • investment
+    • linear
+    • loan
+    • lump-sum payment
+    • minimum payment
+    • model
+    • present value
+    • reducing balance loan
+    • repayment
+    • salvage value
+    • share
+    • simple interest
+    • straight-line method of depreciation
+    • term deposit
+    • transaction
+Prior knowledge, skills and understanding
+These concepts may be reviewed as required:
+    • converting percentages to fractions and decimals
+    • conversion of time periods, such as years to months
+    • substitution into formulas

@@ -1,0 +1,87 @@
+﻿=== Trigonometry and measure of angles ===
+Subject: mathematics-advanced
+============================================================
+
+MA-T1 Trigonometry and Measure of Angles 
+MA-T2 Trigonometric Functions and Identities
+
+
+Trigonometric Functions
+MA-T1 Trigonometry and Measure of Angles 
+Outcomes
+A student:
+� uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problems MA11-1
+� uses the concepts and techniques of trigonometry in the solution of equations and problems involving geometric shapes MA11-3
+� uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
+� provides reasoning to support conclusions which are appropriate to the context MA11-9
+Subtopic Focus
+The principal focus of this subtopic is to solve problems involving triangles using trigonometry, and to understand and use angular measure expressed in radians and degrees. This has practical and analytical applications in areas including surveying, navigation, meteorology, architecture, construction and electronics.
+
+Students develop techniques to solve problems involving triangles, and then extend these ideas to include the exact ratios for angles, and also to the study of non-right-angled triangles. This introduces the need to define the trigonometric ratios for obtuse angles, which is followed by the establishment of trigonometric ratios of angles of any size. Radians are introduced as another measure in which angles of any size can be found. Radians are important for the study of the calculus of trigonometric functions in Year 12.
+
+Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
+Content
+T1.1 Trigonometry
+Students:
+? use the sine, cosine and tangent ratios to solve problems involving right-angled triangles where angles are measured in degrees, or degrees and minutes 
+? establish and use the sine rule, cosine rule and the area of a triangle formula for solving problems where angles are measured in degrees, or degrees and minutes AAM  
+? find angles and sides involving the ambiguous case of the sine rule
+- use technology and/or geometric construction to investigate the ambiguous case of the sine rule when finding an angle, and the condition for it to arise  
+? solve problems involving the use of trigonometry in two and three dimensions AAM 
+- interpret information about a two or three-dimensional context given in diagrammatic or written form and construct diagrams where required
+? solve practical problems involving Pythagoras' theorem and the trigonometry of triangles, which may involve the ambiguous case, including finding and using angles of elevation and depression and the use of true bearings and compass bearings in navigation AAM  
+
+T1.2 Radians
+Students:
+? understand the unit circle definition of sin??, cos?? and tan?? and periodicity using degrees (ACMMM029)
+- sketch the trigonometric functions in degrees for 0�=x=360�
+? define and use radian measure and understand its relationship with degree measure (ACMMM032) 
+- convert between the two measures, using the fact that 360�=2p radians
+- recognise and use the exact values of sin ?, cos ? and tan?? in both degrees and radians for integer multiples of  p/6 and p/4 (ACMMM035)
+? understand the unit circle definition of sin??, cos?? and tan?? and periodicity using radians (ACMMM034)
+? solve problems involving trigonometric ratios of angles of any magnitude in both degrees and radians
+? recognise the graphs of y=sin x, y=cos x and y=tan x and sketch on extended domains in degrees and radians (ACMMM036)
+? derive the formula for arc length, l=r? and for the area of a sector of a circle, A=1/2 r^2 ? 
+? solve problems involving sector areas, arc lengths and combinations of either areas or lengths
+ 
+
+Trigonometric Functions
+MA-T2 Trigonometric Functions and Identities
+Outcomes
+A student:
+� uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problems MA11-1
+� uses the concepts and techniques of periodic functions in the solutions of trigonometric equations or proof of trigonometric identities MA11-4
+� uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
+� provides reasoning to support conclusions which are appropriate to the context MA11-9
+Subtopic Focus
+The principal focus of this subtopic is to use trigonometric identities and reciprocal relationships to simplify expressions, to prove equivalences and to solve equations.
+
+Students develop their ability to prove identities, simplify expressions and solve trigonometric equations. Trigonometric expressions and equations provide a powerful tool for modelling quantities that vary in a cyclical way such as tides, seasons, demand for resources, and alternating current. The solution of trigonometric equations may require the use of trigonometric identities.
+Content
+Students:
+? define the reciprocal trigonometric functions, y=cosec x, y=sec x and y=cot x
+- cosec A =  1/(sin A),  sin A?0
+- sec A =  1/(cos A),  cos A ?0
+- cot A =  (cos A)/(sin A),  sin A?0
+? sketch the graphs of reciprocal trigonometric functions in both radians and degrees
+? prove and apply the Pythagorean identities cos^2 x+sin^2 x=1, ? 1+tan?^2 x=sec^2 x and 
+1+cot^2 x=cosec^2 x (ACMSM046)
+- know the difference between an equation and an identity
+? use tan x=(sin x)/(cos x) provided that cos??x?0?
+? prove trigonometric identities
+? evaluate trigonometric expressions using angles of any magnitude and complementary angle results
+? simplify trigonometric expressions and solve trigonometric equations, including those that reduce to quadratic equations  
+
+
+Topic: Calculus
+Outcomes
+A student:
+� uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problems MA11-1
+� interprets the meaning of the derivative, determines the derivative of functions and applies these to solve simple practical problems MA11-5
+� uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
+� provides reasoning to support conclusions which are appropriate to the context MA11-9
+Topic Focus
+The topic Calculus is concerned with how quantities change and provides a framework for developing quantitative models of change and deducing their consequences. The topic involves the development of the basic concepts upon which differential calculus is built, namely the connection between the gradient of the tangent to a curve and the instantaneous rate of change of a function, rates of change and derivatives of functions and the manipulative skills necessary for the effective use of differential calculus.
+
+The study of calculus is important in developing students' ability to solve problems involving algebraic and graphical representations of functions and rates of change of a function with relevance to all quantitative fields of study including physics, chemistry, medicine, engineering, computing, statistics, business, finance, economics and the construction industry.
+Subtopics

@@ -1,0 +1,780 @@
+ 
+ 
+        
+  
+  
+  
+   
+ 
+ 
+ 
+  
+  
+  
+      
+ 
+  
+ 
+  
+  
+   
+ 
+  
+ 
+  NSW  Education  Standards  Authority  
+2025 HSC Software Engineering 
+Marking Guidelines 
+Question 1 
+Criteria Marks 
+• Identifies the correct answer 1 
+Answer: 
+Pilot 
+Question 2 
+Criteria Marks 
+• Identifies the correct item from each dropdown 1 
+Answer: 
+Dropdown 1  
+Wat
+erfall  
+ 
+Dropdown 2  
+Agile  
+Question 3 
+Criteria Marks 
+• Identifies the correct answer 1 
+Answer: 
+Supervised learning 
+Page 1 of 17 
+
+       
+      Question  4  
+ Criteria  Marks 
+ •     Identifies the correct answer  1 
+ 
+ 
+  
+  
+   
+ 
+      
+  
+ 
+  
+  
+   
+ 
+           
+  
+ 
+  
+  
+   
+ 
+        
+   
+  
+  
+   
+ 
+  
+ NESA 2025 HSC Software Engineering Marking Guidelines 
+Answer:  
+Language- dependent  code optimisation  
+ 
+Question 5 
+Criteria Marks 
+• Identifies the correct answer 1 
+Answer: 
+Exposure of more data than intended 
+Question 6 
+Criteria Marks 
+• Identifies the correct answer 1 
+Answer: 
+Ensuring that parties exchanging information are who they claim to be 
+Question 7 
+Criteria Marks 
+• Identifies the correct answer 1 
+Answer: 
+Blue background, white text, border around the heading 
+Question 8 
+Criteria Marks 
+• Identifies the correct answer 1 
+Answer: Race conditions 
+Page 2 of 17 
+
+       
+       
+   
+   
+  
+     
+        
+    
+   
+ 
+  
+  
+  
+    
+  
+ 
+ 
+ 
+  
+  
+     
+ 
+  NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  9  
+ Criteria  Marks 
+ •    Correctly matches each characteristic to the appropriate approach  1 
+Answer: 
+Object Relational
+Mapping (ORM) Structured Query
+Language (SQL) 
+Code is focused on object manipulation •
+Tables can be joined to enhance searching • •
+Programmers can choose the language used 
+to access the database •
+Question 10 
+Criteria Marks 
+• Identifies ALL the items that are the goals of regulatory compliance in 
+relation to software development 1 
+Answer:  
+☐   Limiting the need for  software updates  
+•  Protecting  sensitive  data  from u  nauthorised  access  
+☐   Allowing  developers to bypass security features when needed  
+☐   Reducing  the  testing  time  required  during  software  development  
+•  Ensuring  software  applications  meet  legal  and  industry  standards  
+Question 11 
+Criteria Marks 
+• Identifies ALL the items that are key principles of DevOps 1 
+Answer:  
+•  
+Rapid  feedback  
+☐   Freedom f  rom b ias  
+☐   Procedural  fairness  
+•  Automation  of  repetitive  tasks  
+•  Collaboration  and  shared  ownership  
+Page 3 of 17 
+
+       
+       
+ 
+ 
+  
+  
+             
+            
+ 
+         
+ 
+ 
+ 
+  
+  
+  
+      
+  NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  12  
+ Criteria  Marks 
+ •    Identifies true or false correctly for all SIX check boxes  2 
+ • Identifies true or false correctly for FOUR of the six checkboxes   1 
+Answer:  
+•  Identifying  whether  a  received  email  is  spam  
+•  Determining  the outcome of a two -party election  
+☐   Calculating  house  prices  based  on  land  size  
+☐   Investigating the relationship between height and weight  
+☐   Estimating  the  rate  at  which  a  contagious  illness  will  spread  
+•  Work ing  out  if  someone will  be admitted to a university course  
+Question 13 
+Criteria Marks 
+• Correctly identifies the timing and source code access for each strategy 2 
+• Correctly identifies the timing and source code access for ONE strategy 
+OR 
+• Correctly identifies the timing for each strategy 1 
+Answer: 
+Question 14 
+Criteria Marks 
+• Identifies the correct item from each dropdown 1 
+Answer:  
+ 
+  
+Page 4 of 17 
+
+       
+       
+ 
+ 
+  
+  
+             
+    
+                
+      
+   
+ 
+ NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  15  (a)  
+ Criteria  Marks 
+ •      Correctly completes ALL the dropdowns  3 
+ •     Correctly completes FIVE dropdowns  2 
+ •     Correctly completes THREE dropdowns  1 
+Answer: 
+Question  15  (b)  
+ Criteria  Marks 
+ •      Outlines TWO relevant software debugging tools  3 
+•  Outlines  ONE  relevant  software  debugging  tool  
+OR  
+•  Identifies TWO relevant software debugging tools   2 
+ •     Provides some relevant information  1 
+Sample answer: 
+Breakpoints can be added to specific lines of code to halt program execution, allowing the 
+programmer to check the value of specific variables or to step through the program line by 
+line. Debugging output statements can be added to the code to indicate that a certain section 
+of code has been reached or to show the content s of a variable. 
+Page 5 of 17 
+
+       
+        
+            
+ 
+                
+  
+    
+  
+             
+ 
+ 
+ 
+  
+                 
+            
+  
+  
+ 
+ 
+ NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  16  (a)  
+ Criteria  Marks 
+ •           Compares the use of a PWA with an interactive website for the weather 
+ app  3 
+ •        Outlines features of a PWA and/or an interactive website  2 
+ •     Identifies a feature of a PWA or an interactive website  1 
+Sample answer: 
+Both PWAs and interactive websites are platform -independent, allowing users to access the 
+app on any device with a browser. PWAs can pre- cache updates to enable offline updates 
+when a stable internet connection is not available but may not provide real time updates for 
+the most recent changes to weather or warnings. Meanwhile, interactive websites require a constant internet connection to provide any updates. 
+Answers could include: 
+Some PWAs prompt for initial installation or setup which might deter some users. 
+Question  16  (b)  
+ Criteria  Marks 
+ •    Outlines TWO ways , other than the use of a PWA, to minimise the load 
+    time of the weather app  3 
+•  Outlines  ONE  way, other than the use of a PWA, to minimise load time  
+OR  
+•  Identifies TWO ways, other than the use of a PWA, to minimise load time   2 
+ •     Provides some relevant information  1 
+Sample answer: 
+One way would be to provide the option to select lower resolution images or text only display. 
+Another way would be to utilise caching as this would provide high speed access to 
+commonly requested weather data. 
+Page 6 of 17 
+
+       
+        
+               
+               
+   
+ 
+ 
+ 
+  
+  
+      
+     
+  
+          
+  NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  16  (c)  
+ Criteria  Marks 
+ •       Describes ONE way that the ‘privacy by design’ approach could be 
+     implemented in the weather app  3 
+ •       Outlines ONE feature of the ‘privacy by design’ approach  2 
+ •     Identifies a feature of the ‘privacy by design’ approach  1 
+Sample answer: 
+Embedded within the design of the weather app would be a process for regularly deleting 
+identifiable data . For example, the app would likely record a person’s live location to deliver 
+relevant weather details. The privacy by design approach would incorporate a regular process to delete these locations from cache. 
+Question 17 
+Criteria Marks 
+• Provides a substantially correct pseudocode algorithm 3 
+• Provides a pseudocode algorithm that addresses some aspects of the 
+problem 2 
+• Shows some understanding of the problem or pseudocode 1 
+Sample answer: 
+BEGIN RiskRating  
+ Total  = 0  
+ index  =  0  
+ REPEAT  
+  Total  = Total  + Risks[index]  
+  index  =  index  + 1  
+ UNTIL  index  =  10  
+ IF Total > 35 THEN  
+  Rating  = “High”  
+ ELSE  
+        IF   Total  < 20  THEN  
+   Rating  = “Low”  
+        ELSE  
+   Rating  = “Medium”  
+        ENDIF  
+ ENDIF  
+ Display  Rating  
+END RiskRating  
+Page 7 of 17 
+
+       
+       
+ 
+ 
+ 
+ 
+ 
+ 
+  NESA 2025 HSC Software Engineering Marking Guidelines 
+OR 
+BEGIN RiskRating  
+ Tot
+al  = 0  
+ index  =  0  
+ REPEAT  
+  Total  = Total  + Risks[index]  
+  index  =  index  + 1  
+ UNTIL  index  =  10  
+ CASEWHERE Total  is  
+   > 35:  Rating  = “High”  
+         < 20:  Rating  = “Low”  
+        OTHERWISE : Rating  = “Medium”  
+ END  CASE  
+ Display  Rating  
+END RiskRating  
+OR 
+BEGIN RiskRating  
+ Tot
+al  = 0  
+ index  =  0  
+ REPEAT  
+  Total  = Total  + Risks[index]  
+  index  =  index  + 1  
+ UNTIL  index  =  10  
+ IF Total > 35 THEN  
+  Rating  = “High”  
+ ELSEIF Total  < 20  THEN  
+         Rating  = “Low”  
+       ELSE  
+  Rating  = “Medium”  
+ ENDIF  
+ Display  Rating  
+END RiskRating  
+Page 8 of 17 
+
+       
+        
+        
+   
+  
+       
+  
+ 
+  
+  
+  
+        
+         
+     
+           
+  
+  
+ 
+ 
+ NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  18  
+ Criteria  Marks 
+ •           Explains how metadata and data mining can be used to prevent 
+technical difficulties during the broadcast of the live event   3 
+ •            Outlines how metadata AND/OR data mining can be used to prevent 
+   broadcast technical difficulties  2 
+ •  Identifies a feature of metadata or data mining  1 
+Sample answer: 
+Metadata describes the content, structure and meaning of raw data, enabling more effective, 
+accurate and efficient data mining. Data mining identifies user preferences and viewing 
+patterns from large datasets, helping streaming services personalise recommendations and identify times of predicted high demand. St reaming service management uses this along with 
+real-time user data to balance server loads and deliver smooth playback experiences. 
+Question 19 
+Criteria Marks 
+• Provides correct code for the problem 3 
+• Provides partially correct code that includes a correct selection structure 
+OR password creation 2 
+• Shows some understanding of the scenario and Python programming 1 
+Sample answer: 
+uName = input('What  is your  username?')  
+password = input('What  is your  password?')  
+passwordP1 = uName[:3]  
+passwordP1= passwordP1 + '123'  
+if   passwordP1 == password:  
+print  ('Welcome!')  
+else:  
+ print  ('Incorrect  password entered')  
+Page 9 of 17 
+
+       
+        
+  
+     
+  
+     
+      
+  
+           
+    
+  
+         
+  
+ 
+ 
+ 
+  
+  
+       
+       
+ 
+   
+    
+             
+  
+             
+          
+  
+    
+  
+  
+    
+    
+ 
+ 
+  NESA 2025 HSC Software Engineering Marking Guidelines 
+Question 20 
+Criteria Marks 
+• Describes how session management can affect code execution 
+efficiency 3 
+• Identifies some features of session management 2 
+• Provides some relevant information 1 
+Sample answer: 
+Efficient session management limits memory consumption by restricting session data size 
+and lifetime. Excessive reading, writing or storing large objects increases input/output 
+operations and slows code execution for the user. Removing sessions when they are no 
+longer required is essential to prevent unnecessary resource consumption. 
+Answers could include: 
+•  Reducing  database  and  network  bottlenecks  –  frequent access to session  stores,  
+especially in distributed environments,  can cause latency  
+•  Preventing  memory  leaks  –  poor  session handling,  particularly in server -side storage,  can 
+lead  to  memory  leaks,  triggering  more  frequent  garbage  collection  and  degrading  
+performance.   
+•  Enabling  scalable,  responsive  systems  –  asynchronous or  lazy cleanup can further  
+optimise execution.  
+Question 21 
+Criteria Marks 
+• Provides a correct SQL query that 
+– extracts ‘Pending’ and ‘Escalated’ jobs for the ‘Software’ and 
+‘Hardware’ categories 
+– counts the jobs for each status in each category 
+– outputs results in descending order 4 
+• Provides an SQL query that addresses most of the requirements of the 
+problem 3 
+• Provides an SQL query that shows some understanding of the problem 2 
+• Shows some understanding of SQL or the problem 1 
+Sample answer: 
+SELECT Category, Status, COUNT(JobID) AS Jobs 
+FROM Issues 
+WHERE ( Status = ‘Pending’ OR Status = ‘Escalated’) 
+GROUP BY Status, Category 
+ORDER BY Jobs DESC 
+Page 10 of 17 
+
+       
+        
+ 
+ 
+ 
+ 
+  
+        
+        
+ 
+   
+   
+  
+              
+  
+   
+ 
+  NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  22  
+ Criteria  Marks 
+ •        Constructs a correct class diagram that shows inheritance and removes 
+ redundant attributes from each class  3 
+ •       Constructs a class diagram that shows some understanding of the 
+ problem  2 
+ •     Provides some relevant information  1 
+Sample answer: 
+Question  23  (a)  
+Criteria Marks 
+• Outlines relevant social and ethical issues 3 
+• Outlines ONE relevant social or ethical issue 
+OR 
+• Identifies relevant social and/or ethical issues 2 
+• Identifies ONE relevant social or ethical issue 1 
+Sample answer: 
+The website will need to ensure payment and address data is appropriately secured and 
+accessible only to authorised personnel . It also needs to ensure that pages can be viewed in 
+a wide variety of languages and that the information about dishes displayed is accurate and 
+representative of the product. 
+Page 11 of 17 
+
+       
+        
+  
+ 
+  
+                
+  
+ 
+ 
+ 
+ 
+ NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  23  (b)  
+ Criteria  Marks 
+ •   Explains why server -side web programming is needed to develop the 
+      website with examples from the scenario  3 
+ •      Outlines some features of server -side web programming for developing 
+    the website with example s from the scenario  2 
+ •    Identifies a feature of server -side web programming and/or providing 
+relevant examples from the scenario   1 
+Sample answer: 
+Server- side development will need to be used to provide dynamic information to the front -end 
+(website). There are many dynamic aspects to the website, including the menu which 
+changes along with subscription information and order tracking information. Serv er-side 
+scripting will need to be written to read the relevant information from storage (most likely, a 
+database) and then provide this information to the front -end. 
+Question  23  (c)  
+ Criteria  Marks 
+ •        Provides the correct response for ALL items  3 
+ •        Provides the correct response for THREE items  2 
+ •        Provides the correct response for ONE item  1 
+Answer: 
+Page 12 of 17 
+
+       
+        
+              
+ 
+         
+             
+   
+ 
+          
+     
+  
+ 
+ 
+ 
+  NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  24  
+ Criteria  Marks 
+ •           Provides a comprehensive discussion of the impact of the safety 
+        monitoring system on workers with reference to the scenario   5 
+ •       Outlines both positive and negative ways, that the safety monitoring 
+   system can affect workers  4 
+ •           Outlines some ways that the safety monitoring system can affect workers  3 
+ •           Outlines ONE way that the safety monitoring system can affect workers 
+OR  
+ • Identifies some ways that the safety monitoring system can affect 
+ workers  2 
+ •     Provides some relevant information  1 
+Sample answer: 
+The AI monitoring system can improve safety on site by reducing human error through real -
+time alerts and remote monitoring. It can also help supervisors track workers' compliance 
+with PPE requirements and identify risky behaviours, potentially preventing a ccidents. 
+However, some workers might feel their privacy is invaded, especially if the wearables 
+continue monitoring during breaks or in private areas like bathrooms. There’s also a risk of 
+the system misidentifying safe behaviour as unsafe, leading to unn ecessary alerts or stress 
+which could cause distractions at critical times. Additionally, the long -term data collection 
+could be used to improve training, but workers may worry about how the data is stored or used. 
+Page 13 of 17 
+
+       
+        
+           
+     
+ 
+      
+    
+ 
+    
+      
+   
+              
+ 
+  NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  25  
+ Criteria  Marks 
+ • 
+ •       Explains how the neural network supports the virtual personal assistant 
+     Includes one positive AND one negative impact of using the virtual 
+  personal assistant  5 
+ •       Explains how the neural network supports the virtual personal assistant 
+OR  
+ •            Outlines how the neural network supports the assistant and includes one 
+      positive AND one negative impact of using the virtual personal assistant  4 
+ •         Outlines features of neural network AND/OR impacts of using the virtual 
+  personal assistant  3 
+ •            Outlines a feature of neural network OR an impact of using the virtual 
+  personal assistant  
+ OR 
+ •         Identifies features of neural network AND/OR impacts of using the virtual 
+  personal assistant  2 
+ •     Provides some relevant information  1 
+Sample answer: 
+Neural networks recognise natural language patterns to categorise common support queries, 
+such as lost luggage, and use nodes to assist with processing. They assess language tone 
+to gauge frustration or urgency, allowing the virtual personal assistant to recommend specific 
+phrasing for customer service staff. For instance, calming language may be suggested for 
+distressed customers. By tracking customer ratings and turnaround times, the neural network 
+uses weightings to refine recommendations to prioritise high -frequency queries or improve 
+suggestions for poorly rated interactions. While this system streamlines support processes 
+and improves response accuracy, it may also impact the role of customer service staff. As 
+the neural network learns from interactions, staff may rely more on its recommendations, potentially reducing their familiarity with emerging query trends or response strategies. 
+Customers may come to expect faster, more precise service, raising the standard for human 
+interactions. 
+Page 14 of 17 
+
+       
+        
+  NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  26  
+ Criteria  Marks 
+ •       Provides a correct python program that addresses the following 
+ requirements: 
+ –  creates a list of unique randomly generated numbers 
+ – processes the generated list correctly  
+ –   uses selection and looping structures 
+ –  provides correctly formatted output  
+ –     uses inbuilt python functions  5 
+ •           Provides a substantially correct python program that addresses most of 
+ the requirements  4 
+ •        Provides a python program that addresses some of the requirements  3 
+ •       Provides a python program that addresses one requirement  2 
+ •       Shows some understanding of the problem  1 
+Sample answer: 
+import  r andom  
+  
+randList = []  
+for x in range(15):  
+    nextInt  = random.randint(1,25)  
+    while  nextInt  in  randList:  
+        nextInt  = random.randint(1,25)  
+    randList.append(nextInt)  
+  
+pos = 0  
+while  pos  < 25:  
+    if  pos  in  randList:  
+        print  ("|  X",  end="  ")  
+    else:  
+        print  ("|  ", end=" ")  
+    pos = pos + 1  
+    if  (pos  %  5  ==  0):  
+        print("|  \n")  
+Page 15 of 17 
+
+       
+        NESA 2025 HSC Software Engineering Marking Guidelines 
+Question  27  
+ Criteria  Marks 
+ • 
+ •           Explains how human bias could affect the usefulness of AI solutions 
+       Supports answer with reference to the video  6 
+ • 
+ •           Describes how human bias could affect the usefulness of AI solutions 
+       Refers to a scenario (s) in the video  5 
+ • 
+ •      Outlines how human bias could affect AI solutions 
+    Refers to the video  4 
+ •  Identifies some sources/examples of human bias 
+AND/OR  
+ • Identifies effects of human bias on AI solutions  
+AND/OR  
+ •     Outlines how AI learn s  2–3 
+ •    Provides some relevant information  1 
+Sample answer: 
+AI  develops  its  ability  by  analysing  vast  amounts  of  data.  The  quality  of  these  data  can  be  
+influenced  by  human  bias,  and  in  turn,  affect  the  usefulness  of  AI  solutions.  
+ 
+Human  bias  may  be  explicit  or  implicit.  Explicit  biases  are  intentional.  For  example,  a  
+researcher may favour male physicists and only collect pictures of male physicists for training  
+an AI  solution,  as shown in the video.  Implicit  biases operate unconsciously and may be 
+shaped by social  and cultural  factors.  Whether  the bias was explicit  or  implicit,  the choice of  
+male  physicists  would  suggest  to  the  AI  solution  that  physicists  are  male.    
+ 
+Human  bias  can  occur  in  various  stages  of  the  development  of  AI  solutions.  As  shown  in  the  
+photo library example,  training data needs to be diverse and representative,  otherwise AI  
+solutions may produce inaccurate or  unhelpful  responses.  The  process  of  labelling  training  
+data may also introduce biases as people may have different  interpretations of  the same 
+data.  The video shows that  if  most  people draw shoes  in particular  ways,  certain type s  of  
+shoes  will  not  be  recognised as a shoe.  
+Page 16 of 17 
+
+       
+        
+  NESA 2025 HSC Software Engineering Marking Guidelines 
+2025 HSC Software Engineering
+Mapping Grid 
+Page 17 of 17  Question Marks   Content Syllabus  
+ outcomes 
+ 1  1       Software engineering project — implementation methods  SE-12-07 
+ 2  1        Software engineering project — software development approaches  SE-12-09 
+ 3  1      Software automation — machine learning training   SE 12 -03 
+ 4  1      Software engineering project — language -dependent optimisation   SE 12 -08 
+ 5  1       Secure software architecture — API vulnerabilities  SE 12 -04 
+ 6  1        Programming for the web — web protocols  SE 12 -04 
+ 7  1         Programming for the web — CSS code fragment  SE 12 -02 
+ 8  1      Secure software architecture — user action controls   SE 12 -04 
+ 9  1        Programming for the web — ORM and SQL   SE 12 -01 
+ 10  1       Secure software architecture — regulatory compliance  SE 12 -05 
+ 11  1    Software automation — DevOps   SE 12 -03 
+ 12  2      Software automation — logistic regression  SE 12 -03 
+ 13  2        Secure software architecture — SAST and DAST  SE 12 -04 
+ 14  1      Software engineering project — data structures  SE 12 -02 
+ 15 (a)  3      Software engineering project — data dictionary  SE-12-09 
+ 15 (b)  3      Software engineering project — testing and debugging  SE 12 -08 
+ 16 (a)  3        Programming for the web — load times  SE 12 -06 
+ 16 (b)  3          Programming for the web — interactive websites and PWAs  SE 12 -03 
+ 16 (c)  3        Secure software architecture — privacy by design  SE 12 -01 
+ 17  3      Software engineering project — algorithm design   SE 12 -09 
+ 18  3        Programming for the web — effect of big data on web architecture  SE 12 -04 
+ 19  3      Secure software architecture — developing secure code  SE 12 -07 
+ 20  3       Secure software architecture — session management  SE 12 -06 
+ 21  4        Programming for the web — SQL queries  SE-12-08 
+ 22  3      Software engineering project — modelling tools   SE 12 -06 
+ 23 (a)  3         Secure software architecture — social and ethical issues  SE 12 -05 
+ 23 (b)  3         Programming for the web — server -side web programming  SE 12 -01 
+ 23 (c)  3      Secure software architecture — fundamental software design 
+ security concepts  SE 12 -04 
+ 24  5      Software automation — safety of workers  SE 12 -05 
+ 25  5      Software automation — patterns in human behaviour  SE12 -05 
+ 26  5        Software engineering project — design, construct and implement a 
+solution   SE 12 -07 
+ 27 
+  6           Software automation — respond to bias in AI video stimuli  SE 12 -05 
+

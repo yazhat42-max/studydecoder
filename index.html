@@ -685,57 +685,33 @@
             background: #fafafa;
         }
 
-        .onboard-search {
-            width: 100%;
-            padding: 10px 14px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-family: inherit;
-            outline: none;
-            transition: border-color 0.2s;
-            margin-bottom: 8px;
-        }
-
-        .onboard-search:focus {
-            border-color: var(--primary);
-        }
-
         .onboard-subject-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 10px;
-            border-radius: 8px;
+            gap: 6px;
+            padding: 5px 6px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.15s;
-            font-size: 0.88rem;
-            border: 2px solid transparent;
+            transition: background 0.15s;
+            font-size: 0.85rem;
         }
 
         .onboard-subject-item:hover {
             background: #ede9ff;
         }
 
-        .onboard-subject-item.checked {
-            background: #f0eeff;
-            border-color: var(--primary);
-        }
-
         .onboard-subject-item input[type="checkbox"] {
             accent-color: var(--primary);
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             cursor: pointer;
-            flex-shrink: 0;
         }
 
         .onboard-subject-item label {
             cursor: pointer;
             color: #333;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             line-height: 1.2;
-            flex: 1;
         }
 
         .onboard-submit-btn {
@@ -1199,7 +1175,6 @@
 
             <div class="onboard-section" id="onboardSubjectsSection">
                 <label class="section-label">2. Select your subjects</label>
-                <input type="text" class="onboard-search" id="onboardSearch" placeholder="Search subjects..." oninput="filterOnboardSubjects()">
                 <div class="onboard-subjects-grid" id="onboardSubjectsGrid">
                     <!-- Populated dynamically -->
                 </div>
@@ -1766,34 +1741,19 @@
     function populateOnboardSubjects(level) {
         const grid = document.getElementById('onboardSubjectsGrid');
         const subjects = level === 'senior' ? seniorSubjects : juniorSubjects;
-        const search = document.getElementById('onboardSearch');
-        if (search) search.value = '';
         grid.innerHTML = '';
         subjects.forEach(s => {
             const item = document.createElement('div');
             item.className = 'onboard-subject-item';
-            item.dataset.name = s.name.toLowerCase();
-            item.innerHTML = `<input type="checkbox" id="onboard-${s.id}" value="${s.id}"><label for="onboard-${s.id}">${s.name}</label>`;
+            item.innerHTML = `<input type="checkbox" id="onboard-${s.id}" value="${s.id}" onchange="updateOnboardSubmitBtn()"><label for="onboard-${s.id}">${s.name}</label>`;
             item.addEventListener('click', (e) => {
                 if (e.target.tagName !== 'INPUT') {
                     const cb = item.querySelector('input');
                     cb.checked = !cb.checked;
+                    updateOnboardSubmitBtn();
                 }
-                item.classList.toggle('checked', item.querySelector('input').checked);
-                updateOnboardSubmitBtn();
-            });
-            item.querySelector('input').addEventListener('change', () => {
-                item.classList.toggle('checked', item.querySelector('input').checked);
-                updateOnboardSubmitBtn();
             });
             grid.appendChild(item);
-        });
-    }
-
-    function filterOnboardSubjects() {
-        const query = document.getElementById('onboardSearch').value.toLowerCase().trim();
-        document.querySelectorAll('#onboardSubjectsGrid .onboard-subject-item').forEach(item => {
-            item.style.display = item.dataset.name.includes(query) ? '' : 'none';
         });
     }
 

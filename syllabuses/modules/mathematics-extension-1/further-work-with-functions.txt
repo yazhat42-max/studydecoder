@@ -1,0 +1,62 @@
+﻿=== Further work with functions ===
+Subject: mathematics-extension-1
+============================================================
+
+Mathematics Extension 1 Year 11 Further work with functions
+ 
+Proofs of the derivatives of ,  and  make use of the results ,  and , as well as the Pythagorean identities.
+Mathematics Advanced Year 11 Trigonometric identities and equations
+Mathematics Advanced Year 12 Further graph transformations and modelling
+Integrals of  and  can be used in the context of volumes of revolution.
+Mathematics Extension 1 Year 12 Further applications of calculus
+Considerations
+    • When evaluating a definite integral using integration by substitution, students should ensure they change the boundary limits as well as the variable of integration.
+    • Identities such as  can be derived using calculus by showing , implying  is a constant, the value of which can be evaluated by a convenient substitution such as .
+    • Students should consider how integrals such as  can be expressed in the form  before integrating, i.e. .
+    • Students should practise using algebraic manipulation when working with integrals such as  to obtain an integral of the form , i.e. .
+Diversity of learners
+    • Teachers should consider the accessibility of tools and resources. Considerations for tools such as spreadsheets, calculators and applications may include compatibility with screen readers and other assistive technologies including alternative input devices and the use of accessible calculators (see approved calculators). Considerations for resources may include the language demands, readability of and long descriptions for images and providing alternative text for graphs and diagrams.
+    • Students with disability may require adjustments including access to visual or digital aids to communicate and demonstrate knowledge, understanding and skills.
+    • Students for whom English is an additional language or dialect (EAL/D) may require additional support and targeted strategies in learning language specific to mathematics.
+    • The pace and complexity of learning may need to be adjusted for students who progress at different rates.
+Teaching advice for Further applications of calculus
+Content
+    § Further applications of calculus
+Teaching advice
+Purpose
+Calculus involves the study of how things change and provides a framework for developing quantitative models of change and deducing their consequences. It explores the development of analytic and numeric integration techniques and the use of these techniques in solving problems.
+The study of calculus is important in developing students’ knowledge, understanding and capacity to model and operate in situations involving change. Calculus involves using algebraic and graphical techniques to describe and solve problems and to predict future outcomes with relevance to, for example science, engineering, finance, economics and the construction industry.
+Key terms
+    • arc
+    • asymptote
+    • chain rule
+    • constant
+    • derivative
+    • differential equation
+    • exponential decay
+    • exponential growth
+    • function
+    • infinite
+    • integration
+    • logistic function
+    • point of inflection
+    • logistic function
+    • model
+    • multiplicity of a zero
+    • partial fractions
+    • point of inflection
+    • polynomial
+    • product rule
+    • rate of change
+    • slope field
+    • tangent
+    • turning point
+    • zero (of a function)
+Related Stage 5 Path content
+    • Algebraic techniques B
+    • Area and surface area B
+    • Variation and rates of change A
+    • Variation and rates of change B
+    • Indices B
+    • Non-linear relationships C
+    • Logarithms

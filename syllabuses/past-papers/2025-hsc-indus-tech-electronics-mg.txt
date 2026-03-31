@@ -1,0 +1,396 @@
+    
+ 
+ 
+        
+  
+  
+ 
+  
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  NSW Education Standards Authority 
+2025 HSC Industrial Technology
+Electronics Technologies
+Marking Guidelines 
+Section I 
+Multiple- choice Answer Key 
+Question Answer 
+1 A 
+2 A 
+3 B 
+4 C 
+5 A 
+6 D 
+7 C 
+8 D 
+9 D 
+10 B 
+Page 1 of 9 
+
+         
+       
+  
+  
+      
+      
+ 
+ 
+ 
+  
+  
+      
+      
+  
+ 
+ NESA 2025 HSC Industrial Technology – Electronics Technologies Marking Guidelines 
+Section II 
+Question 11 
+Criteria Marks 
+• Outlines the use of diodes in rectification of the AC current 2 
+• Provides some relevant information 1 
+Sample  answer:  
+Diodes  convert  alternating  current  (AC)  to  direct  current  (DC).  They  allow current  to  flow only  
+in  one  direction,  blocking  the  reverse  flow.  This  results  in  the  conversion  of  AC,  which  
+oscillates in both directions to DC,  which flows in a single direction.  
+Answers  could include:  
+•  Diodes  allow  current  to  flow  in  only  one  direction  
+•  AC is  converted  to  DC through  rectification  
+•  Half-wave  and  full-wave  rectification  using  diodes  
+•  Diagram s  howing  the  rectification  process  with  diodes  (if  applicable) .  
+Question 12 
+Criteria Marks 
+• Distinguishes between a NOR gate and a NAND gate in a circuit 2 
+• Provides some relevant information 1 
+Sample  answer:  
+A NOR gate  produces  a  low  output  (0)  for  all  inputs except  when all  inputs are low, in which  
+case the output  is high. A NAND gate produces a  high  output  (1)  for  all  inputs except  when 
+all  inputs are high, in which case the output is  low.  
+Answers  could include:  
+•  NOR gate:  Output  is high  only when all  inputs are low; otherwise, output is  low.  
+•  NAND gate:  Output  is low  only when all  inputs are high; otherwise, output is  high.  
+Page 2 of 9 
+
+         
+        
+  
+    
+      
+  
+ 
+  
+ 
+ 
+  NESA 2025 HSC Industrial Technology – Electronics Technologies Marking Guidelines 
+Question 13 
+Criteria Marks 
+• Sketches BOTH battery and L ED components 2 
+• Sketches ONE of the components 1 
+Sample answer: 
+Answers could include: 
+•  Di agram o  f  LED   
+•  Diagram o  f  battery  
+Page 3 of 9 
+
+         
+        
+  
+    
+     
+  
+   
+     
+   
+   
+     
+  
+      
+ 
+ 
+ 
+  NESA 2025 HSC Industrial Technology – Electronics Technologies Marking Guidelines 
+Question 14 
+Criteria Marks 
+• Identifies the combination of TWO appliances that can be operated 
+simultaneously without causing the circuit breaker to trip, with all working 
+shown 4 
+• Identifies the combination of TWO appliances that can be operated 
+simultaneously without causing the circuit breaker to trip, with some 
+working shown 3 
+• Identifies the combination of TWO appliances that can be operated 
+simultaneously without causing the circuit breaker to trip, with limited 
+working 2 
+• Provides some relevant information 1 
+Sample  answer:  
+Microwave :  
+1200  W  I  =  =  5 A  240  V 
+ 
+Toaster:  
+800  W  I  =  =  3.33  A  240  V 
+ 
+Coffee  machine:  
+900  W  I  =  =  3.75  A  240  V 
+ 
+Toaster  and  coffee m achine:  
+ 3.33  A  +  3.75  A  =  7.08  A  
+This  combination  will  NOT  trip  the circuit breaker  
+Page 4 of 9 
+
+         
+        
+  
+             
+          
+             
+    
+   
+       
+      
+          
+      
+ NESA 2025 HSC Industrial Technology – Electronics Technologies Marking Guidelines 
+Question 15 
+Criteria Marks 
+• Provides a detailed description of the factors that need to be considered 
+when choosing insulation material suitable for high voltage applications 5 
+• Provides a description of the factors that need to be considered when 
+choosing insulation material suitable for high voltage applications 4 
+• Outlines factors that need to be considered when choosing insulation 
+material suitable for high voltage applications 3 
+• Demonstrates some understanding of factors that need to be considered 
+when choosing insulation material suitable for high voltage applications 2 
+• Provides some relevant information 1 
+Sample  answer:  
+Dielectric  strength  is  essential  to  prevent  electrical  breakdown,  but  material s  like  ceramics,  
+while  strong,  can  be  brittle  and  hard  to  work  with.  Flexible  polymers  such  as  silicone  offer  
+better  handling and moisture resistance,  though they may not  perform w  ell  under  extreme 
+heat.  
+ 
+Thermal  stability,  mechanical  durability  and  resistance  to  environmental  factors  like  UV 
+exposure,  moisture  and  chemicals  are  vital,  especially  in  outdoor  or  industrial  settings.  It 
+ensures consistent  performance and prevents degradation under  high temperatures 
+generated during operation.  
+ 
+Long- term performance including the ability to resist partial discharge is also important for 
+system r  eliability.  Although cost  is often a consideration,  it  should not  outweigh safety and 
+performance.   
+Answers  could include:  
+•  Dielectric  strength  and  its  importance  in  preventing  electrical breakdown  
+•  Thermal  stability and the material’s ability to withstand high temperatures  
+•  Need for  chemical  resistance to prevent  reactions with various substances  
+•  Importance of mechanical strength for durability  
+•  Need  for  moisture  resistance  to  maintain  insulating  properties  
+•  Environmental  impact  and  safety  standards  compliance  
+•  Cost-effectiveness and market  availability.  
+Page 5 of 9 
+
+         
+      Section III  
+Question  16  (a)  
+ Criteria  Marks 
+ •       Describes in detail how legislative requirements have affected  
+   sustainable practices and environmental impacts of the industry  5 
+ •      Describes how legislative requirements have affected sustainable  
+    practices and/or environmental impacts of the industry  4 
+ •          Outlines the effects of legislative requirements on the sustainable 
+    practices and/or environmental impacts of the industry  3 
+ •        Demonstrates some understanding of legislative requirement s or 
+    sustainable practices or environmental impacts  2 
+ •     Provides some relevant information  1 
+ 
+ 
+  NESA 2025 HSC Industrial Technology – Electronics Technologies Marking Guidelines 
+Sample  answer:  
+Legislation mandates that  companies responsible for  importing and manufacturing 
+televisions, computers, and computer products must provide free recycling services for these  
+items.  As  a  result,  the  electronics  industry  has  seen  a  significant  reduction  in  electronic 
+waste  being  sent  to  landfills.  Companies  have  become  more  invested  in  designing  products  
+that are easier to recycle and contain fewer hazardous materials. For example, many  
+electronics manufacturers now use  recyclable materials and have implemented take- back 
+programs to ensure proper  disposal  and recycling of  e-waste.  Regulations  have  greatly 
+improved  the  industry ’s environmental  footprint  by promoting sustainable practices and 
+reducing the amount of electronic waste.  
+Page 6 of 9 
+
+         
+      NESA 2025 HSC Industrial Technology – Electronics Technologies Marking Guidelines 
+Question  16  (b)  
+Criteria  Marks  
+•  
+•  Provides  a  comprehensive  analysis  of  how hi  storical  developments and 
+advancements in  manufacturing  processes  have affected  the  electronics 
+industry  
+Integrates relevant industry examples to support response  9–10  
+• Provides  a  sound  analysis  of  how hi storical  developments and 
+advancements in  manufacturing  processes  have affected  the  electronics 
+industry  
+Makes  reference  to  industry  examples  to  support  response   
+•  7–8  
+•  Provides an analysis of how historical developments and/or 
+advancements in manufacturing processes have affected the electronics 
+industry  
+OR  
+•  Provides  a description  of  how hi storical  developments and 
+advancements in  manufacturing  processes  have affected  the  electronics 
+industry  with  some reference to industry examples   5–6 
+•  Demonstrates  some  understanding  of  historical  developments  and/or  
+advancements in  manufacturing  processes  and/or  effects on  industry  3–4  
+•  Provides  some  relevant  information  1–2  
+Sample  answer:  
+The  electronics  industry  has  been  significantly  affected by  various historical  developments in 
+manufacturing  processes.  The  invention  of  the  transistor  in  1947  marked  a  revolutionary  
+advancement,  leading to the miniaturis ation of  electronic components and the development  
+of  smaller,  more efficient  devices.  This breakthrough paved the way for  the creation of  
+modern  computers,  radios,  and  other  electronic  devices.  
+ 
+In the 1960s, the development of integrated circuits (ICs) further transformed the industry. 
+ICs allowed for the incorporation of multiple electronic components into a single chip, significantly increasing the functionality and complexity of  electronic dev ices.  This  
+advancement  led to the creation of  more powerful  and compact  electronics,  such as personal  
+computers and smartphones.  
+ 
+The  rise  of  surface -mount  technology  (SMT)  in  the  late  20th  century  marked  another  
+significant  milestone.  SMT enabl  ed the placement  of  electronic components directly onto the 
+surface of  printed circuit  boards (PCBs),  increasing manufacturing efficiency and  reducing  
+the size of electronic devices. This technology has allowed for the production of highly  
+complex and compact  electronic devices that  are now ubi  quitous in everyday life.  
+ 
+These  historical  advancements  have  collectively  enhanced  the  efficiency,  functionality,  and  
+miniaturi sation of  electronic devices.  They have also opened up new possi  bilities for  
+innovation  and  creativity,  shaping  the  electronics  industry  into  what  it  is  today.  
+Answers  could include:  
+•  Mechanisation  and  automation  revolutionised  production,  increasing  efficiency  and  
+reducing labour costs.  
+•  Mass  production  methods  enabled  affordability  and  wider  accessibility  of  products.  
+•  Digital  and  computer -aided technologies enhanced precision,  consistency,  and design 
+flexibility.  
+Page 7 of 9 
+
+         
+      NESA 2025 HSC Industrial Technology – Electronics Technologies Marking Guidelines 
+•  Miniaturisation  of  components  improved  functionality,  portability,  and  material  efficiency.  
+•  Robotics,  AI,  CNC and  the  like  systems  optimised  manufacturing  processes,  reducing  
+waste  and  errors.   
+•  CAD,  CAM,  modelling  and  authoring  software  led  to  improved  designs,  customisation  and  
+manufacturing  processes  and  improved  precision  and  automation .  
+•  Standardisation  of  materials  and  components  ensured  quality  control  and  interoperability.  
+•  Cloud  computing  and  digital  storage  transformed  data  accessibility,  distribution,  and  
+collaboration.  
+•  Adoption  of  sustainable  manufacturing  practices  minimised  environmental  impact  and  
+waste.  
+•  Increased use of recycled, biodegradable, and eco -friendly materials across industries.  
+•  Energy -efficient  production methods reduced resource consumption and carbon 
+emissions.  
+•  Circular  economy  principles  promoted  waste  reduction,  material  reuse,  and  sustainability.  
+•  Integration of renewable energy sources reduced reliance on fossil fuels in industrial  
+operations.  
+•  Digital  solutions  such  as  cloud  storage  and  on-demand production minimised material  
+waste.  
+•  Green  technologies  advanced  the  creation  of  environmentally  friendly  and  energy -efficient  
+products.  
+•  Ethical  and  sustainable  sourcing  practices  ensured  responsible  use  of  resources.  
+•  Ongoing  research  and  technological  innovation  continue  to  shape  modern  industry  and  
+sustainability efforts.  
+  
+Page 8 of 9 
+
+         
+         
+  
+  
+ 
+  
+    
+ 
+         
+       
+     
+       
+  
+        
+        
+       
+          
+       
+        
+  
+       
+        
+  
+       
+         
+          
+  
+    
+ 
+         
+          
+  
+         
+       
+        
+ 
+      
+  
+    
+ 
+    
+    
+  
+    
+    
+  
+ NESA 2025 HSC Industrial Technology – Electronics Technologies Marking Guidelines 
+2025 HSC Industrial Technology
+Electronics Technologies
+Mapping Grid 
+Section I 
+Question Marks Content Syllabus 
+outcomes 
+1 1 Electrical principles – components – transistors H1.2, H 4.3 
+2 1 Electrical principles – supply and safety 
+Processes – circuit assembly H4.3 
+3 1 Electrical principles – components/materials/devices – 
+semiconductors H4.3 
+4 1 Processes – use of tools and equipment 
+Processes – circuit assembly – testing and fault-finding techniques H3.2 
+5 1 Circuitry – basic calculation H4.3, H 5.1 
+6 1 Electrical principles – input/output devices – solenoids H3.2 
+7 1 Processes – use of tools and equipment 
+Processes – circuit assembly – testing and fault–finding techniques 
+Instruments and testing equipment H1.2, H3.2 
+8 1 Processes – use of tools and equipment 
+Processes – circuit assembly – testing and fault-finding techniques 
+Instruments and testing equipment H1.2, H3.2 
+9 1 Electrical principles – supply and safety 
+Processes – circuit assembly – testing and fault-finding techniques H1.2, H3.2 
+10 1 Processes – use of tools and equipment / circuit assembly H3.2 
+Section II 
+Question Marks Content Syllabus 
+outcomes 
+11 2 Electrical principles – supply and safety H1.2, H7.2 
+12 2 Electrical principles – digital electronics – basic logic gates and truth 
+tables H3.2 
+13 2 Graphical communication – schematic and circuit symbols H3.1, H5.1 
+14 4 Circuitry – basic calculation H3.2 
+15 5 Processes – apply sound techniques to circuit designs and 
+assemblies 
+Electrical principles – supply and safety  / components H4.3 
+Section III 
+Question Marks Content Syllabus 
+outcomes 
+16 (a) 5 Historical developments 
+Environmental and sociological considerations – legislative 
+requirements H1.3, H7.1 
+16 (b) 10 Historical developments 
+Environmental and sociological considerations – sustainable 
+developments H1.3 
+Page 9 of 9 
+

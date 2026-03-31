@@ -1,0 +1,63 @@
+﻿=== Proof by mathematical induction ===
+Subject: mathematics-extension-1
+============================================================
+
+(60 hours)Mathematics Extension 1TopicsSubtopicsProofME-P1 Proof by Mathematical InductionVectorsME-V1 Introduction to VectorsTrigonometric FunctionsME-T3 Trigonometric EquationsCalculusME-C2 Further Calculus Skills
+ME-C3 Applications of CalculusStatistical AnalysisME-S1 The Binomial Distribution
+For the Year 12 course:
+? The Mathematics Advanced Year 12 course should be taught prior to or concurrently with this course.
+? The Mathematics Advanced Year 11 course is a prerequisite.
+? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
+? Students should be provided with regular opportunities involving the integration of technology.
+
+
+Topic: Proof
+Outcomes
+A student:
+� applies techniques involving proof or calculus to model and solve problems ME12-1
+� chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+� evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Topic Focus
+The topic Proof involves the communication and justification of an argument for a mathematical statement in a clear, concise and precise manner.
+
+A knowledge of proof enables a level of reasoning, justification and communication that is accurate, concise and precise.
+
+The study of proof is important in developing students' ability to reason, justify, communicate and critique mathematical arguments and statements necessary for problem solving and generalising patterns.
+Subtopics
+ME-P1 Proof by Mathematical Induction
+
+
+Proof
+ME-P1 Proof by Mathematical Induction
+Outcomes
+A student:
+� applies techniques involving proof or calculus to model and solve problems ME12-1
+� chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+� evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Subtopic Focus
+The principal focus of this subtopic is to explore and to develop the use of the technique of proof by mathematical induction to prove results. Students are introduced to mathematical induction for a limited range of applications so that they have time to develop confidence in its use.
+
+Students develop the use of formal mathematical language and argument to prove the validity of given situations using inductive reasoning. The logical sequence of steps in the proof technique needs to be understood and carefully justified, thus encouraging clear and concise communication which is useful both in further study of mathematics and in life.
+Content
+Students:
+? understand the nature of inductive proof, including the 'initial statement' and the inductive step (ACMSM064)
+? prove results using mathematical induction 
+- prove results for sums, for example 1+4+9+...+n^2=(n(n+1)(2n+1))/6 for any positive integer n (ACMSM065)
+- prove divisibility results, for example 3^2n-1 is divisible by 8 for any positive integer n (ACMSM066)
+? identify errors in false 'proofs by induction', such as cases where only one of the required two steps of a proof by induction is true, and understand that this means that the statement has not been proved
+? recognise situations where proof by mathematical induction is not appropriate 
+
+
+Topic: Vectors
+Outcomes
+A student:
+� applies concepts and techniques involving vectors and projectiles to solve problems ME12-2
+� chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
+� evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
+Topic Focus
+The topic Vectors involves mathematical representation of a quantity with magnitude and direction and its geometrical depiction. This topic provides a modern language and approach to explore and explain a range of object behaviours in a variety of contexts from theoretical or real-life scenarios.
+
+A knowledge of vectors enables the understanding of the behaviour of objects in two dimensions and ways in which this behaviour can be expressed, including the consideration of position, displacement and movement.
+
+The study of vectors is important in developing students' understanding of an object's representation and behaviour in two dimensions using a variety of notations, and how to use these notations effectively to explore the geometry of a situation. Vectors are used in many fields of study, including engineering, structural analysis and navigation.
+Subtopics

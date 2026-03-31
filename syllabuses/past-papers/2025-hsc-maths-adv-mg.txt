@@ -1,0 +1,889 @@
+
+
+NSW Education Standards Authority
+
+
+
+
+
+2025 HSC Mathematics Advanced Marking Guidelines
+
+
+Section I
+
+Multiple-choice Answer Key
+
+QuestionAnswer1B2A3D4C5B6C7A8D9B10C
+
+Section II
+
+Question 11 (a)
+
+CriteriaMarks• Provides correct answer2• Finds correct value of t, or equivalent merit1Sample answer:
+ 6 + 2
+t =
+2
+= 4
+
+h = 42 - 8 × 4 + 12
+= -4
+
+
+Question 11 (b)
+
+CriteriaMarks• Provides correct answer1Sample answer:
+
+t  = 4 + 4 = 8	using axis of symmetry
+
+`	t = 8
+
+
+
+
+CriteriaMarks• Provides correct solution3• Finds the correct gradient of the tangent, or equivalent merit2• Attempts to find the gradient of the tangent, or equivalent merit1
+Sample answer:
+y = 5x3 -  2  - 9
+x2
+y = 5x3 - 2x-2 - 9
+y' = 15x2 + 4x-3
+y' = 15x2 +  4 
+x3
+y' = 15(1) +  4 
+(1)
+y' = 19
+
+y - y1 = m(x - x1) y + 6 = 19(x - 1) y + 6 = 19x - 19
+y = 19x - 25
+
+
+
+
+CriteriaMarks• Provides correct solution2• Shows understanding that the sequence is geometric, or equivalent merit1
+Sample answer:
+
+T1 = 75,	T2 = p,	T3 = q,	T4 = 2025
+ar3 = 2025
+(75)r3 = 2025
+r3 = 27
+r = 3
+
+T2 = p = ar = 75 × 3 = 225
+T3 = q = ar2 = 75 × 32 = 675
+
+p = 225 q = 675
+
+
+
+
+CriteriaMarks• Provides correct form and direction2• Provides correct direction, or equivalent merit1
+Sample answer:
+
+Form:	Linear Direction: Negative
+
+
+Question 14 (b)
+
+CriteriaMarks• Provides correct interpretation of both slope and y-intercept2• Provides correct interpretation of y-intercept, or equivalent merit1Sample answer:
+
+Slope: For every 1 minute increase in time spent watching television per day the time spent exercising decreases by 0.7 minutes per day.
+
+y-intercept: If someone doesn't watch television they are expected to exercise for
+64.3 minutes per day.
+
+
+Question 14 (c)
+
+CriteriaMarks• Provides correct answer1Sample answer:
+
+y = 64.3 - 0.7x
+y = 64.3 - 0.7 × 42
+= 34.9 minutes
+
+Question 14 (d)
+
+CriteriaMarks• Provides correct reason1Sample answer:
+
+- 2 hours or 120 minutes of television suggests -19.7 minutes of exercise and can't do negative minutes of exercise.
+Alternative answer:
+- 2 hours or 120 minutes is outside the dataset so extrapolating is not reliable.
+
+
+
+
+CriteriaMarks• Provides correct equation2• Finds k, or equivalent merit1
+Sample answer:
+
+k = 2
+Period = 2p = 5 ms	so	a = 2p
+a	5
+P (t) = 2 sin 2p t
+1	5
+Question 15 (b)
+
+CriteriaMarks• Provides correct graph2• Draws a sine wave with an amplitude of 4, or equivalent merit1Sample answer:
+
+
+
+Question 15 (c)
+
+CriteriaMarks• Provides correct answer2• Finds one correct endpoint of interval, or equivalent merit1Sample answer:
+
+6.25 < t < 8.75
+
+
+Question 16 (a)
+
+CriteriaMarks• Provides correct solution4• Finds both stationary points3• Finds one of the stationary points, or equivalent merit2• Attempts to use quotient rule, or equivalent merit1Sample answer:
+x2
+
+ƒ ( x ) =
+
+'
+
+
+
+ex
+2xex - x2ex	xex(2 - x)
+
+ƒ ( x ) =
+
+e2x
+
+=
+e2x
+
+ƒ '( x ) = x(2 - x)
+ex
+x = 0,	2 - x = 0
+x = 0,	x = 2
+y = 0,	y =  4
+e2
+
+
+
+
+
+
+= 0.541 . . .
+
+
+x-10123ƒ '( x )Negative0Positive0Negative
+`	Minimum at (0, 0) and maximum at 2,
+
+
+Question 16 (b)
+
+CriteriaMarks• Provides correct graph1Sample answer:
+
+
+
+Question 17 (a)
+
+CriteriaMarks• Provides correct solution2• Provides a correct A1, or equivalent merit1Sample answer:
+
+A0 = 800 000
+A1 = 800 000 × (1.005) - 5740
+A2 = A1 × (1.005) - 5740
+= (800 000 × (1.005) - 5740) × 1.005 - 5740
+= 800 000 (1.005)2 - 5740 (1.005) - 5740
+
+
+Question 17 (b)
+
+CriteriaMarks• Provides correct solution3• Uses the sum of a geometric sequence in An, or equivalent merit2• Provides an expression that shows evidence of the pattern, or equivalent merit1Sample answer:
+A3 = A2 × (1.005) - 5740
+= (800 000 × (1.005)2 - 5740 × (1.005) - 5740) × 1.005 - 5740
+= 800 000 (1.005)3 - 5740 (1.005)2 - 5740 (1.005)- 5740
+
+So, using the pattern above
+A = 800 000 (1.005)n - 5740 (1.005n -1 + 1.005n -2 + · · · + 1.005 + 1)
+
+An = 800 000 (1.005) -
+
+5740 (1.005n - 1)
+
+1.005 - 1
+
+A = 800 000 (1.005)n -
+
+5740 (1.005n - 1)
+
+0.005
+
+An = 800 000 (1.005)n - 1 148 000 (1.005n - 1)
+= 800 000 (1.005)n - 1 148 000 (1.005)n + 1 148 000
+= 1 148 000 - 348 000 (1.005)n
+
+
+Question 17 (c)
+
+CriteriaMarks• Provides correct solution2• Attempts to use logarithms to find n, or equivalent merit1Sample answer:
+400 000 = 1 148 000 - 348 000 (1.005)n
+348 000 (1.005)n = 748 000
+(1.005)n =  748
+348
+n ln (1.005) = ln  748
+348
+
+n = ln	÷ ln (1.005)
+
+n = 153.4 . . .
+So the balance will be less than $400 000 after 154 months.
+
+
+
+
+CriteriaMarks• Provides correct solution2• Finds a composite function, or equivalent merit1
+Sample answer:
+g(ƒ ( x )) =   3   + 5
+x - 1
+
+Range: All real y, y ? 5
+
+
+Question 19
+
+CriteriaMarks• Provides correct solution3• Demonstrates some understanding of conditional probability in this context2• Shows evidence of correct interpretation of the ratio, or equivalent merit1Sample answer:
+
+W
+Amara
+W'
+
+
+W
+Bala
+W'
+
+
+
+W
+Cassie
+W'
+
+1 × 0.5
+P(Amara|wins) = 	6	
+1 × 0.5 + 1 × 0.4 + 1 × 0.2
+6	3	2
+=  5 
+19
+
+
+
+
+CriteriaMarks• Provides correct solution3• Finds Lin's correct future value. or equivalent merit2• Finds the correct rate and number of periods, or equivalent merit1
+Sample answer:
+n = 7 × 12	 6 
+r =
+= 84 periods	12
+ 6 	84
+21 000 1 +	%
+12
+= 31 927.76
+
+`	Monthly deposit = $31 927.76 ÷ 104.07393
+= $306.78
+
+
+
+
+CriteriaMarks• Provides correct solution2• Attempts to find maximum value of ƒ ( x ), or equivalent merit1
+Sample answer:
+
+
+ƒ ( x ) = 1
+x
+
+1 = x = e
+
+
+
+
+So maximum of ƒ ( x ) on this interval is when x = 1. Therefore, the mode is 1.
+
+Question 21 (b)
+
+CriteriaMarks• Provides correct solution3• Finds the correct cumulative distribution function (cdf ), or equivalent merit2• Writes a correct integral for the cumulative distribution function (cdf ), or equivalent merit1Sample answer:
+Q1 1
+x dx = 0.25
+1
+
+Q1 1	Q1
+x dx = ln x	= ln Q1 - ln 1
+1	1
+= ln Q1 = 0.25
+Q1 = e0.25 = 1.284
+
+
+
+
+CriteriaMarks• Provides correct solution2• Factorises the numerator correctly, or equivalent merit1
+Sample answer:
+sin4q + cos4q
+LHS =	+ 2
+sin2q cos2q
+
+= sin4q + cos4q + 2 sin2q cos2q
+sin2q cos2q
+= (sin2q + cos2q)2 sin2q cos2q
+
+=	(1)2
+sin2q cos2q
+=   1	 ×   1	
+
+
+(as sin2
+
+
+q + cos2q = 1)
+
+cos2q	sin2q
+
+= sec2q cosec2q
+= RHS
+
+
+
+
+CriteriaMarks• Provides correct solution4• Attempt to use a z-score in a calculation, or equivalent merit3• Calculates the percentage of males that weigh more than x kg2• Calculates the number of male sheep, or equivalent merit1
+Sample answer:
+Number of male sheep = 12 600 = 600
+21
+
+Percentage of males weighing more than x kg
+
+=  15  ×
+600
+
+
+100
+
+
+= 2.5%
+
+
+
+x = 76.2 + 2 × 6.8
+x = 76.2 + 13.6
+x = 89.8 kg
+
+
+
+`	z-score = 2
+
+76.2	x	z
+
+
+
+Question 23 (b)
+
+CriteriaMarks• Provides correct reason1Sample answer:
+x - m
+z =	s	will be larger than 2 as the mean and standard deviation for females is smaller.
+
+The percentage of female sheep with weight greater than x kg will be smaller than 2.5%. So less than 300 females will weigh more than x kg.
+
+Answer could include:
+
+
+
+
+
+
+
+
+2.5%
+
+
+Females
+
+Males
+
+x	z
+<2.5% ˜ 300 sheep
+
+
+
+
+CriteriaMarks• Provides correct solution4• Finds value of a, or equivalent merit3• Sets one derivative equal to 1, or equivalent merit2• Provides a correct derivative, or equivalent merit1
+Sample answer:
+
+The gradients of y = e ln x and y = ax2 + c at point of intersection are both equal to 1.
+
+`	 d  (e ln x) = 1
+dx
+`	e = 1
+x
+x = e	(` y = e)
+
+`	y = ax2 + c has gradient of 1 at point (e, e).
+
+`  d  ax2 + c = 2ax dx
+
+`	2ax = 1 at x = e
+` 2a · e = 1
+a =  1 
+2e
+
+and y = ax2 + c = e at x = e
+
+
+
+
+-----
+
+
+
+`	e =  1  · e2 + c
+2e
+e =  e + c
+2
+`	c =  e
+2
+
+
+
+
+
+
+-----
+
+
+
+
+CriteriaMarks• Provides correct solution2• Attempts to use the product rule, or equivalent merit1
+Sample answer:
+
+ d  (sin x - x cos x) = cos x - x × (-sin x) + cos x dx
+= cos x + x sin x - cos x
+= x sin x	as required
+
+Question 25 (b)
+
+CriteriaMarks• Provides correct solution2• Uses part (a) to rewrite the definite integral, or equivalent merit1Sample answer:
+
+
+2025p
+
+0
+
+x sin x dx = 7sin x - x cos xA 2025p
+
+
+from part (a)
+
+= (sin 2025p - 2025p cos 2025p) - (0)
+= 0 - 2025p × (-1)
+= 2025p
+
+Question 25 (c)
+
+CriteriaMarks• Provides correct solution2• Sums an arithmetic sequence, or equivalent merit1Sample answer:
+Exact area of regions = p + 3p + 5p + · · · + (2 × 2025 - 1)p
+= p + 3p + 5p + · · · + 4049p
+
+This is an arithmetic series with a = p, d = 2p, n = 2025 and l = 4049p
+S = n (a + l )
+n	2
+S = 2025 (p + 4049p )
+n	2
+= 2025 × 2025 × p
+= (2025)2p units2
+
+
+Question 26 (a)
+
+CriteriaMarks• Provides correct solution2• Finds an expression for r in terms of x, or equivalent merit1Sample answer:
+Circumference of circle and perimeter of triangle must add to 100 cm. So	2pr + 3x = 100
+100 - 3x
+That is	r =
+2p
+
+A(x) = Area of circle + area of equilateral triangle
+= pr2 + 1 x2 sin 60° 2
+= pr2 +   3 x2
+4
+
+
+= p
+
+= 1	3 x2 +
+4
+
+2
++	x2
+4
+
+
+Question 26 (b)
+
+CriteriaMarks• Provides correct solution3• Finds the value of A at an endpoint, or equivalent merit2• Identifies that the quadratic will have a minimum turning point, or equivalent merit1Sample answer:
+A(x) is a quadratic with positive coefficient of x2 so A has a minimum stationary point. The maximum will therefore occur on an endpoint of the domain.
+
+When x = 0	r = 50	Area = pr2
+
+502
+p	796
+
+
+When r = 0	x = 33 1	Area = 1 x2 sin 60° =   3 × 33.3332 ˜ 481
+3	2	4
+A
+
+
+
+
+
+
+
+
+
+0	21	33 1	x
+2
+
+` The maximum value of A(x) occurs when all wire is used for the circle.
+
+
+Question 27 (a)
+
+CriteriaMarks• Provides correct solution2• Attempts to use trapezoidal rule, or equivalent merit1Sample answer:
+b - a
+Area =	& f ]ag + f ]bg + 29 f (x1)C0
+2n
+= 2 - 0 1 + 1 + 2 × 1
+2 × 2	4	2
+
+= 1 1 + 1 + 1
+2	4
+= 9 units2
+8
+
+
+
+Question 27 (b)
+
+CriteriaMarks• Provides correct solution21 x
+• Provides the correct antiderivative of	, or equivalent merit
+2
+1Sample answer:
+
+2	x
+dx
+0
+
+
+
+=
+
+
+
+1 2	1 0
+=  2	 -  2	
+ln 1	ln 1
+2	2
+- 3
+= 	4 
+-ln 2
+=   3	
+4 ln 2
+
+
+Question 27 (c)
+
+CriteriaMarks• Provides correct solution2• Provides correct initial inequality, or equivalent merit1
+
+Sample answer:
+  3	 < 9
+
+
+
+(Function is concave up.
+
+4 ln 2	8	` Exact value is less than trapezoidal approximation.)
+24 < 36 ln 2
+2 < 3 ln 2
+2 < ln 8
+e2 < 8
+
+e <	= 2
+`  e < 2
+
+
+Question 28 (a)
+
+CriteriaMarks• Provides correct solution2• Provides a correct expression relating the areas in the diagram, or equivalent merit1Sample answer:
+
+Area of shaded segment = area of sector - area of triangle
+
+area of sector - area of triangle = 1 × area of circle
+4
+
+1 × 10
+2
+
+
+2q -
+
+1 × 102
+2
+
+
+sin q =
+
+102p
+
+
+4
+
+50q - 50 sin q = 25p 50(q - sin q ) = 25p
+q - sin q = p
+2
+q = sin q + p
+2
+
+
+Question 28 (b)
+
+CriteriaMarks• Provides correct solution2• Finds the value of q, or equivalent merit1Sample answer:
+
+
+y = sin q + p
+2
+q = sin q + p	from part (a)
+2
+
+Looking for point of intersection of y = q and y = sin q + p
+2
+
+So, q = 2.3 radians
+
+Arc length = rq
+= 10 m × 2.3 = 23 metres
+
+
+Question 29 (a)
+
+CriteriaMarks• Provides correct solution1Sample answer:
+
+
+tan 60° =  h 
+OY
+
+in LTYO
+
+`	OY =
+
+	h	
+tan 60°
+
+30°
+2	3
+
+=  h 
+
+60°
+1
+
+
+Question 29 (b)
+
+CriteriaMarks• Provides correct solution3• Finds a quadratic expression in h, or equivalent merit2• Attempts to use the cosine rule to find a value for h, or equivalent merit1Sample answer:
+In DTFO,	ETFO = 45°,	ETOF = 90°
+` EOTF = 45°
+` D is isosceles and OF = h
+In DFOY,	by cosine rule
+2
+h2 =	+ 42 - 2 × 4 ×  h  cos 45°
+
+= h2 +	-  8h 3
+
+
+2h2 +  8h
+3
+
+
+- 16 =
+
+
+0
+
+- 8  ±
+
+
+
+64 + 4 × 2 × 16
+
+h = 	6	6	3	
+4
+
+3
+= 3.03 since h > 0
+
+
+Question 29 (c)
+
+CriteriaMarks• Provides correct solution3• Attempts to find the bearing, or equivalent merit2• Finds angle OFY, or equivalent merit1
+Sample answer:
+h
+sin q = sin 45°	Y
+h	h
+sin q = 	1	
+
+q = 24° . . .
+˜ 24°
+
+Bearing = 45° - 24°
+˜ 021°	F
+
+
+
+
+CriteriaMarks• Provides correct solution3• Obtains a quadratic in k, or equivalent merit2• Substitutes x - k and y - k into equation, or equivalent merit1
+Sample answer:
+
+x	x - k	y	y - k
+
+ y - k = (x - k - 1)(x - k - 5) 11 - k = (6 - k - 1)(6 - k - 5)
+11 - k = (5 - k)(1 - k)
+    11 - k = 5 - 6k + k2 k2 - 5k - 6 = 0
+(k - 6)(k + 1) = 0
+
+So, k = 6 since k is positive
+
+
+Question 31
+
+CriteriaMarks• Provides correct solution3• Finds p = 5 or p = 7 , or equivalent merit
+6	6
+2• Finds x = p and 5p , or equivalent merit
+3	3
+1Sample answer:
+cos x = 1
+2
+x =	, 5p, 7p , . . .
+3	3	3
+
+y = cos px	dilation horizontally by a factor of 1
+p
+Lowest value of p to get 2 solutions
+
+
+
+`	5p 3
+
+× 1 = 2p
+p
+p =   5p	
+3 × 2p
+
+= 5
+6
+
+Highest value of p to get 2 solutions
+
+
+
+`	7p 3
+
+× 1 = 2p
+p
+p =   7p	
+3 × 2p
+
+= 7
+6
+`	5 = p < 7
+6	6
+
+
+2025 HSC Mathematics Advanced Mapping Grid
+
+Section I
+
+QuestionMarksContentSyllabus outcomes11MA-S1  Probability and Discrete Probability DistributionsMA11-721MA-E1  Logarithms and ExponentialsMA11-931MA-F1  Working with FunctionsMA11-141MA-F1  Working with FunctionsMA11-151MA-C4  Integral CalculusMA12-761MA-F1  Working with FunctionsMA11-171MA-S1  Probability and Discrete Probability DistributionsMA11-781MA-S3  Random VariablesMA12-891MA-C3  Applications of DifferentiationMA12-10101MA-C3  Applications of DifferentiationMA12-3
+Section II
+
+QuestionMarksContentSyllabus outcomes11 (a)2MA-F1  Working with FunctionsMA11-211 (b)1MA-F1  Working with FunctionsMA11-2123MA-C1  Introduction to DifferentiationMA11-5132MA-M1 Modelling Financial SituationsMA12-414 (a)2MA-S2  Descriptive Statistics and Bivariate Data AnalysisMA12-814 (b)2MA-S2  Descriptive Statistics and Bivariate Data AnalysisMA12-814 (c)1MA-S2  Descriptive Statistics and Bivariate Data AnalysisMA12-814 (d)1MA-S2  Descriptive Statistics and Bivariate Data AnalysisMA12-1015 (a)2MA-T3  Trigonometric Functions and GraphsMA12-515 (b)2MA-T3  Trigonometric Functions and GraphsMA12-515 (c)2MA-T3  Trigonometric Functions and GraphsMA12-516 (a)4MA-C3  Applications of DifferentiationMA12-616 (b)1MA-C3  Applications of DifferentiationMA12-617 (a)2MA-M1 Modelling Financial SituationsMA12-417 (b)3MA-M1 Modelling Financial SituationsMA12-4
+17 (c)
+2MA-E1 Logarithms and Exponentials MA-M1 Modelling Financial Situations
+MA11-6, MA12-2182MA-F1  Working with FunctionsMA11-2193MA-S1  Probability and Discrete Probability DistributionsMA11-7203MA-M1 Modelling Financial SituationsMA12-221 (a)2MA-S3  Random VariablesMA12-8
+21 (b)
+3MA-E1 Logarithms and Exponentials MA-S3 Random Variables
+MA11-6, MA12-8
+QuestionMarksContentSyllabus outcomes222MA-T2  Trigonometric Functions and IdentitiesMA11-423 (a)4MA-S3  Random VariablesMA12-823 (b)1MA-S3  Random VariablesMA12-10244MA-C3  Applications of DifferentiationMA12-625 (a)2MA-C2  Differential CalculusMA12-325 (b)2MA-C4  Integral CalculusMA12-725 (c)2MA-M1 Modelling Financial SituationsMA12-426 (a)2MA-C3  Applications of DifferentiationMA12-326 (b)3MA-C3  Applications of DifferentiationMA12-3, MA12-1027 (a)2MA-C4  Integral CalculusMA12-727 (b)2MA-C4  Integral CalculusMA12-7
+27 (c)
+2MA-C3 Applications of Differentiation MA-C4 Integral Calculus
+MA-E1  Logarithms and Exponentials
+MA12-1028 (a)2MA-T1  Trigonometry and Measure of AnglesMA11-3
+28 (b)
+2MA-T1 Trigonometry and Measure of Angles MA-T3 Trigonometric Functions and Graphs
+MA11-3, MA12-929 (a)1MA-T1  Trigonometry and Measure of AnglesMA11-329 (b)3MA-T1  Trigonometry and Measure of AnglesMA11-329 (c)3MA-T1  Trigonometry and Measure of AnglesMA11-3303MA-F2  Graphing TechniquesMA12-1313MA-T3  Trigonometric Functions and GraphsMA12-5, MA12-10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

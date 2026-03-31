@@ -1,0 +1,796 @@
+﻿=== Science Inquiry and Innovation Project (FULL SYLLABUS) ===
+Subject: science-extension
+Focus ONLY on content related to: Science Inquiry and Innovation Project
+============================================================
+
+NSW Syllabus
+Science Extension
+Stage 6
+Syllabus
+
+
+(c) 2017 NSW Education Standards Authority (NESA) for and on behalf of the Crown in right of the State of New South Wales.
+
+The NESA website holds the ONLY official and up-to-date versions of these documents available on the internet. ANY other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are NOT authorised. You CANNOT rely on copies from any other source.
+
+The documents on this website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright.
+
+All rights reserved. No part of the Material may be reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form, or transmitted to any other person or stored electronically in any form without the prior written permission of NESA, except as permitted by the Copyright Act 1968.
+
+When you access the material you agree:
+* to use the material for information purposes only
+* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the prior permission of NESA
+* to acknowledge that the material is provided by NESA
+* to include this copyright notice in any copy made
+* not to modify the material or any part of the material without the express prior written permission of NESA.
+
+The material may contain third-party copyright materials such as photos, diagrams, quotations, cartoons and artworks. These materials are protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's specific permission. Unauthorised reproduction, transmission or commercial use of such copyright materials may result in prosecution.
+
+NESA has made all reasonable attempts to locate owners of third-party copyright material and invites anyone from whom permission has not been sought to contact the Copyright Officer.
+
+Phone: (02) 9367 8289
+Fax: (02) 9279 1482
+Email: copyright@nesa.nsw.edu.au
+
+Published by
+NSW Education Standards Authority
+GPO Box 5300
+Sydney NSW 2001
+Australia
+
+www.educationstandards.nsw.edu.au
+
+PAF17/495
+D2017/26424
+
+Contents
+Introduction	4
+Science Extension Key	7
+Rationale	9
+The Place of the Science Extension Stage 6 Syllabus in the K-12 Curriculum	10
+Aim	11
+Objectives	12
+Outcomes	13
+Year 12 Course Structure and Requirements	15
+Assessment and Reporting	20
+Content	21
+Science Extension Year 12 Course Content	29
+Glossary	43
+
+Introduction
+Stage 6 Curriculum
+NSW Education Standards Authority (NESA) Stage 6 syllabuses have been developed to provide students with opportunities to further develop skills which will assist in the next stage of their lives.
+
+The purpose of the Stage 6 syllabuses is to:
+* develop a solid foundation of literacy and numeracy
+* provide a curriculum structure which encourages students to complete secondary education at their highest possible level
+* foster the intellectual, creative, ethical and social development of students, in particular relating to:
+- application of knowledge, understanding, skills, values and attitudes in the fields of study they choose
+- capacity to manage their own learning and to become flexible, independent thinkers, problem-solvers and decision-makers
+- capacity to work collaboratively with others
+- respect for the cultural diversity of Australian society
+- desire to continue learning in formal or informal settings after school.
+* provide a flexible structure within which students can meet the challenges of and prepare for:
+- further academic study, vocational training and employment
+- changing workplaces, including an increasingly STEM-focused (Science, Technology, Engineering and Mathematics) workforce
+- full and active participation as global citizens.
+* provide formal assessment and certification of students' achievements
+* promote the development of students' values, identity and self-respect.
+
+The Stage 6 syllabuses reflect the principles of the NESA K-10 Curriculum Framework and Statement of Equity Principles, the reforms of the NSW Government Stronger HSC Standards (2016), and nationally agreed educational goals. These syllabuses build on the continuum of learning developed in the K-10 syllabuses.
+
+The syllabuses provide a set of broad learning outcomes that summarise the knowledge, understanding, skills, values and attitudes important for students to succeed in and beyond their schooling. In particular, the attainment of skills in literacy and numeracy needed for further study, employment and active participation in society are provided in the syllabuses in alignment with the Australian Core Skills Framework (ACSF).
+
+NESA syllabuses support a standards-referenced approach to assessment by detailing the important knowledge, understanding, skills, values and attitudes students will develop and outlining clear standards of what students are expected to know and be able to do. The syllabuses take into account the diverse needs of all students and provide structures and processes by which teachers can provide continuity of study for all students.
+
+
+Diversity of Learners
+NSW Stage 6 syllabuses are inclusive of the learning needs of all students. Syllabuses accommodate teaching approaches that support student diversity including students with special education needs, gifted and talented students, and students learning English as an additional language or dialect (EAL/D). Students may have more than one learning need.
+Students with Special Education Needs
+All students are entitled to participate in and progress through the curriculum. Schools are required to provide additional support or adjustments to teaching, learning and assessment activities for some students with special education needs. Adjustments are measures or actions taken in relation to teaching, learning and assessment that enable a student with special education needs to access syllabus outcomes and content, and demonstrate achievement of outcomes.
+
+Students with special education needs can access the outcomes and content from Stage 6 syllabuses in a range of ways. Students may engage with:
+* Stage 6 syllabus outcomes and content with adjustments to teaching, learning and/or assessment activities; or
+* selected Stage 6 Life Skills outcomes and content from one or more Stage 6 Life Skills syllabuses.
+
+Decisions regarding curriculum options, including adjustments should be made in the context of collaborative curriculum planning with the student, parent/carer and other significant individuals to ensure that decisions are appropriate for the learning needs and priorities of individual students.
+
+Further information can be found in support materials for:
+* Science Extension
+* Special education needs
+* Life Skills.
+Gifted and Talented Students
+Gifted students have specific learning needs that may require adjustments to the pace, level and content of the curriculum. Differentiated educational opportunities assist in meeting the needs of gifted students.
+
+Generally, gifted students demonstrate the following characteristics:
+* the capacity to learn at faster rates
+* the capacity to find and solve problems
+* the capacity to make connections and manipulate abstract ideas.
+
+There are different kinds and levels of giftedness. Gifted and talented students may also possess learning difficulties and/or disabilities that should be addressed when planning appropriate teaching, learning and assessment activities.
+
+
+Curriculum strategies for gifted and talented students may include:
+* differentiation: modifying the pace, level and content of teaching, learning and assessment activities
+* acceleration: promoting a student to a level of study beyond their age group
+* curriculum compacting: assessing a student's current level of learning and addressing aspects of the curriculum that have not yet been mastered.
+
+School decisions about appropriate strategies are generally collaborative and involve teachers, parents and students with reference to documents and advice available from NESA and the education sectors. 
+
+Gifted and talented students may also benefit from individual planning to determine the curriculum options, as well as teaching, learning and assessment strategies, most suited to their needs and abilities.
+Students Learning English as an Additional Language or Dialect (EAL/D)
+Many students in Australian schools are learning English as an additional language or dialect (EAL/D). EAL/D students are those whose first language is a language or dialect other than Standard Australian English and who require additional support to assist them to develop English language proficiency.
+
+EAL/D students come from diverse backgrounds and may include:
+* overseas and Australian-born students whose first language is a language other than English, including creoles and related varieties
+* Aboriginal and Torres Strait Islander students whose first language is Aboriginal English, including Kriol and related varieties.
+
+EAL/D students enter Australian schools at different ages and stages of schooling and at different stages of English language learning. They have diverse talents and capabilities and a range of prior learning experiences and levels of literacy in their first language and in English. EAL/D students represent a significant and growing percentage of learners in NSW schools. For some, school is the only place they use Standard Australian English.
+
+EAL/D students are simultaneously learning a new language and the knowledge, understanding and skills of the Science Extension Stage 6 Syllabus through that new language. They may require additional support, along with informed teaching that explicitly addresses their language needs.
+
+The ESL Scales and the English as an Additional Language or Dialect Teacher Resource (EAL/D) provide information about the English language development phases of EAL/D students. These materials and other resources can be used to support the specific needs of English language learners and to assist students to access syllabus outcomes and content.
+
+
+Science Extension Key
+The following codes and icons are used in the Science Extension Stage 6 Syllabus.
+Outcome Coding
+Syllabus outcomes have been coded in a consistent way. The code identifies the subject, Year and outcome number. For example:
+
+
+
+Outcome codeInterpretationSE12-2Science Extension, Year 12 - Outcome number 2
+
+Learning Across the Curriculum Icons
+Learning across the curriculum content, including cross-curriculum priorities, general capabilities and other areas identified as important learning for all students, is incorporated and identified by icons in the syllabus.
+
+Cross-curriculum priorities
+	Aboriginal and Torres Strait Islander histories and cultures
+	Asia and Australia's engagement with Asia
+	Sustainability
+
+General capabilities
+	Critical and creative thinking
+	Ethical understanding
+	Information and communication technology capability
+	Intercultural understanding
+	Literacy
+	Numeracy
+	Personal and social capability
+
+Other learning across the curriculum areas
+	Civics and citizenship
+	Difference and diversity
+	Work and enterprise
+
+
+Rationale
+The Science Extension Stage 6 Syllabus focuses on the nature, development and processes of science. The course requires students to engage with complex concepts and theories and to critically evaluate new ideas, discoveries and contemporary scientific research. Students are challenged to examine a scientific research question influenced by their study of one or more of the scientific disciplines. In doing this, students extend their knowledge of the discipline(s), conduct further analysis and authentic scientific investigations, and uniquely for this course, produce a detailed scientific research report that reflects the standards generally required for publication in a scientific journal.
+
+Students interrogate and refine their ideas of and about science through analysing historic and cultural observations and significant scientific research within the relevant ethical frameworks and philosophical arguments of the time.
+
+Through designing and conducting their own scientific research, initially using small datasets, students deepen and build upon their understanding of analysing and interpreting data. They are provided with opportunities to refine and extend their skills of Working Scientifically by applying these interrelated processes to contemporary authentic scientific research reflecting the skills used by practising research scientists. Students gather, examine, model and critically assess evidence that is informed by analysis of primary and secondary-sourced data and examining this data in relation to relevant publicly available data sets.
+
+Science Extension is designed for students with an interest in scientific research. The course lays a foundation for students planning to pursue further study in Science, Technology, Engineering or Mathematics (STEM) based courses offered at the tertiary level, and to engage in new and emerging industries.
+
+
+The Place of the Science Extension Stage 6 Syllabus in the K-12 Curriculum
+
+
+
+
+Aim
+The study of Science Extension Stage 6 enables students with a passion for science to explore the development of the scientific process over time, undertake high-level authentic scientific research, communicate findings and propose further research.
+
+Objectives
+Knowledge, Understanding and Skills
+Students:
+* apply the Working Scientifically processes as they are practised by the scientific community
+* develop extensive knowledge and understanding about the development of scientific inquiry and research
+* develop extensive understanding of the nature of, and the application and processes involved in, modern scientific research
+* develop and apply comprehensive knowledge, understanding and skills, to a specific area of science informed by researching, manipulating and analysing primary and secondary-sourced data in relation to relevant publicly available data sets
+* develop and apply extensive knowledge, understanding and skills in regard to the current methods of communicating scientific ideas through scientific research
+Values and Attitudes
+Students:
+* develop positive values and attitudes towards science
+* develop an appreciation of the significance of applying imagination and creativity to scientific research
+* develop an appreciation of the wonder of science and acknowledge the contribution science has made to contemporary society
+* appreciate the influence of cultural, political and societal influences on the development of scientific knowledge
+* support ethical ideals when collecting and analysing data and publishing scientific research results
+
+
+Outcomes
+Table of Objectives and Outcomes - Continuum of Learning
+Knowledge, Understanding and Skills
+Objective
+Students:
+* apply the Working Scientifically processes as they are practised by the scientific communityOutcome
+A student:
+SE-1 refines and applies the Working Scientifically processes in relation to scientific researchObjective
+Students:
+* develop extensive knowledge and understanding about the development of scientific inquiry and researchOutcome
+A student:
+SE-2 analyses historic and cultural observations, ethical considerations and philosophical arguments involved in the development of scientific knowledge and scientific methods of inquiryObjective
+Students:
+* develop extensive understanding of the nature of, and the application and processes involved in, modern scientific researchOutcomes
+A student:
+SE-3 interrogates relevant and valid peer-reviewed scientific research to develop a scientific research question, hypothesis, proposal and plan
+
+SE-4 uses statistical applications, mathematical processes and/or modelling to gather, process, analyse and represent reliable and valid datasets
+
+SE-5 analyses and applies the processes used in reliable and valid scientific research to solve complex scientific problems and inform further researchObjective
+Students:
+* develop and apply comprehensive knowledge, understanding and skills, to a specific area of science informed by researching, manipulating and analysing primary and secondary-sourced data in relation to relevant publicly available data setsOutcome
+A student:
+SE-6 analyses and reports on a contemporary issue or an application of science informed by either primary or secondary-sourced data, or both, in relation to relevant publicly available data setsObjective
+Students:
+* develop and apply extensive knowledge, understanding and skills relating to the current methods of communicating scientific ideas through scientific researchOutcome
+A student:
+SE-7 communicates analysis of an argument or conclusion incorporating appropriate scientific language and referencing techniques in a scientific report
+
+Year 12 Course Structure and Requirements
+Year 12 Course
+1 Unit
+(60 hours)Students develop a response to a scientific research question that requires the analysis of data from one, or a combination of, the disciplines of ScienceModulesIndicative
+hoursScientific Research ProjectModule 1
+The Foundations of Scientific Thinking10Establish an area for scientific research
+?
+Formulate the hypothesis for research
+?
+Find or generate the data
+Apply methodologies to analyse the data
+?
+Develop the Scientific Research Report and respond to the hypothesis
+?Module 2
+The Scientific Research Proposal10Module 3
+The Data, Evidence and Decisions20Module 4
+The Scientific Research Report20Mandatory Scientific Research Report and Portfolio
+Prerequisite courses for entry into Science Extension Year 12 are one of, or a combination (up to 6 units of study) of, Biology, Chemistry, Earth and Environmental Science, Investigating Science or Physics in Year 11.
+
+Co-requisite courses for Science Extension Year 12 are one of, or a combination (up to 7 units of study) of, Biology, Chemistry, Earth and Environmental Science, Investigating Science or Physics in Year 12.
+
+Students will need to have appropriate access to the internet and a computer during the HSC examination. This access is also required to support aspects of class and study time.
+
+Students must propose and develop a research question, formulate a hypothesis and develop evidence-based responses in the form of a Scientific Research Report, which is supported by a Scientific Research Portfolio.
+
+The Scientific Research Report is a result of the student's own work and must adhere to the principles and practices of good scholarship, as identified in the HSC: All My Own Work course. While students may collaborate with and draw upon the expertise, knowledge and data held by others in developing their Scientific Research Report and Portfolio, this assistance must be referenced using accepted protocols. All scientific research must be sensitive to community expectations in relation to the question being interrogated. Students must adhere to ethical practices in the collection and analysis of data and the communication of results.
+
+
+The Scientific Research Report and Portfolio produced in this course may be an extension of, but must not overlap with or significantly duplicate, any depth study attempted in the Year 11 or Year 12 Biology, Chemistry, Earth and Environmental Science, Investigating Science or Physics courses.
+The Scientific Research Report
+A scientific research report or paper (approximately 2500-3000 words) has a formal structure. Regardless of the scientific discipline the report is prepared in a way that can be clearly interpreted by academics or other scientists. The order in which the sections of a report appear are, however, not necessarily in the order they are written. For example, the abstract appears at the beginning but is written once the scientific research findings have been determined.
+
+The Title
+A title is a stand-alone statement that is specific, precise and informative, and provides the aim of the investigation. It is not a restatement of the scientific research question or the hypothesis. The title should appear on the cover page.
+
+The Abstract
+The abstract is a one paragraph (approximately 100-200 words) summary of the scientific research investigation. It contains the question, the methods, key results and conclusions. It should be accurate and precise. Referencing is not needed in the abstract.
+
+Literature Review
+This section (approximately 750-1000 words) is designed to inform the reader of the relevance of the scientific research and includes background information enabling the reader to understand the key areas involved. It is usual to start the review with a broad scope and become more specific. Sources used are to be current and, where possible, original articles referenced rather than reviews of the articles.
+
+Scientific Research Question
+The scientific research question addresses a single independent variable but may be broken down into subparts if multiple aspects are involved and are directly related. The Scientific Research Project should have a single major focus and subsequently only one main scientific research question. The question should be clear, precise and specific; written in scientific language, and be developed from the review of the literature.
+
+Scientific Hypothesis
+Once the scientific research question has been chosen, a hypothesis is then formulated. A hypothesis is a statement that relates an independent variable to a dependent variable in a causal relationship that can be tested.
+
+Methodology
+The methodology is usually written first and is refined as the scientific research progresses. The methodology should be written in passive voice, simple past tense and contain enough specific and detailed information so that it can be repeated by another scientist to obtain the same results.
+
+
+Results
+The results are based upon the facts. This section describes what was observed, calculated or the trends discovered. It is not an explanation of the results. The order of the results can either follow the order of the methodology or, maybe, in order of most important to least important. Results may include tables, graphs and/or other visual representations to highlight important features. It may be relevant to comment on the degree of uncertainty stated for each set of data collected. All visual displays should be labelled with a number, concise name and a stand-alone description of how the result was obtained. It is useful to integrate visual displays with text so that the reader is guided through the research.
+
+Discussion
+The discussion (approximately 700-1200 words) forms the argument and provides an explanation of the phenomenon that was investigated. Other peer-reviewed scientific research should be used and referenced to discuss findings and to form an academic argument. The discussion includes an evaluation of the data-analysis and an explanation of the results, why they occurred, key limitations and further implications with suggestions for future directions of scientific research.
+
+Conclusion
+The conclusion (approximately 250-500 words) is a summary of the scientific research findings and is usually one or two paragraphs in length and should not introduce new information.
+
+Reference List
+All sources of information and data that are used to inform the scientific research should be cited using an appropriate footnoting and referencing style.
+
+Appendices
+Appendices are not essential, but are used to include relevant documents that are either too large or that detract from the flow of the report. They are to be numbered and referred to in the text.
+
+
+The Scientific Research Portfolio
+The Scientific Research Portfolio supports and guides the development of the Scientific Research Report. It provides a record of the processes and documents the information gathered, the analysis of data and the development of the report.
+
+The portfolio is an active, working, purpose-built set of documents that facilitates organisation and ensures that students reflect on their work and maintain information and records of their actions and findings. It is used to evidence students' original work and maintain records of teacher feedback, comments and observations. The portfolio also provides evidence for the acknowledgement of secondary-sourced information used and clarifies the scientific research methodology, leading to a logical evidence-based Scientific Research Report. The portfolio may be maintained in digital format.
+
+The following information is provided to assist students in identifying the key structural elements of the portfolio. Each element may be revisited a number of times and the order of engagement with each element may vary.
+Section 1
+Planning may include:
+* an action plan with milestones and a timeframe for each stage of the Scientific Research Project
+* a log of the sequential development of the scientific research process
+* summaries and annotated extracts of peer-reviewed scientific research and statements of applicability to the Scientific Research Project
+* a developing reference list using correct formatting from the chosen format
+* a referenced literature review appropriate to the scientific research question
+* a concept map or alternative strategy for generating ideas for the scientific research, including references to literature and justification for their selection
+* a refined and justified scientific research question
+* a refined and justified scientific hypothesis.
+Section 2
+Evidence of data collection and analysis may include:
+* work samples of various methods for obtaining qualitative and quantitative scientific research including relevant publicly available data sets
+* criteria for the choice of a variety of relevant data sets pertaining to the scientific research
+* work samples demonstrating skills of recording, processing, organising and storing data
+* work samples demonstrating proficiency in gathering small data sets and applying appropriate scientific skills
+* manipulation, presentation and analysis of data in a variety of forms.
+
+
+Section 3
+Reflections of the research process may include:
+* extracts of students' drafts with reasons for changes and critical questions from peers and/or teachers
+* revisions of the scientific research with justifying statements
+* examples of final edits, including use of scientific language, plausibility and logical progression of scientific arguments
+* suggestions for improvements to the Scientific Research Project, including its methods
+* suggestions for future directions to further the scientific research.
+
+Communication and collaboration with scientific researchers, scientists and scientific institutions, both nationally and internationally, can assist students to achieve the outcomes of the course. All assistance and materials gathered, including data, must be appropriately referenced and acknowledged using accepted protocols.
+
+Assessment and Reporting
+Information about assessment in relation to the Science Extension syllabus is contained in Assessment and Reporting in Science Extension Stage 6. It outlines course-specific advice and requirements regarding:
+* Year 12 school-based assessment requirements
+* Year 12 mandatory components and weightings
+* External assessment requirements including HSC examination specifications.
+
+This information should be read in conjunction with requirements on the Assessment Certification Examination (ACE) website.
+
+Additional advice is available in the Principles of Assessment for Stage 6.
+
+
+Content
+Content defines what students are expected to know and do as they work towards syllabus outcomes. It provides the foundations for students to successfully progress to the next stage of schooling or post-school opportunities.
+
+Teachers will make decisions about content regarding the sequence, emphasis and any adjustments required based on the needs, interests, abilities and prior learning of students.
+
+Content in Stage 6 syllabuses defines learning expectations that may be assessed in Higher School Certificate examinations.
+
+
+Organisation of Content
+The following diagram provides an illustrative representation of elements of the course and their relationship.
+
+The Year 12 course comprises four modules supporting a major Scientific Research Project. The skills of Working Scientifically are integrated within the course content and form the framework for the Scientific Research Project.
+
+
+
+Working Scientifically as Practised
+Application of the Working Scientifically processes, as practised by the scientific community, are at the core of the course.
+
+Science Extension challenges students to apply the Working Scientifically processes in a way that is determined by, and appropriate to, the scientific research over an extended period of time.
+
+Students are challenged to:
+* define and modify questions and/or hypotheses
+* define, refine or modify plans and procedures
+* process and analyse data
+* solve problems
+* communicate methodologies and conclusions
+* conduct further secondary scientific research.
+
+A major focus of the Working Scientifically processes is the communication of evidence-based conclusions and suggestions for future scientific research. Methodologies can be refined, and further investigations and scientific research generated as a result of unexpected observations. Knowledge and understanding of science and its processes are essential for scientific research at the tertiary level and for engagement in current and future scientific endeavours.
+
+
+
+Safety
+Schools have a legal obligation in relation to safety. Schools need to ensure that they comply with relevant legislation as well as system and school requirements in relation to safety when implementing their programs. This includes legislation and guidelines relating to Work Health and Safety, and the handling and storage of chemicals and dangerous goods.
+Animal Research
+Schools have a legal obligation in relation to the welfare of animals. The keeping of animals and all practical activities involving animals must comply with relevant guidelines and legislation.
+Inquiry Questions
+Inquiry questions are included in the course content and are used to frame the syllabus content within each module. The depth of knowledge and understanding, and skill development required to fully address the inquiry questions may vary.
+
+Learning Across the Curriculum
+Learning across the curriculum content, including the cross-curriculum priorities and general capabilities, assists students to achieve the broad learning outcomes defined in the NESA Statement of Equity Principles, the Melbourne Declaration on Educational Goals for Young Australians (December 2008) and in the Australian Government's Core Skills for Work Developmental Framework (2013).
+
+Cross-curriculum priorities enable students to develop understanding about and address the contemporary issues they face.
+
+The cross-curriculum priorities are:
+* Aboriginal and Torres Strait Islander histories and cultures 
+* Asia and Australia's engagement with Asia 
+* Sustainability 
+
+General capabilities encompass the knowledge, skills, attitudes and behaviours to assist students to live and work successfully in the 21st century.
+
+The general capabilities are:
+* Critical and creative thinking 
+* Ethical understanding 
+* Information and communication technology capability 
+* Intercultural understanding 
+* Literacy 
+* Numeracy 
+* Personal and social capability 
+
+NESA syllabuses include other areas identified as important learning for all students:
+* Civics and citizenship 
+* Difference and diversity 
+* Work and enterprise 
+
+Learning across the curriculum content is incorporated, and identified by icons, in the content of the Science Extension Stage 6 Syllabus in the following ways.
+
+
+Aboriginal and Torres Strait Islander Histories and Cultures 
+Aboriginal and Torres Strait Islander communities have diverse cultures, social structures and a history of unique, complex knowledge systems. In Science Extension students are provided with opportunities to learn about the cultural observations of Aboriginal and Torres Strait Islander Peoples and the ways in which traditional knowledge and observations continue to inform Western scientific knowledge and understanding.
+
+When planning and programming content relating to Aboriginal and Torres Strait Islander histories and cultures teachers are encouraged to:
+* involve local Aboriginal communities and/or appropriate knowledge holders in determining suitable resources, or to use Aboriginal or Torres Strait Islander authored or endorsed publications
+* read the Principles and Protocols relating to teaching and learning about Aboriginal and Torres Strait Islander histories and cultures and the involvement of local Aboriginal communities.
+Asia and Australia's Engagement with Asia 
+Asia and Australia's engagement with Asia provides rich and engaging contexts for developing students' scientific and technological knowledge, understanding and skills. In Science Extension students are provided with opportunities to recognise the Asia region's contribution to cultural observational knowledge and its relationship to Western scientific knowledge and understanding.
+Sustainability 
+Sustainability is concerned with the ongoing capacity of the Earth to maintain all life. It provides authentic contexts for exploring, investigating and understanding systems in natural and human-made environments. In Science Extension students are provided with opportunities to research contemporary sustainability issues.
+Critical and Creative Thinking 
+Critical and creative thinking are integral to activities where students learn to generate and evaluate knowledge, clarify concepts and ideas, seek possibilities, consider alternatives and solve problems. In Science Extension critical and creative thinking skills are developed through the Working Scientifically processes by students applying them as they are practised.
+Ethical Understanding 
+Students are provided with opportunities to understand how reasoning can assist ethical judgement. In Science Extension students are provided with opportunities to make ethical judgements in relation to scientific investigations, codes of practice, and the use and application of scientific knowledge. Students explore the importance of honest reporting based on evidence. They apply ethical guidelines in their investigations, particularly in regard to the implications for others and the environment.
+
+
+Information and Communication Technology Capability 
+Information and communication technology (ICT) can be used effectively and appropriately to access, create and communicate information and ideas, solve problems and work collaboratively. In Science Extension students are provided with opportunities to develop ICT capability when they learn to access information, collect, analyse and represent data, including relevant publicly available datasets. Students can model and interpret concepts and relationships to communicate scientific and technological ideas, processes and information.
+Intercultural Understanding 
+Students develop intercultural understanding as they learn to understand themselves in relation to others. In Science Extension students are provided with opportunities to appreciate how diverse cultural perspectives and observations have impacted on the development, breadth and diversity of present-day science - its knowledge, processes and applications. Students may engage with issues requiring cultural sensitivity, and are provided with opportunities to collaborate with scientists who work in global teams and alliances to address issues and solve problems of national and international importance.
+Literacy 
+Literacy is the ability to use a repertoire of knowledge and skills to communicate and comprehend effectively, using a variety of modes and media. In Science Extension students are provided with opportunities to understand that scientific language varies according to the context. They engage with different forms of written and spoken language to communicate scientific concepts. Students learn how scientific information can also be presented effectively in the form of diagrams, flow charts, tables, graphs and models. They are required to produce a scientific report that reflects the standard generally required for publication.
+Numeracy 
+Numeracy involves recognising and understanding the role of mathematics in the world. In Science Extension students are provided with opportunities to develop advanced numeracy skills through practical measurement, mathematical modelling, statistical analysis and the collection, representation and interpretation of relevant publicly available data sets. Students consider issues of uncertainty and reliability in measurement and learn data-analysis skills, identifying trends and patterns from numerical data and graphs. They apply mathematical relationships and concepts to solve problems.
+Personal and Social Capability 
+Students develop personal and social capability as they learn to understand and manage themselves, their relationships and their lives more effectively. This includes making responsible decisions, working effectively individually and in teams, and constructively handling challenging situations. Through applying the processes of Working Scientifically, students develop skills in collaboration, peer assessment and review. They learn that the study of science is a collaborative global pursuit.
+
+
+Civics and Citizenship 
+Civics and citizenship involves knowledge and understanding of how our Australian society operates. In Science Extension students are provided with opportunities to broaden their understanding of aspects of civics and citizenship related to the application of scientific ideas and technological advances. Students further develop their understanding of ecological sustainability and the development of environmental and sustainable practices at a local, regional, national and international level.
+Difference and Diversity 
+Difference and diversity comprise gender, race and socio-economic circumstances. Students are provided with opportunities to understand and appreciate the difference and diversity they experience in their everyday lives. Working Scientifically provides opportunities for students to work collaboratively, where they can develop an appreciation of the values and ideas of all group members. This appreciation also enables students to challenge stereotypes and engage with opinions that may be different to their own.
+Work and Enterprise 
+Students develop work-related skills and an appreciation of the value of working individually and collaboratively when conducting scientific research and investigations. In Science Extension students are provided with opportunities to prioritise safe practices and understand the potential risks and hazards present when conducting scientific research and investigations. They will engage with risk assessment while working safely in the laboratory or in the field. Students are provided with opportunities to develop skills in producing scientific reports that reflect contemporary approaches to research and the work of scientists.
+
+Science Extension Year 12 Course Content
+Year 12 Course Structure and Requirements
+Year 12 Course
+1 Unit
+(60 hours)Students develop a response to a scientific research question that requires the analysis of data from one, or a combination of, the disciplines of ScienceModulesIndicative
+HoursScientific Research ProjectModule 1
+The Foundations of Scientific Thinking10Establish an area for scientific research
+?
+Formulate the hypothesis for research
+?
+Find or generate the data
+Apply methodologies to analyse the data
+?
+Develop the Scientific Research Report and respond to the hypothesis
+?Module 2
+The Scientific Research Proposal10Module 3
+The Data, Evidence and Decisions20Module 4
+The Scientific Research Report20Mandatory Scientific Research Report and Portfolio
+Prerequisite courses for entry into Science Extension Year 12 are one of, or a combination (up to 6 units of study) of, Biology, Chemistry, Earth and Environmental Science, Investigating Science or Physics in Year 11.
+
+Co-requisite courses for Science Extension Year 12 are one of, or a combination (up to 7 units of study) of, Biology, Chemistry, Earth and Environmental Science, Investigating Science or Physics in Year 12.
+
+Students will need to have appropriate access to the internet and a computer during the HSC examination. This access is also required to support aspects of class and study time.
+
+Students must propose and develop a research question, formulate a hypothesis and develop evidence-based responses in the form of a Scientific Research Report, which is supported by a Scientific Research Portfolio.
+
+The Scientific Research Report is a result of the student's own work and must adhere to the principles and practices of good scholarship, as identified in the HSC: All My Own Work program. While students may collaborate with and draw upon the expertise, knowledge and data held by others in developing their Scientific Research Report and Portfolio, this assistance must be referenced using accepted protocols. All scientific research must be sensitive to community expectations in relation to the question being interrogated. Students must adhere to ethical practices in the collection and analysis of data and the communication of results.
+
+The Scientific Research Report and Portfolio produced in this course may be an extension of, 
+but must not overlap with or significantly duplicate, any depth study attempted in the Year 11 or Year 12 Biology, Chemistry, Earth and Environmental Science, Investigating Science or Physics courses.
+
+Scientific Research Project
+The Scientific Research Project comprises the creation and maintenance of a Scientific Research Portfolio evidencing the development of Scientific Research Report. These documents are developed concurrently with the study of Modules 1 to 4.
+Outcomes
+A student:
+� refines and applies the Working Scientifically processes in relation to scientific research SE-1
+� analyses historic and cultural observations, ethical considerations and philosophical arguments involved in the development of scientific knowledge and scientific methods of inquiry SE-2
+� interrogates relevant and valid peer-reviewed scientific research to develop a scientific research question, hypothesis, proposal and plan SE-3
+� uses statistical applications, mathematical processes and/or modelling to gather, process, analyse and represent reliable and valid data sets SE-4
+� analyses and applies the processes used in reliable and valid scientific research to solve complex scientific problems and inform further research SE-5
+� analyses and reports on a contemporary issue or an application of science informed by primary or secondary-sourced data, or both, in relation to relevant publicly available data sets SE-6
+� communicates analysis of an argument or conclusion incorporating appropriate scientific language and referencing techniques in a scientific report SE-7
+Content Focus
+Scientific research is not conducted in isolation. The fields and disciplines of the sciences overlap during scientific research and in many cases, where complex problems exist, are dependent on each other and often involve global collaboration for solutions to be found.
+
+Students are introduced to current models of scientific research to assist them to extend their knowledge of a specific area of science. Students will access relevant publicly available data sets associated with their research and apply authentic scientific research skills developed throughout the modules.
+
+Data sets nowadays include 'big data' which relates to large volumes of data that can only be computationally analysed to reveal patterns, trends and associations. Scientific research is producing vast amounts of data that relate to current phenomena and world issues, especially health and wellbeing. These data sets require analysis and interpretation to create ideas that lead to solutions or further scientific research.
+
+Students will have the opportunity to carry out a Scientific Research Project to explore contemporary issues, problems and potential new discoveries in depth while extending their skills and knowledge. The project requires the compilation of a Scientific Research Portfolio that supports and provides a record of the relevant processes used to produce Scientific Research Report.
+
+
+Content
+Maintaining the Scientific Research Portfolio
+Inquiry question: How do scientists journal the scientific process?
+
+Students:
+* respond to coursework and inquiry questions in written form 
+* document and maintain a Scientific Research Portfolio to record the processes involved in the scientific research component of the course in regard to the chosen discipline(s)  
+* record and log sequential development of the scientific research process 
+* conduct a review of the literature  
+* justify the scientific research question 
+* prepare summaries of secondary-sourced investigations 
+* analyse and record data  
+* represent and display data  
+* apply appropriate referencing protocols throughout the portfolio 
+* make entries into the portfolio that evidence the development of the scientific research   
+The Scientific Research Report
+Inquiry question: How do scientists present a scientific research report?
+
+Students:
+* prepare a response to a formulated hypothesis from a scientific research question using a scientific report-style format, including:    
+- title
+- abstract
+- literature review
+- scientific research question
+- hypothesis
+- methodology
+- results
+- discussion
+- conclusion
+- reference list
+- appendices
+
+
+Module 1: The Foundations of Scientific Thinking
+Outcomes
+A student:
+� refines and applies the Working Scientifically processes in relation to scientific research SE-1
+� analyses historic and cultural observations, ethical considerations and philosophical arguments involved in the development of scientific knowledge and scientific methods of inquiry SE-2
+� analyses and applies the processes used in reliable and valid scientific research to solve complex scientific problems and inform further research SE-5
+Content Focus
+Scientific laws, theories, concepts and methods undergo changes over time. Theories are formulated to explain and make sense of what we observe. These theories are changed and replaced by newer theories when more sophisticated observations are made or scientists look at existing theories from a new perspective. Scientists understand that there are few absolute truths and that changing ethical frameworks and methods, over time, influence the development of science.
+
+There are many scientific laws and theories that have not been changed significantly since their inception, such as the law of conservation of mass, energy laws and cell theory. Much scientific research is about applying existing scientific theories to new contexts, shown through Einstein's thought experiments that took a century for the evidence to support them to be observed, measured and confirmed.
+
+Students explore historic and cultural observations, the way scientific research has changed over time, and how ethical frameworks have influenced this process. They consider philosophical arguments in relation to the nature of science to deepen their understanding and refine their own views of and about science.
+Content
+The Development of Modern Science
+Inquiry question: How have philosophical arguments influenced the development of modern scientific research?
+
+Students:
+* explore epistemology and alternative ways of knowing, for example the development of navigation 
+* describe the influence of empiricism on scientific inquiry 
+* compare induction and deduction with reference to scientific inquiry 
+* assess parsimony/Occam's razor and its influence on the development of science 
+* analyse the importance of falsifiability in scientific research 
+* evaluate the significance of confirmation bias, including theory-dependence of observation 
+* use historical examples to evaluate the contribution of cultural observational knowledge and its relationship to science, including:    
+- post - 49000 BCE, exemplified by Aboriginal cultures
+- pre - 1500 CE, exemplified by Greek and Egyptian cultures and those of the Asia region
+
+
+* select one example from the following list to analyse the paradigm shift and how evidence is used to support new theories to explain phenomena and their consequences:  
+- Lavoisier and oxygen
+- Einstein and general relativity
+- Wegener and continental drift, leading to plate tectonics
+- McClintock and transposable elements, commonly known as 'jumping genes'
+Influences on Current Scientific Thinking
+Inquiry question: What currently influences scientific thinking?
+
+Students:
+* analyse the current influences on scientific thinking, including but not limited to:
+- economic
+- political
+- global
+* analyse the influence of ethical frameworks on scientific research over time, including but not limited to:  
+- human experimentation
+- experimentation on animals
+- biobanks
+- use of research data
+
+
+Module 2: The Scientific Research Proposal
+Outcomes
+A student:
+� refines and applies the Working Scientifically processes in relation to scientific research SE-1
+� interrogates relevant and valid peer-reviewed scientific research to develop a scientific research question, hypothesis, proposal and plan SE-3
+� uses statistical applications, mathematical processes and/or modelling to gather, process, analyse and represent reliable and valid data sets SE-4
+� analyses and applies the processes used in reliable and valid scientific research to solve complex scientific problems and inform further research SE-5
+� analyses and reports on a contemporary issue or an application of science informed by primary or secondary-sourced data, or both, in relation to relevant publicly available data sets SE-6
+� communicates analysis of an argument or conclusion incorporating appropriate scientific language and referencing techniques in a scientific report SE-7
+Content Focus
+Scientific Research Question and Hypothesis
+Students are to propose a scientific research question that relates to one or more of the science disciplines, formulate a relevant hypothesis and conduct scientific research into an issue, problem, emerging theory or discovery, using relevant publicly available data sets. Students create a Scientific Research Portfolio to evidence and substantiate the research process.
+The Beginnings of Scientific Research
+Successful scientific research depends upon the quality of the scientific research question. It must be meaningful, significant and feasible and clearly guide the scientific research process. It should be framed with consideration of methodologies, data collection and processing issues.
+
+Students will learn to develop a question that enables scientific research by exploring peer-reviewed published literature for guidance. Students will be guided to undertake relevant scientific research and to develop a detailed plan that lays the foundations for the subsequent processes to be employed to address a developed hypothesis.
+Methodology and Data Collection
+Students are provided with opportunities to use established scientific methods to gather, process, analyse and represent valid, accurate and reliable quantitative and qualitative data. They will also apply methods to appropriately store, record and organise data.
+
+Content
+Developing the Question and Hypothesis
+Inquiry question: What are the processes needed for developing a scientific research question and initial hypothesis?
+
+Students:
+* conduct an initial literature search, from one or more areas of science, to identify the potential use of a contemporary, relevant publicly available data set    
+* develop a scientific research question from the literature search    
+* formulate an initial scientific hypothesis based on the scientific research question
+* evaluate the resources associated with the initial scientific hypothesis derived from the literature in terms of:  
+- the scope to perform an investigation to obtain primary data
+- the availability of secondary-sourced data
+- the availability of a relevant publicly available data set(s)
+- reliability and validity
+- assessing the current state of the theory, concept, issue or problem being considered
+* assess the process involved in the development of a scientific research question and relevant hypothesis    
+Scientific Research Proposal
+Inquiry question: How is scientific research planned, based on a relevant hypothesis?
+
+Students:
+* conduct a detailed literature review to support the validity, significance and appropriateness of the scientific research question    
+* formulate a final scientific hypothesis based on the scientific research question
+* develop the rationale and possible outcomes for the chosen scientific research  
+* develop a detailed plan to investigate the scientific hypothesis including:
+- the overall strategy
+- methodology
+- data analysis
+- representation and communication of the scientific research
+- timelines
+- benchmarks
+* critically analyse the scientific research plan to refine and make appropriate amendments   
+* employ accepted referencing protocols, for example: 
+- APA
+- Harvard
+- MLA
+
+
+Methodology and Data Collection
+Inquiry question: How is an appropriate methodology developed to collect valid and reliable data?
+
+Students:
+* assess and evaluate the uncertainty in experimental evidence, including but not limited to:   
+- systematic errors
+- random errors
+* assess and evaluate the use of errors in:
+- mathematical calculations involving degrees of uncertainty
+- graphical representations from curves of best fit
+* compare quantitative and qualitative research methods, including but not limited to:   
+- design of method
+- gathering of data
+- analysis of data
+* investigate the various methods that can be used to obtain large data sets, for example:    
+- remote sensing
+- streamed data
+* propose a suitable method to gather relevant data, including large data set(s), if appropriate, applicable to the scientific hypothesis   
+
+Processing Data for Analysis
+Inquiry question: How is data processed so that it is ready for analysis?
+
+Students:
+* investigate appropriate methods for processing, recording, organising and storing data using modern technologies    
+* conduct a practical investigation to obtain a qualitative and a quantitative set of data and apply appropriate methods to process, record, store and organise this data    
+* assess the impact of making a large data set from scientific sources public, for example:      
+- LHC (Large Hadron Collider)
+- Kepler Telescope
+- Human Genome Project
+* conduct an investigation to access and obtain relevant publicly available data set(s), associated with the proposed hypothesis, for inclusion in the development of the Scientific Research Project
+
+
+Module 3: The Data, Evidence and Decisions
+Outcomes
+A student:
+� refines and applies the Working Scientifically processes in relation to scientific research SE-1
+� uses statistical applications, mathematical processes and/or modelling to gather, process, analyse and represent reliable and valid data sets SE-4
+� analyses and applies the processes used in reliable and valid scientific research to solve complex scientific problems and inform further research SE-5
+� analyses and reports on a contemporary issue or an application of science informed by primary or secondary-sourced data, or both, in relation to relevant publicly available data sets SE-6
+� communicates analysis of an argument or conclusion incorporating appropriate scientific language and referencing techniques in a scientific report SE-7
+Content Focus
+Modern scientific research involves making observations and measurements that produce ever-increasing amounts of data. All observations and measurements contain some uncertainty and error. Statistical methods help us quantify and characterise this uncertainty. Data usually contains patterns and trends available for analysis, using a variety of tools in order to derive meaning from them.
+
+Students will develop knowledge, understanding and skills related to the analytical techniques for accessing, storing and analysing high-volume unstructured secondary-sourced publicly available data set(s). Students will be provided with the opportunity to consider limitations and construct plausible inferences while understanding degrees of uncertainty in the data. Students will explore the difference between the concepts of proving that something is true and measuring the probability of a certain result by understanding falsification and statistical levels of confidence.
+Content
+Patterns and Trends
+Inquiry question: What tools are used to describe patterns and trends in data?
+
+Students:
+* analyse and determine the differences between data and evidence    
+* describe the difference between qualitative and quantitative data sets, and methods used for statistical analysis, including but not limited to:  
+- content and thematic analysis
+- descriptive statistics
+* select and use appropriate tools, technologies and/or models in order to manipulate and represent data appropriately for a data set, including but not limited to:   
+- spreadsheets
+- graphical representations
+- models (physical, computational and/or mathematical)
+- digital technologies
+* assess the relevance, accuracy and validity of the data and determine error, uncertainty and comment on its limitations    
+* evaluate the limitations of data analysis and interpretation  
+Statistics in Scientific Research
+Inquiry question: How does statistical analysis assist in finding meaning in the trends or patterns in data sets?
+
+Students:
+* apply appropriate descriptive statistics to a data set(s), including but not limited to:  
+- mean
+- median
+- standard deviation
+* apply appropriate performance measures to the statistical analysis of quantitative data set(s) obtained from conducting a relevant practical investigation, including but not limited to:   
+- error
+- accuracy
+- precision
+- bias
+- data cleansing
+* apply appropriate performance measures to the statistical analysis of a data set(s) relevant to the Scientific Research Project   
+* apply appropriate statistical tests of confidence to a data set(s), including but not limited to:  
+- Student's t-test
+- Chi-squared test
+- F-test
+* apply statistical tests that can determine correlation between two variables, including but not limited to:
+- correlation coefficient
+* describe the difference between correlation and causation
+* explain the requirements to establish causation
+* use available software to apply statistical tests appropriate to a large data set(s) to assist with the analysis of the data
+Decisions from Data and Evidence
+Inquiry question: How is evidence used to make decisions in the scientific research process?
+
+Students:
+* assess the benefits of collective and individual decision-making    
+* analyse patterns and trends arising from the data set(s) related to the Scientific Research Project to:
+- construct a relevant conclusion
+- suggest possibilities for further investigation  
+* demonstrate the impact of new data on established scientific ideas, including but not limited to one of the following:    
+- gravitational waves on general relativity
+- mechanisms of disease transmission and control
+- prediction of natural disasters
+- effects of chemical pollutants on climate
+
+
+Data Modelling
+Inquiry question: How can data modelling help to process, frame and use knowledge obtained from the analysis of data sets?
+
+Students:
+* evaluate data modelling techniques used in contemporary science associated with large data sets, including but not limited to:   
+- predictive
+- statistical
+- descriptive
+- graphical
+
+
+Module 4: The Research Report
+Outcomes
+A student:
+� refines and applies the Working Scientifically processes in relation to scientific research SE-1
+� analyses and applies the processes used in reliable and valid scientific research to solve complex scientific problems and inform further research SE-5
+� analyses and reports on a contemporary issue or an application of science informed by primary or secondary-sourced data, or both, in relation to relevant publicly available data sets SE-6
+� communicates analysis of an argument or conclusion incorporating appropriate scientific language and referencing techniques in a scientific report SE-7
+Content Focus
+In order for science to progress, education, public funding and public support are required. Excellent oral and written communication skills are imperative to achieve these goals, as is the publication of a concise, clearly written, authentic, peer-reviewed scientific research report. A scientific research report follows a specific format that ensures that the scientific community can readily access and examine its contents, including related data, and to repeat methodologies, if required, to evidence claims made or conclusions drawn.
+
+All articles, papers or scientific reports must include a title, abstract, introduction, methodology, an analysis of uncertainties, results, discussion and a conclusion with a relevant bibliography and referencing.
+
+This module assists students in making final additions to the related Scientific Research Portfolio and to complete the related Scientific Research Report.
+Content
+Reporting Findings
+Inquiry question: How are the inferences, generalisations and conclusions derived from valid and reliable data reported?
+
+Students:
+* assess methods by which scientists communicate research findings, including but not limited to:     
+- the scientific peer-review process
+- publishing in online and print journals
+- presenting at conferences
+- presentations in popular media
+* analyse the results from the Scientific Research Project and present findings about the data set obtained as a discussion, using scientific language and peer-reviewed supporting data   
+* analyse trends, patterns and relationships in the data set to suggest modifications to the scientific research methods employed    
+* analyse the patterns and trends derived from the associated data set(s) relevant to the scientific research for inclusion in the report   
+* justify choices of mode and media for the presentation of the scientific research, based on purpose, audience and context 
+
+* communicate scientific and/or technical information or ideas clearly and accurately using a variety of forms appropriate to purpose, for example orally, mathematically, graphically or in writing  
+* justify future directions of further scientific research outlined in the Scientific Research Report  
+* use scientific language in the analysis and evaluation of an area of scientific research by means of a scientific report, supported by an associated portfolio of evidence   
+
+Glossary
+
+Glossary termDefinitionAboriginal and Torres Strait Islander PeoplesAboriginal Peoples are the first peoples of Australia and are represented by over 250 language groups each associated with a particular Country or territory. Torres Strait Islander Peoples whose island territories to the north east of Australia were annexed by Queensland in 1879 are also Indigenous Australians and are represented by five cultural groups.
+
+An Aboriginal and/or Torres Strait Islander person is someone who:
+* is of Aboriginal and/or Torres Strait Islander descent
+* identifies as an Aboriginal person and/or Torres Strait Islander person, and
+* is accepted as such by the Aboriginal and/or Torres Strait Islander community in which they live.content analysisStrategies used to analyse the characteristics of a resource. correlationInterdependence of variable quantities.cultural observationsTraditional knowledge, based on observations linked to local culture and to the predominant philosophy and rituals of the time.data cleansingDetecting and removing errors and inconsistencies from data in order to improve the quality of data (also known as data scrubbing).data setAn organised collection of data.deductionDeriving a conclusion by reasoning using known facts.descriptive statisticsStatistics that quantitatively describe or summarise features of a collection of information.empiricismThe theory that all knowledge is based on experience derived from the senses.epistemologyA branch of philosophy that investigates the origin, nature, methods and limits of human knowledge.ethical frameworkA set of codes that guides behaviour.falsifiabilityThe idea that a theory, hypothesis or statement must be testable and shown to be incorrect, if it is to be considered scientific.hypothesisA statement that relates an independent variable to a dependent variable in a causal relationship that can be tested.inductionInference of a generalised conclusion from particular instances.large data setsData sets that must be of a size to be statistically reliable and require computational analysis to reveal patterns, trends and associations.modelA representation that describes, simplifies, clarifies or provides an explanation of the workings, structure or relationships within an object, system or idea.Occam's razorThe proposition that where multiple conclusions are found to be equally possible, the simplest is the true conclusion.parsimonyAdoption of the simplest assumption in the formulation of a theory or in the interpretation of data, especially in accordance with the rule of Occam's razor.philosophical argumentA series of statements used to present reasons for accepting a conclusion.primary sources/primary dataInformation created by a person or persons directly involved in a study or observing an event.qualitativeRelating to, measuring, or measured by the quality of something.quantitativeRelating to, measuring, or measured by the quantity of something.secondary-sourced investigation/dataAn investigation that involves systematic scientific inquiry by planning a course of action and sourcing data and/or information from other people, including written information, reports, graphs, tables, diagrams and images.thematic analysisAnalysis which converts qualitative data into quantitative data.
+
+
+Science Extension Stage 6 Syllabus	31
+
+Science Extension Stage 6 Draft Syllabus for consultation	1
+
+Year 12
+
+
+
+
+

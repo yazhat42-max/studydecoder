@@ -1,0 +1,2162 @@
+﻿
+
+
+
+Centre Number
+
+
+
+NSW Education Standards Authority	Student Number
+
+
+
+
+
+
+
+2025 HIGHER SCHOOL CERTIFICATE EXAMINATION
+
+Mathematics Standard 2
+
+
+
+
+General Instructions
+
+
+
+
+
+
+
+
+
+
+
+
+
+Total marks: 100
+
+• Reading time – 10 minutes
+• Working time – 2 hours and 30 minutes
+• Write using black pen
+• Calculators approved by NESA may be used
+• A reference sheet is provided at the back of this paper
+• For questions in Section II, show relevant mathematical reasoning and/ or calculations
+• Write your Centre Number and Student Number at the top of this page
+
+
+
+Section I – 15 marks (pages 2–7)
+
+• Attempt Questions 1–15
+• Allow about 25 minutes for this section
+
+
+Section II – 85 marks (pages 9–40)
+
+• Attempt Questions 16–40
+• Allow about 2 hours and 5 minutes for this section
+
+
+
+
+
+
+
+
+
+
+
+1100
+Section I 15 marks
+Attempt Questions 1–15 
+Allow about 25 minutes for this section
+
+Use the multiple-choice answer sheet for Questions 1–15.
+ 
+
+1 	Consider the network diagram.
+
+A	B	C	D
+
+
+
+
+
+E	F
+
+ 	Which vertex has degree 4?
+
+A. 	A B. 	B C. 	C D. 	D
+
+
+2 	Which graph could represent  y = 4x ?
+
+A.	y	B.	y
+
+
+
+
+
+
+
+x	x C.	y                                                            D.     y
+
+
+
+
+
+
+
+ 	x	x
+
+
+– 2 –
+3 	The network shows the distances, in kilometres, along a series of roads that connect 
+towns. 
+
+
+
+
+9	10	NOT TO
+SCALE 
+8
+7	4	5	5
+
+6	7
+
+ 	What is the value of the largest weighted edge included in the minimum spanning tree 
+for this network? 
+
+
+A. 	7 B. 	8 C. 	9 D. 	10
+
+
+4 	Frankie takes four weeks of annual leave. His weekly pay is $350 and his annual leave loading is 172 % of four weeks pay.
+1 
+ 	What is Frankie’s total pay for this period of annual leave?
+
+A. 	$245.00 B. 	$411.25 C. 	$1461.25 D. 	$1645.00
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+– 3 –
+5 	Which of the following is arranged from largest to smallest?
+
+A. 	6.2 × 10−3,  4.5 × 10−4,  3.2 × 10−1 B. 	4.5 × 10−4,  6.2 × 10−3,  3.2 × 10−1 C. 	3.2 × 10−1,  4.5 × 10−4,  6.2 × 10−3 D. 	3.2 × 10−1,  6.2 × 10−3,  4.5 × 10−4 
+
+
+6 	Consider the formula   n = m − p .
+q 
+
+ 	Which of the following correctly shows p as the subject of the formula?
+
+A. 	p = nq − m B. 	p = m − nq C. 	p = n + q − m D. 	p = m − n − q 
+
+
+7 	There are 960 students at a high school.
+
+ 	Using stratified sampling, 240 students from the whole school are to be chosen for a 
+survey. 
+
+
+ 	If there are 200 students in Year 12, how many Year 12 students should be chosen?
+
+A. 	4 B. 	5 C. 	50 D. 	60
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+– 4 –
+8 	A spinner made up of 4 colours is spun 100 times. The frequency histogram shows the 
+results. 
+
+
+60 50 40 30 20 10
+Frequency
+0	Red	White	Green Yellow
+Colours
+
+ 	Which of these spinners is most likely to give the results shown?
+
+
+A.	Green Yellow
+
+Red
+
+B.
+
+
+Red	White
+
+
+
+White	Green	Yellow
+
+
+
+
+
+C.
+
+
+White	Red
+
+D.
+Yellow
+
+White	Green
+
+
+Green	Red
+Yellow
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+– 5 –
+9 	The ratio of the dimensions of a model car to the dimensions of an actual car is 1 : 64. 
+The actual car has a length of 4.9 m. 
+
+
+ 	What is the length of the model car in cm, correct to 1 decimal place?
+
+A. 	3.1 B. 	7.7 C. 	13.1 D. 	59.1
+
+10 	An electricity company charges customers 37 cents per kWh for electricity used, U, and 
+pays customers 5 cents per kWh for electricity produced, P. 
+
+
+ 	The electricity company also charges customers a fee of 71 cents per day.
+
+ 	Which formula should be used to calculate a customer’s daily cost of electricity, C, 
+in cents? 
+
+
+A. 	C = 71 + 37U − 5P B. 	C = 71 + 37U + 5P C. 	C = 71 − 37U − 5P D. 	C = 71 − 37U + 5P 
+
+11 	The thickness of the skin of a spherical balloon varies inversely with the surface area of 
+the balloon. 
+
+
+ 	What would be the effect on the thickness of the skin if the radius of the balloon is 
+doubled? 
+
+
+A. 	Divided by 2 B. 	Multiplied by 2 C. 	Divided by 4 D. 	Multiplied by 4
+
+12 	A football game is being played in Quito (UTC −5) starting at 3:40 pm on Tuesday.
+
+ 	What is the time in Sydney (UTC +10) when the game starts in Quito?
+
+A. 	10:40 am Tuesday B. 	8:40 pm Tuesday
+C. 	12:40 am Wednesday D. 	6:40 am Wednesday
+
+– 6 –
+13 	A ten-sided die has faces numbered 1 to 10.
+
+ 	The die is constructed so that the probability of obtaining the number 1 is greater than likely to occur.
+the probability of obtaining any of the other numbers. The numbers 2 to 10 are equally 
+ 	When the die is rolled 153 times, a 1 is obtained 72 times.
+
+ 	By using the relative frequency of rolling a 1, which of the following is the best estimate 
+for the probability of rolling a 10? 
+
+
+
+
+A. 
+
+B. 
+
+C. 
+
+D. 
+
+ 1
+17
+ 1
+11
+ 1
+10
+1
+9
+
+
+
+14 	Points M and P are the same distance from a third point R.
+
+ 	The bearing of M from R is 017° and the bearing of P from R is 107°.
+
+ 	Which of the following best describes the bearing of P from M ?
+
+A. 	Between 000° and 090° B. 	Exactly 090°
+C. 	Between 090° and 180° D. 	Exactly 180°
+
+
+15 	distribution with its mean equal to its standard deviation. The minimum daily temperature 
+The minimum daily temperature, in degrees, of a town each year follows a normal 
+was recorded over one year. 
+
+
+ 	What percentage of the recorded minimum daily temperatures was above zero degrees?
+
+A. 	16% B. 	50% C. 	68% D. 	84%
+
+
+
+
+– 7 –
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BLANK PAGE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+– 8 –
+©  2025 NSW Education Standards Authority
+
+2025 HIGHER SCHOOL CERTIFICATE EXAMINATION
+Do NOT write in this area.
+
+Centre Number
+
+Mathematics Standard 2
+Section II Answer Booklet	Student Number
+
+
+
+
+
+
+
+
+
+
+85 marks
+Attempt Questions 16–40
+Allow about 2 hours and 5 minutes for this section
+
+
+
+
+
+Instructions	• Write your Centre Number and Student Number at the top of this page
+
+• Answer the questions in the spaces provided. These spaces provide guidance for the expected length of response
+
+• Your responses should include relevant mathematical reasoning and/or calculations
+
+• Extra writing space is provided at the back of this booklet. If you use this space, clearly indicate which question you are answering
+
+ 
+
+
+
+
+
+
+Please turn over
+
+
+
+
+
+
+
+
+
+		– 9 –                                                                                 Office Use Only – Do NOT write anything, or make any marks below this line.	7178310434
+1101 15236
+Question 16 (2 marks)
+Do NOT write in this area.
+
+Paint is sold in two sizes at a local shop.	2
+
+• Four-litre cans at $90 per can
+• Ten-litre cans at $205 per can
+
+Mina needs to purchase 80 litres of paint.
+
+Calculate the amount of money Mina will save by purchasing only ten-litre cans of 
+paint rather than only four-litre cans of paint. 
+
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 10 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	5348310431
+Question 17 (3 marks)
+Do NOT write in this area.
+
+The scatter plot shows a bivariate dataset, where x is the independent variable and y is 	3
+the dependent variable. 
+
+
+y
+18 16 14 12 10
+8
+
+6
+
+4
+
+2
+
+0 0	1	2	3	4	5	6	x
+
+The points (0, 14) and (5, 4) lie on the line of best fit.
+Plot the points (0, 14) and (5, 4) on the graph and hence find the equation of the line 
+of best fit. 
+
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+
+
+
+
+		– 11 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	7450310437
+Question 18 (2 marks)
+Do NOT write in this area.
+
+A table of future value interest factors for an annuity of $1 is shown.	2
+Rate 
+
+
+ Period	       1.5%
+5	5.152 10                10.703 20                23.124 40                54.268
+
+3%	4.5%
+5.309	5.471 11.464            12.288 26.870            31.371 75.401          107.030
+
+6%
+5.637 13.181 36.786 154.762
+
+
+The prize in a lottery is an annuity of $5000 a year for 10 years, invested at 4.5% per 
+annum compounding annually. 
+
+
+What will be the value of the prize at the end of 10 years?
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 12 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	4619310431
+Question 19 (5 marks)
+Do NOT write in this area.
+
+The activities and corresponding durations in days for a project are shown in the 
+network diagram. 
+
+
+
+A, 3	C, 3	E, 5	F, 7	H, 5 B, 4                 D, 5                                    G, 3
+
+
+(a) 	Complete the table showing the immediate prerequisites for each activity. 	2
+Indicate with an  any activities without any immediate prerequisites. 
+
+
+Activity	prerequisite(s)
+Immediate 
+B
+E
+F
+
+
+(b) Find the critical path for this project AND state the minimum duration for the 	2
+project. 
+
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+(c) 	the project? Give a reaso is increased by 2. Does this affect the critical path for 	1
+The duration of activity A 
+n for your answer. 
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+
+
+		– 13 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	6368310434
+Question 20 (3 marks)
+Do NOT write in this area.
+
+The graph of a quadratic function represented by the equation  h = t  − 8 t + 12  is 
+2 
+shown. 
+
+
+
+h
+12
+
+
+
+
+
+
+O	2	6	t
+
+
+
+
+(a) 	Find the values of t and h at the turning point of the graph.	2
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+(b) The graph shows  h = 12  when  t = 0.	1
+
+ 	What is the other value of t for which h = 12?
+ 
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 14 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	8840310431
+Question 21 (3 marks)
+Do NOT write in this area.
+
+A house has a reverse-cycle air conditioner which uses 2.5 kW of power for cooling 
+and 3.2 kW of power for heating. The cost of electricity is 29 cents per kWh. 
+
+
+
+(a) 	Find the cost, in dollars and cents, of cooling the house for 6 hours.	1
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+(b) The cost of operating the air conditioner to heat the house during winter last year 	2
+was $640. There are 92 days in winter. 
+
+
+ 	Find the number of hours, to 1 decimal place, that the air conditioner was used 
+on average per day. 
+
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 15 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	7717310433
+Question 22 (5 marks)
+Do NOT write in this area.
+
+A network of tpipes iwith one cut is shown. The number on each edge gives the 
+capacity of tha pipe n L/min. 
+
+
+B	26	D 24                                      8
+A		14	17	E 35
+C	12
+
+
+
+15
+
+24	G
+
+6	11
+
+F
+
+
+Cut
+
+
+(a) 	What is the capacity of the cut shown?	1
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+
+Question 22 continues on page 17
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 16 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	0669310432
+Question 22 (continued)
+Do NOT write in this area.
+the maximum flow? 
+
+(b) The diagram shows a possible flow for this network of pipes.
+
+
+B	23	D 18                                      8
+A	5	13	E
+x
+C	12
+
+
+
+15
+
+22	G
+
+1	11
+
+F
+
+
+
+
+ 	(i) 
+
+
+
+
+
+
+
+
+
+
+ 	(ii) 
+
+
+
+
+
+
+ 	(iii) 
+
+ 	 
+
+What is the value of x ? Give a reason for your answer.	2
+ ...................................................................................................................
+ ...................................................................................................................
+ ...................................................................................................................
+ ...................................................................................................................
+
+
+Which of the pipes in the flow are at full capacity?	1
+ ...................................................................................................................
+ ...................................................................................................................
+
+
+The maximum flow for this network is 50 L/min.	1 Which path of pipes could have an increase in flow of 2 L/min to achieve 
+
+ ...................................................................................................................
+ ...................................................................................................................
+
+
+
+
+End of Question 22
+
+
+
+
+
+
+
+		– 17 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	8973310438
+Question 23 (2 marks)
+Do NOT write in this area.
+
+Company A and Company B both issue an annual dividend per share as shown in the 	2
+per share 
+table. 
+
+
+
+Company
+
+A
+
+B
+
+Current share price
+
+$25.43
+
+$2.13
+
+Annual dividend 
+
+$4.92
+
+45c
+
+
+Based on the dividend yield, which company would be better to invest in?
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 18 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	7413310436
+Question 24 (2 marks)
+Do NOT write in this area.
+
+The population of snails in a garden is approximately 90.	2 One night Bobbie collected 18 snails from the garden. He tagged each snail and 
+released it back into the garden. 
+
+The next night 20 snails were captured from the garden.
+
+Approximately how many of the snails in the second sample are expected to have 
+a tag? 
+
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+Please turn over
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 19 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	9635310434
+Question 25 (6 marks)
+Do NOT write in this area.
+
+In a research study, participants were asked to record the number of minutes they spent a period of 3 months. The averages for each participant were recorded and graphed.
+watching television and the number of minutes they spent exercising each day over 
+y
+10	20	30	40	50 
+80
+Average minutes per day exercising
+
+
+60
+
+
+40
+
+
+20
+
+
+0 0	Average minutes per day watching television	60	x
+
+
+(a) 	 Describe the bivariate dataset in terms of its form and direction.	2 Form:  .................................................................................................................... Direction:  ..............................................................................................................
+
+
+
+
+Question 25 continues on page 21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 20 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	9643310433
+Question 25 (continued)
+Do NOT write in this area.
+
+The equation of the least-squares regression line for this dataset is
+ y = 64.3 − 0.7x.
+
+(b) Interpret the values of the slope and y-intercept of the regression line in the 	2
+context of this dataset. 
+
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+(c) 	Jo spends an average of 42 minutes per day watching television.	1
+
+ 	Use the equation of the regression line to determine how many minutes on 
+average Jo is expected to exercise each day. 
+
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+(d) Explain why it is NOT appropriate to extrapolate the regression line to predict 	1
+the average number of minutes of exercise per day for someone who watches an 
+
+average of 2 hours of television per day.
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+
+End of Question 25
+
+
+
+		– 21 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	8534310431
+Question 26 (6 marks)
+Do NOT write in this area.
+
+A toy has a curved surface on the top which has been shaded as shown. The toy has a 
+uniform cross-section and a rectangular base. 
+
+
+Curved surface
+40.0 cm
+SCALE 
+
+
+
+
+
+6.0 cm	3.8 cm	NOT TO 10.2 cm
+
+
+(a) 	Use two applications of the trapezoidal rule to find an approximate area of the 	2
+cross-section of the toy. 
+
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+(b) The total surface area of the plastic toy is 1300 cm2.	2
+
+ 	What is the approximate area of the curved surface?
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+
+Question 26 continues on page 23
+
+
+		– 22 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	1724310435
+Question 26 (continued)
+Do NOT write in this area.
+
+(c) 	The measurements shown on the diagram are given to the nearest millimetre.	2
+
+ 	What is the percentage error of the measurement of 10 2 cm? Give your answer 
+. 
+correct to 3 significant figures. 
+
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+
+End of Question 26
+
+
+
+
+
+
+
+Questions 16–26 are worth 39 marks in total
+
+
+
+
+
+
+
+Please turn over
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 23 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	4664310431
+Question 27 (3 marks)
+Do NOT write in this area.
+
+A credit card has an interest-free period of 45 days from and including the date of 	3 13.74% per annum, from and including the day following the interest-free period.
+purchase. Interest is charged on purchases made, compounding daily at a rate of 
+Concert tickets were purchased for a total of $392 using this credit card.
+
+Full payment was made on the 68th day from the date of purchase. There were no 
+other purchases on this credit card. 
+
+
+What was the total interest charged when the account was paid in full?
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 24 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	1354310434
+Question 28 (3 marks)
+Do NOT write in this area.
+
+The heights of students in a class were recorded.	3 The results for this class are displayed in the cumulative frequency graph shown.
+
+35 30 25 20 15 10
+Number of students
+5
+0	135	145	155	165	175
+Height (cm)
+
+The shortest student in this class is 130 cm and the tallest student is 180 cm. Construct a box-plot for this class in the space below.
+
+
+
+
+
+
+
+
+130 135 140 145 150 155 160 165 170 175 180 Height (cm)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 25 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	2191310434
+Question 29 (2 marks)
+Do NOT write in this area.
+
+A bag contains 7 blue lollies and 9 yellow lollies. One lolly is selected at random and 	2
+eaten. A second lolly is then selected from the remaining lollies in the bag. 
+
+
+Find the probability that the two lollies selected are the same colour.
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+Question 30 (2 marks)
+
+It costs $465 to register a passenger car and $350 to register a motorcycle.	2
+
+Let P = the number of passenger cars, and
+ 	B = the number of motorcycles.
+
+Write TWO linear equations that represent the relationships below.
+
+• There are 11 times as many passenger cars as motorcycles.
+• The total registration fees for passenger cars and motorcycles is $494 million.
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+		– 26 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	6559310436
+Question 31 (3 marks)
+Do NOT write in this area.
+
+The table shows the income tax rate for Australian residents for the 2024−2025 	3
+financial year. 
+
+
+
+Taxable income 0 – $18 200
+$18 201 – $45 000 $45 001 – $135 000 $135 001 – $190 000 $190 001 and over
+
+Tax on this income Nil
+16 cents for each $1 over $18 200
+$4288 plus 30 cents for each $1 over $45 000 $31 288 plus 37 cents for each $1 over $135 000 $51 638 plus 45 cents for each $1 over $190 000
+
+
+At the end of the 2024−2025 financial year, Alex’s tax payable was $47 420, 
+excluding the Medicare levy. 
+
+
+What was Alex’s taxable income?
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 27 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	3620310432
+Question 32 (3 marks)
+Do NOT write in this area.
+
+Solid spheres are placed inside a square-based pyramid as shown.	3
+
+
+
+
+NOT TO
+14 cm
+h cm
+SCALE 
+
+
+
+
+
+
+
+
+
+14 cm
+
+The base of the pyramid has side lengths of 14 cm. The height of the pyramid is h cm. 
+The radius of each sphere is 1.5 cm. 
+
+
+The amount of empty space remaining inside the pyramid after 30 spheres have been 
+3 
+placed inside the pyramid is 634 cm . 
+
+
+What is the height, h, of the pyramid? Give your answer correct to the nearest 
+centimetre. 
+
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+		– 28 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	8699310433
+Question 33 (5 marks)
+Do NOT write in this area.
+
+A used car has a sale price of $24 200. In addition to the sale price, the following costs 	5
+are charged: 
+
+
+• transfer of registration $50
+• stamp duty which is calculated at $3 for every $100, or part thereof, of the sale 
+price. 
+
+
+Kat borrows the total amount to be paid for the car, including transfer of registration The loan is to be repaid in equal monthly repayments over 3 years.
+and stamp duty. Simple interest at the rate of 6.8% per annum is charged on the loan. 
+Calculate Kat’s monthly repayment.
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+
+
+
+
+
+		– 29 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	5892310435
+Question 34 (3 marks)
+Do NOT write in this area.
+(n)      
+(r) 
+
+The table shows future value interest factors for an annuity of $1.	3
+
+
+Rate 
+Period	      0.005
+
+7	7.10588 28             29.97452 56             64.44140 84           104.07393
+
+
+0.01
+
+7.21354 32.12910 74.58098 130.67227
+
+
+0.015
+
+7.32300 34.48148 86.79754 166.17264
+
+
+0.02
+
+7.43428 37.05121 101.55826 213.86661
+
+
+0.03
+
+7.66246 42.93092 141.15377 365.88054
+
+
+0.06
+
+8.39384 68.52811 418.82235 2209.41674
+
+
+
+Lin invests a lump sum of $21 000 for 7 years at an interest rate of 6% per annum, 
+compounding monthly. 
+
+
+Yemi wants to achieve the same future value as Lin by using an annuity. Yemi plans 7 years. The investment account pays 6% per annum, compounding monthly.
+to deposit a fixed amount into an investment account at the end of each month for 
+Using the table provided, determine how much Yemi needs to deposit each month.
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 30 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	1902310433
+Question 35 (3 marks)
+Do NOT write in this area.
+
+The triangle PTA is shown. The length of PA is 75 m and the length of PT is 51 m.	3 The angle of depression from T to A is 36°, and the angle P TA is obtuse.
+SCALE 
+T	NOT TO 51 m 
+
+P	75 m	A
+
+Find the length of TA. Give your answer correct to 2 decimal places.
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 31 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	6068310431
+Question 36 (4 marks)
+Do NOT write in this area.
+
+The graph shows the salvage value of a car over 5 years.	4
+
+
+55 000
+
+44 000
+
+33 000
+Value ($)
+
+22 000
+
+11 000
+
+0 0	1	2	3	4	5
+Time (years)
+
+The salvage values are based on the declining-balance method.
+
+By what amount will the car’s value depreciate during the 10th year?
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+
+
+
+		– 32 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	4194310439
+Question 37 (4 marks)
+Do NOT write in this area.
+
+The diagram shows a park consisting of two equilateral triangles. The shaded triangle 	4
+is a grassed section. All measurements on the diagram are in metres. 
+
+
+
+3
+SCALE 
+
+9	NOT TO
+
+
+9
+
+
+3
+
+9	3
+
+How long will it take to mow the grassed section if it takes 5 minutes to mow 20 m2 ? 
+Give your answer to the nearest minute. 
+
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+		– 33 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	9911310431
+Question 38 (3 marks)
+Do NOT write in this area.
+
+A car’s fuel efficiency is 30 miles per US gallon.	3
+
+
+1 US gallon = 3.8 litres 
+  	1 mile = 1.6 km 
+
+(correct to 2 significant figures) (correct to 2 significant figures)
+
+
+Calculate the car’s fuel efficiency in litres per 100 km, correct to 1 decimal place.
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		– 34 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	0014310436
+Question 39 (3 marks)
+Do NOT write in this area.
+
+After a dose of a medication, the amount of the medication remaining in a person can 	3 dose, and y is the amount remaining in milligrams (mg).
+be modelled by the equation  y = k a 
+x 
+,  where x is the number of hours after taking the 
+The graph shows the amount of the medication remaining in a person after x hours. 
+Two points are also shown on the graph. 
+
+
+y
+20
+Amount of medication remaining inÀa person (mg)
+
+
+
+15
+
+
+
+10
+
+
+
+5
+
+
+
+0 0		1	2	x Number of hours after taking
+a dose of medication 
+
+
+Using the information provided, find the amount of medication that remains in a 
+person when  x = 4. 
+
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+.........................................................................................................................................
+
+
+
+		– 35 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	3419310438
+Question 40 (5 marks)
+Do NOT write in this area.
+
+(a) 	In a flock of 12 600 sheep, the ratio of males to females is 1 : 20.	4
+
+ 	The weights of the male sheep are normally distributed with a mean of 76.2 kg 
+and a standard deviation of 6.8 kg. 
+
+
+ 	In the flock, 15 of the male sheep each weigh more than x kg.
+
+ 	Find the value of x.
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+
+(b) The weights of the female sheep are also normally distributed but have a smaller 	1
+mean and smaller standard deviation than the weights of male sheep. 
+
+
+ 	Explain whether it could be expected that 300 of the females from the flock each 
+weigh more than x 
+ kg, where x is the value found in part (a). 
+
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+ ...............................................................................................................................
+
+End of paper
+		– 36 –                                                                                Office Use Only – Do NOT write anything, or make any marks below this line.	7561310430
+
+Section II extra writing space
+Do NOT write in this area.
+If you use this space, clearly indicate which question you are answering.
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+– 37 –
+Office Use Only – Do NOT write anything, or make any marks below this line.	6393310432
+
+Section II extra writing space
+Do NOT write in this area.
+If you use this space, clearly indicate which question you are answering.
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+– 38 –
+Office Use Only – Do NOT write anything, or make any marks below this line.	6907310433
+
+Section II extra writing space
+Do NOT write in this area.
+If you use this space, clearly indicate which question you are answering.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+– 39 –
+Office Use Only – Do NOT write anything, or make any marks below this line.	5155310437
+
+Section II extra writing space
+Do NOT write in this area.
+If you use this space, clearly indicate which question you are answering.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+– 40 –	©  2025 NSW Education Standards Authority Office Use Only – Do NOT write anything, or make any marks below this line.	6054310436
+NSW Education Standards Authority
+
+2025 HIGHER SCHOOL CERTIFICATE EXAMINATION
+
+Mathematics Standard 1 Mathematics Standard 2
+
+
+REFERENCE SHEET
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1092	– 1 –
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BLANK PAGE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+– 2 –	 © 2025 NSW Education Standards Authority

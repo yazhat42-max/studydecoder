@@ -1,0 +1,495 @@
+﻿=== Random variables ===
+Subject: mathematics-advanced
+============================================================
+
+The empirical rule for normally distributed random variables is:
+    • approximately 68% of data will have -scores between −1 and 1
+    • approximately 95% of data will have -scores between −2 and 2
+    • approximately 99.7% of data will have -scores between −3 and 3.
+empty set
+The unique set characterised by the property that it has no elements at all.
+enlargement
+A type of transformation that increases or decreases the size of an image without changing its shape, depending on the size of the enlargement factor.
+
+equal
+If two quantities or mathematical expressions are equal, then the quantities have the same value, or the expressions represent the same mathematical object.
+If   then either may be substituted for the other.
+For  and , the ‘=’ sign indicates assignment by definition.
+equally likely outcomes
+An event for which all outcomes have the same probability of occurring. For example, in tossing a fair coin, the outcome ‘head’ and the outcome ‘tail’ are equally likely. In this situation, 𝑃(head)=𝑃(tail)=0.5.
+equation
+An expression showing the equality of 2 quantities, using the = sign between them. A mathematical formula asking for a solution so that the 2 expressions in that variable are equal, e.g. .
+equivalent
+Two things are equivalent if they have the same value.
+See equal, equals sign.
+Extended in Mathematics Advanced, Extension 1 and Extension 2: Two things are equivalent if they have the same value, function or meaning. For example,  and  are equivalent. Statements  and  are equivalent if  implies  and  implies .
+Euler’s number
+An irrational number, , which can be defined in various ways including:  and . It has the property . 
+even function
+A function is even if its graph is unchanged under reflection in the -axis.
+An even function  has the property , for all values of  in the domain.
+event
+Situations that occur in the everyday context, e.g. having lunch. In the context of probability, the set of possible outcomes.
+Extended in 7–10: A subset of the sample space for a random experiment. For example, the set of possible outcomes from tossing 2 coins is , where H represents a 'head' and T is a 'tail'. For example, if  is the event 'at least one head is obtained', then .
+exact value
+A precise numerical value e.g.  as opposed to the approximation .
+expected value
+In statistics, the expected value  of a random variable  is a measure of the central tendency of its distribution. Also known as the expectation or mean.  is calculated differently depending on whether the random variable is discrete or continuous.
+experiment (random)
+A process with an observable result. The results of the experiment are the set of possible outcomes, called the sample space.
+exponential decay
+Occurs when the rate of change of a mathematical function is negative and proportional to the function’s current value.
+exponential function
+A function of the form , where  is the independent variable and the base . The graph of an exponential function is an exponential curve.
+exponential growth
+Occurs when the rate of change of a mathematical function is positive and proportional to the function’s current value.
+expression
+Two or more numbers or variables connected by operations. For example, , ,  are all expressions. Expressions do not include an equals sign.
+Extended in Mathematics Advanced, Extension 1 and Extension 2: The result of combining numbers, variables and operations in a meaningful way. For example,  is an expression, but  is not a validly formed expression.
+factorise
+To express a number or algebraic expression as a product. For example, 15 is factorised when expressed as a product:  and  is factorised when written as a product: . 
+finite
+A value between  and .
+frequency
+The number of times that a particular value occurs in a dataset. For grouped data, it is the number of observations that lie in that group or class interval. For example, when rolling a dice 20 times, ‘the frequency of a 6’ means how many times the number 6 comes up.
+function
+A function  assigns to each element of one set  precisely one element of a second set .
+The functions most commonly encountered in elementary mathematics are real functions of real variables. For such functions, the domain are sets of real numbers.
+Functions are usually defined by a formula for  in terms of . For example, the formula , defines the ‘squaring function’ that maps each real number  to its square .
+Fundamental Theorem of Calculus
+Relates differentiation and integration.
+For a continuous function  on the interval  it has two equivalent forms:
+for ,
+
+and 
+where  is any antiderivative of .
+future value
+The total value of an investment or annuity at the end of a specified term, including all contributions and interest earned.
+general form (of a straight line)
+A straight line in general form is given as , where ,  and  are constants.
+geometric progression (GP)
+See geometric sequence
+geometric sequence
+A sequence of numbers where each term after the first is found by multiplying the previous term by a fixed number called the common ratio. Sometimes called a geometric progression (GP).
+geometric series
+A geometric series is a sum whose terms form a geometric sequence.
+global maximum
+The largest value of the function on its domain.
+global minimum
+The smallest value of the function on its domain.
+gradient
+The slope of a line. It is calculated as the gradient of a line segment it contains. If  and  are 2 distinct points on a line, the gradient of the line (or line segment ) is given by .
+gradient–intercept form
+ is the gradient–intercept form of a straight line, where  is the gradient of the line and  is the point at which the line intersects the -axis.  is called the -intercept.
+graph
+A visual representation of statistical data or of a relationship between variables. Ordered pairs of values () that represent the function or relation are plotted to form a graph. Graphs of statistical data include dot plots, box plots, column graphs, divided bar graphs and histograms.
+Extended in Mathematics Advanced, Extension 1, Extension 2: For a function , its graph consists of all ordered pairs  for  in the domain of .
+identity
+An identity is a statement involving a variable(s) that is true for all possible values of the variable(s).
+indefinite integral
+The set of all primitives of a continuous function  notated . So,  where  is an arbitrary constant of integration, and .
+independent events
+Two events are independent if knowing the outcome of one event tells us nothing about the outcome of the other event.
+independent variable
+A variable used to represent values in the domain (input values) of a function. Generally represented on the horizontal axis of a graph.
+index
+Also called ‘exponent’. The power to which a number or algebraic expression is to be raised. The index or exponent is written as a superscript. Positive integral exponents indicate the number of times a term is to be multiplied by itself.
+indices
+The plural of the term index.
+inequality
+A statement that one number or algebraic expression is less than (or greater than) another. There are 4 types of inequalities:
+    •  is less than  is written 
+    •  is greater than  is written 
+    •  is less than or equal to  is written 
+    •  is greater than or equal to  is written .
+Extended in Advanced, Extension 1, Extension 2: An order relation between one number or algebraic expression and another.
+infinite
+Limitless, exceeding any finite amount.
+See finite
+instantaneous rate of change
+The rate of change at a particular moment. For a differentiable function, the instantaneous rate of change at a point is its derivative at that point, so it equals the gradient of the tangent to its graph at the point.
+integer
+A whole number, positive, negative or zero, e.g. −3, −2, −1, 0, 1, 2 …
+Extended in Advanced, Extension 1, Extension 2: The set of integers is usually denoted by ℤ.
+integration
+The process of finding the integral of a function. The inverse of differentiation.
+intercept
+The point at which a curve or function crosses an axis or other curve in a plane. The point at which a curve crosses the -axis  is called the -intercept and the point at which a curve crosses the -axis  is called the -intercept.
+Extended in Advanced and Extension 1: The - and -intercepts are sometimes taken to mean the signed distance from the point at which the curve crosses the axis to the origin, e.g. for the line , the -intercept is .
+interest
+Money paid or received in return for using or lending money.
+interest rate
+A percentage at which interest is charged or paid.
+intersection (sets)
+For sets  and , it is the set of elements that are in both  and in . The intersection of  and  is denoted .
+interval notation
+Notation for representing an interval on the real number line by its endpoints. Parentheses and/or square brackets are used respectively to show whether the endpoints are excluded or included.
+For ,  is an open interval, and  is a closed interval.
+inverse variation
+When one variable increases as the other variable decreases. For example, if  is said to be ‘inversely proportional’ to , the equation is of the form , where  is a constant of variation (or proportion). Also known as inverse proportion.
+investment
+An allocation of money or capital into an asset or venture which is expected to generate a profit or return.
+irrational number
+A number that cannot be expressed as a fraction in the form , where  and  are integers and  is non-zero. The decimal form of irrational numbers does not terminate and is non-recurring.
+linear
+Something that can be represented or modelled by a straight line.
+linear equation
+An equation involving linear expressions. The general form of a linear equation in one variable is  where  and  are constants.
+linear function
+ is a linear function of  if  where  and  are constants.
+The graph of a linear function is a straight line, where  is the gradient and  is the -intercept.
+See linear relationship
+loan
+An amount of money borrowed from a bank or other financial institution.
+local maximum
+A point on a function is a local maximum if its function value is larger than the function values near it.
+local minimum
+A point on a function is a local minimum if its function value is smaller than the function values near it.
+logarithm
+The logarithm of a positive number  is the power to which a given number , called the base, must be raised in order to produce the number . The logarithm of , to the base  is denoted by .
+Algebraically:  is equivalent to .
+logarithmic function
+A function, such as , which is the inverse of the exponential function, . Here  is the independent variable and  is the base of the logarithm.
+logarithmic scale
+A scale where successive endpoint values of intervals increase by a constant factor (multiplicatively). Contrast with linear scales in which the increase is a constant amount.
+
+magnitude
+The size or absolute value of a number. For example, 4 and 4 have a magnitude of 4.
+Extended in Mathematics Extension 1 and Mathematics Extension 2: For a vector, the magnitude is its length, given by  for 2D vectors and  for 3D vectors.
+mean
+The sum of values in a dataset divided by the total number of values in the dataset. Also called the average.
+measure of centre
+A statistic that is used to summarise a dataset. There are 3 common measures of centre for a dataset: mode, median and mean.
+median
+The value in a set of ordered data that divides the data into 2 parts. It is frequently called the 'middle value'.
+Extended in Mathematics Standard and Advanced: If the number of values in the ordered dataset is even, it is the average of the two middle values. If the number of values in the dataset is odd, the median is the middle value.
+minute (geometry)
+One sixtieth of a degree, also equivalent to sixty seconds. Often represented by the sign ( ). For example,  (fourteen degrees and twenty five minutes).
+mode
+The most frequently occurring value in a set of data.
+Extended in 7–10: There can be more than one mode. When there are 2 modes, the dataset is said to be bimodal.
+model
+A mathematical, conceptual or physical representation that describes, simplifies, clarifies or provides an explanation of the structure, workings or relationships within an object, system or idea. Models can provide a means of testing and predicting behaviour within limited conditions. Models may be physical or exist in digital form.
+multistage events
+An event that consists of two or more simple experiments. For example, tossing a coin three times (repeated trials), or both tossing a coin and rolling a dice (possible outcomes would be H and 5, T and 2).
+mutually exclusive events
+Two events that cannot have simultaneous outcomes in the same chance experiment. For example, when a fair coin is tossed twice, the events 'HH' and 'TT' cannot occur at the same time and are, therefore, mutually exclusive.
+In a Venn diagram, as shown below, mutually exclusive events do not overlap.
+
+Extended in Mathematics Advanced: For a random experiment two events  and  are mutually exclusive if  , that is, they cannot occur simultaneously.
+natural logarithm
+A logarithm to the base . The logarithm of  to the base  is denoted as  or .
+normal (to a curve)
+In calculus, the normal to a curve at a given point  is the straight line that is perpendicular to the tangent to the curve at a given point .
+normal distribution
+A type of continuous distribution whose graph looks like this:
+
+Image long description: The horizontal x-axis is labelled from 100 to 200 in increments of 20 from left to right. The y-axis is labelled from 0 to 50 in increments of 10 from the bottom to the top. Along the x-axis is a series of columns that rise to a peak halfway along the axis and fall back towards 0 on the far right of the x-axis. An orange ‘bell curve’ is laid over the peaks of the columns.
+The mean, median and mode are equal and the scores are symmetrically arranged either side of the mean.
+The graph of a normal distribution is often called a ‘bell curve’ due to its shape.
+normal random variable
+A variable which varies according to the normal distribution.
+odd function
+A function whose graph is unchanged under rotation of  about the origin.
+An odd function  has the property  , for all values of  in the domain.
+outcome
+Possible result from an experiment or trial.
+parabola
+The graph of . The point  is called the vertex of the parabola and the -axis is the axis of symmetry of the parabola.
+Some other parabolas are the graphs of  where .
+
+parallel
+Two distinct lines, rays or line segments in the same plane that have no points of intersection and so necessarily have the same gradient (slope).
+The symbol  is used to express that one line, ray, or line segment is parallel to another.
+
+partial sum of a sequence
+The th partial sum  of a sequence  is the sum of the first  terms of the sequence: , for all whole numbers .
+period
+A function  is periodic with period  if , for all , that is, the function repeats itself after each interval of length  .
+For example,  and  have period .
+perpendicular
+Two lines, rays, line segments, vectors, planes or other objects that intersect at a 90° angle (a right angle).
+piecewise-defined function
+A function which is defined differently for different parts of the domain. For example, 
+point of inflection
+A point on a curve where the concavity changes. At a point of inflection, the tangent exists and crosses the curve.
+primitive
+For a function , a primitive is a function  whose derivative is . Primitive and antiderivative are synonyms.
+probability
+The chance of something happening shown on a scale from 0 and 1 (inclusive). For example, the probability that a fair coin toss will come up ‘heads’ is 0.5.
+probability density function
+For a random variable , the probability density function (PDF), , is a function that describes the likelihood that the random variable takes a particular value, that is .
+probability distribution
+For a random variable , the probability distribution is the set of values  taken by the random variable, together with the probabilities  that .
+product rule
+A rule for the derivative of the product of two differentiable functions: If  where  and  are both functions of  , then , or if  then .
+proof
+A rigorous mathematical argument that demonstrates the truth of a given statement or proposition. A mathematical statement that has been established by means of a proof is called a theorem.
+Pythagoras' theorem
+The square of the length of the hypotenuse, , of a right-angled triangle equals the sum of the squares of the lengths of the other 2 sides,  and , such that .
+quadrant
+A quarter of a circle.
+Any one of the four parts into which the Cartesian plane is divided by the - and -axes. Thus, the first or positive quadrant consists of those points   with   and .
+quadratic equation
+An equation of the form , where ,  and  are constants.
+quadratic expression
+An expression of the form , where ,  and  are constants.
+quadratic formula
+The roots of a quadratic equation  where  are given by the quadratic formula:
+.
+quadratic function
+A function of the form  , where ,   and  are constants.
+quadratic inequality
+An inequality reducible to inequalities of the form , where ,   and  are constants.
+quartiles
+The values that divide an ordered dataset into 4 (approximately) equal parts. There are 3 quartiles. The first, the lower quartile , divides off (approximately) the lower 25% of data values. The second quartile  is the median. The third quartile, the upper quartile , divides off (approximately) the upper 25% of data values.
+quotient rule
+A formula for the derivative of the ratio of two differentiable functions. If , where   and  are both functions of   then the quotient rule states that , or if  then .
+radian
+A unit of angular measure frequently used in mathematics. 
+1 radian is the angle between two radii of a circle which cut off on the circumference an arc equal to the radius.
+radian measure
+The size of an angle subtended by an arc of a circle in radian (or circular) measure is given by the ratio .
+Radian measure is frequently employed in mathematics. For example, in the formulas of differentiation for trigonometric function;  the values of  relate to radian measure.
+random variable
+A variable whose possible values are outcomes of a statistical experiment or a random phenomenon.
+range (function)
+The set of values of the dependent variable for which a function is defined.
+rate of change
+For a function, the relative change in a function’s value  to a change in . Instantaneous rate of change is measured by its derivative.
+For example, the velocity of a moving object is the rate of change of its position over time.
+rational number
+An element of the infinite set of numbers  {, where  and  are integers and   0}. It may be expressed in decimal form, e.g. and 
+
+real number
+A number which can be represented by a point on a number line. The set of real numbers is the set of all rational and irrational numbers.
+reciprocal
+If  is any real number, then the reciprocal of that number will be . For example, the reciprocal of 4 is .
+reducing balance loan
+A reducing balance loan is a compound interest loan where the loan is repaid by making regular payments and the interest paid is calculated on the amount still owing (the reducing balance of the loan) after each payment is made.
+reduction
+A type of transformation that decreases the size of an image by a factor without changing its shape.
+reflection
+A transformation of a shape formed by creating a mirror image on the other side of a given line.
+relation
+An association between the elements of one set, , and the elements of another set, . It may be represented as a set of ordered pairs , where  is in ,  is in  and  is related to .
+relative frequency
+Given by the ratio , where  is the frequency of occurrence of a particular data value or group of data values in a dataset, and  is the number of data values in the dataset.
+repayment
+A set amount, paid at regular intervals over the period of a loan, to pay off a loan.
+revenue
+The total income generated from normal business operations, such as from the sale of items produced.
+root
+The solution to an equation. For example,  has roots  and .
+rotation
+A turn about a point through a specified angle. For example, a rotation about the origin through an anticlockwise angle of 45° transforms the line  into the line .
+sample
+A subset of a population used to estimate characteristics of the population. For example, a randomly selected group of 8-year-olds (sample) selected to estimate the height of 8-year-olds in Australia (population).
+secant
+The straight line passing through 2 points on the graph of a function.
+secant (ratio)
+For an angle, the secant is the reciprocal of its cosine, .
+In any right-angled triangle,
+
+where
+.
+
+second derivative
+The derivative of the first derivative. It is denoted by:  ,  or .
+sector
+The plane figure enclosed by 2 radii or a circle and the arc between them.
+segment
+A plane figure enclosed by a chord and the arc joining the endpoints of a chord.
+
+semicircle
+Half of a circle.
+sequence
+An enumerated list of elements:  , , …, , …where  is referred to as the th term.
+In a sequence, repetitions are allowed and order matters. The length (possibly infinite) of the sequence is the number of terms in it.
+series
+The sum of the terms of an infinite sequence. The notation  is used for the series corresponding to the sequence 
+set
+A collection of objects or elements, usually specified by listing its elements, e.g. ; by describing it in words, e.g. ‘the set of primes’; or by using a rule such as .
+Extended in Mathematics Advanced, Extension 1 and Extension 2: A collection of distinct, unordered objects, referred to as members or elements of the set.
+sine ratio
+In any right-angled triangle,  where .
+
+sine rule
+
+Relates the lengths of the sides of a triangle to the sines of its angles:  .
+speed
+The absolute value of an object’s velocity. It represents how fast the object is moving. For an object moving along the -axis, average speed is calculated as . If its position at time  is  the instantaneous speed is .
+standard deviation
+A measure of the variability or spread of a dataset. It gives an indication of the degree to which the individual data values are spread around their mean.
+Extended in Mathematics Standard and Advanced: For a random variable, the standard deviation is the square root of its variance.
+It provides a measure of the spread of the probability density function.
+stationary point
+A stationary point on the graph  of a differentiable function is a point where .
+A stationary point could be classified as a local or global maximum or minimum or a horizontal point of inflection.
+subset
+  is a subset of set  if every member of set  is a member of set  and is written as , i.e. ‘  is a subset of ’. If there are elements of  not in , then  is a proper subset of , written .
+substitution
+The process of replacing a variable in an algebraic expression, formula, equation or function consistently by a particular value, another variable, expression or function.
+Simultaneous equations can be solved using substitution by isolating one variable in one equation and using its value to replace that variable in another equation.
+See simultaneous equations
+Extended in Mathematics Extension 1 and Extension 2: Integration by substitution is a method used for evaluating integrals. The substitution could be expressed as a function of the variable of integration, or with the variable of integration as the subject of the substitution.
+subtend
+In geometry, an angle subtended by an arc or interval is the angle whose 2 rays pass through the endpoints of the arc or interval. A possible synonym for ‘subtends’ is ‘makes’.
+summation notation
+Notation used to express a sum. For example, the sum  can be represented using summation notation as . Also known as sigma notation.
+surd
+A numerical expression involving one or more irrational roots of numbers.
+Extended in Mathematics Advanced: An irrational root of a number, e.g.  and .
+More generally sums involving rational multiples of surds are sometimes also referred to as surds, e.g. .
+tangent
+A line that intersects a circle at just one point. It touches the circle at that point of contact but does not pass inside it.
+
+Extended in Mathematics Advanced, Extension 1 and Extension 2: For a curve at a given point  the tangent can be described intuitively as the straight line that ‘just touches’ the curve at that point. At  the curve has ‘the same direction’ as the tangent. In this sense, it is the best straight-line approximation to the curve at point . For a differentiable function  the tangent to its graph at the point  has slope .
+tangent ratio
+The ratio of the length of the altitude, , of a right-angled triangle to the length of its base, , for a given base angle, theta, .
+In any right-angled triangle, , where °  °.
+
+transformation
+A procedure or set of procedures that changes the size and/or shape of an image. A transformation operates on points in the plane to change aspects, such as the position, size or shape of curves and other figures.
+Translations, reflections, rotations, dilations, enlargements are all examples of transformations.
+translation
+A type of transformation that moves a shape (or all the points in a plane) by the same amount to the left or right, or up or down.
+trapezoidal rule
+A method of approximating the area of an irregular shape, or a region bounded by a curve and an axis, by slicing the area up into trapeziums (trapezia) of equal height.
+tree diagram
+A diagram consisting of line segments (edges) connected to points (vertices) like the branches of a tree. It shows the relationship between sets, events or the set of outcomes of a multi-step random experiment.
+
+See probability tree
+trial
+A single performance of a random experiment. Successive trials refers to repeated performances of the same experiment each of which will therefore have the same set of possible outcomes (sample space).
+When there are only two possible outcomes they are known as Bernoulli trials.
+trigonometric ratios
+The relationship between the angles and sides of right-angled triangles. The 3 basic trigonometric ratios are sine, cosine and tangent.
+See sine ratio, cosine ratio and tangent ratio
+true bearing
+Measured in degrees clockwise from true north and written with 3 digits to specify the direction. For example, the direction of north is specified as °T, east is specified as °T, south is specified as °T and north-west is specified as °T.
+turning points
+Points at which the gradient of the graph of a function changes direction, so the function has either a local minimum or local maximum at those points.
+two-way table
+A common way of displaying the two-way frequency distribution that arises when a group is categorised according to 2 criteria.
+
+uniform distribution
+A probability distribution in which all values of the random variable are equally likely.
+union (of sets)
+For sets  and , the union is the set of elements which are in  or  or both and is written as , i.e. ‘  union ’.
+universal set
+The universal set for a particular problem or context contains all elements involved in the problem.
+variable (algebra)
+Things that are measurable or observable that are expected to either change over time or between individual observations. They are often designated by symbols, such as ,  and , to represent members of a set. For example, the variable  could represent an unspecified real number.
+variable (statistics)
+Something measurable or observable that is expected to change either over time or between individual observations. For example, the age of students, their hair colour or a playing field's length or its shape.
+variance 
+In statistics, the variance  of a random variable  is a measure of the spread of its distribution.  is calculated differently depending on whether the random variable is discrete or continuous.
+velocity
+The rate of change of an object's position with respect to time. It is a vector quantity, meaning it has both magnitude and direction. The SI units for velocity are metres per second (ms-1).
+Extended in Mathematics Advanced, Extension 1, Extension 2: A particle moving along the -axis whose position at time  is  has velocity . 
+Venn diagram
+Graphical representations, using several typically overlapping circles, showing elements of sets in relation to properties or attributes. They are drawn for some specified universal set.
+
+vertex
+Where 2 straight sides of a two-dimensional shape meet.
+Extended in 7–12: A vertex is a point in the plane where lines meet and do not extend beyond, or a point in space where several edges meet. A vertex can also refer to a node in a network. It is also the turning point of a parabola.
+vertical line test
+Determines whether a relation or graph is also a function. If a vertical line intersects or touches a graph at more than one point, then the graph is not a function.
+volume
+The amount of space occupied by an object.
+whole number
+Any of the positive integers or 0.
+z-score
+A -score is a statistical measurement of how many standard deviations a raw score is above or below the mean. A -score can be positive or negative, indicating whether it is above or below the mean, or zero. Also known as a standardised score.
+zero (of a function)
+A point in the domain of a function where the value of the function is zero. A solution of the equation . 
+Global Terms
+Aboriginal and Torres Strait Islander Peoples
+Aboriginal Peoples are the first peoples of Australia and are represented by more than 250 language groups, each associated with a particular Country or territory. Torres Strait Islander Peoples are represented by 5 major island groups, and are associated with island territories to the north of Australia’s Cape York which were annexed by Queensland in 1879. 
+An Aboriginal and/or Torres Strait Islander person is someone who: 
+    • is of Aboriginal and/or Torres Strait Islander descent 
+    • identifies as an Aboriginal person and/or Torres Strait Islander person, and 
+    • is accepted as such by the Aboriginal and/or Torres Strait Islander community(ies) in which they live.
+Aboriginal English
+A recognised dialect of English which is the first, or home language, of many Aboriginal people. It differs from other dialects of English, such as Standard Australian English, in systematic ways including sounds, grammar, words and their meanings, and language use. Aboriginal English is a powerful vehicle for the expression of Aboriginal identity. Aboriginal English is not a target language study option for NSW Aboriginal Languages syllabuses.
+Aboriginal Songline(s)
+Texts that describe landscapes and directions of the tracks forged in lands, waters and skies by Creator Spirits during the Dreaming.
+accessibility
+The extent to which a system, environment or object may be used irrespective of a user’s capabilities or abilities. For example, the use of assistive technologies (AT) to allow people with disability to use computer systems, or the use of icons in place of words to allow young children to use a system.
+assistive technology (AT)
+A device or system whose primary purpose is to maintain or improve an individual's functioning and independence to facilitate participation and enhance overall wellbeing. This includes technologies specifically designed to meet an individual's needs, eg eye gaze technology, as well as more general technologies that can be used by anyone, eg speech-to-text applications. Assistive technology can also be referred to as inclusive technology.
+augmentative and alternative communication (AAC)
+An umbrella term that encompasses the communication methods used to supplement or replace speech or writing. AAC can be unaided, such as gestures, body language and sign language, or aided such as pictures, symbols, objects or speech generating devices.
+See communication systems
+communication forms
+The ways people communicate and the communicative behaviours they use. Communication forms can be non-symbolic and/or symbolic. Non-symbolic forms include sounds, gestures, facial expressions and eye movements. Symbolic forms can be aided or non-aided. Aided forms of symbolic communication include objects, symbols, photographs and drawings. Aided forms can be digital. Non-aided forms of symbolic communication include formal gestures; speech; and signs, such as Key Word Sign.
+copyright
+The protection provided to the creators of original works and makers of sound recordings and films, that offers a legal framework for the control and reproduction or transmission of their literary, dramatic, artistic or musical works.
+Country/Place
+Country is used to describe a specific area of a nation or clan including physical, linguistic and spiritual features. Aboriginal communities’ cultural associations with their Country may include or relate to languages, cultural practices, knowledge, songs, stories, art, paths, landforms, flora, fauna and minerals. These cultural associations may include custodial relationships with particular landscapes such as land, sea, sky, rivers as well as the intangible places associated with the Dreaming(s). Custodial relationships are extremely important in determining who may have the capacity to authentically speak for their Country. 
+Place is a space mapped out by physical or intangible boundaries that individuals or groups of Torres Strait Islander Peoples occupy and regard as their own. It is a space with varying degrees of spirituality.
+culture
+The customs, habits, beliefs/spirituality, social organisation and ways of life that characterise different groups and communities. Cultural characteristics give a group or individual a sense of who they are and help them make sense of the world in which they live. Culture is a shared system but inherently diverse – there can be individual and group differences within cultures. Everyone has culture – it is a lens through which we see the world.
+custodians
+In Aboriginal communities, an individual charged with maintaining and passing on particular elements of cultural significance, eg language, stories, songs, rituals and imagery.
+See owners
+d/Deaf
+When referring to deaf people who belong to a linguistic and cultural minority known as the Deaf community, the 'D' may be capitalised in reference to the individual, the group, or the culture in order to accord respect and deference, for example, the Deaf community. When referring simply to audiological status or when cultural affiliation is not known, as in the case of a person with a hearing loss in general, the lowercase 'd', as in 'deaf' is the more common usage.
+Deaf
+A cultural identity for people with hearing loss who share a common culture and who usually have a shared sign language.
+disability
+An umbrella term for any or all of the following components: 
+    • impairments: challenges in body function or structure
+    • activity limitations: difficulties in executing activities
+    • participation restrictions: challenges an individual may experience in involvement in life situations. (World Health Organization)
+diversity
+Differences that exist within a group, for example, age, sex, gender, gender expression, sexuality, ethnicity, ability/disability, body shape and composition, culture, religion/spirituality, learning differences, socioeconomic background, values and experiences.
+Dreaming
+The Dreaming has different meanings for different Aboriginal groups. The Dreaming can be seen as the embodiment of Aboriginal creation which gives meaning to everything; the essence of Aboriginal beliefs about creation and spiritual and physical existence. It establishes the rules governing relationships between the people, the land and all things for Aboriginal Peoples. The Dreaming is linked to the past, the present and the future. Where appropriate, refer to Aboriginal names for the Dreaming.
+Elders
+The custodians of knowledge and lore. They are chosen and accepted by their own communities as people who have the permission to disclose cultural knowledge and beliefs. Recognised Elders are highly respected people within Aboriginal communities. Proper consultation with local Aboriginal communities will often direct schools to recognised Elders.
+first language(s)
+The first language(s) that a person learns to speak.
+Indigenous
+An internationally recognised term for the first peoples of a land. In NSW the term Aboriginal person/Peoples is preferred.
+See Aboriginal and Torres Strait Islander Peoples
+Indigenous cultural and intellectual property (ICIP)
+Includes, but is not limited to, objects, sites, cultural knowledge, cultural expression and the arts, that have been transmitted or continue to be transmitted through generations as belonging to a particular Indigenous group or Indigenous people as a whole or their territory. 
+See intellectual property
+intellectual property
+Non-material assets such as forms of cultural expression that belong to a particular individual or community. Intellectual property rights refer to the rights that the law grants to individuals for the protection of creative, intellectual, scientific and industrial activity, such as inventions. 
+See Indigenous cultural and intellectual property (ICIP), and copyright
+Key Word Sign
+A communication strategy that incorporates signing with speech. It is used to support language development for people with communication difficulties. Although Key Word Sign uses a simplified form of manual signing, it is different to Auslan, as it is not a signed language.
+kinship
+A key aspect of Aboriginal cultures and values. It includes the importance of all relationships and of being related to and belonging to the land.
+language group
+An Aboriginal community identified with a common language, both verbal and nonverbal, and with a particular territory. Used in preference to the term ‘tribe’.
+language revival
+The process and range of strategies for increasing knowledge and use of a language that is no longer spoken fluently across all generations in the context of language loss or language dispossession caused by colonisation. Aboriginal Languages and Torres Strait Islander Languages are being revived through community initiatives, linguistic research and school programs. ‘Language revival’ may be used as an overarching term that could also include ‘reclamation’, ‘revitalisation’, ‘renewal’ and ‘reawakening’.
+local Aboriginal community
+A local Aboriginal community is constituted by those people who are Aboriginal and who reside in the near locality. Aboriginal communities will have a rich and diverse history that has been seriously affected by dispossession and relations, which sees families with spiritual connection to Country residing beside those who have been forced to move from other locations. The notion of locality is complex and multilayered: schools should seek advice from a range of people and/or organisations representing local interests. 
+See community(ies)
+off-Country
+Taking place away from Aboriginal land or Country of origin. 
+See Country/Place
+on-Country
+Taking place on Aboriginal land or Country of origin.
+See Country/Place
+owners
+Each Aboriginal Language is recognised as belonging to a particular geographical area and thus to the people who can claim a connection to that area. Aboriginal community members acquire ownership of their language(s) at birth. Language proficiency is not essential for ownership.
+See custodians
+protocols
+The appropriate ways of behaving, communicating and showing respect for diversity of history and culture. This involves appreciation of the knowledge, standing and status of people within the local Aboriginal community and the school community. Protocols inevitably vary between communities, and between people within a community. In establishing a partnership between schools and Aboriginal communities, it is especially important that protocols are acknowledged and respected.
+respect
+A term used commonly in NSW Aboriginal communities to refer to the way an individual treats others. Showing respect occurs in many ways, such as waiting to speak, listening and demonstrating understanding, not asking too many direct questions, ensuring that people are not made to feel uncomfortable or uneasy, and generally showing regard for others’ ideas, beliefs and culture.
+sign
+Hand signs (or hand talk) used to supplement or replace oral language. Signs form part of nonverbal communication for Aboriginal and Torres Strait Islander Peoples and may be used by people who are hearing, or d/Deaf or hard of hearing. Aboriginal and Torres Strait Islander Sign Languages may be used in some areas. Some Sign Languages may be associated with sacred ceremonial practices.
+signage
+The use of words, graphic designs and/or symbols used to communicate a message, eg information signs, plaques, warning signs, road signs, signs that show direction.
+switch
+A type of assistive technology that enables people with cognitive and/or physical disability to access a range of devices, including computers and communication devices. Switches can be activated by touch, or triggered without contact, such as through eye gaze, sound or blowing.
+See assistive technology (AT)
+yarning circle
+Yarning circles are an important cultural practice for Aboriginal and Torres Strait Islander Peoples to learn within the collective group. Knowledge and information are shared in harmony and respect with all individuals.
