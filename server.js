@@ -691,7 +691,9 @@ async function autoSyncStripeSubscription(userId, email) {
             // Calculate new expiration from session creation
             const sessionDate = new Date(completedSession.created * 1000);
             const expiration = new Date(sessionDate);
-            if (plan === 'yearly') {
+            if (plan === 'lifetime') {
+                expiration.setFullYear(expiration.getFullYear() + 100);
+            } else if (plan === 'yearly') {
                 expiration.setFullYear(expiration.getFullYear() + 1);
             } else {
                 expiration.setMonth(expiration.getMonth() + 1);
@@ -1745,39 +1747,85 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
     
     try {
         const { plan } = req.body;
-        if (!['monthly', 'yearly'].includes(plan)) {
+        if (!['monthly', 'yearly', 'lifetime'].includes(plan)) {
             return res.status(400).json({ error: 'Invalid plan' });
         }
         
         const user = req.user;
         
-        // Create or get Stripe customer
+        // Already subscribed check
+        if (user.subscribed && user.expiresAt && new Date(user.expiresAt) > new Date()) {
+            return res.status(400).json({ error: 'Already subscribed' });
+        }
+        
+        // Create or get Stripe customer with email locked to account email
         let customerId = user.stripeCustomerId;
         if (!customerId) {
             const customer = await stripe.customers.create({
-                email: user.email,
+                email: user.email.toLowerCase(),
                 metadata: { userId: user.userId }
             });
             customerId = customer.id;
             upsertUser(user.userId, { stripeCustomerId: customerId });
         }
         
-        const session = await stripe.checkout.sessions.create({
+        let sessionParams = {
             customer: customerId,
-            mode: 'subscription',
             payment_method_types: ['card'],
-            line_items: [{
-                price: plan === 'yearly' ? config.stripe.yearlyPriceId : config.stripe.monthlyPriceId,
-                quantity: 1
-            }],
             success_url: `${config.frontendUrl}/?plan=${plan}&session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${config.frontendUrl}/?cancelled=true`,
             metadata: {
                 userId: user.userId,
                 plan: plan
             }
-        });
+        };
         
+        if (plan === 'lifetime') {
+            // One-time payment for lifetime access
+            sessionParams.mode = 'payment';
+            sessionParams.line_items = [{
+                price_data: {
+                    currency: 'aud',
+                    product_data: {
+                        name: 'Study Decoder Premium — Lifetime Access',
+                        description: 'One-time payment, unlimited access forever'
+                    },
+                    unit_amount: 3750 // $37.50 AUD
+                },
+                quantity: 1
+            }];
+        } else if (plan === 'yearly') {
+            sessionParams.mode = 'payment';
+            sessionParams.line_items = [{
+                price_data: {
+                    currency: 'aud',
+                    product_data: {
+                        name: 'Study Decoder Premium — Yearly Access',
+                        description: '12 months of unlimited access'
+                    },
+                    unit_amount: 7500 // $75.00 AUD
+                },
+                quantity: 1
+            }];
+        } else {
+            // Monthly recurring subscription
+            sessionParams.mode = 'subscription';
+            sessionParams.line_items = [{
+                price_data: {
+                    currency: 'aud',
+                    product_data: {
+                        name: 'Study Decoder Premium — Monthly',
+                    },
+                    unit_amount: 750, // $7.50 AUD
+                    recurring: { interval: 'month' }
+                },
+                quantity: 1
+            }];
+        }
+        
+        const session = await stripe.checkout.sessions.create(sessionParams);
+        
+        console.log(`💳 Checkout session created for ${user.email} - plan: ${plan}`);
         res.json({ sessionId: session.id, url: session.url });
         
     } catch (error) {
@@ -1877,7 +1925,9 @@ app.post('/api/verify-payment', requireAuth, async (req, res) => {
         if (completedSession) {
             const plan = completedSession.metadata?.plan || 'monthly';
             const expiration = new Date();
-            if (plan === 'yearly') {
+            if (plan === 'lifetime') {
+                expiration.setFullYear(expiration.getFullYear() + 100);
+            } else if (plan === 'yearly') {
                 expiration.setFullYear(expiration.getFullYear() + 1);
             } else {
                 expiration.setMonth(expiration.getMonth() + 1);
@@ -2030,7 +2080,9 @@ app.post('/api/stripe-webhook', async (req, res) => {
                 
                 if (userId) {
                     const expiration = new Date();
-                    if (plan === 'yearly') {
+                    if (plan === 'lifetime') {
+                        expiration.setFullYear(expiration.getFullYear() + 100);
+                    } else if (plan === 'yearly') {
                         expiration.setFullYear(expiration.getFullYear() + 1);
                     } else {
                         expiration.setMonth(expiration.getMonth() + 1);
