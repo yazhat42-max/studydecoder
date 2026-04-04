@@ -683,8 +683,19 @@ async function autoSyncStripeSubscription(userId, email) {
             const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 1000 ? 'monthly' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
             const existingUser = getUser(userId);
             
-            // Check if we already have valid expiration
+            // If already valid but plan is wrong, correct it
             if (existingUser?.expiresAt && new Date(existingUser.expiresAt) > new Date()) {
+                if (existingUser.plan !== plan) {
+                    // Plan mismatch — recalculate expiration from Stripe
+                    const sessionDate = new Date(completedSession.created * 1000);
+                    const correctedExp = new Date(sessionDate);
+                    if (plan === 'lifetime') correctedExp.setFullYear(correctedExp.getFullYear() + 100);
+                    else if (plan === 'yearly') correctedExp.setFullYear(correctedExp.getFullYear() + 1);
+                    else correctedExp.setMonth(correctedExp.getMonth() + 1);
+                    upsertUser(userId, { plan, expiresAt: correctedExp.toISOString() });
+                    console.log(`🔄 Corrected plan for ${email}: ${existingUser.plan} → ${plan}`);
+                    return { subscribed: true, plan, expiresAt: correctedExp.toISOString() };
+                }
                 return { subscribed: true, plan: existingUser.plan, expiresAt: existingUser.expiresAt };
             }
             
