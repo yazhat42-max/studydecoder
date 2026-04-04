@@ -925,9 +925,7 @@ app.post('/api/auth/google', async (req, res) => {
         }
         
         // Auto-sync subscription status from Stripe (handles server restarts)
-        if (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date()) {
-            await autoSyncStripeSubscription(userId, verified.email);
-        }
+        await autoSyncStripeSubscription(userId, verified.email);
         
         // Get updated user after potential sync
         const updatedUser = getUser(userId) || user;
@@ -1001,9 +999,7 @@ app.post('/api/auth/google-oauth', async (req, res) => {
         }
         
         // Auto-sync subscription status from Stripe (handles server restarts)
-        if (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date()) {
-            await autoSyncStripeSubscription(userId, userInfo.email);
-        }
+        await autoSyncStripeSubscription(userId, userInfo.email);
         
         // Get updated user after potential sync
         const updatedUser = getUser(userId) || user;
@@ -1131,10 +1127,8 @@ app.post('/api/auth/login', async (req, res) => {
         // Check if user signed up before preferences update
         ensureOnboardingFlag(user);
         
-        // Auto-sync subscription status from Stripe (handles server restarts)
-        if (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date()) {
-            await autoSyncStripeSubscription(user.userId, user.email);
-        }
+        // Auto-sync subscription status from Stripe (handles server restarts + plan corrections)
+        await autoSyncStripeSubscription(user.userId, user.email);
         
         // Get updated user after potential sync
         const updatedUser = getUser(user.userId) || user;
@@ -1487,10 +1481,8 @@ app.post('/api/login', async (req, res) => {
             req.session.userId = verified.userId;
             
             // Auto-sync subscription for Google users
-            if (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date()) {
                 await autoSyncStripeSubscription(verified.userId, verified.email);
                 user = getUser(verified.userId) || user;
-            }
             
         } else if (email && password) {
             // Email/Password
@@ -1531,8 +1523,8 @@ app.post('/api/login', async (req, res) => {
             return res.status(400).json({ error: 'Email and password required' });
         }
 
-        // Auto-sync subscription status from Stripe (handles server restarts)
-        if (user && (!user.subscribed || !user.expiresAt || new Date(user.expiresAt) < new Date())) {
+        // Auto-sync subscription status from Stripe (handles server restarts + plan corrections)
+        if (user) {
             await autoSyncStripeSubscription(user.userId, user.email);
             user = getUser(user.userId) || user;
         }
