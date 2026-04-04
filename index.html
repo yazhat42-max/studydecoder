@@ -1444,9 +1444,20 @@
         
         // Populate subscription info
         if (currentUser) {
-            document.getElementById('subPlan').textContent = currentUser.plan === 'yearly' ? 'Lifetime ($37.50 one-time)' : 'Monthly ($7.50/month)';
+            document.getElementById('subPlan').textContent = 
+                currentUser.plan === 'lifetime' ? 'Lifetime ($37.50 one-time)' :
+                currentUser.plan === 'yearly' ? 'Yearly ($75/year)' :
+                currentUser.plan === 'granted' ? 'Granted (Free)' :
+                'Monthly ($7.50/month)';
             
-            if (currentUser.cancelAtPeriodEnd) {
+            if (currentUser.plan === 'lifetime' || currentUser.plan === 'granted') {
+                document.getElementById('subStatus').textContent = 'Active';
+                document.getElementById('subStatus').style.color = '#10b981';
+                document.getElementById('subExpires').textContent = currentUser.plan === 'lifetime' ? 'Never' : document.getElementById('subExpires').textContent;
+                const btn = document.getElementById('cancelSubBtn');
+                btn.style.display = 'none';
+                document.querySelector('#subModalOverlay p[style]').style.display = 'none';
+            } else if (currentUser.cancelAtPeriodEnd) {
                 document.getElementById('subStatus').textContent = 'Cancelling (access until period ends)';
                 document.getElementById('subStatus').style.color = '#f59e0b';
                 const btn = document.getElementById('cancelSubBtn');
@@ -1462,13 +1473,15 @@
                 btn.disabled = false;
             }
             
-            if (currentUser.expiresAt) {
+            if (currentUser.expiresAt && currentUser.plan !== 'lifetime') {
                 const expDate = new Date(currentUser.expiresAt);
                 document.getElementById('subExpires').textContent = expDate.toLocaleDateString('en-AU', { 
                     day: 'numeric', 
                     month: 'long', 
                     year: 'numeric' 
                 });
+            } else if (currentUser.plan === 'lifetime') {
+                document.getElementById('subExpires').textContent = 'Never';
             } else {
                 document.getElementById('subExpires').textContent = 'N/A';
             }
