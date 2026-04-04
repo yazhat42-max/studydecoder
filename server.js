@@ -1973,7 +1973,9 @@ app.post('/api/subscribe', requireAuth, (req, res) => {
     
     // Calculate expiration
     const expiration = new Date();
-    if (plan === 'yearly') {
+    if (plan === 'lifetime') {
+        expiration.setFullYear(expiration.getFullYear() + 100);
+    } else if (plan === 'yearly') {
         expiration.setFullYear(expiration.getFullYear() + 1);
     } else {
         expiration.setMonth(expiration.getMonth() + 1);
