@@ -1664,13 +1664,9 @@ app.put('/api/user/preferences', requireAuth, express.json(), (req, res) => {
 
 /**
  * POST /api/set-pending-plan
+ * @deprecated - No longer used, kept for backwards compatibility
  */
 app.post('/api/set-pending-plan', requireAuth, (req, res) => {
-    const { plan } = req.body;
-    if (!['monthly', 'yearly'].includes(plan)) {
-        return res.status(400).json({ error: 'Invalid plan' });
-    }
-    req.session.pendingPlan = plan;
     res.json({ success: true });
 });
 
@@ -1969,11 +1965,17 @@ app.post('/api/verify-payment', requireAuth, async (req, res) => {
 
 /**
  * POST /api/subscribe
- * Manual subscription activation (for legacy checkout links)
+ * Manual subscription activation (owner-only, for granting access)
  */
 app.post('/api/subscribe', requireAuth, (req, res) => {
     const user = req.user;
-    const plan = req.body.plan || req.session.pendingPlan || 'monthly';
+    
+    // Only owner can use this endpoint directly
+    if (getUserRole(user.email) !== 'owner') {
+        return res.status(403).json({ error: 'Not authorized' });
+    }
+    
+    const plan = req.body.plan || 'monthly';
     
     // Calculate expiration
     const expiration = new Date();
@@ -1991,8 +1993,6 @@ app.post('/api/subscribe', requireAuth, (req, res) => {
         subscribedAt: new Date().toISOString(),
         expiresAt: expiration.toISOString()
     });
-    
-    delete req.session.pendingPlan;
 
     res.json({
         success: true,

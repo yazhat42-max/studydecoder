@@ -1238,7 +1238,7 @@
                     <span class="sub-info-value" id="subExpires" style="font-weight: 600; color: #2A2A2A;">-</span>
                 </div>
             </div>
-            <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">Cancelling will stop auto-renewal. You'll keep access until your current period ends.</p>
+            <p id="subCancelHint" style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">Cancelling will stop auto-renewal. You'll keep access until your current period ends.</p>
             <button class="sub-modal-btn sub-modal-btn-cancel" id="cancelSubBtn" onclick="cancelSubscription()" style="width: 100%; padding: 12px; background: #ef4444; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 12px; transition: all 0.2s;">Cancel Subscription</button>
             <button class="sub-modal-btn sub-modal-btn-close" onclick="closeSubModal()" style="width: 100%; padding: 12px; background: #e0e0e0; color: #2A2A2A; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Close</button>
         </div>
@@ -1456,7 +1456,7 @@
                 document.getElementById('subExpires').textContent = currentUser.plan === 'lifetime' ? 'Never' : document.getElementById('subExpires').textContent;
                 const btn = document.getElementById('cancelSubBtn');
                 btn.style.display = 'none';
-                document.querySelector('#subModalOverlay p[style]').style.display = 'none';
+                document.getElementById('subCancelHint').style.display = 'none';
             } else if (currentUser.cancelAtPeriodEnd) {
                 document.getElementById('subStatus').textContent = 'Cancelling (access until period ends)';
                 document.getElementById('subStatus').style.color = '#f59e0b';
