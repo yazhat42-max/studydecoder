@@ -680,7 +680,7 @@ async function autoSyncStripeSubscription(userId, email) {
         );
         
         if (completedSession) {
-            const plan = completedSession.metadata?.plan || 'monthly';
+            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 1000 ? 'monthly' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
             const existingUser = getUser(userId);
             
             // Check if we already have valid expiration
@@ -1923,7 +1923,7 @@ app.post('/api/verify-payment', requireAuth, async (req, res) => {
             s.payment_status === 'paid' || s.payment_status === 'no_payment_required'
         );
         if (completedSession) {
-            const plan = completedSession.metadata?.plan || 'monthly';
+            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 1000 ? 'monthly' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
             const expiration = new Date();
             if (plan === 'lifetime') {
                 expiration.setFullYear(expiration.getFullYear() + 100);
@@ -2069,7 +2069,8 @@ app.post('/api/stripe-webhook', async (req, res) => {
             case 'checkout.session.completed': {
                 const session = event.data.object;
                 let userId = session.metadata?.userId;
-                const plan = session.metadata?.plan || (session.amount_total >= 3000 ? 'yearly' : 'monthly');
+                // Detect plan from metadata, or fallback to amount-based detection
+                const plan = session.metadata?.plan || (session.amount_total <= 1000 ? 'monthly' : session.amount_total <= 5000 ? 'lifetime' : 'yearly');
                 
                 // If no userId in metadata (Payment Links), match by email
                 if (!userId && session.customer_details?.email) {
@@ -2289,6 +2290,7 @@ app.get('/api/admin/stats', requireOwner, (req, res) => {
         subscribers: users.filter(u => u.subscribed).length,
         monthlyPlans: users.filter(u => u.plan === 'monthly').length,
         yearlyPlans: users.filter(u => u.plan === 'yearly').length,
+        lifetimePlans: users.filter(u => u.plan === 'lifetime').length,
         ogTesters: ogRedemptions.length,
         ogSlotsRemaining: OG_CODE_CONFIG.maxRedemptions - ogRedemptions.length,
         recentSignups: users
