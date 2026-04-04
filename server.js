@@ -1775,6 +1775,7 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
         let sessionParams = {
             customer: customerId,
             payment_method_types: ['card'],
+            allow_promotion_codes: true,
             success_url: `${config.frontendUrl}/?plan=${plan}&session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${config.frontendUrl}/?cancelled=true`,
             metadata: {
