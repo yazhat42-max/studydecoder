@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Sign In – Study Decoder</title>
+    <title>Sign In â€“ Study Decoder</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="canonical" href="https://www.studydecoder.com.au/login.html">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
@@ -853,7 +849,7 @@
                 }
             } catch (e) {}
             
-            // Initialize Google Sign-In (optional — works if not blocked)
+            // Initialize Google Sign-In (optional â€” works if not blocked)
             initializeGoogleSignIn();
         });
         
@@ -885,7 +881,7 @@
                 if (googleInitRetries < MAX_GOOGLE_RETRIES) {
                     setTimeout(initializeGoogleSignIn, 500);
                 } else {
-                    // Google blocked — hide Google buttons, email/password still works fine
+                    // Google blocked â€” hide Google buttons, email/password still works fine
                     document.querySelectorAll('.google-btn-custom').forEach(btn => {
                         btn.style.display = 'none';
                     });
@@ -1021,7 +1017,7 @@
             try {
                 const check = await fetch('/api/subscription', { credentials: 'include' });
                 if (!check.ok) {
-                    // Session not set yet — wait and retry once
+                    // Session not set yet â€” wait and retry once
                     await new Promise(r => setTimeout(r, 1000));
                     const retry = await fetch('/api/subscription', { credentials: 'include' });
                     if (!retry.ok) {

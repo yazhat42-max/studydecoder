@@ -18,10 +18,6 @@
     <meta name="twitter:description" content="Create a personalised HSC study timetable with AI.">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0f1419">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -209,21 +205,21 @@
         <!-- History sidebar -->
         <div class="history-panel" id="historyPanel">
             <div class="history-header">
-                <h3>📅 Past Timetables</h3>
-                <button class="history-close" onclick="closeHistory()">✕</button>
+                <h3>ðŸ“… Past Timetables</h3>
+                <button class="history-close" onclick="closeHistory()">âœ•</button>
             </div>
             <div class="history-list" id="historyList"></div>
         </div>
 
         <header class="header">
             <div class="header-left">
-                <a href="index.html" class="back-btn">← Home</a>
+                <a href="index.html" class="back-btn">â† Home</a>
                 <div>
                     <div class="header-title">Smart Timetable Generator</div>
                     <div class="header-subtitle">Create sustainable, personalised HSC study schedules</div>
                 </div>
             </div>
-            <button class="history-btn" onclick="openHistory()">📋 History</button>
+            <button class="history-btn" onclick="openHistory()">ðŸ“‹ History</button>
         </header>
         <main class="main-content">
             <div class="output-panel" id="outputPanel">
@@ -239,14 +235,14 @@
                     <div class="form-title">Generate a Timetable</div>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label">🎓 Year Level</label>
+                            <label class="form-label">ðŸŽ“ Year Level</label>
                             <select class="form-select" id="yearLevel" required>
                                 <option value="Year 11">Year 11</option>
                                 <option value="Year 12" selected>Year 12</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">⏰ Study Hours/Day</label>
+                            <label class="form-label">â° Study Hours/Day</label>
                             <select class="form-select" id="studyHours" required>
                                 <option value="1">1 hour</option>
                                 <option value="2" selected>2 hours</option>
@@ -256,7 +252,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">🧠 Preferred Time</label>
+                            <label class="form-label">ðŸ§  Preferred Time</label>
                             <select class="form-select" id="preferredTime" required>
                                 <option value="Morning">Morning</option>
                                 <option value="Afternoon" selected>Afternoon</option>
@@ -265,23 +261,23 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">📅 Start Date</label>
+                            <label class="form-label">ðŸ“… Start Date</label>
                             <input type="date" class="form-input" id="startDate">
                         </div>
                         <div class="form-group full-width">
-                            <label class="form-label">📘 Your HSC Subjects (hold Ctrl/Cmd to select multiple)</label>
+                            <label class="form-label">ðŸ“˜ Your HSC Subjects (hold Ctrl/Cmd to select multiple)</label>
                             <select class="form-select" id="subjectSelect" multiple style="min-height: 150px;">
                                 <option value="">Loading subjects...</option>
                             </select>
                         </div>
                         <div class="form-group half-width">
-                            <label class="form-label">📉 Weakest Subject</label>
+                            <label class="form-label">ðŸ“‰ Weakest Subject</label>
                             <select class="form-select" id="weakSubject">
                                 <option value="">Select your weakest subject...</option>
                             </select>
                         </div>
                         <div class="form-group half-width">
-                            <label class="form-label">📅 Upcoming Exams/Deadlines</label>
+                            <label class="form-label">ðŸ“… Upcoming Exams/Deadlines</label>
                             <textarea class="form-textarea" id="deadlines" placeholder="e.g., Physics trial Feb 15, English essay due Feb 20, HSC Oct..."></textarea>
                         </div>
                     </div>
@@ -365,7 +361,7 @@
             // Add "Your Subjects" group at the top if user has saved subjects
             if (savedSubjects && savedSubjects.length > 0) {
                 const yourGroup = document.createElement('optgroup');
-                yourGroup.label = '⭐ Your Subjects';
+                yourGroup.label = 'â­ Your Subjects';
                 savedSubjects.forEach(id => {
                     const s = allSubjects.find(x => x.id === id);
                     if (s) {
@@ -398,7 +394,7 @@
             // Add "Your Subjects" to weak subject too
             if (savedSubjects && savedSubjects.length > 0) {
                 const yourGroup = document.createElement('optgroup');
-                yourGroup.label = '⭐ Your Subjects';
+                yourGroup.label = 'â­ Your Subjects';
                 savedSubjects.forEach(id => {
                     const s = allSubjects.find(x => x.id === id);
                     if (s) {
@@ -433,8 +429,8 @@
                 })
                 .replace(/((<tr>.*<\/tr>\s*)+)/g, '<table>$1</table>')
                 .replace(/<tr><td>-+<\/td>.*?<\/tr>/g, '')
-                .replace(/📅|🧠|🔁/g, '</p><h3>$&')
-                .replace(/(📅[^<]*|🧠[^<]*|🔁[^<]*)/g, '$1</h3><p>')
+                .replace(/ðŸ“…|ðŸ§ |ðŸ”/g, '</p><h3>$&')
+                .replace(/(ðŸ“…[^<]*|ðŸ§ [^<]*|ðŸ”[^<]*)/g, '$1</h3><p>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\n\n/g, '</p><p>')
                 .replace(/\n/g, '<br>');
@@ -448,10 +444,10 @@
             const toolName = botType === 'worksheet' ? 'worksheet decode' : botType === 'notes-transcriber' ? 'notes transcription' : 'free use';
             const heading = isSpecial ? `You've used your 1 daily ${toolName}.` : `You've used all 10 free uses for today.`;
             const isSale = new Date() < new Date('2026-04-25T00:00:00');
-            const yearlyText = isSale ? '🔥 Study Break Sale — $37.50 for life' : 'Yearly — $75/yr';
+            const yearlyText = isSale ? 'ðŸ”¥ Study Break Sale â€” $37.50 for life' : 'Yearly â€” $75/yr';
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message message-assistant';
-            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">âš¡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly â€” $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
             outputContent.appendChild(messageDiv);
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
@@ -663,7 +659,7 @@ Please generate a detailed weekly study timetable in a clear table format with s
 
             list.innerHTML = history.map(h => `
                 <div class="history-item" onclick="loadSession('${h.id}')">
-                    <div class="history-item-title">📅 ${h.title}</div>
+                    <div class="history-item-title">ðŸ“… ${h.title}</div>
                     <div class="history-item-date">${new Date(h.date).toLocaleDateString()} ${new Date(h.date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</div>
                     <div class="history-item-preview">${h.preview}</div>
                     <div class="history-item-actions">
@@ -753,7 +749,7 @@ Please generate a detailed weekly study timetable in a clear table format with s
                     const upgradeBtn = document.createElement('a');
                     upgradeBtn.href = 'https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03';
                     upgradeBtn.target = '_blank';
-                    upgradeBtn.innerHTML = '⚡ Upgrade';
+                    upgradeBtn.innerHTML = 'âš¡ Upgrade';
                     upgradeBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9rem;z-index:9999;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.2s,box-shadow 0.2s;';
                     upgradeBtn.onmouseenter = () => { upgradeBtn.style.transform = 'scale(1.05)'; upgradeBtn.style.boxShadow = '0 6px 20px rgba(102,126,234,0.6)'; };
                     upgradeBtn.onmouseleave = () => { upgradeBtn.style.transform = 'scale(1)'; upgradeBtn.style.boxShadow = '0 4px 15px rgba(102,126,234,0.4)'; };

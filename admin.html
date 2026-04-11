@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Admin Dashboard – Study Decoder</title>
+    <title>Admin Dashboard â€“ Study Decoder</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -541,7 +537,7 @@
     </div>
     
     <div class="access-denied" id="accessDenied" style="display: none;">
-        <h1>🔒</h1>
+        <h1>ðŸ”’</h1>
         <h2>Access Denied</h2>
         <p>This page is only accessible to the owner.</p>
         <a href="login.html" class="action-btn action-btn-primary">Sign In</a>
@@ -552,11 +548,11 @@
             <h1>
                 <img src="logo.png" alt="Logo" style="height: 36px; border-radius: 8px;">
                 Study Decoder Admin
-                <span class="owner-badge">👑 Owner</span>
+                <span class="owner-badge">ðŸ‘‘ Owner</span>
             </h1>
             <div class="header-actions">
-                <a href="senior-bot.html">📚 Study Tools</a>
-                <a href="index.html">🏠 Home</a>
+                <a href="senior-bot.html">ðŸ“š Study Tools</a>
+                <a href="index.html">ðŸ  Home</a>
                 <button class="logout-btn" onclick="logout()">Sign Out</button>
             </div>
         </header>
@@ -570,7 +566,7 @@
             <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card live">
-                    <span class="stat-label">🟢 Live Users Now</span>
+                    <span class="stat-label">ðŸŸ¢ Live Users Now</span>
                     <span class="stat-value"><span class="live-indicator"></span><span id="statLiveUsers">0</span></span>
                     <span class="live-subtitle" id="liveSubtitle">Updating...</span>
                 </div>
@@ -607,18 +603,18 @@
             <!-- Quick Actions -->
             <div class="admin-section">
                 <div class="section-header">
-                    <h2>⚡ Quick Actions</h2>
+                    <h2>âš¡ Quick Actions</h2>
                 </div>
                 <div class="section-content" style="padding: 20px;">
                     <div class="quick-actions">
                         <button class="action-btn action-btn-primary" onclick="showGrantAccessModal()">
-                            🎁 Grant Access
+                            ðŸŽ Grant Access
                         </button>
                         <button class="action-btn action-btn-secondary" onclick="showRevokeAccessModal()">
-                            ❌ Revoke Access
+                            âŒ Revoke Access
                         </button>
                         <button class="action-btn action-btn-secondary" onclick="refreshData()">
-                            🔄 Refresh Data
+                            ðŸ”„ Refresh Data
                         </button>
                     </div>
                 </div>
@@ -627,7 +623,7 @@
             <!-- OG Testers -->
             <div class="admin-section">
                 <div class="section-header">
-                    <h2>🌟 OG Testers</h2>
+                    <h2>ðŸŒŸ OG Testers</h2>
                     <span class="badge badge-og" id="ogCodeBadge">Loading...</span>
                 </div>
                 <div class="section-content og-list" id="ogList">
@@ -638,7 +634,7 @@
             <!-- Recent Signups -->
             <div class="admin-section">
                 <div class="section-header">
-                    <h2>👥 Recent Signups</h2>
+                    <h2>ðŸ‘¥ Recent Signups</h2>
                 </div>
                 <div class="section-content">
                     <table class="admin-table">
@@ -660,7 +656,7 @@
             <!-- Recent Payments -->
             <div class="admin-section">
                 <div class="section-header">
-                    <h2>💳 Recent Payments</h2>
+                    <h2>ðŸ’³ Recent Payments</h2>
                 </div>
                 <div class="section-content">
                     <table class="admin-table">
@@ -682,9 +678,9 @@
             <!-- Binary Code Easter Egg -->
             <div class="admin-section">
                 <div class="section-header">
-                    <h2>🔢 The Matrix</h2>
+                    <h2>ðŸ”¢ The Matrix</h2>
                     <button class="action-btn action-btn-secondary" onclick="toggleBinaryView()" style="font-size: 0.85rem; padding: 6px 14px;">
-                        👁️ View Binary
+                        ðŸ‘ï¸ View Binary
                     </button>
                 </div>
                 <div class="section-content" id="binarySection" style="display: none;">
@@ -692,7 +688,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                             <div>
                                 <span style="color: #00ff00; font-family: 'Courier New', monospace; font-size: 0.9rem;">
-                                    📊 Total Size: <span id="binarySize">Calculating...</span>
+                                    ðŸ“Š Total Size: <span id="binarySize">Calculating...</span>
                                 </span>
                             </div>
                             <div style="display: flex; gap: 8px;">
@@ -700,14 +696,14 @@
                                     <option value="">Select a file...</option>
                                 </select>
                                 <button onclick="copyBinary()" style="background: #1a1a1a; color: #00ff00; border: 1px solid #00ff00; border-radius: 4px; padding: 4px 12px; cursor: pointer; font-size: 0.8rem;">
-                                    📋 Copy
+                                    ðŸ“‹ Copy
                                 </button>
                             </div>
                         </div>
                         <div id="binaryOutput" style="font-family: 'Courier New', monospace; font-size: 0.7rem; color: #00ff00; background: #050505; padding: 16px; border-radius: 6px; max-height: 400px; overflow: auto; line-height: 1.4; word-break: break-all; text-shadow: 0 0 5px #00ff00;">
                             <div style="text-align: center; padding: 40px; color: #00aa00;">
                                 Click "View Binary" to decode the matrix...<br>
-                                <span style="font-size: 2rem; display: block; margin-top: 10px;">🐇</span>
+                                <span style="font-size: 2rem; display: block; margin-top: 10px;">ðŸ‡</span>
                             </div>
                         </div>
                         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; background: linear-gradient(180deg, transparent 0%, rgba(0,255,0,0.03) 50%, transparent 100%); animation: scanline 8s linear infinite;"></div>
@@ -721,9 +717,9 @@
             <!-- Scratch Blocks Easter Egg -->
             <div class="admin-section">
                 <div class="section-header">
-                    <h2>🧩 Scratch View</h2>
+                    <h2>ðŸ§© Scratch View</h2>
                     <button class="action-btn action-btn-secondary" onclick="toggleScratchView()" style="font-size: 0.85rem; padding: 6px 14px;">
-                        🐱 View as Scratch
+                        ðŸ± View as Scratch
                     </button>
                 </div>
                 <div class="section-content" id="scratchSection" style="display: none;">
@@ -731,7 +727,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <img src="https://scratch.mit.edu/images/logo_sm.png" alt="Scratch" style="height: 24px;" onerror="this.style.display='none'">
-                                <span style="font-weight: 600; color: #575e75;">Study Decoder - Scratch Edition™</span>
+                                <span style="font-weight: 600; color: #575e75;">Study Decoder - Scratch Editionâ„¢</span>
                             </div>
                             <select id="scratchFileSelect" onchange="showScratchBlocks()" style="background: #fff; border: 2px solid #4d97ff; border-radius: 8px; padding: 6px 12px; font-weight: 500; color: #575e75;">
                                 <option value="">Select a file...</option>
@@ -739,7 +735,7 @@
                         </div>
                         <div id="scratchOutput" style="background: #fff; border-radius: 8px; padding: 20px; min-height: 300px; max-height: 500px; overflow: auto; border: 2px solid #e9eef2;">
                             <div style="text-align: center; padding: 60px 20px; color: #575e75;">
-                                <div style="font-size: 4rem; margin-bottom: 16px;">🐱</div>
+                                <div style="font-size: 4rem; margin-bottom: 16px;">ðŸ±</div>
                                 <p style="font-size: 1.1rem; font-weight: 500;">Click "View as Scratch" to see the code blocks!</p>
                                 <p style="font-size: 0.9rem; color: #8c94a6; margin-top: 8px;">Warning: Professional developers may cringe</p>
                             </div>
@@ -815,7 +811,7 @@
             gap: 4px;
         }
         .scratch-dropdown::after {
-            content: '▼';
+            content: 'â–¼';
             font-size: 0.6rem;
         }
         .block-stack {
@@ -837,7 +833,7 @@
     <!-- Grant Access Modal -->
     <div class="modal-overlay" id="grantModal">
         <div class="modal">
-            <h3>🎁 Grant Access</h3>
+            <h3>ðŸŽ Grant Access</h3>
             <form class="modal-form" id="grantForm">
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
@@ -867,14 +863,14 @@
     <!-- Revoke Access Modal -->
     <div class="modal-overlay" id="revokeModal">
         <div class="modal">
-            <h3>❌ Revoke Access</h3>
+            <h3>âŒ Revoke Access</h3>
             <form class="modal-form" id="revokeForm">
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
                     <input type="email" class="form-input" id="revokeEmail" required placeholder="user@example.com">
                 </div>
                 <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">
-                    ⚠️ Note: Cannot revoke access for owners or OG testers.
+                    âš ï¸ Note: Cannot revoke access for owners or OG testers.
                 </p>
                 <div class="modal-actions">
                     <button type="button" class="action-btn action-btn-secondary" onclick="closeModal('revokeModal')">Cancel</button>
@@ -952,7 +948,7 @@
                 const parts = [];
                 if (data.authenticated > 0) parts.push(`${data.authenticated} logged in`);
                 if (data.anonymous > 0) parts.push(`${data.anonymous} visitors`);
-                subtitle.textContent = parts.length > 0 ? parts.join(' • ') : 'No active users';
+                subtitle.textContent = parts.length > 0 ? parts.join(' â€¢ ') : 'No active users';
                 
             } catch (error) {
                 console.error('Live users error:', error);
@@ -1069,8 +1065,8 @@
         
         function getRoleBadge(role) {
             switch (role) {
-                case 'owner': return '<span class="badge badge-owner">👑 Owner</span>';
-                case 'og_tester': return '<span class="badge badge-og">🌟 OG</span>';
+                case 'owner': return '<span class="badge badge-owner">ðŸ‘‘ Owner</span>';
+                case 'og_tester': return '<span class="badge badge-og">ðŸŒŸ OG</span>';
                 default: return '<span class="badge badge-subscriber">User</span>';
             }
         }
@@ -1131,7 +1127,7 @@
                     return;
                 }
                 
-                alert('✅ ' + data.message);
+                alert('âœ… ' + data.message);
                 closeModal('grantModal');
                 await loadStats();
                 
@@ -1165,7 +1161,7 @@
                     return;
                 }
                 
-                alert('✅ ' + data.message);
+                alert('âœ… ' + data.message);
                 closeModal('revokeModal');
                 await loadStats();
                 
@@ -1223,13 +1219,13 @@
         
         async function loadAllFiles() {
             const output = document.getElementById('binaryOutput');
-            output.innerHTML = '<div style="text-align: center; color: #00ff00;">⏳ Entering the Matrix...</div>';
+            output.innerHTML = '<div style="text-align: center; color: #00ff00;">â³ Entering the Matrix...</div>';
             
             let totalSize = 0;
             let loadedCount = 0;
             let failedFiles = [];
             const select = document.getElementById('binaryFileSelect');
-            select.innerHTML = '<option value="">Select a file...</option><option value="__ALL__">🔥 ALL FILES (Warning: Large!)</option>';
+            select.innerHTML = '<option value="">Select a file...</option><option value="__ALL__">ðŸ”¥ ALL FILES (Warning: Large!)</option>';
             
             for (const file of Object.keys(websiteFiles)) {
                 try {
@@ -1258,8 +1254,8 @@
             binaryLoaded = true;
             
             let statusMsg = loadedCount > 0 
-                ? `✅ Matrix loaded successfully! (${loadedCount} files)`
-                : '❌ No files could be loaded';
+                ? `âœ… Matrix loaded successfully! (${loadedCount} files)`
+                : 'âŒ No files could be loaded';
             
             if (failedFiles.length > 0) {
                 statusMsg += `<br><span style="color: #ff6600; font-size: 0.8rem;">Failed: ${failedFiles.join(', ')}</span>`;
@@ -1289,7 +1285,7 @@
             
             if (file === '__ALL__') {
                 // Combine all files
-                output.innerHTML = '<div style="text-align: center; color: #00ff00;">⏳ Generating full matrix... This may take a moment.</div>';
+                output.innerHTML = '<div style="text-align: center; color: #00ff00;">â³ Generating full matrix... This may take a moment.</div>';
                 setTimeout(() => {
                     let allContent = '';
                     for (const [name, content] of Object.entries(websiteFiles)) {
@@ -1300,7 +1296,7 @@
                     const binary = textToBinary(allContent.substring(0, 50000)); // Limit to prevent browser crash
                     output.innerHTML = binary;
                     if (allContent.length > 50000) {
-                        output.innerHTML += '<br><br><span style="color: #ff6600;">[Truncated to 50KB to prevent browser meltdown 🔥]</span>';
+                        output.innerHTML += '<br><br><span style="color: #ff6600;">[Truncated to 50KB to prevent browser meltdown ðŸ”¥]</span>';
                     }
                 }, 100);
             } else {
@@ -1332,7 +1328,7 @@
             const output = document.getElementById('binaryOutput');
             const text = output.innerText;
             navigator.clipboard.writeText(text).then(() => {
-                alert('📋 Binary copied to clipboard!\n\nYou now possess the raw essence of Study Decoder. Use it wisely. 🐇');
+                alert('ðŸ“‹ Binary copied to clipboard!\n\nYou now possess the raw essence of Study Decoder. Use it wisely. ðŸ‡');
             }).catch(() => {
                 alert('Failed to copy. The Matrix resists.');
             });
@@ -1357,7 +1353,7 @@
             const blocks = [];
             
             // Hat block - when green flag clicked
-            blocks.push(`<div class="scratch-block hat" style="background: ${scratchColors.events};">🚩 when <span class="scratch-dropdown">${filename}</span> loaded</div>`);
+            blocks.push(`<div class="scratch-block hat" style="background: ${scratchColors.events};">ðŸš© when <span class="scratch-dropdown">${filename}</span> loaded</div>`);
             
             // Parse HTML structure
             if (code.includes('<!DOCTYPE html>')) {
@@ -1384,7 +1380,7 @@
                     <div class="scratch-block c-block" style="background: ${scratchColors.control};">
                         repeat <span class="scratch-input">${scriptCount}</span> times
                         <div class="inner-blocks">
-                            <div class="scratch-block" style="background: ${scratchColors.myBlocks};">run <span class="scratch-input">JavaScript magic</span> ✨</div>
+                            <div class="scratch-block" style="background: ${scratchColors.myBlocks};">run <span class="scratch-input">JavaScript magic</span> âœ¨</div>
                         </div>
                     </div>
                 `);
@@ -1404,7 +1400,7 @@
             
             // Style blocks
             if (styleCount > 0) {
-                blocks.push(`<div class="scratch-block" style="background: ${scratchColors.looks};">set <span class="scratch-dropdown">costume</span> to <span class="scratch-input">beautiful CSS ✨</span></div>`);
+                blocks.push(`<div class="scratch-block" style="background: ${scratchColors.looks};">set <span class="scratch-dropdown">costume</span> to <span class="scratch-input">beautiful CSS âœ¨</span></div>`);
                 blocks.push(`<div class="scratch-block" style="background: ${scratchColors.looks};">set <span class="scratch-dropdown">color effect</span> to <span class="scratch-input">${Math.floor(Math.random() * 200)}</span></div>`);
             }
             
@@ -1420,7 +1416,7 @@
             }
             
             if (code.includes('localStorage') || code.includes('session')) {
-                blocks.push(`<div class="scratch-block" style="background: ${scratchColors.variables};">set <span class="scratch-dropdown">☁ cloud variable</span> to <span class="scratch-input">user data</span></div>`);
+                blocks.push(`<div class="scratch-block" style="background: ${scratchColors.variables};">set <span class="scratch-dropdown">â˜ cloud variable</span> to <span class="scratch-input">user data</span></div>`);
             }
             
             if (code.includes('if (') || code.includes('if(')) {
@@ -1429,11 +1425,11 @@
                     <div class="scratch-block c-block" style="background: ${scratchColors.control};">
                         if <span class="scratch-input">something is true</span> then
                         <div class="inner-blocks">
-                            <div class="scratch-block" style="background: ${scratchColors.looks};">say <span class="scratch-input">Condition met! 🎉</span></div>
+                            <div class="scratch-block" style="background: ${scratchColors.looks};">say <span class="scratch-input">Condition met! ðŸŽ‰</span></div>
                         </div>
                     </div>
                 `);
-                blocks.push(`<div class="scratch-block" style="background: ${scratchColors.operators};"><span class="scratch-input">${ifCount}</span> conditions checked total 🤔</div>`);
+                blocks.push(`<div class="scratch-block" style="background: ${scratchColors.operators};"><span class="scratch-input">${ifCount}</span> conditions checked total ðŸ¤”</div>`);
             }
             
             if (code.includes('for (') || code.includes('while (') || code.includes('.forEach')) {
@@ -1461,7 +1457,7 @@
         
         async function loadScratchFiles() {
             const output = document.getElementById('scratchOutput');
-            output.innerHTML = '<div style="text-align: center; padding: 40px; color: #575e75;"><div style="font-size: 2rem; margin-bottom: 10px;">🐱</div>Loading Scratch workspace...</div>';
+            output.innerHTML = '<div style="text-align: center; padding: 40px; color: #575e75;"><div style="font-size: 2rem; margin-bottom: 10px;">ðŸ±</div>Loading Scratch workspace...</div>';
             
             // Make sure files are loaded
             if (!binaryLoaded) {
@@ -1483,7 +1479,7 @@
             scratchLoaded = true;
             output.innerHTML = `
                 <div style="text-align: center; padding: 40px; color: #575e75;">
-                    <div style="font-size: 4rem; margin-bottom: 16px;">🎉</div>
+                    <div style="font-size: 4rem; margin-bottom: 16px;">ðŸŽ‰</div>
                     <p style="font-size: 1.1rem; font-weight: 500;">Scratch workspace loaded!</p>
                     <p style="font-size: 0.9rem; color: #8c94a6; margin-top: 8px;">Select a file to see it as Scratch blocks</p>
                 </div>

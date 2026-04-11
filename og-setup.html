@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>OG Tester Setup – Study Decoder</title>
+    <title>OG Tester Setup â€“ Study Decoder</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -231,7 +227,7 @@
         }
         
         .perks-list li::before {
-            content: '✓';
+            content: 'âœ“';
             color: var(--success);
             font-weight: bold;
         }
@@ -252,7 +248,7 @@
 <body>
     <div class="setup-container">
         <div class="setup-card">
-            <div class="og-badge-large">🌟 OG Tester Access</div>
+            <div class="og-badge-large">ðŸŒŸ OG Tester Access</div>
             
             <div class="brand">
                 <h1>Complete Your Setup</h1>
@@ -260,12 +256,12 @@
             </div>
             
             <div class="alert alert-error" id="alertError">
-                <span>⚠️</span>
+                <span>âš ï¸</span>
                 <span id="alertErrorText">An error occurred</span>
             </div>
             
             <div class="perks-list">
-                <h3>🎁 Your OG Perks Include:</h3>
+                <h3>ðŸŽ Your OG Perks Include:</h3>
                 <ul>
                     <li>Lifetime FREE access to all features</li>
                     <li>Priority support</li>
@@ -289,18 +285,18 @@
                     <label class="form-label">Create Password</label>
                     <div class="password-wrapper">
                         <input type="password" class="form-input" id="password" placeholder="Min 8 characters" required minlength="8">
-                        <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+                        <button type="button" class="password-toggle" onclick="togglePassword()">ðŸ‘ï¸</button>
                     </div>
                 </div>
                 
                 <button type="submit" class="btn btn-og" id="submitBtn">
-                    🚀 Activate OG Access
+                    ðŸš€ Activate OG Access
                 </button>
             </form>
         </div>
         
         <div class="back-home">
-            <a href="login.html">← Back to Login</a>
+            <a href="login.html">â† Back to Login</a>
         </div>
     </div>
     
@@ -317,10 +313,10 @@
             const btn = document.querySelector('.password-toggle');
             if (input.type === 'password') {
                 input.type = 'text';
-                btn.textContent = '🙈';
+                btn.textContent = 'ðŸ™ˆ';
             } else {
                 input.type = 'password';
-                btn.textContent = '👁️';
+                btn.textContent = 'ðŸ‘ï¸';
             }
         }
         
@@ -333,7 +329,7 @@
             
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            btn.innerHTML = '⏳ Creating account...';
+            btn.innerHTML = 'â³ Creating account...';
             
             try {
                 const res = await fetch('/api/og-code/complete-setup', {
@@ -349,7 +345,7 @@
                     throw new Error(data.error || 'Setup failed');
                 }
                 
-                btn.innerHTML = '✅ Success! Redirecting...';
+                btn.innerHTML = 'âœ… Success! Redirecting...';
                 setTimeout(() => {
                     window.location.href = '/senior-bot.html';
                 }, 1500);
@@ -358,7 +354,7 @@
                 document.getElementById('alertError').classList.add('visible');
                 document.getElementById('alertErrorText').textContent = error.message;
                 btn.disabled = false;
-                btn.innerHTML = '🚀 Activate OG Access';
+                btn.innerHTML = 'ðŸš€ Activate OG Access';
             }
         });
     </script>
