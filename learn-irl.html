@@ -57,73 +57,62 @@
         .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
         .btn-outline:hover { background: var(--primary); color: #fff; }
 
-        .login-gate {
+        /* Hook screen — full-screen, visible to everyone */
+        .hook-screen {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 80vh; padding: 40px 20px; text-align: center;
+            min-height: calc(100vh - 70px); padding: 40px 20px; text-align: center;
         }
-        .login-gate h1 {
-            font-size: 2rem; margin-bottom: 16px;
+        .hook-screen h1 {
+            font-size: 2.2rem; font-weight: 700; max-width: 600px; line-height: 1.3;
+            color: var(--secondary); margin-bottom: 40px;
+        }
+        .hook-screen h1 em {
+            font-style: normal;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .login-gate p { color: #666; margin-bottom: 24px; max-width: 500px; }
-        .login-gate .btn { font-size: 1rem; padding: 0.8rem 2rem; }
+        .hook-start-btn {
+            padding: 18px 60px; border: none; border-radius: 50px;
+            font-size: 1.15rem; font-weight: 700; cursor: pointer; transition: var(--transition);
+            color: #fff; background: linear-gradient(135deg, var(--primary), #8b7cf7);
+            letter-spacing: 0.5px;
+        }
+        .hook-start-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(108,99,255,0.4); }
 
+        /* Onboard steps — centered single-field screens */
+        .onboard-step {
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            min-height: calc(100vh - 70px); padding: 40px 20px; text-align: center;
+        }
+        .onboard-step.active { display: flex; }
+        .onboard-step h2 {
+            font-size: 1.6rem; font-weight: 600; color: var(--secondary); margin-bottom: 24px;
+        }
+        .onboard-input {
+            width: 100%; max-width: 420px; padding: 16px 20px; border: 2px solid #e8e8e8; border-radius: 14px;
+            font-size: 16px; color: var(--secondary); transition: var(--transition);
+            font-family: 'Poppins', sans-serif; text-align: center;
+        }
+        .onboard-input:focus { outline: none; border-color: var(--primary); }
+        .onboard-next-btn {
+            margin-top: 20px; padding: 14px 48px; border: none; border-radius: 50px;
+            font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition);
+            color: #fff; background: linear-gradient(135deg, var(--primary), #8b7cf7);
+            opacity: 0.4; pointer-events: none;
+        }
+        .onboard-next-btn.ready { opacity: 1; pointer-events: auto; }
+        .onboard-next-btn.ready:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,99,255,0.35); }
+
+        /* Main container (chat view) */
         .main-container { max-width: 900px; margin: 0 auto; padding: 30px 20px; display: none; }
         .main-container.active { display: block; }
-
-        .page-header { text-align: center; margin-bottom: 24px; }
-        .page-header h1 {
-            font-size: 2rem; font-weight: 700; margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-        }
-        .page-header p { color: #666; font-size: 1rem; }
-
-        /* Setup panel */
-        .setup-panel {
-            background: var(--white); border-radius: var(--radius); padding: 28px;
-            box-shadow: var(--shadow); margin-bottom: 24px;
-        }
-        .setup-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-        .setup-row label { font-size: 0.85rem; font-weight: 600; color: #555; display: block; margin-bottom: 6px; }
-        .setup-field { flex: 1; min-width: 200px; }
-        .setup-input {
-            width: 100%; padding: 12px 16px; border: 2px solid #e8e8e8; border-radius: 10px;
-            font-size: 14px; color: var(--secondary); transition: var(--transition);
-            font-family: 'Poppins', sans-serif;
-        }
-        .setup-input:focus { outline: none; border-color: var(--primary); }
-
-        .mode-selector { display: flex; gap: 12px; margin-bottom: 20px; }
-        .mode-btn {
-            flex: 1; padding: 18px 20px; border-radius: 12px;
-            border: 2px solid #e8e8e8; background: #fff; cursor: pointer;
-            transition: var(--transition); text-align: left;
-        }
-        .mode-btn:hover { border-color: var(--primary); }
-        .mode-btn.active-game { border-color: var(--game); background: linear-gradient(135deg, #ecfdf5 0%, #fff 100%); box-shadow: 0 4px 12px rgba(16,185,129,0.15); }
-        .mode-btn.active-breakdown { border-color: var(--breakdown); background: linear-gradient(135deg, #fffbeb 0%, #fff 100%); box-shadow: 0 4px 12px rgba(245,158,11,0.15); }
-        .mode-btn h4 { font-size: 14px; margin-bottom: 4px; font-weight: 600; }
-        .mode-btn p { font-size: 12px; color: #666; margin: 0; line-height: 1.4; }
-        .mode-btn.active-game h4 { color: var(--game); }
-        .mode-btn.active-breakdown h4 { color: var(--breakdown); }
-
-        .start-btn {
-            width: 100%; padding: 14px; border: none; border-radius: 12px;
-            font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition);
-            color: #fff; background: linear-gradient(135deg, var(--primary), #8b7cf7);
-        }
-        .start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,99,255,0.35); }
-        .start-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         /* Chat area */
         .chat-container {
             background: var(--white); border-radius: var(--radius);
             box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(0,0,0,0.04);
-            display: none;
+            display: block;
         }
-        .chat-container.active { display: block; }
         .chat-messages { height: 500px; overflow-y: auto; padding: 24px; background: linear-gradient(180deg, #fafbff 0%, #fff 100%); }
         .message { margin-bottom: 20px; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -191,20 +180,32 @@
         }
         .new-topic-btn:hover { background: var(--primary); color: #fff; }
 
+        /* Mode toggle (shown only after first session via New Topic) */
+        .mode-toggle {
+            display: flex; align-items: center; gap: 12px; margin-top: 12px;
+        }
+        .mode-toggle-label { font-size: 0.85rem; color: #888; font-weight: 500; }
+        .mode-toggle-switch {
+            padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;
+            border: 2px solid #e0e4ff; background: #fff; cursor: pointer;
+            transition: var(--transition); color: var(--secondary);
+        }
+        .mode-toggle-switch.active-game { border-color: var(--game); color: var(--game); background: #ecfdf5; }
+        .mode-toggle-switch.active-breakdown { border-color: var(--breakdown); color: var(--breakdown); background: #fffbeb; }
+
         @media (max-width: 768px) {
             .navbar { padding: 0.7rem 4%; }
             .logo span { font-size: 1.1rem; }
             .nav-right .btn { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
-            .page-header h1 { font-size: 1.4rem; }
-            .page-header p { font-size: 0.85rem; }
             .main-container { padding: 16px 10px; }
-            .setup-panel { padding: 18px 14px; }
-            .mode-selector { flex-direction: column; }
-            .setup-row { flex-direction: column; }
-            .setup-field { min-width: unset; }
+
+            .hook-screen h1 { font-size: 1.5rem; }
+            .hook-start-btn { padding: 16px 48px; font-size: 1rem; }
+            .onboard-step h2 { font-size: 1.3rem; }
+            .onboard-input { font-size: 15px; padding: 14px 16px; }
 
             /* Chat fills available viewport */
-            .chat-container.active {
+            .chat-container {
                 display: flex; flex-direction: column;
                 height: calc(100vh - 130px);
                 border-radius: 12px;
@@ -222,8 +223,6 @@
             .chat-input { font-size: 14px; padding: 10px 12px; }
             .send-btn { width: 100%; padding: 12px; }
             .new-topic-btn { font-size: 0.8rem; padding: 8px 16px; margin-top: 10px; }
-            .login-gate h1 { font-size: 1.5rem; }
-            .login-gate p { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -239,59 +238,44 @@
         </div>
     </nav>
 
-    <!-- Login Gate -->
-    <div class="login-gate" id="loginGate">
-        <h1>Learn IRL</h1>
-        <p>Learn any topic through real-life simulations and breakdowns. Sign in to start making learning feel real.</p>
-        <a href="login.html" class="btn btn-primary">Sign In to Access</a>
+    <!-- Step 1: Hook Screen (visible to everyone, no auth required) -->
+    <div class="hook-screen" id="hookScreen">
+        <h1>You don't actually understand school topics&hellip; <em>until you live them.</em></h1>
+        <button class="hook-start-btn" id="hookStartBtn" onclick="handleHookStart()">Start</button>
     </div>
 
-    <!-- Main Interface -->
+    <!-- Step 2: Subject input -->
+    <div class="onboard-step" id="stepSubject">
+        <h2>What are you learning right now?</h2>
+        <input type="text" class="onboard-input" id="subjectInput" placeholder="e.g. Economics, Biology, English..." autocomplete="off">
+        <button class="onboard-next-btn" id="subjectNextBtn" onclick="goToTopic()">Next</button>
+    </div>
+
+    <!-- Step 3: Topic input -->
+    <div class="onboard-step" id="stepTopic">
+        <h2>Pick a topic</h2>
+        <input type="text" class="onboard-input" id="topicInput" placeholder="e.g. Supply and Demand, Mitosis..." autocomplete="off">
+        <button class="onboard-next-btn" id="topicNextBtn" onclick="launchSimulation()">Go</button>
+    </div>
+
+    <!-- Chat (simulation view) -->
     <div class="main-container" id="mainContainer">
-        <div class="page-header">
-            <h1>Learn IRL</h1>
-            <p>Learn any topic through real-life decisions and clear breakdowns</p>
-        </div>
-
-        <!-- Setup Panel -->
-        <div class="setup-panel" id="setupPanel">
-            <div class="setup-row">
-                <div class="setup-field">
-                    <label>Subject</label>
-                    <select class="setup-input" id="subjectInput">
-                        <option value="">Select your subject...</option>
-                    </select>
-                </div>
-                <div class="setup-field">
-                    <label>Topic</label>
-                    <input type="text" class="setup-input" id="topicInput" placeholder="e.g. Supply and Demand, Quadratics, Mitosis...">
-                </div>
-            </div>
-
-            <div class="mode-selector" id="modeSelector">
-                <button class="mode-btn active-game" id="gameModeBtn" onclick="selectMode('game')">
-                    <h4>Game Mode</h4>
-                    <p>Learn through interactive decisions. Make choices, see consequences, and understand concepts by living them.</p>
-                </button>
-                <button class="mode-btn" id="breakdownModeBtn" onclick="selectMode('breakdown')">
-                    <h4>Breakdown Mode</h4>
-                    <p>Get a clear real-life explanation. No textbook fluff — just what it means, where you see it, and why it matters.</p>
-                </button>
-            </div>
-
-            <button class="start-btn" id="startBtn" onclick="startSession()">Start Learning</button>
-        </div>
-
-        <!-- Chat Area -->
         <div class="chat-container" id="chatContainer">
             <div class="chat-messages" id="chatMessages"></div>
             <div id="choicesContainer"></div>
             <div class="input-panel">
                 <form class="input-form" id="chatForm">
-                    <textarea class="chat-input" id="userInput" placeholder="Type your response or ask a follow-up..." rows="2"></textarea>
+                    <textarea class="chat-input" id="userInput" placeholder="Type your response..." rows="2"></textarea>
                     <button type="submit" class="send-btn" id="sendBtn">Send</button>
                 </form>
-                <button class="new-topic-btn" onclick="resetSession()">New Topic</button>
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                    <button class="new-topic-btn" onclick="resetSession()">New Topic</button>
+                    <div class="mode-toggle" id="modeToggle" style="display:none;">
+                        <span class="mode-toggle-label">Mode:</span>
+                        <button class="mode-toggle-switch active-game" id="toggleGame" onclick="switchMode('game')">Game</button>
+                        <button class="mode-toggle-switch" id="toggleBreakdown" onclick="switchMode('breakdown')">Breakdown</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -303,86 +287,128 @@
         let conversationHistory = [];
         let gameState = null;
         let isLoading = false;
+        let isAuthenticated = false;
+        let hasCompletedFirstSession = false;
 
         // Elements
-        const loginGate = document.getElementById('loginGate');
+        const hookScreen = document.getElementById('hookScreen');
+        const stepSubject = document.getElementById('stepSubject');
+        const stepTopic = document.getElementById('stepTopic');
         const mainContainer = document.getElementById('mainContainer');
-        const setupPanel = document.getElementById('setupPanel');
         const chatContainer = document.getElementById('chatContainer');
         const chatMessages = document.getElementById('chatMessages');
         const chatForm = document.getElementById('chatForm');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
-        const startBtn = document.getElementById('startBtn');
         const subjectInput = document.getElementById('subjectInput');
         const topicInput = document.getElementById('topicInput');
         const userDisplay = document.getElementById('userDisplay');
         const choicesContainer = document.getElementById('choicesContainer');
+        const subjectNextBtn = document.getElementById('subjectNextBtn');
+        const topicNextBtn = document.getElementById('topicNextBtn');
+        const modeToggle = document.getElementById('modeToggle');
 
-        function selectMode(mode) {
-            currentMode = mode;
-            document.getElementById('gameModeBtn').className = 'mode-btn' + (mode === 'game' ? ' active-game' : '');
-            document.getElementById('breakdownModeBtn').className = 'mode-btn' + (mode === 'breakdown' ? ' active-breakdown' : '');
-        }
+        // Enable Next buttons as user types
+        subjectInput.addEventListener('input', () => {
+            subjectNextBtn.classList.toggle('ready', subjectInput.value.trim().length > 0);
+        });
+        topicInput.addEventListener('input', () => {
+            topicNextBtn.classList.toggle('ready', topicInput.value.trim().length > 0);
+        });
 
-        async function checkAuth() {
+        // Enter key advances steps
+        subjectInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); goToTopic(); }
+        });
+        topicInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); launchSimulation(); }
+        });
+
+        // Step 1 → Check auth, then show subject input
+        async function handleHookStart() {
+            hookScreen.querySelector('.hook-start-btn').textContent = '...';
             try {
                 const res = await fetch(API_BASE + '/api/subscription', { credentials: 'include' });
                 if (res.ok) {
                     const data = await res.json();
                     const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged || data.preferences?.onboarded;
                     if (hasAccess) {
-                        loginGate.style.display = 'none';
-                        mainContainer.classList.add('active');
+                        isAuthenticated = true;
                         userDisplay.textContent = data.name || data.email || '';
-                        loadSubjects();
+                        showStep('subject');
                         return;
                     }
                 }
             } catch (e) {}
-            loginGate.style.display = 'flex';
+            // Not logged in → redirect to login
+            window.location.href = 'login.html';
+        }
+
+        function showStep(step) {
+            hookScreen.style.display = 'none';
+            stepSubject.style.display = 'none';
+            stepSubject.classList.remove('active');
+            stepTopic.style.display = 'none';
+            stepTopic.classList.remove('active');
             mainContainer.classList.remove('active');
-        }
 
-        async function loadSubjects() {
-            try {
-                const res = await fetch(API_BASE + '/api/subjects');
-                const data = await res.json();
-                data.subjects.forEach(s => {
-                    const opt = document.createElement('option');
-                    opt.value = s.name;
-                    opt.textContent = s.name;
-                    subjectInput.appendChild(opt);
-                });
-            } catch (e) {}
-        }
-
-        async function startSession() {
-            const subject = subjectInput.value;
-            const topic = topicInput.value.trim();
-            if (!subject || !topic) {
-                alert('Please select a subject and enter a topic.');
-                return;
+            if (step === 'subject') {
+                stepSubject.style.display = 'flex';
+                stepSubject.classList.add('active');
+                subjectInput.focus();
+            } else if (step === 'topic') {
+                stepTopic.style.display = 'flex';
+                stepTopic.classList.add('active');
+                topicInput.focus();
+            } else if (step === 'chat') {
+                mainContainer.classList.add('active');
+                userInput.focus();
             }
+        }
 
-            setupPanel.style.display = 'none';
-            chatContainer.classList.add('active');
+        // Step 2 → Step 3
+        function goToTopic() {
+            if (!subjectInput.value.trim()) return;
+            showStep('topic');
+        }
+
+        // Step 3 → Launch simulation (always game mode on first run)
+        async function launchSimulation() {
+            const subject = subjectInput.value.trim();
+            const topic = topicInput.value.trim();
+            if (!subject || !topic) return;
+
+            showStep('chat');
             chatMessages.innerHTML = '';
             choicesContainer.innerHTML = '';
             conversationHistory = [];
             gameState = null;
+
+            // Show mode toggle after first session
+            if (hasCompletedFirstSession) {
+                modeToggle.style.display = 'flex';
+            }
 
             const initMessage = `Subject: ${subject}\nTopic: ${topic}\nMode: ${currentMode}`;
             await sendMessage(initMessage, false);
         }
 
         function resetSession() {
-            setupPanel.style.display = 'block';
-            chatContainer.classList.remove('active');
+            hasCompletedFirstSession = true;
             conversationHistory = [];
             gameState = null;
             chatMessages.innerHTML = '';
             choicesContainer.innerHTML = '';
+            topicInput.value = '';
+            topicNextBtn.classList.remove('ready');
+            // Go back to subject step (keep subject filled for convenience)
+            showStep('subject');
+        }
+
+        function switchMode(mode) {
+            currentMode = mode;
+            document.getElementById('toggleGame').className = 'mode-toggle-switch' + (mode === 'game' ? ' active-game' : '');
+            document.getElementById('toggleBreakdown').className = 'mode-toggle-switch' + (mode === 'breakdown' ? ' active-breakdown' : '');
         }
 
         async function sendMessage(content, showAsUser = true) {
@@ -444,7 +470,6 @@
         }
 
         function tryParseGameResponse(text) {
-            // Try to find JSON in the response
             const jsonMatch = text.match(/\{[\s\S]*"message"[\s\S]*"choices"[\s\S]*\}/);
             if (jsonMatch) {
                 try {
@@ -452,7 +477,6 @@
                     if (parsed.message && parsed.choices) return parsed;
                 } catch (e) {}
             }
-            // Try parsing entire response as JSON
             try {
                 const parsed = JSON.parse(text);
                 if (parsed.message && parsed.choices) return parsed;
@@ -461,7 +485,6 @@
         }
 
         function renderGameResponse(data) {
-            // Track state internally (no visible UI)
             if (data.effects) {
                 if (!gameState) gameState = { money: 50, time: 50, risk: 50, energy: 50 };
                 for (const [key, val] of Object.entries(data.effects)) {
@@ -469,13 +492,11 @@
                 }
             }
 
-            // Render message as story narration
             const div = document.createElement('div');
             div.className = 'message message-bot';
             div.innerHTML = `<p>${formatResponse(data.message)}</p>`;
             chatMessages.appendChild(div);
 
-            // Render choices as story decisions (no labels)
             if (data.choices && data.choices.length > 0) {
                 choicesContainer.innerHTML = `<div class="choices" style="padding: 0 24px 16px;">
                     ${data.choices.map((c) => `<button class="choice-btn" onclick="pickChoice(this, '${escapeAttr(c)}')">${escapeHtml(c)}</button>`).join('')}
@@ -488,7 +509,6 @@
         }
 
         function pickChoice(btn, choice) {
-            // Disable all choice buttons
             document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
             btn.style.borderColor = 'var(--primary)';
             btn.style.background = '#f0f2ff';
@@ -554,12 +574,12 @@
             sendMessage(msg, true);
         });
 
-        // Enter to send
+        // Enter to send in chat
         userInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatForm.dispatchEvent(new Event('submit')); }
         });
 
-        checkAuth();
+        // Page loads → hook screen is already visible, nothing else needed
     </script>
 </body>
 </html>
