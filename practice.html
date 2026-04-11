@@ -1839,7 +1839,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                             <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px;">🏆 Full Exam Mode — Our Flagship Feature</div>
                             <div style="color:#8899a6;font-size:0.9rem;margin-bottom:10px;">Sit complete HSC exams with auto-marking & band feedback. This is <strong style="color:#4f8cff;">the #1 reason students upgrade</strong>.</div>
                             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                                <span style="color:#f59e0b;font-weight:600;">${limits.remaining} of 3 free exams left this week · Score 80%+ to unlock next</span>
+                                <span style="color:#f59e0b;font-weight:600;">${limits.remaining} of 3 free exams left this week</span>
                                 <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="background:linear-gradient(135deg,#4f8cff,#764ba2);color:white;padding:8px 20px;border-radius:50px;font-size:0.85rem;font-weight:700;text-decoration:none;">Upgrade for Unlimited Exams →</a>
                             </div>
                         </div>`;
@@ -2110,17 +2110,6 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                             <div style="text-align:center;padding:60px 20px;">
                                 <h2 style="color:#e7e9ea;margin-bottom:12px;">⚡ Weekly Exam Limit Reached</h2>
                                 <p style="color:#71767b;margin-bottom:20px;">You've used all 3 free exams this week. Upgrade for unlimited exams.</p>
-                                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="exam-generate-btn" style="display:inline-block;text-decoration:none;max-width:300px;">Upgrade to Premium</a>
-                                <br><button class="exam-nav-btn" style="margin-top:16px;" onclick="showExamSetup()">← Back</button>
-                            </div>`;
-                        return;
-                    }
-                    if (err.scoreGateBlocked) {
-                        document.getElementById('examContent').innerHTML = `
-                            <div style="text-align:center;padding:60px 20px;">
-                                <h2 style="color:#e7e9ea;margin-bottom:12px;">🔒 Score 80% to Unlock</h2>
-                                <p style="color:#71767b;margin-bottom:12px;">Your last score was <strong style="color:#ef4444;">${err.lastScore}%</strong>. You need 80%+ to generate a new exam.</p>
-                                <p style="color:#71767b;margin-bottom:20px;">Retry your previous exam or upgrade for unlimited access.</p>
                                 <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="exam-generate-btn" style="display:inline-block;text-decoration:none;max-width:300px;">Upgrade to Premium</a>
                                 <br><button class="exam-nav-btn" style="margin-top:16px;" onclick="showExamSetup()">← Back</button>
                             </div>`;
