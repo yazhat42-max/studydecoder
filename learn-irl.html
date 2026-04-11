@@ -144,40 +144,16 @@
         .message-bot li { margin-bottom: 8px; color: #555; line-height: 1.5; }
         .message-bot strong { color: var(--primary); }
 
-        /* Game variables bar */
-        .game-vars {
-            display: flex; gap: 12px; padding: 14px 20px; background: linear-gradient(135deg, #1a1a2e, #16213e);
-            border-radius: 10px; margin-bottom: 16px; flex-wrap: wrap;
-        }
-        .game-var {
-            flex: 1; min-width: 70px; text-align: center; color: #e7e9ea;
-        }
-        .game-var-label { font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; letter-spacing: 0.5px; }
-        .game-var-value { font-size: 1.2rem; font-weight: 700; }
-        .game-var-value.positive { color: #10b981; }
-        .game-var-value.negative { color: #ef4444; }
-
         /* Choice buttons */
         .choices { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
         .choice-btn {
             padding: 14px 20px; border: 2px solid #e0e4ff; border-radius: 12px;
             background: #fff; cursor: pointer; font-size: 14px; font-weight: 500;
             color: var(--secondary); text-align: left; transition: var(--transition);
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', sans-serif; line-height: 1.5;
         }
         .choice-btn:hover { border-color: var(--primary); background: #f0f2ff; transform: translateX(4px); }
         .choice-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-        /* Effects display */
-        .effects {
-            display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; padding: 10px 14px;
-            background: #f8f9ff; border-radius: 8px;
-        }
-        .effect-tag {
-            font-size: 0.8rem; font-weight: 600; padding: 4px 10px; border-radius: 20px;
-        }
-        .effect-up { background: #ecfdf5; color: #059669; }
-        .effect-down { background: #fef2f2; color: #dc2626; }
 
         .loading { display: flex; align-items: center; gap: 10px; color: #888; padding: 16px; }
         .loading-dots { display: flex; gap: 4px; }
@@ -239,10 +215,6 @@
             }
             .message-bot { max-width: 100%; padding: 14px; }
             .message-user { max-width: 90%; padding: 10px 14px; font-size: 0.9rem; }
-            .game-vars { gap: 6px; padding: 10px 12px; margin: 0; border-radius: 0; }
-            .game-var { min-width: 55px; }
-            .game-var-label { font-size: 0.6rem; }
-            .game-var-value { font-size: 1rem; }
             .choices { padding: 0 !important; }
             .choice-btn { padding: 12px 14px; font-size: 13px; }
             .input-panel { padding: 12px; }
@@ -250,8 +222,6 @@
             .chat-input { font-size: 14px; padding: 10px 12px; }
             .send-btn { width: 100%; padding: 12px; }
             .new-topic-btn { font-size: 0.8rem; padding: 8px 16px; margin-top: 10px; }
-            .effects { gap: 6px; padding: 8px 10px; }
-            .effect-tag { font-size: 0.7rem; padding: 3px 8px; }
             .login-gate h1 { font-size: 1.5rem; }
             .login-gate p { font-size: 0.9rem; }
         }
@@ -314,7 +284,6 @@
 
         <!-- Chat Area -->
         <div class="chat-container" id="chatContainer">
-            <div id="gameVarsContainer"></div>
             <div class="chat-messages" id="chatMessages"></div>
             <div id="choicesContainer"></div>
             <div class="input-panel">
@@ -348,7 +317,6 @@
         const subjectInput = document.getElementById('subjectInput');
         const topicInput = document.getElementById('topicInput');
         const userDisplay = document.getElementById('userDisplay');
-        const gameVarsContainer = document.getElementById('gameVarsContainer');
         const choicesContainer = document.getElementById('choicesContainer');
 
         function selectMode(mode) {
@@ -401,7 +369,6 @@
             chatContainer.classList.add('active');
             chatMessages.innerHTML = '';
             choicesContainer.innerHTML = '';
-            gameVarsContainer.innerHTML = '';
             conversationHistory = [];
             gameState = null;
 
@@ -416,7 +383,6 @@
             gameState = null;
             chatMessages.innerHTML = '';
             choicesContainer.innerHTML = '';
-            gameVarsContainer.innerHTML = '';
         }
 
         async function sendMessage(content, showAsUser = true) {
@@ -495,55 +461,30 @@
         }
 
         function renderGameResponse(data) {
-            // Update game vars from effects (accumulate)
+            // Track state internally (no visible UI)
             if (data.effects) {
                 if (!gameState) gameState = { money: 50, time: 50, risk: 50, energy: 50 };
                 for (const [key, val] of Object.entries(data.effects)) {
                     if (gameState[key] !== undefined) gameState[key] += val;
                 }
-                renderGameVars(gameState);
-            } else if (data.game_state) {
-                gameState = data.game_state.variables || data.game_state;
-                renderGameVars(gameState);
             }
 
-            // Show effects if present
-            let effectsHtml = '';
-            if (data.effects) {
-                const tags = [];
-                for (const [key, val] of Object.entries(data.effects)) {
-                    if (val > 0) tags.push(`<span class="effect-tag effect-up">${key} +${val}</span>`);
-                    else if (val < 0) tags.push(`<span class="effect-tag effect-down">${key} ${val}</span>`);
-                }
-                if (tags.length) effectsHtml = `<div class="effects">${tags.join('')}</div>`;
-            }
-
-            // Render message
+            // Render message as story narration
             const div = document.createElement('div');
             div.className = 'message message-bot';
-            div.innerHTML = `<p>${formatResponse(data.message)}</p>${effectsHtml}`;
+            div.innerHTML = `<p>${formatResponse(data.message)}</p>`;
             chatMessages.appendChild(div);
 
-            // Render choices
+            // Render choices as story decisions (no labels)
             if (data.choices && data.choices.length > 0) {
                 choicesContainer.innerHTML = `<div class="choices" style="padding: 0 24px 16px;">
-                    ${data.choices.map((c, i) => `<button class="choice-btn" onclick="pickChoice(this, '${escapeAttr(c)}')">${String.fromCharCode(65 + i)}. ${escapeHtml(c)}</button>`).join('')}
+                    ${data.choices.map((c) => `<button class="choice-btn" onclick="pickChoice(this, '${escapeAttr(c)}')">${escapeHtml(c)}</button>`).join('')}
                 </div>`;
             } else {
                 choicesContainer.innerHTML = '';
             }
 
             chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function renderGameVars(vars) {
-            if (!vars) return;
-            gameVarsContainer.innerHTML = `<div class="game-vars">
-                ${Object.entries(vars).map(([k, v]) => `<div class="game-var">
-                    <div class="game-var-label">${k}</div>
-                    <div class="game-var-value">${v}</div>
-                </div>`).join('')}
-            </div>`;
         }
 
         function pickChoice(btn, choice) {
