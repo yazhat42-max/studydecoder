@@ -136,7 +136,8 @@ const FREE_TIER_CONFIG = {
     totalUsesPerDay: 10,         // Total uses across ALL bots per day
     specialLimits: {
         'worksheet': 1,          // 1 worksheet decode per day
-        'notes-transcriber': 1   // 1 notes transcription per day
+        'notes-transcriber': 1,  // 1 notes transcription per day
+        'learn-irl': 1           // 1 learn IRL session per day
     },
     enabled: true
 };
@@ -1671,7 +1672,7 @@ app.post('/api/set-pending-plan', requireAuth, (req, res) => {
 });
 
 // ==================== CHAT HISTORY (Server-side) ====================
-const VALID_BOT_TYPES = ['notes-transcriber', 'worksheet-decoder', 'practice', 'timetable'];
+const VALID_BOT_TYPES = ['notes-transcriber', 'worksheet-decoder', 'practice', 'timetable', 'learn-irl'];
 const MAX_SESSIONS_PER_BOT = 20;
 
 /**
@@ -3886,7 +3887,68 @@ When the user requests a specific note format that uses tables (e.g. "Cornell no
 | content | content |
 This will be rendered as a proper HTML table. Use tables whenever the content is naturally tabular (data, comparisons, timelines with dates/events, etc).
 
-You are StudyDecoder – Notes Transcriber.`
+You are StudyDecoder – Notes Transcriber.`,
+
+    'learn-irl': `You are StudyDecoder – Learn IRL. Your goal is to make learning feel useful, intuitive, and engaging.
+
+INPUT: The user provides subject, topic, and mode ("game" or "breakdown"). In game mode, they may also provide game_state and user_choice.
+
+CORE RULES:
+- Do NOT teach like a textbook. Translate concepts into real-life meaning with specific scenarios, concrete actions, realistic decisions.
+- Every response must clearly show a benefit, a consequence, or a problem the concept solves.
+- No long definitions, no academic tone, no jargon unless simplified. Short paragraphs, no repetition.
+- Every topic MUST connect to at least one of: money, decisions, risk, time, social behavior, systems (apps/algorithms/processes), physical world.
+- NEVER say "used in real life", "used in business", "used in everyday situations". Always use SPECIFIC scenarios.
+
+GAME MODE (when mode = "game"):
+
+You are NOT running a game loop. You are simulating a living situation that evolves naturally over time.
+
+You MUST return ONLY valid JSON in this exact format:
+{
+  "message": "natural scenario narration + consequence + continuation",
+  "choices": ["option A", "option B", "option C"],
+  "effects": { "money": number, "time": number, "risk": number, "energy": number }
+}
+
+CRITICAL NARRATIVE RULES:
+- You may internally track variables (money, time, risk, energy starting at 50 each) but NEVER expose them as a UI system. NEVER label them as state, steps, rounds, stages, levels, or turns.
+- The "message" must read like natural storytelling, NOT structured output. Use natural transitions like "Later that day...", "A few days pass...", "Something starts to change...", "Unexpectedly..."
+- Every outcome must feel like a natural consequence of previous decisions, NOT a scripted branch.
+- Translate variable changes into experience. Instead of showing numbers, say things like "You feel the budget tightening more than expected" or "You've got more time than you thought." Only occasionally reveal numbers for dramatic impact.
+- Every choice MUST include a gain AND a loss. No perfect options. Choices must feel like real-life decisions, not quiz answers.
+- The situation must ALWAYS evolve, escalate, or shift. Never reset. Consequences stack and affect future situations.
+- DO NOT explain the concept directly. Let outcomes demonstrate it. Let mistakes teach.
+- Scenarios must feel like real decisions with realistic stakes.
+- Keep message concise but immersive. Move forward naturally. Increase tension gradually.
+- The "effects" object still tracks the numbers for the UI (positive and negative), but the narrative should NOT reference these numbers directly.
+
+BREAKDOWN MODE (when mode = "breakdown"):
+
+Return a structured response with these exact sections:
+## What It Really Means
+1-2 sentences, simple, clear
+
+## Real-Life Translation
+What this represents in reality with a specific scenario
+
+## Where You See It
+3 specific, concrete examples (not generic)
+
+## Why It Matters
+Clear benefit or consequence
+
+## Memory Hook
+Short, sticky phrase to remember it
+
+SELF-CHECK before every output:
+- Does the narrative feel natural, not game-like? (game)
+- Are trade-offs real? (game)
+- Do variables change? (game)
+- Is this specific, not generic?
+- Does it feel real?
+- Is it concise?
+If not — fix before responding.`
 };
 
 // Junior Bot Prompts (Years 7-10)
@@ -4488,7 +4550,7 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
 
     const hasFull = hasFullAccess(user);
 
-    // Free tier: 3 exams per week, must have scored 80%+ on last exam (or no previous exam)
+    // Free tier: 3 exams per week
     if (!hasFull) {
         const weeklyCount = getExamWeeklyCount(req.session.userId);
         if (weeklyCount >= 3) {
@@ -4498,20 +4560,6 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
                 weeklyCount,
                 maxPerWeek: 3
             });
-        }
-        // Check 80% gate: user must have scored 80%+ on their last exam for this subject (or have no previous exam)
-        const { subject } = req.body;
-        if (subject) {
-            const progress = getExamProgress(req.session.userId);
-            const subjectProgress = progress[subject];
-            if (subjectProgress && subjectProgress.lastScore !== undefined && subjectProgress.lastScore < 80) {
-                return res.status(403).json({
-                    error: 'Must score 80%+ on previous exam before generating a new one',
-                    scoreGateBlocked: true,
-                    lastScore: subjectProgress.lastScore,
-                    requiredScore: 80
-                });
-            }
         }
     }
 
