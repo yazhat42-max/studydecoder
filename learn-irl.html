@@ -238,23 +238,27 @@
         </div>
     </nav>
 
-    <!-- Step 1: Hook Screen (visible to everyone, no auth required) -->
+    <!-- Hook Screen (visible to everyone, no auth required) -->
     <div class="hook-screen" id="hookScreen">
         <h1>You don't actually understand school topics&hellip; <em>until you live them.</em></h1>
         <button class="hook-start-btn" id="hookStartBtn" onclick="handleHookStart()">Start</button>
     </div>
 
-    <!-- Step 2: Subject input -->
+    <!-- Subject step -->
     <div class="onboard-step" id="stepSubject">
         <h2>What are you learning right now?</h2>
-        <input type="text" class="onboard-input" id="subjectInput" placeholder="e.g. Economics, Biology, English..." autocomplete="off">
+        <select class="onboard-input" id="subjectInput">
+            <option value="">Select your subject...</option>
+        </select>
         <button class="onboard-next-btn" id="subjectNextBtn" onclick="goToTopic()">Next</button>
     </div>
 
-    <!-- Step 3: Topic input -->
+    <!-- Module step -->
     <div class="onboard-step" id="stepTopic">
-        <h2>Pick a topic</h2>
-        <input type="text" class="onboard-input" id="topicInput" placeholder="e.g. Supply and Demand, Mitosis..." autocomplete="off">
+        <h2>Pick a module</h2>
+        <select class="onboard-input" id="topicInput">
+            <option value="">Select a module...</option>
+        </select>
         <button class="onboard-next-btn" id="topicNextBtn" onclick="launchSimulation()">Go</button>
     </div>
 
@@ -290,6 +294,102 @@
         let isAuthenticated = false;
         let hasCompletedFirstSession = false;
 
+        const subjects = [
+            { id: 'agriculture', name: 'Agriculture', category: 'TAS' },
+            { id: 'ancient-history', name: 'Ancient History', category: 'HSIE' },
+            { id: 'biology', name: 'Biology', category: 'Science' },
+            { id: 'business-studies', name: 'Business Studies', category: 'HSIE' },
+            { id: 'chemistry', name: 'Chemistry', category: 'Science' },
+            { id: 'construction', name: 'Construction', category: 'VET' },
+            { id: 'dance', name: 'Dance', category: 'Creative Arts' },
+            { id: 'design-technology', name: 'Design and Technology', category: 'TAS' },
+            { id: 'drama', name: 'Drama', category: 'Creative Arts' },
+            { id: 'earth-environmental-science', name: 'Earth and Environmental Science', category: 'Science' },
+            { id: 'economics', name: 'Economics', category: 'HSIE' },
+            { id: 'engineering-studies', name: 'Engineering Studies', category: 'TAS' },
+            { id: 'english-advanced', name: 'English Advanced', category: 'English' },
+            { id: 'english-eald', name: 'English EAL/D', category: 'English' },
+            { id: 'english-extension', name: 'English Extension', category: 'English' },
+            { id: 'english-standard', name: 'English Standard', category: 'English' },
+            { id: 'english-studies', name: 'English Studies', category: 'English' },
+            { id: 'enterprise-computing', name: 'Enterprise Computing', category: 'TAS' },
+            { id: 'food-technology', name: 'Food Technology', category: 'TAS' },
+            { id: 'geography', name: 'Geography', category: 'HSIE' },
+            { id: 'health-movement-science', name: 'Health and Movement Science', category: 'PDHPE' },
+            { id: 'history-extension', name: 'History Extension', category: 'HSIE' },
+            { id: 'hospitality', name: 'Hospitality', category: 'VET' },
+            { id: 'industrial-tech-automotive', name: 'Industrial Technology - Automotive', category: 'TAS' },
+            { id: 'industrial-tech-electronics', name: 'Industrial Technology - Electronics', category: 'TAS' },
+            { id: 'industrial-tech-graphics', name: 'Industrial Technology - Graphics', category: 'TAS' },
+            { id: 'industrial-tech-metals', name: 'Industrial Technology - Metal and Engineering', category: 'TAS' },
+            { id: 'industrial-tech-multimedia', name: 'Industrial Technology - Multimedia', category: 'TAS' },
+            { id: 'industrial-tech-timber', name: 'Industrial Technology - Timber and Furniture', category: 'TAS' },
+            { id: 'information-digital-technology', name: 'Information and Digital Technology', category: 'TAS' },
+            { id: 'investigating-science', name: 'Investigating Science', category: 'Science' },
+            { id: 'legal-studies', name: 'Legal Studies', category: 'HSIE' },
+            { id: 'mathematics-advanced', name: 'Mathematics Advanced', category: 'Mathematics' },
+            { id: 'mathematics-extension-1', name: 'Mathematics Extension 1', category: 'Mathematics' },
+            { id: 'mathematics-extension-2', name: 'Mathematics Extension 2', category: 'Mathematics' },
+            { id: 'mathematics-standard', name: 'Mathematics Standard', category: 'Mathematics' },
+            { id: 'modern-history', name: 'Modern History', category: 'HSIE' },
+            { id: 'music-1', name: 'Music 1', category: 'Creative Arts' },
+            { id: 'music-2', name: 'Music 2', category: 'Creative Arts' },
+            { id: 'physics', name: 'Physics', category: 'Science' },
+            { id: 'science-extension', name: 'Science Extension', category: 'Science' },
+            { id: 'society-culture', name: 'Society and Culture', category: 'HSIE' },
+            { id: 'software-engineering', name: 'Software Engineering', category: 'TAS' },
+            { id: 'studies-of-religion', name: 'Studies of Religion', category: 'HSIE' },
+            { id: 'visual-arts', name: 'Visual Arts', category: 'Creative Arts' }
+        ];
+
+        const subjectTopics = {
+            'agriculture': ['Farm case study', 'Plant production', 'Animal production', 'Plant/Animal production', 'Farm product study', 'Electives'],
+            'ancient-history': ['Investigating Ancient History - Tutankhamun\'s Tomb', 'Investigating Ancient History - Troy', 'Investigating Ancient History - Persepolis', 'Investigating Ancient History - Masada', 'Investigating Ancient History - Ancient Australia', 'Features of Ancient Societies', 'Historical Investigation', 'Core Study: Cities of Vesuvius - Pompeii and Herculaneum', 'Ancient Societies - New Kingdom Egypt to Amenhotep III', 'Ancient Societies - New Kingdom Egypt (Ramesside period)', 'Ancient Societies - Spartan society to Leuctra 371 BC', 'Ancient Societies - Athenian society in the time of Pericles', 'Ancient Societies - Persian society (Darius and Xerxes)', 'Ancient Societies - Minoan Crete', 'Ancient Societies - Han Dynasty China', 'Personalities - Hatshepsut', 'Personalities - Akhenaten', 'Personalities - Xerxes', 'Personalities - Agrippina the Younger', 'Personalities - Julius Caesar', 'Personalities - Pericles', 'Personalities - Alexander the Great', 'Historical Periods - New Kingdom Egypt to Thutmose IV', 'Historical Periods - Amenhotep III to Ramesses II', 'Historical Periods - Persia (Cyrus II to Darius III)', 'Historical Periods - Greek World 500-440 BC', 'Historical Periods - Fall of Roman Republic 78-31 BC', 'Historical Periods - The Augustan Age', 'Historical Periods - The Julio-Claudians'],
+            'biology': ['Module 1: Cells as the Basis of Life', 'Module 2: Organisation of Living Things', 'Module 3: Biological Diversity', 'Module 4: Ecosystem Dynamics', 'Module 5: Heredity', 'Module 6: Genetic Change', 'Module 7: Infectious Disease', 'Module 8: Non-infectious Disease and Disorders'],
+            'business-studies': ['Nature of business', 'Business management', 'Business planning', 'Operations', 'Marketing', 'Finance', 'Human resources'],
+            'chemistry': ['Module 1: Properties and Structure of Matter', 'Module 2: Introduction to Quantitative Chemistry', 'Module 3: Reactive Chemistry', 'Module 4: Drivers of Reactions', 'Module 5: Equilibrium and Acid Reactions', 'Module 6: Acid/Base Reactions', 'Module 7: Organic Chemistry', 'Module 8: Applying Chemical Ideas'],
+            'construction': ['Safety', 'Skills in construction', 'Tools of the trade', 'Working in the industry'],
+            'dance': ['Performance - Dance Technique', 'Performance - Safe Dance Practice', 'Composition - Elements of Dance', 'Composition - Generating and Organising Movement', 'Appreciation - Development of Dance in Australia', 'Appreciation - Dance Analysis', 'Major Study - Performance', 'Major Study - Composition', 'Major Study - Appreciation', 'Major Study - Dance and Technology'],
+            'design-technology': ['Designing and Producing', 'Innovation and Emerging Technologies', 'Project proposal and development', 'Project realisation', 'Project evaluation'],
+            'drama': ['Improvisation, Playbuilding and Acting', 'Elements of Production in Performance', 'Theatrical Traditions and Performance Styles', 'Australian Drama and Theatre', 'Studies in Drama and Theatre', 'Group Performance', 'Individual Project - Critical Analysis', 'Individual Project - Design', 'Individual Project - Performance', 'Individual Project - Scriptwriting'],
+            'earth-environmental-science': ['Module 1: Earth\'s Resources', 'Module 2: Plate Tectonics', 'Module 3: Energy Transformations', 'Module 4: Human Impacts', 'Module 5: Earth\'s Processes', 'Module 6: Hazards', 'Module 7: Climate Science', 'Module 8: Resource Management'],
+            'economics': ['Introduction to Economics', 'Consumers and Business', 'Markets', 'Labour Markets', 'Financial Markets', 'Government and the Economy', 'The Global Economy', 'Australia\'s Place in the Global Economy', 'Economic Issues', 'Economic Policies and Management'],
+            'engineering-studies': ['Engineering Fundamentals', 'Engineered Products', 'Braking Systems', 'Biomedical Engineering', 'Civil Structures', 'Personal and Public Transport', 'Aeronautical Engineering', 'Telecommunications Engineering'],
+            'english-advanced': ['Reading to write: Transition to English Advanced', 'Narratives that shape our world', 'Critical study of literature', 'Texts and human experiences', 'Textual conversations', 'Critical study of literature (Year 12)', 'The craft of writing'],
+            'english-eald': ['Reading to write: Transition to English EAL/D', 'Texts and society', 'Close study of text', 'Texts and human experiences', 'Language, identity and culture', 'Close study of text (Year 12)', 'Writing'],
+            'english-extension': ['Texts, culture and value', 'Related research project', 'Literary worlds (Extension 1)', 'Author and authority (Extension 2)', 'Major work (Extension 2)'],
+            'english-standard': ['Reading to write: Transition to English Standard', 'Contemporary possibilities', 'Close study of literature', 'Texts and human experiences', 'Language, identity and culture', 'Close study of literature (Year 12)', 'The craft of writing'],
+            'english-studies': ['Reading to write: Transition to English Studies', 'Elective: Voices of Australia', 'Elective: Media and influence', 'Elective: On the road', 'Elective: Playing the game', 'Elective: Lyrical voices', 'Elective: Everyday heroes', 'Elective: Part of a family', 'Elective: Uncovering the truth', 'Elective: The big screen', 'Elective: Representing the past', 'Elective: Achieving through English', 'Narrative and human experiences', 'Writing for purpose'],
+            'enterprise-computing': ['Interactive Media and the User Experience', 'Networking Systems and Social Computing', 'Principles of Cybersecurity', 'Data Science', 'Data Visualisation', 'Intelligent Systems', 'Enterprise Project'],
+            'food-technology': ['Food Availability and Selection', 'Food Quality', 'Nutrition', 'The Australian Food Industry', 'Food Manufacture', 'Food Product Development', 'Contemporary Nutrition Issues'],
+            'geography': ['Earth\'s natural systems', 'People, patterns and processes', 'Human-environment interactions', 'Geographical Investigation', 'Global sustainability', 'Rural and urban places', 'Ecosystems and global biodiversity'],
+            'health-movement-science': ['Health for individuals and communities', 'The body and mind in motion', 'Collaborative Investigation', 'Health in an Australian and global context', 'Training for improved performance'],
+            'history-extension': ['Extension History Topics', 'Research Projects'],
+            'hospitality': ['Hospitality Operations', 'Food and Beverage Services', 'Hospitality and Tourism', 'Hospitality Businesses', 'Hospitality Services', 'Hospitality Industry'],
+            'industrial-tech-automotive': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Engine Types and Systems', 'Cooling, Fuel and Exhaust Systems', 'Transmission and Drivetrain', 'Braking, Suspension and Steering', 'Electrical and Ignition Systems', 'Body and Automotive Design', 'Tools and Equipment'],
+            'industrial-tech-electronics': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Electrical Principles', 'Components and Semiconductors', 'Digital Electronics', 'Circuitry and Circuit Design', 'PCB Design and Construction', 'Input/Output Devices', 'Instruments and Test Equipment'],
+            'industrial-tech-graphics': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Freehand and Pictorial Drawing', 'Engineering and Product Drawing', 'Architectural Drawing', 'CAD and Computer Graphics', 'Presentation Techniques', 'Principles and Standards (AS1100)'],
+            'industrial-tech-metals': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Ferrous and Non-Ferrous Metals', 'Properties and Modification of Metals', 'Marking Out, Cutting and Machining', 'Joining (Welding, Brazing, Soldering)', 'Finishing and Surface Treatment', 'Tools and Machinery'],
+            'industrial-tech-multimedia': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Multimedia Computer Systems', 'Multimedia Design and Storyboarding', 'Graphics and Digital Imaging', 'Audio and Sound', 'Video Production and Editing', 'Animation (2D and 3D)', 'World Wide Web', 'Intellectual Property and Ethics'],
+            'industrial-tech-timber': ['Industry Study', 'Design, Management and Communication', 'Production', 'Industry Related Manufacturing Technology', 'Timber Structure and Properties', 'Manufactured Boards', 'Fittings and Allied Materials', 'Joints (Widening, Framing, Carcase)', 'Construction Techniques', 'Assembly and Finishing', 'Tools and Machinery'],
+            'information-digital-technology': ['Information Systems', 'Digital Systems', 'Data and Information', 'Networking and Cloud Computing', 'Digital Issues and Implications'],
+            'investigating-science': ['Module 1: Cause and Effect - Observing', 'Module 2: Cause and Effect - Inferences and Generalisations', 'Module 3: Scientific Models', 'Module 4: Theories and Laws', 'Module 5: Scientific Investigations', 'Module 6: Technologies', 'Module 7: Fact or Fallacy?', 'Module 8: Science and Society'],
+            'legal-studies': ['The Legal System', 'The Individual and the Law', 'Law in Practice', 'Crime', 'Human Rights', 'Options - Consumers', 'Options - Global Environmental Protection', 'Options - Family', 'Options - Indigenous Peoples', 'Options - Shelter', 'Options - Workplace', 'Options - World Order'],
+            'mathematics-advanced': ['Working with functions', 'Graph transformations', 'Trigonometry and measure of angles', 'Trigonometric identities and equations', 'Introduction to differentiation', 'Exponential and logarithmic functions', 'Probability and data', 'Further graph transformations and modelling', 'Sequences and series', 'Differential calculus', 'Integral calculus', 'Applications of calculus', 'Random variables', 'Financial mathematics'],
+            'mathematics-extension-1': ['Further work with functions', 'Polynomials', 'Further trigonometry', 'Permutations and combinations', 'The binomial theorem', 'Proof by mathematical induction', 'Introduction to vectors', 'Inverse trigonometric functions', 'Further calculus skills', 'Further applications of calculus', 'The binomial distribution and sampling distribution of the mean'],
+            'mathematics-extension-2': ['The nature of proof', 'Further work with vectors', 'Introduction to complex numbers', 'Further integration', 'Applications of calculus to mechanics'],
+            'mathematics-standard': ['Formulas and equations', 'Linear relationships', 'Earning money', 'Managing money', 'Applications of measurement', 'Time and location', 'Networks, paths and trees', 'Data analysis', 'Algebraic relationships', 'Investment', 'Depreciation and loans', 'Investment and loans', 'Annuities', 'Right-angled triangles', 'Trigonometry', 'Ratios and rates', 'Network flow', 'Critical path analysis', 'Bivariate data analysis', 'Relative frequency and probability', 'The normal distribution'],
+            'modern-history': ['Case Study - The Decline and Fall of the Romanov Dynasty', 'Case Study - The American Civil War', 'Case Study - The Meiji Restoration', 'Case Study - The Cuban Revolution', 'Case Study - The Trans-Atlantic Slave Trade', 'The Shaping of the Modern World - The French Revolution', 'The Shaping of the Modern World - World War I', 'The Shaping of the Modern World - The Age of Imperialism', 'Historical Investigation', 'Core Study: Power and Authority in the Modern World 1919-1946', 'National Studies - USA 1919-1941', 'National Studies - Russia and the Soviet Union 1917-1941', 'National Studies - China 1927-1949', 'National Studies - Japan 1904-1937', 'National Studies - India 1942-1984', 'National Studies - Indonesia 1945-2005', 'National Studies - Australia 1918-1949', 'Peace and Conflict - Conflict in Indochina 1954-1979', 'Peace and Conflict - Conflict in the Pacific 1937-1951', 'Peace and Conflict - Conflict in Europe 1935-1945', 'Peace and Conflict - The Cold War 1945-1991', 'Peace and Conflict - The Arab-Israeli Conflict 1948-1996', 'Change in the Modern World - Civil Rights in the USA 1945-1968', 'Change in the Modern World - Apartheid in South Africa 1960-1994', 'Change in the Modern World - The Nuclear Age 1945-2011', 'Change in the Modern World - Pro-democracy Movement in Burma'],
+            'music-1': ['Performance (Solo and Ensemble)', 'Composition', 'Musicology', 'Aural Skills', 'Topic - Australian Music', 'Topic - Jazz', 'Topic - Music for Film/TV/Multimedia', 'Topic - Popular Music', 'Topic - Rock Music', 'Topic - Theatre Music', 'Topic - Music of a Culture'],
+            'music-2': ['Performance', 'Composition', 'Musicology', 'Aural Skills', 'Music 1600-1900 (Baroque, Classical, Romantic)', 'Music of the Last 25 Years', 'Music of a Culture', 'Music 1900-1945', 'Music 1945 to 25 Years Ago'],
+            'physics': ['Module 1: Kinematics', 'Module 2: Dynamics', 'Module 3: Waves and Thermodynamics', 'Module 4: Electricity and Magnetism', 'Module 5: Advanced Mechanics', 'Module 6: Electromagnetism', 'Module 7: The Nature of Light', 'Module 8: From the Universe to the Atom'],
+            'science-extension': ['Science Inquiry and Innovation Project'],
+            'society-culture': ['The Social and Cultural World', 'Personal and Social Identity', 'Intercultural Communication', 'Social and Cultural Continuity and Change', 'Personal Interest Project (PIP)', 'Depth Study - Popular Culture', 'Depth Study - Belief Systems and Ideologies', 'Depth Study - Social Inclusion and Exclusion', 'Depth Study - Social Conformity and Nonconformity'],
+            'software-engineering': ['Programming Fundamentals', 'The Object-Oriented Paradigm', 'Programming Mechatronics', 'Secure Software Architecture', 'Programming for the Web', 'Software Automation', 'Software Engineering Project'],
+            'studies-of-religion': ['Nature of Religion and Beliefs', 'Religious Tradition Study - Buddhism', 'Religious Tradition Study - Christianity', 'Religious Tradition Study - Hinduism', 'Religious Tradition Study - Islam', 'Religious Tradition Study - Judaism', 'Religion and Belief Systems in Australia post-1945', 'Religion and Peace', 'Religion and Non-Religion', 'Religions of Ancient Origin'],
+            'visual-arts': ['Artmaking Practice', 'Art Criticism and Art History', 'The Conceptual Framework', 'The Frames (Subjective, Cultural, Structural, Postmodern)', 'Body of Work Development', 'Case Studies']
+        };
+
         // Elements
         const hookScreen = document.getElementById('hookScreen');
         const stepSubject = document.getElementById('stepSubject');
@@ -308,25 +408,28 @@
         const topicNextBtn = document.getElementById('topicNextBtn');
         const modeToggle = document.getElementById('modeToggle');
 
-        // Enable Next buttons as user types
-        subjectInput.addEventListener('input', () => {
-            subjectNextBtn.classList.toggle('ready', subjectInput.value.trim().length > 0);
+        // Enable Next buttons on dropdown change
+        subjectInput.addEventListener('change', () => {
+            subjectNextBtn.classList.toggle('ready', subjectInput.value !== '');
+            // Populate modules for selected subject
+            topicInput.innerHTML = '<option value="">Select a module...</option>';
+            topicNextBtn.classList.remove('ready');
+            const topics = subjectTopics[subjectInput.value];
+            if (topics) {
+                topics.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t;
+                    opt.textContent = t;
+                    topicInput.appendChild(opt);
+                });
+            }
         });
-        topicInput.addEventListener('input', () => {
-            topicNextBtn.classList.toggle('ready', topicInput.value.trim().length > 0);
+        topicInput.addEventListener('change', () => {
+            topicNextBtn.classList.toggle('ready', topicInput.value !== '');
         });
 
-        // Enter key advances steps
-        subjectInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') { e.preventDefault(); goToTopic(); }
-        });
-        topicInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') { e.preventDefault(); launchSimulation(); }
-        });
-
-        // Step 1 → Check auth, then show subject input
-        async function handleHookStart() {
-            hookScreen.querySelector('.hook-start-btn').textContent = '...';
+        // Check auth on page load, then show hook or redirect
+        async function checkAuth() {
             try {
                 const res = await fetch(API_BASE + '/api/subscription', { credentials: 'include' });
                 if (res.ok) {
@@ -335,13 +438,38 @@
                     if (hasAccess) {
                         isAuthenticated = true;
                         userDisplay.textContent = data.name || data.email || '';
-                        showStep('subject');
-                        return;
+                        populateSubjects();
+                        return; // Show hook screen (already visible)
                     }
                 }
             } catch (e) {}
             // Not logged in → redirect to login
             window.location.href = 'login.html';
+        }
+
+        function populateSubjects() {
+            const byCategory = {};
+            subjects.forEach(s => {
+                if (!byCategory[s.category]) byCategory[s.category] = [];
+                byCategory[s.category].push(s);
+            });
+            subjectInput.innerHTML = '<option value="">Select your subject...</option>';
+            Object.keys(byCategory).sort().forEach(cat => {
+                const group = document.createElement('optgroup');
+                group.label = cat;
+                byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    group.appendChild(opt);
+                });
+                subjectInput.appendChild(group);
+            });
+        }
+
+        // Hook Start → go to subject step
+        function handleHookStart() {
+            showStep('subject');
         }
 
         function showStep(step) {
@@ -368,14 +496,28 @@
 
         // Step 2 → Step 3
         function goToTopic() {
-            if (!subjectInput.value.trim()) return;
+            if (!subjectInput.value) return;
+            // Re-populate modules in case subject changed
+            topicInput.innerHTML = '<option value="">Select a module...</option>';
+            topicNextBtn.classList.remove('ready');
+            const topics = subjectTopics[subjectInput.value];
+            if (topics) {
+                topics.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t;
+                    opt.textContent = t;
+                    topicInput.appendChild(opt);
+                });
+            }
             showStep('topic');
         }
 
-        // Step 3 → Launch simulation (always game mode on first run)
+        // Launch simulation (always game mode on first run)
         async function launchSimulation() {
-            const subject = subjectInput.value.trim();
-            const topic = topicInput.value.trim();
+            const subjectId = subjectInput.value;
+            const subj = subjects.find(s => s.id === subjectId);
+            const subject = subj ? subj.name : subjectId;
+            const topic = topicInput.value;
             if (!subject || !topic) return;
 
             showStep('chat');
@@ -401,8 +543,8 @@
             choicesContainer.innerHTML = '';
             topicInput.value = '';
             topicNextBtn.classList.remove('ready');
-            // Go back to subject step (keep subject filled for convenience)
-            showStep('subject');
+            // Go back to topic step (keep subject selected for convenience)
+            showStep('topic');
         }
 
         function switchMode(mode) {
@@ -579,7 +721,8 @@
             if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatForm.dispatchEvent(new Event('submit')); }
         });
 
-        // Page loads → hook screen is already visible, nothing else needed
+        // Page load → check auth, then hook screen
+        checkAuth();
     </script>
 </body>
 </html>
