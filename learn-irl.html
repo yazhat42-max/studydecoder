@@ -57,62 +57,87 @@
         .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
         .btn-outline:hover { background: var(--primary); color: #fff; }
 
-        /* Hook screen — full-screen, visible to everyone */
-        .hook-screen {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: calc(100vh - 70px); padding: 40px 20px; text-align: center;
+        /* Mode Landing */
+        .mode-landing {
+            max-width: 800px; margin: 0 auto; padding: 40px 20px; display: none;
         }
-        .hook-screen h1 {
-            font-size: 2.2rem; font-weight: 700; max-width: 600px; line-height: 1.3;
-            color: var(--secondary); margin-bottom: 40px;
-        }
-        .hook-screen h1 em {
-            font-style: normal;
+        .mode-landing.active { display: block; }
+        .mode-landing-header { text-align: center; margin-bottom: 32px; }
+        .mode-landing-header h1 {
+            font-size: 2.2rem; font-weight: 700; margin-bottom: 10px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .hook-start-btn {
-            padding: 18px 60px; border: none; border-radius: 50px;
-            font-size: 1.15rem; font-weight: 700; cursor: pointer; transition: var(--transition);
-            color: #fff; background: linear-gradient(135deg, var(--primary), #8b7cf7);
-            letter-spacing: 0.5px;
+        .mode-landing-header p { color: #666; font-size: 1.05rem; max-width: 500px; margin: 0 auto; }
+        .mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .mode-card {
+            background: var(--white); border-radius: var(--radius); padding: 32px 28px;
+            box-shadow: var(--shadow); cursor: pointer; transition: var(--transition);
+            border: 2px solid transparent; text-align: center;
         }
-        .hook-start-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(108,99,255,0.4); }
+        .mode-card:hover { transform: translateY(-4px); }
+        .mode-card-icon { font-size: 2.4rem; margin-bottom: 16px; }
+        .mode-card h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 10px; }
+        .mode-card p { font-size: 0.9rem; color: #666; line-height: 1.5; margin-bottom: 16px; }
+        .mode-card-cta {
+            display: inline-block; font-size: 0.9rem; font-weight: 700; color: var(--primary);
+            transition: var(--transition);
+        }
+        .mode-card:hover .mode-card-cta { transform: translateX(4px); }
+        .mode-card.card-game:hover { border-color: var(--game); box-shadow: 0 8px 30px rgba(16,185,129,0.15); }
+        .mode-card.card-game:hover h2 { color: var(--game); }
+        .mode-card.card-game:hover .mode-card-cta { color: var(--game); }
+        .mode-card.card-breakdown:hover { border-color: var(--breakdown); box-shadow: 0 8px 30px rgba(245,158,11,0.15); }
+        .mode-card.card-breakdown:hover h2 { color: var(--breakdown); }
+        .mode-card.card-breakdown:hover .mode-card-cta { color: var(--breakdown); }
 
-        /* Onboard steps — centered single-field screens */
-        .onboard-step {
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-            min-height: calc(100vh - 70px); padding: 40px 20px; text-align: center;
+        /* Active view — setup + chat */
+        .active-view { max-width: 900px; margin: 0 auto; padding: 20px 20px; display: none; }
+        .active-view.active { display: block; }
+        .active-view-header {
+            display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
         }
-        .onboard-step.active { display: flex; }
-        .onboard-step h2 {
-            font-size: 1.6rem; font-weight: 600; color: var(--secondary); margin-bottom: 24px;
+        .back-modes-btn {
+            background: none; border: none; cursor: pointer; font-size: 0.95rem;
+            font-weight: 600; color: var(--primary); font-family: 'Poppins', sans-serif;
+            transition: var(--transition); padding: 0;
         }
-        .onboard-input {
-            width: 100%; max-width: 420px; padding: 16px 20px; border: 2px solid #e8e8e8; border-radius: 14px;
-            font-size: 16px; color: var(--secondary); transition: var(--transition);
-            font-family: 'Poppins', sans-serif; text-align: center;
-        }
-        .onboard-input:focus { outline: none; border-color: var(--primary); }
-        .onboard-next-btn {
-            margin-top: 20px; padding: 14px 48px; border: none; border-radius: 50px;
-            font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition);
-            color: #fff; background: linear-gradient(135deg, var(--primary), #8b7cf7);
-            opacity: 0.4; pointer-events: none;
-        }
-        .onboard-next-btn.ready { opacity: 1; pointer-events: auto; }
-        .onboard-next-btn.ready:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,99,255,0.35); }
+        .back-modes-btn:hover { opacity: 0.7; }
+        .active-view-title { font-size: 1.3rem; font-weight: 700; color: var(--secondary); }
 
-        /* Main container (chat view) */
-        .main-container { max-width: 900px; margin: 0 auto; padding: 30px 20px; display: none; }
-        .main-container.active { display: block; }
+        /* Setup panel */
+        .setup-panel {
+            background: var(--white); border-radius: var(--radius); padding: 28px;
+            box-shadow: var(--shadow); margin-bottom: 24px;
+        }
+        .setup-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+        .setup-row label { font-size: 0.85rem; font-weight: 600; color: #555; display: block; margin-bottom: 6px; }
+        .setup-field { flex: 1; min-width: 200px; }
+        .setup-input {
+            width: 100%; padding: 12px 16px; border: 2px solid #e8e8e8; border-radius: 10px;
+            font-size: 14px; color: var(--secondary); transition: var(--transition);
+            font-family: 'Poppins', sans-serif;
+        }
+        .setup-input:focus { outline: none; border-color: var(--primary); }
+        .start-btn {
+            width: 100%; padding: 14px; border: none; border-radius: 12px;
+            font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition);
+            color: #fff;
+        }
+        .start-btn:hover { transform: translateY(-2px); }
+        .start-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .start-btn.btn-game { background: linear-gradient(135deg, var(--game), #059669); }
+        .start-btn.btn-game:hover { box-shadow: 0 6px 20px rgba(16,185,129,0.35); }
+        .start-btn.btn-breakdown { background: linear-gradient(135deg, var(--breakdown), #d97706); }
+        .start-btn.btn-breakdown:hover { box-shadow: 0 6px 20px rgba(245,158,11,0.35); }
 
         /* Chat area */
         .chat-container {
             background: var(--white); border-radius: var(--radius);
             box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(0,0,0,0.04);
-            display: block;
+            display: none;
         }
+        .chat-container.active { display: block; }
         .chat-messages { height: 500px; overflow-y: auto; padding: 24px; background: linear-gradient(180deg, #fafbff 0%, #fff 100%); }
         .message { margin-bottom: 20px; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -180,32 +205,24 @@
         }
         .new-topic-btn:hover { background: var(--primary); color: #fff; }
 
-        /* Mode toggle (shown only after first session via New Topic) */
-        .mode-toggle {
-            display: flex; align-items: center; gap: 12px; margin-top: 12px;
-        }
-        .mode-toggle-label { font-size: 0.85rem; color: #888; font-weight: 500; }
-        .mode-toggle-switch {
-            padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;
-            border: 2px solid #e0e4ff; background: #fff; cursor: pointer;
-            transition: var(--transition); color: var(--secondary);
-        }
-        .mode-toggle-switch.active-game { border-color: var(--game); color: var(--game); background: #ecfdf5; }
-        .mode-toggle-switch.active-breakdown { border-color: var(--breakdown); color: var(--breakdown); background: #fffbeb; }
-
         @media (max-width: 768px) {
             .navbar { padding: 0.7rem 4%; }
             .logo span { font-size: 1.1rem; }
             .nav-right .btn { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
-            .main-container { padding: 16px 10px; }
 
-            .hook-screen h1 { font-size: 1.5rem; }
-            .hook-start-btn { padding: 16px 48px; font-size: 1rem; }
-            .onboard-step h2 { font-size: 1.3rem; }
-            .onboard-input { font-size: 15px; padding: 14px 16px; }
+            .mode-landing { padding: 24px 14px; }
+            .mode-landing-header h1 { font-size: 1.5rem; }
+            .mode-landing-header p { font-size: 0.9rem; }
+            .mode-cards { grid-template-columns: 1fr; gap: 16px; }
+            .mode-card { padding: 24px 20px; }
 
-            /* Chat fills available viewport */
-            .chat-container {
+            .active-view { padding: 12px 10px; }
+            .active-view-title { font-size: 1.1rem; }
+            .setup-panel { padding: 18px 14px; }
+            .setup-row { flex-direction: column; }
+            .setup-field { min-width: unset; }
+
+            .chat-container.active {
                 display: flex; flex-direction: column;
                 height: calc(100vh - 130px);
                 border-radius: 12px;
@@ -238,32 +255,55 @@
         </div>
     </nav>
 
-    <!-- Hook Screen (visible to everyone, no auth required) -->
-    <div class="hook-screen" id="hookScreen">
-        <h1>You don't actually understand school topics&hellip; <em>until you live them.</em></h1>
-        <button class="hook-start-btn" id="hookStartBtn" onclick="handleHookStart()">Start</button>
+    <!-- Mode Landing (sub-page selector) -->
+    <div class="mode-landing" id="modeLanding">
+        <div class="mode-landing-header">
+            <h1>Learn IRL</h1>
+            <p>Learn any topic through real-life decisions and clear breakdowns</p>
+        </div>
+        <div class="mode-cards">
+            <div class="mode-card card-game" onclick="selectMode('game')">
+                <div class="mode-card-icon">🎮</div>
+                <h2>Game Mode</h2>
+                <p>Learn through interactive real-life decisions. Make choices, see consequences, and understand concepts by living them.</p>
+                <span class="mode-card-cta">Start →</span>
+            </div>
+            <div class="mode-card card-breakdown" onclick="selectMode('breakdown')">
+                <div class="mode-card-icon">🔍</div>
+                <h2>Breakdown Mode</h2>
+                <p>Get a clear real-life explanation. No textbook fluff — just what it means, where you see it, and why it matters.</p>
+                <span class="mode-card-cta">Start →</span>
+            </div>
+        </div>
     </div>
 
-    <!-- Subject step -->
-    <div class="onboard-step" id="stepSubject">
-        <h2>What are you learning right now?</h2>
-        <select class="onboard-input" id="subjectInput">
-            <option value="">Select your subject...</option>
-        </select>
-        <button class="onboard-next-btn" id="subjectNextBtn" onclick="goToTopic()">Next</button>
-    </div>
+    <!-- Active View (setup + chat) -->
+    <div class="active-view" id="activeView">
+        <div class="active-view-header">
+            <button class="back-modes-btn" onclick="backToModes()">← Modes</button>
+            <span class="active-view-title" id="activeTitle">Game Mode</span>
+        </div>
 
-    <!-- Module step -->
-    <div class="onboard-step" id="stepTopic">
-        <h2>Pick a module</h2>
-        <select class="onboard-input" id="topicInput">
-            <option value="">Select a module...</option>
-        </select>
-        <button class="onboard-next-btn" id="topicNextBtn" onclick="launchSimulation()">Go</button>
-    </div>
+        <!-- Setup Panel -->
+        <div class="setup-panel" id="setupPanel">
+            <div class="setup-row">
+                <div class="setup-field">
+                    <label>Subject</label>
+                    <select class="setup-input" id="subjectInput">
+                        <option value="">Select your subject...</option>
+                    </select>
+                </div>
+                <div class="setup-field">
+                    <label>Module</label>
+                    <select class="setup-input" id="topicInput">
+                        <option value="">Select subject first...</option>
+                    </select>
+                </div>
+            </div>
+            <button class="start-btn btn-game" id="startBtn" onclick="startSession()">Start Learning</button>
+        </div>
 
-    <!-- Chat (simulation view) -->
-    <div class="main-container" id="mainContainer">
+        <!-- Chat Area -->
         <div class="chat-container" id="chatContainer">
             <div class="chat-messages" id="chatMessages"></div>
             <div id="choicesContainer"></div>
@@ -272,14 +312,7 @@
                     <textarea class="chat-input" id="userInput" placeholder="Type your response..." rows="2"></textarea>
                     <button type="submit" class="send-btn" id="sendBtn">Send</button>
                 </form>
-                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                    <button class="new-topic-btn" onclick="resetSession()">New Topic</button>
-                    <div class="mode-toggle" id="modeToggle" style="display:none;">
-                        <span class="mode-toggle-label">Mode:</span>
-                        <button class="mode-toggle-switch active-game" id="toggleGame" onclick="switchMode('game')">Game</button>
-                        <button class="mode-toggle-switch" id="toggleBreakdown" onclick="switchMode('breakdown')">Breakdown</button>
-                    </div>
-                </div>
+                <button class="new-topic-btn" onclick="resetSession()">New Topic</button>
             </div>
         </div>
     </div>
@@ -291,8 +324,6 @@
         let conversationHistory = [];
         let gameState = null;
         let isLoading = false;
-        let isAuthenticated = false;
-        let hasCompletedFirstSession = false;
 
         const subjects = [
             { id: 'agriculture', name: 'Agriculture', category: 'TAS' },
@@ -391,29 +422,24 @@
         };
 
         // Elements
-        const hookScreen = document.getElementById('hookScreen');
-        const stepSubject = document.getElementById('stepSubject');
-        const stepTopic = document.getElementById('stepTopic');
-        const mainContainer = document.getElementById('mainContainer');
+        const modeLanding = document.getElementById('modeLanding');
+        const activeView = document.getElementById('activeView');
+        const activeTitle = document.getElementById('activeTitle');
+        const setupPanel = document.getElementById('setupPanel');
         const chatContainer = document.getElementById('chatContainer');
         const chatMessages = document.getElementById('chatMessages');
         const chatForm = document.getElementById('chatForm');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
+        const startBtn = document.getElementById('startBtn');
         const subjectInput = document.getElementById('subjectInput');
         const topicInput = document.getElementById('topicInput');
         const userDisplay = document.getElementById('userDisplay');
         const choicesContainer = document.getElementById('choicesContainer');
-        const subjectNextBtn = document.getElementById('subjectNextBtn');
-        const topicNextBtn = document.getElementById('topicNextBtn');
-        const modeToggle = document.getElementById('modeToggle');
 
-        // Enable Next buttons on dropdown change
+        // Populate module dropdown when subject changes
         subjectInput.addEventListener('change', () => {
-            subjectNextBtn.classList.toggle('ready', subjectInput.value !== '');
-            // Populate modules for selected subject
             topicInput.innerHTML = '<option value="">Select a module...</option>';
-            topicNextBtn.classList.remove('ready');
             const topics = subjectTopics[subjectInput.value];
             if (topics) {
                 topics.forEach(t => {
@@ -424,11 +450,8 @@
                 });
             }
         });
-        topicInput.addEventListener('change', () => {
-            topicNextBtn.classList.toggle('ready', topicInput.value !== '');
-        });
 
-        // Check auth on page load, then show hook or redirect
+        // Auth check on page load
         async function checkAuth() {
             try {
                 const res = await fetch(API_BASE + '/api/subscription', { credentials: 'include' });
@@ -436,14 +459,13 @@
                     const data = await res.json();
                     const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged || data.preferences?.onboarded;
                     if (hasAccess) {
-                        isAuthenticated = true;
                         userDisplay.textContent = data.name || data.email || '';
                         populateSubjects();
-                        return; // Show hook screen (already visible)
+                        modeLanding.classList.add('active');
+                        return;
                     }
                 }
             } catch (e) {}
-            // Not logged in → redirect to login
             window.location.href = 'login.html';
         }
 
@@ -467,90 +489,64 @@
             });
         }
 
-        // Hook Start → go to subject step
-        function handleHookStart() {
-            showStep('subject');
-        }
+        // Mode card click → show active view
+        function selectMode(mode) {
+            currentMode = mode;
+            modeLanding.classList.remove('active');
+            activeView.classList.add('active');
+            setupPanel.style.display = 'block';
+            chatContainer.classList.remove('active');
 
-        function showStep(step) {
-            hookScreen.style.display = 'none';
-            stepSubject.style.display = 'none';
-            stepSubject.classList.remove('active');
-            stepTopic.style.display = 'none';
-            stepTopic.classList.remove('active');
-            mainContainer.classList.remove('active');
-
-            if (step === 'subject') {
-                stepSubject.style.display = 'flex';
-                stepSubject.classList.add('active');
-                subjectInput.focus();
-            } else if (step === 'topic') {
-                stepTopic.style.display = 'flex';
-                stepTopic.classList.add('active');
-                topicInput.focus();
-            } else if (step === 'chat') {
-                mainContainer.classList.add('active');
-                userInput.focus();
+            if (mode === 'game') {
+                activeTitle.textContent = 'Game Mode';
+                startBtn.className = 'start-btn btn-game';
+            } else {
+                activeTitle.textContent = 'Breakdown Mode';
+                startBtn.className = 'start-btn btn-breakdown';
             }
         }
 
-        // Step 2 → Step 3
-        function goToTopic() {
-            if (!subjectInput.value) return;
-            // Re-populate modules in case subject changed
-            topicInput.innerHTML = '<option value="">Select a module...</option>';
-            topicNextBtn.classList.remove('ready');
-            const topics = subjectTopics[subjectInput.value];
-            if (topics) {
-                topics.forEach(t => {
-                    const opt = document.createElement('option');
-                    opt.value = t;
-                    opt.textContent = t;
-                    topicInput.appendChild(opt);
-                });
-            }
-            showStep('topic');
+        // Back to mode landing
+        function backToModes() {
+            activeView.classList.remove('active');
+            modeLanding.classList.add('active');
+            conversationHistory = [];
+            gameState = null;
+            chatMessages.innerHTML = '';
+            choicesContainer.innerHTML = '';
         }
 
-        // Launch simulation (always game mode on first run)
-        async function launchSimulation() {
+        // Start session
+        async function startSession() {
             const subjectId = subjectInput.value;
+            const topic = topicInput.value;
+            if (!subjectId || !topic) {
+                alert('Please select a subject and module.');
+                return;
+            }
             const subj = subjects.find(s => s.id === subjectId);
             const subject = subj ? subj.name : subjectId;
-            const topic = topicInput.value;
-            if (!subject || !topic) return;
 
-            showStep('chat');
+            setupPanel.style.display = 'none';
+            chatContainer.classList.add('active');
             chatMessages.innerHTML = '';
             choicesContainer.innerHTML = '';
             conversationHistory = [];
             gameState = null;
-
-            // Show mode toggle after first session
-            if (hasCompletedFirstSession) {
-                modeToggle.style.display = 'flex';
-            }
 
             const initMessage = `Subject: ${subject}\nTopic: ${topic}\nMode: ${currentMode}`;
             await sendMessage(initMessage, false);
         }
 
+        // New Topic → back to setup (keep mode + subject)
         function resetSession() {
-            hasCompletedFirstSession = true;
             conversationHistory = [];
             gameState = null;
             chatMessages.innerHTML = '';
             choicesContainer.innerHTML = '';
             topicInput.value = '';
-            topicNextBtn.classList.remove('ready');
-            // Go back to topic step (keep subject selected for convenience)
-            showStep('topic');
-        }
-
-        function switchMode(mode) {
-            currentMode = mode;
-            document.getElementById('toggleGame').className = 'mode-toggle-switch' + (mode === 'game' ? ' active-game' : '');
-            document.getElementById('toggleBreakdown').className = 'mode-toggle-switch' + (mode === 'breakdown' ? ' active-breakdown' : '');
+            setupPanel.style.display = 'block';
+            chatContainer.classList.remove('active');
         }
 
         async function sendMessage(content, showAsUser = true) {
@@ -588,7 +584,6 @@
                 const reply = data.reply || data.content || '';
                 conversationHistory.push({ role: 'assistant', content: reply });
 
-                // Try to parse game JSON from response
                 if (currentMode === 'game') {
                     const parsed = tryParseGameResponse(reply);
                     if (parsed) {
@@ -597,7 +592,6 @@
                     }
                 }
 
-                // Fallback: render as regular text
                 addMessage(reply, false);
 
             } catch (e) {
@@ -707,7 +701,6 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        // Form submit
         chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const msg = userInput.value.trim();
@@ -716,12 +709,10 @@
             sendMessage(msg, true);
         });
 
-        // Enter to send in chat
         userInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatForm.dispatchEvent(new Event('submit')); }
         });
 
-        // Page load → check auth, then hook screen
         checkAuth();
     </script>
 </body>
