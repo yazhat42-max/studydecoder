@@ -666,8 +666,8 @@
 
         function formatResponse(text) {
             return text
-                .replace(/## (.*)/g, '<h2>$1</h2>')
                 .replace(/### (.*)/g, '<h3>$1</h3>')
+                .replace(/## (.*)/g, '<h2>$1</h2>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/^\• (.*)/gm, '<li>$1</li>')
                 .replace(/^- (.*)/gm, '<li>$1</li>')
@@ -677,7 +677,7 @@
         }
 
         function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
-        function escapeAttr(str) { return str.replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+        function escapeAttr(str) { return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
 
         function showLoading() {
             const div = document.createElement('div');
