@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Learn IRL â€” Real-Life Learning | Study Decoder</title>
+    <title>Learn IRL — Real-Life Learning | Study Decoder</title>
     <meta name="description" content="Learn any HSC topic through real-life simulations and breakdowns. Play interactive decision games or get clear real-world explanations that actually make sense.">
     <link rel="canonical" href="https://www.studydecoder.com.au/learn-irl.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Study Decoder">
-    <meta property="og:title" content="Learn IRL â€” Real-Life Learning | Study Decoder">
+    <meta property="og:title" content="Learn IRL — Real-Life Learning | Study Decoder">
     <meta property="og:description" content="Learn any HSC topic through real-life simulations and breakdowns. Make learning feel real.">
     <meta property="og:url" content="https://www.studydecoder.com.au/learn-irl.html">
     <meta property="og:image" content="https://www.studydecoder.com.au/logo.png">
     <meta property="og:locale" content="en_AU">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Learn IRL â€” Real-Life Learning | Study Decoder">
+    <meta name="twitter:title" content="Learn IRL — Real-Life Learning | Study Decoder">
     <meta name="twitter:description" content="Learn through real-life simulations and breakdowns.">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -87,7 +91,7 @@
         .mode-card.card-breakdown:hover h2 { color: var(--breakdown); }
         .mode-card.card-breakdown:hover .mode-card-cta { color: var(--breakdown); }
 
-        /* Active view â€” setup + chat */
+        /* Active view — setup + chat */
         .active-view { max-width: 900px; margin: 0 auto; padding: 20px 20px; display: none; }
         .active-view.active { display: block; }
         .active-view-header {
@@ -246,7 +250,7 @@
             <span>Study Decoder</span>
         </a>
         <div class="nav-right">
-            <a href="senior-bot.html" class="btn btn-outline">â† Back to Tools</a>
+            <a href="senior-bot.html" class="btn btn-outline">← Back to Tools</a>
             <span id="userDisplay" style="font-size: 0.85rem; color: #666;"></span>
         </div>
     </nav>
@@ -259,16 +263,16 @@
         </div>
         <div class="mode-cards">
             <div class="mode-card card-game" onclick="selectMode('game')">
-                <div class="mode-card-icon">ðŸŽ®</div>
+                <div class="mode-card-icon">🎮</div>
                 <h2>Game Mode</h2>
                 <p>Learn through interactive real-life decisions. Make choices, see consequences, and understand concepts by living them.</p>
-                <span class="mode-card-cta">Start â†’</span>
+                <span class="mode-card-cta">Start →</span>
             </div>
             <div class="mode-card card-breakdown" onclick="selectMode('breakdown')">
-                <div class="mode-card-icon">ðŸ”</div>
+                <div class="mode-card-icon">🔍</div>
                 <h2>Breakdown Mode</h2>
-                <p>Get a clear real-life explanation. No textbook fluff â€” just what it means, where you see it, and why it matters.</p>
-                <span class="mode-card-cta">Start â†’</span>
+                <p>Get a clear real-life explanation. No textbook fluff — just what it means, where you see it, and why it matters.</p>
+                <span class="mode-card-cta">Start →</span>
             </div>
         </div>
     </div>
@@ -276,7 +280,7 @@
     <!-- Active View (setup + chat) -->
     <div class="active-view" id="activeView">
         <div class="active-view-header">
-            <button class="back-modes-btn" onclick="backToModes()">â† Modes</button>
+            <button class="back-modes-btn" onclick="backToModes()">← Modes</button>
             <span class="active-view-title" id="activeTitle">Game Mode</span>
         </div>
 
@@ -485,7 +489,7 @@
             });
         }
 
-        // Mode card click â†’ show active view
+        // Mode card click → show active view
         function selectMode(mode) {
             currentMode = mode;
             modeLanding.classList.remove('active');
@@ -534,7 +538,7 @@
             await sendMessage(initMessage, false);
         }
 
-        // New Topic â†’ back to setup (keep mode + subject)
+        // New Topic → back to setup (keep mode + subject)
         function resetSession() {
             conversationHistory = [];
             gameState = null;
@@ -665,7 +669,7 @@
                 .replace(/### (.*)/g, '<h3>$1</h3>')
                 .replace(/## (.*)/g, '<h2>$1</h2>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/^\â€¢ (.*)/gm, '<li>$1</li>')
+                .replace(/^\• (.*)/gm, '<li>$1</li>')
                 .replace(/^- (.*)/gm, '<li>$1</li>')
                 .replace(/(<li>.*<\/li>\n?)+/gs, '<ul>$&</ul>')
                 .replace(/\n\n/g, '</p><p>')

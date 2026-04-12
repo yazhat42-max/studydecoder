@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>About Us â€“ Study Decoder | AI Study Tools for Australian Students</title>
-    <meta name="description" content="Learn about Study Decoder â€“ the AI-powered study platform built for HSC and high school students in Australia. Our mission is to make studying smarter, not harder.">
+    <title>About Us – Study Decoder | AI Study Tools for Australian Students</title>
+    <meta name="description" content="Learn about Study Decoder – the AI-powered study platform built for HSC and high school students in Australia. Our mission is to make studying smarter, not harder.">
     <link rel="canonical" href="https://www.studydecoder.com.au/about.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Study Decoder">
-    <meta property="og:title" content="About Us â€“ Study Decoder">
-    <meta property="og:description" content="Learn about Study Decoder â€“ the AI-powered study platform built for HSC and high school students in Australia.">
+    <meta property="og:title" content="About Us – Study Decoder">
+    <meta property="og:description" content="Learn about Study Decoder – the AI-powered study platform built for HSC and high school students in Australia.">
     <meta property="og:url" content="https://www.studydecoder.com.au/about.html">
     <meta property="og:image" content="https://www.studydecoder.com.au/logo.png">
     <meta property="og:locale" content="en_AU">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="About Us â€“ Study Decoder">
-    <meta name="twitter:description" content="Learn about Study Decoder â€“ AI study tools for Australian students.">
+    <meta name="twitter:title" content="About Us – Study Decoder">
+    <meta name="twitter:description" content="Learn about Study Decoder – AI study tools for Australian students.">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         .study-decoder {
@@ -376,7 +380,7 @@
             <img src="logo.png" alt="Study Decoder" style="width: 36px; height: 36px;">
             <span style="font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #6C63FF 0%, #FF6584 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Study Decoder</span>
         </a>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" style="display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 8px; color: #2A2A2A;">â˜°</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" style="display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 8px; color: #2A2A2A;">☰</button>
         <ul class="nav-links" id="navLinks" style="list-style: none; display: flex; gap: 30px; align-items: center; margin: 0; padding: 0;">
             <li><a href="index.html" style="text-decoration: none; color: #333; font-weight: 500;">Home</a></li>
             <li><a href="about.html" style="text-decoration: none; color: #6C63FF; font-weight: 500;">About</a></li>
@@ -418,8 +422,8 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About us</a></li>
             <li><a href="contact.html">Contact us</a></li>
-            <li><a href="junior-bot.html">Study Decoder Bot â€“ Juniors</a></li>
-            <li><a href="senior-bot.html">Study Decoder Bot â€“ Seniors</a></li>
+            <li><a href="junior-bot.html">Study Decoder Bot – Juniors</a></li>
+            <li><a href="senior-bot.html">Study Decoder Bot – Seniors</a></li>
         </ul>
     </section>
 </div>
@@ -427,12 +431,12 @@
     document.getElementById('mobileMenuBtn').addEventListener('click', function() {
         const navLinks = document.getElementById('navLinks');
         navLinks.classList.toggle('active');
-        this.textContent = navLinks.classList.contains('active') ? 'âœ•' : 'â˜°';
+        this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
     });
     document.querySelectorAll('#navLinks a').forEach(link => {
         link.addEventListener('click', () => {
             document.getElementById('navLinks').classList.remove('active');
-            document.getElementById('mobileMenuBtn').textContent = 'â˜°';
+            document.getElementById('mobileMenuBtn').textContent = '☰';
         });
     });
     async function checkNav() {

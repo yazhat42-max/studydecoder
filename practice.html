@@ -18,6 +18,10 @@
     <meta name="twitter:description" content="AI-powered HSC practice questions with instant marking.">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0f1419">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -512,8 +516,8 @@
         <!-- History sidebar -->
         <div class="history-panel" id="historyPanel">
             <div class="history-header">
-                <h3>âœï¸ Past Questions</h3>
-                <button class="history-close" onclick="closeHistory()">âœ•</button>
+                <h3>✏️ Past Questions</h3>
+                <button class="history-close" onclick="closeHistory()">✕</button>
             </div>
             <div class="history-list" id="historyList"></div>
         </div>
@@ -521,7 +525,7 @@
         <!-- MODE SELECTION LANDING (shown first, like senior-bot.html grid) -->
         <div id="modeLanding">
             <div style="padding: 20px 24px;">
-                <a href="index.html" class="back-btn">â† Back to Home</a>
+                <a href="index.html" class="back-btn">← Back to Home</a>
             </div>
             <div style="max-width: 1100px; margin: 0 auto; padding: 0 24px 60px;">
                 <div style="text-align: center; padding: 30px 20px 10px;">
@@ -529,26 +533,26 @@
                     <p style="font-size: 1.1rem; color: #71767b; max-width: 550px; margin: 0 auto; line-height: 1.6;">Generate authentic HSC exam-style questions. Choose a mode below.</p>
                 </div>
                 <div style="text-align: center; margin-bottom: 24px;">
-                    <button class="history-btn" onclick="openHistory()">ðŸ“‹ Past Questions</button>
+                    <button class="history-btn" onclick="openHistory()">📋 Past Questions</button>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
                     <div class="mode-card" onclick="selectMode('standard')">
-                        <div class="mode-card-icon">âœï¸</div>
+                        <div class="mode-card-icon">✏️</div>
                         <h2>Standard Questions</h2>
                         <p>Generate individual practice questions by subject, topic, and difficulty.</p>
-                        <span class="mode-card-cta">Start â†’</span>
+                        <span class="mode-card-cta">Start →</span>
                     </div>
                     <div class="mode-card" onclick="selectMode('exam')">
-                        <div class="mode-card-icon">ðŸ“</div>
+                        <div class="mode-card-icon">📝</div>
                         <h2>Full Exam Paper</h2>
                         <p>Generate complete 1, 2, or 3 hour HSC-style exam papers.</p>
-                        <span class="mode-card-cta">Start â†’</span>
+                        <span class="mode-card-cta">Start →</span>
                     </div>
                     <div class="mode-card" onclick="selectMode('feedback')">
-                        <div class="mode-card-icon">ðŸ“Š</div>
+                        <div class="mode-card-icon">📊</div>
                         <h2>Get Feedback</h2>
                         <p>Paste a question and your answer to get HSC marking feedback.</p>
-                        <span class="mode-card-cta">Start â†’</span>
+                        <span class="mode-card-cta">Start →</span>
                     </div>
                 </div>
             </div>
@@ -558,13 +562,13 @@
         <div id="activeView" style="display: none; height: 100vh; flex-direction: column;">
             <header class="header">
                 <div class="header-left">
-                    <a href="#" class="back-btn" onclick="backToModes(event)">â† Modes</a>
+                    <a href="#" class="back-btn" onclick="backToModes(event)">← Modes</a>
                     <div>
                         <div class="header-title" id="activeTitle">Practice Question Generator</div>
                         <div class="header-subtitle">Generate real NSW HSC exam-style questions</div>
                     </div>
                 </div>
-                <button class="history-btn" onclick="openHistory()">ðŸ“‹ History</button>
+                <button class="history-btn" onclick="openHistory()">📋 History</button>
             </header>
             <main class="main-content" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
                 <div class="output-panel" id="outputPanel">
@@ -576,28 +580,28 @@
                         <div class="standard-panel" id="standardPanel" style="display: none;">
                         <div class="form-grid">
                             <div class="form-group">
-                                <label class="form-label">ðŸ“˜ Subject</label>
+                                <label class="form-label">📘 Subject</label>
                                 <select class="form-select" id="subject" required>
                                     <option value="">Select your subject...</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">ðŸ“š Topic/Module</label>
+                                <label class="form-label">📚 Topic/Module</label>
                                 <select class="form-select" id="topic" required>
                                     <option value="">Select subject first...</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">ðŸŽ¯ Difficulty</label>
+                                <label class="form-label">🎯 Difficulty</label>
                                 <select class="form-select" id="difficulty" required>
                                     <option value="Easy">Easy</option>
                                     <option value="Medium" selected>Medium</option>
                                     <option value="Hard">Hard</option>
-                                    <option value="Varied">Varied (Easy â†’ Hard)</option>
+                                    <option value="Varied">Varied (Easy → Hard)</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">ðŸ“ Mark Value</label>
+                                <label class="form-label">📝 Mark Value</label>
                                 <select class="form-select" id="markValue" required>
                                     <option value="1">1 mark</option>
                                     <option value="2">2 marks</option>
@@ -608,7 +612,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">ðŸ”¢ Number of Questions</label>
+                                <label class="form-label">🔢 Number of Questions</label>
                                 <select class="form-select" id="numQuestions">
                                     <option value="1">1</option>
                                     <option value="3" selected>3</option>
@@ -630,17 +634,17 @@
                         </div>
                         <div class="form-grid">
                             <div class="form-group">
-                                <label class="form-label">ðŸ“˜ Subject</label>
+                                <label class="form-label">📘 Subject</label>
                                 <select class="form-select" id="examSubject">
                                     <option value="">Select your subject...</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">ðŸ“š Topics to Cover</label>
+                                <label class="form-label">📚 Topics to Cover</label>
                                 <input type="text" class="form-input" id="examTopics" placeholder="e.g., All Year 12 content, Module 5-8...">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">â±ï¸ Exam Duration</label>
+                                <label class="form-label">⏱️ Exam Duration</label>
                                 <select class="form-select" id="examDuration">
                                     <option value="1 hour">1 hour (Mini Exam)</option>
                                     <option value="2 hours" selected>2 hours (Standard)</option>
@@ -655,13 +659,13 @@
                         </div>
                         <div class="form-grid" style="gap: 6px;">
                             <div class="form-group">
-                                <label class="form-label">ðŸ“˜ Subject</label>
+                                <label class="form-label">📘 Subject</label>
                                 <select class="form-select" id="feedbackSubject">
                                     <option value="">Select your subject...</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">ðŸŽ¯ Mark Value</label>
+                                <label class="form-label">🎯 Mark Value</label>
                                 <select class="form-select" id="feedbackMarks">
                                     <option value="1">1 mark</option>
                                     <option value="2">2 marks</option>
@@ -676,11 +680,11 @@
                                 </select>
                             </div>
                             <div class="form-group full-width">
-                                <label class="form-label">â“ Question</label>
+                                <label class="form-label">❓ Question</label>
                                 <textarea class="feedback-textarea" id="feedbackQuestion" placeholder="Paste the exam question here..." style="height: 60px; max-height: 80px;"></textarea>
                             </div>
                             <div class="form-group full-width">
-                                <label class="form-label">âœï¸ Your Answer</label>
+                                <label class="form-label">✍️ Your Answer</label>
                                 <textarea class="feedback-textarea" id="feedbackAnswer" placeholder="Paste your answer here..." style="height: 80px; max-height: 100px;"></textarea>
                             </div>
                         </div>
@@ -695,14 +699,14 @@
         <div id="examView" class="exam-view">
             <div class="exam-header">
                 <div class="exam-header-left">
-                    <a href="#" class="back-btn" id="examBackBtn" onclick="exitExam(event)">â† Exit Exam</a>
+                    <a href="#" class="back-btn" id="examBackBtn" onclick="exitExam(event)">← Exit Exam</a>
                     <div>
                         <div class="exam-header-title" id="examTitle">Full Exam Paper</div>
                         <div class="exam-header-meta" id="examMeta"></div>
                     </div>
                 </div>
                 <div class="exam-timer" id="examTimer">00:00:00</div>
-                <span class="lockdown-badge" id="lockdownBadge">ðŸ”’ LOCKED</span>
+                <span class="lockdown-badge" id="lockdownBadge">🔒 LOCKED</span>
             </div>
             <div class="exam-body" id="examBody">
                 <div class="exam-content" id="examContent">
@@ -712,16 +716,16 @@
             <div class="exam-dots" id="examDots" style="display:none;"></div>
             <!-- Lockdown violation overlay -->
             <div class="lockdown-overlay" id="lockdownOverlay">
-                <h2>âš ï¸ Tab Switch Detected</h2>
+                <h2>⚠️ Tab Switch Detected</h2>
                 <p>This exam is in <strong>lockdown mode</strong>. Switching tabs, minimising, or leaving the exam window is flagged as a violation.</p>
                 <div class="violation-count" id="violationCount"></div>
                 <button onclick="dismissLockdownWarning()">Return to Exam</button>
             </div>
             <div class="exam-nav" id="examNav" style="display:none;">
-                <button class="exam-nav-btn" id="examPrev" onclick="examNavigate(-1)">â† Previous</button>
+                <button class="exam-nav-btn" id="examPrev" onclick="examNavigate(-1)">← Previous</button>
                 <div class="exam-progress-bar"><div class="exam-progress-fill" id="examProgressFill"></div></div>
                 <span class="exam-q-counter" id="examQCounter">1 / 20</span>
-                <button class="exam-nav-btn primary" id="examNext" onclick="examNavigate(1)">Next â†’</button>
+                <button class="exam-nav-btn primary" id="examNext" onclick="examNavigate(1)">Next →</button>
                 <button class="exam-nav-btn submit-exam" id="examSubmitBtn" style="display:none;" onclick="submitExam()">Submit Exam</button>
             </div>
         </div>
@@ -811,7 +815,7 @@
                 // Add "Your Subjects" group at the top
                 if (savedSubjects && savedSubjects.length > 0) {
                     const yourGroup = document.createElement('optgroup');
-                    yourGroup.label = 'â­ Your Subjects';
+                    yourGroup.label = '⭐ Your Subjects';
                     savedSubjects.forEach(id => {
                         const s = subjects.find(x => x.id === id);
                         if (s) {
@@ -902,7 +906,7 @@
                     { value: 'Easy', label: 'Easy' },
                     { value: 'Medium', label: 'Medium', selected: true },
                     { value: 'Hard', label: 'Hard' },
-                    { value: 'Varied', label: 'Varied (Easy â†’ Hard)' }
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4]
             },
@@ -913,7 +917,7 @@
                     { value: 'Easy', label: 'Easy' },
                     { value: 'Medium', label: 'Medium', selected: true },
                     { value: 'Hard', label: 'Hard' },
-                    { value: 'Varied', label: 'Varied (Easy â†’ Hard)' }
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9]
             },
@@ -924,7 +928,7 @@
                     { value: 'Easy', label: 'Easy' },
                     { value: 'Medium', label: 'Medium', selected: true },
                     { value: 'Hard', label: 'Hard' },
-                    { value: 'Varied', label: 'Varied (Easy â†’ Hard)' }
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [2, 3, 4, 5, 6, 7, 8, 10, 15, 20]
             },
@@ -935,7 +939,7 @@
                     { value: 'Easy', label: 'Easy' },
                     { value: 'Medium', label: 'Medium', selected: true },
                     { value: 'Hard', label: 'Hard' },
-                    { value: 'Varied', label: 'Varied (Easy â†’ Hard)' }
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20]
             },
@@ -946,7 +950,7 @@
                     { value: 'Easy', label: 'Easy' },
                     { value: 'Medium', label: 'Medium', selected: true },
                     { value: 'Hard', label: 'Hard' },
-                    { value: 'Varied', label: 'Varied (Easy â†’ Hard)' }
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [2, 3, 4, 5, 6, 7, 8, 10, 15, 20]
             },
@@ -957,7 +961,7 @@
                     { value: 'Easy', label: 'Easy' },
                     { value: 'Medium', label: 'Medium', selected: true },
                     { value: 'Hard', label: 'Hard' },
-                    { value: 'Varied', label: 'Varied (Easy â†’ Hard)' }
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8]
             },
@@ -968,7 +972,7 @@
                     { value: 'Easy', label: 'Easy' },
                     { value: 'Medium', label: 'Medium', selected: true },
                     { value: 'Hard', label: 'Hard' },
-                    { value: 'Varied', label: 'Varied (Easy â†’ Hard)' }
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 20]
             },
@@ -979,7 +983,7 @@
                     { value: 'Easy', label: 'Easy' },
                     { value: 'Medium', label: 'Medium', selected: true },
                     { value: 'Hard', label: 'Hard' },
-                    { value: 'Varied', label: 'Varied (Easy â†’ Hard)' }
+                    { value: 'Varied', label: 'Varied (Easy → Hard)' }
                 ],
                 feedbackMarks: [1, 2, 3, 4, 5, 6, 7, 8]
             }
@@ -1234,8 +1238,8 @@
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message message-assistant';
             const isSale = new Date() < new Date('2026-04-25T00:00:00');
-            const yearlyText = isSale ? 'ðŸ”¥ Study Break Sale â€” $37.50 for life' : 'Yearly â€” $75/yr';
-            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">âš¡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly â€” $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+            const yearlyText = isSale ? '🔥 Study Break Sale — $37.50 for life' : 'Yearly — $75/yr';
+            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
             outputContent.appendChild(messageDiv);
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
@@ -1361,7 +1365,7 @@ Assess the student's response using HSC marking criteria. Do NOT provide a model
                 console.log('[DEBUG] Standard fields:', { subjectName, topic, difficulty, markValue, numQuestions, includeAnswers });
                 if (!topic || topic === 'Select subject first...' || topic === 'Select a topic/module...') { alert('Please select a topic.'); return; }
                 const difficultyInstruction = difficulty === 'Varied' 
-                    ? `Difficulty: Varied â€” start with easier questions and gradually increase in complexity and difficulty across the set.`
+                    ? `Difficulty: Varied — start with easier questions and gradually increase in complexity and difficulty across the set.`
                     : `Difficulty: ${difficulty}`;
                 message = `[STANDARD MODE]
 Generate practice questions based on real HSC past paper style and format.
@@ -1479,7 +1483,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
             list.innerHTML = history.map(h => `
                 <div class="history-item" onclick="loadSession('${h.id}')">
-                    <div class="history-item-title">âœï¸ ${h.title}</div>
+                    <div class="history-item-title">✏️ ${h.title}</div>
                     <div class="history-item-date">${new Date(h.date).toLocaleDateString()} ${new Date(h.date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</div>
                     <div class="history-item-preview">${h.preview}</div>
                     <div class="history-item-actions">
@@ -1581,7 +1585,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     upgradeBtn.href = 'https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03';
                     upgradeBtn.target = '_blank';
                     upgradeBtn.className = 'sd-upgrade-float';
-                    upgradeBtn.innerHTML = 'âš¡ Upgrade';
+                    upgradeBtn.innerHTML = '⚡ Upgrade';
                     upgradeBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9rem;z-index:9999;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.2s,box-shadow 0.2s;';
                     upgradeBtn.onmouseenter = () => { upgradeBtn.style.transform = 'scale(1.05)'; upgradeBtn.style.boxShadow = '0 6px 20px rgba(102,126,234,0.6)'; };
                     upgradeBtn.onmouseleave = () => { upgradeBtn.style.transform = 'scale(1)'; upgradeBtn.style.boxShadow = '0 4px 15px rgba(102,126,234,0.4)'; };
@@ -1769,7 +1773,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         async function autoSubmitExam() {
             // Save whatever the student has typed on the current question
             saveCurrentAnswer();
-            // Disable lockdown â€” exam is over
+            // Disable lockdown — exam is over
             disableLockdown();
             // Lock all inputs so student can't keep typing
             document.querySelectorAll('.exam-answer-box, .exam-working-box, input[name="mc-answer"]').forEach(el => el.disabled = true);
@@ -1777,7 +1781,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             const content = document.getElementById('examContent');
             content.innerHTML = `
                 <div style="text-align:center;padding:60px 20px;">
-                    <h2 style="color:#ef4444;margin-bottom:12px;">â° Time's Up!</h2>
+                    <h2 style="color:#ef4444;margin-bottom:12px;">⏰ Time's Up!</h2>
                     <p style="color:#71767b;margin-bottom:20px;">Your exam is being submitted and marked automatically...</p>
                     <div class="loading-dots" style="justify-content:center;"><span></span><span></span><span></span></div>
                 </div>`;
@@ -1800,10 +1804,10 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                         examSubjectId = saved.examSubjectId;
                         document.getElementById('examContent').innerHTML = `
                             <div style="text-align:center;padding:60px 20px;">
-                                <h2 style="color:#4f8cff;margin-bottom:12px;">ðŸ“‹ Exam Recovered</h2>
+                                <h2 style="color:#4f8cff;margin-bottom:12px;">📋 Exam Recovered</h2>
                                 <p style="color:#a1a1aa;margin-bottom:8px;">Your previous exam and answers were saved after marking failed.</p>
                                 <p style="color:#71717a;font-size:0.85rem;margin-bottom:24px;">You can retry marking or start fresh.</p>
-                                <button class="exam-nav-btn primary" onclick="retryMarking()" style="margin-right:10px;">ðŸ”„ Retry Marking</button>
+                                <button class="exam-nav-btn primary" onclick="retryMarking()" style="margin-right:10px;">🔄 Retry Marking</button>
                                 <button class="exam-nav-btn" onclick="sessionStorage.removeItem('examBackup'); showExamSetup();" style="opacity:0.7;">Start Fresh</button>
                             </div>`;
                         return;
@@ -1832,16 +1836,16 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     examIsOwner = !!limits.isOwner;
                     if (!limits.isPremium) {
                         limitsHtml = `<div class="exam-limits-banner" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid #4f8cff33;border-radius:12px;padding:18px 20px;margin-bottom:18px;color:#e7e9ea;">
-                            <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px;">ðŸ† Full Exam Mode â€” Our Flagship Feature</div>
+                            <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px;">🏆 Full Exam Mode — Our Flagship Feature</div>
                             <div style="color:#8899a6;font-size:0.9rem;margin-bottom:10px;">Sit complete HSC exams with auto-marking & band feedback. This is <strong style="color:#4f8cff;">the #1 reason students upgrade</strong>.</div>
                             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
                                 <span style="color:#f59e0b;font-weight:600;">${limits.remaining} of 3 free exams left this week</span>
-                                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="background:linear-gradient(135deg,#4f8cff,#764ba2);color:white;padding:8px 20px;border-radius:50px;font-size:0.85rem;font-weight:700;text-decoration:none;">Upgrade for Unlimited Exams â†’</a>
+                                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="background:linear-gradient(135deg,#4f8cff,#764ba2);color:white;padding:8px 20px;border-radius:50px;font-size:0.85rem;font-weight:700;text-decoration:none;">Upgrade for Unlimited Exams →</a>
                             </div>
                         </div>`;
                     } else {
                         limitsHtml = `<div class="exam-limits-banner" style="background:linear-gradient(135deg,#0f3460,#1a1a2e);border:1px solid #4f8cff44;border-radius:12px;padding:16px 20px;margin-bottom:18px;color:#e7e9ea;">
-                            <div style="font-size:0.95rem;">âœ… <strong>Premium</strong> â€” Unlimited exams, full NESA-style structure, all 45 subjects. Generate as many as you need.</div>
+                            <div style="font-size:0.95rem;">✅ <strong>Premium</strong> — Unlimited exams, full NESA-style structure, all 45 subjects. Generate as many as you need.</div>
                         </div>`;
                     }
                 }
@@ -1855,17 +1859,17 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
             document.getElementById('examContent').innerHTML = `
                 <div class="exam-setup">
-                    <div class="exam-setup-title">ðŸ“ Full Exam Paper</div>
+                    <div class="exam-setup-title">📝 Full Exam Paper</div>
                     <div class="exam-setup-sub">Generate a complete interactive HSC-style exam. Answer question by question, then submit for auto-marking.</div>
                     ${limitsHtml}
                     <div class="exam-setup-form">
                         <div class="exam-setup-row">
                             <div class="form-group">
-                                <label class="form-label">ðŸ“˜ Subject</label>
+                                <label class="form-label">📘 Subject</label>
                                 <select class="form-select" id="examSetupSubject">${subjectOpts}</select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">â±ï¸ Duration</label>
+                                <label class="form-label">⏱️ Duration</label>
                                 <select class="form-select" id="examSetupDuration">
                                     <option value="1">1 hour (Mini Exam)</option>
                                     <option value="2" selected>2 hours (Standard)</option>
@@ -1875,13 +1879,13 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                         </div>
                         <div class="exam-setup-row">
                             <div class="form-group">
-                                <label class="form-label">ðŸ“š Modules / Topics</label>
+                                <label class="form-label">📚 Modules / Topics</label>
                                 <select class="form-select" id="examSetupTopics">
                                     <option value="All">All Modules</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">ðŸŽ¯ Difficulty</label>
+                                <label class="form-label">🎯 Difficulty</label>
                                 <select class="form-select" id="examSetupDifficulty">
                                     <option value="standard" selected>Standard (HSC-level)</option>
                                     <option value="easy">Easy (Foundation / Revision)</option>
@@ -1889,11 +1893,11 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                                 </select>
                             </div>
                         </div>
-                        <button type="button" class="exam-generate-btn" id="examGenerateBtn" onclick="generateExam()">ðŸ“ Generate Exam</button>
+                        <button type="button" class="exam-generate-btn" id="examGenerateBtn" onclick="generateExam()">📝 Generate Exam</button>
                     </div>
                     <div class="exam-history-section" id="examHistorySection" style="display:none;">
                         <div class="exam-history-header">
-                            <h3>ðŸ“Š Your Exam History</h3>
+                            <h3>📊 Your Exam History</h3>
                         </div>
                         <div id="examHistoryContent"></div>
                     </div>
@@ -2013,7 +2017,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 if (Object.keys(subjectStats).length > 0) {
                     html += `<div class="exam-history-subjects">`;
                     for (const [id, s] of Object.entries(subjectStats)) {
-                        const trendIcon = s.trend > 0 ? 'ðŸ“ˆ' : s.trend < 0 ? 'ðŸ“‰' : 'âž¡ï¸';
+                        const trendIcon = s.trend > 0 ? '📈' : s.trend < 0 ? '📉' : '➡️';
                         const trendClass = s.trend > 0 ? 'positive' : s.trend < 0 ? 'negative' : '';
                         const bandClass = s.best >= 90 ? 'band6' : s.best >= 80 ? 'band5' : s.best >= 70 ? 'band4' : s.best >= 60 ? 'band3' : 'low';
                         html += `<div class="exam-history-subject-card">
@@ -2041,7 +2045,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     html += `<div class="exam-history-item">
                         <div class="exam-history-item-left">
                             <div class="exam-history-item-subject">${a.subjectName || a.subjectId}</div>
-                            <div class="exam-history-item-meta">${dateStr} at ${timeStr}${a.duration ? ' Â· ' + a.duration : ''}</div>
+                            <div class="exam-history-item-meta">${dateStr} at ${timeStr}${a.duration ? ' · ' + a.duration : ''}</div>
                         </div>
                         <div class="exam-history-item-right">
                             <span class="exam-history-badge ${pctClass}">${Math.round(a.percentage)}%</span>
@@ -2104,10 +2108,10 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     if (err.examLimitReached) {
                         document.getElementById('examContent').innerHTML = `
                             <div style="text-align:center;padding:60px 20px;">
-                                <h2 style="color:#e7e9ea;margin-bottom:12px;">âš¡ Weekly Exam Limit Reached</h2>
+                                <h2 style="color:#e7e9ea;margin-bottom:12px;">⚡ Weekly Exam Limit Reached</h2>
                                 <p style="color:#71767b;margin-bottom:20px;">You've used all 3 free exams this week. Upgrade for unlimited exams.</p>
                                 <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="exam-generate-btn" style="display:inline-block;text-decoration:none;max-width:300px;">Upgrade to Premium</a>
-                                <br><button class="exam-nav-btn" style="margin-top:16px;" onclick="showExamSetup()">â† Back</button>
+                                <br><button class="exam-nav-btn" style="margin-top:16px;" onclick="showExamSetup()">← Back</button>
                             </div>`;
                         return;
                     }
@@ -2131,7 +2135,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     throw new Error('No questions generated');
                 }
 
-                // Client-side mark verification â€” recount from actual questions
+                // Client-side mark verification — recount from actual questions
                 let verifiedTotal = 0;
                 for (const q of examQuestions) verifiedTotal += (q.marks || 0);
                 if (verifiedTotal > 0 && verifiedTotal !== examData.totalMarks) {
@@ -2143,7 +2147,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 examCurrentIdx = 0;
                 examDurationSeconds = parseFloat(duration) * 3600;
                 document.getElementById('examTitle').textContent = examData.title || `${subjectName} Exam`;
-                document.getElementById('examMeta').textContent = `${examData.duration || duration + ' hour(s)'} Â· ${examData.totalMarks} marks Â· ${examQuestions.length} questions`;
+                document.getElementById('examMeta').textContent = `${examData.duration || duration + ' hour(s)'} · ${examData.totalMarks} marks · ${examQuestions.length} questions`;
                 document.getElementById('examNav').style.display = 'flex';
                 document.getElementById('examDots').style.display = 'flex';
                 if (examIsOwner) enableLockdown();
@@ -2260,7 +2264,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 });
                 html += `</div>`;
             } else if (q.parts && q.parts.length > 0) {
-                // Multi-part question â€” render each sub-part with its own answer box
+                // Multi-part question — render each sub-part with its own answer box
                 const showWorking = examNeedsWorking();
                 q.parts.forEach((part, pi) => {
                     const partKey = q.number + '_' + (pi + 1);
@@ -2352,7 +2356,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 sessionStorage.setItem('examBackup', JSON.stringify({
                     examData, examAnswers, examSubjectId
                 }));
-            } catch (e) { /* storage full â€” ignore */ }
+            } catch (e) { /* storage full — ignore */ }
 
             try {
                 const res = await fetch(`${API_BASE}/api/exam/mark`, {
@@ -2376,8 +2380,8 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     <div style="text-align:center;padding:60px 20px;">
                         <h2 style="color:#ef4444;margin-bottom:12px;">Marking Failed</h2>
                         <p style="color:#71717a;margin-bottom:8px;">${error.message}</p>
-                        <p style="color:#71717a;font-size:0.85rem;margin-bottom:24px;">This is usually a temporary issue with the AI service. Your answers are saved â€” tap Retry.</p>
-                        <button class="exam-nav-btn primary" onclick="retryMarking()" style="margin-right:10px;">ðŸ”„ Retry Marking</button>
+                        <p style="color:#71717a;font-size:0.85rem;margin-bottom:24px;">This is usually a temporary issue with the AI service. Your answers are saved — tap Retry.</p>
+                        <button class="exam-nav-btn primary" onclick="retryMarking()" style="margin-right:10px;">🔄 Retry Marking</button>
                         <button class="exam-nav-btn" onclick="showExamSetup()" style="opacity:0.7;">Back to Setup</button>
                     </div>`;
             }
@@ -2408,11 +2412,11 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             // Comparison with previous
             if (progress.comparison) {
                 const change = progress.comparison.change;
-                const arrow = change > 0 ? 'ðŸ“ˆ' : change < 0 ? 'ðŸ“‰' : 'âž¡ï¸';
+                const arrow = change > 0 ? '📈' : change < 0 ? '📉' : '➡️';
                 const changeText = change > 0 ? `+${change.toFixed(1)}%` : `${change.toFixed(1)}%`;
                 html += `<div class="exam-results-comparison">
-                    ${arrow} <strong>${changeText}</strong> compared to your last attempt (${progress.comparison.previousPercentage}% â€” ${progress.comparison.previousBand})
-                    <br><span style="font-size:12px;">Best score: ${progress.bestScore}% Â· ${progress.totalAttempts} total attempt${progress.totalAttempts > 1 ? 's' : ''}</span>
+                    ${arrow} <strong>${changeText}</strong> compared to your last attempt (${progress.comparison.previousPercentage}% — ${progress.comparison.previousBand})
+                    <br><span style="font-size:12px;">Best score: ${progress.bestScore}% · ${progress.totalAttempts} total attempt${progress.totalAttempts > 1 ? 's' : ''}</span>
                 </div>`;
             }
             html += `</div>`;
@@ -2420,7 +2424,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             // Lockdown violation summary (owner only)
             if (examFinalViolations > 0) {
                 html += `<div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
-                    <span style="font-size:22px;">âš ï¸</span>
+                    <span style="font-size:22px;">⚠️</span>
                     <div>
                         <strong style="color:#ef4444;">Lockdown Violations: ${examFinalViolations}</strong>
                         <p style="color:#71767b;font-size:13px;margin:4px 0 0;">You left the exam window ${examFinalViolations} time${examFinalViolations > 1 ? 's' : ''} during this exam. In a real exam, this would be flagged to the supervisor.</p>
@@ -2428,9 +2432,9 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 </div>`;
             } else if (examIsOwner && examFinalViolations === 0) {
                 html += `<div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
-                    <span style="font-size:22px;">âœ…</span>
+                    <span style="font-size:22px;">✅</span>
                     <div>
-                        <strong style="color:#22c55e;">Clean Exam â€” No Violations</strong>
+                        <strong style="color:#22c55e;">Clean Exam — No Violations</strong>
                         <p style="color:#71767b;font-size:13px;margin:4px 0 0;">You stayed in the exam window the entire time. Well done.</p>
                     </div>
                 </div>`;
@@ -2439,7 +2443,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             // Overall feedback
             if (marking.overallFeedback) {
                 html += `<div class="exam-results-feedback">
-                    <h3>ðŸ“‹ Overall Feedback</h3>
+                    <h3>📋 Overall Feedback</h3>
                     <p>${marking.overallFeedback}</p>
                 </div>`;
             }
@@ -2447,7 +2451,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             // Free tier gate message
             if (!isPremium && pct < 80) {
                 html += `<div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:16px;margin-bottom:20px;text-align:center;">
-                    <strong style="color:#ef4444;">ðŸ”’ Score 80%+ to unlock a new exam</strong>
+                    <strong style="color:#ef4444;">🔒 Score 80%+ to unlock a new exam</strong>
                     <p style="color:#71767b;font-size:13px;margin:8px 0 0;">You can retry this exam by clearing your answers. Or <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="color:#4f8cff;font-weight:600;">upgrade to Premium</a> for unlimited exams.</p>
                 </div>`;
             }
@@ -2478,9 +2482,9 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
             // Action buttons
             html += `<div class="exam-results-actions">
-                <button class="exam-nav-btn" onclick="retryExam()">ðŸ”„ Retry This Exam</button>
-                <button class="exam-nav-btn primary" onclick="showExamSetup()">ðŸ“ New Exam</button>
-                <button class="exam-nav-btn" onclick="exitExam(event)">â† Back to Modes</button>
+                <button class="exam-nav-btn" onclick="retryExam()">🔄 Retry This Exam</button>
+                <button class="exam-nav-btn primary" onclick="showExamSetup()">📝 New Exam</button>
+                <button class="exam-nav-btn" onclick="exitExam(event)">← Back to Modes</button>
             </div>`;
 
             html += `</div>`;

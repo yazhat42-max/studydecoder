@@ -9,6 +9,10 @@
     <meta name="robots" content="noindex, follow">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -251,7 +255,7 @@
             <img src="logo.png" alt="Study Decoder">
             <span>Study Decoder</span>
         </a>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">â˜°</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
         <ul class="nav-links" id="navLinks">
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
@@ -396,12 +400,12 @@
     document.getElementById('mobileMenuBtn').addEventListener('click', function() {
         const navLinks = document.getElementById('navLinks');
         navLinks.classList.toggle('active');
-        this.textContent = navLinks.classList.contains('active') ? 'âœ•' : 'â˜°';
+        this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
     });
     document.querySelectorAll('#navLinks a').forEach(link => {
         link.addEventListener('click', () => {
             document.getElementById('navLinks').classList.remove('active');
-            document.getElementById('mobileMenuBtn').textContent = 'â˜°';
+            document.getElementById('mobileMenuBtn').textContent = '☰';
         });
     });
     async function checkNav() {

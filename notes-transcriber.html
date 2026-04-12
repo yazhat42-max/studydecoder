@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Notes Transcriber â€“ Handwriting to Text | Study Decoder</title>
+    <title>Notes Transcriber – Handwriting to Text | Study Decoder</title>
     <meta name="description" content="Convert handwritten notes to clean, organised digital text with AI. Take a photo of your notes and get them transcribed instantly. Perfect for HSC students.">
     <link rel="canonical" href="https://www.studydecoder.com.au/notes-transcriber.html">
     <meta property="og:type" content="website">
@@ -18,6 +18,10 @@
     <meta name="twitter:description" content="Convert handwritten notes to digital text with AI.">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0f1419">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -293,25 +297,25 @@
         <!-- History sidebar -->
         <div class="history-panel" id="historyPanel">
             <div class="history-header">
-                <h3>ðŸ“ Past Sessions</h3>
-                <button class="history-close" onclick="closeHistory()">âœ•</button>
+                <h3>📝 Past Sessions</h3>
+                <button class="history-close" onclick="closeHistory()">✕</button>
             </div>
             <div class="history-list" id="historyList"></div>
         </div>
 
         <header class="header">
             <div class="header-left">
-                <a href="index.html" class="back-btn">â† Home</a>
+                <a href="index.html" class="back-btn">← Home</a>
                 <div>
                     <div class="header-title">
                         Notes Transcriber
                         <span class="flagship-badge">NEW</span>
                     </div>
-                    <div class="header-subtitle">Upload handwritten notes â†’ Get clean text, or paste notes to polish them up</div>
+                    <div class="header-subtitle">Upload handwritten notes → Get clean text, or paste notes to polish them up</div>
                 </div>
             </div>
             <div class="header-actions">
-                <button class="history-btn" onclick="openHistory()">ðŸ“‹ History</button>
+                <button class="history-btn" onclick="openHistory()">📋 History</button>
             </div>
         </header>
         <main class="main-content">
@@ -319,12 +323,12 @@
                 <div class="output-content" id="outputContent">
                     <!-- Mode tabs -->
                     <div class="mode-tabs" id="modeTabs">
-                        <button class="mode-tab active" onclick="switchMode('transcribe')">âœï¸ Transcribe Notes</button>
-                        <button class="mode-tab" onclick="switchMode('glowup')">âœ¨ Note Glow-Up</button>
+                        <button class="mode-tab active" onclick="switchMode('transcribe')">✍️ Transcribe Notes</button>
+                        <button class="mode-tab" onclick="switchMode('glowup')">✨ Note Glow-Up</button>
                     </div>
                     <div class="welcome-message" id="welcomeMsg">
-                        <h2 id="welcomeTitle">âœï¸ Notes Transcriber</h2>
-                        <p id="welcomeDesc">Upload a photo of your handwritten notes and get clean, organised text â€” ready to paste into Google Docs or download as a Word document.</p>
+                        <h2 id="welcomeTitle">✍️ Notes Transcriber</h2>
+                        <p id="welcomeDesc">Upload a photo of your handwritten notes and get clean, organised text — ready to paste into Google Docs or download as a Word document.</p>
                         <div class="welcome-steps" id="welcomeSteps">
                             <div class="welcome-step">
                                 <div class="step-num">1</div>
@@ -350,9 +354,9 @@
                     <!-- Transcribe mode: upload zone -->
                     <div id="transcribeInputs">
                         <div class="upload-zone" id="uploadZone">
-                            <div class="upload-zone-icon">âœï¸</div>
+                            <div class="upload-zone-icon">✍️</div>
                             <h3>Drop your handwritten notes here</h3>
-                            <p>or click to browse â€” supports JPG, PNG, WEBP (max 20MB)</p>
+                            <p>or click to browse — supports JPG, PNG, WEBP (max 20MB)</p>
                             <input type="file" id="fileInput" accept="image/*">
                         </div>
                         <div class="preview-container" id="previewContainer">
@@ -361,7 +365,7 @@
                                 <h4 id="previewName">notes.jpg</h4>
                                 <p id="previewSize">1.2 MB</p>
                             </div>
-                            <button class="preview-remove" onclick="removeFile()" title="Remove">âœ•</button>
+                            <button class="preview-remove" onclick="removeFile()" title="Remove">✕</button>
                             <button class="submit-btn" id="transcribeBtn" onclick="transcribeNotes()">Transcribe Notes</button>
                         </div>
                     </div>
@@ -371,22 +375,22 @@
                         <textarea class="glowup-textarea" id="glowupTextarea" placeholder="Paste your messy notes, bullet points, or rough text here...
 
 The AI will transform them into polished, professional-looking notes with proper formatting, structure, and organisation."></textarea>
-                        <button class="submit-btn" id="glowupBtn" onclick="glowUpNotes()">âœ¨ Glow Up My Notes</button>
+                        <button class="submit-btn" id="glowupBtn" onclick="glowUpNotes()">✨ Glow Up My Notes</button>
                     </div>
 
                     <div class="download-bar" id="downloadBar">
                         <button class="download-btn" onclick="copyToClipboard()" title="Copy to clipboard">
-                            <span class="dl-icon">ðŸ“‹</span> Copy to Clipboard
+                            <span class="dl-icon">📋</span> Copy to Clipboard
                         </button>
                         <button class="download-btn" onclick="downloadDocx()" title="Download as Word document">
-                            <span class="dl-icon">ðŸ“„</span> Download .docx
+                            <span class="dl-icon">📄</span> Download .docx
                         </button>
                         <button class="download-btn" onclick="downloadTxt()" title="Download as text file">
-                            <span class="dl-icon">ðŸ“</span> Download .txt
+                            <span class="dl-icon">📝</span> Download .txt
                         </button>
                     </div>
                     <div class="chat-row" id="chatRow" style="display: none;">
-                        <button class="attach-btn" id="attachBtn" onclick="triggerAttach()" title="Upload another image">ðŸ“Ž</button>
+                        <button class="attach-btn" id="attachBtn" onclick="triggerAttach()" title="Upload another image">📎</button>
                         <input type="file" id="chatFileInput" accept="image/*" style="display:none;">
                         <textarea class="chat-input" id="chatInput" rows="1" placeholder="Ask the AI to reorganise, fix something, or paste more notes to polish..."></textarea>
                         <button class="submit-btn" id="sendBtn" onclick="sendReply()">Send</button>
@@ -1282,7 +1286,7 @@ The AI will transform them into polished, professional-looking notes with proper
                     var upgradeBtn = document.createElement('a');
                     upgradeBtn.href = 'https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03';
                     upgradeBtn.target = '_blank';
-                    upgradeBtn.innerHTML = 'âš¡ Upgrade';
+                    upgradeBtn.innerHTML = '⚡ Upgrade';
                     upgradeBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9rem;z-index:9999;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.2s,box-shadow 0.2s;';
                     upgradeBtn.onmouseenter = function() { upgradeBtn.style.transform = 'scale(1.05)'; upgradeBtn.style.boxShadow = '0 6px 20px rgba(102,126,234,0.6)'; };
                     upgradeBtn.onmouseleave = function() { upgradeBtn.style.transform = 'scale(1)'; upgradeBtn.style.boxShadow = '0 4px 15px rgba(102,126,234,0.4)'; };

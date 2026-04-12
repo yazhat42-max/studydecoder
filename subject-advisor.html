@@ -18,6 +18,10 @@
     <meta name="twitter:description" content="Get personalised HSC subject selection advice with AI.">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -205,7 +209,7 @@
             <span>Study Decoder</span>
         </a>
         <div class="nav-right">
-            <a href="senior-bot.html" class="btn btn-outline">â† Back to Tools</a>
+            <a href="senior-bot.html" class="btn btn-outline">← Back to Tools</a>
             <span id="userDisplay" style="font-size: 0.85rem; color: #666;"></span>
         </div>
     </nav>
@@ -345,7 +349,7 @@
                             const upgradeBtn = document.createElement('a');
                             upgradeBtn.href = 'https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03';
                             upgradeBtn.target = '_blank';
-                            upgradeBtn.innerHTML = 'âš¡ Upgrade';
+                            upgradeBtn.innerHTML = '⚡ Upgrade';
                             upgradeBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9rem;z-index:9999;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.2s,box-shadow 0.2s;';
                             upgradeBtn.onmouseenter = () => { upgradeBtn.style.transform = 'scale(1.05)'; upgradeBtn.style.boxShadow = '0 6px 20px rgba(102,126,234,0.6)'; };
                             upgradeBtn.onmouseleave = () => { upgradeBtn.style.transform = 'scale(1)'; upgradeBtn.style.boxShadow = '0 4px 15px rgba(102,126,234,0.4)'; };
@@ -380,7 +384,7 @@
                 .replace(/## (.*)/g, '<h2>$1</h2>')
                 .replace(/### (.*)/g, '<h3>$1</h3>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/^\â€¢ (.*)/gm, '<li>$1</li>')
+                .replace(/^\• (.*)/gm, '<li>$1</li>')
                 .replace(/^- (.*)/gm, '<li>$1</li>')
                 .replace(/(<li>.*<\/li>\n?)+/gs, '<ul>$&</ul>')
                 .replace(/\n\n/g, '</p><p>')
@@ -390,10 +394,10 @@
         function showFreeTierUpsell(botType, limitType) {
             const heading = `You've used all 10 free uses for today.`;
             const isSale = new Date() < new Date('2026-04-25T00:00:00');
-            const yearlyText = isSale ? 'ðŸ”¥ Study Break Sale â€” $37.50 for life' : 'Yearly â€” $75/yr';
+            const yearlyText = isSale ? '🔥 Study Break Sale — $37.50 for life' : 'Yearly — $75/yr';
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message message-assistant';
-            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">âš¡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly â€” $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
