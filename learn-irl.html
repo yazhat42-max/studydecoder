@@ -17,6 +17,10 @@
     <meta name="twitter:title" content="Learn IRL — Real-Life Learning | Study Decoder">
     <meta name="twitter:description" content="Learn through real-life simulations and breakdowns.">
     <link rel="icon" type="image/png" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -201,6 +205,107 @@
         }
         .new-topic-btn:hover { background: var(--primary); color: #fff; }
 
+        /* ===== Immersive Game View (SPENT-style) ===== */
+        .game-view {
+            position: fixed; inset: 0; z-index: 200;
+            display: none; flex-direction: column;
+            background: var(--gv-bg, linear-gradient(160deg, #0f1419 0%, #1a2332 50%, #0f1419 100%));
+            color: rgba(255,255,255,0.92);
+            overflow-y: auto;
+            font-family: 'Poppins', sans-serif;
+        }
+        .game-view.active { display: flex; }
+
+        .game-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 28px; border-bottom: 1px solid rgba(255,255,255,0.08);
+            flex-shrink: 0;
+        }
+        .game-exit-btn {
+            background: rgba(255,255,255,0.08); border: none;
+            color: rgba(255,255,255,0.6); width: 38px; height: 38px;
+            border-radius: 50%; font-size: 18px; cursor: pointer;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+        }
+        .game-exit-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+        .game-header-info { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .game-subject-label { font-size: 0.9rem; font-weight: 600; color: var(--gv-accent, #10b981); }
+        .game-topic-label { font-size: 0.75rem; color: rgba(255,255,255,0.45); font-weight: 400; }
+        .game-new-btn {
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.6); padding: 8px 18px; border-radius: 8px;
+            font-size: 0.8rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; font-family: 'Poppins', sans-serif;
+        }
+        .game-new-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+        .game-stats {
+            display: flex; justify-content: center; gap: 32px;
+            padding: 20px 28px 8px; flex-shrink: 0;
+        }
+        .gstat { display: flex; align-items: center; gap: 10px; }
+        .gstat-icon { font-size: 1.05rem; }
+        .gstat-label { font-size: 0.7rem; color: rgba(255,255,255,0.4); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+        .gstat-bar { width: 72px; height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+        .gstat-fill { height: 100%; border-radius: 3px; transition: width 1s cubic-bezier(0.4,0,0.2,1); width: 50%; }
+        .gstat-fill.money { background: #10b981; }
+        .gstat-fill.time { background: #3b82f6; }
+        .gstat-fill.risk { background: #ef4444; }
+        .gstat-fill.energy { background: #f59e0b; }
+
+        .game-stage {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: 36px 28px; min-height: 0;
+        }
+        .game-narrative {
+            max-width: 660px; font-size: 1.15rem; line-height: 1.9;
+            text-align: center; color: rgba(255,255,255,0.88);
+        }
+        .game-narrative.fade-in { animation: gvFadeIn 0.6s ease forwards; }
+        .game-narrative p { margin-bottom: 14px; }
+        .game-narrative p:last-child { margin-bottom: 0; }
+        .game-narrative strong { color: var(--gv-accent, #10b981); }
+        @keyframes gvFadeIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes gvFadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+        .game-loading-el { display: none; flex-direction: column; align-items: center; gap: 12px; }
+        .game-loading-el.active { display: flex; }
+        .game-loading-el .loading-dots span { background: var(--gv-accent, #10b981); width: 10px; height: 10px; }
+        .game-loading-el .loading-dots { display: flex; gap: 6px; }
+
+        .game-choices {
+            padding: 0 28px 36px; max-width: 660px; margin: 0 auto;
+            width: 100%; display: flex; flex-direction: column; gap: 12px;
+            flex-shrink: 0;
+        }
+        .game-choices.fade-in { animation: gvFadeIn 0.55s ease 0.15s both; }
+        .gchoice-btn {
+            width: 100%; padding: 17px 24px;
+            background: rgba(255,255,255,0.035); border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 12px; color: rgba(255,255,255,0.88);
+            font-size: 0.95rem; font-weight: 500; font-family: 'Poppins', sans-serif;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            text-align: left; line-height: 1.6;
+        }
+        .gchoice-btn:hover {
+            background: rgba(255,255,255,0.07); border-color: var(--gv-accent, #10b981);
+            transform: translateX(8px); box-shadow: 0 0 28px var(--gv-glow, rgba(16,185,129,0.1));
+        }
+        .gchoice-btn.picked { border-color: var(--gv-accent, #10b981); background: rgba(255,255,255,0.09); }
+        .gchoice-btn:disabled { opacity: 0.3; cursor: default; transform: none; box-shadow: none; }
+
+        .game-upsell {
+            text-align: center; padding: 32px 20px; max-width: 480px; margin: 0 auto;
+        }
+        .game-upsell h3 { font-size: 1.1rem; margin-bottom: 10px; color: rgba(255,255,255,0.9); }
+        .game-upsell p { color: rgba(255,255,255,0.55); font-size: 0.9rem; margin-bottom: 20px; }
+        .game-upsell a {
+            display: inline-block; padding: 12px 28px;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color: #fff; border-radius: 10px; text-decoration: none; font-weight: 600;
+        }
+        .game-upsell small { display: block; margin-top: 14px; color: rgba(255,255,255,0.35); font-size: 0.8rem; }
+
         @media (max-width: 768px) {
             .navbar { padding: 0.7rem 4%; }
             .logo span { font-size: 1.1rem; }
@@ -236,6 +341,21 @@
             .chat-input { font-size: 14px; padding: 10px 12px; }
             .send-btn { width: 100%; padding: 12px; }
             .new-topic-btn { font-size: 0.8rem; padding: 8px 16px; margin-top: 10px; }
+
+            /* Game view mobile */
+            .game-header { padding: 12px 16px; }
+            .game-exit-btn { width: 32px; height: 32px; font-size: 15px; }
+            .game-subject-label { font-size: 0.8rem; }
+            .game-topic-label { font-size: 0.68rem; }
+            .game-new-btn { padding: 6px 12px; font-size: 0.72rem; }
+            .game-stats { gap: 14px; padding: 14px 16px 6px; flex-wrap: wrap; justify-content: center; }
+            .gstat-bar { width: 48px; }
+            .gstat-label { display: none; }
+            .game-stage { padding: 24px 18px; }
+            .game-narrative { font-size: 1rem; line-height: 1.75; }
+            .game-choices { padding: 0 18px 28px; gap: 10px; }
+            .gchoice-btn { padding: 14px 18px; font-size: 0.88rem; }
+            .gchoice-btn:hover { transform: translateX(4px); }
         }
     </style>
 </head>
@@ -311,6 +431,31 @@
                 <button class="new-topic-btn" onclick="resetSession()">New Topic</button>
             </div>
         </div>
+    </div>
+
+    <!-- Immersive Game View (fullscreen overlay) -->
+    <div class="game-view" id="gameView">
+        <div class="game-header">
+            <button class="game-exit-btn" onclick="exitGame()" title="Exit game">✕</button>
+            <div class="game-header-info">
+                <span class="game-subject-label" id="gameSubjectLabel"></span>
+                <span class="game-topic-label" id="gameTopicLabel"></span>
+            </div>
+            <button class="game-new-btn" onclick="resetSession()">New Scenario</button>
+        </div>
+        <div class="game-stats" id="gameStats">
+            <div class="gstat"><span class="gstat-icon">💰</span><span class="gstat-label">Resources</span><div class="gstat-bar"><div class="gstat-fill money" id="statMoney"></div></div></div>
+            <div class="gstat"><span class="gstat-icon">⏱️</span><span class="gstat-label">Time</span><div class="gstat-bar"><div class="gstat-fill time" id="statTime"></div></div></div>
+            <div class="gstat"><span class="gstat-icon">⚠️</span><span class="gstat-label">Risk</span><div class="gstat-bar"><div class="gstat-fill risk" id="statRisk"></div></div></div>
+            <div class="gstat"><span class="gstat-icon">⚡</span><span class="gstat-label">Energy</span><div class="gstat-bar"><div class="gstat-fill energy" id="statEnergy"></div></div></div>
+        </div>
+        <div class="game-stage" id="gameStage">
+            <div class="game-narrative" id="gameNarrative"></div>
+            <div class="game-loading-el" id="gameLoadingEl">
+                <div class="loading-dots"><span></span><span></span><span></span></div>
+            </div>
+        </div>
+        <div class="game-choices" id="gameChoices"></div>
     </div>
 
     <script>
@@ -433,6 +578,18 @@
         const userDisplay = document.getElementById('userDisplay');
         const choicesContainer = document.getElementById('choicesContainer');
 
+        // Subject category → immersive game theme
+        const SUBJECT_THEMES = {
+            'Science':       { gradient: 'linear-gradient(160deg, #071a14 0%, #0d2818 50%, #071a14 100%)', accent: '#10b981', glow: 'rgba(16,185,129,0.12)' },
+            'English':       { gradient: 'linear-gradient(160deg, #150d28 0%, #1e1145 50%, #150d28 100%)', accent: '#a78bfa', glow: 'rgba(167,139,250,0.12)' },
+            'Mathematics':   { gradient: 'linear-gradient(160deg, #0a1426 0%, #0f1d3a 50%, #0a1426 100%)', accent: '#3b82f6', glow: 'rgba(59,130,246,0.12)' },
+            'HSIE':          { gradient: 'linear-gradient(160deg, #181208 0%, #261e0a 50%, #181208 100%)', accent: '#f59e0b', glow: 'rgba(245,158,11,0.12)' },
+            'Creative Arts': { gradient: 'linear-gradient(160deg, #1a0916 0%, #2a0e24 50%, #1a0916 100%)', accent: '#ec4899', glow: 'rgba(236,72,153,0.12)' },
+            'TAS':           { gradient: 'linear-gradient(160deg, #081820 0%, #0f2530 50%, #081820 100%)', accent: '#06b6d4', glow: 'rgba(6,182,212,0.12)' },
+            'PDHPE':         { gradient: 'linear-gradient(160deg, #180e04 0%, #251608 50%, #180e04 100%)', accent: '#f97316', glow: 'rgba(249,115,22,0.12)' },
+            'VET':           { gradient: 'linear-gradient(160deg, #101808 0%, #1a250e 50%, #101808 100%)', accent: '#84cc16', glow: 'rgba(132,204,22,0.12)' }
+        };
+
         // Populate module dropdown when subject changes
         subjectInput.addEventListener('change', () => {
             topicInput.innerHTML = '<option value="">Select a module...</option>';
@@ -504,6 +661,7 @@
 
         // Back to mode landing
         function backToModes() {
+            closeGameView();
             activeView.classList.remove('active');
             modeLanding.classList.add('active');
             conversationHistory = [];
@@ -523,21 +681,45 @@
             const subj = subjects.find(s => s.id === subjectId);
             const subject = subj ? subj.name : subjectId;
 
-            setupPanel.style.display = 'none';
-            chatContainer.classList.add('active');
-            chatMessages.innerHTML = '';
-            choicesContainer.innerHTML = '';
             conversationHistory = [];
             gameState = null;
 
-            const initMessage = `Subject: ${subject}\nTopic: ${topic}\nMode: ${currentMode}`;
-            await sendMessage(initMessage, false);
+            if (currentMode === 'game') {
+                // Apply subject theme
+                const theme = SUBJECT_THEMES[subj?.category] || SUBJECT_THEMES['Science'];
+                const gv = document.getElementById('gameView');
+                gv.style.setProperty('--gv-accent', theme.accent);
+                gv.style.setProperty('--gv-glow', theme.glow);
+                gv.style.background = theme.gradient;
+                document.getElementById('gameSubjectLabel').textContent = subject;
+                document.getElementById('gameTopicLabel').textContent = topic;
+
+                gameState = { money: 50, time: 50, risk: 50, energy: 50 };
+                updateGameStats();
+                document.getElementById('gameNarrative').innerHTML = '';
+                document.getElementById('gameChoices').innerHTML = '';
+
+                gv.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                const initMessage = `Subject: ${subject}\nTopic: ${topic}\nMode: game`;
+                await sendMessage(initMessage, false);
+            } else {
+                setupPanel.style.display = 'none';
+                chatContainer.classList.add('active');
+                chatMessages.innerHTML = '';
+                choicesContainer.innerHTML = '';
+
+                const initMessage = `Subject: ${subject}\nTopic: ${topic}\nMode: ${currentMode}`;
+                await sendMessage(initMessage, false);
+            }
         }
 
         // New Topic → back to setup (keep mode + subject)
         function resetSession() {
             conversationHistory = [];
             gameState = null;
+            closeGameView();
             chatMessages.innerHTML = '';
             choicesContainer.innerHTML = '';
             topicInput.value = '';
@@ -545,16 +727,31 @@
             chatContainer.classList.remove('active');
         }
 
+        function closeGameView() {
+            document.getElementById('gameView').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function exitGame() {
+            closeGameView();
+            backToModes();
+        }
+
         async function sendMessage(content, showAsUser = true) {
             if (isLoading) return;
 
-            if (showAsUser) addMessage(content, true);
+            if (showAsUser && currentMode !== 'game') addMessage(content, true);
             conversationHistory.push({ role: 'user', content });
 
             isLoading = true;
-            sendBtn.disabled = true;
-            userInput.disabled = true;
-            showLoading();
+
+            if (currentMode === 'game') {
+                showGameLoading();
+            } else {
+                sendBtn.disabled = true;
+                userInput.disabled = true;
+                showLoading();
+            }
 
             try {
                 const res = await fetch(API_BASE + '/api/chat/learn-irl', {
@@ -567,37 +764,50 @@
                 if (!res.ok) {
                     const err = await res.json().catch(() => ({}));
                     if (err.freeTierExhausted) {
-                        hideLoading();
-                        showFreeTierUpsell();
+                        if (currentMode === 'game') {
+                            hideGameLoading();
+                            showGameUpsell();
+                        } else {
+                            hideLoading();
+                            showFreeTierUpsell();
+                        }
                         return;
                     }
                     throw new Error(err.error || 'Request failed');
                 }
 
                 const data = await res.json();
-                hideLoading();
+
+                if (currentMode === 'game') hideGameLoading();
+                else hideLoading();
 
                 const reply = data.reply || data.content || '';
                 conversationHistory.push({ role: 'assistant', content: reply });
 
                 if (currentMode === 'game') {
                     const parsed = tryParseGameResponse(reply);
-                    if (parsed) {
-                        renderGameResponse(parsed);
-                        return;
-                    }
+                    if (parsed) renderGameResponse(parsed);
+                    else renderGameNarrative(reply);
+                    return;
                 }
 
                 addMessage(reply, false);
 
             } catch (e) {
-                hideLoading();
-                addMessage('Something went wrong. Please try again.', false);
+                if (currentMode === 'game') {
+                    hideGameLoading();
+                    renderGameNarrative('Something went wrong. Please try again.');
+                } else {
+                    hideLoading();
+                    addMessage('Something went wrong. Please try again.', false);
+                }
             } finally {
                 isLoading = false;
-                sendBtn.disabled = false;
-                userInput.disabled = false;
-                userInput.focus();
+                if (currentMode !== 'game') {
+                    sendBtn.disabled = false;
+                    userInput.disabled = false;
+                    userInput.focus();
+                }
             }
         }
 
@@ -620,32 +830,93 @@
             if (data.effects) {
                 if (!gameState) gameState = { money: 50, time: 50, risk: 50, energy: 50 };
                 for (const [key, val] of Object.entries(data.effects)) {
-                    if (gameState[key] !== undefined) gameState[key] += val;
+                    if (gameState[key] !== undefined) gameState[key] = Math.max(0, Math.min(100, gameState[key] + val));
                 }
             }
+            updateGameStats();
 
-            const div = document.createElement('div');
-            div.className = 'message message-bot';
-            div.innerHTML = `<p>${formatResponse(data.message)}</p>`;
-            chatMessages.appendChild(div);
+            const narrativeEl = document.getElementById('gameNarrative');
+            narrativeEl.className = 'game-narrative';
+            narrativeEl.innerHTML = formatGameText(data.message);
+            void narrativeEl.offsetWidth;
+            narrativeEl.classList.add('fade-in');
 
+            const choicesEl = document.getElementById('gameChoices');
             if (data.choices && data.choices.length > 0) {
-                choicesContainer.innerHTML = `<div class="choices" style="padding: 0 24px 16px;">
-                    ${data.choices.map((c) => `<button class="choice-btn" onclick="pickChoice(this, '${escapeAttr(c)}')">${escapeHtml(c)}</button>`).join('')}
-                </div>`;
+                choicesEl.className = 'game-choices';
+                choicesEl.innerHTML = data.choices.map(c =>
+                    `<button class="gchoice-btn" onclick="pickChoice(this, '${escapeAttr(c)}')">${escapeHtml(c)}</button>`
+                ).join('');
+                void choicesEl.offsetWidth;
+                choicesEl.classList.add('fade-in');
             } else {
-                choicesContainer.innerHTML = '';
+                choicesEl.innerHTML = '';
             }
-
-            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         function pickChoice(btn, choice) {
-            document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
-            btn.style.borderColor = 'var(--primary)';
-            btn.style.background = '#f0f2ff';
-            choicesContainer.innerHTML = '';
-            sendMessage(choice, true);
+            if (currentMode === 'game') {
+                document.querySelectorAll('.gchoice-btn').forEach(b => { b.disabled = true; });
+                btn.classList.add('picked');
+                setTimeout(() => {
+                    document.getElementById('gameNarrative').innerHTML = '';
+                    document.getElementById('gameChoices').innerHTML = '';
+                    sendMessage(choice, false);
+                }, 350);
+            } else {
+                document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+                btn.style.borderColor = 'var(--primary)';
+                btn.style.background = '#f0f2ff';
+                choicesContainer.innerHTML = '';
+                sendMessage(choice, true);
+            }
+        }
+
+        // Game view helpers
+        function updateGameStats() {
+            if (!gameState) return;
+            document.getElementById('statMoney').style.width = Math.max(0, Math.min(100, gameState.money)) + '%';
+            document.getElementById('statTime').style.width = Math.max(0, Math.min(100, gameState.time)) + '%';
+            document.getElementById('statRisk').style.width = Math.max(0, Math.min(100, gameState.risk)) + '%';
+            document.getElementById('statEnergy').style.width = Math.max(0, Math.min(100, gameState.energy)) + '%';
+        }
+
+        function formatGameText(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+        }
+
+        function renderGameNarrative(text) {
+            const narrativeEl = document.getElementById('gameNarrative');
+            narrativeEl.className = 'game-narrative';
+            narrativeEl.innerHTML = `<p>${formatGameText(text)}</p>`;
+            void narrativeEl.offsetWidth;
+            narrativeEl.classList.add('fade-in');
+            document.getElementById('gameChoices').innerHTML = '';
+        }
+
+        function showGameLoading() {
+            document.getElementById('gameNarrative').innerHTML = '';
+            document.getElementById('gameChoices').innerHTML = '';
+            document.getElementById('gameLoadingEl').classList.add('active');
+        }
+
+        function hideGameLoading() {
+            document.getElementById('gameLoadingEl').classList.remove('active');
+        }
+
+        function showGameUpsell() {
+            const narrativeEl = document.getElementById('gameNarrative');
+            narrativeEl.className = 'game-narrative fade-in';
+            narrativeEl.innerHTML = `<div class="game-upsell">
+                <h3>You've used your free session for today.</h3>
+                <p>Upgrade to <strong>Premium</strong> for unlimited games and higher quality scenarios.</p>
+                <a href="index.html">See Plans</a>
+                <small>Come back tomorrow for more free uses!</small>
+            </div>`;
+            document.getElementById('gameChoices').innerHTML = '';
         }
 
         function addMessage(content, isUser = false) {
