@@ -1851,10 +1851,19 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 }
             } catch (e) { /* ignore */ }
 
-            // Build subject options from the already-loaded subjects array
+            // Build subject options from the already-loaded subjects array (grouped by category)
             let subjectOpts = '<option value="">Select your subject...</option>';
+            const byCat = {};
             subjects.forEach(s => {
-                subjectOpts += `<option value="${s.id}">${s.name}</option>`;
+                if (!byCat[s.category]) byCat[s.category] = [];
+                byCat[s.category].push(s);
+            });
+            Object.keys(byCat).sort().forEach(cat => {
+                subjectOpts += `<optgroup label="${cat}">`;
+                byCat[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                    subjectOpts += `<option value="${s.id}">${s.name}</option>`;
+                });
+                subjectOpts += '</optgroup>';
             });
 
             document.getElementById('examContent').innerHTML = `
