@@ -531,47 +531,232 @@
         let isLoading = false;
         let pendingScenario = null; // stores selected scenario context
 
-        // Scenario starters per subject category
-        const CATEGORY_SCENARIOS = {
-            'Science': [
-                { icon: '🧪', title: 'Lab Emergency', desc: 'A contamination alarm goes off in the research lab. You\'re the senior tech on shift.', context: 'Scenario: Lab emergency — contamination detected, player is senior lab technician making safety and science decisions' },
-                { icon: '🏥', title: 'Medical Case', desc: 'A patient presents with unusual symptoms. You\'re the specialist they\'ve been referred to.', context: 'Scenario: Medical case — player is a specialist diagnosing and treating based on scientific knowledge' },
-                { icon: '🌿', title: 'Field Research', desc: 'Your expedition team is deep in the field when something unexpected disrupts the study.', context: 'Scenario: Field research expedition — unexpected disruption, player must use scientific method to adapt' }
+        // Scenario starters per subject (keyed by subject ID)
+        const SUBJECT_SCENARIOS = {
+            'agriculture': [
+                { icon: '🌾', title: 'Drought Crisis', desc: 'Your farm is entering its driest season on record. Every decision about water, crops and livestock matters.', context: 'Scenario: Farm manager facing drought — making agricultural decisions about water management, crop selection, and livestock survival' },
+                { icon: '🐄', title: 'Livestock Outbreak', desc: 'A disease has been detected in your herd. Quarantine decisions need to happen now.', context: 'Scenario: Livestock disease outbreak on a farm — biosecurity, animal health, and production decisions' },
+                { icon: '🚜', title: 'New Season Planning', desc: 'You\'ve just taken over a struggling 500-acre property. Plan the season to turn it around.', context: 'Scenario: New farm manager planning a full production season — crop rotation, soil management, and farm economics' }
             ],
-            'English': [
-                { icon: '📰', title: 'Editor Under Pressure', desc: 'You\'re the editor of a major publication. A controversial piece just landed on your desk.', context: 'Scenario: Editor making publishing decisions — weighing ethics, audience, and textual integrity' },
-                { icon: '🎭', title: 'Festival Curator', desc: 'You\'re curating a literary festival. Budget is tight, stakes are high.', context: 'Scenario: Literary festival curation — selecting texts, managing stakeholders, creating meaningful dialogue' },
-                { icon: '✍️', title: 'Writer\'s Dilemma', desc: 'You\'ve been commissioned to adapt a classic text. The producer wants changes you disagree with.', context: 'Scenario: Writer adapting a classic — creative integrity vs commercial pressure' }
+            'ancient-history': [
+                { icon: '🏛️', title: 'Archaeological Dig', desc: 'Your team uncovers something extraordinary at a dig site. But a developer wants to build over it.', context: 'Scenario: Archaeologist at an ancient site — preservation vs development, interpreting evidence, historical significance' },
+                { icon: '📜', title: 'Museum Curator', desc: 'You\'re curating a major ancient civilisation exhibit. A key artefact\'s authenticity is questioned.', context: 'Scenario: Museum curator handling contested ancient artefacts — provenance, historical accuracy, cultural sensitivity' },
+                { icon: '🗿', title: 'Historical Documentary', desc: 'You\'re directing a documentary on an ancient civilisation. Historians disagree on the narrative.', context: 'Scenario: Documentary filmmaker navigating competing historical interpretations of ancient events' }
             ],
-            'Mathematics': [
-                { icon: '🏗️', title: 'Construction Planner', desc: 'You\'re managing a building project. The numbers need to work or the structure won\'t.', context: 'Scenario: Construction project manager — applying mathematical concepts to structural and budgetary decisions' },
-                { icon: '💰', title: 'Financial Advisor', desc: 'A client just inherited $50,000. They need a plan — and you\'re the numbers person.', context: 'Scenario: Financial advisor — applying mathematical modelling to investment and risk decisions' },
-                { icon: '📊', title: 'Data Analyst', desc: 'Your company needs insights from messy data. The board meeting is tomorrow.', context: 'Scenario: Data analyst under deadline — statistical analysis, probability, and data-driven decisions' }
+            'biology': [
+                { icon: '🧬', title: 'Lab Outbreak', desc: 'A containment breach in the biology lab. Samples are compromised and protocols are failing.', context: 'Scenario: Biology lab containment breach — applying knowledge of cells, disease, and biosafety protocols' },
+                { icon: '🏥', title: 'Patient Zero', desc: 'A hospital reports unusual symptoms in multiple patients. You\'re the pathologist on call.', context: 'Scenario: Pathologist investigating a disease cluster — applying biology knowledge of infectious disease, genetics, and immunity' },
+                { icon: '🌿', title: 'Ecosystem Crisis', desc: 'A local ecosystem is collapsing. Species are disappearing and the community wants answers.', context: 'Scenario: Ecologist investigating ecosystem collapse — biodiversity, food webs, and environmental biology' }
             ],
-            'HSIE': [
-                { icon: '⚖️', title: 'Court Advisor', desc: 'A landmark case is being heard. You\'re advising one side — the verdict could change everything.', context: 'Scenario: Legal/policy advisor in a landmark case — applying HSIE knowledge to real decisions' },
-                { icon: '🏪', title: 'Business Owner', desc: 'You just opened a business in a competitive market. Survive the first 6 months.', context: 'Scenario: New business owner — navigating market forces, competition, and economic decisions' },
-                { icon: '🗳️', title: 'Policy Maker', desc: 'Your community faces a crisis. You\'re on the council that decides the response.', context: 'Scenario: Community policy maker — weighing social, economic, and political factors' }
+            'business-studies': [
+                { icon: '🏢', title: 'Startup Founder', desc: 'You just launched a business with $10,000. Every dollar and decision counts.', context: 'Scenario: Startup founder — business planning, operations, marketing, finance, and HR decisions from day one' },
+                { icon: '📉', title: 'Turnaround Manager', desc: 'A once-profitable company is bleeding money. The board hired you to fix it.', context: 'Scenario: Business turnaround manager — diagnosing operational, financial, and marketing failures' },
+                { icon: '🌏', title: 'Franchise Expansion', desc: 'Your business is ready to go national. But expanding too fast could destroy everything.', context: 'Scenario: Business owner planning franchise expansion — growth strategy, operations, finance, and risk' }
             ],
-            'Creative Arts': [
-                { icon: '🎬', title: 'Production Manager', desc: 'Opening night is in two weeks. The lead just quit and the budget is blown.', context: 'Scenario: Production manager for a creative show — managing artistic vision vs practical constraints' },
-                { icon: '🖼️', title: 'Gallery Curator', desc: 'You\'re mounting a controversial exhibition. Artists, sponsors, and critics all want different things.', context: 'Scenario: Gallery curator — balancing artistic expression, commercial viability, and public reaction' },
-                { icon: '🎵', title: 'Music Producer', desc: 'An artist wants to release something bold. The label wants something safe. You decide.', context: 'Scenario: Music producer — creative vs commercial tension, artistic integrity decisions' }
+            'chemistry': [
+                { icon: '⚗️', title: 'Forensic Analyst', desc: 'A crime scene has unknown substances. You\'re the chemist who needs to identify them.', context: 'Scenario: Forensic chemist analysing unknown substances — applying knowledge of reactions, properties, and analytical techniques' },
+                { icon: '🏭', title: 'Industrial Process', desc: 'A chemical plant\'s reaction yield has dropped 40%. Production is halting. Find the problem.', context: 'Scenario: Industrial chemist troubleshooting a failed chemical process — equilibrium, reaction rates, and quality control' },
+                { icon: '💊', title: 'Drug Development', desc: 'Your team is synthesising a new compound. One wrong step and months of work are lost.', context: 'Scenario: Pharmaceutical chemist in drug development — organic chemistry, synthesis, and safety protocols' }
             ],
-            'TAS': [
-                { icon: '⚙️', title: 'Workshop Crisis', desc: 'A critical machine breaks down mid-production. The client deadline is tomorrow.', context: 'Scenario: Workshop/engineering crisis — technical problem-solving under pressure' },
-                { icon: '🍳', title: 'Kitchen Challenge', desc: 'You\'re running a commercial kitchen. A health inspector just walked in unannounced.', context: 'Scenario: Commercial kitchen manager — food safety, quality control, and technical decisions' },
-                { icon: '💻', title: 'Tech Startup', desc: 'Your app just went viral but the servers are crashing. Users are furious.', context: 'Scenario: Tech startup — engineering and technical decisions under pressure' }
+            'construction': [
+                { icon: '🏗️', title: 'Site Safety Crisis', desc: 'An accident just happened on your construction site. WorkCover is on the way.', context: 'Scenario: Construction site manager after a safety incident — WHS compliance, investigation, and site management' },
+                { icon: '📋', title: 'Building Inspection', desc: 'You\'re inspecting a build and something doesn\'t meet code. The builder disagrees.', context: 'Scenario: Building inspector finding code violations — construction standards, safety, and compliance decisions' },
+                { icon: '⏰', title: 'Deadline Crunch', desc: 'The client wants the build done in 2 weeks. You\'re behind schedule and over budget.', context: 'Scenario: Construction project under deadline pressure — scheduling, trade coordination, and quality management' }
             ],
-            'PDHPE': [
-                { icon: '🏃', title: 'Team Coach', desc: 'Finals are next week. Your star player is injured and team morale is crashing.', context: 'Scenario: Sports team coach — training, injury management, and performance decisions' },
-                { icon: '🥗', title: 'Health Consultant', desc: 'A client wants to transform their health in 3 months. You design the plan.', context: 'Scenario: Health consultant — nutrition, exercise science, and lifestyle management' },
-                { icon: '🏥', title: 'Community Health', desc: 'A health crisis hits your local area. You\'re coordinating the community response.', context: 'Scenario: Community health coordinator — public health decisions and resource management' }
+            'dance': [
+                { icon: '💃', title: 'Company Director', desc: 'Your dance company got a major performance slot. But your lead dancer is injured.', context: 'Scenario: Dance company director preparing for a major performance — choreography, safe dance practice, and creative decisions' },
+                { icon: '🎭', title: 'Competition Choreographer', desc: 'You\'re choreographing a piece for a national competition. The theme is controversial.', context: 'Scenario: Choreographer creating a competition piece — composition, movement elements, and artistic expression' },
+                { icon: '🎪', title: 'Festival Producer', desc: 'You\'re producing a multi-act dance festival. Acts clash, budgets shrink, and the venue has limits.', context: 'Scenario: Dance festival producer — managing performance styles, safe practice, and audience experience' }
             ],
-            'VET': [
-                { icon: '🔧', title: 'Site Manager', desc: 'You\'re managing a job site. Safety incident reported — what do you do?', context: 'Scenario: Job site manager — workplace safety, compliance, and technical decisions' },
-                { icon: '🤝', title: 'Client Project', desc: 'A major client has specific requirements that conflict with best practice. Navigate it.', context: 'Scenario: Trade professional — balancing client demands with industry standards' },
-                { icon: '📋', title: 'Quality Inspector', desc: 'You\'re inspecting a completed project. Something doesn\'t look right.', context: 'Scenario: Quality inspector — identifying issues and making compliance decisions' }
+            'design-technology': [
+                { icon: '🎨', title: 'Product Launch', desc: 'Your design prototype just failed testing. The launch event is in 3 weeks.', context: 'Scenario: Product designer with a failing prototype — design process, innovation, materials, and deadline management' },
+                { icon: '♻️', title: 'Sustainability Brief', desc: 'A client wants a product redesigned to be fully sustainable. The budget hasn\'t changed.', context: 'Scenario: Designer tackling a sustainability redesign — materials, emerging technologies, and design constraints' },
+                { icon: '🏆', title: 'Design Competition', desc: 'You\'ve entered a national design competition. Your concept is bold but risky.', context: 'Scenario: Designer in a major competition — innovation, project development, and evaluation under pressure' }
+            ],
+            'drama': [
+                { icon: '🎭', title: 'Theatre Director', desc: 'Opening night is in two weeks. Your lead just quit and the understudy isn\'t ready.', context: 'Scenario: Theatre director in crisis — performance styles, production elements, and creative problem-solving' },
+                { icon: '✍️', title: 'Playwright', desc: 'A theatre company commissioned your play. The producer wants you to change the ending.', context: 'Scenario: Playwright navigating creative integrity vs production demands — scriptwriting and dramatic conventions' },
+                { icon: '🎪', title: 'Festival Programmer', desc: 'You\'re programming a drama festival. One show is brilliant but deeply offensive to some.', context: 'Scenario: Drama festival programmer — balancing artistic merit, audience, and theatrical traditions' }
+            ],
+            'earth-environmental-science': [
+                { icon: '🌋', title: 'Disaster Response', desc: 'A geological event is threatening a coastal town. You\'re the scientist advising evacuation.', context: 'Scenario: Earth scientist advising on natural disaster — plate tectonics, hazards, and risk assessment' },
+                { icon: '⛏️', title: 'Mining Assessment', desc: 'A mining company wants approval for a new site. You\'re the environmental assessor.', context: 'Scenario: Environmental scientist assessing a mining proposal — resource management, human impacts, and earth processes' },
+                { icon: '🌡️', title: 'Climate Report', desc: 'Your climate data shows a troubling trend. The government wants your report by Friday.', context: 'Scenario: Climate scientist preparing a critical report — climate science, data analysis, and policy implications' }
+            ],
+            'economics': [
+                { icon: '🏦', title: 'Reserve Bank Analyst', desc: 'Inflation is spiking and unemployment is rising. You\'re advising on the next interest rate decision.', context: 'Scenario: Reserve Bank analyst during economic instability — monetary policy, markets, and macroeconomic management' },
+                { icon: '📈', title: 'Trade Negotiator', desc: 'Australia is negotiating a major trade deal. You\'re the chief economic advisor.', context: 'Scenario: Trade negotiator — global economy, Australia\'s trade position, and economic policy decisions' },
+                { icon: '💸', title: 'Market Crash', desc: 'Financial markets just crashed 15%. Your clients are panicking. What do you advise?', context: 'Scenario: Financial economist during a market crash — financial markets, economic issues, and crisis management' }
+            ],
+            'engineering-studies': [
+                { icon: '🌉', title: 'Bridge Failure', desc: 'A bridge you helped design is showing stress fractures. Traffic is still flowing.', context: 'Scenario: Civil engineer discovering structural failure — engineering fundamentals, materials, and safety decisions' },
+                { icon: '⚡', title: 'Energy Project', desc: 'You\'re leading a renewable energy installation. The engineering specs don\'t match the site.', context: 'Scenario: Engineer on a renewable energy project — engineering systems, problem-solving, and project management' },
+                { icon: '✈️', title: 'Aerospace Crisis', desc: 'A test flight reveals unexpected behaviour. The prototype needs redesigning before the deadline.', context: 'Scenario: Aerospace engineer troubleshooting a prototype — engineering analysis, systems thinking, and innovation' }
+            ],
+            'english-advanced': [
+                { icon: '📰', title: 'Editor Under Pressure', desc: 'You\'re the editor of a major publication. A controversial piece challenges everything you believe about texts.', context: 'Scenario: Editor of a literary publication — critical analysis of texts, human experiences, and editorial integrity' },
+                { icon: '🎭', title: 'Festival Curator', desc: 'You\'re curating a literary festival exploring how narratives shape our world. Budget is tight.', context: 'Scenario: Literary festival curator — selecting and connecting texts, exploring narrative power and human experiences' },
+                { icon: '✍️', title: 'Adaptation Writer', desc: 'You\'ve been commissioned to adapt a classic text. The producer wants changes you disagree with.', context: 'Scenario: Writer adapting a significant text — craft of writing, textual integrity, and creative decisions' }
+            ],
+            'english-eald': [
+                { icon: '🌏', title: 'Cultural Interpreter', desc: 'A major conference needs someone to bridge two very different cultural perspectives through language.', context: 'Scenario: Cultural interpreter navigating language and identity — EAL/D communication, cultural context, and textual meaning' },
+                { icon: '📝', title: 'Bilingual Editor', desc: 'You\'re editing a publication for a multicultural audience. Tone and meaning shift between languages.', context: 'Scenario: Bilingual editor — language, identity, culture, and making texts accessible across backgrounds' },
+                { icon: '🎤', title: 'Community Voice', desc: 'Your community needs someone to tell their migration story. You\'re asked to write it.', context: 'Scenario: Writer capturing a community\'s migration experience — language, identity, culture, and human experiences' }
+            ],
+            'english-extension': [
+                { icon: '📚', title: 'Thesis Defence', desc: 'Your controversial literary thesis is being challenged by a panel of experts. Defend your reading.', context: 'Scenario: Literary scholar defending a thesis — texts, culture, value, critical frameworks, and textual conversations' },
+                { icon: '🔍', title: 'Archival Discovery', desc: 'You\'ve found an unpublished manuscript that could redefine an author\'s legacy. What do you do with it?', context: 'Scenario: Literary researcher with a major discovery — authorship, authority, textual value, and ethical decisions' },
+                { icon: '🎓', title: 'Research Project', desc: 'Your research uncovers a connection between two literary worlds that nobody has seen before.', context: 'Scenario: Extension English researcher — literary worlds, intertextuality, and original critical analysis' }
+            ],
+            'english-standard': [
+                { icon: '📱', title: 'Content Creator', desc: 'Your post just went viral for the wrong reasons. How you respond will define your brand.', context: 'Scenario: Content creator managing a viral moment — language, identity, audience, and contemporary communication' },
+                { icon: '🗞️', title: 'Journalist', desc: 'You\'re covering a story that could help your community but hurt someone you know.', context: 'Scenario: Journalist navigating ethics — close study of real-world texts, human experiences, and writing for purpose' },
+                { icon: '📖', title: 'Community Storyteller', desc: 'Your town is losing its identity. You\'ve been asked to write something that captures what matters.', context: 'Scenario: Community storyteller — craft of writing, contemporary possibilities, and capturing human experiences' }
+            ],
+            'english-studies': [
+                { icon: '🎙️', title: 'Podcast Host', desc: 'Your podcast covers everyday Australians. This week\'s guest has a story that challenges your audience.', context: 'Scenario: Podcast host — voices of Australia, everyday heroes, and navigating narrative and human experiences' },
+                { icon: '📺', title: 'Media Producer', desc: 'You\'re producing a documentary about media influence on young Australians. The sponsors want changes.', context: 'Scenario: Media producer — media and influence, uncovering truth, and ethical storytelling decisions' },
+                { icon: '✏️', title: 'Campaign Writer', desc: 'A local cause needs a persuasive campaign. You\'re writing the words that could change minds.', context: 'Scenario: Campaign writer — writing for purpose, achieving through English, and real-world communication' }
+            ],
+            'enterprise-computing': [
+                { icon: '🔒', title: 'Cybersecurity Breach', desc: 'Your company\'s network has been compromised. Customer data may be exposed. Respond now.', context: 'Scenario: IT security lead during a cyberattack — cybersecurity principles, networking systems, and data protection decisions' },
+                { icon: '📊', title: 'Data Pipeline Crash', desc: 'The company\'s data analytics platform just went down before a major board presentation.', context: 'Scenario: Data engineer fixing a critical system failure — data science, data visualisation, and enterprise systems' },
+                { icon: '🤖', title: 'AI System Launch', desc: 'Your team\'s intelligent system is ready to deploy but testing reveals bias in the model.', context: 'Scenario: Enterprise computing lead launching an AI system — intelligent systems, ethics, user experience, and data science' }
+            ],
+            'food-technology': [
+                { icon: '🍳', title: 'Product Development', desc: 'Your food company needs a new product line. You\'re leading R&D with a tight deadline.', context: 'Scenario: Food technologist developing a new product — food manufacture, nutrition, quality, and product development' },
+                { icon: '⚠️', title: 'Food Safety Crisis', desc: 'A contamination scare has hit your production line. Recalls are being discussed.', context: 'Scenario: Food safety manager during a contamination crisis — food quality, safety standards, and industry regulations' },
+                { icon: '🥗', title: 'Nutrition Program', desc: 'A school district wants you to redesign their meal program. Budget is limited, standards are high.', context: 'Scenario: Nutritionist redesigning a school food program — nutrition, food availability, contemporary nutrition issues' }
+            ],
+            'geography': [
+                { icon: '🏙️', title: 'Urban Planner', desc: 'A growing city needs a new suburb designed from scratch. Sustainability is non-negotiable.', context: 'Scenario: Urban planner designing a new suburb — rural and urban places, sustainability, and human-environment interactions' },
+                { icon: '🌊', title: 'Disaster Mapper', desc: 'A natural disaster is approaching. Your geographic data will determine the evacuation plan.', context: 'Scenario: Geographer advising on disaster response — earth\'s natural systems, hazards, and spatial analysis' },
+                { icon: '🌍', title: 'Environmental Consultant', desc: 'A development threatens a biodiversity hotspot. You\'re writing the environmental impact report.', context: 'Scenario: Environmental geographer assessing a development — ecosystems, biodiversity, and global sustainability' }
+            ],
+            'health-movement-science': [
+                { icon: '🏃', title: 'Team Coach', desc: 'Finals are next week. Your star player is injured and team morale is crashing.', context: 'Scenario: Sports team coach before finals — training for performance, body in motion, injury and recovery decisions' },
+                { icon: '🥗', title: 'Health Program Designer', desc: 'A community has rising health issues. You\'re designing an intervention program.', context: 'Scenario: Health program designer — health for individuals and communities, Australian and global health context' },
+                { icon: '🧠', title: 'Performance Scientist', desc: 'An elite athlete is underperforming. The data says one thing, the athlete says another.', context: 'Scenario: Sports scientist analysing performance — body and mind in motion, training, and evidence-based decisions' }
+            ],
+            'history-extension': [
+                { icon: '📚', title: 'Historiography Debate', desc: 'Two historians disagree violently about a pivotal event. You\'re moderating the public debate.', context: 'Scenario: Historiography moderator — competing historical perspectives, methodology, and the nature of history' },
+                { icon: '🔎', title: 'Archive Researcher', desc: 'You\'ve found documents that contradict the accepted narrative. Publishing could be controversial.', context: 'Scenario: Archival researcher with a controversial discovery — historical method, evidence, and ethical obligations' },
+                { icon: '🎓', title: 'Research Project', desc: 'Your extension research project is due. Your thesis is bold but your evidence is contested.', context: 'Scenario: History Extension student defending a research project — constructing history, methodology, and argumentation' }
+            ],
+            'hospitality': [
+                { icon: '🍽️', title: 'Restaurant Crisis', desc: 'Your restaurant is fully booked, the sous chef called in sick, and a food critic just walked in.', context: 'Scenario: Restaurant manager during a crisis night — hospitality operations, food and beverage service, and quality management' },
+                { icon: '🎉', title: 'Catering Event', desc: 'You\'re catering a 200-person corporate event. The client just changed the menu 48 hours out.', context: 'Scenario: Catering manager with last-minute changes — hospitality services, food preparation, and client management' },
+                { icon: '🏨', title: 'Hotel Manager', desc: 'A VIP guest has a complaint that could go viral. Your response will define the hotel\'s reputation.', context: 'Scenario: Hotel hospitality manager handling a VIP complaint — customer service, hospitality business, and crisis management' }
+            ],
+            'industrial-tech-automotive': [
+                { icon: '🔧', title: 'Workshop Diagnosis', desc: 'A customer\'s car has an intermittent fault nobody can find. They want it fixed today.', context: 'Scenario: Automotive technician diagnosing a complex fault — engine systems, electronics, and diagnostic problem-solving' },
+                { icon: '🏎️', title: 'Race Preparation', desc: 'A racing team needs their car prepped for the weekend. Time is tight and the engine sounds wrong.', context: 'Scenario: Automotive technician preparing a race car — engine, transmission, braking, and performance systems' },
+                { icon: '🚗', title: 'Fleet Manager', desc: 'You manage a fleet of 50 vehicles. Three just failed inspection and the budget is spent.', context: 'Scenario: Fleet manager handling vehicle failures — automotive systems, maintenance scheduling, and safety compliance' }
+            ],
+            'industrial-tech-electronics': [
+                { icon: '⚡', title: 'Circuit Failure', desc: 'A prototype PCB keeps failing at the same point. The client demo is tomorrow.', context: 'Scenario: Electronics technician debugging a prototype — circuit design, components, semiconductors, and testing' },
+                { icon: '🔌', title: 'Production Line', desc: 'The automated production line is producing faulty units. Quality control flagged it — find the issue.', context: 'Scenario: Electronics engineer on a production line — digital electronics, PCB construction, and quality assurance' },
+                { icon: '📡', title: 'System Integration', desc: 'Your sensor system isn\'t communicating with the main controller. The installation deadline is today.', context: 'Scenario: Electronics technician integrating a system — input/output devices, circuitry, and troubleshooting' }
+            ],
+            'industrial-tech-graphics': [
+                { icon: '📐', title: 'Architecture Bid', desc: 'Your firm is pitching a major building design. The presentation needs to be flawless.', context: 'Scenario: Graphics technician preparing architectural drawings for a pitch — CAD, architectural drawing, and presentation' },
+                { icon: '🏠', title: 'Client Revision', desc: 'The client rejected your engineering drawings. They want major changes by end of week.', context: 'Scenario: Graphics technician handling client revisions — engineering drawing, product drawing, and standards compliance' },
+                { icon: '🎨', title: 'Design Competition', desc: 'You\'ve entered a technical drawing competition. Your concept pushes the boundaries of convention.', context: 'Scenario: Graphics designer in a competition — pictorial drawing, CAD, computer graphics, and design communication' }
+            ],
+            'industrial-tech-metals': [
+                { icon: '🔩', title: 'Custom Fabrication', desc: 'A client needs a precision metal component. The tolerances are tight and the material is expensive.', context: 'Scenario: Metal fabricator on a precision job — properties of metals, machining, joining, and quality control' },
+                { icon: '🏗️', title: 'Structural Inspection', desc: 'A welded structure shows signs of stress. You need to assess and recommend action.', context: 'Scenario: Metals engineer inspecting a structure — welding, metal properties, modification, and safety assessment' },
+                { icon: '⚙️', title: 'Production Rush', desc: 'A bulk order just came in with a 1-week deadline. Your workshop needs to deliver.', context: 'Scenario: Workshop manager handling a rush order — cutting, machining, joining, finishing, and production management' }
+            ],
+            'industrial-tech-multimedia': [
+                { icon: '🎬', title: 'Client Campaign', desc: 'A major brand wants a multimedia campaign. The concept is approved but execution is behind.', context: 'Scenario: Multimedia producer creating a brand campaign — video production, graphics, web, and project management' },
+                { icon: '🎮', title: 'Interactive Exhibit', desc: 'A museum wants an interactive digital exhibit. The tech needs to work for all ages.', context: 'Scenario: Multimedia developer building an interactive exhibit — animation, audio, digital imaging, and UX design' },
+                { icon: '📱', title: 'Product Launch', desc: 'You\'re creating the launch video and web experience for a new product. It needs to go viral.', context: 'Scenario: Multimedia creator producing a product launch — video, audio, web design, and digital storytelling' }
+            ],
+            'industrial-tech-timber': [
+                { icon: '🪑', title: 'Custom Furniture', desc: 'A client wants a bespoke dining set from sustainably sourced timber. The design is complex.', context: 'Scenario: Furniture maker on a custom commission — timber properties, joints, construction techniques, and finishing' },
+                { icon: '🏚️', title: 'Renovation Project', desc: 'You\'re restoring timber features in a heritage building. The original wood is hard to match.', context: 'Scenario: Timber craftsperson on a heritage restoration — timber structure, manufactured boards, fittings, and techniques' },
+                { icon: '🌲', title: 'Supply Crisis', desc: 'Your main timber supplier just went under. You have orders to fill and limited stock.', context: 'Scenario: Workshop manager handling a supply crisis — timber properties, alternative materials, and production decisions' }
+            ],
+            'information-digital-technology': [
+                { icon: '🌐', title: 'Network Breach', desc: 'Your school\'s network has been compromised. Student data might be at risk.', context: 'Scenario: IT administrator during a network security breach — networking, digital systems, and data protection' },
+                { icon: '☁️', title: 'Cloud Migration', desc: 'The company is moving everything to the cloud. The migration plan has hit unexpected problems.', context: 'Scenario: IT professional managing a cloud migration — networking, cloud computing, and digital systems decisions' },
+                { icon: '📊', title: 'Data Governance', desc: 'A new privacy regulation means your data systems need a complete overhaul. Budget is limited.', context: 'Scenario: IT manager implementing data governance — data and information, digital issues, and compliance' }
+            ],
+            'investigating-science': [
+                { icon: '🔬', title: 'Research Fraud', desc: 'A colleague\'s published results can\'t be replicated. You suspect the data was fabricated.', context: 'Scenario: Scientist investigating potential research fraud — scientific method, theories and laws, fact or fallacy' },
+                { icon: '🧪', title: 'Experimental Design', desc: 'Your experiment keeps producing unexpected results. Is it a breakthrough or a flaw?', context: 'Scenario: Scientist with anomalous results — cause and effect, scientific models, and investigation methodology' },
+                { icon: '🌍', title: 'Science vs Policy', desc: 'Your research findings conflict with government policy. The media wants a statement.', context: 'Scenario: Scientist navigating science and society — communicating findings, technologies, and public impact' }
+            ],
+            'legal-studies': [
+                { icon: '⚖️', title: 'Defence Lawyer', desc: 'You\'re defending someone the public has already convicted. The evidence is messy.', context: 'Scenario: Defence lawyer in a high-profile case — crime, the legal system, and individual rights' },
+                { icon: '🏛️', title: 'Human Rights Advocate', desc: 'A community\'s rights are being violated. You\'re leading the legal challenge.', context: 'Scenario: Human rights advocate mounting a legal challenge — human rights, law in practice, and the legal system' },
+                { icon: '📋', title: 'Policy Drafter', desc: 'New legislation is needed urgently. You\'re drafting it, but stakeholders disagree on everything.', context: 'Scenario: Legal policy drafter — the legal system, individual and the law, and balancing competing interests' }
+            ],
+            'mathematics-advanced': [
+                { icon: '🏗️', title: 'Engineering Design', desc: 'A bridge design needs your mathematical verification. If the numbers are wrong, it fails.', context: 'Scenario: Mathematician verifying an engineering design — calculus, functions, and mathematical modelling' },
+                { icon: '📈', title: 'Data Scientist', desc: 'Your company needs predictive models from complex data. The board meets tomorrow.', context: 'Scenario: Data scientist building predictive models — probability, statistics, functions, and calculus applications' },
+                { icon: '💰', title: 'Financial Modeller', desc: 'A major investment decision rests on your financial model. Millions are at stake.', context: 'Scenario: Financial modeller — sequences and series, financial mathematics, exponential and logarithmic functions' }
+            ],
+            'mathematics-extension-1': [
+                { icon: '🚀', title: 'Space Trajectory', desc: 'You\'re calculating the launch trajectory for a satellite. One error and it\'s lost in space.', context: 'Scenario: Mathematician calculating space trajectories — vectors, further calculus, and trigonometric functions' },
+                { icon: '🔐', title: 'Cryptographer', desc: 'An encrypted message needs breaking. The pattern is there — you just need to find it.', context: 'Scenario: Cryptographer breaking a code — combinatorics, binomial theorem, proof, and mathematical reasoning' },
+                { icon: '🏛️', title: 'Structural Analyst', desc: 'A heritage building is being assessed. Your vector analysis determines if it\'s safe.', context: 'Scenario: Structural analyst using advanced mathematics — vectors, further applications of calculus, and mathematical modelling' }
+            ],
+            'mathematics-extension-2': [
+                { icon: '🔬', title: 'Research Mathematician', desc: 'Your proof could solve a long-standing conjecture. But there\'s a gap in the logic.', context: 'Scenario: Research mathematician working on a proof — nature of proof, complex numbers, and mathematical reasoning' },
+                { icon: '⚛️', title: 'Quantum Computing', desc: 'Your team needs complex number calculations to model a quantum system. Precision is everything.', context: 'Scenario: Quantum computing researcher — complex numbers, further integration, and advanced mathematical methods' },
+                { icon: '🌊', title: 'Mechanics Modelling', desc: 'A physical system is behaving unexpectedly. Your differential equations need to explain why.', context: 'Scenario: Applied mathematician modelling a mechanical system — applications of calculus to mechanics, vectors, and integration' }
+            ],
+            'mathematics-standard': [
+                { icon: '💵', title: 'Budget Manager', desc: 'You\'re managing a $50,000 community project budget. Every dollar needs to be justified.', context: 'Scenario: Budget manager for a community project — managing money, investment, depreciation, and financial mathematics' },
+                { icon: '🎪', title: 'Event Planner', desc: 'You\'re planning a festival for 5,000 people. Logistics, timing, and costs all need to work.', context: 'Scenario: Event planner using practical mathematics — measurement, networks, ratios, rates, and scheduling' },
+                { icon: '📊', title: 'Retail Analyst', desc: 'Sales data shows a worrying trend. Your analysis will determine whether stores close.', context: 'Scenario: Retail analyst interpreting data — data analysis, probability, normal distribution, and algebraic relationships' }
+            ],
+            'modern-history': [
+                { icon: '📰', title: 'War Correspondent', desc: 'You\'re reporting from a conflict zone. The truth is messy and all sides want your story.', context: 'Scenario: War correspondent in a modern conflict — power and authority, peace and conflict, and ethical reporting' },
+                { icon: '🕊️', title: 'Peace Negotiator', desc: 'Two nations are on the brink. You\'re at the table trying to broker a ceasefire.', context: 'Scenario: Peace negotiator — power and authority in the modern world, peace and conflict, and diplomacy' },
+                { icon: '🎬', title: 'Documentary Maker', desc: 'Your documentary could change how people see a pivotal moment in modern history.', context: 'Scenario: Documentary filmmaker covering modern history — shaping of the modern world, national studies, and historical narrative' }
+            ],
+            'music-1': [
+                { icon: '🎸', title: 'Band Manager', desc: 'Your band just got a record deal offer. But the contract has strings attached.', context: 'Scenario: Band manager negotiating a deal — music industry, performance, composition, and artistic decisions' },
+                { icon: '🎤', title: 'Festival Organiser', desc: 'You\'re running a music festival. A headline act just cancelled 48 hours before doors open.', context: 'Scenario: Music festival organiser in crisis — Australian music, popular music, performance, and event management' },
+                { icon: '🎧', title: 'Recording Session', desc: 'You\'re producing a recording session. The artist wants one thing, the label wants another.', context: 'Scenario: Music producer in a recording session — composition, musicology, aural skills, and artistic integrity' }
+            ],
+            'music-2': [
+                { icon: '🎻', title: 'Orchestra Conductor', desc: 'The concert is tonight. The first violin disagrees with your interpretation of the score.', context: 'Scenario: Orchestra conductor before a major concert — performance, musicology, and musical interpretation (1600-1900)' },
+                { icon: '🎼', title: 'Composition Commission', desc: 'You\'ve been commissioned to compose a piece for a major event. The brief is vague.', context: 'Scenario: Composer working on a commission — composition, aural skills, and contemporary music creation' },
+                { icon: '📝', title: 'Music Critic', desc: 'A controversial new work is dividing audiences. Your review will shape public opinion.', context: 'Scenario: Music critic reviewing a new work — musicology, music of the last 25 years, and critical analysis' }
+            ],
+            'physics': [
+                { icon: '🛰️', title: 'Space Mission', desc: 'A satellite is off course. Your physics calculations will determine if the mission is saved or lost.', context: 'Scenario: Mission physicist correcting satellite trajectory — mechanics, electromagnetism, and orbital dynamics' },
+                { icon: '⚡', title: 'Power Grid Crisis', desc: 'A city\'s power grid is failing during a heatwave. You\'re the physicist advising the engineers.', context: 'Scenario: Physicist advising on a power grid crisis — electricity, magnetism, waves, and thermodynamics' },
+                { icon: '🔭', title: 'Observatory Discovery', desc: 'Your telescope data shows something that shouldn\'t exist. Publish it or verify first?', context: 'Scenario: Astrophysicist with an anomalous discovery — nature of light, the universe, and scientific methodology' }
+            ],
+            'science-extension': [
+                { icon: '🔬', title: 'Innovation Project', desc: 'Your research could lead to a breakthrough, but replication is proving impossible.', context: 'Scenario: Science extension researcher with a potential breakthrough — scientific inquiry, innovation, and methodology' },
+                { icon: '💡', title: 'Ethics Committee', desc: 'A promising experiment raises serious ethical concerns. You\'re on the review committee.', context: 'Scenario: Ethics committee member reviewing a science project — scientific inquiry, innovation, and ethical boundaries' },
+                { icon: '🎓', title: 'Research Presentation', desc: 'You\'re presenting your extension research to a panel. They\'re sceptical of your methods.', context: 'Scenario: Student defending a science extension project — scientific inquiry, communication, and peer review' }
+            ],
+            'society-culture': [
+                { icon: '🔍', title: 'Social Researcher', desc: 'Your study on social exclusion has uncovered something uncomfortable. Do you publish?', context: 'Scenario: Social researcher with controversial findings — social inclusion/exclusion, personal identity, and ethical research' },
+                { icon: '🤝', title: 'Community Organiser', desc: 'Two cultural groups in your area are in conflict. You\'re mediating the community meeting.', context: 'Scenario: Community organiser mediating cultural conflict — intercultural communication, social identity, and continuity and change' },
+                { icon: '🌏', title: 'Cultural Consultant', desc: 'A company wants to expand into a new market. Their approach is culturally tone-deaf.', context: 'Scenario: Cultural consultant advising a company — social and cultural world, intercultural communication, and identity' }
+            ],
+            'software-engineering': [
+                { icon: '🚨', title: 'Production Outage', desc: 'Your app just crashed in production. 100,000 users are affected. Find and fix it.', context: 'Scenario: Software engineer during a production outage — programming, secure architecture, and debugging under pressure' },
+                { icon: '🏃', title: 'Feature Sprint', desc: 'The client wants a major feature shipped in one week. Your team says it\'s impossible.', context: 'Scenario: Software engineer leading a feature sprint — OOP, web programming, project management, and agile decisions' },
+                { icon: '🔒', title: 'Security Audit', desc: 'A penetration test found critical vulnerabilities in your system. Fix them before launch.', context: 'Scenario: Software engineer handling security vulnerabilities — secure software architecture, cybersecurity, and code quality' }
+            ],
+            'studies-of-religion': [
+                { icon: '🕊️', title: 'Interfaith Mediator', desc: 'A dispute between religious communities threatens to escalate. You\'re called in to mediate.', context: 'Scenario: Interfaith mediator — nature of religion, belief systems in Australia, and religion and peace' },
+                { icon: '⚖️', title: 'Ethics Committee', desc: 'A hospital ethics committee must decide on a case where religious beliefs conflict with treatment.', context: 'Scenario: Ethics committee with a religion vs medicine conflict — nature of religion, belief systems, and ethical frameworks' },
+                { icon: '🏛️', title: 'Heritage Advisor', desc: 'A sacred site is threatened by development. Multiple faiths have a claim to it.', context: 'Scenario: Heritage advisor protecting a sacred site — religious traditions, religion in Australia, and cultural significance' }
+            ],
+            'visual-arts': [
+                { icon: '🖼️', title: 'Gallery Curator', desc: 'You\'re mounting a controversial exhibition. Artists, sponsors, and critics all want different things.', context: 'Scenario: Gallery curator balancing stakeholders — artmaking, art criticism, the frames, and the conceptual framework' },
+                { icon: '🎨', title: 'Commission Artist', desc: 'A corporate client wants bold art for their headquarters. Their brief clashes with your artistic vision.', context: 'Scenario: Visual artist navigating a commission — artmaking practice, the frames, and creative vs commercial tension' },
+                { icon: '🔧', title: 'Art Restorer', desc: 'A valuable artwork is deteriorating. Your restoration decisions will define its future.', context: 'Scenario: Art restorer making preservation decisions — art history, art criticism, materials, and ethical conservation' }
             ]
         };
 
@@ -806,7 +991,8 @@
 
         function showScenarioPicker(subj, subject, topic) {
             const category = subj?.category || 'Science';
-            const scenarios = CATEGORY_SCENARIOS[category] || CATEGORY_SCENARIOS['Science'];
+            const subjectId = subj?.id || '';
+            const scenarios = SUBJECT_SCENARIOS[subjectId] || SUBJECT_SCENARIOS['biology'];
             const theme = SUBJECT_THEMES[category] || SUBJECT_THEMES['Science'];
 
             const picker = document.getElementById('scenarioPicker');
