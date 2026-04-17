@@ -63,958 +63,442 @@
     <style>
         :root {
             --primary: #6C63FF;
-            --secondary: #2A2A2A;
+            --primary-glow: rgba(108,99,255,0.3);
             --accent: #FF6584;
-            --light-bg: #F9F9FB;
+            --bg: #08080d;
+            --bg-card: #111118;
+            --bg-elevated: #1a1a26;
+            --text: #ffffff;
+            --text-sec: rgba(255,255,255,0.6);
+            --text-muted: rgba(255,255,255,0.3);
+            --border: rgba(255,255,255,0.06);
             --white: #ffffff;
-            --shadow: 0 4px 20px rgba(0,0,0,0.08);
-            --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+            --shadow: 0 4px 30px rgba(0,0,0,0.5);
+            --shadow-lg: 0 10px 60px rgba(0,0,0,0.6);
             --radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; scroll-behavior:smooth; }
+        body { background:var(--bg); color:var(--text); line-height:1.6; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: var(--light-bg);
-            color: var(--secondary);
-            line-height: 1.6;
-        }
-
-        /* ========== NAVIGATION ========== */
+        /* ── NAV (glass) ── */
         .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem 5%;
-            background: var(--white);
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(0,0,0,0.02);
+            display:flex; justify-content:space-between; align-items:center;
+            padding:1rem 5%;
+            background:rgba(8,8,13,0.82);
+            backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+            border-bottom:1px solid var(--border);
+            position:sticky; top:0; z-index:1000;
         }
+        .mobile-menu-btn { display:none; background:none; border:none; font-size:1.5rem; cursor:pointer; padding:8px; color:var(--text); }
+        .logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+        .logo img { height:42px; width:auto; }
+        .logo span { font-size:1.5rem; font-weight:700; color:var(--primary); letter-spacing:-0.5px; }
+        .nav-links { list-style:none; display:flex; gap:2.5rem; align-items:center; }
+        .nav-links a { text-decoration:none; color:var(--text-sec); font-weight:500; transition:var(--transition); position:relative; }
+        .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--primary); transition:width 0.3s ease; }
+        .nav-links a:hover { color:var(--white); }
+        .nav-links a:hover::after { width:100%; }
 
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 8px;
-            color: var(--secondary);
-        }
+        /* ── BUTTONS ── */
+        .btn { display:inline-block; padding:0.8rem 1.8rem; border-radius:50px; text-decoration:none; font-weight:600; font-size:0.95rem; cursor:pointer; transition:var(--transition); border:none; }
+        .btn-primary { background:var(--primary); color:var(--white) !important; }
+        .btn-primary:hover { transform:translateY(-3px); box-shadow:0 8px 25px var(--primary-glow); }
+        .btn-glow { box-shadow:0 0 20px var(--primary-glow); }
+        .btn-ghost { border:2px solid rgba(255,255,255,0.2); color:var(--white); background:transparent; }
+        .btn-ghost:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.4); }
+        .btn-secondary { border:2px solid var(--primary); color:var(--primary); background:transparent; }
+        .btn-secondary:hover { background:var(--primary); color:white; }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-
-        .logo img {
-            height: 42px;
-            width: auto;
-        }
-
-        .logo span {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            letter-spacing: -0.5px;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 2.5rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--secondary);
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* ========== BUTTONS ========== */
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 1.8rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--white) !important;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.35);
-        }
-
-        .btn-secondary {
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            background: transparent;
-        }
-
-        .btn-secondary:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* ========== SALE BANNER ========== */
+        /* ── SALE BANNER ── */
         .sale-banner {
-            background: linear-gradient(135deg, #ff6b35 0%, #f7c948 50%, #ff6b35 100%);
-            background-size: 200% 200%;
-            animation: salePulse 3s ease-in-out infinite;
-            color: #fff;
-            text-align: center;
-            padding: 0.9rem 5%;
-            font-weight: 600;
-            font-size: 1.05rem;
-            letter-spacing: 0.3px;
-            cursor: pointer;
-            position: relative;
-            z-index: 999;
+            background:linear-gradient(135deg,#ff6b35 0%,#f7c948 50%,#ff6b35 100%);
+            background-size:200% 200%; animation:salePulse 3s ease-in-out infinite;
+            color:#fff; text-align:center; padding:0.9rem 5%; font-weight:600;
+            font-size:1.05rem; letter-spacing:0.3px; cursor:pointer; position:relative; z-index:999;
         }
+        .sale-banner:hover { filter:brightness(1.08); }
+        .sale-banner a { color:#fff; text-decoration:underline; font-weight:700; }
+        @keyframes salePulse { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
 
-        .sale-banner:hover {
-            filter: brightness(1.08);
-        }
-
-        .sale-banner a {
-            color: #fff;
-            text-decoration: underline;
-            font-weight: 700;
-        }
-
-        .sale-banner .sale-timer {
-            font-weight: 400;
-            font-size: 0.9rem;
-            opacity: 0.95;
-        }
-
-        @keyframes salePulse {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        /* ========== HERO SECTION ========== */
+        /* ── HERO (full viewport, dark) ── */
         .hero {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4.5rem 5% 3.5rem;
-            min-height: auto;
-            background: linear-gradient(135deg, #ffffff 0%, #f5f7ff 50%, #ebe8ff 100%);
-            text-align: center;
+            min-height:100vh; display:flex; align-items:center; justify-content:center;
+            padding:6rem 5% 4rem; text-align:center; position:relative; overflow:hidden;
+            background:var(--bg);
         }
-
-        .hero-inner {
-            max-width: 720px;
-            margin: 0 auto;
-            width: 100%;
+        .hero-grid-bg {
+            position:absolute; inset:0;
+            background-image:
+                linear-gradient(rgba(108,99,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(108,99,255,0.04) 1px, transparent 1px);
+            background-size:60px 60px;
+            mask-image:radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 100%);
+            -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 100%);
         }
-
-        .hero-text h1 {
-            font-size: 2.8rem;
-            line-height: 1.12;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            color: var(--secondary);
+        .hero-glow {
+            position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+            width:500px; height:500px;
+            background:radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%);
+            border-radius:50%; filter:blur(60px); pointer-events:none;
         }
-
+        .hero-inner { max-width:800px; margin:0 auto; width:100%; position:relative; z-index:1; }
+        .hero-badge {
+            display:inline-block; padding:6px 18px; border-radius:50px;
+            background:rgba(108,99,255,0.12); border:1px solid rgba(108,99,255,0.25);
+            color:var(--primary); font-size:0.82rem; font-weight:600; letter-spacing:0.5px;
+            margin-bottom:1.5rem; text-transform:uppercase;
+        }
+        .hero-text h1 { font-size:4.5rem; line-height:1.05; margin-bottom:1.2rem; font-weight:800; letter-spacing:-2px; }
         .hero-text h1 .highlight {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            background:linear-gradient(135deg, var(--primary), var(--accent), var(--primary));
+            background-size:200% 200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text; animation:gradShift 6s ease infinite;
+        }
+        @keyframes gradShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        .hero-text p.hero-sub { font-size:1.15rem; color:var(--text-sec); margin-bottom:2rem; line-height:1.7; max-width:600px; margin-left:auto; margin-right:auto; }
+        .hero-buttons { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
+        .hero-text .hero-trust { margin-top:1.5rem; font-size:0.82rem; color:var(--text-muted); }
+        .hero-scroll {
+            position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+            display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--text-muted); font-size:0.78rem;
+        }
+        .scroll-line { width:1px; height:40px; background:linear-gradient(to bottom, var(--primary), transparent); animation:scrollPulse 2s infinite; }
+        @keyframes scrollPulse { 0%,100%{opacity:1;height:40px} 50%{opacity:0.4;height:25px} }
+
+        /* ── SHOWCASE SECTIONS ── */
+        .showcase {
+            padding:6rem 5%; position:relative;
+            border-top:1px solid var(--border);
+        }
+        .showcase:nth-child(even) { background:rgba(255,255,255,0.015); }
+        .showcase-inner {
+            max-width:1100px; margin:0 auto;
+            display:flex; align-items:center; gap:4rem;
+        }
+        .showcase-reverse .showcase-inner { flex-direction:row-reverse; }
+        .showcase-text { flex:1; min-width:0; }
+        .showcase-demo { flex:1.1; min-width:0; }
+        .showcase-label {
+            display:inline-block; font-size:0.78rem; font-weight:700; text-transform:uppercase;
+            letter-spacing:1.5px; color:var(--primary); margin-bottom:0.8rem;
+        }
+        .showcase h2 { font-size:2.4rem; font-weight:700; margin-bottom:1rem; letter-spacing:-0.5px; line-height:1.15; }
+        .showcase h2 .highlight {
+            background:linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+        }
+        .showcase p { color:var(--text-sec); font-size:1rem; line-height:1.7; margin-bottom:1.5rem; }
+        .showcase-pills { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1.8rem; }
+        .showcase-pills span {
+            background:rgba(255,255,255,0.05); border:1px solid var(--border);
+            padding:5px 14px; border-radius:50px; font-size:0.78rem; font-weight:600; color:var(--text-sec);
         }
 
-        .hero-text p.hero-sub {
-            font-size: 1.15rem;
-            color: #555;
-            margin-bottom: 1.8rem;
-            line-height: 1.6;
-            font-weight: 400;
+        /* ── DEMO WINDOWS ── */
+        .demo-window {
+            background:var(--bg-card); border-radius:14px; border:1px solid var(--border);
+            overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.4);
         }
-
-        .hero-text .hero-trust {
-            margin-top: 1.2rem;
-            font-size: 0.85rem;
-            color: #888;
-            font-weight: 400;
+        .demo-topbar {
+            display:flex; align-items:center; gap:10px;
+            padding:10px 16px; background:rgba(255,255,255,0.03); border-bottom:1px solid var(--border);
         }
+        .demo-dots { display:flex; gap:6px; }
+        .demo-dots span { width:10px; height:10px; border-radius:50%; }
+        .demo-dots span:nth-child(1) { background:#ff5f56; }
+        .demo-dots span:nth-child(2) { background:#ffbd2e; }
+        .demo-dots span:nth-child(3) { background:#27c93f; }
+        .demo-title { font-size:0.75rem; color:var(--text-muted); margin-left:auto; }
+        .demo-content { padding:1.5rem; }
 
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
+        /* Demo: Exam */
+        .demo-exam-header {
+            display:flex; justify-content:space-between; align-items:center;
+            margin-bottom:1.2rem; padding-bottom:10px; border-bottom:1px solid var(--border);
         }
-
-        /* ========== FULL EXAM FEATURE SECTION ========== */
-        .exam-feature {
-            padding: 4rem 5%;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
-            color: white;
+        .demo-subject {
+            font-size:0.82rem; font-weight:600; color:var(--primary);
+            background:rgba(108,99,255,0.1); padding:4px 12px; border-radius:6px;
         }
-
-        .exam-feature-inner {
-            max-width: 720px;
-            margin: 0 auto;
-            text-align: center;
+        .demo-timer { font-size:0.82rem; color:var(--text-muted); font-family:monospace; }
+        .demo-question { margin-bottom:1.2rem; }
+        .demo-q-label { font-size:0.85rem; font-weight:700; color:var(--text-sec); margin-bottom:6px; }
+        .demo-q-label span { font-weight:400; color:var(--text-muted); }
+        .demo-q-text { font-size:0.9rem; color:var(--text); line-height:1.6; min-height:3em; }
+        .demo-cursor {
+            display:inline-block; width:2px; height:1em; background:var(--primary);
+            animation:cursorBlink 0.7s infinite; vertical-align:text-bottom; margin-left:1px;
         }
-
-        .exam-feature-text h2 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -0.5px;
+        @keyframes cursorBlink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+        .demo-marking {
+            background:rgba(39,201,63,0.06); border:1px solid rgba(39,201,63,0.15);
+            border-radius:10px; padding:1rem; transition:opacity 0.6s ease;
         }
-
-        .exam-feature-text p {
-            color: rgba(255,255,255,0.75);
-            font-size: 1.05rem;
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
+        .demo-mark-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+        .demo-mark-badge {
+            font-size:0.78rem; font-weight:700; color:#27c93f;
+            background:rgba(39,201,63,0.12); padding:3px 10px; border-radius:6px;
         }
+        .demo-mark-score { font-size:0.9rem; font-weight:800; color:#27c93f; }
+        .demo-mark-feedback { font-size:0.82rem; color:var(--text-sec); line-height:1.5; }
 
-        .exam-feature-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 1.5rem;
-            justify-content: center;
+        /* Demo: Syllabus */
+        .demo-syllabus-input { margin-bottom:1rem; }
+        .demo-label-sm { font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:6px; font-weight:600; }
+        .demo-raw-text {
+            font-size:0.88rem; color:var(--text-sec); font-style:italic;
+            padding:10px 14px; background:rgba(255,255,255,0.03); border-radius:8px;
+            border-left:3px solid var(--primary);
         }
-
-        .exam-feature-pills span {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.15);
-            padding: 6px 14px;
-            border-radius: 50px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: rgba(255,255,255,0.9);
+        .demo-arrow { text-align:center; font-size:1.2rem; color:var(--primary); margin:0.8rem 0; font-weight:700; }
+        .demo-decoded-item {
+            display:flex; align-items:flex-start; gap:8px;
+            padding:8px 12px; margin-bottom:4px; border-radius:8px;
+            font-size:0.85rem; color:var(--text);
+            background:rgba(108,99,255,0.04);
+            opacity:0; transform:translateX(-15px);
         }
+        .demo-active .demo-decoded-item { animation:decodeIn 0.45s ease forwards; }
+        @keyframes decodeIn { to { opacity:1; transform:translateX(0); } }
 
-
-
-        /* ========== FEATURES SECTION ========== */
-        .features {
-            padding: 5rem 5%;
-            background: var(--white);
+        /* Demo: Game */
+        .demo-game-stats { display:flex; gap:10px; margin-bottom:1rem; }
+        .demo-stat { flex:1; display:flex; align-items:center; gap:6px; }
+        .demo-stat-icon { font-size:0.9rem; }
+        .demo-stat-bar { flex:1; height:6px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden; }
+        .demo-stat-fill { height:100%; background:var(--primary); border-radius:3px; transition:width 1s ease; }
+        .demo-stat-fill.demo-risk { background:#f59e0b; }
+        .demo-game-narrative { font-size:0.88rem; color:var(--text-sec); line-height:1.6; margin-bottom:1rem; }
+        .demo-game-choices { display:flex; flex-direction:column; gap:6px; }
+        .demo-choice {
+            padding:10px 14px; border-radius:8px; font-size:0.82rem; font-weight:500;
+            background:rgba(255,255,255,0.04); border:1px solid var(--border);
+            color:var(--text-sec); cursor:default; transition:var(--transition);
         }
+        .demo-choice:hover { background:rgba(108,99,255,0.08); border-color:rgba(108,99,255,0.3); color:var(--text); }
 
+        /* ── TOOLS GRID ── */
+        .tools-section { padding:5rem 5%; border-top:1px solid var(--border); }
         .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 3.5rem;
-            color: var(--secondary);
+            text-align:center; font-size:2.2rem; font-weight:700;
+            margin-bottom:3rem; color:var(--text);
         }
-
-        .features-grid {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            flex-wrap: wrap;
+        .section-title .highlight {
+            background:linear-gradient(135deg,var(--primary),var(--accent));
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
         }
-
-        .feature-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-            padding: 2.5rem;
-            border-radius: var(--radius);
-            text-align: center;
-            box-shadow: var(--shadow);
-            flex: 1;
-            min-width: 280px;
-            max-width: 400px;
-            transition: var(--transition);
-            border: 1px solid rgba(0,0,0,0.04);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-12px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.8rem;
-            font-weight: 600;
-            color: var(--secondary);
-        }
-
-        .feature-card p {
-            color: #666;
-            font-size: 1rem;
-            line-height: 1.6;
-            font-weight: 300;
-        }
-
-        /* ========== COURSES SECTION ========== */
-        .courses {
-            padding: 5rem 5%;
-            background: linear-gradient(180deg, #ffffff 0%, #f5f7ff 100%);
-        }
-
-        /* ========== TOOLS GRID ========== */
         .tools-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            display:flex; flex-wrap:wrap; justify-content:center;
+            gap:1.5rem; max-width:1100px; margin:0 auto;
         }
-
         .tool-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 2rem 1.8rem;
-            text-align: center;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border: 2px solid transparent;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            width: calc(33.333% - 2rem);
-            min-width: 280px;
-            max-width: 360px;
+            background:var(--bg-card); border-radius:var(--radius);
+            padding:2rem 1.6rem; text-align:center;
+            box-shadow:var(--shadow); transition:var(--transition);
+            border:1px solid var(--border); text-decoration:none; color:inherit;
+            display:flex; flex-direction:column; align-items:center;
+            position:relative; overflow:hidden;
+            width:calc(33.333% - 1.5rem); min-width:260px; max-width:340px;
         }
-
-        .tool-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
-        }
-
-        .tool-card.flagship {
-            border: 2px solid var(--primary);
-            background: linear-gradient(135deg, #f8f7ff 0%, #fff 100%);
-        }
-
+        .tool-card:hover { transform:translateY(-6px); border-color:var(--primary); box-shadow:0 10px 40px rgba(108,99,255,0.15); }
+        .tool-card.flagship { border-color:rgba(108,99,255,0.2); }
         .tool-card.flagship::before {
-            content: '⭐ FLAGSHIP';
-            position: absolute;
-            top: 12px;
-            right: -28px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            font-size: 0.65rem;
-            font-weight: 700;
-            padding: 4px 32px;
-            transform: rotate(45deg);
-            letter-spacing: 1px;
+            content:'FLAGSHIP'; position:absolute; top:12px; right:-24px;
+            background:linear-gradient(135deg,var(--primary),var(--accent));
+            color:white; font-size:0.6rem; font-weight:700;
+            padding:3px 30px; transform:rotate(45deg); letter-spacing:1px;
         }
-
         .tool-card-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.2rem;
-            font-size: 2rem;
+            width:60px; height:60px; border-radius:14px;
+            background:linear-gradient(135deg, rgba(108,99,255,0.15), rgba(255,101,132,0.1));
+            display:flex; align-items:center; justify-content:center;
+            margin-bottom:1rem; font-size:1.8rem;
         }
-
-        .tool-card.flagship .tool-card-icon {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-        }
-
-        .tool-card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.6rem;
-            color: var(--secondary);
-        }
-
-        .tool-card p {
-            color: #666;
-            font-size: 0.92rem;
-            line-height: 1.6;
-            margin-bottom: 1.2rem;
-            flex-grow: 1;
-        }
-
+        .tool-card.flagship .tool-card-icon { background:linear-gradient(135deg,var(--primary),var(--accent)); }
+        .tool-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:0.5rem; color:var(--text); }
+        .tool-card p { color:var(--text-sec); font-size:0.88rem; line-height:1.5; margin-bottom:1rem; flex-grow:1; }
         .tool-card-cta {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 0.6rem 1.8rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: var(--transition);
+            display:inline-block; background:var(--primary); color:white;
+            padding:0.5rem 1.5rem; border-radius:50px; font-weight:600; font-size:0.85rem;
+            transition:var(--transition);
         }
+        .tool-card:hover .tool-card-cta { box-shadow:0 4px 16px var(--primary-glow); }
+        .tools-section-locked .tool-card { pointer-events:none; opacity:0.5; }
 
-        .tool-card.flagship .tool-card-cta {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+        /* ── STATS ── */
+        .stats-strip { padding:3rem 5%; border-top:1px solid var(--border); }
+        .stats-inner { display:flex; justify-content:center; gap:4rem; max-width:900px; margin:0 auto; flex-wrap:wrap; }
+        .stat-item { text-align:center; }
+        .stat-number { font-size:2.8rem; font-weight:800; color:var(--primary); line-height:1; margin-bottom:4px; text-shadow:0 0 30px var(--primary-glow); }
+        .stat-label { font-size:0.82rem; color:var(--text-muted); font-weight:500; }
+
+        /* ── FEATURES ── */
+        .features { padding:5rem 5%; border-top:1px solid var(--border); }
+        .features-grid { display:flex; justify-content:center; gap:2rem; max-width:1100px; margin:0 auto; flex-wrap:wrap; }
+        .feature-card {
+            background:var(--bg-card); padding:2.2rem; border-radius:var(--radius);
+            text-align:center; box-shadow:var(--shadow); flex:1; min-width:260px; max-width:360px;
+            transition:var(--transition); border:1px solid var(--border);
         }
+        .feature-card:hover { transform:translateY(-8px); border-color:rgba(108,99,255,0.2); }
+        .feature-icon { font-size:2.8rem; margin-bottom:1.2rem; }
+        .feature-card h3 { font-size:1.2rem; margin-bottom:0.6rem; font-weight:600; color:var(--text); }
+        .feature-card p { color:var(--text-sec); font-size:0.92rem; line-height:1.6; }
 
-        .tool-card:hover .tool-card-cta {
-            transform: scale(1.05);
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.35);
-        }
-
-        .tools-section-locked .tool-card {
-            pointer-events: none;
-            opacity: 0.7;
-        }
-
-        .tools-section-locked .tool-card-cta {
-            background: #ccc;
-        }
-
-        /* Level selector modal */
-        .level-modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 9999;
-        }
-
-        .level-modal {
-            background: white;
-            border-radius: var(--radius);
-            padding: 2.5rem;
-            max-width: 480px;
-            width: 90%;
-            text-align: center;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .level-modal h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-        }
-
-        .level-modal p {
-            color: #666;
-            margin-bottom: 1.5rem;
-        }
-
-        .level-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .level-btn {
-            flex: 1;
-            padding: 1.2rem 1rem;
-            border-radius: 12px;
-            border: 2px solid #e8e8e8;
-            background: white;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            display: block;
-        }
-
-        .level-btn:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow);
-        }
-
-        .level-btn h4 {
-            font-size: 1.1rem;
-            color: var(--primary);
-            margin-bottom: 4px;
-        }
-
-        .level-btn span {
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        /* ========== ONBOARDING MODAL ========== */
-        .onboarding-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 10000;
-            backdrop-filter: blur(4px);
-        }
-
-        .onboarding-modal {
-            background: white;
-            border-radius: var(--radius);
-            padding: 2.5rem;
-            max-width: 580px;
-            width: 92%;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-lg);
-            animation: onboardSlideIn 0.4s ease;
-        }
-
-        @keyframes onboardSlideIn {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .onboarding-modal h2 {
-            font-size: 1.6rem;
-            margin-bottom: 0.3rem;
-            color: var(--secondary);
-            text-align: center;
-        }
-
-        .onboarding-modal .onboard-subtitle {
-            color: #666;
-            text-align: center;
-            margin-bottom: 1.8rem;
-            font-size: 0.95rem;
-        }
-
-        .onboard-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .onboard-section label.section-label {
-            display: block;
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 0.6rem;
-            color: var(--secondary);
-        }
-
-        .onboard-level-btns {
-            display: flex;
-            gap: 0.8rem;
-        }
-
-        .onboard-level-btn {
-            flex: 1;
-            padding: 1rem;
-            border-radius: 12px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-        }
-
-        .onboard-level-btn:hover {
-            border-color: var(--primary);
-            background: #f8f7ff;
-        }
-
-        .onboard-level-btn.selected {
-            border-color: var(--primary);
-            background: linear-gradient(135deg, #f0eeff, #e8e5ff);
-            box-shadow: 0 2px 12px rgba(108, 99, 255, 0.15);
-        }
-
-        .onboard-level-btn h4 {
-            font-size: 1rem;
-            color: var(--primary);
-            margin-bottom: 2px;
-        }
-
-        .onboard-level-btn span {
-            font-size: 0.8rem;
-            color: #888;
-        }
-
-        .onboard-subjects-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.4rem 1rem;
-            max-height: 260px;
-            overflow-y: auto;
-            padding: 0.5rem;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            background: #fafafa;
-        }
-
-        .onboard-search {
-            width: 100%;
-            padding: 10px 14px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-family: inherit;
-            outline: none;
-            transition: border-color 0.2s;
-            margin-bottom: 8px;
-        }
-
-        .onboard-search:focus {
-            border-color: var(--primary);
-        }
-
-        .onboard-subject-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-size: 0.88rem;
-            border: 2px solid transparent;
-        }
-
-        .onboard-subject-item:hover {
-            background: #ede9ff;
-        }
-
-        .onboard-subject-item.checked {
-            background: #f0eeff;
-            border-color: var(--primary);
-        }
-
-        .onboard-subject-item input[type="checkbox"] {
-            accent-color: var(--primary);
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .onboard-subject-item label {
-            cursor: pointer;
-            color: #333;
-            font-size: 0.88rem;
-            line-height: 1.2;
-            flex: 1;
-        }
-
-        .onboard-submit-btn {
-            display: block;
-            width: 100%;
-            padding: 0.9rem;
-            border: none;
-            border-radius: 50px;
-            background: var(--primary);
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-top: 0.5rem;
-        }
-
-        .onboard-submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.35);
-        }
-
-        .onboard-submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .onboard-skip {
-            display: block;
-            text-align: center;
-            margin-top: 0.8rem;
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
-
-        .onboard-skip:hover {
-            color: #666;
-        }
-
-        @media (max-width: 500px) {
-            .onboard-subjects-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .courses-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 2.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .course-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border: 1px solid rgba(0,0,0,0.04);
-        }
-
-        .course-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .course-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem 1.8rem;
-        }
-
-        .course-badge {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: inline-block;
-            margin-bottom: 0.8rem;
-        }
-
-        .course-header h3 {
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
-
-        .course-body {
-            padding: 1.8rem;
-        }
-
-        .course-body p {
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        /* ========== CTA SECTION ========== */
+        /* ── CTA ── */
         .cta {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 5rem 5%;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            background:linear-gradient(135deg, #1a1235 0%, #0f0a2e 50%, #14082e 100%);
+            border-top:1px solid var(--border);
+            padding:5rem 5%; text-align:center; position:relative; overflow:hidden;
         }
-
         .cta::before {
-            content: '';
-            position: absolute;
-            top: -30%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            z-index: 0;
+            content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+            width:600px; height:300px;
+            background:radial-gradient(ellipse, rgba(108,99,255,0.1) 0%, transparent 70%);
+            pointer-events:none;
         }
+        .cta h2 { font-size:2.5rem; font-weight:700; margin-bottom:1rem; position:relative; z-index:1; color:var(--text); }
+        .cta p { font-size:1.1rem; color:var(--text-sec); margin-bottom:2rem; position:relative; z-index:1; }
+        .cta .btn-primary { position:relative; z-index:1; }
 
-        .cta h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
+        /* ── FOOTER ── */
+        footer { text-align:center; padding:3rem 5%; background:rgba(0,0,0,0.3); border-top:1px solid var(--border); }
+        footer h3 { font-size:1.1rem; margin-bottom:1.2rem; color:var(--text-sec); }
+        .footer-links { list-style:none; display:flex; justify-content:center; gap:2rem; margin-bottom:1.5rem; }
+        .footer-links a { color:var(--text-muted); text-decoration:none; transition:color 0.3s; }
+        .footer-links a:hover { color:var(--primary); }
+        .disclaimer { font-size:0.85rem; color:var(--text-muted); max-width:800px; margin:0 auto; line-height:1.6; }
+
+        /* ── MODALS (level + onboarding, dark-adapted) ── */
+        .level-modal-overlay {
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:9999;
         }
-
-        .cta p {
-            font-size: 1.2rem;
-            opacity: 0.95;
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 1;
+        .level-modal {
+            background:var(--bg-elevated); border:1px solid var(--border);
+            border-radius:var(--radius); padding:2.5rem; max-width:480px; width:90%;
+            text-align:center; box-shadow:var(--shadow-lg);
         }
-
-        .cta .btn-primary {
-            background: var(--white);
-            color: #667eea !important;
+        .level-modal h2 { font-size:1.5rem; margin-bottom:0.5rem; color:var(--text); }
+        .level-modal p { color:var(--text-sec); margin-bottom:1.5rem; }
+        .level-buttons { display:flex; gap:1rem; }
+        .level-btn {
+            flex:1; padding:1.2rem 1rem; border-radius:12px;
+            border:2px solid var(--border); background:var(--bg-card);
+            cursor:pointer; transition:var(--transition); text-decoration:none; display:block;
         }
+        .level-btn:hover { border-color:var(--primary); transform:translateY(-3px); }
+        .level-btn h4 { font-size:1.1rem; color:var(--primary); margin-bottom:4px; }
+        .level-btn span { font-size:0.85rem; color:var(--text-sec); }
 
-        .cta .btn-primary:hover {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        .onboarding-overlay {
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center;
+            z-index:10000; backdrop-filter:blur(4px);
         }
-
-        /* ========== FOOTER ========== */
-        footer {
-            text-align: center;
-            padding: 3rem 5%;
-            background: var(--secondary);
-            color: #ddd;
-            font-weight: 300;
+        .onboarding-modal {
+            background:var(--bg-elevated); border:1px solid var(--border);
+            border-radius:var(--radius); padding:2.5rem; max-width:580px; width:92%;
+            max-height:85vh; overflow-y:auto; box-shadow:var(--shadow-lg);
+            animation:onboardSlideIn 0.4s ease;
         }
-
-        footer h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            color: white;
+        @keyframes onboardSlideIn { from{opacity:0;transform:translateY(30px) scale(0.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+        .onboarding-modal h2 { font-size:1.6rem; margin-bottom:0.3rem; color:var(--text); text-align:center; }
+        .onboarding-modal .onboard-subtitle { color:var(--text-sec); text-align:center; margin-bottom:1.8rem; font-size:0.95rem; }
+        .onboard-section { margin-bottom:1.5rem; }
+        .onboard-section label.section-label { display:block; font-weight:600; font-size:1rem; margin-bottom:0.6rem; color:var(--text); }
+        .onboard-level-btns { display:flex; gap:0.8rem; }
+        .onboard-level-btn {
+            flex:1; padding:1rem; border-radius:12px; border:2px solid var(--border);
+            background:var(--bg-card); cursor:pointer; transition:var(--transition); text-align:center;
         }
-
-        .footer-links {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
+        .onboard-level-btn:hover { border-color:var(--primary); background:var(--bg-elevated); }
+        .onboard-level-btn.selected {
+            border-color:var(--primary); background:rgba(108,99,255,0.1);
+            box-shadow:0 2px 12px rgba(108,99,255,0.15);
         }
-
-        .footer-links a {
-            color: #bbb;
-            text-decoration: none;
-            transition: color 0.3s;
+        .onboard-level-btn h4 { font-size:1rem; color:var(--primary); margin-bottom:2px; }
+        .onboard-level-btn span { font-size:0.8rem; color:var(--text-muted); }
+        .onboard-subjects-grid {
+            display:grid; grid-template-columns:1fr 1fr; gap:0.4rem 1rem;
+            max-height:260px; overflow-y:auto; padding:0.5rem;
+            border:1px solid var(--border); border-radius:10px; background:var(--bg-card);
         }
-
-        .footer-links a:hover {
-            color: var(--primary);
+        .onboard-search {
+            width:100%; padding:10px 14px; border:2px solid var(--border);
+            border-radius:10px; font-size:0.9rem; font-family:inherit; outline:none;
+            transition:border-color 0.2s; margin-bottom:8px;
+            background:var(--bg-card); color:var(--text);
         }
-
-        .disclaimer {
-            font-size: 0.9rem;
-            color: #888;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.6;
+        .onboard-search:focus { border-color:var(--primary); }
+        .onboard-search::placeholder { color:var(--text-muted); }
+        .onboard-subject-item {
+            display:flex; align-items:center; gap:8px; padding:8px 10px;
+            border-radius:8px; cursor:pointer; transition:all 0.15s;
+            font-size:0.88rem; border:2px solid transparent;
         }
+        .onboard-subject-item:hover { background:rgba(108,99,255,0.08); }
+        .onboard-subject-item.checked { background:rgba(108,99,255,0.1); border-color:var(--primary); }
+        .onboard-subject-item input[type="checkbox"] { accent-color:var(--primary); width:18px; height:18px; cursor:pointer; flex-shrink:0; }
+        .onboard-subject-item label { cursor:pointer; color:var(--text-sec); font-size:0.88rem; line-height:1.2; flex:1; }
+        .onboard-submit-btn {
+            display:block; width:100%; padding:0.9rem; border:none; border-radius:50px;
+            background:var(--primary); color:white; font-size:1rem; font-weight:600;
+            cursor:pointer; transition:var(--transition); margin-top:0.5rem;
+        }
+        .onboard-submit-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px var(--primary-glow); }
+        .onboard-submit-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none; }
+        .onboard-skip { display:block; text-align:center; margin-top:0.8rem; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem; }
+        .onboard-skip:hover { color:var(--text-sec); }
 
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem 4%;
-            }
+        /* ── SCROLL REVEAL ── */
+        .reveal { opacity:0; transform:translateY(40px); transition:opacity 0.7s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .reveal-left { opacity:0; transform:translateX(-50px); transition:opacity 0.7s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .reveal-right { opacity:0; transform:translateX(50px); transition:opacity 0.7s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .reveal-scale { opacity:0; transform:scale(0.9); transition:opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible, .reveal-left.visible, .reveal-right.visible, .reveal-scale.visible { opacity:1; transform:translateY(0) translateX(0) scale(1); }
+        .stagger-1 { transition-delay:0.08s; } .stagger-2 { transition-delay:0.16s; }
+        .stagger-3 { transition-delay:0.24s; } .stagger-4 { transition-delay:0.32s; }
+        .stagger-5 { transition-delay:0.40s; } .stagger-6 { transition-delay:0.48s; }
 
-            .mobile-menu-btn {
-                display: block;
-            }
-
+        /* ── RESPONSIVE ── */
+        @media (max-width:768px) {
+            .navbar { padding:1rem 4%; }
+            .mobile-menu-btn { display:block; }
             .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--white);
-                flex-direction: column;
-                padding: 1rem 5%;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                gap: 0;
+                display:none; position:absolute; top:100%; left:0; right:0;
+                background:rgba(8,8,13,0.95); backdrop-filter:blur(20px);
+                flex-direction:column; padding:1rem 5%; box-shadow:0 4px 20px rgba(0,0,0,0.4); gap:0;
             }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .nav-links li {
-                padding: 0.8rem 0;
-                border-bottom: 1px solid #f0f0f0;
-            }
-
-            .nav-links li:last-child {
-                border-bottom: none;
-                padding-top: 1rem;
-            }
-
-            .hero {
-                padding: 2.5rem 5% 2rem;
-            }
-
-            .hero-text h1 {
-                font-size: 2rem;
-            }
-
-            .hero-text p.hero-sub {
-                font-size: 1rem;
-            }
-
-            .exam-feature {
-                padding: 3rem 5%;
-            }
-
-            .exam-feature-text h2 {
-                font-size: 1.7rem;
-            }
-
-            .features-grid {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .feature-card {
-                max-width: 100%;
-            }
-
-            .courses-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-title {
-                font-size: 1.8rem;
-            }
-
-            .cta h2 {
-                font-size: 1.8rem;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 1rem;
-            }
+            .nav-links.active { display:flex; }
+            .nav-links li { padding:0.8rem 0; border-bottom:1px solid var(--border); }
+            .nav-links li:last-child { border-bottom:none; padding-top:1rem; }
+            .hero { min-height:90vh; padding:4rem 5% 3rem; }
+            .hero-text h1 { font-size:2.8rem; letter-spacing:-1px; }
+            .hero-text p.hero-sub { font-size:1rem; }
+            .hero-scroll { display:none; }
+            .showcase { padding:3.5rem 5%; }
+            .showcase-inner { flex-direction:column !important; gap:2.5rem; }
+            .showcase h2 { font-size:1.8rem; }
+            .showcase-text, .showcase-demo { flex:none; width:100%; }
+            .demo-window { max-width:100%; }
+            .tools-grid { gap:1rem; }
+            .tool-card { width:calc(50% - 1rem); min-width:0; }
+            .features-grid { flex-direction:column; align-items:center; }
+            .feature-card { max-width:100%; }
+            .section-title { font-size:1.7rem; }
+            .cta h2 { font-size:1.8rem; }
+            .stats-inner { gap:2rem; }
+            .stat-number { font-size:2rem; }
+            .footer-links { flex-direction:column; gap:1rem; }
         }
-
+        @media (max-width:500px) {
+            .hero-text h1 { font-size:2.2rem; }
+            .tool-card { width:100%; max-width:100%; }
+            .demo-game-stats { flex-wrap:wrap; }
+            .onboard-subjects-grid { grid-template-columns:1fr; }
+        }
     </style>
 </head>
 <body>
@@ -1047,117 +531,217 @@
     </div>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="heroSection">
+        <div class="hero-grid-bg"></div>
+        <div class="hero-glow"></div>
         <div class="hero-inner">
             <div class="hero-text">
-                <h1>Generate Full Practice Exams <span class="highlight">With AI</span></h1>
-                <p class="hero-sub">Create realistic HSC exams, answer questions under timed conditions, and receive instant AI marking with band-level feedback — for all 45 subjects.</p>
+                <div class="hero-badge">AI-Powered Study Platform</div>
+                <h1>Study <span class="highlight">Decoded</span>.</h1>
+                <p class="hero-sub">Generate full practice exams, decode your syllabus, and get instant AI marking — for all 45 HSC subjects.</p>
                 <div class="hero-buttons" id="heroButtons">
-                    <a href="practice.html?mode=exam" class="btn btn-primary" id="featuredExamCard" onclick="return goExamMode(event)">Start Practice Exam</a>
-                    <a href="login.html" class="btn btn-secondary" id="heroSignInBtn">Sign In to Access</a>
+                    <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" id="featuredExamCard" onclick="return goExamMode(event)">Start Practice Exam</a>
+                    <a href="login.html" class="btn btn-ghost" id="heroSignInBtn">Sign In to Access</a>
                 </div>
                 <div class="hero-buttons" id="heroLoggedIn" style="display: none;">
-                    <a href="practice.html?mode=exam" class="btn btn-primary" onclick="return goExamMode(event)">Start Practice Exam</a>
-                    <a href="#tools" class="btn btn-secondary">Explore All Tools</a>
+                    <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" onclick="return goExamMode(event)">Start Practice Exam</a>
+                    <a href="#tools" class="btn btn-ghost">Explore Tools ↓</a>
                 </div>
                 <p class="hero-trust">Built for Australian students following the NSW curriculum.</p>
             </div>
         </div>
+        <div class="hero-scroll">
+            <span>Scroll to explore</span>
+            <div class="scroll-line"></div>
+        </div>
     </section>
 
-    <!-- Full Exam Feature Section -->
-    <section class="exam-feature">
-        <div class="exam-feature-inner">
-            <div class="exam-feature-text">
-                <h2>Simulate Real HSC Exams</h2>
-                <p>Sit a complete, timed exam with authentic structure and marking. Multiple choice, short answer, and extended response — modelled on real NESA past papers.</p>
-                <div class="exam-feature-pills">
+    <!-- Demo: Exam Bot -->
+    <section class="showcase" id="examDemo">
+        <div class="showcase-inner">
+            <div class="showcase-text reveal-left">
+                <div class="showcase-label">Flagship Tool</div>
+                <h2>Full Exam <span class="highlight">Simulation</span></h2>
+                <p>Sit a complete, timed HSC exam with authentic structure. Multiple choice, short answer, and extended response — auto-marked with band-level feedback.</p>
+                <div class="showcase-pills">
                     <span>Timed Conditions</span>
                     <span>MC + Short Answer + Essays</span>
                     <span>Auto-marked</span>
                     <span>Band-level Feedback</span>
                     <span>All 45 Subjects</span>
                 </div>
-                <a href="practice.html?mode=exam" class="btn btn-primary" style="margin-top: 0.5rem;" onclick="return goExamMode(event)">Try Full Exam Mode</a>
+                <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" onclick="return goExamMode(event)">Try Exam Mode →</a>
+            </div>
+            <div class="showcase-demo reveal-right">
+                <div class="demo-window">
+                    <div class="demo-topbar">
+                        <div class="demo-dots"><span></span><span></span><span></span></div>
+                        <span class="demo-title">Study Decoder — Practice Exam</span>
+                    </div>
+                    <div class="demo-content">
+                        <div class="demo-exam-header">
+                            <span class="demo-subject">Modern History</span>
+                            <span class="demo-timer">⏱ 42:15</span>
+                        </div>
+                        <div class="demo-question">
+                            <div class="demo-q-label">Question 22 <span>(9 marks)</span></div>
+                            <div class="demo-q-text" id="demoQuestionText"><span class="demo-cursor"></span></div>
+                        </div>
+                        <div class="demo-marking" id="demoMarking" style="opacity: 0;">
+                            <div class="demo-mark-header">
+                                <span class="demo-mark-badge">✓ Band 6</span>
+                                <span class="demo-mark-score">8/9</span>
+                            </div>
+                            <div class="demo-mark-feedback" id="demoFeedback"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- AI Study Suite Section -->
-    <section class="courses" id="tools">
-        <h2 class="section-title">Your AI Study Suite</h2>
-        <div class="tools-grid" id="toolsGrid">
-            <a href="#" onclick="openTool('syllabus'); return false;" class="tool-card flagship">
-                <div class="tool-card-icon">📘</div>
-                <h3>Syllabus Decoder</h3>
-                <p>Break down complex syllabus points into clear, actionable study notes. Understand exactly what you need to learn.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            <a href="#" onclick="openTool('worksheet'); return false;" class="tool-card flagship">
-                <div class="tool-card-icon">📄</div>
-                <h3>Worksheet Decoder</h3>
-                <p>Upload a hard-to-read worksheet image and get a clean, readable version with optional hints and practice questions.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            <a href="#" onclick="openTool('notes-transcriber'); return false;" class="tool-card flagship">
-                <div class="tool-card-icon">✍️</div>
-                <h3>Notes Transcriber</h3>
-                <p>Upload handwritten notes and get clean, organised text — ready to paste into Google Docs or download as a Word document.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            <a href="#" onclick="openTool('practice'); return false;" class="tool-card">
-                <div class="tool-card-icon">✏️</div>
-                <h3>Practice Questions</h3>
-                <p>Generate exam-style questions, get instant marking feedback, or practise specific topics with targeted question sets.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            <a href="#" onclick="openTool('timetable'); return false;" class="tool-card">
-                <div class="tool-card-icon">📅</div>
-                <h3>Timetable Generator</h3>
-                <p>Create a personalised, sustainable study schedule that balances all your subjects and fits your life.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            <a href="#" onclick="openTool('learn-irl'); return false;" class="tool-card">
-                <div class="tool-card-icon">🌍</div>
-                <h3>Learn IRL</h3>
-                <p>See how your subjects work in real life — play through interactive scenarios or get instant real-world breakdowns.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            <!-- Subject Advisor hidden for now
-            <a href="subject-advisor.html" class="tool-card">
-                <div class="tool-card-icon">🎯</div>
-                <h3>Subject Advisor</h3>
-                <p>Get personalised subject recommendations for Years 11-12 based on your strengths, interests, and goals.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            -->
+    <!-- Demo: Syllabus Decoder -->
+    <section class="showcase showcase-reverse" id="syllabusDemo">
+        <div class="showcase-inner">
+            <div class="showcase-demo reveal-left">
+                <div class="demo-window">
+                    <div class="demo-topbar">
+                        <div class="demo-dots"><span></span><span></span><span></span></div>
+                        <span class="demo-title">Syllabus Decoder</span>
+                    </div>
+                    <div class="demo-content">
+                        <div class="demo-syllabus-input">
+                            <div class="demo-label-sm">Syllabus Point</div>
+                            <div class="demo-raw-text">"Analyse the impact of innovation on business operations"</div>
+                        </div>
+                        <div class="demo-arrow">↓ Decoded</div>
+                        <div class="demo-decoded" id="syllabusDecoded">
+                            <div class="demo-decoded-item" style="animation-delay: 0.15s;">✓ Define innovation in a business context</div>
+                            <div class="demo-decoded-item" style="animation-delay: 0.3s;">✓ Types: product, process, marketing, organisational</div>
+                            <div class="demo-decoded-item" style="animation-delay: 0.45s;">✓ Impact on operations: efficiency, cost, quality</div>
+                            <div class="demo-decoded-item" style="animation-delay: 0.6s;">✓ Case studies: Apple, Tesla, local businesses</div>
+                            <div class="demo-decoded-item" style="animation-delay: 0.75s;">✓ Link to competitive advantage &amp; profitability</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="showcase-text reveal-right">
+                <div class="showcase-label">Decode Anything</div>
+                <h2>Syllabus <span class="highlight">Decoder</span></h2>
+                <p>Paste any syllabus point and get a clear breakdown of exactly what you need to know — with key terms, concepts, and how they connect.</p>
+                <a href="#" onclick="openTool('syllabus'); return false;" class="btn btn-primary btn-glow">Decode Your Syllabus →</a>
+            </div>
         </div>
     </section>
 
+    <!-- Demo: Learn IRL -->
+    <section class="showcase" id="irlDemo">
+        <div class="showcase-inner">
+            <div class="showcase-text reveal-left">
+                <div class="showcase-label">Interactive Game</div>
+                <h2>Learn <span class="highlight">IRL</span></h2>
+                <p>Play through real-world scenarios where your subject knowledge determines survival. Manage resources, make decisions, and actually learn by doing.</p>
+                <a href="#" onclick="openTool('learn-irl'); return false;" class="btn btn-primary btn-glow">Play Now →</a>
+            </div>
+            <div class="showcase-demo reveal-right">
+                <div class="demo-window">
+                    <div class="demo-topbar">
+                        <div class="demo-dots"><span></span><span></span><span></span></div>
+                        <span class="demo-title">Learn IRL — Biology</span>
+                    </div>
+                    <div class="demo-content">
+                        <div class="demo-game-stats">
+                            <div class="demo-stat"><span class="demo-stat-icon">💰</span><div class="demo-stat-bar"><div class="demo-stat-fill" style="width:65%;"></div></div></div>
+                            <div class="demo-stat"><span class="demo-stat-icon">⏱</span><div class="demo-stat-bar"><div class="demo-stat-fill" style="width:80%;"></div></div></div>
+                            <div class="demo-stat"><span class="demo-stat-icon">⚠️</span><div class="demo-stat-bar"><div class="demo-stat-fill demo-risk" style="width:35%;"></div></div></div>
+                            <div class="demo-stat"><span class="demo-stat-icon">⚡</span><div class="demo-stat-bar"><div class="demo-stat-fill" style="width:50%;"></div></div></div>
+                        </div>
+                        <div class="demo-game-narrative">You're a lab technician investigating a contamination outbreak. A water sample shows unusual bacterial growth patterns...</div>
+                        <div class="demo-game-choices">
+                            <div class="demo-choice">Run a gram stain to identify bacteria type</div>
+                            <div class="demo-choice">Check the pH levels of the water source</div>
+                            <div class="demo-choice">Skip testing and report contamination directly</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- AI Study Suite - All Tools -->
+    <section class="tools-section" id="tools">
+        <h2 class="section-title reveal">Your AI <span class="highlight">Study Suite</span></h2>
+        <div class="tools-grid" id="toolsGrid">
+            <a href="#" onclick="openTool('syllabus'); return false;" class="tool-card flagship reveal stagger-1">
+                <div class="tool-card-icon">📘</div>
+                <h3>Syllabus Decoder</h3>
+                <p>Break down complex syllabus points into clear, actionable study notes.</p>
+                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
+                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
+            </a>
+            <a href="#" onclick="openTool('worksheet'); return false;" class="tool-card flagship reveal stagger-2">
+                <div class="tool-card-icon">📄</div>
+                <h3>Worksheet Decoder</h3>
+                <p>Upload a worksheet image and get a clean, readable version with hints.</p>
+                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
+                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
+            </a>
+            <a href="#" onclick="openTool('notes-transcriber'); return false;" class="tool-card flagship reveal stagger-3">
+                <div class="tool-card-icon">✍️</div>
+                <h3>Notes Transcriber</h3>
+                <p>Upload handwritten notes and get clean, organised digital text.</p>
+                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
+                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
+            </a>
+            <a href="#" onclick="openTool('practice'); return false;" class="tool-card reveal stagger-4">
+                <div class="tool-card-icon">✏️</div>
+                <h3>Practice Questions</h3>
+                <p>Generate exam-style questions and get instant marking feedback.</p>
+                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
+                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
+            </a>
+            <a href="#" onclick="openTool('timetable'); return false;" class="tool-card reveal stagger-5">
+                <div class="tool-card-icon">📅</div>
+                <h3>Timetable Generator</h3>
+                <p>Create a personalised study schedule that fits your life.</p>
+                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
+                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
+            </a>
+            <a href="#" onclick="openTool('learn-irl'); return false;" class="tool-card reveal stagger-6">
+                <div class="tool-card-icon">🌍</div>
+                <h3>Learn IRL</h3>
+                <p>Play through interactive real-world scenarios to learn your subjects.</p>
+                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
+                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Stats Strip -->
+    <section class="stats-strip">
+        <div class="stats-inner">
+            <div class="stat-item reveal stagger-1"><div class="stat-number" data-target="45">0</div><div class="stat-label">HSC Subjects</div></div>
+            <div class="stat-item reveal stagger-2"><div class="stat-number" data-target="6">0</div><div class="stat-label">AI Study Tools</div></div>
+            <div class="stat-item reveal stagger-3"><div class="stat-number" data-target="1000" data-suffix="+">0</div><div class="stat-label">Questions Generated</div></div>
+            <div class="stat-item reveal stagger-4"><div class="stat-number" data-target="100" data-suffix="%">0</div><div class="stat-label">Curriculum Aligned</div></div>
+        </div>
+    </section>
 
     <!-- Features Section (Why Choose Us) -->
     <section class="features">
-        <h2 class="section-title">Why Students Choose Study Decoder</h2>
+        <h2 class="section-title reveal">Why Students Choose <span class="highlight">Study Decoder</span></h2>
         <div class="features-grid">
-            <div class="feature-card">
+            <div class="feature-card reveal stagger-1">
                 <div class="feature-icon">📋</div>
                 <h3>Based on Real Past Papers</h3>
-                <p>Every question is modelled on official NESA past papers — matching the format, structure, and difficulty of real HSC exams across all 45 subjects.</p>
+                <p>Every question modelled on official NESA past papers — matching the format, structure, and difficulty of real HSC exams across all 45 subjects.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card reveal stagger-2">
                 <div class="feature-icon">⚡</div>
                 <h3>Instant AI Marking</h3>
                 <p>Submit your answers and get band-level feedback in seconds. Understand exactly where you lost marks and how to improve.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card reveal stagger-3">
                 <div class="feature-icon">🎯</div>
                 <h3>Exam-Ready Practice</h3>
                 <p>Timed exams with authentic structure — multiple choice, short answer, and extended response — so you walk in prepared on exam day.</p>
@@ -1219,11 +803,11 @@
 
     <!-- CTA Section -->
     <section class="cta">
-        <h2>Start Practising for Your HSC Today</h2>
-        <p>Built for Australian students following the NSW curriculum. Generate exams, get marked, and improve — all in one place.</p>
-        <a href="login.html" class="btn btn-primary" id="ctaSignIn">Get Started Free</a>
+        <h2 class="reveal">Start Practising for Your HSC Today</h2>
+        <p class="reveal">Generate exams, get AI-marked, and improve — all in one place.</p>
+        <a href="login.html" class="btn btn-primary btn-glow" id="ctaSignIn">Get Started Free</a>
         <div id="ctaLoggedIn" style="display: none;">
-            <a href="practice.html?mode=exam" class="btn btn-primary" onclick="return goExamMode(event)">Start Practice Exam</a>
+            <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" onclick="return goExamMode(event)">Start Practice Exam</a>
         </div>
     </section>
 
@@ -1890,7 +1474,7 @@
             console.error('Onboarding save error:', e);
             btn.disabled = false;
             btn.textContent = 'Get Started 🚀';
-            alert('Something went wrong. Please try again.');
+              alert('Something went wrong. Please try again.');
         }
     }
 
@@ -1947,6 +1531,93 @@
             document.getElementById('saleBanner').style.display = 'block';
         }
     })();
+
+    // ========== SCROLL REVEAL + COUNTER ANIMATION ==========
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+        revealObserver.observe(el);
+    });
+
+    // Animate stat counters when visible
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = parseInt(el.dataset.target);
+                const suffix = el.dataset.suffix || '';
+                const duration = 1600;
+                const start = performance.now();
+
+                function tick(now) {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = Math.floor(target * eased) + suffix;
+                    if (progress < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+                counterObserver.unobserve(el);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-number[data-target]').forEach(el => counterObserver.observe(el));
+
+    // ========== DEMO ANIMATIONS ==========
+    // Exam demo typewriter
+    const examDemoObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                startExamDemo();
+                examDemoObs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.25 });
+
+    const examDemoEl = document.getElementById('examDemo');
+    if (examDemoEl) examDemoObs.observe(examDemoEl);
+
+    function startExamDemo() {
+        const text = "Evaluate the impact of the Cold War on Australia's foreign policy in the period 1945\u20131972. In your response, refer to specific events and policies.";
+        const el = document.getElementById('demoQuestionText');
+        if (!el) return;
+        let i = 0;
+        el.innerHTML = '<span class="demo-cursor"></span>';
+        const iv = setInterval(() => {
+            if (i < text.length) {
+                el.innerHTML = text.substring(0, i + 1) + '<span class="demo-cursor"></span>';
+                i++;
+            } else {
+                clearInterval(iv);
+                el.textContent = text;
+                setTimeout(() => {
+                    const m = document.getElementById('demoMarking');
+                    if (m) { m.style.transition = 'opacity 0.8s ease'; m.style.opacity = '1'; }
+                    const fb = document.getElementById('demoFeedback');
+                    if (fb) fb.textContent = 'Strong evaluation of ANZUS and forward defence. Consider expanding on the shift towards detente in the late 1960s for full marks.';
+                }, 800);
+            }
+        }, 25);
+    }
+
+    // Syllabus decode cascade
+    const syllDemoObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('demo-active');
+                syllDemoObs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.35 });
+    const syllDecoded = document.getElementById('syllabusDecoded');
+    if (syllDecoded) syllDemoObs.observe(syllDecoded);
 
     </script>
 </body>

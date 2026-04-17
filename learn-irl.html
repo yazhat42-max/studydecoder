@@ -267,6 +267,7 @@
         .game-narrative strong { color: var(--gv-accent, #10b981); }
         @keyframes gvFadeIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes gvFadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes statPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
         .game-loading-el { display: none; flex-direction: column; align-items: center; gap: 12px; }
         .game-loading-el.active { display: flex; }
@@ -835,6 +836,14 @@
             }
             updateGameStats();
 
+            // Check for game over: any stat at 0 or risk at 100
+            const isGameOver = gameState && (
+                gameState.money <= 0 || gameState.time <= 0 || gameState.energy <= 0 || gameState.risk >= 100
+            );
+
+            // Also detect if AI sent no choices (narrative ending)
+            const hasChoices = data.choices && data.choices.length > 0 && !isGameOver;
+
             const narrativeEl = document.getElementById('gameNarrative');
             narrativeEl.className = 'game-narrative';
             narrativeEl.innerHTML = formatGameText(data.message);
@@ -842,7 +851,13 @@
             narrativeEl.classList.add('fade-in');
 
             const choicesEl = document.getElementById('gameChoices');
-            if (data.choices && data.choices.length > 0) {
+            if (isGameOver) {
+                // Game over — show restart button instead of choices
+                choicesEl.className = 'game-choices';
+                choicesEl.innerHTML = `<button class="gchoice-btn" style="border-color: var(--gv-accent); text-align: center; font-weight: 600;" onclick="resetSession()">Play Again</button>`;
+                void choicesEl.offsetWidth;
+                choicesEl.classList.add('fade-in');
+            } else if (hasChoices) {
                 choicesEl.className = 'game-choices';
                 choicesEl.innerHTML = data.choices.map(c =>
                     `<button class="gchoice-btn" onclick="pickChoice(this, '${escapeAttr(c)}')">${escapeHtml(c)}</button>`
@@ -875,10 +890,14 @@
         // Game view helpers
         function updateGameStats() {
             if (!gameState) return;
-            document.getElementById('statMoney').style.width = Math.max(0, Math.min(100, gameState.money)) + '%';
-            document.getElementById('statTime').style.width = Math.max(0, Math.min(100, gameState.time)) + '%';
-            document.getElementById('statRisk').style.width = Math.max(0, Math.min(100, gameState.risk)) + '%';
-            document.getElementById('statEnergy').style.width = Math.max(0, Math.min(100, gameState.energy)) + '%';
+            ['money', 'time', 'risk', 'energy'].forEach(key => {
+                const el = document.getElementById('stat' + key.charAt(0).toUpperCase() + key.slice(1));
+                const val = Math.max(0, Math.min(100, gameState[key]));
+                el.style.width = val + '%';
+                // Pulse animation when stat is critical (below 20 or risk above 80)
+                const isCritical = key === 'risk' ? val > 80 : val < 20;
+                el.style.animation = isCritical ? 'statPulse 1s ease-in-out infinite' : 'none';
+            });
         }
 
         function formatGameText(text) {
