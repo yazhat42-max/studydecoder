@@ -205,6 +205,57 @@
         }
         .new-topic-btn:hover { background: var(--primary); color: #fff; }
 
+        /* ── SCENARIO PICKER ── */
+        .scenario-picker {
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            position: fixed; inset: 0; z-index: 201; background: linear-gradient(160deg, #0f1419 0%, #1a2332 50%, #0f1419 100%);
+            color: rgba(255,255,255,0.92); font-family: 'Poppins', sans-serif; padding: 40px 20px;
+            overflow-y: auto;
+        }
+        .scenario-picker.active { display: flex; }
+        .scenario-picker-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 6px; text-align: center; }
+        .scenario-picker-sub { font-size: 0.9rem; color: rgba(255,255,255,0.45); margin-bottom: 32px; text-align: center; }
+        .scenario-cards { display: flex; gap: 16px; max-width: 800px; width: 100%; flex-wrap: wrap; justify-content: center; }
+        .scenario-card {
+            flex: 1; min-width: 220px; max-width: 260px;
+            background: rgba(255,255,255,0.035); border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 14px; padding: 24px 20px; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1); text-align: left;
+        }
+        .scenario-card:hover {
+            background: rgba(255,255,255,0.07); border-color: var(--gv-accent, #10b981);
+            transform: translateY(-4px); box-shadow: 0 8px 30px var(--gv-glow, rgba(16,185,129,0.15));
+        }
+        .scenario-card-icon { font-size: 1.8rem; margin-bottom: 10px; }
+        .scenario-card-title { font-size: 1rem; font-weight: 600; margin-bottom: 6px; color: rgba(255,255,255,0.92); }
+        .scenario-card-desc { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.5; }
+        .scenario-back-btn {
+            margin-top: 24px; background: none; border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.5); padding: 10px 24px; border-radius: 8px;
+            font-size: 0.85rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.2s;
+        }
+        .scenario-back-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+        /* ── OBJECTIVE BANNER ── */
+        .game-objective {
+            display: none; text-align: center; padding: 12px 24px;
+            background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.06);
+            flex-shrink: 0;
+        }
+        .game-objective.active { display: block; }
+        .game-objective-label {
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--gv-accent, #10b981); font-weight: 600; margin-bottom: 4px;
+        }
+        .game-objective-text {
+            font-size: 0.88rem; color: rgba(255,255,255,0.7); line-height: 1.5; max-width: 600px; margin: 0 auto;
+        }
+
+        @media (max-width: 600px) {
+            .scenario-cards { flex-direction: column; align-items: center; }
+            .scenario-card { max-width: 100%; min-width: 0; }
+        }
+
         /* ===== Immersive Game View (SPENT-style) ===== */
         .game-view {
             position: fixed; inset: 0; z-index: 200;
@@ -434,6 +485,14 @@
         </div>
     </div>
 
+    <!-- Scenario Picker Overlay -->
+    <div class="scenario-picker" id="scenarioPicker">
+        <div class="scenario-picker-title" id="scenarioPickerTitle">Choose Your Scenario</div>
+        <div class="scenario-picker-sub" id="scenarioPickerSub">Pick a starting situation — your subject knowledge determines survival</div>
+        <div class="scenario-cards" id="scenarioCards"></div>
+        <button class="scenario-back-btn" onclick="closeScenarioPicker()">&#8592; Back</button>
+    </div>
+
     <!-- Immersive Game View (fullscreen overlay) -->
     <div class="game-view" id="gameView">
         <div class="game-header">
@@ -449,6 +508,10 @@
             <div class="gstat"><span class="gstat-icon">⏱️</span><span class="gstat-label">Time</span><div class="gstat-bar"><div class="gstat-fill time" id="statTime"></div></div></div>
             <div class="gstat"><span class="gstat-icon">⚠️</span><span class="gstat-label">Risk</span><div class="gstat-bar"><div class="gstat-fill risk" id="statRisk"></div></div></div>
             <div class="gstat"><span class="gstat-icon">⚡</span><span class="gstat-label">Energy</span><div class="gstat-bar"><div class="gstat-fill energy" id="statEnergy"></div></div></div>
+        </div>
+        <div class="game-objective" id="gameObjective">
+            <div class="game-objective-label">&#127919; Objective</div>
+            <div class="game-objective-text" id="gameObjectiveText"></div>
         </div>
         <div class="game-stage" id="gameStage">
             <div class="game-narrative" id="gameNarrative"></div>
@@ -466,6 +529,51 @@
         let conversationHistory = [];
         let gameState = null;
         let isLoading = false;
+        let pendingScenario = null; // stores selected scenario context
+
+        // Scenario starters per subject category
+        const CATEGORY_SCENARIOS = {
+            'Science': [
+                { icon: '🧪', title: 'Lab Emergency', desc: 'A contamination alarm goes off in the research lab. You\'re the senior tech on shift.', context: 'Scenario: Lab emergency — contamination detected, player is senior lab technician making safety and science decisions' },
+                { icon: '🏥', title: 'Medical Case', desc: 'A patient presents with unusual symptoms. You\'re the specialist they\'ve been referred to.', context: 'Scenario: Medical case — player is a specialist diagnosing and treating based on scientific knowledge' },
+                { icon: '🌿', title: 'Field Research', desc: 'Your expedition team is deep in the field when something unexpected disrupts the study.', context: 'Scenario: Field research expedition — unexpected disruption, player must use scientific method to adapt' }
+            ],
+            'English': [
+                { icon: '📰', title: 'Editor Under Pressure', desc: 'You\'re the editor of a major publication. A controversial piece just landed on your desk.', context: 'Scenario: Editor making publishing decisions — weighing ethics, audience, and textual integrity' },
+                { icon: '🎭', title: 'Festival Curator', desc: 'You\'re curating a literary festival. Budget is tight, stakes are high.', context: 'Scenario: Literary festival curation — selecting texts, managing stakeholders, creating meaningful dialogue' },
+                { icon: '✍️', title: 'Writer\'s Dilemma', desc: 'You\'ve been commissioned to adapt a classic text. The producer wants changes you disagree with.', context: 'Scenario: Writer adapting a classic — creative integrity vs commercial pressure' }
+            ],
+            'Mathematics': [
+                { icon: '🏗️', title: 'Construction Planner', desc: 'You\'re managing a building project. The numbers need to work or the structure won\'t.', context: 'Scenario: Construction project manager — applying mathematical concepts to structural and budgetary decisions' },
+                { icon: '💰', title: 'Financial Advisor', desc: 'A client just inherited $50,000. They need a plan — and you\'re the numbers person.', context: 'Scenario: Financial advisor — applying mathematical modelling to investment and risk decisions' },
+                { icon: '📊', title: 'Data Analyst', desc: 'Your company needs insights from messy data. The board meeting is tomorrow.', context: 'Scenario: Data analyst under deadline — statistical analysis, probability, and data-driven decisions' }
+            ],
+            'HSIE': [
+                { icon: '⚖️', title: 'Court Advisor', desc: 'A landmark case is being heard. You\'re advising one side — the verdict could change everything.', context: 'Scenario: Legal/policy advisor in a landmark case — applying HSIE knowledge to real decisions' },
+                { icon: '🏪', title: 'Business Owner', desc: 'You just opened a business in a competitive market. Survive the first 6 months.', context: 'Scenario: New business owner — navigating market forces, competition, and economic decisions' },
+                { icon: '🗳️', title: 'Policy Maker', desc: 'Your community faces a crisis. You\'re on the council that decides the response.', context: 'Scenario: Community policy maker — weighing social, economic, and political factors' }
+            ],
+            'Creative Arts': [
+                { icon: '🎬', title: 'Production Manager', desc: 'Opening night is in two weeks. The lead just quit and the budget is blown.', context: 'Scenario: Production manager for a creative show — managing artistic vision vs practical constraints' },
+                { icon: '🖼️', title: 'Gallery Curator', desc: 'You\'re mounting a controversial exhibition. Artists, sponsors, and critics all want different things.', context: 'Scenario: Gallery curator — balancing artistic expression, commercial viability, and public reaction' },
+                { icon: '🎵', title: 'Music Producer', desc: 'An artist wants to release something bold. The label wants something safe. You decide.', context: 'Scenario: Music producer — creative vs commercial tension, artistic integrity decisions' }
+            ],
+            'TAS': [
+                { icon: '⚙️', title: 'Workshop Crisis', desc: 'A critical machine breaks down mid-production. The client deadline is tomorrow.', context: 'Scenario: Workshop/engineering crisis — technical problem-solving under pressure' },
+                { icon: '🍳', title: 'Kitchen Challenge', desc: 'You\'re running a commercial kitchen. A health inspector just walked in unannounced.', context: 'Scenario: Commercial kitchen manager — food safety, quality control, and technical decisions' },
+                { icon: '💻', title: 'Tech Startup', desc: 'Your app just went viral but the servers are crashing. Users are furious.', context: 'Scenario: Tech startup — engineering and technical decisions under pressure' }
+            ],
+            'PDHPE': [
+                { icon: '🏃', title: 'Team Coach', desc: 'Finals are next week. Your star player is injured and team morale is crashing.', context: 'Scenario: Sports team coach — training, injury management, and performance decisions' },
+                { icon: '🥗', title: 'Health Consultant', desc: 'A client wants to transform their health in 3 months. You design the plan.', context: 'Scenario: Health consultant — nutrition, exercise science, and lifestyle management' },
+                { icon: '🏥', title: 'Community Health', desc: 'A health crisis hits your local area. You\'re coordinating the community response.', context: 'Scenario: Community health coordinator — public health decisions and resource management' }
+            ],
+            'VET': [
+                { icon: '🔧', title: 'Site Manager', desc: 'You\'re managing a job site. Safety incident reported — what do you do?', context: 'Scenario: Job site manager — workplace safety, compliance, and technical decisions' },
+                { icon: '🤝', title: 'Client Project', desc: 'A major client has specific requirements that conflict with best practice. Navigate it.', context: 'Scenario: Trade professional — balancing client demands with industry standards' },
+                { icon: '📋', title: 'Quality Inspector', desc: 'You\'re inspecting a completed project. Something doesn\'t look right.', context: 'Scenario: Quality inspector — identifying issues and making compliance decisions' }
+            ]
+        };
 
         const subjects = [
             { id: 'agriculture', name: 'Agriculture', category: 'TAS' },
@@ -671,8 +779,8 @@
             choicesContainer.innerHTML = '';
         }
 
-        // Start session
-        async function startSession() {
+        // Start session — show scenario picker for game mode
+        function startSession() {
             const subjectId = subjectInput.value;
             const topic = topicInput.value;
             if (!subjectId || !topic) {
@@ -682,38 +790,90 @@
             const subj = subjects.find(s => s.id === subjectId);
             const subject = subj ? subj.name : subjectId;
 
-            conversationHistory = [];
-            gameState = null;
-
             if (currentMode === 'game') {
-                // Apply subject theme
-                const theme = SUBJECT_THEMES[subj?.category] || SUBJECT_THEMES['Science'];
-                const gv = document.getElementById('gameView');
-                gv.style.setProperty('--gv-accent', theme.accent);
-                gv.style.setProperty('--gv-glow', theme.glow);
-                gv.style.background = theme.gradient;
-                document.getElementById('gameSubjectLabel').textContent = subject;
-                document.getElementById('gameTopicLabel').textContent = topic;
-
-                gameState = { money: 50, time: 50, risk: 50, energy: 50 };
-                updateGameStats();
-                document.getElementById('gameNarrative').innerHTML = '';
-                document.getElementById('gameChoices').innerHTML = '';
-
-                gv.classList.add('active');
-                document.body.style.overflow = 'hidden';
-
-                const initMessage = `Subject: ${subject}\nTopic: ${topic}\nMode: game`;
-                await sendMessage(initMessage, false);
+                showScenarioPicker(subj, subject, topic);
             } else {
+                conversationHistory = [];
+                gameState = null;
                 setupPanel.style.display = 'none';
                 chatContainer.classList.add('active');
                 chatMessages.innerHTML = '';
                 choicesContainer.innerHTML = '';
-
                 const initMessage = `Subject: ${subject}\nTopic: ${topic}\nMode: ${currentMode}`;
-                await sendMessage(initMessage, false);
+                sendMessage(initMessage, false);
             }
+        }
+
+        function showScenarioPicker(subj, subject, topic) {
+            const category = subj?.category || 'Science';
+            const scenarios = CATEGORY_SCENARIOS[category] || CATEGORY_SCENARIOS['Science'];
+            const theme = SUBJECT_THEMES[category] || SUBJECT_THEMES['Science'];
+
+            const picker = document.getElementById('scenarioPicker');
+            picker.style.setProperty('--gv-accent', theme.accent);
+            picker.style.setProperty('--gv-glow', theme.glow);
+            picker.style.background = theme.gradient;
+
+            document.getElementById('scenarioPickerTitle').textContent = 'Choose Your Scenario';
+            document.getElementById('scenarioPickerSub').textContent = subject + ' \u2014 ' + topic;
+
+            const cardsEl = document.getElementById('scenarioCards');
+            cardsEl.innerHTML = scenarios.map(function(s, i) {
+                return '<div class="scenario-card" onclick="pickScenario(' + i + ')">' +
+                    '<div class="scenario-card-icon">' + s.icon + '</div>' +
+                    '<div class="scenario-card-title">' + s.title + '</div>' +
+                    '<div class="scenario-card-desc">' + s.desc + '</div>' +
+                '</div>';
+            }).join('');
+
+            picker._subj = subj;
+            picker._subject = subject;
+            picker._topic = topic;
+            picker._scenarios = scenarios;
+
+            picker.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeScenarioPicker() {
+            document.getElementById('scenarioPicker').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        async function pickScenario(index) {
+            const picker = document.getElementById('scenarioPicker');
+            const subj = picker._subj;
+            const subject = picker._subject;
+            const topic = picker._topic;
+            const scenario = picker._scenarios[index];
+
+            picker.classList.remove('active');
+
+            conversationHistory = [];
+            gameState = null;
+
+            const theme = SUBJECT_THEMES[subj?.category] || SUBJECT_THEMES['Science'];
+            const gv = document.getElementById('gameView');
+            gv.style.setProperty('--gv-accent', theme.accent);
+            gv.style.setProperty('--gv-glow', theme.glow);
+            gv.style.background = theme.gradient;
+            document.getElementById('gameSubjectLabel').textContent = subject;
+            document.getElementById('gameTopicLabel').textContent = topic;
+
+            const objEl = document.getElementById('gameObjective');
+            document.getElementById('gameObjectiveText').textContent = scenario.desc;
+            objEl.classList.add('active');
+
+            gameState = { money: 50, time: 50, risk: 50, energy: 50 };
+            updateGameStats();
+            document.getElementById('gameNarrative').innerHTML = '';
+            document.getElementById('gameChoices').innerHTML = '';
+
+            gv.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            const initMessage = 'Subject: ' + subject + '\nTopic: ' + topic + '\nMode: game\n' + scenario.context;
+            await sendMessage(initMessage, false);
         }
 
         // New Topic → back to setup (keep mode + subject)
@@ -730,6 +890,8 @@
 
         function closeGameView() {
             document.getElementById('gameView').classList.remove('active');
+            document.getElementById('gameObjective').classList.remove('active');
+            document.getElementById('scenarioPicker').classList.remove('active');
             document.body.style.overflow = '';
         }
 
@@ -835,6 +997,16 @@
                 }
             }
             updateGameStats();
+
+            // Extract objective from first AI response
+            if (conversationHistory.length <= 2 && data.message) {
+                const objMatch = data.message.match(/[Oo]bjective:\s*(.+?)(?:\.\s|\n|$)/);
+                if (objMatch) {
+                    const objEl = document.getElementById('gameObjective');
+                    document.getElementById('gameObjectiveText').textContent = objMatch[1].trim();
+                    objEl.classList.add('active');
+                }
+            }
 
             // Check for game over: any stat at 0 or risk at 100
             const isGameOver = gameState && (
