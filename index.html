@@ -80,6 +80,11 @@
         }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; scroll-behavior:smooth; }
         body { background:var(--bg); color:var(--text); line-height:1.6; }
+        body::after {
+            content:''; position:fixed; inset:0; z-index:9998; pointer-events:none;
+            background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity:0.025; mix-blend-mode:overlay;
+        }
 
         /* ── NAV (glass) ── */
         .navbar {
@@ -104,7 +109,8 @@
         .btn { display:inline-block; padding:0.8rem 1.8rem; border-radius:50px; text-decoration:none; font-weight:600; font-size:0.95rem; cursor:pointer; transition:var(--transition); border:none; }
         .btn-primary { background:var(--primary); color:var(--white) !important; }
         .btn-primary:hover { transform:translateY(-3px); box-shadow:0 8px 25px var(--primary-glow); }
-        .btn-glow { box-shadow:0 0 20px var(--primary-glow); }
+        .btn-glow { box-shadow:0 0 20px var(--primary-glow); animation:btnPulse 3s ease-in-out infinite; }
+        @keyframes btnPulse { 0%,100%{box-shadow:0 0 20px var(--primary-glow)} 50%{box-shadow:0 0 35px var(--primary-glow), 0 0 60px rgba(108,99,255,0.1)} }
         .btn-ghost { border:2px solid rgba(255,255,255,0.2); color:var(--white); background:transparent; }
         .btn-ghost:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.4); }
         .btn-secondary { border:2px solid var(--primary); color:var(--primary); background:transparent; }
@@ -142,13 +148,16 @@
             background:radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%);
             border-radius:50%; filter:blur(60px); pointer-events:none;
         }
-        .hero-inner { max-width:800px; margin:0 auto; width:100%; position:relative; z-index:1; }
+        .hero-inner { max-width:800px; margin:0 auto; width:100%; position:relative; z-index:1; animation:heroReveal 1s cubic-bezier(0.25,0.46,0.45,0.94); }
+        @keyframes heroReveal { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
         .hero-badge {
             display:inline-block; padding:6px 18px; border-radius:50px;
             background:rgba(108,99,255,0.12); border:1px solid rgba(108,99,255,0.25);
             color:var(--primary); font-size:0.82rem; font-weight:600; letter-spacing:0.5px;
             margin-bottom:1.5rem; text-transform:uppercase;
+            animation:badgeIn 0.8s ease 0.2s both;
         }
+        @keyframes badgeIn { from{opacity:0;transform:translateY(10px) scale(0.95)} to{opacity:1;transform:translateY(0) scale(1)} }
         .hero-text h1 { font-size:4.5rem; line-height:1.05; margin-bottom:1.2rem; font-weight:800; letter-spacing:-2px; }
         .hero-text h1 .highlight {
             background:linear-gradient(135deg, var(--primary), var(--accent), var(--primary));
@@ -165,6 +174,23 @@
         }
         .scroll-line { width:1px; height:40px; background:linear-gradient(to bottom, var(--primary), transparent); animation:scrollPulse 2s infinite; }
         @keyframes scrollPulse { 0%,100%{opacity:1;height:40px} 50%{opacity:0.4;height:25px} }
+
+        /* ── SUBJECT TICKER ── */
+        .ticker {
+            overflow:hidden; padding:0.9rem 0;
+            border-bottom:1px solid var(--border);
+            background:rgba(108,99,255,0.015);
+        }
+        .ticker-track {
+            display:flex; gap:3rem; white-space:nowrap;
+            animation:tickerScroll 40s linear infinite;
+            width:max-content;
+        }
+        .ticker-track span {
+            font-size:0.72rem; color:var(--text-muted); font-weight:600;
+            text-transform:uppercase; letter-spacing:2.5px;
+        }
+        @keyframes tickerScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
         /* ── SHOWCASE SECTIONS ── */
         .showcase {
@@ -277,54 +303,71 @@
             color:var(--text-sec); cursor:default; transition:var(--transition);
         }
         .demo-choice:hover { background:rgba(108,99,255,0.08); border-color:rgba(108,99,255,0.3); color:var(--text); }
-
-        /* ── TOOLS GRID ── */
-        .tools-section { padding:5rem 5%; border-top:1px solid var(--border); }
-        .section-title {
-            text-align:center; font-size:2.2rem; font-weight:700;
-            margin-bottom:3rem; color:var(--text);
+        .demo-disclaimer {
+            font-size:0.58rem; font-weight:700; text-transform:uppercase;
+            letter-spacing:0.8px; color:#f59e0b;
+            background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.15);
+            padding:2px 8px; border-radius:4px; white-space:nowrap;
         }
-        .section-title .highlight {
+
+        /* ── DEMO: Worksheet ── */
+        .demo-upload-area {
+            display:flex; align-items:center; gap:12px;
+            padding:12px 16px; background:rgba(255,255,255,0.03); border:1px dashed var(--border);
+            border-radius:10px; margin-bottom:0.8rem;
+        }
+        .demo-upload-icon { font-size:1.6rem; }
+        .demo-upload-text { font-size:0.82rem; color:var(--text-sec); font-family:monospace; }
+        .demo-ws-output { display:flex; flex-direction:column; gap:6px; }
+        .demo-ws-q { font-size:0.85rem; color:var(--text); padding:8px 12px; background:rgba(108,99,255,0.04); border-radius:8px; }
+        .demo-ws-hint { font-size:0.78rem; color:#f59e0b; padding:4px 12px; opacity:0.85; }
+
+        /* ── DEMO: Notes ── */
+        .demo-handwriting {
+            display:flex; flex-direction:column; gap:6px;
+            padding:12px 16px; background:rgba(255,255,255,0.02);
+            border:1px solid var(--border); border-radius:10px;
+            font-family:'Segoe Script','Comic Sans MS',cursive; font-size:0.85rem; color:var(--text-muted);
+            font-style:italic;
+        }
+        .demo-typed-notes {
+            padding:12px 16px; background:rgba(108,99,255,0.04);
+            border:1px solid rgba(108,99,255,0.1); border-radius:10px;
+        }
+        .demo-typed-notes p { font-size:0.85rem; color:var(--text); margin-bottom:4px; line-height:1.5; }
+        .demo-typed-notes p:last-child { margin-bottom:0; }
+
+        /* ── DEMO: Timetable ── */
+        .demo-timetable { border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+        .demo-tt-header {
+            display:grid; grid-template-columns:repeat(5,1fr);
+            background:rgba(108,99,255,0.08); border-bottom:1px solid var(--border);
+        }
+        .demo-tt-header span { text-align:center; padding:8px; font-size:0.72rem; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:0.5px; }
+        .demo-tt-row { display:grid; grid-template-columns:repeat(5,1fr); border-bottom:1px solid var(--border); }
+        .demo-tt-row:last-child { border-bottom:none; }
+        .demo-tt-block {
+            text-align:center; padding:12px 6px; font-size:0.75rem; font-weight:600;
+            color:var(--text); border-right:1px solid var(--border);
+            border-left:1px solid transparent; border-top:1px solid transparent; border-bottom:1px solid transparent;
+        }
+        .demo-tt-block:last-child { border-right:none; }
+        .demo-tt-free { color:var(--text-muted); font-weight:400; font-style:italic; }
+
+        /* ── DEMO: Practice Q ── */
+        .demo-pq-subject { display:flex; align-items:center; gap:12px; margin-bottom:0.5rem; }
+
+        /* ── SECTION DIVIDER ── */
+        .section-divider {
+            text-align:center; padding:4rem 5% 1rem;
+            border-top:1px solid var(--border);
+        }
+        .section-divider h2 { font-size:2.2rem; font-weight:700; color:var(--text); margin-bottom:0.5rem; }
+        .section-divider h2 .highlight {
             background:linear-gradient(135deg,var(--primary),var(--accent));
             -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
         }
-        .tools-grid {
-            display:flex; flex-wrap:wrap; justify-content:center;
-            gap:1.5rem; max-width:1100px; margin:0 auto;
-        }
-        .tool-card {
-            background:var(--bg-card); border-radius:var(--radius);
-            padding:2rem 1.6rem; text-align:center;
-            box-shadow:var(--shadow); transition:var(--transition);
-            border:1px solid var(--border); text-decoration:none; color:inherit;
-            display:flex; flex-direction:column; align-items:center;
-            position:relative; overflow:hidden;
-            width:calc(33.333% - 1.5rem); min-width:260px; max-width:340px;
-        }
-        .tool-card:hover { transform:translateY(-6px); border-color:var(--primary); box-shadow:0 10px 40px rgba(108,99,255,0.15); }
-        .tool-card.flagship { border-color:rgba(108,99,255,0.2); }
-        .tool-card.flagship::before {
-            content:'FLAGSHIP'; position:absolute; top:12px; right:-24px;
-            background:linear-gradient(135deg,var(--primary),var(--accent));
-            color:white; font-size:0.6rem; font-weight:700;
-            padding:3px 30px; transform:rotate(45deg); letter-spacing:1px;
-        }
-        .tool-card-icon {
-            width:60px; height:60px; border-radius:14px;
-            background:linear-gradient(135deg, rgba(108,99,255,0.15), rgba(255,101,132,0.1));
-            display:flex; align-items:center; justify-content:center;
-            margin-bottom:1rem; font-size:1.8rem;
-        }
-        .tool-card.flagship .tool-card-icon { background:linear-gradient(135deg,var(--primary),var(--accent)); }
-        .tool-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:0.5rem; color:var(--text); }
-        .tool-card p { color:var(--text-sec); font-size:0.88rem; line-height:1.5; margin-bottom:1rem; flex-grow:1; }
-        .tool-card-cta {
-            display:inline-block; background:var(--primary); color:white;
-            padding:0.5rem 1.5rem; border-radius:50px; font-weight:600; font-size:0.85rem;
-            transition:var(--transition);
-        }
-        .tool-card:hover .tool-card-cta { box-shadow:0 4px 16px var(--primary-glow); }
-        .tools-section-locked .tool-card { pointer-events:none; opacity:0.5; }
+        .section-divider p { color:var(--text-sec); font-size:1.05rem; }
 
         /* ── STATS ── */
         .stats-strip { padding:3rem 5%; border-top:1px solid var(--border); }
@@ -483,8 +526,7 @@
             .showcase h2 { font-size:1.8rem; }
             .showcase-text, .showcase-demo { flex:none; width:100%; }
             .demo-window { max-width:100%; }
-            .tools-grid { gap:1rem; }
-            .tool-card { width:calc(50% - 1rem); min-width:0; }
+
             .features-grid { flex-direction:column; align-items:center; }
             .feature-card { max-width:100%; }
             .section-title { font-size:1.7rem; }
@@ -495,7 +537,7 @@
         }
         @media (max-width:500px) {
             .hero-text h1 { font-size:2.2rem; }
-            .tool-card { width:100%; max-width:100%; }
+
             .demo-game-stats { flex-wrap:wrap; }
             .onboard-subjects-grid { grid-template-columns:1fr; }
         }
@@ -538,16 +580,16 @@
             <div class="hero-text">
                 <div class="hero-badge">AI-Powered Study Platform</div>
                 <h1>Study <span class="highlight">Decoded</span>.</h1>
-                <p class="hero-sub">Generate full practice exams, decode your syllabus, and get instant AI marking — for all 45 HSC subjects.</p>
+                <p class="hero-sub">Generate full practice exams, get instant AI marking, and decode your syllabus — everything you need to ace the HSC, in one platform.</p>
                 <div class="hero-buttons" id="heroButtons">
-                    <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" id="featuredExamCard" onclick="return goExamMode(event)">Start Practice Exam</a>
+                    <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" id="featuredExamCard" onclick="return goExamMode(event)">Start Practice Exam — Free</a>
                     <a href="login.html" class="btn btn-ghost" id="heroSignInBtn">Sign In to Access</a>
                 </div>
                 <div class="hero-buttons" id="heroLoggedIn" style="display: none;">
                     <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" onclick="return goExamMode(event)">Start Practice Exam</a>
-                    <a href="#tools" class="btn btn-ghost">Explore Tools ↓</a>
+                    <a href="#tools" class="btn btn-ghost">Explore All Tools ↓</a>
                 </div>
-                <p class="hero-trust">Built for Australian students following the NSW curriculum.</p>
+                <p class="hero-trust">🇦🇺 Built for the NSW curriculum &nbsp;·&nbsp; Free to start, no card required</p>
             </div>
         </div>
         <div class="hero-scroll">
@@ -555,6 +597,19 @@
             <div class="scroll-line"></div>
         </div>
     </section>
+
+    <!-- Subject Ticker -->
+    <div class="ticker">
+        <div class="ticker-track">
+            <span>Modern History</span><span>Biology</span><span>Chemistry</span><span>Physics</span><span>English Advanced</span><span>Mathematics</span><span>Economics</span><span>Legal Studies</span><span>Business Studies</span><span>Engineering</span><span>Geography</span><span>Society &amp; Culture</span><span>Visual Arts</span><span>Software Engineering</span><span>Ancient History</span><span>Design &amp; Technology</span><span>Drama</span><span>Music</span><span>Modern History</span><span>Biology</span><span>Chemistry</span><span>Physics</span><span>English Advanced</span><span>Mathematics</span><span>Economics</span><span>Legal Studies</span><span>Business Studies</span><span>Engineering</span><span>Geography</span><span>Society &amp; Culture</span><span>Visual Arts</span><span>Software Engineering</span><span>Ancient History</span><span>Design &amp; Technology</span><span>Drama</span><span>Music</span>
+        </div>
+    </div>
+
+    <!-- Tools Section Header -->
+    <div class="section-divider reveal" id="tools">
+        <h2>Every Tool You Need, <span class="highlight">One Platform</span></h2>
+        <p>Six AI-powered tools built for HSC students. Scroll to explore each one.</p>
+    </div>
 
     <!-- Demo: Exam Bot -->
     <section class="showcase" id="examDemo">
@@ -577,6 +632,7 @@
                     <div class="demo-topbar">
                         <div class="demo-dots"><span></span><span></span><span></span></div>
                         <span class="demo-title">Study Decoder — Practice Exam</span>
+                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
                     </div>
                     <div class="demo-content">
                         <div class="demo-exam-header">
@@ -608,6 +664,7 @@
                     <div class="demo-topbar">
                         <div class="demo-dots"><span></span><span></span><span></span></div>
                         <span class="demo-title">Syllabus Decoder</span>
+                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
                     </div>
                     <div class="demo-content">
                         <div class="demo-syllabus-input">
@@ -648,6 +705,7 @@
                     <div class="demo-topbar">
                         <div class="demo-dots"><span></span><span></span><span></span></div>
                         <span class="demo-title">Learn IRL — Biology</span>
+                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
                     </div>
                     <div class="demo-content">
                         <div class="demo-game-stats">
@@ -668,83 +726,214 @@
         </div>
     </section>
 
-    <!-- AI Study Suite - All Tools -->
-    <section class="tools-section" id="tools">
-        <h2 class="section-title reveal">Your AI <span class="highlight">Study Suite</span></h2>
-        <div class="tools-grid" id="toolsGrid">
-            <a href="#" onclick="openTool('syllabus'); return false;" class="tool-card flagship reveal stagger-1">
-                <div class="tool-card-icon">📘</div>
-                <h3>Syllabus Decoder</h3>
-                <p>Break down complex syllabus points into clear, actionable study notes.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            <a href="#" onclick="openTool('worksheet'); return false;" class="tool-card flagship reveal stagger-2">
-                <div class="tool-card-icon">📄</div>
-                <h3>Worksheet Decoder</h3>
-                <p>Upload a worksheet image and get a clean, readable version with hints.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            <a href="#" onclick="openTool('notes-transcriber'); return false;" class="tool-card flagship reveal stagger-3">
-                <div class="tool-card-icon">✍️</div>
-                <h3>Notes Transcriber</h3>
-                <p>Upload handwritten notes and get clean, organised digital text.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            <a href="#" onclick="openTool('practice'); return false;" class="tool-card reveal stagger-4">
-                <div class="tool-card-icon">✏️</div>
-                <h3>Practice Questions</h3>
-                <p>Generate exam-style questions and get instant marking feedback.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            <a href="#" onclick="openTool('timetable'); return false;" class="tool-card reveal stagger-5">
-                <div class="tool-card-icon">📅</div>
-                <h3>Timetable Generator</h3>
-                <p>Create a personalised study schedule that fits your life.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
-            <a href="#" onclick="openTool('learn-irl'); return false;" class="tool-card reveal stagger-6">
-                <div class="tool-card-icon">🌍</div>
-                <h3>Learn IRL</h3>
-                <p>Play through interactive real-world scenarios to learn your subjects.</p>
-                <span class="tool-card-cta tool-cta-unlocked" style="display:none;">Open Tool →</span>
-                <div class="tool-card-cta tool-cta-locked" role="link" onclick="window.location.href='login.html';" aria-label="Sign in to access"></div>
-            </a>
+    <!-- Demo: Worksheet Decoder -->
+    <section class="showcase showcase-reverse" id="worksheetDemo">
+        <div class="showcase-inner">
+            <div class="showcase-demo reveal-left">
+                <div class="demo-window">
+                    <div class="demo-topbar">
+                        <div class="demo-dots"><span></span><span></span><span></span></div>
+                        <span class="demo-title">Worksheet Decoder</span>
+                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                    </div>
+                    <div class="demo-content">
+                        <div class="demo-upload-area">
+                            <div class="demo-upload-icon">📷</div>
+                            <div class="demo-upload-text">worksheet_biology_ch3.jpg</div>
+                        </div>
+                        <div class="demo-arrow">↓ Decoded</div>
+                        <div class="demo-ws-output">
+                            <div class="demo-ws-q"><strong>Q1.</strong> Describe the role of enzymes in cellular respiration.</div>
+                            <div class="demo-ws-hint">💡 Focus on substrate specificity and activation energy</div>
+                            <div class="demo-ws-q"><strong>Q2.</strong> Compare aerobic and anaerobic respiration.</div>
+                            <div class="demo-ws-hint">💡 Use a table format: location, ATP yield, byproducts</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="showcase-text reveal-right">
+                <div class="showcase-label">Flagship Tool</div>
+                <h2>Worksheet <span class="highlight">Decoder</span></h2>
+                <p>Upload a photo of any worksheet and get a clean, readable version with structured hints — no more squinting at blurry handouts.</p>
+                <div class="showcase-pills">
+                    <span>Image Upload</span>
+                    <span>OCR Recognition</span>
+                    <span>Structured Hints</span>
+                    <span>Any Subject</span>
+                </div>
+                <a href="#" onclick="openTool('worksheet'); return false;" class="btn btn-primary btn-glow">Decode a Worksheet →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo: Notes Transcriber -->
+    <section class="showcase" id="notesDemo">
+        <div class="showcase-inner">
+            <div class="showcase-text reveal-left">
+                <div class="showcase-label">Flagship Tool</div>
+                <h2>Notes <span class="highlight">Transcriber</span></h2>
+                <p>Upload a photo of your handwritten notes and get clean, perfectly organised digital text — ready to study from, share, or revise.</p>
+                <div class="showcase-pills">
+                    <span>Handwriting Recognition</span>
+                    <span>Auto-formatting</span>
+                    <span>Organised Output</span>
+                </div>
+                <a href="#" onclick="openTool('notes-transcriber'); return false;" class="btn btn-primary btn-glow">Transcribe Notes →</a>
+            </div>
+            <div class="showcase-demo reveal-right">
+                <div class="demo-window">
+                    <div class="demo-topbar">
+                        <div class="demo-dots"><span></span><span></span><span></span></div>
+                        <span class="demo-title">Notes Transcriber</span>
+                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                    </div>
+                    <div class="demo-content">
+                        <div class="demo-label-sm">Your Handwriting</div>
+                        <div class="demo-handwriting">
+                            <span>mitosis → cell division...</span>
+                            <span>prophase, metaphase, anaphase, telophse</span>
+                            <span>cytokinesis = cytoplasm splits</span>
+                        </div>
+                        <div class="demo-arrow">↓ Transcribed</div>
+                        <div class="demo-label-sm">Clean Digital Notes</div>
+                        <div class="demo-typed-notes">
+                            <p><strong>Mitosis — Cell Division</strong></p>
+                            <p>Stages: Prophase → Metaphase → Anaphase → Telophase</p>
+                            <p>Cytokinesis: cytoplasm divides to form two daughter cells</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo: Practice Questions -->
+    <section class="showcase showcase-reverse" id="practiceDemo">
+        <div class="showcase-inner">
+            <div class="showcase-demo reveal-left">
+                <div class="demo-window">
+                    <div class="demo-topbar">
+                        <div class="demo-dots"><span></span><span></span><span></span></div>
+                        <span class="demo-title">Practice Questions</span>
+                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                    </div>
+                    <div class="demo-content">
+                        <div class="demo-pq-subject">
+                            <span class="demo-subject">Chemistry</span>
+                            <span style="font-size:0.78rem;color:var(--text-muted);">Module 5 — Equilibrium</span>
+                        </div>
+                        <div class="demo-question" style="margin-top:0.8rem;">
+                            <div class="demo-q-label">Question 1 <span>(4 marks)</span></div>
+                            <div class="demo-q-text" style="min-height:auto;">Explain how Le Chatelier’s principle applies when pressure is increased in the Haber process.</div>
+                        </div>
+                        <div class="demo-question" style="margin-top:0.6rem; opacity:0.7;">
+                            <div class="demo-q-label">Question 2 <span>(6 marks)</span></div>
+                            <div class="demo-q-text" style="min-height:auto;">Evaluate how temperature and concentration changes affect equilibrium yield in an industrial context.</div>
+                        </div>
+                        <div class="demo-question" style="margin-top:0.6rem; opacity:0.45;">
+                            <div class="demo-q-label">Question 3 <span>(3 marks)</span></div>
+                            <div class="demo-q-text" style="min-height:auto; overflow:hidden; max-height:1.5em;">Define dynamic equilibrium and outline the conditions required...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="showcase-text reveal-right">
+                <div class="showcase-label">Quick Practice</div>
+                <h2>Practice <span class="highlight">Questions</span></h2>
+                <p>Generate targeted exam-style questions for any topic and mark range — then submit your answers for instant AI feedback.</p>
+                <div class="showcase-pills">
+                    <span>Any Topic</span>
+                    <span>AI Feedback Mode</span>
+                    <span>HSC-Style Format</span>
+                    <span>All Mark Values</span>
+                </div>
+                <a href="#" onclick="openTool('practice'); return false;" class="btn btn-primary btn-glow">Generate Questions →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo: Timetable Generator -->
+    <section class="showcase" id="timetableDemo">
+        <div class="showcase-inner">
+            <div class="showcase-text reveal-left">
+                <div class="showcase-label">Smart Scheduling</div>
+                <h2>Timetable <span class="highlight">Generator</span></h2>
+                <p>Input your subjects, commitments, and exam dates — get a personalised study timetable that maximises your revision time.</p>
+                <div class="showcase-pills">
+                    <span>Personalised</span>
+                    <span>Exam-weighted</span>
+                    <span>Adapts to You</span>
+                </div>
+                <a href="#" onclick="openTool('timetable'); return false;" class="btn btn-primary btn-glow">Build Your Timetable →</a>
+            </div>
+            <div class="showcase-demo reveal-right">
+                <div class="demo-window">
+                    <div class="demo-topbar">
+                        <div class="demo-dots"><span></span><span></span><span></span></div>
+                        <span class="demo-title">Timetable Generator</span>
+                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                    </div>
+                    <div class="demo-content">
+                        <div class="demo-timetable">
+                            <div class="demo-tt-header">
+                                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span>
+                            </div>
+                            <div class="demo-tt-row">
+                                <div class="demo-tt-block" style="background:rgba(108,99,255,0.15);">Maths</div>
+                                <div class="demo-tt-block" style="background:rgba(39,201,63,0.12);">Bio</div>
+                                <div class="demo-tt-block" style="background:rgba(255,101,132,0.12);">English</div>
+                                <div class="demo-tt-block" style="background:rgba(245,158,11,0.12);">History</div>
+                                <div class="demo-tt-block" style="background:rgba(108,99,255,0.15);">Maths</div>
+                            </div>
+                            <div class="demo-tt-row">
+                                <div class="demo-tt-block" style="background:rgba(39,201,63,0.12);">Bio</div>
+                                <div class="demo-tt-block" style="background:rgba(108,99,255,0.15);">Maths</div>
+                                <div class="demo-tt-block" style="background:rgba(245,158,11,0.12);">History</div>
+                                <div class="demo-tt-block" style="background:rgba(255,101,132,0.12);">English</div>
+                                <div class="demo-tt-block demo-tt-free">Free</div>
+                            </div>
+                            <div class="demo-tt-row">
+                                <div class="demo-tt-block" style="background:rgba(255,101,132,0.12);">English</div>
+                                <div class="demo-tt-block" style="background:rgba(245,158,11,0.12);">History</div>
+                                <div class="demo-tt-block" style="background:rgba(108,99,255,0.15);">Maths</div>
+                                <div class="demo-tt-block" style="background:rgba(39,201,63,0.12);">Bio</div>
+                                <div class="demo-tt-block" style="background:rgba(108,99,255,0.15);">Revision</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Stats Strip -->
     <section class="stats-strip">
         <div class="stats-inner">
-            <div class="stat-item reveal stagger-1"><div class="stat-number" data-target="45">0</div><div class="stat-label">HSC Subjects</div></div>
-            <div class="stat-item reveal stagger-2"><div class="stat-number" data-target="6">0</div><div class="stat-label">AI Study Tools</div></div>
+            <div class="stat-item reveal stagger-1"><div class="stat-number" data-target="45">0</div><div class="stat-label">HSC Subjects Covered</div></div>
+            <div class="stat-item reveal stagger-2"><div class="stat-number" data-target="6">0</div><div class="stat-label">AI-Powered Tools</div></div>
             <div class="stat-item reveal stagger-3"><div class="stat-number" data-target="1000" data-suffix="+">0</div><div class="stat-label">Questions Generated</div></div>
-            <div class="stat-item reveal stagger-4"><div class="stat-number" data-target="100" data-suffix="%">0</div><div class="stat-label">Curriculum Aligned</div></div>
+            <div class="stat-item reveal stagger-4"><div class="stat-number" data-target="100" data-suffix="%">0</div><div class="stat-label">NESA Curriculum Aligned</div></div>
         </div>
     </section>
 
     <!-- Features Section (Why Choose Us) -->
     <section class="features">
-        <h2 class="section-title reveal">Why Students Choose <span class="highlight">Study Decoder</span></h2>
+        <h2 class="section-title reveal">Why <span class="highlight">Study Decoder</span> Gets Results</h2>
         <div class="features-grid">
             <div class="feature-card reveal stagger-1">
                 <div class="feature-icon">📋</div>
                 <h3>Based on Real Past Papers</h3>
-                <p>Every question modelled on official NESA past papers — matching the format, structure, and difficulty of real HSC exams across all 45 subjects.</p>
+                <p>Every question modelled on official NESA past papers — matching the exact format, structure, and difficulty you'll see on exam day.</p>
             </div>
             <div class="feature-card reveal stagger-2">
                 <div class="feature-icon">⚡</div>
                 <h3>Instant AI Marking</h3>
-                <p>Submit your answers and get band-level feedback in seconds. Understand exactly where you lost marks and how to improve.</p>
+                <p>Submit your answers and get band-level feedback in seconds — no waiting for a teacher. See exactly where you lost marks and how to fix it.</p>
             </div>
             <div class="feature-card reveal stagger-3">
                 <div class="feature-icon">🎯</div>
-                <h3>Exam-Ready Practice</h3>
-                <p>Timed exams with authentic structure — multiple choice, short answer, and extended response — so you walk in prepared on exam day.</p>
+                <h3>Walk In Already Prepared</h3>
+                <p>Timed exams with authentic structure — MC, short answer, and extended response. No surprises on the day because you've already done it all.</p>
             </div>
         </div>
     </section>
@@ -803,11 +992,12 @@
 
     <!-- CTA Section -->
     <section class="cta">
-        <h2 class="reveal">Start Practising for Your HSC Today</h2>
-        <p class="reveal">Generate exams, get AI-marked, and improve — all in one place.</p>
-        <a href="login.html" class="btn btn-primary btn-glow" id="ctaSignIn">Get Started Free</a>
+        <h2 class="reveal">Stop Just Reading Notes.<br><span class="highlight">Start Practising.</span></h2>
+        <p class="reveal">The students who do the best aren't the ones who study the most — they're the ones who practice smart. Join them.</p>
+        <a href="login.html" class="btn btn-primary btn-glow" id="ctaSignIn" style="font-size:1.1rem; padding:16px 40px;">Get Started — It's Free</a>
+        <p class="reveal" style="margin-top:1rem; font-size:0.85rem; color:var(--text-muted); position:relative; z-index:1;">No credit card required · Takes 30 seconds to sign up</p>
         <div id="ctaLoggedIn" style="display: none;">
-            <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" onclick="return goExamMode(event)">Start Practice Exam</a>
+            <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" style="font-size:1.1rem; padding:16px 40px;" onclick="return goExamMode(event)">Start Practice Exam</a>
         </div>
     </section>
 
@@ -981,7 +1171,7 @@
             document.querySelectorAll('.tool-cta-locked').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.tool-cta-unlocked').forEach(el => el.style.display = 'inline-block');
             // Enable tool card clicks
-            document.querySelectorAll('.tool-card').forEach(el => el.style.pointerEvents = 'auto');
+            // tool showcase CTAs handle auth via openTool()
         }
         
         // CTA

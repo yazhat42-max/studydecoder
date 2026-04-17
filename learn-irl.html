@@ -26,13 +26,13 @@
     <style>
         :root {
             --primary: #6C63FF;
-            --secondary: #2A2A2A;
+            --secondary: #ffffff;
             --accent: #FF6584;
             --game: #10b981;
             --breakdown: #f59e0b;
-            --light-bg: #F9F9FB;
-            --white: #ffffff;
-            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --light-bg: #08080d;
+            --white: #111118;
+            --shadow: 0 4px 20px rgba(0,0,0,0.4);
             --radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -68,7 +68,7 @@
             background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .mode-landing-header p { color: #666; font-size: 1.05rem; max-width: 500px; margin: 0 auto; }
+        .mode-landing-header p { color: rgba(255,255,255,0.5); font-size: 1.05rem; max-width: 500px; margin: 0 auto; }
         .mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         .mode-card {
             background: var(--white); border-radius: var(--radius); padding: 32px 28px;
@@ -78,7 +78,7 @@
         .mode-card:hover { transform: translateY(-4px); }
         .mode-card-icon { font-size: 2.4rem; margin-bottom: 16px; }
         .mode-card h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 10px; }
-        .mode-card p { font-size: 0.9rem; color: #666; line-height: 1.5; margin-bottom: 16px; }
+        .mode-card p { font-size: 0.9rem; color: rgba(255,255,255,0.5); line-height: 1.5; margin-bottom: 16px; }
         .mode-card-cta {
             display: inline-block; font-size: 0.9rem; font-weight: 700; color: var(--primary);
             transition: var(--transition);
@@ -111,7 +111,7 @@
             box-shadow: var(--shadow); margin-bottom: 24px;
         }
         .setup-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-        .setup-row label { font-size: 0.85rem; font-weight: 600; color: #555; display: block; margin-bottom: 6px; }
+        .setup-row label { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.6); display: block; margin-bottom: 6px; }
         .setup-field { flex: 1; min-width: 200px; }
         .setup-input {
             width: 100%; padding: 12px 16px; border: 2px solid #e8e8e8; border-radius: 10px;
@@ -134,7 +134,7 @@
         /* Chat area */
         .chat-container {
             background: var(--white); border-radius: var(--radius);
-            box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(255,255,255,0.06);
             display: none;
         }
         .chat-container.active { display: block; }
@@ -155,21 +155,21 @@
         .message-bot h3 { color: var(--primary); font-size: 14px; margin: 16px 0 10px 0; }
         .message-bot p { margin-bottom: 10px; line-height: 1.65; color: #444; }
         .message-bot ul { margin: 8px 0 8px 18px; }
-        .message-bot li { margin-bottom: 8px; color: #555; line-height: 1.5; }
+        .message-bot li { margin-bottom: 8px; color: rgba(255,255,255,0.6); line-height: 1.5; }
         .message-bot strong { color: var(--primary); }
 
         /* Choice buttons */
         .choices { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
         .choice-btn {
             padding: 14px 20px; border: 2px solid #e0e4ff; border-radius: 12px;
-            background: #fff; cursor: pointer; font-size: 14px; font-weight: 500;
+            background: #111118; cursor: pointer; font-size: 14px; font-weight: 500;
             color: var(--secondary); text-align: left; transition: var(--transition);
             font-family: 'Poppins', sans-serif; line-height: 1.5;
         }
         .choice-btn:hover { border-color: var(--primary); background: #f0f2ff; transform: translateX(4px); }
         .choice-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        .loading { display: flex; align-items: center; gap: 10px; color: #888; padding: 16px; }
+        .loading { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.4); padding: 16px; }
         .loading-dots { display: flex; gap: 4px; }
         .loading-dots span {
             width: 8px; height: 8px; background: var(--primary); border-radius: 50%;
@@ -179,7 +179,7 @@
         .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
 
-        .input-panel { background: #fff; border-top: 1px solid #eee; padding: 20px 24px; }
+        .input-panel { background: #111118; border-top: 1px solid #eee; padding: 20px 24px; }
         .input-form { display: flex; gap: 12px; }
         .chat-input {
             flex: 1; padding: 14px 18px; border: 2px solid #e8e8e8; border-radius: 12px;
@@ -187,7 +187,7 @@
             transition: var(--transition); font-family: 'Poppins', sans-serif;
         }
         .chat-input:focus { outline: none; border-color: var(--primary); }
-        .chat-input:disabled { background: #f5f5f5; cursor: not-allowed; }
+        .chat-input:disabled { background: rgba(255,255,255,0.03); cursor: not-allowed; }
         .send-btn {
             background: linear-gradient(135deg, var(--primary), #8b7cf7);
             color: #fff; border: none; border-radius: 12px; padding: 14px 24px;
@@ -368,7 +368,7 @@
         </a>
         <div class="nav-right">
             <a href="senior-bot.html" class="btn btn-outline">← Back to Tools</a>
-            <span id="userDisplay" style="font-size: 0.85rem; color: #666;"></span>
+            <span id="userDisplay" style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"></span>
         </div>
     </nav>
 

@@ -26,11 +26,11 @@
     <style>
         :root {
             --primary: #6C63FF;
-            --secondary: #2A2A2A;
+            --secondary: #ffffff;
             --accent: #FF6584;
-            --light-bg: #F9F9FB;
-            --white: #ffffff;
-            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --light-bg: #08080d;
+            --white: #111118;
+            --shadow: 0 4px 20px rgba(0,0,0,0.4);
             --radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -65,7 +65,7 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .login-gate p { color: #666; margin-bottom: 24px; max-width: 500px; }
+        .login-gate p { color: rgba(255,255,255,0.5); margin-bottom: 24px; max-width: 500px; }
         .login-gate .btn { font-size: 1rem; padding: 0.8rem 2rem; }
         
         .advisor-container {
@@ -82,7 +82,7 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .advisor-header p { color: #666; font-size: 1rem; }
+        .advisor-header p { color: rgba(255,255,255,0.5); font-size: 1rem; }
         
         .info-banner {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -94,7 +94,7 @@
         
         .chat-container {
             background: var(--white); border-radius: var(--radius);
-            box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(255,255,255,0.06);
         }
         .chat-messages {
             height: 500px; overflow-y: auto; padding: 24px;
@@ -116,19 +116,19 @@
         .message-bot h3 { color: var(--primary); font-size: 14px; margin: 16px 0 10px 0; }
         .message-bot p { margin-bottom: 10px; line-height: 1.65; color: #444; }
         .message-bot ul { margin: 8px 0 8px 18px; }
-        .message-bot li { margin-bottom: 8px; color: #555; line-height: 1.5; }
+        .message-bot li { margin-bottom: 8px; color: rgba(255,255,255,0.6); line-height: 1.5; }
         .message-bot strong { color: var(--primary); }
         
         .welcome-message {
-            text-align: center; padding: 60px 20px; color: #888;
+            text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.4);
         }
         .welcome-message h2 { font-size: 1.4rem; color: var(--secondary); margin-bottom: 10px; }
         .welcome-message p { max-width: 500px; margin: 0 auto 20px; }
         .welcome-message ul { text-align: left; max-width: 400px; margin: 0 auto; list-style: none; }
-        .welcome-message li { padding: 8px 0; border-bottom: 1px solid #eee; color: #666; }
+        .welcome-message li { padding: 8px 0; border-bottom: 1px solid #eee; color: rgba(255,255,255,0.5); }
         .welcome-message li:last-child { border: none; }
         
-        .loading { display: flex; align-items: center; gap: 10px; color: #888; padding: 16px; }
+        .loading { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.4); padding: 16px; }
         .loading-dots { display: flex; gap: 4px; }
         .loading-dots span {
             width: 8px; height: 8px; background: var(--primary); border-radius: 50%;
@@ -139,7 +139,7 @@
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
         
         .input-panel {
-            background: #fff; border-top: 1px solid #eee; padding: 20px 24px;
+            background: #111118; border-top: 1px solid #eee; padding: 20px 24px;
         }
         .input-form { display: flex; gap: 12px; }
         .chat-input {
@@ -148,7 +148,7 @@
             transition: var(--transition); font-family: 'Poppins', sans-serif;
         }
         .chat-input:focus { outline: none; border-color: var(--primary); }
-        .chat-input:disabled { background: #f5f5f5; cursor: not-allowed; }
+        .chat-input:disabled { background: rgba(255,255,255,0.03); cursor: not-allowed; }
         .send-btn {
             background: linear-gradient(135deg, var(--primary), #8b7cf7);
             color: #fff; border: none; border-radius: 12px; padding: 14px 24px;
@@ -161,10 +161,10 @@
         .subject-list {
             background: #f8f9ff; border-radius: 10px; padding: 16px; margin-top: 16px;
         }
-        .subject-list h4 { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; }
+        .subject-list h4 { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 10px; }
         .subject-tags { display: flex; flex-wrap: wrap; gap: 8px; }
         .subject-tag {
-            background: #fff; border: 1px solid #e0e4ff; padding: 6px 12px;
+            background: #111118; border: 1px solid #e0e4ff; padding: 6px 12px;
             border-radius: 20px; font-size: 12px; color: var(--secondary);
         }
         
@@ -173,7 +173,7 @@
         }
         .mode-btn {
             flex: 1; min-width: 200px; padding: 16px 20px; border-radius: 12px;
-            border: 2px solid #e8e8e8; background: #fff; cursor: pointer;
+            border: 2px solid #e8e8e8; background: #111118; cursor: pointer;
             transition: var(--transition); text-align: left;
         }
         .mode-btn:hover { border-color: var(--primary); }
@@ -185,7 +185,7 @@
             font-size: 14px; color: var(--primary); margin-bottom: 4px; font-weight: 600;
         }
         .mode-btn p {
-            font-size: 12px; color: #666; margin: 0; line-height: 1.4;
+            font-size: 12px; color: rgba(255,255,255,0.5); margin: 0; line-height: 1.4;
         }
         .mode-btn.active h4 { color: var(--primary); }
         .mode-indicator {
@@ -210,7 +210,7 @@
         </a>
         <div class="nav-right">
             <a href="senior-bot.html" class="btn btn-outline">← Back to Tools</a>
-            <span id="userDisplay" style="font-size: 0.85rem; color: #666;"></span>
+            <span id="userDisplay" style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"></span>
         </div>
     </nav>
 
