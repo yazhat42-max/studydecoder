@@ -569,7 +569,7 @@
 
     <!-- Sale Banner -->
     <div class="sale-banner" id="saleBanner" style="display: none;" onclick="showUpgradeModal()">
-        🔥 <strong>Study Break Sale</strong> — Get lifetime access for just <strong>$37.50</strong> (normally $75/yr)! Offer ends soon. <a href="#" onclick="showUpgradeModal(); return false;">Grab it now →</a>
+        🔥 <strong>First 100 Users Deal</strong> — Get lifetime access for just <strong>$37.50</strong> (normally $75/yr)! Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="showUpgradeModal(); return false;">Grab yours →</a>
     </div>
 
     <!-- Hero Section -->
@@ -1716,9 +1716,18 @@
             checkAuthStatus();
         }
 
-        // Show sale banner if before April 25, 2026 (hidden for paid/OG/owner in checkAuthStatus)
+        // Show sale banner with live spots counter
         if (new Date() < new Date('2026-04-25T00:00:00')) {
             document.getElementById('saleBanner').style.display = 'block';
+            fetch('/api/spots-left').then(r => r.json()).then(d => {
+                var el = document.getElementById('spotsLeft');
+                if (el && d.spotsLeft !== undefined) {
+                    el.textContent = d.spotsLeft;
+                    if (d.spotsLeft <= 0) {
+                        document.getElementById('saleBanner').style.display = 'none';
+                    }
+                }
+            }).catch(function(){});
         }
     })();
 

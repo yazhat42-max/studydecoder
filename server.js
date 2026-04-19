@@ -2236,6 +2236,21 @@ app.get('/api/health', (req, res) => {
 });
 
 /**
+ * GET /api/spots-left - Public endpoint for promo banner
+ */
+app.get('/api/spots-left', (req, res) => {
+    const TOTAL_SPOTS = 100;
+    let claimed = 0;
+    for (const uid of Object.keys(db.users)) {
+        const u = db.users[uid];
+        if (u.subscribed === true) claimed++;
+    }
+    const spotsLeft = Math.max(0, TOTAL_SPOTS - claimed);
+    res.set('Cache-Control', 'public, max-age=60');
+    res.json({ total: TOTAL_SPOTS, claimed, spotsLeft });
+});
+
+/**
  * Owner-only middleware
  */
 function requireOwner(req, res, next) {
