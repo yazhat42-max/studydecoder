@@ -900,6 +900,32 @@
             const box = document.getElementById('funFactBox');
             if (box) box.style.display = 'none';
         }
+
+        function showRecommendations(subjectId) {
+            const enc = s => encodeURIComponent(s || '');
+            const topicText = topicSelect ? (topicSelect.options[topicSelect.selectedIndex]?.text || '') : '';
+            const recDiv = document.createElement('div');
+            recDiv.className = 'rec-panel';
+            recDiv.innerHTML = `<h4>⚡ What's Next?</h4><div class="rec-cards">
+                <a class="rec-card" href="syllabus.html?subject=${enc(subjectId)}">
+                    <span class="rc-icon">📖</span>
+                    <div class="rc-info"><div class="rc-title">Syllabus Decoder</div><div class="rc-desc">Decode the syllabus for this topic</div></div>
+                    <span class="rc-arrow">→</span>
+                </a>
+                <a class="rec-card" href="learn-irl.html?subject=${enc(subjectId)}&topic=${enc(topicText)}">
+                    <span class="rc-icon">🎮</span>
+                    <div class="rc-info"><div class="rc-title">Learn IRL</div><div class="rc-desc">Apply concepts in real scenarios</div></div>
+                    <span class="rc-arrow">→</span>
+                </a>
+                <a class="rec-card" href="notes-transcriber.html">
+                    <span class="rc-icon">📋</span>
+                    <div class="rc-info"><div class="rc-title">Notes Transcriber</div><div class="rc-desc">Organise your study notes</div></div>
+                    <span class="rc-arrow">→</span>
+                </a>
+            </div>`;
+            outputContent.appendChild(recDiv);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
         
         const form = document.getElementById('inputForm');
         const outputContent = document.getElementById('outputContent');
@@ -1490,6 +1516,7 @@
                 stopFunFacts();
                 conversationHistory.push({ role: 'assistant', content: data.reply });
                 addMessage(data.reply, false);
+                showRecommendations(subjectId);
                 saveCurrentSession();
             } catch (error) {
                 console.error('[DEBUG] sendMessage error:', error);
