@@ -1038,14 +1038,14 @@
                     <span style="position: absolute; top: -12px; background: #f59e0b; color: #000; font-weight: 700; font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; letter-spacing: 0.5px;">🔥 LIMITED DEAL</span>
                     <span style="font-size: 0.85rem; opacity: 0.85; margin-top: 8px;">One-Time Payment — Lifetime Access</span>
                     <span style="font-size: 2.2rem; font-weight: 800; margin: 8px 0 4px;">$37.50</span>
-                    <span style="text-decoration: line-through; opacity: 0.6; font-size: 1rem;">$75/year</span>
+                    <span style="text-decoration: line-through; opacity: 0.6; font-size: 1rem;">$5/month</span>
                     <span style="font-size: 0.8rem; opacity: 0.8; margin-top: 8px;">Offer ends soon — pay once, use forever</span>
                 </button>
                 <!-- MONTHLY CARD (right, smaller) -->
                 <button onclick="createCheckout('monthly')" style="flex: 0.9; min-width: 200px; max-width: 260px; padding: 24px 18px; background: #f8f9fa; color: #2A2A2A; border: 2px solid #e0e0e0; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;">
                     <span style="font-size: 0.85rem; color: #888;">Monthly Subscription</span>
-                    <span style="font-size: 1.8rem; font-weight: 700; margin: 8px 0 4px; color: #6C63FF;">$7.50</span>
-                    <span style="font-size: 0.85rem; color: #888;">/month</span>
+                    <span style="font-size: 1.8rem; font-weight: 700; margin: 8px 0 4px; color: #6C63FF;">$5</span>
+                    <span style="font-size: 0.85rem; color: #888;">/month (AUD)</span>
                     <span style="font-size: 0.75rem; color: #aaa; margin-top: 8px;">Cancel anytime</span>
                 </button>
             </div>
@@ -1227,7 +1227,7 @@
         if (currentUser) {
             document.getElementById('subPlan').textContent = 
                 currentUser.plan === 'lifetime' ? 'Lifetime ($37.50 one-time)' :
-                currentUser.plan === 'yearly' ? 'Yearly ($75/year)' :
+                currentUser.plan === 'yearly' ? 'Monthly ($5/month)' :
                 currentUser.plan === 'granted' ? 'Granted (Free)' :
                 'Monthly ($7.50/month)';
             
@@ -1327,8 +1327,8 @@
         if (yearlyBtn) {
             if (new Date() >= new Date('2026-04-25T00:00:00')) {
                 // Sale over — revert to standard yearly card
-                yearlyBtn.setAttribute('onclick', "createCheckout('yearly')");
-                yearlyBtn.innerHTML = '<span style="font-size:0.85rem;opacity:0.85;">Yearly Subscription</span><span style="font-size:2.2rem;font-weight:800;margin:8px 0 4px;">$75</span><span style="font-size:0.85rem;opacity:0.8;">/year — that\'s $6.25/mo</span>';
+                yearlyBtn.setAttribute('onclick', "createCheckout('monthly')");
+                yearlyBtn.innerHTML = '<span style="font-size:0.85rem;opacity:0.85;">Monthly Subscription</span><span style="font-size:2.2rem;font-weight:800;margin:8px 0 4px;">$5</span><span style="font-size:0.85rem;opacity:0.8;">/month (AUD)</span>';
             }
         }
     }

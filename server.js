@@ -1804,7 +1804,7 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
                         name: 'Study Decoder Premium — Yearly Access',
                         description: '12 months of unlimited access'
                     },
-                    unit_amount: 7500 // $75.00 AUD
+                    unit_amount: 5000 // $50.00 AUD
                 },
                 quantity: 1
             }];
@@ -1817,7 +1817,7 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
                     product_data: {
                         name: 'Study Decoder Premium — Monthly',
                     },
-                    unit_amount: 750, // $7.50 AUD
+                    unit_amount: 500, // $5.00 AUD
                     recurring: { interval: 'month' }
                 },
                 quantity: 1
