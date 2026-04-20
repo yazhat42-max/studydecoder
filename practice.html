@@ -1583,6 +1583,7 @@ ${includeAnswers ? 'Include model answers with marking guidelines and band descr
 Base these questions on the style, format, and difficulty of actual HSC past papers. Use appropriate question types for the mark value (e.g. 1 mark = MC or single-step, 2-4 marks = short answer with working, 5+ marks = extended response). Start generating immediately.`;
             }
             console.log('[DEBUG] Final message:', message, 'subjectId:', subjectId);
+            trackUsage(currentMode === 'exam' ? 'exam' : 'practice', subjectId, '', '');
             sendMessage(message, subjectId);
         });
 
@@ -2322,6 +2323,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
             genBtn.disabled = true;
             genBtn.textContent = 'Generating exam...';
+            trackUsage('exam', examSubjectId, subjectName, topics);
 
             // Show loading with fun facts
             const examFacts = getFactsForSubject(examSubjectId);
@@ -2789,6 +2791,16 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             startExamTimer();
             renderExamDots();
             renderExamQuestion();
+        }
+
+        // ── Usage tracking for retention ──
+        function trackUsage(botName, subjectId, subjectName, topic) {
+            try {
+                localStorage.setItem('sd_last_activity', JSON.stringify({ bot: botName, subject: subjectId || '', subject_name: subjectName || '', topic: topic || '', ts: Date.now() }));
+                var today = new Date().toISOString().slice(0,10);
+                var s = JSON.parse(localStorage.getItem('sd_study_streak') || '{"count":0,"lastDate":""}');
+                if (s.lastDate !== today) { var yday = new Date(Date.now()-864e5).toISOString().slice(0,10); s.count = (s.lastDate === yday) ? s.count + 1 : 1; s.lastDate = today; localStorage.setItem('sd_study_streak', JSON.stringify(s)); }
+            } catch(e) {}
         }
 
         checkAuth();

@@ -127,6 +127,39 @@
         .sale-banner a { color:#fff; text-decoration:underline; font-weight:700; }
         @keyframes salePulse { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
 
+        /* ── CONTINUE / STREAK SECTION ── */
+        .continue-section {
+            display:none; padding:24px 5%; max-width:900px; margin:0 auto;
+        }
+        .continue-section.active { display:block; }
+        .continue-inner {
+            display:flex; gap:16px; align-items:stretch; flex-wrap:wrap;
+        }
+        .continue-card {
+            flex:1; min-width:260px; background:rgba(108,99,255,0.06); border:1px solid rgba(108,99,255,0.15);
+            border-radius:14px; padding:20px; display:flex; align-items:center; gap:16px;
+            text-decoration:none; color:inherit; transition:all 0.25s;
+        }
+        .continue-card:hover { background:rgba(108,99,255,0.12); border-color:rgba(108,99,255,0.35); transform:translateY(-2px); }
+        .continue-card .cc-icon { font-size:32px; flex-shrink:0; }
+        .continue-card .cc-info { flex:1; min-width:0; }
+        .continue-card .cc-label { font-size:11px; font-weight:600; color:#71767b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+        .continue-card .cc-title { font-size:15px; font-weight:700; color:var(--text-primary,#e7e9ea); }
+        .continue-card .cc-desc { font-size:12px; color:#71767b; margin-top:2px; }
+        .continue-card .cc-arrow { color:var(--primary,#6C63FF); font-size:18px; flex-shrink:0; }
+        .streak-card {
+            min-width:140px; flex:0 0 auto; background:rgba(255,107,53,0.06); border:1px solid rgba(255,107,53,0.15);
+            border-radius:14px; padding:20px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+            text-align:center; gap:4px;
+        }
+        .streak-card .streak-fire { font-size:28px; }
+        .streak-card .streak-num { font-size:24px; font-weight:800; color:#ff6b35; }
+        .streak-card .streak-label { font-size:11px; font-weight:600; color:#71767b; text-transform:uppercase; letter-spacing:0.5px; }
+        @media (max-width:600px) {
+            .continue-inner { flex-direction:column; }
+            .streak-card { flex-direction:row; gap:12px; padding:14px 20px; }
+        }
+
         /* ── HERO (full viewport, dark) ── */
         .hero {
             min-height:100vh; display:flex; align-items:center; justify-content:center;
@@ -605,6 +638,26 @@
         </div>
     </div>
 
+    <!-- Continue Where You Left Off -->
+    <div class="continue-section" id="continueSection">
+        <div class="continue-inner">
+            <a class="continue-card" id="continueCard" href="#">
+                <span class="cc-icon" id="continueIcon">📝</span>
+                <div class="cc-info">
+                    <div class="cc-label">Pick up where you left off</div>
+                    <div class="cc-title" id="continueTitle">—</div>
+                    <div class="cc-desc" id="continueDesc">—</div>
+                </div>
+                <span class="cc-arrow">→</span>
+            </a>
+            <div class="streak-card" id="streakCard" style="display:none;">
+                <span class="streak-fire">🔥</span>
+                <span class="streak-num" id="streakNum">0</span>
+                <span class="streak-label">day streak</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Tools Section Header -->
     <div class="section-divider reveal" id="tools">
         <h2>Every Tool You Need, <span class="highlight">One Platform</span></h2>
@@ -1029,7 +1082,6 @@
     <div class="upgrade-modal-overlay hidden" id="upgradeModalOverlay" onclick="closeUpgradeModal(event)" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 9999;">
         <div class="upgrade-modal" onclick="event.stopPropagation()" style="background: white; border-radius: 16px; padding: 32px; max-width: 680px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.2); text-align: center;">
             <h2 style="margin-bottom: 8px; font-size: 1.5rem; color: #6C63FF;">⭐ Upgrade to Premium</h2>
-            <p style="color: #666; margin-bottom: 6px;">You're on the <strong>Free Plan</strong> — 10 uses/day, 1 worksheet decode &amp; 1 notes transcription per day.</p>
             <p style="color: #888; font-size: 0.9rem; margin-bottom: 24px;">Premium = <strong>unlimited uses</strong>, longer responses &amp; better quality answers.</p>
             
             <div style="display: flex; gap: 16px; align-items: stretch; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;">
@@ -1076,6 +1128,43 @@
         : '';
 
     let currentUser = null;
+
+    // ── Continue where you left off + Study Streak ──
+    (function initContinueSection() {
+        const BOT_META = {
+            'syllabus': { icon: '📖', name: 'Syllabus Decoder', page: 'syllabus.html' },
+            'practice': { icon: '📝', name: 'Practice Questions', page: 'practice.html' },
+            'exam': { icon: '🎓', name: 'Full Exam Bot', page: 'practice.html?mode=exam' },
+            'learn-irl': { icon: '🎮', name: 'Learn IRL', page: 'learn-irl.html' },
+            'worksheet': { icon: '📄', name: 'Worksheet Decoder', page: 'worksheet-decoder.html' },
+            'notes': { icon: '📋', name: 'Notes Transcriber', page: 'notes-transcriber.html' },
+            'advisor': { icon: '🧭', name: 'Subject Advisor', page: 'subject-advisor.html' }
+        };
+        try {
+            const last = JSON.parse(localStorage.getItem('sd_last_activity') || 'null');
+            if (last && last.bot && BOT_META[last.bot]) {
+                const meta = BOT_META[last.bot];
+                let href = meta.page;
+                if (last.subject) href += (href.includes('?') ? '&' : '?') + 'subject=' + encodeURIComponent(last.subject);
+                if (last.topic) href += '&topic=' + encodeURIComponent(last.topic);
+                document.getElementById('continueIcon').textContent = meta.icon;
+                document.getElementById('continueTitle').textContent = meta.name;
+                document.getElementById('continueDesc').textContent = last.subject_name ? last.subject_name + (last.topic ? ' · ' + last.topic : '') : 'Continue your session';
+                document.getElementById('continueCard').href = href;
+                document.getElementById('continueSection').classList.add('active');
+            }
+
+            // Study streak
+            const streakData = JSON.parse(localStorage.getItem('sd_study_streak') || '{"count":0,"lastDate":""}');
+            if (streakData.count > 0) {
+                document.getElementById('streakNum').textContent = streakData.count;
+                document.getElementById('streakCard').style.display = '';
+                if (!document.getElementById('continueSection').classList.contains('active')) {
+                    document.getElementById('continueSection').classList.add('active');
+                }
+            }
+        } catch(e) {}
+    })();
 
     // Mobile menu toggle
     document.getElementById('mobileMenuBtn').addEventListener('click', function() {
