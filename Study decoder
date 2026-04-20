@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Decoder – Making study fun again</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .study-decoder {
+            --primary: #6C63FF;
+            --secondary: #2A2A2A;
+            --accent: #FF6584;
+            --light-bg: #F9F9FB;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .study-decoder * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .study-decoder {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--secondary);
+            line-height: 1.6;
+        }
+
+        .study-decoder .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2%;
+        }
+
+        .study-decoder header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 100px 2% 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .study-decoder header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .study-decoder header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -1px;
+        }
+
+        .study-decoder header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 650px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+        }
+
+        .study-decoder .header-tagline {
+            font-size: 1.15rem;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        .study-decoder .products-section {
+            padding: 100px 2%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .study-decoder .product-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 3rem 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .study-decoder .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .study-decoder .product-card h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .study-decoder .product-card p {
+            font-size: 1.05rem;
+            color: #666;
+            line-height: 1.9;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .study-decoder .product-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #E0DFFF 0%, #E8D7FF 100%);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .study-decoder .btn {
+            display: inline-block;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .study-decoder .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+        }
+
+        .study-decoder .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.35);
+        }
+
+        .study-decoder .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .study-decoder .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .study-decoder .features-section {
+            background: var(--white);
+            padding: 100px 2%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .study-decoder .feature-item {
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .study-decoder .feature-item h3 {
+            font-size: 1.4rem;
+            margin: 1rem 0;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .study-decoder .feature-item p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .study-decoder .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--white);
+        }
+
+        .study-decoder .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 100px 2%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .study-decoder .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .study-decoder .cta-section h2 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .study-decoder .cta-section p {
+            font-size: 1.15rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+        }
+
+        .study-decoder .nav-links {
+            background: var(--white);
+            padding: 70px 2%;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .study-decoder .nav-links h3 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 30px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .study-decoder .nav-links-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            list-style: none;
+        }
+
+        .study-decoder .nav-links-list a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            font-size: 1rem;
+        }
+
+        .study-decoder .nav-links-list a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .study-decoder .nav-links-list a:hover {
+            color: var(--secondary);
+        }
+
+        .study-decoder .nav-links-list a:hover::after {
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .study-decoder header h1 {
+                font-size: 2.8rem;
+            }
+
+            .study-decoder .product-card h2 {
+                font-size: 1.7rem;
+            }
+
+            .study-decoder .cta-section h2 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .study-decoder header {
+                padding: 80px 2% 60px;
+            }
+
+            .study-decoder header h1 {
+                font-size: 2.2rem;
+            }
+
+            .study-decoder header p {
+                font-size: 1rem;
+            }
+
+            .study-decoder .products-section {
+                padding: 60px 2%;
+                gap: 2rem;
+            }
+
+            .study-decoder .product-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .study-decoder .product-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .study-decoder .cta-section {
+                padding: 60px 2%;
+            }
+
+            .study-decoder .cta-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .study-decoder .nav-links-list {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .study-decoder header h1 {
+                font-size: 1.8rem;
+            }
+
+            .study-decoder header p {
+                font-size: 0.95rem;
+            }
+
+            .study-decoder .product-card h2 {
+                font-size: 1.3rem;
+            }
+
+            .study-decoder .cta-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="study-decoder">
+    <header>
+        <h1>Study Decoder</h1>
+        <p class="header-tagline">Making study fun again.</p>
+    </header>
+
+    <section class="products-section">
+        <div class="product-card">
+            <div class="product-badge">For Year 7-10</div>
+            <h2>Junior Study Decoder</h2>
+            <p>Designed for students in year 7 to 10, Junior Study Decoder, summarizes the core subjects, as well as upon request providing study advice and practice questions. This not only gives the student a competitive advantage, it develops healthy and enjoyable study habits early on.</p>
+            <a href="https://studydecoder.netlify.app/junior-bot" class="btn btn-primary">Learn More</a>
+        </div>
+
+        <div class="product-card">
+            <div class="product-badge">For Year 10-12</div>
+            <h2>Senior Study Decoder</h2>
+            <p>Designed for students in years 11 and 12, as well as year 10s planning ahead, Senior Study Decoder is built off all major NESA syllabuses. The bot can break down what the student will learn, provide practice questions, create a custom timetable, or all 3, upon request. This gives the student a competitive advantage, and provides a fun, and modern, way to study and learn.</p>
+            <a href="https://studydecoder.netlify.app/senior-bot" class="btn btn-primary">Learn More</a>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Ready to Transform Your Study Experience?</h2>
+        <p>Choose the Study Decoder that matches your year level and start studying smarter today.</p>
+    </section>
+
+    <section class="nav-links">
+        <h3>Quick Links</h3>
+        <ul class="nav-links-list">
+            <li><a href="https://studydecoder.netlify.app/">Home</a></li>
+            <li><a href="https://studydecoder.netlify.app/about">About us</a></li>
+            <li><a href="https://studydecoder.netlify.app/contact">Contact us</a></li>
+            <li><a href="https://studydecoder.netlify.app/junior-bot">Study Decoder Bot – Juniors</a></li>
+            <li><a href="https://studydecoder.netlify.app/senior-bot">Study Decoder Bot – Seniors</a></li>
+        </ul>
+    </section>
+</div>
+</body>
+</html>

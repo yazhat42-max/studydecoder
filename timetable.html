@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Smart Study Timetable Generator | Study Decoder</title>
+    <meta name="description" content="Create a personalised HSC study timetable with AI. Automatically schedules study sessions around your commitments. Built for Year 11 & 12 students.">
+    <link rel="canonical" href="https://www.studydecoder.com.au/timetable.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Study Decoder">
+    <meta property="og:title" content="Smart Study Timetable Generator | Study Decoder">
+    <meta property="og:description" content="Create a personalised HSC study timetable with AI. Schedules sessions around your commitments.">
+    <meta property="og:url" content="https://www.studydecoder.com.au/timetable.html">
+    <meta property="og:image" content="https://www.studydecoder.com.au/logo.png">
+    <meta property="og:locale" content="en_AU">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Smart Study Timetable Generator | Study Decoder">
+    <meta name="twitter:description" content="Create a personalised HSC study timetable with AI.">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="logo.png">
+    <meta name="theme-color" content="#0f1419">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            height: 100%; width: 100%;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0f1419; color: #e7e9ea;
+        }
+        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100%; overflow-x: hidden; }
+        .header {
+            background: #16202a; border-bottom: 1px solid #2f3336;
+            padding: 12px 24px; display: flex; align-items: center;
+            justify-content: space-between; flex-shrink: 0;
+        }
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        .back-btn {
+            color: #4f8cff; text-decoration: none; font-size: 14px; font-weight: 500;
+            padding: 8px 16px; border-radius: 8px; background: rgba(79, 140, 255, 0.1);
+            transition: all 0.2s;
+        }
+        .back-btn:hover { background: rgba(79, 140, 255, 0.2); }
+        .header-title { font-size: 20px; font-weight: 700; color: #e7e9ea; }
+        .header-subtitle { font-size: 12px; color: #71767b; margin-top: 2px; }
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .output-panel { flex: 1; overflow-y: auto; padding: 24px; background: #0f1419; }
+        .output-content { max-width: 1000px; margin: 0 auto; }
+        .welcome-message { text-align: center; padding: 60px 20px; color: #71767b; }
+        .welcome-message h2 { font-size: 28px; color: #e7e9ea; margin-bottom: 12px; font-weight: 700; }
+        .welcome-message p { font-size: 16px; line-height: 1.6; max-width: 500px; margin: 0 auto; }
+        .message { margin-bottom: 24px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .message-user {
+            background: #1d3a5f; border-radius: 16px 16px 4px 16px;
+            padding: 16px 20px; margin-left: auto; max-width: 80%; width: fit-content;
+        }
+        .message-assistant {
+            background: #16202a; border: 1px solid #2f3336;
+            border-radius: 4px 16px 16px 16px; padding: 20px 24px;
+        }
+        .message-assistant h3 { color: #4f8cff; font-size: 16px; font-weight: 600; margin: 16px 0 12px 0; }
+        .message-assistant h3:first-child { margin-top: 0; }
+        .message-assistant p { margin-bottom: 12px; line-height: 1.7; }
+        .message-assistant table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+        .message-assistant th, .message-assistant td { border: 1px solid #2f3336; padding: 10px 12px; text-align: left; }
+        .message-assistant th { background: #1a2634; color: #4f8cff; font-weight: 600; }
+        .message-assistant tr:nth-child(even) { background: rgba(79, 140, 255, 0.05); }
+        .loading { display: flex; align-items: center; gap: 8px; color: #71767b; padding: 16px; }
+        .loading-dots { display: flex; gap: 4px; }
+        .loading-dots span {
+            width: 8px; height: 8px; background: #4f8cff; border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        .input-panel { background: #16202a; border-top: 1px solid #2f3336; padding: 20px 24px; flex-shrink: 0; max-height: 45vh; overflow-y: auto; }
+        .input-form { max-width: 1000px; margin: 0 auto; }
+        .form-title { font-size: 16px; font-weight: 600; color: #e7e9ea; margin-bottom: 16px; text-align: center; }
+        .form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group.half-width { grid-column: span 2; }
+        .form-label { font-size: 12px; font-weight: 500; color: #71767b; }
+        .form-input, .form-select, .form-textarea {
+            background: #0f1419; border: 1px solid #2f3336; border-radius: 8px;
+            padding: 12px 14px; color: #e7e9ea; font-size: 14px; font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #4f8cff; }
+        .form-textarea { resize: vertical; min-height: 60px; }
+        .submit-btn {
+            width: 100%; background: #4f8cff; color: #fff; border: none; border-radius: 8px;
+            padding: 14px 24px; font-size: 15px; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; margin-top: 8px;
+        }
+        .submit-btn:hover:not(:disabled) { background: #3d7ae8; }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .tag-input-container {
+            display: flex; flex-wrap: wrap; gap: 6px; background: #0f1419;
+            border: 1px solid #2f3336; border-radius: 8px; padding: 8px 12px;
+            min-height: 44px; align-items: center;
+        }
+        .tag-input-container:focus-within { border-color: #4f8cff; }
+        .tag {
+            background: #1d3a5f; color: #e7e9ea; padding: 4px 10px; border-radius: 4px;
+            font-size: 13px; display: flex; align-items: center; gap: 6px;
+        }
+        .tag-remove { cursor: pointer; color: #71767b; font-size: 16px; line-height: 1; }
+        .tag-remove:hover { color: #ff6b6b; }
+        .tag-input {
+            flex: 1; min-width: 100px; background: transparent; border: none;
+            color: #e7e9ea; font-size: 14px; padding: 4px;
+        }
+        .tag-input:focus { outline: none; }
+        .subject-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .subject-chip {
+            background: #0f1419; border: 1px solid #2f3336; padding: 6px 12px;
+            border-radius: 16px; font-size: 12px; cursor: pointer; transition: all 0.2s;
+        }
+        .subject-chip:hover { border-color: #4f8cff; }
+        .subject-chip.selected { background: #1d3a5f; border-color: #4f8cff; }
+        /* Auth overlay styles */
+        .auth-loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0f1419;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .auth-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #2f3336;
+            border-top-color: #4f8cff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .auth-text {
+            margin-top: 16px;
+            color: #71767b;
+            font-size: 1rem;
+        }
+        .hidden { display: none !important; }
+
+        /* Chat history sidebar */
+        .history-btn {
+            color: #4f8cff; text-decoration: none; font-size: 14px; font-weight: 500;
+            padding: 8px 16px; border-radius: 8px; background: rgba(79, 140, 255, 0.1);
+            transition: all 0.2s; cursor: pointer; border: none;
+        }
+        .history-btn:hover { background: rgba(79, 140, 255, 0.2); }
+        .history-panel {
+            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh;
+            background: #16202a; border-left: 1px solid #2f3336; z-index: 1000;
+            transition: right 0.3s ease; display: flex; flex-direction: column;
+        }
+        .history-panel.open { right: 0; }
+        .history-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.5); z-index: 999; display: none;
+        }
+        .history-overlay.open { display: block; }
+        .history-header {
+            padding: 16px 20px; border-bottom: 1px solid #2f3336;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .history-header h3 { color: #e7e9ea; font-size: 16px; margin: 0; }
+        .history-close { background: none; border: none; color: #71767b; font-size: 20px; cursor: pointer; padding: 4px 8px; }
+        .history-close:hover { color: #e7e9ea; }
+        .history-list { flex: 1; overflow-y: auto; padding: 12px; }
+        .history-item {
+            background: #0f1419; border: 1px solid #2f3336; border-radius: 10px;
+            padding: 12px 16px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .history-item:hover { border-color: #4f8cff; background: rgba(79, 140, 255, 0.05); }
+        .history-item-title { color: #e7e9ea; font-size: 13px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .history-item-date { color: #71767b; font-size: 11px; }
+        .history-item-preview { color: #8b949e; font-size: 12px; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .history-item-actions { display: flex; justify-content: flex-end; margin-top: 6px; }
+        .history-delete { background: none; border: none; color: #ff6b6b; font-size: 11px; cursor: pointer; padding: 2px 6px; }
+        .history-delete:hover { text-decoration: underline; }
+        .history-empty { text-align: center; padding: 40px 20px; color: #71767b; font-size: 14px; }
+
+        @media (max-width: 900px) { .form-grid { grid-template-columns: repeat(2, 1fr); } .form-group.half-width { grid-column: span 1; } }
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .form-group.half-width { grid-column: span 1; } .header { padding: 12px 16px; } }
+    </style>
+</head>
+<body>
+    <!-- Auth loading overlay -->
+    <div class="auth-loading-overlay" id="authOverlay">
+        <div class="auth-spinner"></div>
+        <div class="auth-text">Checking access...</div>
+    </div>
+
+    <div class="app-container hidden" id="mainContent">
+        <!-- History overlay -->
+        <div class="history-overlay" id="historyOverlay" onclick="closeHistory()"></div>
+        <!-- History sidebar -->
+        <div class="history-panel" id="historyPanel">
+            <div class="history-header">
+                <h3>📅 Past Timetables</h3>
+                <button class="history-close" onclick="closeHistory()">✕</button>
+            </div>
+            <div class="history-list" id="historyList"></div>
+        </div>
+
+        <header class="header">
+            <div class="header-left">
+                <a href="index.html" class="back-btn">← Home</a>
+                <div>
+                    <div class="header-title">Smart Timetable Generator</div>
+                    <div class="header-subtitle">Create sustainable, personalised HSC study schedules</div>
+                </div>
+            </div>
+            <button class="history-btn" onclick="openHistory()">📋 History</button>
+        </header>
+        <main class="main-content">
+            <div class="output-panel" id="outputPanel">
+                <div class="output-content" id="outputContent">
+                    <div class="welcome-message">
+                        <h2>Smart Timetable Generator</h2>
+                        <p>Select your HSC subjects and preferences below to generate a realistic, sustainable weekly timetable tailored to your needs and upcoming exams.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="input-panel">
+                <form class="input-form" id="inputForm">
+                    <div class="form-title">Generate a Timetable</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">🎓 Year Level</label>
+                            <select class="form-select" id="yearLevel" required>
+                                <option value="Year 11">Year 11</option>
+                                <option value="Year 12" selected>Year 12</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">⏰ Study Hours/Day</label>
+                            <select class="form-select" id="studyHours" required>
+                                <option value="1">1 hour</option>
+                                <option value="2" selected>2 hours</option>
+                                <option value="3">3 hours</option>
+                                <option value="4">4 hours</option>
+                                <option value="5+">5+ hours</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">🧠 Preferred Time</label>
+                            <select class="form-select" id="preferredTime" required>
+                                <option value="Morning">Morning</option>
+                                <option value="Afternoon" selected>Afternoon</option>
+                                <option value="Evening">Evening</option>
+                                <option value="Night">Night</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">📅 Start Date</label>
+                            <input type="date" class="form-input" id="startDate">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">📘 Your HSC Subjects (hold Ctrl/Cmd to select multiple)</label>
+                            <select class="form-select" id="subjectSelect" multiple style="min-height: 150px;">
+                                <option value="">Loading subjects...</option>
+                            </select>
+                        </div>
+                        <div class="form-group half-width">
+                            <label class="form-label">📉 Weakest Subject</label>
+                            <select class="form-select" id="weakSubject">
+                                <option value="">Select your weakest subject...</option>
+                            </select>
+                        </div>
+                        <div class="form-group half-width">
+                            <label class="form-label">📅 Upcoming Exams/Deadlines</label>
+                            <textarea class="form-textarea" id="deadlines" placeholder="e.g., Physics trial Feb 15, English essay due Feb 20, HSC Oct..."></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">Generate Timetable</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
+        let conversationHistory = [];
+        let isLoading = false;
+        
+        const form = document.getElementById('inputForm');
+        const outputContent = document.getElementById('outputContent');
+        const outputPanel = document.getElementById('outputPanel');
+        const submitBtn = document.getElementById('submitBtn');
+        const subjectSelect = document.getElementById('subjectSelect');
+        const weakSubjectSelect = document.getElementById('weakSubject');
+        
+        // Hardcoded HSC subjects (grouped by category)
+        const allSubjects = [
+            { id: 'agriculture', name: 'Agriculture', category: 'TAS' },
+            { id: 'ancient-history', name: 'Ancient History', category: 'HSIE' },
+            { id: 'biology', name: 'Biology', category: 'Science' },
+            { id: 'business-studies', name: 'Business Studies', category: 'HSIE' },
+            { id: 'chemistry', name: 'Chemistry', category: 'Science' },
+            { id: 'construction', name: 'Construction', category: 'VET' },
+            { id: 'dance', name: 'Dance', category: 'Creative Arts' },
+            { id: 'design-technology', name: 'Design and Technology', category: 'TAS' },
+            { id: 'drama', name: 'Drama', category: 'Creative Arts' },
+            { id: 'earth-environmental-science', name: 'Earth and Environmental Science', category: 'Science' },
+            { id: 'economics', name: 'Economics', category: 'HSIE' },
+            { id: 'engineering-studies', name: 'Engineering Studies', category: 'TAS' },
+            { id: 'english-advanced', name: 'English Advanced', category: 'English' },
+            { id: 'english-eald', name: 'English EAL/D', category: 'English' },
+            { id: 'english-extension', name: 'English Extension', category: 'English' },
+            { id: 'english-standard', name: 'English Standard', category: 'English' },
+            { id: 'english-studies', name: 'English Studies', category: 'English' },
+            { id: 'enterprise-computing', name: 'Enterprise Computing', category: 'TAS' },
+            { id: 'food-technology', name: 'Food Technology', category: 'TAS' },
+            { id: 'geography', name: 'Geography', category: 'HSIE' },
+            { id: 'health-movement-science', name: 'Health and Movement Science', category: 'PDHPE' },
+            { id: 'history-extension', name: 'History Extension', category: 'HSIE' },
+            { id: 'hospitality', name: 'Hospitality', category: 'VET' },
+            { id: 'industrial-tech-automotive', name: 'Industrial Technology - Automotive', category: 'TAS' },
+            { id: 'industrial-tech-electronics', name: 'Industrial Technology - Electronics', category: 'TAS' },
+            { id: 'industrial-tech-graphics', name: 'Industrial Technology - Graphics', category: 'TAS' },
+            { id: 'industrial-tech-metals', name: 'Industrial Technology - Metal and Engineering', category: 'TAS' },
+            { id: 'industrial-tech-multimedia', name: 'Industrial Technology - Multimedia', category: 'TAS' },
+            { id: 'industrial-tech-timber', name: 'Industrial Technology - Timber and Furniture', category: 'TAS' },
+            { id: 'information-digital-technology', name: 'Information and Digital Technology', category: 'TAS' },
+            { id: 'investigating-science', name: 'Investigating Science', category: 'Science' },
+            { id: 'legal-studies', name: 'Legal Studies', category: 'HSIE' },
+            { id: 'mathematics-advanced', name: 'Mathematics Advanced', category: 'Mathematics' },
+            { id: 'mathematics-extension-1', name: 'Mathematics Extension 1', category: 'Mathematics' },
+            { id: 'mathematics-extension-2', name: 'Mathematics Extension 2', category: 'Mathematics' },
+            { id: 'mathematics-standard', name: 'Mathematics Standard', category: 'Mathematics' },
+            { id: 'modern-history', name: 'Modern History', category: 'HSIE' },
+            { id: 'music-1', name: 'Music 1', category: 'Creative Arts' },
+            { id: 'music-2', name: 'Music 2', category: 'Creative Arts' },
+            { id: 'physics', name: 'Physics', category: 'Science' },
+            { id: 'science-extension', name: 'Science Extension', category: 'Science' },
+            { id: 'society-culture', name: 'Society and Culture', category: 'HSIE' },
+            { id: 'software-engineering', name: 'Software Engineering', category: 'TAS' },
+            { id: 'studies-of-religion', name: 'Studies of Religion', category: 'HSIE' },
+            { id: 'visual-arts', name: 'Visual Arts', category: 'Creative Arts' }
+        ];
+        
+        // Populate subject dropdowns
+        function loadSubjects(savedSubjects) {
+            const byCategory = {};
+            allSubjects.forEach(s => {
+                if (!byCategory[s.category]) byCategory[s.category] = [];
+                byCategory[s.category].push(s);
+            });
+            
+            // Populate main subject multi-select
+            subjectSelect.innerHTML = '';
+            
+            // Add "Your Subjects" group at the top if user has saved subjects
+            if (savedSubjects && savedSubjects.length > 0) {
+                const yourGroup = document.createElement('optgroup');
+                yourGroup.label = '⭐ Your Subjects';
+                savedSubjects.forEach(id => {
+                    const s = allSubjects.find(x => x.id === id);
+                    if (s) {
+                        const opt = document.createElement('option');
+                        opt.value = s.id;
+                        opt.textContent = s.name;
+                        opt.selected = true; // Auto-select saved subjects
+                        yourGroup.appendChild(opt);
+                    }
+                });
+                if (yourGroup.children.length > 0) subjectSelect.appendChild(yourGroup);
+            }
+            
+            Object.keys(byCategory).sort().forEach(cat => {
+                const group = document.createElement('optgroup');
+                group.label = cat;
+                byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    // Don't duplicate-select if already in "Your Subjects"
+                    group.appendChild(opt);
+                });
+                subjectSelect.appendChild(group);
+            });
+            
+            // Populate weak subject dropdown
+            weakSubjectSelect.innerHTML = '<option value="">Select your weakest subject...</option>';
+            
+            // Add "Your Subjects" to weak subject too
+            if (savedSubjects && savedSubjects.length > 0) {
+                const yourGroup = document.createElement('optgroup');
+                yourGroup.label = '⭐ Your Subjects';
+                savedSubjects.forEach(id => {
+                    const s = allSubjects.find(x => x.id === id);
+                    if (s) {
+                        const opt = document.createElement('option');
+                        opt.value = s.id;
+                        opt.textContent = s.name;
+                        yourGroup.appendChild(opt);
+                    }
+                });
+                if (yourGroup.children.length > 0) weakSubjectSelect.appendChild(yourGroup);
+            }
+            
+            Object.keys(byCategory).sort().forEach(cat => {
+                const group = document.createElement('optgroup');
+                group.label = cat;
+                byCategory[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    group.appendChild(opt);
+                });
+                weakSubjectSelect.appendChild(group);
+            });
+        }
+        // loadSubjects is called in checkAuth() after preferences load
+        
+        function formatResponse(text) {
+            let formatted = text
+                .replace(/\|(.+)\|/g, (match) => {
+                    const cells = match.split('|').filter(c => c.trim());
+                    return `<tr>${cells.map(c => `<td>${c.trim()}</td>`).join('')}</tr>`;
+                })
+                .replace(/((<tr>.*<\/tr>\s*)+)/g, '<table>$1</table>')
+                .replace(/<tr><td>-+<\/td>.*?<\/tr>/g, '')
+                .replace(/📅|🧠|🔁/g, '</p><h3>$&')
+                .replace(/(📅[^<]*|🧠[^<]*|🔁[^<]*)/g, '$1</h3><p>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+            return `<p>${formatted}</p>`;
+        }
+        
+        function showFreeTierUpsell(botType, limitType) {
+            const welcome = outputContent.querySelector('.welcome-message');
+            if (welcome) welcome.remove();
+            const isSpecial = limitType === 'special';
+            const toolName = botType === 'worksheet' ? 'worksheet decode' : botType === 'notes-transcriber' ? 'notes transcription' : 'free use';
+            const heading = isSpecial ? `You've used your 1 daily ${toolName}.` : `You've used all 10 free uses for today.`;
+            const isSale = new Date() < new Date('2026-04-25T00:00:00');
+            const yearlyText = isSale ? '🔥 Study Break Sale — $37.50 for life' : 'Yearly — $75/yr';
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message message-assistant';
+            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+            outputContent.appendChild(messageDiv);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
+
+        function addMessage(content, isUser = false) {
+            const welcome = outputContent.querySelector('.welcome-message');
+            if (welcome) welcome.remove();
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'message-user' : 'message-assistant'}`;
+            messageDiv.innerHTML = isUser ? content.replace(/\n/g, '<br>') : formatResponse(content);
+            outputContent.appendChild(messageDiv);
+            // Scroll to show the response with a slight delay for rendering
+            setTimeout(() => {
+                outputPanel.scrollTop = outputPanel.scrollHeight;
+                messageDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+        
+        function showLoading() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'loading';
+            loadingDiv.id = 'loadingIndicator';
+            loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Generating timetable...</span>';
+            outputContent.appendChild(loadingDiv);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
+        
+        function hideLoading() {
+            const loading = document.getElementById('loadingIndicator');
+            if (loading) loading.remove();
+        }
+        
+        async function sendMessage(userMessage) {
+            if (isLoading) return;
+            isLoading = true;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Generating...';
+            conversationHistory.push({ role: 'user', content: userMessage });
+            addMessage(userMessage, true);
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/chat/timetable`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages: conversationHistory })
+                });
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    if (errorData.freeTierExhausted) {
+                        hideLoading();
+                        showFreeTierUpsell(errorData.botType, errorData.limitType);
+                        return;
+                    }
+                    throw new Error('Failed');
+                }
+                const data = await response.json();
+                hideLoading();
+                conversationHistory.push({ role: 'assistant', content: data.reply });
+                addMessage(data.reply, false);
+                saveCurrentSession();
+            } catch (error) {
+                hideLoading();
+                addMessage('Error: Unable to generate timetable. Please try again.', false);
+            } finally {
+                isLoading = false;
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Generate Timetable';
+            }
+        }
+        
+        // Save selected subjects to preferences on form submit
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get selected subjects from multi-select
+            const selectedOptions = Array.from(subjectSelect.selectedOptions);
+            if (selectedOptions.length === 0) {
+                alert('Please select at least one subject');
+                return;
+            }
+            
+            // Save subjects to preferences
+            const selectedIds = selectedOptions.map(opt => opt.value).filter(Boolean);
+            saveSubjectsToPreferences(selectedIds);
+            
+            const subjectNames = selectedOptions.map(opt => opt.text);
+            const weakSubject = weakSubjectSelect.options[weakSubjectSelect.selectedIndex]?.text;
+            
+            const yearLevel = document.getElementById('yearLevel').value;
+            const studyHours = document.getElementById('studyHours').value;
+            const preferredTime = document.getElementById('preferredTime').value;
+            const startDate = document.getElementById('startDate').value;
+            const deadlines = document.getElementById('deadlines').value;
+            
+            const message = `Year Level: ${yearLevel}
+Subjects: ${subjectNames.join(', ')}
+Weakest Subject: ${weakSubject && weakSubject !== 'Select your weakest subject...' ? weakSubject : 'None specified'}
+Available Study Time Per Day: ${studyHours} hours
+Preferred Study Time: ${preferredTime}
+${startDate ? `Start Date: ${startDate}` : 'Start Date: This week'}
+Upcoming Exams/Deadlines: ${deadlines || 'HSC trials coming up'}
+
+Please generate a detailed weekly study timetable in a clear table format with specific time slots and subjects.`;
+            
+            sendMessage(message);
+        });
+        
+        document.getElementById('startDate').valueAsDate = new Date();
+
+        // ===== CHAT HISTORY (Server-synced with localStorage cache) =====
+        const HISTORY_KEY = 'sd_timetable_history';
+        const BOT_TYPE = 'timetable';
+        let currentSessionId = null;
+        let historyCache = null;
+
+        function getHistoryFromCache() {
+            if (historyCache) return historyCache;
+            try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+            catch { return []; }
+        }
+
+        async function getHistory() {
+            try {
+                const res = await fetch(`${API_BASE}/api/user/history/${BOT_TYPE}`, { credentials: 'include' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.length === 0) {
+                        const local = getHistoryFromCache();
+                        if (local.length > 0) {
+                            await fetch(`${API_BASE}/api/user/history/${BOT_TYPE}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                credentials: 'include',
+                                body: JSON.stringify({ history: local })
+                            });
+                            historyCache = local;
+                            return local;
+                        }
+                    }
+                    historyCache = data;
+                    localStorage.setItem(HISTORY_KEY, JSON.stringify(data));
+                    return data;
+                }
+            } catch {}
+            return getHistoryFromCache();
+        }
+
+        function saveCurrentSession() {
+            if (!conversationHistory.length) return;
+            const history = getHistoryFromCache();
+            const firstUser = conversationHistory.find(m => m.role === 'user');
+            const firstAssistant = conversationHistory.find(m => m.role === 'assistant');
+            const preview = firstAssistant ? firstAssistant.content.substring(0, 120) : 'Timetable';
+            let title = 'Timetable';
+            if (firstUser) {
+                const subjectMatch = firstUser.content.match(/Subjects:\s*(.+)/i);
+                if (subjectMatch) title = subjectMatch[1].trim().substring(0, 50);
+            }
+
+            if (currentSessionId) {
+                const idx = history.findIndex(h => h.id === currentSessionId);
+                if (idx !== -1) {
+                    history[idx].messages = conversationHistory.map(m => ({ role: m.role, content: m.content }));
+                    history[idx].preview = preview;
+                }
+            } else {
+                currentSessionId = Date.now().toString();
+                history.unshift({
+                    id: currentSessionId,
+                    title: title,
+                    date: new Date().toISOString(),
+                    preview: preview,
+                    messages: conversationHistory.map(m => ({ role: m.role, content: m.content }))
+                });
+            }
+
+            while (history.length > 20) history.pop();
+            historyCache = history;
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            fetch(`${API_BASE}/api/user/history/${BOT_TYPE}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ history })
+            }).catch(() => {});
+        }
+
+        async function openHistory() {
+            await renderHistoryList();
+            document.getElementById('historyPanel').classList.add('open');
+            document.getElementById('historyOverlay').classList.add('open');
+        }
+
+        function closeHistory() {
+            document.getElementById('historyPanel').classList.remove('open');
+            document.getElementById('historyOverlay').classList.remove('open');
+        }
+
+        async function renderHistoryList() {
+            const list = document.getElementById('historyList');
+            list.innerHTML = '<div class="history-empty">Loading...</div>';
+            const history = await getHistory();
+
+            if (history.length === 0) {
+                list.innerHTML = '<div class="history-empty">No timetables yet.<br>Generate a timetable to get started!</div>';
+                return;
+            }
+
+            list.innerHTML = history.map(h => `
+                <div class="history-item" onclick="loadSession('${h.id}')">
+                    <div class="history-item-title">📅 ${h.title}</div>
+                    <div class="history-item-date">${new Date(h.date).toLocaleDateString()} ${new Date(h.date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</div>
+                    <div class="history-item-preview">${h.preview}</div>
+                    <div class="history-item-actions">
+                        <button class="history-delete" onclick="event.stopPropagation(); deleteSession('${h.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadSession(sessionId) {
+            const history = getHistoryFromCache();
+            const session = history.find(h => h.id === sessionId);
+            if (!session) return;
+
+            closeHistory();
+            currentSessionId = sessionId;
+            conversationHistory = session.messages.map(m => ({ role: m.role, content: m.content }));
+
+            outputContent.innerHTML = '';
+            session.messages.forEach(m => {
+                addMessage(m.content, m.role === 'user');
+            });
+        }
+
+        function deleteSession(sessionId) {
+            let history = getHistoryFromCache();
+            history = history.filter(h => h.id !== sessionId);
+            historyCache = history;
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            fetch(`${API_BASE}/api/user/history/${BOT_TYPE}/${sessionId}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            }).catch(() => {});
+            if (currentSessionId === sessionId) {
+                currentSessionId = null;
+                conversationHistory = [];
+                location.reload();
+            }
+            renderHistoryList();
+        }
+
+        // =====================
+        // SAVE SUBJECTS TO PREFERENCES
+        // =====================
+        async function saveSubjectsToPreferences(subjectIds) {
+            try {
+                await fetch(`${API_BASE}/api/user/preferences`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ subjects: subjectIds.slice(0, 10) })
+                });
+            } catch (e) { /* silent */ }
+        }
+
+        // =====================
+        // AUTHENTICATION CHECK
+        // =====================
+        async function checkAuth() {
+            try {
+                const res = await fetch(`${API_BASE}/api/subscription`, {
+                    credentials: 'include'
+                });
+                
+                if (!res.ok) {
+                    window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                    return;
+                }
+                
+                const data = await res.json();
+                
+                // Check if has access (owner, lifetime, og_tester, subscribed, or free tier acknowledged)
+                const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged || data.preferences?.onboarded;
+                if (!hasAccess) {
+                    window.location.href = '/index.html';
+                    return;
+                }
+                
+                // Load saved subject preferences
+                const savedSubjects = data.preferences?.subjects || [];
+                loadSubjects(savedSubjects);
+                
+                document.getElementById('authOverlay').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+                
+                if (!data.subscribed && data.role !== 'owner' && data.role !== 'lifetime' && data.role !== 'og_tester') {
+                    const upgradeBtn = document.createElement('a');
+                    upgradeBtn.href = 'https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03';
+                    upgradeBtn.target = '_blank';
+                    upgradeBtn.innerHTML = '⚡ Upgrade';
+                    upgradeBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9rem;z-index:9999;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.2s,box-shadow 0.2s;';
+                    upgradeBtn.onmouseenter = () => { upgradeBtn.style.transform = 'scale(1.05)'; upgradeBtn.style.boxShadow = '0 6px 20px rgba(102,126,234,0.6)'; };
+                    upgradeBtn.onmouseleave = () => { upgradeBtn.style.transform = 'scale(1)'; upgradeBtn.style.boxShadow = '0 4px 15px rgba(102,126,234,0.4)'; };
+                    document.body.appendChild(upgradeBtn);
+                }
+                
+            } catch (e) {
+                console.error('Auth check failed:', e);
+                window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+            }
+        }
+        
+        checkAuth();
+    </script>
+</body>
+</html>
