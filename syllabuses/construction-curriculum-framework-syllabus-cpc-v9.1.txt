@@ -1,1275 +1,0 @@
-Construction
-Curriculum Framework
-Stage 6 Syllabus
-based on the CPC Construction, Plumbing and Services Training Package (version 9.1)
-for implementation from 2022
-updated December 2022 (CPCv8)
-amended February 2024 (CPCv9)
-updated March 2025 (CPCv9.1)
-
-
-NESA acknowledges Traditional Owners and Custodians of Country throughout NSW, and pays respect to Elders past and present. NESA recognises Aboriginal Peoples' continuing Cultures and Connections to lands, waters, skies and Community.
-Released February 2022, updated December 2022, amended February 2024, updated March 2025
-(c) 2025 NSW Education Standards Authority
-The documents on the NSW Education Standards Authority (NESA) website and the NSW Curriculum website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright.
-These websites hold the only official and up-to-date versions of the documents available on the internet. Any other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are not authorised. You cannot rely on copies from any other source.
-All rights are reserved. No part of the material may be:
-* reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form 
-* transmitted to any other person or stored electronically in any form without the written permission of NESA except as permitted by the Copyright Act 1968 (Cth).
-When you access the material you agree:
-* to use the material for research or study, criticism or review, reporting news and parody or satire 
-* to use the material for information purposes only 
-* not to modify the material or any part of the material without the written permission of NESA 
-* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the permission of NESA 
-* to include this copyright notice in any copy made 
-* to acknowledge that NESA is the source of the material.
-The documents may include third-party copyright material such as photos, diagrams, quotations, cartoons and artworks. This material is protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's permission. Unauthorised reproduction, transmission or commercial use of such copyright material may result in prosecution.
-NESA has made all reasonable attempts to locate owners of third-party copyright material. NESA invites anyone from whom permission has not been sought to contact the Copyright Officer.
-Published by
-NSW Education Standards Authority
-GPO Box 5300
-Sydney NSW 2001
-Australia
-www.nsw.gov.au/education-and-training/nesa  
-Phone: (02) 9367 8289
-Fax: (02) 9279 1482
-Email: copyright@nesa.nsw.edu.au
-D2025/81485
-Acknowledgements
-Units of competency from the CPC Construction, Plumbing and Services Training Package in this syllabus are (c) Commonwealth of Australia and licensed for use under a Creative Commons Attribution 4.0 International Licence. The following disclaimer applies to the material from the Training Package:
-The content of the units of competency was prepared in consultation with Australian industry participants. It does not necessarily represent the view of the Department of Employment and Workplace Relations (Department), or any specific body. For the sake of brevity it may omit factors which could be pertinent in particular cases.
-The Department does not make any representation or warranty about the accuracy, reliability, currency or completeness of any training product material and you should exercise your own independent skill and judgement before you rely on it. The Department  is not liable for any loss resulting from any action taken or reliance made by you on any information contained in the training product material or incorporated into it by reference (including, without limitation, third party information). No responsibility is taken for any information or services which may appear on any linked websites.
-Contents
-1	Introduction to the Construction Curriculum Framework	5
-1.1	AQF VET qualifications available in the Construction Curriculum Framework	5
-1.2	Industry context - construction	5
-1.3	HSC VET course and AQF VET qualification completion requirements	6
-1.3.1	HSC VET course requirements	6
-1.3.2	AQF VET qualification requirements	6
-1.4	HSC VET course delivery	7
-1.5	Outcomes and content	7
-1.6	Assessment requirements and advice	7
-2	Course structures and requirements	8
-2.1	Construction HSC VET courses	8
-2.1.1	Unit credit for the Higher School Certificate	8
-2.1.2	NESA course numbers	9
-2.1.3	HSC exam number	9
-2.1.4	Allocation of HSC indicative hours of credit	9
-2.1.5	Work placement requirements	10
-2.2	Construction (120 indicative hours)	11
-2.3	Construction (240 indicative hours)	12
-2.4	Construction Specialisation Study  (60 or 120 indicative hours)	13
-2.5	Construction units of competency	14
-2.5.1	Associated mandatory units of competency and focus areas for the 240-hour course	14
-2.5.2	HSC elective pool	15
-2.5.3	Additional HSC elective pool for school-based apprentices	19
-3	HSC Content	21
-3.1	Safety - mandatory focus area	22
-3.1.1	Outcomes	22
-3.1.2	Associated unit of competency	22
-3.1.3	Scope of learning for the HSC	23
-3.2	Skills in construction - mandatory focus area	28
-3.2.1	Outcomes	28
-3.2.2	Associated units of competency	28
-3.2.3	Scope of learning for the HSC	30
-3.3	Tools of the trade - mandatory focus area	35
-3.3.1	Outcomes	35
-3.3.2	Associated unit of competency	35
-3.3.3	Scope of learning for the HSC	36
-3.4	Working in the industry - mandatory focus area	40
-3.4.1	Outcomes	40
-3.4.2	Associated units of competency	40
-3.4.3	Scope of learning for the HSC	41
-4	HSC exam	49
-4.1	Examinable outcomes and content	49
-4.2	Relationship of the Construction 240-hour course to the HSC exam	49
-5	Other important information	50
-5.1	Exclusions	50
-5.2	Recognition of  credit transfer and prior learning (RPL) within VET courses	50
-5.3	School-based apprentices and trainees	50
-5.4	Industries related to construction	50
-5.5	Students with disability	51
-5.6	Students in Years 9 and 10 (Stage 5)	51
-6 	Glossary	52
-
-
-
-1	Introduction to the Construction Curriculum Framework
-Industry curriculum frameworks (Frameworks) provide students with the opportunity to gain industry-recognised national vocational qualifications under the Australian Qualifications Framework (AQF) as part of their NSW Higher School Certificate (HSC). 
-HSC courses within Frameworks count as Board Developed unit credit for the HSC. Frameworks include an HSC exam which provides the opportunity for students to have this HSC exam mark contribute to the calculation of their Australian Tertiary Admission Rank (ATAR).
-1.1	AQF VET qualifications available in the Construction Curriculum Framework
-The Construction Curriculum Framework is based on qualifications and units of competency contained in the nationally endorsed CPC Construction, Plumbing and Services Training Package.
-The AQF VET qualifications available in the Construction Curriculum Framework are:
-* CPC20120 Certificate II in Construction
-* CPC20220 Certificate II in Construction Pathways
-* CPC30220 Certificate III in Carpentry - Statement of Attainment only
-* CPC30620 Certificate III in Painting and Decorating - Statement of Attainment only
-* CPC31320 Certificate III in Wall and Floor Tiling - Statement of Attainment only
-* CPC31920 Certificate III in Joinery - Statement of Attainment only. 
-* CPC33020 Certificate III in Bricklaying and Blocklaying - Statement of Attainment only.
-1.2	Industry context - construction
-The construction industry is focused on the construction, demolition, renovation, maintenance or repair of building and infrastructure. It covers a wide range of services; from planning and surveying to structural construction and finishing services such as painting and decorating. Most businesses in this industry are either sole traders or employing less than 20 people. They tend to be Australian owned, with sales to the domestic market. Construction materials are, however, increasingly imported from overseas.
-This industry is heavily regulated, with regulations at every level of government. VET plays an important role in the licencing of many occupations in this sector, with regulators requiring completion of VET programs or subjects to grant licences.1
-Emerging skill needs in the construction industry include:
-* managing and addressing known and emerging occupational hazards and risks through appropriate training
-* heritage skills - meeting client demand (government and non-government) for maintenance of Australia's built heritage
-* precast concrete construction (PCC) - meeting emerging industry change and client demand for modern methods of construction (MMCs) and
-* developing training to cultivate specialist skills required.2
-
-1.3	HSC VET course and AQF VET qualification completion requirements
-The requirements for the completion of an HSC VET course are different to the requirements for AQF VET qualification completion. Registered Training Organisations (RTOs) need to ensure that delivery of courses meets HSC course requirements and complies with Training Package rules.
-1.3.1	HSC VET course requirements
-HSC VET courses in the Construction Curriculum Framework are made up of:
-* units of competency: 
-? associated HSC mandatory units of competency
-? HSC elective units of competency
-* HSC outcomes and content
-* mandatory HSC work placement requirements.
-For a student to be considered to have satisfactorily completed a course within the Construction Curriculum Framework they must meet the:
-* HSC VET course requirements (refer to Sections 2.2-2.5 of this syllabus)
-* requirements for satisfactory course completion. There must be sufficient evidence that the student has:
-? followed the course developed by NESA
-? applied themselves with diligence and sustained effort to the set tasks and experiences provided in the course
-? achieved some or all of the course outcomes
-? undertaken the mandatory work placement.
-Refer to the NESA Assessment Certification Examination (ACE) Rules 14.6.1, 14.2.1, 4.1.2.
-1.3.2	AQF VET qualification requirements
-To receive AQF VET qualifications, students must meet the assessment requirements of the CPC Construction, Plumbing and Services Training Package (training.gov.au).
-AQF VET qualifications are determined by the qualification rules for each Training Package, referred to as qualification packaging rules. The qualification packaging rules describe the number and range of core and elective units of competency required for eligibility for an AQF VET qualification.
-Units of competency should be selected to meet qualification packaging rules for the intended qualification pathway. Selection of units of competency should also be guided by the job outcome sought and local industry requirements.
-Qualification packaging rules for each AQF VET qualification available through the Construction Curriculum Framework are contained in the CPC Construction, Plumbing and Services Training Package. Refer to the Status of units of competency for qualifications in the Construction Curriculum Framework document to see how qualifications can be achieved through the Framework.
-
-1.4	HSC VET course delivery 
-HSC VET courses can only be delivered by an RTO with the relevant qualification and units of competency on their scope of registration. Scope of registration can be checked at training.gov.au.
-RTOs offering training programs for the delivery and assessment of the Construction HSC VET courses must meet the requirements of the VET Quality Framework, the CPC Construction, Plumbing and Services Training Package and the HSC course.
-NESA's curriculum, assessment and credentialling requirements are contained in the ACE Rules. Information specific to VET is in ACE Rule Group 14.
-Non-government schools outsourcing delivery of HSC VET courses to external providers also need to refer to the NSW Registered and Accredited Individual Non-government Schools Manual or NSW Registration Systems and Member Non-government Schools Manual.
-1.5	Outcomes and content
-The HSC outcomes and content for this Framework are defined in:
-* the units of competency (refer to Section 2.5 of this syllabus)
-* HSC Content focus areas (refer to Section 3 of this syllabus).
-1.6	Assessment requirements and advice
-HSC VET courses are competency-based. NESA and the VET Quality Framework require that a competency-based approach to assessment is used. For more advice on appropriate assessment practice in relation to the Construction Curriculum Framework see Assessment and Reporting in Construction.
-An integrated or holistic approach to course delivery and assessment should be adopted.
-
-
-2	Course structures and requirements
-2.1	Construction HSC VET courses
-This Framework specifies the range of industry-developed units of competency from the CPC Construction, Plumbing and Services Training Package for inclusion in the HSC. It describes how these units of competency are arranged in HSC VET courses to gain unit credit for the HSC.
-The Construction Curriculum Framework contains the following courses:
-* Construction (120 indicative hours) - see Section 2.2 of this syllabus
-* Construction (240 indicative hours) - see Section 2.3 of this syllabus
-* Construction Specialisation Study (60 or 120 indicative hours) - see Section 2.4 of this syllabus.
-2.1.1	Unit credit for the Higher School Certificate
-To facilitate flexibility of VET in the HSC, courses within the Construction Curriculum Framework may be delivered as Preliminary, as HSC or as a combination of Preliminary and HSC units.
-The HSC credit units will be allocated to students' Preliminary and/or HSC patterns of study as required.
-The pattern of study (NESA course number) entered in Schools Online should reflect the delivery of the HSC VET course over successive years. For example, delivery of the 240 HSC indicative hour course over 2 years should be entered as 2 units x 2 years. Students will be credentialled for the HSC credit units entered each calendar year, provided they have satisfactorily completed the course requirements for that calendar year as determined by the school or RTO.
-Table 1	HSC credit units for Construction HSC courses
-HSC VET courseHSC credit unitsConstruction (120 indicative hours)2Construction (240 indicative hours)4Construction Specialisation Study (60 indicative hours)1Construction Specialisation Study (120 indicative hours)2
-
-2.1.2	NESA course numbers
-26210 - Construction (120 indicative hours)
-Pattern of study:	2 units x 1 year
-Enter this NESA course number for either Year 11 (Preliminary) or Year 12 (HSC) in Schools Online.
-26211 - Construction (240 indicative hours)
-Pattern of study:	2 units x 2 years
-Enter this NESA course number for both Year 11 (Preliminary) and Year 12 (HSC) in Schools Online.
-26212 - Construction (240 indicative hours)
-Pattern of study:	4 units x 1 year
-Enter this NESA course number for either Year 11 (Preliminary) or Year 12 (HSC) in Schools Online.
-26213 - Construction Specialisation Study (60 indicative hours)
-Pattern of study:	1 unit x 1 year
-Enter this NESA course number for either Year 11 (Preliminary) or Year 12 (HSC) in Schools Online.
-26214 - Construction Specialisation Study (120 indicative hours)
-Pattern of study:	2 units x 1 year
-Enter this NESA course number for either Year 11 (Preliminary) or Year 12 (HSC) in Schools Online.
-2.1.3	HSC exam number
-26299 - Construction HSC exam
-Enter this NESA course number in Schools Online as a Year 12 (HSC) entry in the year the exam is undertaken.
-2.1.4	Allocation of HSC indicative hours of credit
-Units of competency drawn from Training Packages are not defined in terms of duration. The amount of time required by individual students to achieve competency will vary according to their aptitude and experience. Where a training program is designed for delivery by an RTO, the RTO will specify the length of the training program according to the delivery strategies and/or curriculum resources chosen.
-However, for the purposes of the HSC, VET courses must be described in terms of their indicative hours. For this reason, indicative hours for unit credit towards the HSC have been assigned to each unit of competency within the Framework. It is emphasised that the assignment of indicative hours does not imply that all students will fulfil all requirements of a unit of competency within these hours. RTOs may determine that additional or fewer hours are required for the achievement of particular competencies. However, this does not alter the HSC indicative hours allocated, only the delivery hours.
-Students may need to spend additional time practising skills in a work environment and completing projects and assignments, in order to fulfil Training Package assessment requirements.
-
-The HSC indicative hours assigned to each unit of competency are listed in Section 2.5 of this syllabus.
-It is anticipated the majority of students completing the 240-hour course under regular course arrangements, with an enrolment in a Certificate II qualification, would have the opportunity to achieve the qualification.
-2.1.5	Work placement requirements
-Work placement is a mandatory HSC requirement within this Framework and minimum hours have been assigned to HSC VET courses.
-Work placement is to be undertaken in an appropriate construction work environment. 
-Students undertaking courses as part of a school-based apprenticeship or traineeship will meet mandatory work placement hour requirements through the on-the-job training component of the apprenticeship or traineeship.
-For units of competency that must be assessed in a construction work environment, work placement provides an opportunity to collect evidence required for a student to be deemed competent.
-Recognition of prior learning (RPL) may be granted for mandatory work placement requirements. Students' outside employment (that is, not under the auspices of the school) may be recognised towards the requirement for work placement in a VET course (ACE Rule 14.4.2).
-Non-completion of work placement is grounds for withholding the HSC course. Schools are advised to follow the procedure for issuing 'N' determinations as outlined in ACE Rule 4.2.
-Students must complete the following work placement for Construction Curriculum Framework courses.
-Table 2	Minimum work placement hours for Construction HSC courses
-Construction Framework courseMinimum work placement requirementConstruction (120 indicative hours)35 hoursConstruction (240 indicative hours)70 hoursConstruction Specialisation Study
-(60 or 120 indicative hours)met through the on-the-job component of the school-based apprenticeshipFor more information see Work Placement in Construction.
-
-
-2.2	Construction (120 indicative hours)
-AQF VET qualifications
-The Construction (120 indicative hours) course provides a pathway to the following qualifications:
-Statement of Attainment towards:
-* CPC20120 Certificate II in Construction
-* CPC20220 Certificate II in Construction Pathways
-Course structure
-This course consists of units of competency from the HSC mandatory and/or HSC elective pool.
-(See Section 2.5 of this syllabus.)
-Course requirements
-Students must attempt:
-* a selection of units of competency from the HSC mandatory and/or HSC elective pool to a minimum of 120 HSC indicative hours
-* a minimum of 35 hours of work placement.
-
-
-2.3	Construction (240 indicative hours)
-AQF VET qualifications
-The Construction (240 indicative hours) course provides a pathway to the following qualifications:
-* CPC20120 Certificate II in Construction
-* CPC20220 Certificate II in Construction Pathways
-* CPC20220 Certificate II in Construction Pathways plus Statement of Attainment towards CPC20120 Certificate II in Construction
-Statement of Attainment towards:
-* CPC30220 Certificate III in Carpentry - school-based apprentices only
-* CPC30620 Certificate III in Painting and Decorating - school-based apprentices only
-* CPC31320 Certificate III in Wall and Floor Tiling - school-based apprentices only
-* CPC31920 Certificate III in Joinery - school-based apprentices only
-* CPC33020 Certificate III in Bricklaying and Blocklaying - school-based apprentices only.
-Course structure 
-This course consists of:
-* 4 mandatory focus areas (containing 7 associated units of competency)
-* a range of elective units of competency from the HSC elective pool
-* HSC Content - for the mandatory focus areas.
-(See Section 2.5 and Section 3 of this syllabus.)
-Course requirements
-Students must attempt:
-* 6 associated HSC mandatory units of competency (totalling 125-135 HSC indicative hours) with 4 mandatory focus areas (HSC Content)
-* HSC elective units of competency from the HSC elective pool to bring the course total to a minimum of 240 HSC indicative hours
-* a minimum of 70 hours of work placement.
-For students undertaking a school-based apprenticeship, additional elective units of competency are available. These are listed in Section 2.5.3 of this syllabus.
-Construction HSC exam
-An external written HSC exam will be conducted for the 240 indicative hour course (refer to Section 4 of this syllabus).
-The HSC Content (focus areas) for the HSC exam is detailed in Section 3 of this syllabus.
-
-2.4	Construction Specialisation Study 
-(60 or 120 indicative hours)
-Course eligibility
-The purpose of the Construction Specialisation Study is for school-based apprentices to gain further credit towards their Certificate III qualification.3
-The Construction Specialisation Study is available only to students who are currently entered in, or have completed, the Construction (240 indicative hours) course.
-AQF VET qualifications
-The Construction Specialisation Study (60 or 120 indicative hours) course provides a pathway to the following qualifications:
-Statement of Attainment towards:
-* CPC30220 Certificate III in Carpentry
-* CPC30620 Certificate III in Painting and Decorating
-* CPC31320 Certificate III in Wall and Floor Tiling
-* CPC31920 Certificate III in Joinery
-* CPC33020 Certificate III in Bricklaying and Blocklaying
-Course structure 
-This Specialisation Study consists of units of competency from the HSC elective pool and the additional HSC elective pool for school-based apprentices.
-(See Section 2.5 of this syllabus.)
-Course requirements
-Students must attempt:
-* a minimum of 60 or 120 HSC indicative hours of units of competency not previously undertaken from the HSC elective pool and/or the additional HSC elective pool for school-based apprentices.
-
-
-2.5	Construction units of competency
-Details of units of competency listed in Sections 2.5.1 - 2.5.3 are available in the CPC Construction, Plumbing and Services Training Package at training.gov.au.
-2.5.1	Associated mandatory units of competency and focus areas for the 240-hour course
-Attempt the following units of competency:
-Safety
-Unit codeUnit titleHSC indicative hoursCPCCWHS2001Apply WHS requirements, policies and procedures in the construction industry20
-Skills in construction
-Unit codeUnit titleHSC indicative hoursCPCCOM1015Carry out measurements and calculations20CPCCOM2001
-
-
-CPCCCA3025Read and interpret plans and specifications
-Prerequisite:	CPCCWHS2001
-OR
-Read and interpret plans, specifications and drawings for carpentry work
-Prerequisite:	CPCCWHS200120
-
-
-30
-Tools of the trade
-Unit codeUnit titleHSC indicative hoursCPCCCM2005Use construction tools and equipment*
-Prerequisite:	CPCCWHS200120*	For the purpose of HSC courses, an RTO may choose to deliver one of the following units of competency instead of CPCCCM2005, provided all aspects of the HSC content in the Tools of the trade focus area are covered as outlined in Section 3.3 of this syllabus:
-* CPCCBL2002 Use bricklaying and blocklaying tools and equipment (prerequisite CPCCWHS2001)
-* CPCCCA2002 Use carpentry tools and equipment (prerequisite CPCCWHS2001)
-* CPCCPD2012 Use painting and decorating tools and equipment (prerequisite CPCCWHS2001)
-* CPCCWF2002 Use wall and floor tiling tools and equipment (prerequisite CPCCWHS2001).
-
-Working in the industry
-Unit codeUnit titleHSC indicative hoursCPCCOM1012Work effectively and sustainably in the construction industry30CPCCOM1013Plan and organise work15PLUS a selection of units of competency from the HSC elective pool to bring the course total to a minimum of 240 HSC indicative hours.
-2.5.2	HSC elective pool
-Brick and blocklaying
-Unit codeUnit titleHSC indicative hoursCPCCBL2001Handle and prepare bricklaying and blocklaying materials
-Prerequisite:	CPCCWHS200120CPCCBL2002Use bricklaying and blocklaying tools and equipment
-Prerequisite:	CPCCWHS200110
-Carpentry and joinery
-Unit codeUnit titleHSC indicative hoursCPCCCA2002Use carpentry tools and equipment
-Prerequisite:	CPCCWHS200110CPCCCA2011Handle carpentry materials
-Prerequisite:	CPCCWHS200120CPCCJN2001Assemble components
-Prerequisite:	CPCCWHS200115CPCCJN3004Manufacture and assemble joinery components
-Prerequisite:	CPCCWHS200125CPCCJN3100Process materials to produce components using static machines
-Prerequisite:	CPCCWHS200120
-Common
-Unit codeUnit titleHSC indicative hoursCPCCCM1011Undertake basic estimation and costing25CPCCCM2002Carry out hand excavation#
-Prerequisite:	CPCCWHS200110CPCCCM2004Handle construction materials
-Prerequisite:	CPCCWHS200120CPCCCM2005Use construction tools and equipment
-Prerequisite:	CPCCWHS200110CPCCCM2006Apply basic levelling procedures15CPCCCM2009Carry out basic demolition#
-Prerequisite:	CPCCWHS200115CPCCCM2013Undertake basic installation of wall tiles
-Prerequisite:	CPCCWHS200125CPCCCM3001Operate elevated work platforms up to 11 metres10CPCCCM3005Calculate costs of construction work25CPCCOM1014Conduct workplace communication10
-Concreting
-Unit codeUnit titleHSC indicative hoursCPCCCO2013Carry out concreting to simple forms
-Prerequisite:	CPCCWHS200120
-Construction
-Unit codeUnit titleHSC indicative hoursCPCCCM2007Use explosive power tools#
-Prerequisite:	CPCCWHS200110CPCCCM2008Erect and dismantle restricted height scaffolding#
-Prerequisite:	CPCCWHS200120CPCCCM2012Work safely at heights#
-Prerequisite:	CPCCWHS200120CPCCVE1002Undertake a basic computer design project25CPCCVE1011Undertake a basic construction project
-Prerequisite:	CPCCWHS200125CPCWHS1001Prepare to work safely in the construction industryincluded in allocation for HSC focus area Safety
-Construction waterproofing
-Unit codeUnit titleHSC indicative hoursCPCCWP2001Handle waterproofing materials and components
-Prerequisite:	CPCCWHS200125CPCCWP2002Use waterproofing tools and equipment
-Prerequisite:	CPCCWHS200110Painting and decorating 
-Unit codeUnit titleHSC indicative hoursCPCCPD2011Handle and store painting and decorating materials
-Prerequisite:	CPCCWHS200120CPCCPD2012Use painting and decorating tools and equipment
-Prerequisite:	CPCCWHS200110CPCCPD3021Prepare existing coated surface for painting
-Prerequisite:	CPCCWHS200125
-Plastering
-Unit codeUnit titleHSC indicative hoursCPCCSP2001Handle solid plastering materials
-Prerequisite:	CPCCWHS200120CPCCSP2002Use solid plastering tools and equipment
-Prerequisite:	CPCCWHS200110
-Plumbing
-Unit codeUnit titleHSC indicative hoursCPCPCM2043Carry out WHS requirements0CPCPCM2055Work safely on roofs
-Prerequisite:	CPCPCM204320
-Steel fixing
-Unit codeUnit titleHSC indicative hoursCPCCSF2004Place and fix reinforcement materials
-Prerequisite:	CPCCWHS200115
-Stonemasonry
-Unit codeUnit titleHSC indicative hoursCPCCST2006Identify and use stone products
-Prerequisite:	CPCCWHS200115CPCCST2007Use stonemasonry tools, plant and equipment
-Prerequisite:	CPCCWHS200110
-Wall and floor tiling
-Unit codeUnit titleHSC indicative hoursCPCCWF2002Use wall and floor tiling tools and equipment
-Prerequisite:	CPCCWHS200110
-Imported units
-Unit codeUnit titleHSC indicative hoursRIICCM210EInstall trench support#20RIIWHS202EEnter and work in confined spaces#20RIIWHS205EControl traffic with stop-slow bat#10RIIWMG203EDrain and dewater civil construction sites15
-#	This unit of competency may only be selected as an elective if written approval is obtained from the school system/sector authority or RTO for its delivery in the Construction Curriculum Framework. This is not required for students undertaking a school-based apprenticeship.
-
-
-2.5.3	Additional HSC elective pool for school-based apprentices
-Unit codeUnit titleHSC indicative hoursAHCLSC319Implement a retaining wall project35CPCCBL3001Lay paving
-Prerequisite:	CPCCWHS200140CPCCBL3002Carry out masonry veneer construction
-Prerequisite:	CPCCWHS200140CPCCBL3003Carry out cavity brick construction
-Prerequisite:	CPCCWHS200140CPCCBL3004Construct masonry steps and stairs
-Prerequisite:	CPCCWHS200130CPCCBL3005Lay masonry walls and corners
-Prerequisite:	CPCCWHS200140CPCCBL3006Lay multi-thickness walls and piers
-Prerequisite:	CPCCWHS200130CPCCBL3009Install flashings and damp proof course
-Prerequisite:	CPCCWHS200120CPCCBL3018Install aerated autoclaved concrete products
-Prerequisite:	CPCCWHS200130CPCCCA3001Carry out general demolition of minor building structures
-Prerequisite:	CPCCWHS200130CPCCCA3002Carry out setting out
-Prerequisite:	CPCCWHS200120CPCCCA3003Install flooring systems
-Prerequisite:	CPCCWHS200130CPCCCA3004Construct and erect wall frames
-Prerequisite:	CPCCWHS200130CPCCCA3005Construct ceiling frames
-Prerequisite:	CPCCWHS200125CPCCCA3006Erect roof trusses
-Prerequisite:	CPCCWHS200130CPCCCA3007Construct pitched roofs
-Prerequisite:	CPCCWHS200150CPCCCA3008Construct eaves
-Prerequisite:	CPCCWHS200120CPCCCA3010Install windows and doors
-Prerequisite:	CPCCWHS200125CPCCCA3012Frame and fit wet area fixtures
-Prerequisite:	CPCCWHS200125CPCCCA3014Construct and install bulkheads
-Prerequisite:	CPCCWHS200120CPCCCA3016Construct, assemble and install timber external stairs
-Prerequisite:	CPCCWHS200135CPCCCA3017Install exterior cladding
-Prerequisite:	CPCCWHS200130CPCCCA3026Assemble partitions
-Prerequisite:	CPCCWHS200125CPCCCA3028Erect and dismantle formwork for footings and slabs on ground
-Prerequisite:	CPCCWHS200125CPCCJN3005Cut and install glass
-Prerequisite:	CPCCWHS200110CPCCOM3001Perform construction calculations to determine carpentry material requirements25CPCCOM3006Carry out levelling operations25CPCCPD2013Remove and replace doors and door and window components
-Prerequisite:	CPCCWHS200110CPCCPD3024Apply paint by spray
-Prerequisite:	CPCCWHS200160CPCCPD3026Apply stains and clear timber finishes
-Prerequisite:	CPCCWHS200120CPCCPD3035Prepare uncoated surfaces for painting
-Prerequisite:	CPCCWHS200120CPCCWF2001Handle wall and floor tiling materials
-Prerequisite:	CPCCWHS200125CPCCWF3001Prepare surfaces for tiling application
-Prerequisite:	CPCCWHS200125CPCCWF3004Repair wall and floor tiling
-Prerequisite:	CPCCWHS200130CPCCWF3005Install decorative tiling
-Prerequisite:	CPCCWHS200140CPCCWF3006Install mosaic tiling
-Prerequisite:	CPCCWHS200140CPCWHS3001Identify construction work hazards and select risk control strategies253	HSC Content
-The HSC Content for this Framework is organised into focus areas. Each focus area prescribes the scope of learning for the HSC. This is drawn from the associated units of competency. 
-Students undertaking the 240 indicative hour course from the Construction Curriculum Framework must address all of the mandatory focus areas.
-The Construction Curriculum Framework mandatory focus areas are:
-* Safety
-* Skills in construction
-* Tools of the trade
-* Working in the industry.
-The associated mandatory units of competency for each of the focus areas are outlined in Section 2.5.1 of this syllabus.
-The HSC exam in Construction is based on the HSC Content in this Framework (refer to Section 3 of this syllabus).
-
-
-3.1	Safety - mandatory focus area
-3.1.1	Outcomes
-The student:
-* demonstrates understanding of workplace health and safety (WHS) compliance in the construction industry
-* explains workplace policy and procedures that ensure the safety of the construction industry worker and others
-* describes safe work practices for a construction work environment
-* applies risk management in a construction industry workplace
-* proposes appropriate responses to emergency situations.
-3.1.2	Associated unit of competency
-The scope of learning for the HSC must be read and delivered in conjunction with the following associated unit of competency:
-* CPCCWHS2001	Apply WHS requirements, policies and procedures in the construction industry
-The application and elements for this unit of competency are provided below.
-CPCCWHS2001	Apply WHS requirements, policies and procedures in the construction industry
-Application	This unit specifies the outcomes required to carry out work health and safety (WHS) requirements through safe work practices in all on- or off-site construction workplaces. 
-It requires the performance of work in a safe manner through awareness of risks and work requirements, and the planning and performance of safe work practices with concern for personal safety and the safety of others.
-The unit covers fundamental WHS requirements necessary to undertake work tasks within any sector in the construction industry. It includes the identification of hazardous materials, including asbestos, and compliance with legislated work safety practices.
-Elements	1.	Identify and assess risks
-2.	Identify hazardous materials and other hazards on work sites
-3.	Plan and prepare for safe work practices
-4.	Apply safe work practices
-5.	Follow emergency procedures.
-Assessment requirements for CPCCWHS2001 Apply WHS requirements, policies and procedures in the construction industry are detailed in the Training Package.
-
-
-3.1.3	Scope of learning for the HSC
-work health and safety (WHS) * meaning of health, safety and duty of care* implications of the cost of workplace injury:
-- human
-- social
-- economic
-- organisational* acknowledge that WHS is everyone's responsibility in the workplace and the implications of this responsibility* concept of 'participation' and 'consultation' in relation to WHS* primary role/function of key bodies/authorities involved in WHS:
-- SafeWork NSW
-- Safe Work Australia
-- local councils
-- unions
-- professional associations* internal and external sources of workplace WHS information* importance of acting within scope of responsibility/level of authority in relation to WHS in the workplace:
-- taking initiative
-- problem-solving
-- decision-makingWHS compliance * difference between an act, regulation, code of practice and standard (Australian, industry and workplace)* purpose and intent of WHS legislation and codes of practice and their application to the construction industry and workplace, and a specific job role:
-- WHS legislation:
-* Work Health and Safety Act 2011 (NSW) (as amended)
-* Work Health and Safety Regulation 2017 (NSW) (as amended)
-- codes of practice related to:
-* site induction for construction work
-* first aid in the workplace
-* manual handling
-* risk management and reporting
-* WHS consultation* purpose and intent of industry safety standards and guidelines and their application to the construction industry and workplace and a specific job roleWHS compliance, continued* WHS rights, duties and responsibilities of the person conducting a business or undertaking (PCBU), officer and worker (as defined in the legislation)* work tasks/activities requiring a license, permit, ticket or certificate of competency* functions and powers of WHS inspectors* consequences of failure to observe (non-compliance) WHS workplace policy and procedures and legislative requirements* safety signs, symbols and barricades used in the construction industry and their use in the workplace:
-- legislative requirements
-- meaning of colour and shape
-- placement and positioning* describe how, when and to whom to report:
-- types:
-* formal/informal
-* written
-* verbal
-- reporting to the appropriate persons* purpose and importance of monitoring and reporting* apply workplace policy and protocols and regulatory requirements when recording and reporting in relation to WHSWHS consultation and participation* opportunities for workers to provide input into WHS consultation and participation processes:
-- formal and informal discussion
-- meeting
-- survey
-- training
-- WHS audit
-- WHS inspection* requirements (including election/formation) of a health and safety committee or health and safety representative (HSR) and their role and responsibilities in the workplace* role and responsibilities of relevant personnel in WHS consultation and participation:
-- PCBU
-- manager/supervisor/team leader
-- self
-- other workers
-- union* importance of identifying and reporting:
-- WHS issues and concerns
-- workplace hazardsWHS consultation and participation, continued- unsafe work practices
-- breaches of health and safety
-and examples of each relevant to the construction industry and workplacerisk management * difference between a hazard and a risk* risk management and its application in the construction workplace:
-- hazard identification: 
-* potential hazards to self, colleagues, general public and others typical to the industry
-* range of hazards:
-o hazardous and non-hazardous materials
-o human factors (self, colleagues and others)
-o manual handling
-o tools, equipment, machinery and plant
-o work environment
-o weather
-o work processes and practices
-o working alone; at heights; in confined spaces; in and around excavations; near traffic and water; and with compressed air, electricity and liquids under pressure
-- risk assessment
-- risk control using a hierarchy, including:
-* eliminate the risk
-* minimise the risk:
-o substitution
-o modification
-o isolation
-o engineering control
-* other controls:
-o administrative
-o safe work practices
-o personal protective equipment (PPE)
-- monitor and reviewsafe work procedures and practices * safe work procedures and practices and their purposes:
-- WHS induction training (general, work activity and site-specific)
-- access to appropriate site amenities and communication devices
-- adherence to:
-* job safety analysis (JSA)
-* safe work method statement (SWMS)
-* safety data sheet (SDS)
-* standard operating procedures (SOP)
-* site/project safety plan
-* work documentation and plans
-* work instructions
-* workplace policy
-- correct handling, application, labelling, transport, storage and disposal of hazardous substances and dangerous goodssafe work procedures and practices, continued- asbestos containing materials (ACM):
-* types, use in common building materials and possible location
-* associated risks
-* workplace/company policy and government legislation for prevention of exposure, including asbestos management code
-- ergonomics and posture:
-* correct placement of tools and equipment
-* sitting and standing positions
-* task rotation
-* use of adjustable equipment
-- manual handling techniques:
-* recommended weight limits
-* when working individually, in pairs and with a team:
-o bending and twisting
-o loading and unloading into general storage, in/out of transport and to/from raised work area
-o lifting, moving, carrying and placing items down
-o undertaking repetitious tasks
-o using mechanical aids/lifting equipment
-o working with tools and equipment
-- housekeeping:
-* clean-up procedures for the immediate work area and the work site
-* storage and disposal of waste
-* consideration of WHS and the environment
-- PPE:
-* importance of correct fit
-* types, purpose, selection and use
-* maintenance and storage
-- tools, equipment and machinery:
-* machine guards
-* pre-operational checks and correct use
-* regular maintenance and correct storage
-* reporting faults:
-o verbal notification to appropriate personnel
-o recording on job card/maintenance log
-* restrictions placed on use
-* safety equipment and devices and their use, limitations and maintenance
-* safety tags and lockout
-* selection appropriate to task/work activity
-- traffic control
-- working with electricity:
-* electrical testing and tagging
-* general electrical safety
-* placing and securing leads (including overhead) and power boards
-* location of existing site utilities
-* use of cut-out switch, residual current device (RCD) and/or earth leakage circuit breaker (ELCB)safe work procedures and practices, continued- working safely:
-* at heights
-* in confined spaces
-* in proximity to others
-* with compressed air
-* with dangerous materials* importance of safe work procedures and practices* propose safe work procedures and practices for a workplace and specific job role within the construction industryincidents, accidents and emergencies * meaning of incident, accident and emergency* a range of incidents, accidents and emergencies common to the construction industry* distinguish between a manageable first aid situation and an emergency situation* a range of potential workplace injuries common to a construction workplace, their cause(s) and basic first aid * strategies to reduce workplace accidents, injuries and impairments* responding to incidents, accidents and emergencies:
-- emergency situations
-- seeking assistance
-- emergency contact numbers
-- emergency signals, alarms and exits - location and use
-- procedures to follow:
-* notification
-* workplace policy and procedures:
-o evacuation
-o securing workplace/building
-* reporting
-- basic process of fighting a fire and use of firefighting equipment:
-* fire blanket
-* fire extinguishers:
-o class of extinguisher and identifying colour for particular fire types
-o location, mounting and maintenance of extinguisher
-* fire hose and reel
-- role of personnel in an emergency* apply the principles of first aid in response to first aid scenarios:
-- basic principles of first aid
-- personnel responsible
-- 'duty of care' in relation to first aid* apply workplace policy and protocols and regulatory requirements when recording and reporting in relation to incidents, accidents and emergencies
-
-3.2	Skills in construction - mandatory focus area
-3.2.1	Outcomes
-The student:
-* reads and interprets plans using Australian Standards 
-* understands and applies construction industry processes to plan and sequence work task components safely and to ensure quality outcomes
-* uses measurements and calculations.
-3.2.2	Associated units of competency
-The scope of learning for the HSC must be read and delivered in conjunction with the following associated units of competency:
-* CPCCOM1015	Carry out measurements and calculations
-and
-* CPCCOM2001	Read and interpret plans and specifications
-or
-* CPCCCA3025	Read and interpret plans, specifications and drawings for carpentry work
-The application and elements for each of these units of competency are provided below.
-CPCCOM1015	Carry out measurements and calculations
-Application	This unit of competency specifies the skills and knowledge required to undertake basic measurements and calculations to determine task and material requirements in a construction work environment. 
-Elements	1.	Obtain measurements
-2.	Perform basic calculations.
-Assessment requirements for CPCCOM1015 Carry out measurements and calculations are detailed in the Training Package.
-CPCCOM2001	Read and interpret plans and specifications
-Application	This unit of competency specifies the skills and knowledge required to read and interpret plans and specifications relevant to construction operations at a basic level.
-Elements	1.	Explain features and functions of plans/drawings and specifications
-2.	Locate key features on a site from site plan/drawings
-3.	Identify project requirements from plans/drawings and specifications.
-Assessment requirements for CPCCOM2001 Read and interpret plans and specifications are detailed in the Training Package.
-
-CPCCCA3025	Read and interpret plans, specifications and drawings for carpentry work
-Application	This unit of competency specifies the skills and knowledge required to read and interpret plans and specifications for carpentry work in order to plan and sequence the work, meeting all relevant requirements of the National Construction Code (NCC), Australian Standards, work health and safety (WHS), and Commonwealth and state or territory legislation.
-Elements	1.	Plan and prepare
-2.	Interpret construction plans, drawings and their features
-3.	Locate key features on site plan
-4.	Determine project requirements and plan project.
-Assessment requirements for CPCCCA3025 Read and interpret plans, specifications and drawings for carpentry work are detailed in the Training Package.
-
-
-3.2.3	Scope of learning for the HSC
-project documentation* purpose of project documentation, and the main types of plans, drawings and specifications used in a construction work environment * construction project documentation:
-- building/engagement contracts:
-* costing/itemised quote
-* inclusions
-* material/finish specifications
-* stage schedule
-* payment schedule
-- environmental plan:
-* link to legislation and industry and company/workplace policy
-* requirements and controls for:
-o bush fire
-o coastal management
-o flood zones
-o protecting significant cultural and historical sites
-o rehabilitation management
-o waste management and disposalplans, drawings and specifications* components of the title panel:
-- architect/drafting company
-- client
-- contractor
-- date/version, including amendments
-- drawing number
-- north indicator
-- number of pages
-- scale
-- site location/address* conventions for a range of symbols and abbreviations used on construction plans and drawings:
-- contours 
-- datum
-- dimensions
-- direction
-- inclusions
-- levels
-- material types
-- orientation/direction of north
-- projection
-- scale
-- services (such as electricity, gas and plumbing)
-- situation of structures on siteplans, drawings and specifications, continued* types and purpose of pictorial drawings:
-- illustrations, concept drawings, sketches
-- initial planning
-- major features of a project* types and features of working drawings:
-- location plan:
-* orientation
-* scale
-* address
-* street names/lot number
-* other block numbers
-- site/block plan:
-* orientation
-* scale
-* position of structures, easements and ancillary works/other buildings
-* boundary dimensions
-* street and boundary setbacks
-* contour lines and datum
-* utilities including power, gas, sewer and stormwater
-- floor plan:
-* scale
-* overall internal and external dimensions of the building
-* position, size and function of doors and windows
-* thickness and type of wall structures
-* positions of services, including outlets and switches
-* position of building features including baths, showers, toilets and cupboards
-* roofline
-* legend outlining symbols and abbreviations
-- longitudinal plans and elevations:
-* façade
-* roof shape, pitch and height
-* position of doors and windows
-* ground, floor and ceiling levels
-* window sill heights
-* roof and external wall finishes
-- sections:
-* detail of features at the position of sections
-* wall, floor and subfloor structure and dimensions
-* roof structure and dimensions
-* structural members* features of detail drawings:
-- sections
-- tolerances
-- notes, including dimensions and adherence to standards * importance of ensuring currency of version and status of amendmentsplans, drawings and specifications, continued* procedures for checking amendment status on plans, drawings and specifications, and reporting inconsistencies* read and interpret a range of plans, drawings and specifications relevant to construction operations in order to describe the requirements for proposed construction projectsmeasurement and calculation terminology and equipment* measurement and calculation terminology:
-- area
-- estimation
-- linear
-- metric
-- quantity
-- ratio
-- scale
-- tolerance
-- volume
-- waste minimisation* for a range of measuring equipment:
-- name and general features/characteristics
-- use and limitations
-- selection appropriate for task/job requirements
-- operation
-- cleaning, maintenance and storage (where appropriate)* equipment used to perform measurements in a construction environment:
-- digital devices, including laser measure
-- retractable tape measure
-- rule
-- scales
-- squares
-- trundle wheeltaking measurements and performing calculations* importance of accurate measurements and calculations* consequences of incorrect measurements and calculations for the client/customer, workplace/ company and environment* units for measurement and calculations:
-- gram (g) and kilogram (kg)
-- millilitre (mL) and litre (L)
-- millimetre (mm) and metre (m), including m2 and m3
-- tonnes (t)* conversion of units:
-- g to kg and kg to g
-- mL to L and L to mLtaking measurements and performing calculations, continued- mm to m and m to mm
-- kg to t and t to kg* linear measurements of length, width, depth and height using a rule or retractable tape measure:
-- measurement start and end point
-- units and scale
-- safe and correct use of retractable tape measure (end hook and lock button)
-- accuracy to 1mm* calculations in a construction environment:
-- arithmetic operations - addition, subtraction, division, multiplication
-- mathematical concepts - decimals, fractions, percentages 
-- method:
-* manual
-* electronic:
-o calculator (hand held and online) and other digital devices
-o general features/characteristics, use and limitations, and operation of equipment* mathematical formulae to calculate:
-- area
-- circumference
-- percentage
-- perimeter
-- ratio
-- volume
-- weight* calculating the area and volume of regular and irregular shapes in a construction environment:
-- rectangles, squares, circles, equilateral triangles, cubes and cylinders
-- triangles, trapezium, pyramids and cones
-- 3:4:5 method* determine material quantities for construction work:
-- a range of materials:
-* packed
-* loose
-* compacted
-- standard quantities for particular materials: 
-* 300mm increments (timber)
-* m2 
-* lineal metres (Lm)* perform measurements and calculations for a range of work tasks in a construction work environment* estimate material quantities within industry and workplace tolerances for a range of work tasks in a construction work environmentcommunicate and record measurements, calculations and material requirements * recording measurements, calculation workings and results, and material requirements for work task/projects:
-- placed in an appropriate location:
-* ground spray
-* written or digital record:
-o work plan
-o job card
-o sketches and diagrams
-- concise, legible and accurate and using appropriate industry abbreviations, symbols and standards
-- confirmed and checked against drawings, plans and specifications
-
-3.3	Tools of the trade - mandatory focus area
-3.3.1	Outcomes
-The student:
-* demonstrates understanding of work health and safety (WHS) principles and practices when using tools and equipment 
-* appropriately selects, applies and evaluates tools and equipment for work tasks 
-* interprets manufacturers' specifications and instructions, and workplace procedures and practices, to ensure the safety of the construction industry worker, their colleagues and clients/customers.
-3.3.2	Associated unit of competency
-The scope of learning for the HSC must be read and delivered in conjunction with the following associated unit of competency:
-* CPCCCM2005	Use construction tools and equipment*
-The application and elements for this unit of competency are provided below.
-*	For the purpose of HSC courses, an RTO may choose to deliver one of the following units of competency instead of CPCCCM2005, provided all aspects of the HSC content in the Tools of the trade focus area are covered as outlined in Section 3.3 of this syllabus:
-* CPCCBL2002 Use bricklaying and blocklaying tools and equipment (prerequisite CPCCWHS2001)
-* CPCCCA2002 Use carpentry tools and equipment (prerequisite CPCCWHS2001)
-* CPCCPD2012 Use painting and decorating tools and equipment (prerequisite CPCCWHS2001)
-* CPCCWF2002 Use wall and floor tiling tools and equipment (prerequisite CPCCWHS2001).
-CPCCCM2005	Use construction tools and equipment
-Application	This unit of competency specifies the skills and knowledge required to safely select and use basic construction tools and equipment. 
-It includes hand tools, power tools and pneumatic tools. 
-Elements	1.	Select and use tools and equipment
-2.	Clean up.
-Assessment requirements for CPCCCM2005 Use construction tools and equipment are detailed in the Training Package.
-
-
-3.3.3	Scope of learning for the HSC
-hand tools * difference between hand, power and pneumatic tools* for a range of hand tools:
-- name and general features
-- purpose and limitations
-- selection appropriate for task/job requirements
-- safe use in the workplace:
-* hazard(s) and appropriate risk control(s)
-* use of personal protective equipment (PPE)
-* according to manufacturer's specifications and standard operating procedures (SOP)
-- use/operation, including assembly
-- cleaning and maintenance
-- storage* hand tools commonly used in the construction industry:
-- chisel
-- clamps
-- crowbar
-- hand plane
-- hammers: 
-* claw
-* sledge
-* club/lump
-* brick
-- hand saws:
-* coping
-* crosscut
-* hacksaw
-* rip
-- mallet
-- mattock
-- pick
-- pinch bar
-- pliers
-- retractable tape measure 
-- rule/ruler
-- screwdriver
-- shifting spanner
-- shovel/spade
-- spirit level
-- square, including builder's square
-- string line
-- tin snips
-- trimming knife
-- wheelbarrowpower and pneumatic tools and equipment* for a range of power and pneumatic tools and equipment:
-- name and general features
-- purpose and limitations
-- selection appropriate for task/job requirements
-- safe use in the workplace:
-* hazard(s) and appropriate risk control(s)
-* use of PPE
-* according to manufacturer's specifications and SOP
-* testing and tagging electrical equipment
-- use/operation, including assembly
-- supporting equipment:
-* batteries and their charging devices
-* air compressor and hoses
-* leads and power boards
-* portable residual current device
-- cleaning and maintenance
-- storage* power and pneumatic tools and equipment commonly used in the construction industry:
-- biscuit/domino machine
-- compressor
-- drills:
-* standard electric
-* hammer
-- electric plane
-- generator
-- grinder:
-* angle
-* bench
-- impact driver
-- jack hammer
-- nail gun
-- nibbler
-- router
-- sanders: 
-* orbital (random)
-* belt
-- saws:
-* circular
-* drop and sliding compound mitre
-* jigsaw 
-* reciprocating
-- thicknesser
-- weldersselection and safety * factors affecting the selection of tools and equipment:
-- availabilityselection and safety, continued- desired finish
-- environmental factors:
-* confined space
-* noise restrictions
-* pollution
-- experience and/or supervision needed
-- intended purpose
-- JSA/safe work method statement
-- licensing requirements
-- site location and access to amenities (power/water)
-- skills and/or training
-- time and cost
-- work health and safety (WHS) requirements* safe work practices when using tools and equipment:
-- adhere to workplace/company WHS policy, procedures and guidelines
-- appropriate selection and use of PPE
-- consideration to ergonomics and posture
-- correct manual handling techniques
-- follow  manufacturer's specifications 
-- pre-operational checks and/or safety inspections
-- report faults to appropriate workplace personnel
-- secure work pieces
-- selection and use appropriate to the work task/job
-- work safely with compressed air and/or power supply* PPE that may be required when using tools and equipment:
-- clothing
-- eye protection
-- footwear
-- gloves
-- head protection 
-- hearing protection 
-- masks/respirators 
-- sunscreenclean, maintain, store and secure* cleaning tools and equipment:
-- techniques:
-* brushing
-* scraping
-* sweeping
-* washing
-* wiping
-* use of cleaning agents (chemicals, solvents and detergents)
-* using wet/dry vacuum or high pressure water cleaner
-- waste disposal meeting legislative requirements and workplace guidelinesclean, maintain, store and secure, continued* maintenance of tools and equipment:
-- anti-rust treatments
-- refuel and top-up consumables
-- removal of dirt, dust, grease and oil
-- repair and/or replacement of missing/damaged parts
-- report faults
-- scheduled servicing
-- sharpening* faulty tools and equipment:
-- possible signs identifying poor performance, inefficiency and faults:
-* blockages
-* broken or missing safety guards
-* consumption of fuel and other consumables
-* failure to start
-* malfunctions
-* noise
-* presence of smoke or odours
-* quality of end product
-* rough running
-* time taken to complete a work task/job
-* vibration
-* worn, broken or missing components
-- reporting faults:
-* verbal notification to appropriate person(s)
-* recording / documenting
-* safety/lockout tagging (where appropriate)* storage of tools and equipment:
-- access
-- isolate power
-- security
-- stability
-- weather/climate
-- WHS factors* security of tools and equipment:
-- guards
-- lock-up procedures
-- protective covers
-- security cameras
-- storage racks
-- temporary fencing
-
-3.4	Working in the industry - mandatory focus area
-3.4.1	Outcomes
-The student:
-* examines the nature and scope of the industry 
-* explains how to work effectively with colleagues and clients/customers in a construction industry workplace
-* explains the fundamental principles of sustainability
-* understands environmental hazard identification and risk control
-* analyses resource consumption in a construction industry workplace
-* applies workplace and industry standards to ensure quality, sustainable and efficient work outcomes in a construction work environment. 
-3.4.2	Associated units of competency
-The scope of learning for the HSC must be read and delivered in conjunction with the following associated units of competency:
-* CPCCOM1012	Work effectively and sustainably in the construction industry
-* CPCCOM1013	Plan and organise work
-The application and elements for these units of competency are provided below.
-CPCCOM1012	Work effectively and sustainably in the construction industry
-Application	This unit of competency specifies the skills and knowledge required to work effectively and sustainably in the construction industry. 
-Elements	1.	Work effectively in a team
-2.	Investigate construction industry employment pathways
-3.	Identify and follow environmental and resource efficiency requirements.
-Assessment requirements for CPCCOM1012 Work effectively and sustainably in the construction industry are detailed in the Training Package.
-CPCCOM1013	Plan and organise work
-Application	This unit of competency specifies the skills and knowledge required to plan and organise basic work tasks on a construction site. 
-Elements	1.	Determine and plan basic work task activities
-2.	Organise performance of basic work task.
-Assessment requirements for CPCCOM1013 Plan and organise work are detailed in the Training Package.
-
-3.4.3	Scope of learning for the HSC
-nature of the industry * general features of the construction industry, including its relationship to other industries* sectors of the construction industry:
-- building completion services:
-* plastering
-* carpentry
-* tiling
-* painting and decorating
-* glazing
-- building installation services:
-* plumbing
-* electrical
-* fire and security
-* air-conditioning and heating
-- building structure services:
-* concreting
-* laying and repairing bricks, blocks and pavers
-* tiling, slating and shingling roofs
-* building structural steel components
-- building surveying and signage:
-* design and construction of indoor and outdoor signage
-* surveying for residential, industrial/commercial 
-- general construction and demolition:
-* residential
-* industrial/commercial
-* civil/engineering
-- specialist construction services:
-* crane operations
-* scaffolding
-* pool/spa building* for sectors within the industry:
-- primary role/function
-- product(s) and service(s) provided* interrelationships between sectors and effects on an individual's work, the work of the team, and client/customer outcomes* scope of work across the industry, including:
-- initial planning and design
-- installation and production
-- maintenance and servicing* regulatory requirements affecting the construction industry:
-- Australian and industry standards
-- building regulations
-- local council requirements
-- occupational licensing requirementsnature of the industry, continued* current issues and trends affecting the construction industry and implications for a construction workplace and own work practicescareers and training* vocational education and training and the industry:
-- apprenticeships and traineeships
-- school-based apprenticeships and traineeships (SBA/Ts)
-- competency-based training and assessment
-- qualifications
-- licenses* construction industry occupations:
-- bricklaying and blocklaying
-- carpentry
-- concreting
-- demolition
-- dogging
-- electrician
-- formwork and falsework
-- landscaping
-- painting and decorating
-- plumbing
-- rigging
-- roof tiling
-- scaffolding
-- solid plastering
-- steel fixing
-- wall and ceiling lining
-- wall and floor tiling
-- waterproofing* career opportunities for occupations and trades across the construction industry and interrelationship between various occupations and trades* career pathways for a specific industry sector/area and the knowledge and skills required for different job roles* opportunities available for upgrading knowledge and skills:
-- industry seminars
-- training courses
-- in-house training
-- reference manuals* elements to improve own work performance:
-- personal reflection
-- seek feedback from supervisor, colleagues and clients/customers:
-* value of feedback
-* strategies for dealing with positive and negative feedback
-- opportunities for ongoing training to meet knowledge and skills gaps, for upskilling and/or fulfil career aspirationsemployment * types of employment in the industry:
-- full-time
-- part-time
-- casual
-- contract* the differences between an award, registered agreement and contract, and how they apply to workers in the construction industry * investigate the employment terms and conditions for a specific job role* working knowledge of employer and employee rights and responsibilities in relation to employment and work* primary role/function(s) of a range of key industry bodies for both employers and employees:
-- employee groups
-- employer groups
-- industry groups/professional associations:
-* Housing Industry Association (HIA)
-* Master Builders Association (MBA)
-- regulators
-- trade unions:
-* Construction, Forestry, Mining and Energy Union (CFMEU)
-- training:
-* organisation responsible for the development of the industry's Training Package and qualifications* personal attributes and work ethics of construction workers valued by the industry:
-- attendance and punctuality
-- attitude (positive demeanour) 
-- confidentiality
-- ethical behaviour
-- honesty
-- personal presentation and grooming
-- work performance:
-* taking directions
-* attention to detail
-* consistency of service
-* safe work practices* importance of working within scope of responsibility and level of ability, and seeking assistance when needed* work tasks typical to a construction workplace (routine, rostered and non-routine)work instructions * an understanding that work practices and experiences differ between workplaces* meaning of quality assurance and an overview of the role of employeeswork instructions, continued* access and use a range of sources for work instructions and procedures:
-- Australian and industry standards
-- client/customer and PCBU or supervisor requirements
-- diagrams, drawings and sketches
-- job card/sheet
-- job safety analysis (JSA)/safe work method statement
-- legislation, regulations and codes of practice
-- manufacturer specifications and instructions
-- plans and specifications
-- safety data sheets (SDS)
-- standard operating procedures (SOP)
-- work schedule
-- workplace bulletins/memos
-- workplace/site policies and procedures* strategies for obtaining, understanding and clarifying work goals, plans and instructions:
-- correct sourcing and selection of information
-- consulting appropriate personnel
-- active listening
-- asking open and closed questionstask planning * work sequencing (task management):
-- receiving instruction
-- organising and/or coordinating the task
-- carry out the task:
-* in a logical order
-* maximising efficient use of resources
-* within completion timeframes
-* according to quality measures
-- final checks and notification of completion
-- clean up after task completion* planning and organising work on a construction site:
-- understand overall goals, objectives, priorities, and outcomes
-- determine the component tasks of the work task
-- assess what needs to be done for each component task and how it is to be done:
-* estimate time and number of personnel required 
-* identify tools and equipment (including PPE) and materials and consumables needed
-* plan and sequence tasks within a construction schedule (including coordination with other work processes)
-- prepare written work plan and resource list to complete the overall work task* safe work procedures and practices for a range of work tasks common to a construction site* adherence to quality requirements, standards and practices:
-- Australian standards
-- workplace/company quality policy and standards
-- local council regulationstask planning, continued- manufacturers' specifications
-- workplace procedures and operations* planning and preparation for a range of tasks/activities applicable to daily work routines on a construction site and specific industry sector/area* collaborate with team members to perform work tasks:
-- review the work plan
-- schedule the work
-- allocate roles and responsibilities
-- review WHS requirements
-- access required tools and equipment, including PPEteamwork * meaning of 'team' and 'teamwork' in the context of the construction industry:
-- industrially acceptable terms
-- team types:
-* executive teams
-* project teams
-* committees
-- characteristics of effective teamwork* importance of:
-- developing effective collegial working relationships
-- teamwork for the construction industry, including cross-trade cooperation* communication in the workplace with colleagues and clients/customers:
-- communication process/cycle:
-* sender (idea)
-* message (encoding)
-* transmission
-* receiver (decodes message and interprets meaning)
-* feedback
-- effective verbal, non-verbal and written communication
-- effective questioning and listening techniques
-- barriers to effective communication and strategies to overcome them
-- selection and use of a range of communication methods/equipment used in the construction industry* causes of misunderstandings and conflict when working with others, and conflict resolution techniques* importance of an individual's contribution to effective teamwork in the construction industry: 
-- work collaboratively in a team to:
-* review the purpose and goals/objectives of planning
-* participate in planning, information and skill sharing
-* understand the roles and responsibilities of personnel and other members
-* assist others with organisation and cross trade co-operation
-- use resources efficientlyteamwork, continued- adhere to timelines and schedules
-- adhere to guidelines, directions and instructions
-- resolve problems that impede performancecultural diversity * concepts of cultural diversity, cultural awareness and inclusivity* workplace diversity:
-- benefits
-- need for understanding and acceptance in the workplace
-- importance of respect and sensitivity
-- proactive strategies for promoting workplace diversity and accommodating individual differences
-- culturally appropriate work practices
-- effective cross-cultural communication skillsanti-discrimination * bullying and harassment in the workplace:
-- indirect
-- direct
-- types:
-* verbal
-* physical
-* psychological
-* sexual* principles of anti-discrimination and intent of anti-discrimination legislation* reciprocal rights and responsibilities and employers and employees in relation to anti-discrimination* workplace policy and procedures relating to anti-discrimination* strategies to eliminate bias and harassment in the workplace* consequences, including legal ramifications, of discriminatory workplace behaviour* recourse available to individuals in the event of inappropriate workplace behaviourworking sustainably* current environmental issues affecting the construction industry:
-- conservation
-- energy use and efficiency
-- fire management
-- pollution
-- recycling/re-use
-- resource use and efficiencyworking sustainably, continued- sustainability
-- waste management
-- water and other natural resource management* concept of sustainability in the workplace, and environmentally sustainable workplaces and work practices* potential effect of construction workplace practices on the environment* consequences of poor environmental work practices* a range of environmental hazards and risks typical to a construction workplace* personnel responsible for environmental hazard identification and risk control in a construction workplace* minimising negative impacts on the environment through environmentally sustainable work practices:
-- approved disposal of waste
-- complying with Basix requirements
-- limiting noise and dust
-- maintenance of tools, equipment and machinery
-- management of chemical/gas spillage/leakage and clean-up processes
-- monitoring vibrations
-- protecting discharge into waterways/stormwater
-- safe handling and storage of hazardous materials
-- testing pipes and using efficient fittings
-- utilising alternative energy sources
-- protecting wildlife habitats
-- reducing soil erosion
-- using resources that are biodegradable, non-toxic, recoverable, recyclable, renewable, reusable* resources used in the construction industry:
-- energy
-- equipment and associated consumables
-- facilities
-- human
-- materials* concept of 'resource efficiency' in a construction work environment* techniques to collect and measure resource consumption within a construction workplace:
-- documenting resources in work area
-- examining invoices from suppliers
-- measuring resource usage under different conditions
-- monitoring relevant information and data* tools to measure and document resources and their consumption:
-- checklists
-- stock control toolsworking sustainably, continued- software:
-* databases
-* spreadsheets
-* graphs* reporting environmental hazards and resource efficiency issues in a construction workplace:
-- to appropriate person(s)
-- verbal and written reporting:
-* checklists, registers and logs
-* inspection, incident and accident reports
-* adhering to government legislation and workplace/company policy* propose improvements for environmentally sustainable work practices, including improved resource efficiency:
-- individual construction worker
-- construction team
-- construction workplacesite clean up * understanding the appearance of the site impacts perception of company/corporate reputation* clean up procedures to minimise impact on the environment:
-- replacing disturbed or removed soil
-- removal and disposal of non-reusable materials in a responsible manner:
-* work materials
-* plant debris and other organic matter
-* chemicals
-- safe storage of reusable materials in accordance with workplace/company policy
-- containment of loose materials on site (such as mud, dust, litter and waste material)
-- control of run-off 
-
-4	HSC exam
-The Construction Curriculum Framework includes an HSC exam which provides the opportunity for students to have this HSC exam mark contribute to the calculation of their Australian Tertiary Admission Rank (ATAR).
-The Construction HSC exam can contribute up to 2 units towards the calculation of a student's ATAR.
-Students who have completed the Construction (240 indicative hours) course are eligible to sit for the Construction HSC exam. 
-Students who want to sit for the Construction HSC exam must be entered for both the Construction (240 indicative hours) course and the Construction exam in Schools Online.
-For the HSC exam specifications, which describe the format of the external HSC exam, see Assessment and Reporting in Construction.
-The HSC exam is independent of the competency-based assessment undertaken during the course and has no impact on student eligibility for AQF VET qualifications.
-4.1	Examinable outcomes and content
-The HSC exam in Construction is based on the HSC Content (focus areas) in this Framework.
-The HSC Content is detailed in Section 3 of this syllabus.
-4.2	Relationship of the Construction 240-hour course to the HSC exam 
-For a description of the relationship between the Construction (240 indicative hours) course, the HSC Content and the HSC exam see Assessment and Reporting in Construction.
-
-
-5	Other important information
-5.1	Exclusions
-Where there is significant overlap between an HSC VET course and other HSC VET or general education courses, NESA has an exclusion between the courses. Exclusions are generally applied at a course level rather than at the unit of competency level.
-Students can only undertake the Construction (120 indicative hours) course or the Construction (240 indicative hours) course.
-Schools should check all course exclusions when determining an appropriate pattern of study for their students.
-5.2	Recognition of  credit transfer and prior learning (RPL) within VET courses
-Students who have current knowledge, skills or experience relevant to a VET course may be granted credit towards the course requirements (ACE Rule 14.4.2).
-Find out more about arrangements for credit transfer and RPL within VET courses, including processes, application form and examples of possible scenarios.
-5.3	School-based apprentices and trainees
-Read information about provision for school-based apprentices and trainees within the HSC. 
-Information on requirements and arrangements for NSW school-based apprenticeships and traineeships is available on the NSW government website under Apprentices and trainees.
-5.4	Industries related to construction
-VET qualifications consist of technical skills that prepare you for work or further study in a specific job or industry, as well as employability skills that can be applied across a range of industry (or career) pathways.
-Industries related to this course include, but are not limited to the following outlined on the Your Career website:
-* Administrative and Support Services
-* Construction
-* Electricity, Gas, Water and Waste Services
-* Public Administration and Safety
-
-
-5.5	Students with disability
-Students with disability may access a VET course in one of 2 ways:
-* by undertaking the course under regular course arrangements, or 
-* by undertaking selected units of competency within the course that have been identified through the collaborative curriculum planning process.
-For more information see VET courses and students with disability and collaborative curriculum planning advice.
-5.6	Students in Years 9 and 10 (Stage 5)
-In certain circumstances students in Years 9 and 10 (Stage 5) may access Stage 6 VET courses. Further information is available in the Stage 5 VET section.
-
-
-6 	Glossary
-AQFAustralian Qualifications Framework 
-The AQF is the policy framework that defines all qualifications recognised nationally in post-compulsory education and training in Australia. The AQF comprises titles and guidelines that define each qualification, as well as the principles and protocols covering cross-sectoral qualification links and the issuing of qualifications and statements of attainment.Australian ApprenticeshipsAustralian Apprenticeships encompass all apprenticeships and traineeships. They combine time at work with training and can be full-time, part-time or school-based.
-www.apprenticeships.gov.aucompetencyThe broad concept of industry competency concerns the ability to perform particular tasks and duties to the standard of performance expected in the workplace. Competency requires the application of specified skills, knowledge and attitudes relevant to effective participation in an industry, industry sector or enterprise.core units of competencyUnits of competency required by the Training Package to be eligible for an AQF VET qualification.elements of competencyThe basic building blocks of a unit of competency which describe the key activities or elements of the work covered by the unit.focus areasHSC Content is organised into focus areas. HSC Content prescribes the scope of learning for the HSC.mandatory units of competencyUnits of competency that must be studied for an HSC VET course.recognition of prior learning (RPL)The result of an assessment of an individual's formal, non-formal and informal learning to determine the extent to which that individual has achieved the required learning outcomes, competency outcomes, or standards for entry to, and/or partial or total completion of, a qualification.RTORegistered Training Organisation 
-A training organisation registered by a registering body in accordance with the VET Quality Framework, within a defined scope of registration (including school system/sector RTOs, TAFE NSW and other providers).scope of registrationThe particular services and products an RTO is registered to provide. The RTO's scope defines the specific AQF VET qualifications, units of competency and accredited courses it is registered to provide, and whether it is registered to provide: 
-* both training delivery and assessment services, and to issue the relevant AQF VET qualifications and statements of attainment, or 
-* only assessment services, and to issue the relevant AQF VET qualifications and statements of attainment.Stage 5In NSW, Stage 5 relates to Years 9 and 10 of schooling.Stage 6In NSW, Stage 6 relates to Years 11 and 12 of schooling.Statement of AttainmentMay be issued in the vocational education and training sector by an RTO when an individual has completed one or more units of competency from nationally recognised qualification(s)/course(s).training.gov.auhttps://training.gov.au 
-The national register for recording information about RTOs, Training Packages and accredited courses.Training PackageA nationally endorsed, integrated set of competency standards, assessment guidelines and AQF VET qualifications for a specific industry, industry sector or enterprise.training planA documented program of training and assessment required for an apprenticeship/traineeship training contract. It is developed by an RTO in consultation with the parties to the contract as the basis for training and assessing a person undertaking an apprenticeship or traineeship.unit of competencySpecification of industry knowledge and skill and the application of that knowledge and skill to the standard of performance expected in the workplace.VETVocational Education and TrainingVET qualificationFormal certification in the VET sector by an RTO that a person has satisfied all requirements of the units of competency or modules that comprise an AQF VET qualification, as specified by:
-* a nationally endorsed Training Package, or
-* an accredited course that provides training for the qualification.VET Quality FrameworkThe VET Quality Framework comprises:
-* the Standards for Registered Training Organisations
-* the Fit and Proper Person Requirements
-* the Financial Viability Risk Assessment Requirements
-* the Data Provision Requirements, and
-* the Australian Qualifications Framework.
-1	National Industry Insights Report - Construction (nationalindustryinsights.aisc.net.au/industries/construction)
-2	Artibus Skills Forecast 2020 (artibus.com.au)
-3	The Specialisation Study would only be required if the selection of units of competency meant that Stage 1/Year 1 of the apprenticeship could not be completed within the 240-hour Construction course.
----------------
-
-------------------------------------------------------------
-
----------------
-
-------------------------------------------------------------
-
-NSW Education Standards Authority 	
-
-
-
-
-
-Construction Curriculum Framework syllabus 	Page 2 of 4
-
-
-

@@ -137,6 +137,36 @@
         .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
         .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        /* Fun facts during loading */
+        .fun-fact-box {
+            background: linear-gradient(135deg, rgba(102,126,234,0.08), rgba(118,75,162,0.08));
+            border: 1px solid rgba(102,126,234,0.2); border-radius: 12px;
+            padding: 16px 20px; margin-top: 12px; max-width: 600px;
+            animation: fadeIn 0.5s ease;
+        }
+        .fun-fact-box .ff-label { font-size: 11px; font-weight: 700; color: #667eea; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .fun-fact-box .ff-text { font-size: 14px; color: #c8ccd0; line-height: 1.6; }
+        @keyframes factSwap { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
+        .ff-swap { animation: factSwap 0.4s ease; }
+        /* Recommendation cards */
+        .rec-panel {
+            background: #1a1a2e; border: 1px solid rgba(102,126,234,0.2); border-radius: 16px;
+            padding: 20px 24px; margin: 20px 0; animation: fadeIn 0.4s ease;
+        }
+        .rec-panel h4 { font-size: 15px; font-weight: 700; color: #e7e9ea; margin-bottom: 14px; }
+        .rec-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .rec-card {
+            display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+            background: rgba(102,126,234,0.06); border: 1px solid rgba(102,126,234,0.15);
+            border-radius: 10px; cursor: pointer; transition: all 0.2s; text-decoration: none; color: inherit;
+        }
+        .rec-card:hover { background: rgba(102,126,234,0.12); border-color: rgba(102,126,234,0.35); transform: translateY(-2px); }
+        .rec-card .rc-icon { font-size: 24px; flex-shrink: 0; }
+        .rec-card .rc-info { flex: 1; min-width: 0; }
+        .rec-card .rc-title { font-size: 13px; font-weight: 600; color: #e7e9ea; }
+        .rec-card .rc-desc { font-size: 11px; color: #71767b; margin-top: 2px; }
+        .rec-card .rc-arrow { color: #667eea; font-size: 16px; flex-shrink: 0; }
+        @media (max-width: 768px) { .rec-cards { grid-template-columns: 1fr; } }
         
         .input-panel {
             background: #111118; border-top: 1px solid #eee; padding: 20px 24px;
@@ -293,6 +323,56 @@
         
         let conversationHistory = [];
         let currentMode = 'selection';
+        let funFactInterval = null;
+
+        // ========== FUN FACTS ==========
+        const LOADING_FUN_FACTS = [
+            "Students who choose subjects aligned with their interests score an average 10% higher.",
+            "The most popular HSC subject in NSW is English Advanced, followed by Mathematics Advanced.",
+            "Australia has over 100 HSC subjects available — most schools offer 20-30.",
+            "Students doing subjects they enjoy are 3x more likely to pursue related university courses.",
+            "The ATAR is a rank, not a score — it shows where you sit relative to your age group.",
+            "Over 50% of university courses in NSW don't require a specific ATAR.",
+            "VET subjects count towards your HSC and can give you a head start in trades.",
+            "The HSC has existed in NSW since 1967 — before that it was called the Leaving Certificate."
+        ];
+
+        function startFunFacts() {
+            stopFunFacts();
+            let idx = Math.floor(Math.random() * LOADING_FUN_FACTS.length);
+            const box = document.getElementById('funFactBox');
+            if (!box) return;
+            box.style.display = 'block';
+            const textEl = box.querySelector('.ff-text');
+            textEl.className = 'ff-text ff-swap';
+            textEl.textContent = LOADING_FUN_FACTS[idx];
+            funFactInterval = setInterval(() => {
+                idx = (idx + 1) % LOADING_FUN_FACTS.length;
+                textEl.className = 'ff-text';
+                setTimeout(() => {
+                    textEl.textContent = LOADING_FUN_FACTS[idx];
+                    textEl.className = 'ff-text ff-swap';
+                }, 50);
+            }, 4500);
+        }
+
+        function stopFunFacts() {
+            if (funFactInterval) { clearInterval(funFactInterval); funFactInterval = null; }
+            const box = document.getElementById('funFactBox');
+            if (box) box.style.display = 'none';
+        }
+
+        function showRecommendations() {
+            const recDiv = document.createElement('div');
+            recDiv.className = 'rec-panel';
+            recDiv.innerHTML = `<h4>⚡ Ready to dive in?</h4><div class="rec-cards">
+                <a class="rec-card" href="syllabus.html"><span class="rc-icon">📖</span><div class="rc-info"><div class="rc-title">Syllabus Decoder</div><div class="rc-desc">Explore what you'll study in each subject</div></div><span class="rc-arrow">→</span></a>
+                <a class="rec-card" href="practice.html?mode=exam"><span class="rc-icon">📝</span><div class="rc-info"><div class="rc-title">Practice Exam</div><div class="rc-desc">Try a sample exam in your chosen subject</div></div><span class="rc-arrow">→</span></a>
+                <a class="rec-card" href="learn-irl.html"><span class="rc-icon">🎮</span><div class="rc-info"><div class="rc-title">Learn IRL</div><div class="rc-desc">See subjects applied in real scenarios</div></div><span class="rc-arrow">→</span></a>
+            </div>`;
+            chatMessages.appendChild(recDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
         
         const modeConfig = {
             selection: {
@@ -424,6 +504,15 @@
             div.id = 'loadingIndicator';
             div.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Analysing your profile...</span>';
             chatMessages.appendChild(div);
+            var box = document.getElementById('funFactBox');
+            if (!box) {
+                box = document.createElement('div');
+                box.id = 'funFactBox';
+                box.className = 'fun-fact-box';
+                box.style.display = 'none';
+                box.innerHTML = '<div class="ff-label">💡 Did you know?</div><div class="ff-text"></div>';
+                chatMessages.appendChild(box);
+            }
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
         
@@ -446,6 +535,7 @@
             sendBtn.disabled = true;
             userInput.disabled = true;
             showLoading();
+            startFunFacts();
             
             try {
                 const response = await fetch(`${API_BASE}/api/subject-advisor`, {
@@ -474,12 +564,15 @@
                 
                 const data = await response.json();
                 hideLoading();
+                stopFunFacts();
                 
                 conversationHistory.push({ role: 'assistant', content: data.reply });
                 addMessage(data.reply, false);
+                showRecommendations();
                 
             } catch (error) {
                 hideLoading();
+                stopFunFacts();
                 addMessage(`Sorry, something went wrong: ${error.message}. Please try again.`, false);
             } finally {
                 sendBtn.disabled = false;

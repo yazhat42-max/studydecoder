@@ -178,6 +178,26 @@
         .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
         .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        /* Fun facts during loading */
+        .fun-fact-box {
+            background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,193,7,0.08));
+            border: 1px solid rgba(255,107,53,0.2); border-radius: 12px;
+            padding: 16px 20px; margin: 16px auto; max-width: 500px;
+        }
+        .fun-fact-box .ff-label { font-size: 11px; font-weight: 700; color: var(--gv-accent, #ff6b35); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .fun-fact-box .ff-text { font-size: 14px; color: #c8ccd0; line-height: 1.6; }
+        @keyframes factSwap { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
+        .ff-swap { animation: factSwap 0.4s ease; }
+        /* Fun facts during loading */
+        .fun-fact-box {
+            background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,193,7,0.08));
+            border: 1px solid rgba(255,107,53,0.2); border-radius: 12px;
+            padding: 16px 20px; margin: 16px auto; max-width: 500px;
+        }
+        .fun-fact-box .ff-label { font-size: 11px; font-weight: 700; color: var(--gv-accent, #ff6b35); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .fun-fact-box .ff-text { font-size: 14px; color: #c8ccd0; line-height: 1.6; }
+        @keyframes factSwap { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
+        .ff-swap { animation: factSwap 0.4s ease; }
 
         .input-panel { background: #111118; border-top: 1px solid #eee; padding: 20px 24px; }
         .input-form { display: flex; gap: 12px; }
@@ -517,6 +537,10 @@
             <div class="game-narrative" id="gameNarrative"></div>
             <div class="game-loading-el" id="gameLoadingEl">
                 <div class="loading-dots"><span></span><span></span><span></span></div>
+                <div class="fun-fact-box" id="gameFunFactBox" style="display:none;">
+                    <div class="ff-label">💡 Did you know?</div>
+                    <div class="ff-text" id="gameFunFactText"></div>
+                </div>
             </div>
         </div>
         <div class="game-choices" id="gameChoices"></div>
@@ -909,6 +933,29 @@
                         userDisplay.textContent = data.name || data.email || '';
                         populateSubjects();
                         modeLanding.classList.add('active');
+                        
+                        // Auto-preset from URL params (from cross-bot recommendations)
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const urlSubject = urlParams.get('subject');
+                        const urlTopic = urlParams.get('topic');
+                        if (urlSubject) {
+                            setTimeout(() => {
+                                subjectInput.value = urlSubject;
+                                subjectInput.dispatchEvent(new Event('change'));
+                                selectMode('game');
+                                if (urlTopic) {
+                                    setTimeout(() => {
+                                        // Try to match topic in dropdown
+                                        for (let i = 0; i < topicInput.options.length; i++) {
+                                            if (topicInput.options[i].text.toLowerCase().includes(urlTopic.toLowerCase())) {
+                                                topicInput.selectedIndex = i;
+                                                break;
+                                            }
+                                        }
+                                    }, 200);
+                                }
+                            }, 300);
+                        }
                         return;
                     }
                 }
@@ -1274,14 +1321,58 @@
             document.getElementById('gameChoices').innerHTML = '';
         }
 
+        let gameFunFactInterval = null;
+        const GAME_FUN_FACTS = {
+            biology: ["Your DNA stretched out would reach the Sun and back 17 times.", "The human body has 37.2 trillion cells.", "Octopuses have three hearts and blue blood.", "Tardigrades can survive in outer space."],
+            chemistry: ["The only letter not on the periodic table is J.", "Gallium metal melts in your hand at 29.76°C.", "Honey never spoils due to its chemistry.", "Water expands 9% when it freezes."],
+            physics: ["Light takes 8 min 20 sec to reach Earth from the Sun.", "Sound travels 4.3x faster in water than air.", "GPS must account for Einstein's time dilation.", "A neutron star matchbox weighs 3 billion tonnes."],
+            economics: ["Australia had 33 years without recession (1991-2020).", "At 3% inflation, money halves in ~24 years.", "The AUD is the 5th most traded currency.", "GDP was invented in 1934 by Simon Kuznets."],
+            legal_studies: ["The longest Aussie trial lasted 360 days.", "Donoghue v Stevenson (1932) shaped all negligence law.", "The High Court has decided 7,000+ cases since 1903."],
+            modern_history: ["The Berlin Wall fell partly from a press conference mistake.", "WWI's 1914 Christmas truce saw soldiers playing football.", "The term 'Cold War' was coined by Orwell in 1945."],
+            _default: ["Students who self-test retain 50% more.", "The spacing effect beats cramming every time.", "Teaching others is the best way to learn.", "Your brain grows new pathways when you learn."]
+        };
+
+        function getGameFacts(subjectId) {
+            if (GAME_FUN_FACTS[subjectId]) return GAME_FUN_FACTS[subjectId];
+            const alt = subjectId ? subjectId.replace(/-/g, '_') : '';
+            if (GAME_FUN_FACTS[alt]) return GAME_FUN_FACTS[alt];
+            return GAME_FUN_FACTS._default;
+        }
+
+        function startGameFunFacts() {
+            stopGameFunFacts();
+            const sid = subjectInput.value || '';
+            const facts = getGameFacts(sid);
+            let idx = Math.floor(Math.random() * facts.length);
+            const box = document.getElementById('gameFunFactBox');
+            const textEl = document.getElementById('gameFunFactText');
+            if (!box || !textEl) return;
+            box.style.display = 'block';
+            textEl.className = 'ff-text ff-swap';
+            textEl.textContent = facts[idx];
+            gameFunFactInterval = setInterval(() => {
+                idx = (idx + 1) % facts.length;
+                textEl.className = 'ff-text';
+                setTimeout(() => { textEl.textContent = facts[idx]; textEl.className = 'ff-text ff-swap'; }, 50);
+            }, 4500);
+        }
+
+        function stopGameFunFacts() {
+            if (gameFunFactInterval) { clearInterval(gameFunFactInterval); gameFunFactInterval = null; }
+            const box = document.getElementById('gameFunFactBox');
+            if (box) box.style.display = 'none';
+        }
+
         function showGameLoading() {
             document.getElementById('gameNarrative').innerHTML = '';
             document.getElementById('gameChoices').innerHTML = '';
             document.getElementById('gameLoadingEl').classList.add('active');
+            startGameFunFacts();
         }
 
         function hideGameLoading() {
             document.getElementById('gameLoadingEl').classList.remove('active');
+            stopGameFunFacts();
         }
 
         function showGameUpsell() {

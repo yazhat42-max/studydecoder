@@ -1,203 +1,0 @@
-﻿=== Inverse trigonometric functions ===
-Subject: mathematics-extension-1
-============================================================
-
-? solve problems involving the derivatives of inverse trigonometric functions
-? integrate expressions of the form 1/v(a^2-x^2 ) or a/(a^2+x^2 ) (ACMSM121)
-
-
-Calculus
-ME-C3 Applications of Calculus
-Outcomes
-A student:
-� applies techniques involving proof or calculus to model and solve problems ME12-1
-� uses calculus in the solution of applied problems, including differential equations and volumes of solids of revolution ME12-4
-� chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
-� evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
-Subtopic Focus
-The principal focus of this subtopic is to develop an understanding of applications of calculus in a practical context, including the more accessible kinds of differential equations and volumes of solids of revolution, to solve problems.
-
-Students develop an awareness and understanding of the use of differential equations which arise when the rate of change in one quantity with respect to another can be expressed in mathematical form. The study of differential equations has important applications in science, engineering, finance, economics and broader applications in mathematics.
-Content
-C3.1: Further area and volumes of solids of revolution
-Students:
-? calculate area of regions between curves determined by functions (ACMSM124)
-? sketch, with and without the use of technology, the graph of a solid of revolution whose boundary is formed by rotating an arc of a function about the x-axis or y-axis AAM  
-? calculate the volume of a solid of revolution formed by rotating a region in the plane about the
-x-axis or y-axis, with and without the use of technology (ACMSM125) AAM  
-? determine the volumes of solids of revolution that are formed by rotating the region between two curves about either the x-axis or y-axis in both real-life and abstract contexts AAM 
-
-C3.2: Differential equations
-Students:
-? recognise that an equation involving a derivative is called a differential equation
-? recognise that solutions to differential equations are functions and that these solutions may not be unique
-? sketch the graph of a particular solution given a direction field and initial conditions
-- form a direction field (slope field) from simple first-order differential equations
-- recognise the shape of a direction field from several alternatives given the form of a differential equation, and vice versa
-- sketch several possible solution curves on a given direction field
-
-
-? solve simple first-order differential equations (ACMSM130)
-- solve differential equations of the form dy/dx=f(x)
-- solve differential equations of the form dy/dx=g(y)
-- solve differential equations of the form dy/dx=f(x)g(y) using separation of variables
-? recognise the features of a first-order linear differential equation and that exponential growth and decay models are first-order linear differential equations, with known solutions
-? model and solve differential equations including to the logistic equation that will arise in situations where rates are involved, for example in chemistry, biology and economics (ACMSM132) AAM 
-
-
-Topic: Statistical Analysis
-Outcomes
-A student:
-� applies appropriate statistical processes to present, analyse and interpret data ME12-5
-� chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
-� evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
-Topic Focus
-The topic Statistical Analysis involves the exploration, display and interpretation of data via modelling to identify and communicate key information.
-
-A knowledge of statistical analysis enables careful interpretation of situations and an awareness of the contributing factors when presented with information by third parties, including its possible misrepresentation.
-
-The study of statistical analysis is important in developing students' ability to consider the level of reliability that can be applied to the analysis of current situations and to predict future outcomes. It supports the development of understanding of how conclusions drawn from data can be used to inform decisions made by groups such as scientific investigators, business people and policy-makers.
-Subtopics
-ME-S1 The Binomial Distribution
-
-
-Statistical Analysis
-ME-S1 The Binomial Distribution
-Outcomes
-A student:
-� applies appropriate statistical processes to present, analyse and interpret data ME12-5
-� chooses and uses appropriate technology to solve problems in a range of contexts ME12-6
-� evaluates and justifies conclusions, communicating a position clearly in appropriate mathematical forms ME12-7
-Subtopic Focus
-The principal focus of this subtopic is to develop an understanding of binomial random variables and their uses in modelling random processes involving chance and variation.
-
-Students develop an understanding of binomial distributions and associated statistical analysis methods and their use in modelling binomial events. Binomial probabilities and the binomial distribution are used to model situations where only two outcomes are possible. The use of the binomial distribution and binomial probability has many applications, including medicine and genetics.
-Content
-S1.1: Bernoulli and binomial distributions
-Students:
-? use a Bernoulli random variable as a model for two-outcome situations (ACMMM143)
-- identify contexts suitable for modelling by Bernoulli random variables (ACMMM144)
-? use Bernoulli random variables and their associated probabilities to solve practical problems (ACMMM146) AAM
-- understand and apply the formulae for the mean, E(X)=x �=p, and variance,
-Var(X)=p(1-p), of the Bernoulli distribution with parameter p, and X defined as the number of successes (ACMMM145)
-? understand the concepts of Bernoulli trials and the concept of a binomial random variable as the number of 'successes' in n independent Bernoulli trials, with the same probability of success p in each trial (ACMMM147)
-- calculate the expected frequencies of the various possible outcomes from a series of Bernoulli trials
-? use binomial distributions and their associated probabilities to solve practical problems (ACMMM150) AAM 
-- identify contexts suitable for modelling by binomial random variables (ACMMM148)
-- identify the binomial parameter p as the probability of success
-- understand and use the notation X~Bin(n,p) to indicate that the random variable X is distributed binomially with parameters n and p
-- apply the formulae for probabilities P(X=r)= ^n C_r p^r ?(1-p)?^(n-r) associated with the binomial distribution with parameters n and p and understand the meaning of  ^n C_r as the number of ways in which an outcome with r successes can occur 
-- understand and apply the formulae for the mean, E(X)=x �=np, and the variance,
- Var(X)=np(1-p), of a binomial distribution with parameters n and p
-
-
-S1.2: Normal approximation for the sample proportion
-Students:
-? use appropriate graphs to explore the behaviour of the sample proportion on collected or supplied data AAM
-- understand the concept of the sample proportion p ^ as a random variable whose value varies between samples (ACMMM174)
-? explore the behaviour of the sample proportion using simulated data AAM
-- examine the approximate normality of the distribution of p ^ for large samples (ACMMM175)
-? understand and use the normal approximation to the distribution of the sample proportion and its limitations AAM
-
-
-Glossary
-Glossary termElaborationAboriginal and Torres Strait Islander PeoplesAboriginal Peoples are the first peoples of Australia and are represented by over 250 language groups each associated with a particular Country or territory. Torres Strait Islander Peoples whose island territories to the north east of Australia were annexed by Queensland in 1879 are also Indigenous Australians and are represented by five cultural groups.
-
-An Aboriginal and/or Torres Strait Islander person is someone who:
-* is of Aboriginal and/or Torres Strait Islander descent
-* identifies as an Aboriginal person and/or Torres Strait Islander person, and
-* is accepted as such by the Aboriginal and/or Torres Strait Islander community in which they live.Bernoulli distributionThe Bernoulli distribution is the probability distribution of a random variable which takes the value 1 with 'success' probability p, and the value 0 with 'failure' probability q=1-p. The Bernoulli distribution is a special case of the binomial distribution, where n=1.Bernoulli random variableA Bernoulli random variable has two possible values, namely 0 representing failure and 1 representing success. The parameter associated with such a random variable is the probability p of obtaining a 1.Bernoulli trialA Bernoulli trial is an experiment with only two possible outcomes, labelled 'success' and 'failure'.binomial coefficientThe coefficient of the term x^(n-r) y^r in the expansion of ?(x+y)?^n is called a binomial coefficient. It is written as  ^n C_r or (�(n@r)) where r=0, 1, ..., n and is given by:   n!/(r!(n-r)!)binomial distributionThe binomial distribution with parameters n and p is the discrete probability distribution of the number of successes in a sequence of n independent Bernoulli trials, each of which yields success with probability p.binomial expansionA binomial expansion describes the algebraic expansion of powers of a binomial expression.binomial random variableA binomial random variable X represents the number of successes in n independent Bernoulli trials. In each Bernoulli trial, the probability of success is p and the probability of failure is: q=1-pcolumn vector notationA vector, , in two dimensions can be represented in column vector notation. For example the ordered pair  can be represented in column vector notation as: combinationA combination is a selection of r distinct objects from n distinct objects, where order is not important. The number of such combinations is denoted by ^n C_r or  (�(n@r)), and is given by:   n!/(r!(n-r)!)component form of a vectorThe component form of a vector, , expresses the vector in terms of unit vectors , a unit vector in the x-direction, and , a unit vector in the 
-y-direction. For example the ordered vector pair  can be represented as: differential equationA differential equation is any equation containing the derivative of an unknown function.direction fieldA direction field (or slope field) is a graphical representation of the tangent lines to the solutions of a first-order differential equation.displacement vectorA displacement vector represents the displacement from one point to another.factor theoremThe factor theorem states that a polynomial P(x) has a factor (x-k) if and only if P(k)=0, ie k is a root of the equation P(x)=0.
-
-The factor theorem links the factors and zeros of a polynomial.factorialThe product of the first n positive integers is called the factorial of n and is denoted by n!.
-	n!=n(n-1)(n-2)(n-3)�...�3�2�1
-
-By definition: 0!=1fundamental counting principleThe fundamental counting principle states that if one event has m possible outcomes and a second independent event has n possible outcomes, then there are a total of m�n possible outcomes for the two combined events.integrandAn integrand is a function that is to be integrated.logistic equationThe logistic equation is the differential equation dN/dt=kN(P-N) where k, P are constants. Thus: if N=0 or N=P,  dN/dt=0mathematical inductionMathematical induction is a method of mathematical proof used to prove statements involving the natural numbers.
-
-Also known as proof by induction or inductive proof.
-
-The principle of induction is an axiom and so cannot itself be proven.multiplicity of a rootGiven a polynomial P(x), if P(x)=(x-a)^r Q(x) ,  Q(a)?0 and r is a positive integer, then the root x=a has multiplicity r.parameter1. A parameter is a quantity that defines certain characteristics of a function or system. For example ? is a parameter in y=x cos??
-2. A parameter can be a characteristic value of a situation. For example the time taken for a machine to produce a certain product.permutationA permutation is an arrangement of r distinct objects taken from n distinct objects where order is important.
-
-The number of such permutations is denoted by ^n P_r and is equal to:
-	 ^n P_r=n(n-1)...(n-r+1)=n!/((n-r)!)
-
-The number of permutations of n objects is n!. position vectorThe position vector of a point P in the plane is the vector joining the origin to P.remainder theoremThe remainder theorem states that if a polynomial P(x) is divided by
-(x-k), the remainder is equal to P(k).sample proportionThe sample proportion (p ^) is the fraction of samples out of n Bernoulli trials which were successes (x), that is: p ^=x/n
-
-For large n, p ^ has an approximately normal distribution.scalarA scalar is a quantity with magnitude but no direction.statementA statement is an assertion that can be true or false but not both.
-
-
-
-
-Mathematics Extension 1 Stage 6 Syllabus (2017)		21
-
-
-
-
-
-Year 11
-
-
-
-
-
-
-*****
-
-
-
-Year 12
-
-
-
-
-
-
-
-
-
-
-
-NSW Education Standards Authority
-
-Mathematics Extension 1 11–12 (2024)
-curriculum.nsw.edu.au
-Generated Dec 2025
-Downloaded December 2025
-© 2025 NSW Education Standards Authority 
-NESA acknowledges Traditional Owners and Custodians of Country throughout NSW, and pays respect to Elders past and present. NESA recognises Aboriginal Peoples’ continuing Cultures and Connections to lands, waters, skies and Community.
-The documents on the NSW Education Standards Authority (NESA) website and the NSW Curriculum website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright. 
-These websites hold the only official and up-to-date versions of the documents available on the internet. Any other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are not authorised. You cannot rely on copies from any other source. 
-All rights are reserved. No part of the material may be: 
-    • reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form 
-    • transmitted to any other person or stored electronically in any form without the written permission of NESA except as permitted by the Copyright Act 1968 (Cth). 
-When you access the material, you agree: 
-    • to use the material for research or study, criticism or review, reporting news and parody or satire 
-    • to use the material for information purposes only 
-    • not to modify the material or any part of the material without the written permission of NESA 
-    • to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the permission of NESA 
-    • to include this copyright notice in any copy made 
-    • to acknowledge that NESA is the source of the material. 
-The documents may include third-party copyright material such as photos, diagrams, quotations, cartoons and artworks. This material is protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner’s permission. Unauthorised reproduction, transmission or commercial use of such copyright material may result in prosecution. 
-NESA has made all reasonable attempts to locate the owners of third-party copyright material. NESA invites anyone from whom permission has not been sought to contact the Copyright Officer.
-Special arrangements applying to the NSW Curriculum Reform 
-As part of the NSW Curriculum Reform process, NESA grants a limited non-exclusive licence to: 
-    • teachers employed in NSW government schools and registered non-government schools 
-    • representatives from peak school education bodies, such as the NSW Department of Education, Catholic Schools NSW, the Association of Independent Schools of NSW and TAFE NSW
-    • parents of children registered for home schooling 
-to use, modify and adapt the NSW syllabuses for non-commercial educational use only. The adaptation must not have the effect of bringing NESA into disrepute. 
-Note: The above arrangements do not apply to private/home tutoring companies, professional learning service providers, publishers, and other organisations.
-For more information on the above or for commercial use or any other purpose, please contact the Copyright Officer for permission. 
-Email: copyright@nesa.nsw.edu.au
-Table of contents
-Table of contents	4
-Mathematics Extension 1 11–12 (2024)	5
-Implementation from 2026	5
-Overview	5
-Syllabus overview	5
-Course description	7
-Rationale	10
-Aim	11
-Table of outcomes	12
-Outcomes and content for Year 11	13

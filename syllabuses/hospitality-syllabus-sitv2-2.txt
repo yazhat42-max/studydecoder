@@ -1,1558 +1,0 @@
-Hospitality
-Curriculum Framework
-Stage 6 Syllabus
-
-based on the SIT Tourism, Travel and Hospitality 
-Training Package (version 2.2)
-for implementation from 2023
-amended February 2024
-
-
-
-NESA acknowledges Traditional Owners and Custodians of Country throughout NSW, and pays respect to Elders past and present. NESA recognises Aboriginal Peoples' continuing Cultures and Connections to lands, waters, skies and Community.
-
-
-Released November 2022, amended February 2024
-
-(c) 2024 NSW Education Standards Authority
-The documents on the NSW Education Standards Authority (NESA) website and the NSW Curriculum website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright.
-These websites hold the only official and up-to-date versions of the documents available on the internet. Any other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are not authorised. You cannot rely on copies from any other source.
-All rights are reserved. No part of the material may be:
-* reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form 
-* transmitted to any other person or stored electronically in any form without the written permission of NESA except as permitted by the Copyright Act 1968 (Cth).
-When you access the material you agree:
-* to use the material for research or study, criticism or review, reporting news and parody or satire 
-* to use the material for information purposes only 
-* not to modify the material or any part of the material without the written permission of NESA 
-* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the permission of NESA 
-* to include this copyright notice in any copy made 
-* to acknowledge that NESA is the source of the material.
-The documents may include third-party copyright material such as photos, diagrams, quotations, cartoons and artworks. This material is protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's permission. Unauthorised reproduction, transmission or commercial use of such copyright material may result in prosecution.
-NESA has made all reasonable attempts to locate owners of third-party copyright material. NESA invites anyone from whom permission has not been sought to contact the Copyright Officer.
-Published by
-NSW Education Standards Authority
-GPO Box 5300
-Sydney NSW 2001
-Australia
-www.educationstandards.nsw.edu.au
-Phone: (02) 9367 8289
-Fax: (02) 9279 1482
-Email: copyright@nesa.nsw.edu.au
-D2024/56159	D2024/56160
-
-Acknowledgements
-Units of competency from the SIT Tourism, Travel and Hospitality Training Package in this syllabus are (c) Commonwealth of Australia. Reproduced with permission. The following disclaimer applies to the material from the Training Package:
-This work is the result of wide consultations with Australian industry participants. It is a collaborative view and does not necessarily represent the view of the Department or any specific body. For the sake of brevity it may omit factors which could be pertinent in particular cases.
-While care has been taken in the preparation of this Training Package, the Department and the original developer do not warrant that any licensing or registration requirements specified here are either complete or up-to-date for your State or Territory. The Department and the original developer do not accept any liability for any damage or loss (including indirect and consequential loss) incurred by any person as a result of relying on the information contained in this Training Package, or incorporated into it by reference. No responsibility is taken for any information or services which may appear on any linked websites.
-
-Contents
-1	Introduction to the Hospitality Curriculum Framework	5
-1.1	AQF VET qualifications available in the Hospitality Curriculum Framework	5
-1.2	Industry context - hospitality	5
-1.3	HSC VET course and AQF VET qualification completion requirements	6
-1.3.1	HSC VET course requirements	6
-1.3.2	AQF VET qualification requirements	6
-1.4	HSC VET course delivery	7
-1.5	Outcomes and content	7
-1.6	Assessment requirements and advice	7
-2	Course structures and requirements	8
-2.1	Hospitality HSC VET courses	8
-2.1.1	Unit credit for the Higher School Certificate	8
-2.1.2	NESA course numbers	9
-2.1.3	HSC examination numbers	9
-2.1.4	Allocation of HSC indicative hours of credit	10
-2.1.5	Work placement requirements	10
-2.2	Hospitality (120 indicative hours)	12
-2.3	Hospitality (240 indicative hours)	13
-2.4	Hospitality Specialisation Study (60 or 120 indicative hours)	14
-2.5	Hospitality units of competency	16
-2.5.1	Associated mandatory units of competency and focus areas for the 240-hour course	16
-2.5.2	Associated stream units of competency and focus areas for the 240-hour course	17
-2.5.3	HSC elective pool	18
-2.5.4	Additional HSC elective pool for school-based apprentices and specialisation study courses	20
-3	HSC Content	21
-3.1	Hygiene - mandatory focus area	22
-3.1.1	Outcomes	22
-3.1.2	Associated units of competency	22
-3.1.3	Scope of learning for the HSC	24
-3.2	Safety - mandatory focus area	30
-3.2.1	Outcomes	30
-3.2.2	Associated unit of competency	30
-3.2.3	Scope of learning for the HSC	31
-3.3	Working with colleagues and customers - mandatory focus area	37
-3.3.1	Outcomes	37
-3.3.2	Associated unit of competency	37
-3.3.3	Scope of learning for the HSC	39
-3.4	Food and Beverage - stream focus area	43
-3.4.1	Outcomes	43
-3.4.2	Associated units of competency	43
-3.4.3	Scope of learning for the HSC	45
-3.5	Kitchen Operations and Cookery - stream focus area	55
-3.5.1	Outcomes	55
-3.5.2	Associated units of competency	55
-3.5.3	Scope of learning for the HSC	57
-4	HSC examination	66
-4.1	Examinable outcomes and content	66
-4.2	Relationship of the 240-hour course structure to the HSC examination	66
-5	Other important information	67
-5.1	Exclusions	67
-5.2	Recognition of prior learning (RPL) and credit transfer within VET courses	67
-5.3	School-based apprentices and trainees	67
-5.4	Industries related to Hospitality	67
-5.5	Students with disability	68
-5.6	Students in Years 9 and 10 (Stage 5)	68
-6 	Glossary	69
-
-1	Introduction to the Hospitality Curriculum Framework
-Industry curriculum frameworks (Frameworks) provide students with the opportunity to gain industry-recognised national vocational qualifications under the Australian Qualifications Framework (AQF) as part of their NSW Higher School Certificate (HSC). 
-HSC courses within Frameworks count as Board Developed unit credit for the HSC. Frameworks include an HSC examination which provides the opportunity for students to have this HSC examination mark contribute to the calculation of their Australian Tertiary Admission Rank (ATAR).
-1.1	AQF VET qualifications available in the Hospitality Curriculum Framework
-The Hospitality Curriculum Framework is based on qualifications and units of competency contained in the nationally endorsed SIT Tourism, Travel and Hospitality Training Package.
-The AQF VET qualifications available in the Hospitality Curriculum Framework are:
-* SIT20322 Certificate II in Hospitality 
-* SIT20421 Certificate II in Cookery
-* SIT30622 Certificate III in Hospitality - Statement of Attainment only
-* SIT30821 Certificate III in Commercial Cookery - Statement of Attainment only
-* SIT30921 Certificate III in Catering - Statement of Attainment only.
-1.2	Industry context - hospitality
-The hospitality industry represents a range of food and beverage services - restaurants, cafes, coffee shops, pubs, clubs, bars, nightclubs and casinos. Catering operations provide an extensive range of food and beverage services to individuals and/or organisations in different industries. 
-Consumer trends regarding health consciousness and increasingly busier and time-poor lifestyles have had a positive impact, with demand steadily growing for eating out and/or ordering ready-made meals. 
-Online platforms, social media and technology have been shaping the industry significantly. Platforms have provided online food ordering and delivery services to further expand the reach of restaurants across the market. Diners' online reviews and social media posts of photographs of their food influence the choices others make about their dining, food and beverage choices.
-The industry has an extensive variety of job roles ranging from administration and service-based roles (hosts and waiters) to operational (kitchenhands and cooks), to supervisory and management positions (head chefs and kitchen managers). 
-While the hospitality industry is one of the largest employers in Australia, it currently faces workforce shortages.1
-
-
-1.3	HSC VET course and AQF VET qualification completion requirements
-The requirements for the completion of an HSC VET course are different to the requirements for AQF VET qualification completion. Registered Training Organisations (RTOs) need to ensure that delivery of courses meets HSC course requirements and complies with Training Package rules.
-1.3.1	HSC VET course requirements
-HSC VET courses in the Hospitality Curriculum Framework are made up of:
-* units of competency 
-- associated HSC mandatory units of competency
-- associated HSC stream units of competency
-- HSC elective units of competency
-* HSC outcomes and content
-* mandatory HSC work placement requirements.
-For a student to be considered to have satisfactorily completed a course within the Hospitality Curriculum Framework they must meet the:
-* HSC VET course requirements (refer to Sections 2.2-2.5 of this syllabus)
-* requirements for satisfactory course completion (refer to the NESA Assessment Certification Examination (ACE) website). There must be sufficient evidence that the student has:
-- followed the course developed by NESA
-- applied themselves with diligence and sustained effort to the set tasks and experiences provided in the course
-- achieved some or all of the course outcomes
-- undertaken the mandatory work placement.
-1.3.2	AQF VET qualification requirements
-To receive AQF VET qualifications, students must meet the assessment requirements of the SIT Tourism, Travel and Hospitality Training Package (training.gov.au).
-AQF VET qualifications are determined by the qualification rules for each Training Package, referred to as qualification packaging rules. The qualification packaging rules describe the number and range of core and elective units of competency required for eligibility for an AQF VET qualification.
-Units of competency should be selected to meet qualification packaging rules for the intended qualification pathway. Selection of units of competency should also be guided by the job outcome sought and local industry requirements.
-Qualification packaging rules for each AQF VET qualification available through the Hospitality Curriculum Framework are contained in the SIT Tourism, Travel and Hospitality Training Package. Refer to the Status of units of competency for qualifications in the Hospitality Curriculum Framework document to see how qualifications can be achieved through the Framework..
-
-1.4	HSC VET course delivery 
-HSC VET courses can only be delivered by an RTO with the relevant qualification and units of competency on their scope of registration. Scope of registration can be checked at training.gov.au.
-RTOs offering training programs for the delivery and assessment of the Hospitality HSC VET courses must meet the requirements of the VET Quality Framework, the SIT Tourism, Travel and Hospitality Training Package and the HSC course.
-Information about the delivery of HSC VET courses by RTOs other than school system RTOs or TAFE NSW is contained on the ACE website.
-Non-government schools outsourcing delivery of HSC VET courses to external providers also need to refer to the Registered and Accredited Individual Non-government Schools (NSW) Manual or Registration Systems and Member Non-government Schools (NSW) Manual.
-1.5	Outcomes and content
-The HSC outcomes and content for this Framework are defined in:
-* the units of competency (refer to Section 2.5 of this syllabus)
-* HSC Content focus areas (refer to Section 3 of this syllabus).
-1.6	Assessment requirements and advice
-HSC VET courses are competency-based. NESA and the VET Quality Framework require that a competency-based approach to assessment is used. For more advice on appropriate assessment practice in relation to the Hospitality Curriculum Framework see Assessment and Reporting in Hospitality.
-An integrated or holistic approach to course delivery and assessment should be adopted.
-
-
-2	Course structures and requirements
-2.1	Hospitality HSC VET courses
-This Framework specifies the range of industry-developed units of competency from the 
-SIT Tourism, Travel and Hospitality Training Package for inclusion in the HSC. It describes how these units of competency are arranged in HSC VET courses to gain unit credit for the HSC. 
-The Hospitality Curriculum Framework contains the following courses:
-* Hospitality (120 indicative hours) - see Section 2.2 of this syllabus
-* Hospitality (240 indicative hours) - see Section 2.3 of this syllabus
-* Hospitality Specialisation Study (60 or 120 indicative hours) - see Section 2.4 of this syllabus.
-2.1.1	Unit credit for the Higher School Certificate
-To facilitate flexibility of VET in the HSC, courses within the Hospitality Curriculum Framework may be delivered as Preliminary, as HSC or as a combination of Preliminary and HSC units.
-The HSC credit units will be allocated to students' Preliminary and/or HSC patterns of study as required.
-The pattern of study (NESA course number) entered on Schools Online should reflect the delivery of the HSC VET course over successive years. For example, delivery of the 240 HSC indicative hour course over 2 years should be entered as 2 units x 2 years. Students will be credentialled for the HSC credit units entered each calendar year, provided they have satisfactorily completed the course requirements for that calendar year as determined by the school, college or RTO.
-Table 1	HSC credit units for Hospitality HSC courses
-HSC VET courseHSC credit unitsHospitality (120 indicative hours)2Hospitality (240 indicative hours)4Hospitality Specialisation Study (60 indicative hours)1Hospitality Specialisation Study (120 indicative hours)2
-
-2.1.2	NESA course numbers
-26520 - Hospitality (120 indicative hours)
-Pattern of study:	2 units x 1 year
-Enter this NESA course number for either Year 11 (Preliminary) or Year 12 (HSC) on Schools Online.
-26521 - Hospitality (240 indicative hours)
-Pattern of study:	2 units x 2 years
-Enter this NESA course number for both Year 11 (Preliminary) and Year 12 (HSC) on Schools Online.
-26522 - Hospitality (240 indicative hours)
-Pattern of study:	4 units x 1 year
-Enter this NESA course number for either Year 11 (Preliminary) or Year 12 (HSC) on Schools Online.
-26523 - Hospitality Specialisation Study (60 indicative hours)
-Pattern of study:	1 unit x 1 year
-Enter this NESA course number for either Year 11 (Preliminary) or Year 12 (HSC) on Schools Online.
-26524 - Hospitality Specialisation Study (120 indicative hours)
-Pattern of study:	2 units x 1 year
-Enter this NESA course number for either Year 11 (Preliminary) or Year 12 (HSC) on Schools Online.
-2.1.3	HSC examination numbers
-26589 - Hospitality (Food and Beverage) HSC examination
-Enter this NESA course number on Schools Online as a Year 12 (HSC) entry in the year the examination is undertaken.
-26587 - Hospitality (Kitchen Operations and Cookery) HSC examination
-Enter this NESA course number on Schools Online as a Year 12 (HSC) entry in the year the examination is undertaken.
-
-
-2.1.4	Allocation of HSC indicative hours of credit
-Units of competency drawn from Training Packages are not defined in terms of duration. The amount of time required by individual students to achieve competency will vary according to their aptitude and experience. Where a training program is designed for delivery by an RTO, the RTO will specify the length of the training program according to the delivery strategies and/or curriculum resources chosen. 
-However, for the purposes of the HSC, VET courses must be described in terms of their indicative hours. For this reason, indicative hours for unit credit towards the HSC have been assigned to each unit of competency within the Framework. It is emphasised that the assignment of indicative hours does not imply that all students will fulfil all requirements of a unit of competency within these hours. RTOs may determine that additional or fewer hours are required for the achievement of particular competencies. However, this does not alter the HSC indicative hours allocated, only the delivery hours. 
-Students may need to spend additional time practising skills in a work environment and completing projects and assignments, in order to fulfil Training Package assessment requirements. 
-The HSC indicative hours assigned to each unit of competency are listed in Section 2.5 of this syllabus.
-It is anticipated the majority of students completing the 240-hour course under regular course arrangements, with an enrolment in a Certificate II qualification, would have the opportunity to achieve the qualification.
-2.1.5	Work placement requirements
-Work placement is a mandatory HSC requirement within this Framework and minimum hours have been assigned to HSC VET courses.
-Work placement is to be undertaken in an appropriate hospitality work environment. 
-Students undertaking courses as part of a school-based apprenticeship or traineeship will meet mandatory work placement hour requirements through the on-the-job training component of the apprenticeship or traineeship.
-For units of competency that must be assessed in a hospitality work environment, work placement provides an opportunity to collect evidence required for a student to be deemed competent. Work placement also provides an opportunity for students to undertake 'service periods' for the collection of evidence of work performance required by the holistic units of competency.
-Recognition of prior learning (RPL) may be granted for mandatory work placement requirements. Students' outside employment (ie not under the auspices of the school) may be recognised towards the requirement for work placement in a VET course (ACE 8051).
-Non-completion of work placement is grounds for withholding the HSC course. Schools and colleges are advised to follow the procedure for issuing 'N' determinations as outlined on the ACE website.
-Students must complete the following work placement for Hospitality Curriculum Framework courses.
-
-
-Table 2	Minimum work placement hours for Hospitality HSC courses
-Hospitality Framework courseMinimum work placement requirementHospitality (120 indicative hours)35 hoursHospitality (240 indicative hours) 70 hours*Hospitality Specialisation Study
-(60 indicative hours)no additional hours requiredHospitality Specialisation Study
-(120 indicative hours)additional 35 hours
-*	For the 240-hour course only, it is permissible for up to 50% of work placement to include school and community functions where students cater for and/or serve customers. 
-The 'work environment' of the functions should be authentic and as far as possible reproduce and replicate a hospitality workplace or work environment. Tasks, activities and conditions need to be as close as possible to real-life situations. There should be industry-realistic ratios of staff to customers, as well as sufficient customer traffic that allows students to deal with a range of customers with varying needs and multiple hospitality service or operational tasks simultaneously. The speed, timing and productivity for tasks should be typical of a commercial operation.
-For more information see Work Placement in Hospitality.
-
-
-2.2	Hospitality (120 indicative hours)
-AQF VET qualifications
-The Hospitality (120 indicative hours) course provides a pathway to the following qualifications:
-Statement of Attainment towards:
-* SIT20322 Certificate II in Hospitality
-* SIT20421 Certificate II in Cookery
-Course structure
-This course consists of units of competency from the HSC mandatory, streams and/or HSC elective pool.
-(See Section 2.5 of this syllabus.)
-Course requirements
-Students must attempt:
-* a selection of units of competency from the HSC mandatory, streams and/or HSC elective pool to a minimum of 120 HSC indicative hours
-* a minimum of 35 hours of work placement.
-
-
-2.3	Hospitality (240 indicative hours)
-AQF VET qualifications
-The Hospitality (240 indicative hours) course provides a pathway to the following qualifications:
-* SIT20322 Certificate II in Hospitality
-* SIT20421 Certificate II in Cookery
-Statement of Attainment towards:
-* SIT30622 Certificate III in Hospitality2 
-* SIT30821 Certificate III in Commercial Cookery - school-based apprentices only
-* SIT30921 Certificate III in Catering3
-Course structure
-This course consists of:
-* 3 mandatory focus areas (containing 5 associated units of competency)
-* 2 stream focus areas:
-- Food and Beverage (containing 3 associated units of competency)
-- Kitchen Operations and Cookery (containing 3 associated units of competency)
-* a range of elective units of competency from the HSC elective pool 
-* HSC Content - for the mandatory and stream focus areas.
-(See Section 2.5 and Section 3 of this syllabus.)
-Course requirements
-Students must attempt:
-* 4 associated HSC mandatory units of competency (totalling 70 HSC indicative hours) with 3 mandatory focus areas (HSC Content)
-* 3 associated HSC stream units of competency (totalling 75 or 80 HSC indicative hours) with one stream focus area (HSC Content)
-* HSC elective units of competency from stream not already undertaken and/or the HSC elective pool to bring the course total to a minimum of 240 HSC indicative hours
-* a minimum of 70 hours of work placement.
-For students undertaking a school-based apprenticeship, additional elective units of competency are available. These are listed in Section 2.5.4 of this syllabus.
-Hospitality HSC examination
-An external written HSC examination will be conducted for the 240 indicative hour course (refer to Section 4 of this syllabus).
-The HSC Content (focus areas) for the HSC examination is detailed in Section 3 of this syllabus.
-
-2.4	Hospitality Specialisation Study
-(60 or 120 indicative hours)
-Course eligibility 
-The Hospitality Specialisation Study is for students with particular interest in, and aptitude for, the industry. Students need to be currently entered in, or have completed, the Hospitality (240 indicative hours) course to undertake a Hospitality Specialisation Study course. 
-The Hospitality Specialisation Study:
-* provides students who are undertaking one Certificate II qualification through the 240-hour course with the opportunity to gain the other Certificate II qualification 
-(120-hour Specialisation Study course only)
-or
-* provides students who have achieved a Certificate II qualification through the 240-hour course to commence study towards Certificate III in Catering
-(60 or 120-hour Specialisation Study course)
-or
-* provides school-based apprentices (SBAs) with the opportunity to gain further credit towards their Certificate III in Commercial Cookery qualification4. 
-(60-hour Specialisation Study course only).
-AQF VET qualifications
-The Hospitality Specialisation Study (60 indicative hours) course provides a pathway to the following qualifications:
-Statement of Attainment towards:
-* SIT30821 Certificate III in Commercial Cookery - school-based apprentices only
-* SIT30921 Certificate III in Catering.
-The Hospitality Specialisation Study (120 indicative hours) course provides a pathway to the following qualifications:
-* SIT20322 Certificate II in Hospitality
-* SIT20421 Certificate II in Cookery
-* Statement of Attainment towards SIT30921 Certificate III in Catering.
-
-
-
-Course structure
-This Specialisation Study consists of units of competency from the alternate stream, HSC elective pool and/or and the additional HSC elective pool for school-based apprentices and specialisation study courses.
-(See Section 2.5 of this syllabus.)
-Course requirements
-Students must attempt:
-* a minimum of 60 or 120 HSC indicative hours of units of competency not previously undertaken from the alternate stream, HSC elective pool and/or the additional HSC elective pool for school-based apprentices and specialisation study courses
-* a minimum of 35 hours of additional work placement for the 120-hour Specialisation Study.
-
-
-2.5	Hospitality units of competency
-Details of units of competency listed in Sections 2.5.1 - 2.5.4 are available in the SIT Tourism, Travel and Hospitality Training Package at training.gov.au.
-2.5.1	Associated mandatory units of competency and focus areas for the 240-hour course
-Attempt the following units of competency:
-Hygiene
-Unit codeUnit titleHSC indicative hoursSITXFSA005Use hygienic practices for food safety15SITXFSA006Participate in safe food handling practices20
-Safety
-Unit codeUnit titleHSC indicative hoursSITXWHS005Participate in safe work practices15
-Working with colleagues and customers
-Unit codeUnit titleHSC indicative hoursSITXCCS011
-
-SITXCCS014Interact with customers
-OR
-Provide service to customers20
-
-20
-
-
-2.5.2	Associated stream units of competency and focus areas for the 240-hour course
-Attempt all units of competency from ONE of the following streams:
-Food and Beverage stream
-Unit codeUnit titleHSC indicative hoursSITHFAB024Prepare and serve non-alcoholic beverages
-Prerequisite: SITXFSA00515SITHFAB025Prepare and serve espresso coffee
-Prerequisite: SITXFSA00525SITHFAB027Serve food and beverage
-Prerequisite: SITXFSA00540
-OR
-
-Kitchen Operations and Cookery stream
-Unit codeUnit titleHSC indicative hoursSITHCCC023Use food preparation equipment
-Prerequisite: SITXFSA00520SITHCCC027Prepare dishes using basic methods of cookery
-Prerequisite: SITXFSA00540SITHKOP009Clean kitchen premises and equipment
-Prerequisite: SITXFSA00515
-PLUS a selection of units of competency from the stream not already undertaken and/or the HSC elective pool to bring the course total to a minimum of 240 HSC indicative hours.
-
-
-
-2.5.3	HSC elective pool
-Unit codeUnit titleHSC indicative hoursBSBCMM211Apply communication skills15BSBSUS211Participate in sustainable work practices15BSBTWK201Work effectively with others15HLTAID011Provide First Aid20SITHACS009Clean premises and equipment10SITHCCC024Prepare and present simple dishes
-Prerequisite: SITXFSA00520SITHCCC025Prepare and present sandwiches
-Prerequisite: SITXFSA00520SITHCCC026Package prepared foodstuffs
-Prerequisite: SITXFSA00510SITHCCC028Prepare appetisers and salads
-Prerequisite: SITXFSA00530SITHCCC029Prepare stocks, sauces and soups
-Prerequisite: SITXFSA00530SITHCCC030Prepare vegetable, fruit, eggs and farinaceous dishes
-Prerequisites: SITHCCC027 	SITXFSA00535SITHCCC034Work effectively in a commercial kitchen5
-Prerequisites: SITHCCC027 	SITXFSA00525SITHIND006Source and use information on the hospitality industry20SITHIND007Use hospitality skills effectively625SITXCCS010Provide visitor information20SITXCOM006Source and present information10SITXCOM007Show social and cultural sensitivity10SITXFIN007Process financial transactions15SITXINV006Receive, store and maintain stock
-Prerequisite: SITXFSA00515SITHFAB021Provide responsible service of alcohol#10
-#	The NSW industry training advisory body (SkillsIQ) supports the inclusion of SITHFAB021 Provide responsible service of alcohol in NESA's Hospitality Curriculum Framework for students undertaking the following qualifications:
-* SIT20322 Certificate II in Hospitality 
-* Statement of Attainment towards SIT30622 Certificate III in Hospitality
-* Statement of Attainment towards SIT30921 Certificate III in Catering.
-This support is conditional on:
-* unit content being delivered in-person via face-to-face (classroom) mode
-* assessment using realistic role play scenarios
-* delivery by an approved provider as listed on the Liquor and Gaming NSW website.
-Details on how to obtain the Responsible Service of Alcohol (RSA) competency card after turning 18 are available on the Service NSW website.
-The HSC indicative hours allocated to this unit of competency can only contribute to meeting NESA course indicative hour requirements when the above conditions are met.
-
-
-2.5.4	Additional HSC elective pool for school-based apprentices and specialisation study courses 
-Unit codeUnit titleHSC indicative hoursSITHCCC031Prepare vegetarian and vegan dishes
-Prerequisites: SITHCCC027	SITXFSA00535SITHCCC035Prepare poultry dishes
-Prerequisites: SITHCCC027	SITXFSA00535SITHCCC036Prepare meat dishes
-Prerequisites: SITHCCC027	SITXFSA00535SITHCCC037Prepare seafood dishes
-Prerequisites: SITHCCC027	SITXFSA00540SITHCCC040Prepare and serve cheese
-Prerequisite: SITXFSA00515SITHCCC041Produce cakes, pastries and breads
-Prerequisite: SITXFSA00535SITHCCC042Prepare food to meet special dietary requirements
-Prerequisites: SITHCCC027	SITXFSA00525SITHKOP010Plan and cost recipes25SITHPAT016Produce desserts
-Prerequisite: SITXFSA00535
-
-3	HSC Content
-The HSC Content for this Framework is organised into focus areas. Each focus area prescribes the scope of learning for the HSC. This is drawn from the associated units of competency. 
-Students undertaking the 240 indicative hour course from the Hospitality Curriculum Framework must address all of the mandatory focus areas plus one stream focus area.
-The Hospitality Curriculum Framework mandatory focus areas are:
-* Hygiene
-* Safety
-* Working with colleagues and customers.
-The Hospitality Curriculum Framework stream focus areas are:
-* Food and Beverage
-* Kitchen Operations and Cookery.
-The associated mandatory or stream units of competency for each of the focus areas are outlined in Section 2.5.1 and 2.5.2 of this syllabus.
-The HSC examination in Hospitality is based on the HSC Content in this Framework (refer to Section 4 of this syllabus).
-
-
-3.1	Hygiene - mandatory focus area
-3.1.1	Outcomes
-The student:
-* considers the importance of hygiene in the hospitality industry
-* demonstrates an understanding of compliance with laws, standards and codes relevant to hygienic work practices and food safety for the hospitality workplace
-* explains how to prevent food contamination that might cause food-borne illnesses
-* describes a food safety program and applies it in a hospitality workplace
-* proposes hygienic work procedures and practices for food safety in a hospitality work environment
-* proposes cleaning procedures relevant to food preparation and storage.
-3.1.2	Associated units of competency
-The scope of learning for the HSC must be read and delivered in conjunction with the following associated units of competency:
-* SITXFSA005	Use hygienic practices for food safety
-* SITXFSA006	Participate in safe food handling practices
-The application and elements for each of these units of competency are provided below.
-SITXFSA005	Use hygienic practices for food safety
-Application	This unit describes the performance outcomes, skills and knowledge required to use personal hygiene practices to prevent contamination of food that might cause food-borne illnesses. It requires the ability to follow predetermined organisational procedures and to identify and control food hazards.
-Elements	1.	Follow hygiene procedures and identify food hazards
-2.	Report any personal health issues
-3.	Prevent food contamination
-4.	Prevent cross-contamination by washing hands.
-Assessment requirements for SITXFSA005 Use hygienic practices for food safety are detailed in the Training Package.
-SITXFSA006	Participate in safe food handling practices 
-Application	This unit describes the performance outcomes, skills and knowledge required to handle food safely during the storage, preparation, display, service and disposal of food. It requires the ability to follow predetermined procedures as outlined in a food safety program.
-
-Elements	1.	Follow food safety program
-2.	Store food safely
-3.	Prepare food safely
-4.	Provide safe single use items
-5.	Maintain a clean environment 
-6.	Dispose of food safely. 
-Assessment requirements for SITXFSA006 Participate in safe food handling practices are detailed in the Training Package.
-
-3.1.3	Scope of learning for the HSC
-hygienic work practices* importance of hygienic work practices* consequences of poor hygienic work practices for the customer, worker, colleagues and workplace* hygienic work practices and their purposes related to:
-- personal health and hygiene
-* clean skin and non-excessive makeup
-* no body odour
-* clean hair and tied back or contained in net
-* clean shaven or trimmed beard
-* nails clean and appropriate length
-* clean uniform and enclosed shoes
-* body piercings removed or covered
-* appropriate wound dressings
-- food preparation and storage
-- 'ready to eat' food items
-- service of food and beverages
-- handling money
-- linen
-- cleaning and sanitising
-- waste disposal
-- pest control* hand washing, including when it needs to occur (frequency), the facilities needed and procedure * hygienic work practices for various job roles and responsibilities within the hospitality industrysafe food handling work practices* the importance of safe work practices when handling food* an understanding that food safety needs to be considered from 'paddock to plate'* safe work practices and their purposes when handling food during:
-- storage
-- preparation
-- display
-- service
-- disposal, including documentation of disposed food items* vulnerable customer groups with a high risk of harm from food contaminationhazards impacting food safety * food hazards that may affect the health and safety of customers, colleagues and the worker:
-- related to:
-* handling food and beverageshazards impacting food safety, continued* food contact surfaces
-- including:
-* personal hygiene
-* personal health issues
-* environmental hygiene
-* work practices
-and associated hygiene risk(s)* appropriate control measures to eliminate or minimise the hazards and their associated risk(s)compliance* difference between an act, regulation, code of practice and standard (Australian, industry and workplace)* intent and purpose of national and state/territory food safety laws, standards and codes relevant to food safety and hygienic work practices for workplaces and workers within the hospitality industry:
-- Food Act 2003 (NSW) (as amended)
-- Food Regulation 2015 (NSW) (as amended)
-- Australia New Zealand Food Standards (ANZFS) Code ('the Code')* overview of food safety program for the hospitality workplace including reasons for, essential components and basic content* workplace policy and procedures related to hygiene, food safety and cleaning and the consequences of failure to observe* responsibilities of the food safety supervisor and food handler according to food safety laws, standards and codes* requirements for businesses involved in the preparation and service of food:
-- provide notification of the operation of a food business
-- nominate a food safety supervisor
-- implement a food safety program
-- allow inspections of food and premises* role of the NSW Food Authority and local government regulator in food safety* local government food safety regulations and inspection regimes* legislative and regulatory requirements:
-- impact on workers at operational level
-- responsibilities of the owner, manager/supervisor/team leader, food safety supervisor, food handler, kitchen staff and other staff
-	and ramifications of failure to observe* application of workplace policy and procedures and regulatory requirements for food safety:
-- to a workplace and job role in the hospitality industry 
-- integrated into daily work activitiesfood safety program* reasons for a food safety program in the hospitality workplace* essential elements of a food safety program:
-- identify potential food safety hazards
-- determine where each hazard can be controlled and the means of control 
-- monitor the means of control
-- provide for corrective action when the hazard identified is not under control
-- regularly review the program
-- keep appropriate records* main components of a food safety program common to the hospitality industry and workplaces:
-- Hazard Analysis and Critical Control Points (HACCP) plan
-- support programs* documentation associated with food safety programs:
-- workplace policy, procedures and flowcharts
-- monitoring food safety
-- product specificationsHazard Analysis and Critical Control Points (HACCP)* definition of HACCP* key principles of HACCP:
-- hazard analysis
-- determine critical control points (CCPs)
-- establish critical limits of CCPs
-- monitoring
-- taking corrective actions
-- verification
-- documentation/keeping records* high-risk and potentially hazardous foods* food hazards that may affect the health and safety of customers, colleagues and the worker:
-- actual and potential
-- types:
-* biological
-* chemical
-* physical
-- causes of contamination* critical control points where there is a high risk to food spoilage and contamination (food safety):
-- purchasing and taking delivery of food stock
-- food storage and stock control
-- food and beverage preparation
-- cooking or processing of food
-- cooling and reheating of food
-- holding or displaying foodHazard Analysis and Critical Control Points (HACCP), continued- packaging food
-- transporting food
-- service of food and beverages
-- disposal of food* implementing HACCP through operational policy and procedures* application of HACCP practices for food safety to a workplace in the hospitality industry and integrate into daily work activitiespreparation, storage and service* environmental conditions for preparation, storage and service of food:
-- to protect against contamination
-- to maximise freshness, quality and appearance
-- for a range of food types:
-* fresh, frozen, preserved and cooked
-* dry, cold and frozen storage* optimum storage times for a range of food types* stock rotation as it relates to food safety* time and temperature controls:
-- to ensure microbiological safety
-- temperature danger zone 
-- 'two-hour' and 'four-hour' rule
-- appropriate temperatures at various stages:
-* storage
-* production
-* heating and cooling
-* display
-* service
-- temperature probe:
-* calibration
-* use
-* cleaning
-* identifying faults
-- monitoring* storage and display of single-use items to protect from damage and contaminationfood contamination and food-borne illnesses* signs of damaged, deteriorated, spoiled or out-of-date food* meaning of contaminant, contamination, cross-contamination and potentially hazardous food* causes of contamination:
-- common types of contaminants:
-* physicalfood contamination and food-borne illnesses* chemical
-* microbiological
-- common food allergens
-- conditions conducive to food spoilage and contamination* food allergies:
-- common symptoms of food allergies
-- emergency response to allergic reactions, including anaphylaxis
-- important consideration in the selection of foods to be handled and consumed* meaning of food-borne illness ('food poisoning')* causes of food-borne illness ('food poisoning'):
-- bacterial, bacterial toxins and viral contamination of food through:
-* cross-contamination
-* incorrect storage and food handling
-- naturally poisonous foods* bacterial, toxins and viral contaminants of food:
-- bacterial:
-* camphylobacter
-* escherichia coli (E. coli)
-* listeria
-* salmonella
-- toxins:
-* bacillus cereus
-* clostridium botulinum
-* clostridium perfringens
-* staphylococcus aureus
-- viral:
-* hepatitis A
-* rotavirus
-and the associated food-borne illness(es), its symptoms and examples of high-risk foods* hygienic work practices to minimise and/or prevent contamination and illness:
-- food handler
-- workplace proceduresworkplace policy and procedures for food safety* based on workplace food safety program* workplace policy and procedures related to food safety:
-- purchasing, delivery and storage of food
-- preparation of food and beverages
-- cooking, cooling and heating food
-- displaying or holding food
-- service of food and beverages* consequences of failure to observe workplace food safety policy and proceduresworkplace policy and procedures for food safety, continued* monitoring, reporting and recording related to food safetyreporting * purpose and importance of reporting hygiene and food safety-related issues* describe what, how, when and to whom to report:
-- what to report:
-* food hazards and associated hygiene risks
-* poor hygiene work practices
-* unsafe work practices when working with food
-* personal health issues
-* incidents of food contamination
-- types of reports:
-* formal and informal
-* written
-* verbal
-* reporting to appropriate personssupport programs* support programs for a hospitality workplace that contribute to food safety:
-- approved suppliers
-- calibration of equipment
-- kitchen premises and equipment:
-* cleaning and sanitising schedules
-* pest control
-* maintenance
-- personal presentation, health and hygiene of workers
-- staff training
-- waste management:
-* general waste
-* food waste
-* food identified for disposal
-* recyclables
-* damaged service-ware
-- workplace records and documents
-
-3.2	Safety - mandatory focus area
-3.2.1	Outcomes
-The student:
-* demonstrates an understanding of work health and safety (WHS) compliance, participation and consultation in the hospitality industry
-* explains workplace policy, procedures and practices that ensure the safety of the hospitality worker and their colleagues and customers
-* describes security policy and procedures for a hospitality work environment
-* applies risk management in a hospitality workplace
-* proposes appropriate responses to emergency situations.
-3.2.2	Associated unit of competency
-The scope of learning for the HSC must be read and delivered in conjunction with the following associated unit of competency:
-* SITXWHS005	Participate in safe work practices
-The application and elements for this unit of competency are provided below.
-SITXWHS005	Participate in safe work practices
-Application	This unit describes the performance outcomes, skills and knowledge required to incorporate safe work practices into own workplace activities. It requires the ability to follow predetermined health, safety and security procedures and to participate in organisational work health and safety (WHS) management practices.
-Elements	1.	Work safely
-2.	Follow procedures for emergency situations
-3.	Participate in organisational health, safety and security practices.
-Assessment requirements for SITXWHS005 Participate in safe work practices are detailed in the Training Package.
-
-
-3.2.3	Scope of learning for the HSC
-work health and safety (WHS)* meaning of health, safety and security* acknowledge that WHS is everyone's responsibility in the workplace and the implications of this responsibility* concept of 'participation' and 'consultation' in relation to WHS* internal sources of workplace WHS information:
-- colleagues
-- health and safety representative (HSR)
-- WHS induction process
-- WHS committee and WHS officers* external sources of workplace WHS information:
-- legislation and government regulations
-- professional associations
-- Safe Work Australia Safe Work NSW, local councils
-- unions* primary role/function of key bodies/authorities involved in WHS:
-- SafeWork NSW
-- Safe Work Australia
-- local councils
-- unions
-- professional associations* importance of acting within scope of responsibility/level of authority in relation to WHS in the workplace:
-- taking initiative
-- problem-solving
-- decision-makingWHS compliance * difference between an act, regulation, code of practice and standard (Australian, industry and workplace)* purpose and intent of WHS legislation and codes of practice and their application to the hospitality industry and a hospitality workplace and job role:
-- WHS legislation:
-* Work Health and Safety Act 2011 (NSW) (as amended)
-* Work Health and Safety Regulation 2017 (NSW) (as amended)
-- codes of practice related to:
-* first aid in the workplace
-* hazardous manual tasks 
-* hazardous chemicals
-* noise and preventing hearing loss
-* WHS risks
-* WHS consultation, cooperation and coordinationWHS compliance, continued* work environment and facilities
-* workplace electrical risks* WHS rights, duties and responsibilities of the person conducting a business or undertaking (PCBU), officer and worker (as defined in the legislation)* functions and powers of WHS inspectors* consequences of failure to observe (non-compliance) WHS workplace policy and procedures and legislative requirements* safety signs, symbols and barricades used in the hospitality industry and their use in the workplace:
-- legislative requirements
-- meaning of colour and shape
-- placement and positioning* hospitality industry and workplace requirements for monitoring and reporting in relation to workplace safety* describe how, when and to whom to report:
-- types of reports:
-* formal and informal
-* written
-* verbal
-- reporting to appropriate person(s)* purpose and importance of monitoring and reporting* application of workplace policy and protocols and regulatory requirements when recording and reporting in relation to WHSWHS consultation and participation* opportunities for workers to provide input into WHS consultation and participation processes:
-- formal and informal discussion
-- meeting
-- survey
-- training
-- WHS audit
-- WHS inspection* requirements (including election/formation) of a health and safety committee or health and safety representative (HSR) and their role and responsibilities in the workplace* role and responsibilities of relevant personnel in WHS consultation and participation:
-- PCBU
-- manager/supervisor/team leader
-- self
-- other workers
-- unionWHS consultation and participation, continued* importance of identifying, reporting and responding to:
-- WHS issues and concerns
-- workplace hazards
-- unsafe work practices
-- breaches of health, safety and security
-and examples of each for the hospitality industry and workplacerisk management * difference between a hazard and a risk* risk management and its application in the hospitality workplace:
-- hazard identification:
-* potential hazards to self, colleagues, customers and others typical to the industry
-* range of hazards:
-o biological
-o human factors (self and others)
-o manual handling
-o materials
-o tools and equipment
-o work environment
-o work processes and practices
-o working with electricity and gas
-- risk assessment 
-- risk control using a hierarchy, including:
-* eliminate the risk
-* minimise the risk:
-o substitution
-o modification
-o isolation
-o engineering control
-* other controls:
-o administration
-o safe work practices
-o personal protective equipment (PPE)
-* monitor and reviewsafe work procedures and practices* safe work procedures and practices and their purposes, including:
-- WHS induction training
-- adherence to:
-* standard operating procedures (SOP)
-* work documentation
-* work instructions
-* workplace policy 
-- ergonomics and posture:
-* correct placement of equipment
-* sitting and standing positions
-* task rotation
-* use of adjustable furniture and equipmentsafe work procedures and practices, continued- hazardous substances and dangerous goods:
-* correct handling, application, labelling, transport, storage and disposal
-* management of spills
-* safety data sheet (SDS)
-- manual handling techniques:
-* when working individually, in pairs and with a team:
-o bending and twisting
-o moving, lifting, carrying and placing items down
-o working with tools and equipment
-o loading and unloading
-o using mechanical aids/lifting equipment
-o undertaking repetitious tasks
-* recommended weight limits
-- housekeeping:
-* clean-up procedures
-* movement and storage of materials and equipment
-* storage and disposal of waste
-* consideration of WHS and the environment
-- selection, use and maintenance of PPE 
-- tools and equipment:
-* selection appropriate to task/work activity
-* pre-operational checks and correct use
-* regular maintenance and correct storage
-* electrical tagging (safety tags and lockout)
-- working with:
-* electricity
-* liquid petroleum gas (LPG)
-* inert gases* importance of safe work procedures and practices * propose safe work procedures and practices for a hospitality workplace and job role within the hospitality industrysecurity* potential breaches in security in a hospitality workplace* workplace security policy and procedures in relation to:
-- cash
-- documents
-- equipment
-- keys/access pass
-- people:
-* staff
-* customers
-* others
-- records
-- stock/suppliessecurity, continued- workplace/building:
-* secure areas
-* general access areas* strategies to deal with breaches in security* reporting breaches in security to appropriate personnelincidents, accidents and emergencies * meaning of incident, accident and emergency* a range of incidents, accidents and emergencies common to the hospitality industry* distinguish between a manageable first aid situation and an emergency situation* range of potential injuries common to the hospitality workplace, their cause(s) and basic first aid for these injuries* strategies to reduce workplace accidents, injury and impairment* implications of the cost of workplace injury:
-- human
-- social
-- economic 
-- organisational* responding to incidents, accidents and emergencies:
-- emergency situations
-- seeking assistance
-- emergency contact numbers
-- emergency signals, alarms and exits:
-* location 
-* use
-- procedures to follow:
-* notification
-* workplace policy and procedures:
-o evacuation
-o security
-* reporting- basic process of fighting a fire and use of firefighting equipment:
-* fire blanket
-* fire extinguishers
-* fire hose and reel
-- role of personnel in an emergency
-- first aid:
-* basic principles
-* personnel responsibleincidents, accidents and emergencies, continued* application of workplace policy and protocols and regulatory requirements when recording and reporting in relation to incidents, accidents and emergencies
-
-3.3	Working with colleagues and customers - mandatory focus area
-3.3.1	Outcomes
-The student:
-* explains the fundamental principles of quality customer service
-* applies knowledge of workplace policy and procedures and industry standards to ensure quality customer service
-* communicates respectfully with customers and colleagues from diverse social and cultural groups
-3.3.2	Associated unit of competency
-The scope of learning for the HSC must be read and delivered in conjunction with the following associated unit of competency:
-* SITXCCS011	Interact with customers
-or
-* SITXCCS014	Provide service to customers
-The application and elements for each of these units of competency are provided below.
-SITXCCS011	Interact with customers
-Application	This unit describes the performance outcomes, knowledge and skills required to deliver fundamental customer service to both internal and external customers. It requires the ability to greet and serve customers, and respond to a range of basic customer enquiries, including routine customer problems
-Elements	1.	Greet and serve customers
-2.	Work with others to deliver service
-3.	Provide feedback on customer service.
-Assessment requirements for SITXCCS011 Interact with customers are detailed in the Training Package.
-SITXCCS014	Provide service to customers
-Application	This unit describes the performance outcomes, knowledge and skills required to communicate effectively with and provide quality customer service to both internal and external customers. It requires the ability to establish rapport with customers, determine and address customer needs and expectations, and respond to complaints
-Elements	1.	Communicate with internal and external customers
-2.	Follow defined organisational standards when delivering service
-3.	Provide service to customers
-4.	Respond to customer complaints
-5.	Provide internal feedback on customer service practices.
-Assessment requirements for SITXCCS014 Provide service to customers are detailed in the Training Package.
-
-
-3.3.3	Scope of learning for the HSC
-customers* types of customers:
-- internal
-- external
-- new 
-- repeat or regular* customers with special needs and implications for customer service* a range of customers with different service requirements* difference between customer needs, preferences and expectations* establishing customer needs, preferences and expectations through:
-- active listening
-- open, closed and reflective questions
-- observation and recognition of non-verbal cues* communicating effectively with customers and/or colleagues:
-- verbal, written and non-verbal communication
-- face-to-face, over the telephone and electronically
-- importance of being accurate, clear, concise and courteous
-- dealing sensitively with social and cultural differencesquality customer service * industry approaches to service delivery:
-- standards of customer service for industry personnel
-- how work is organised and undertaken
-- timing and designated response times for service to workplace and industry standards* the relationship between customer service, quality assurance, work practices and business success* concept of a 'customer focused' workplace* concept of 'fair and equitable treatment' of customers and colleagues* characteristics and benefits of quality customer service* role of communication in provision of quality customer service* establishing quality customer service:
-- detailed knowledge of a range of products and services offered at a hospitality workplace
-- matching customer needs, preferences and expectations to appropriate product(s) and/or service(s):
-* meet customer need, preference and/or expectation
-* seek assistance from others as necessary in order to meet the customer need, preference and/or expectation
-* refer to appropriate person where unable to meet the customer need, preference and/or expectationquality customer service, continued- the relationship between customer service and business success
-- professional service standards
-- seeking opportunities to deliver additional level of service beyond customer's immediate request or expectation
-- developing collegial working relationships with others involved in the provision of customer service
-- using/adopting a teamwork approach
-- dealing with problems and/or delays in the delivery of products and/or services
-- seeking feedback on customer service practices:
-* the value of feedback from staff and customers
-* its use in improving and enhancing service deliveryworkplace policy and procedures for customer interaction* workplace policy and procedures for establishing contact with customers: 
-- techniques for approaching a customer
-- developing rapport* workplace policy and procedures for dealing with:
-- customers from diverse backgrounds
-- customers with special needs
-- difficult and abusive customers* workplace policy and procedures for directing customers to relevant personnel and/or more experienced staffcustomer inquiries* a range of customer inquiries common to the hospitality workplace* establishing the details of the inquiry by questioning, summarising and clarifying* paper-based and electronic methods for recording customer inquiries* sources of information that can be used when handling customer inquiries* effective response(s) to a range of customer inquiries common to hospitality within appropriate timeframescustomer complaints and feedback* reasons for customer dissatisfaction, problems and complaints* examples of customer dissatisfaction, problems and complaints common to hospitality* complaints-handling policy and procedures* skills required for handling complaints, including:
-- problem-solving
-- conflict resolution
-- negotiating
-- decision-makingcustomer complaints and feedback, continued* using conflict-resolution techniques when handling customer dissatisfaction, problems and complaints* effective responses to a range of instances of customer dissatisfaction, problems and complaints* the importance of:
-- hospitality staff offering a range of viable solutions in accordance with workplace policy and procedures
-- hospitality staff and the customer agreeing on what is to be done in regard to the problem or complaint
-- implementing solution(s) within acceptable timeframes
-- acting within level of authority/scope of responsibility when handling customer dissatisfaction, problems and complaints* identify when it is appropriate to seek assistance and/or refer customer to other appropriate personnel for issues that cannot be resolved effectively* the importance of recording and/or reporting instances of customer dissatisfaction, problems and complaints* workplace practices for recording and reporting customer complaints and feedback:
-- formal and informal
-- verbal and written* recognition of the value of customer complaints and feedbackworking with others* importance of developing collegial work relationships* communication in the workplace with colleagues and customers:
-- communication process/cycle
-- workplace examples of types of communication:
-* verbal
-* non-verbal
-* written
-- a range of effective verbal, non-verbal and written communication
-- effective questioning and listening techniques
-- barriers to effective communication and strategies to overcome them * workplace protocols in relation to working with others* importance of teamwork when working in the hospitality workplace:
-- meaning of 'team' and 'teamwork'
-- characteristics of effective teamwork
-- benefits of teamwork to the hospitality workplace
-- examples of teams or work groups in a hospitality workplace and their area(s) of responsibility* supporting others to achieve team/work group goals and tasks* delivering quality work outcomes through teamwork and work groupscultural diversity * concepts of cultural diversity, cultural awareness and inclusiveness* workplace diversity:
-- benefits
-- need for tolerance in the workplace
-- importance of respect and sensitivity
-- proactive strategies for promoting workplace diversity and accommodating individual differences
-- culturally appropriate work practices
-- effective cross-cultural communication skillsanti-discrimination * bullying and harassment in the workplace:
-- indirect
-- direct
-- types:
-* verbal
-* physical
-* psychological
-* sexual* principles of anti-discrimination* intent of anti-discrimination legislation* rights and responsibilities of employers and employees in relation to anti-discrimination* workplace policy and procedures relating to anti-discrimination* strategies to eliminate bias and harassment in the workplace* consequences, including legal ramifications, of discriminatory workplace behaviour* recourse available to individuals in the event of inappropriate workplace behaviour
-
-3.4	Food and Beverage - stream focus area
-3.4.1	Outcomes
-The student:
-* demonstrates an understanding of food and beverage service including preparation for service, provision of service and closing down after service
-* proposes appropriate responses to customer inquiries, dissatisfaction, problems and complaints
-* demonstrates knowledge of non-alcoholic beverages and espresso coffee, their preparation and service.
-3.4.2	Associated units of competency
-The scope of learning for the HSC must be read and delivered in conjunction with the following associated units of competency:
-* SITHFAB024	Prepare and serve non-alcoholic beverages
-* SITHFAB025	Prepare and serve espresso coffee
-* SITHFAB027	Serve food and beverage
-The application and elements for each of these units of competency are provided below.
-SITHFAB024	Prepare and serve non-alcoholic beverages
-Application	This unit describes the performance outcomes, skills and knowledge required to prepare and serve a range of teas, non-espresso coffees and other non-alcoholic beverages. It requires the ability to select ingredients and equipment and to use a range of methods to make and present drinks.
-Elements	1.	Select ingredients
-2.	Select, prepare and use equipment
-3.	Prepare non-alcoholic drinks
-4.	Serve non-alcoholic beverages.
-Assessment requirements for SITHFAB024 Prepare and serve non-alcoholic beverages are detailed in the Training Package.
-SITHFAB025	Prepare and serve espresso coffee
-Application	This unit describes the performance outcomes, skills and knowledge required to extract and serve espresso coffee beverages using commercial espresso machines and grinders. It requires the ability to advise customers on coffee beverages, select and grind coffee beans, prepare and assess espresso coffee beverages and to use, maintain and clean espresso machines and grinders. Complex repairs of equipment would be referred to specialist service technicians.
-
-
-Elements	1.	Organise coffee workstation
-2.	Select and grind coffee beans
-3.	Advise customers and take espresso coffee orders
-4.	Extract and monitor quality of espresso
-5.	Undertake milk texturing process
-6.	Serve espresso coffee beverages
-7.	Clean espresso equipment.
-Assessment requirements for SITHFAB025 Prepare and serve espresso coffee are detailed in the Training Package.
-SITHFAB027	Serve food and beverage
-Application	This unit describes the performance outcomes, skills and knowledge required to serve food and beverage to customers in a casual dining setting. It covers the fundamental technical skills required to prepare the outlet for the service period, interact with customers to take orders, serve and clear food and beverage, and complete end of service tasks.
-Elements	1.	Prepare for food and beverage service
-2.	Welcome and advise customers
-3.	Take and process orders
-4.	Serve food and beverages
-5.	Clear food and beverages
-6.	Complete end of shift duties.
-Assessment requirements for SITHFAB027 Serve food and beverage are detailed in the Training Package.
-
-
-3.4.3	Scope of learning for the HSC
-casual dining* meaning of casual dining, cover, service period and style of service* food and beverage outlets offering casual dining, including:
-- cafes
-- cafeterias
-- catering operations
-- clubs
-- coffee shops
-- hotels or pubs
-- restaurants* styles of service and their characteristics, including:
-- bar
-- bistro
-- cafeteria
-- counter
-- family
-- plate
-- smorgasbord/buffet
-- table* service requirements for service periods including breakfast, lunch, dinner and morning and afternoon teas* key features of a range of menu types, including:
-- à la carte
-- blackboard
-- cyclic
-- function
-- set
-- table d'hôte* commercial food and beverage menus typical to a range of food and beverage outlets * role and responsibilities of a range of food and beverage personnelpolicy, procedures and standards for food and beverage service* industry and workplace standards and workplace policy and procedures for:
-- preparing for food and beverage service
-- providing food and beverage service to customers
-- closing down after food and beverage service:
-* end of service
-* end of shiftpreparation for food and beverage service* check reservations* furniture and fittings:
-- checks for cleanliness, stability and condition
-- placement for optimum service efficiency* for a range of food and beverage outlets, service styles and service periods:
-- set up of dining area, tables and waiter/service station(s)
-- selection, check and preparation of equipment:
-* crockery
-* cutlery
-* glassware
-* linen
-* service utensils
-* service-ware
-* table items
-* tableware
-- ensure an environment that will provide comfort and ambience for the customer:
-* background noise
-* decor
-* lighting
-* music
-* privacy
-* room temperature* essential components of a pre-service briefingcustomer* customer interaction:
-- greeting and seating
-- during service
-- thanking and farewelling* establishing customer needs, preferences and expectations through probe questioning and active listening* dealing with diverse demands and requests of multiple customers during food and beverage serviceproviding food and beverage service to customers* safe and hygienic work practices for service of food and beverages* food and beverage service:
-- sequence
-- timing
-- procedures
-- teamworkproviding food and beverage service to customers, continued* work flow:
-- typical to food and beverage service
-- between kitchen and front-of-house areas* information provided at various stages of food and beverage service:
-- menu choices, options, specials and availability
-- key features of food and beverage menu items:
-* describing and recommending menu items
-* details of ingredients and preparation techniques
-* recommendations for complementary selections
-- location of customer facilities 
-- local/surrounding area* importance of accuracy and legibility when taking customer food and beverage orders * consequences for the customer and business if food and beverage orders are not correct or are mismanaged* taking and processing food and beverage orders:
-- equipment and technology
-- systems:
-* manual
-* electronic
-- workplace procedures:
-* general
-* special requests:
-o allergies and intolerances
-o religious or cultural beliefs
-o special occasions
-o individual preferences
-- industry and workplace acceptable abbreviations for:
-* menu items
-* special requests
-* variations* selection/adjustment of glassware, service-ware and cutlery appropriate to customer menu choices* tailoring food and beverage service to a range of customers and their requirements* techniques for serving and clearing:
-- beverage service
-- collection of food and beverage from kitchen and/or bar
-- carrying and placing plates containing meals
-- clearing and carrying multiple used plates and service-ware
-- clearing tables* dealing with:
-- numerous service tasks simultaneouslyproviding food and beverage service to customers, continued- delays and deficiencies in service:
-* reasons for
-* problem-solving
-* follow-up
-* rectify to customer satisfaction* environmentally friendly work practices:
-- efficient use of resources, water and energy
-- management of food and beverage waste:
-* sorting of recyclables
-* disposal of waste* customer accounts:
-- calculations
-- timing and presentation
-- processing:
-* equipment:
-o point-of-sale (POS)
-o electronic funds transfer at point-of-sale (EFTPOS)
-* cash transactions and giving change
-* credit cardsclosing down after food and beverage service* difference between end of service and end of shift* workplace tasks and procedures for:
-- end of service
-- preparation for next service period
-- end of shift* service review:
-- debriefing session
-- customer feedback* handover to colleagues for next shiftnon-alcoholic beverages * range of non-alcoholic beverages typically found in commercial beverage menus* major types/styles of non-alcoholic beverages and their characteristics:
-- carbonated
-- coffees (non-espresso)
-- fruit-based
-- milk-based
-- mocktails
-- teas
-- waters* standard recipes for a range of non-alcoholic beveragesnon-alcoholic beverages, continued* for a range of non-alcoholic beverages, industry standards for:
-- strength
-- taste
-- temperature
-- appearanceespresso coffee* culinary terms associated with espresso coffee:
-- barista
-- espresso:
-* coffee-making equipment and method
-* type of roast
-* a drink
-- extraction
-- group head
-- tamping* different types of coffee beans, blends and roasts and their characteristics* major styles of espresso coffee typically found in commercial beverage menus and their characteristics:
-- caffè latte
-- cappuccino
-- espresso (short black)
-- flat white
-- long black
-- macchiato:
-* short
-* long
-- mocha
-- piccolo latte
-- ristretto* different types of milk and their characteristics* milk in different coffee styles:
-- steamed milk
-- textured milk 
-- cold milk* characteristics of textured milk, including:
-- silken
-- reflective
-- smooth
-- pliable* standard recipes for a range of espresso coffee stylesespresso coffee, continued* criteria used to evaluate the quality of coffee:
-- aroma
-- body
-- flavour:
-* acidity
-* bitterness
-* sweetness
-- quality of the crema
-- volume of the espresso* to produce quality coffee, importance of correct:
-- grind
-- dose
-- tamp
-- extraction* for a range of espresso coffee styles, industry standards for:
-- strength
-- taste 
-- temperature
-- appearanceequipment - non-alcoholic beverages* industry-standard equipment used to prepare different types/styles of non-alcoholic beverages* for a range of equipment:
-- name and general features
-- purpose and limitations
-- selection for task (functions)
-- assembly (if appropriate)
-- safe and hygienic use/operation:
-* pre-operational and safety checks
-* according to manufacturer's instructions
-- cleaning and sanitising
-- maintenance
-- storage* when working with post-mix dispensing systems:
-- dangers associated with inert gases
-- appropriate measures to ensure safety of the hospitality worker and customerequipment - espresso coffee* industry-standard equipment used to prepare different styles of espresso coffee:
-- name and general features
-- selection for task (functions)
-- safe and hygienic use
-- cleaning and storageequipment - espresso coffee, continued* range of different commercial espresso machines and grinders:
-- features, parts and functions
-- assembly (if appropriate)
-- safe and hygienic use/operation:
-* pre-operational and safety checks
-* according to manufacturer's instructions
-* preparation for service
-- cleaning and maintenance:
-* during service
-* post service
-- problems with equipment:
-* indicators of unsafe and/or faulty equipment
-* solution(s) to common problems
-* respond within scope of responsibility:
-o rectify (minor adjustments)
-o refer to manager/supervisor, trained service technician, licensed electrician and/or plumbercustomer service of non-alcoholic beverages and espresso coffee* establishing customer needs, preferences and expectations through probe questioning and active listening* matching needs, preferences and expectations with the most suitable non-alcoholic beverage and espresso coffee* workplace procedures for non-alcoholic beverage and espresso coffee service:
-- taking order (manual and electronic)
-- calling of order
-- delivery to table
-- presentation to customer* standard turnaround times for non-alcoholic beverage and espresso coffee service* dealing with numerous service and operational tasks simultaneously during preparation of non-alcoholic beverages and espresso coffeepreparation of non-alcoholic beverages and espresso coffee* safe and hygienic work practices for preparation and service of non-alcoholic beverages and espresso coffee* time and task management:
-- efficiently sequence beverage order and preparation
-- prepare and serve within commercially realistic timeframespreparation specific to non-alcoholic beverages* environmentally friendly work practices:
-- efficient use of resources, water and energypreparation specific to non-alcoholic beverages, continued- management of waste:
-* sorting of recyclables
-* disposal of waste* mise en place for non-alcoholic beverages:
-- workstation
-- preparation of beverage
-- service of beverage* ingredients for a range of non-alcoholic beverages:
-- associated culinary terms
-- characteristics
-- handling and storage* range of preparation methods for non-alcoholic beverages:
-- blending
-- brewing
-- juicing
-- mixing
-- plunging
-- shaking* measuring ingredients and calculating quantities* deficiencies in beverage quality:
-- evaluation:
-* causes
-* indicators
-- adjustmentspreparation specific to espresso coffee* mise en place for espresso coffee:
-- work station
-- preparation of coffee beverage
-- service of coffee beverage
-- test extractions* ingredients:
-- including:
-* coffee beans
-* ground coffee
-* milks
-* flavourings and toppings
-- storage:
-* environmental conditions to ensure food safety
-* methods to optimise shelf lifepreparation specific to espresso coffee, continued* methods and techniques for:
-- grinding coffee beans
-- dosing:
-* manual
-* electronic
-* mechanical
-- tamping
-- extraction of espresso:
-* flushing the group head
-* appropriate pour rate for espresso coffee beverages
-- texturising milk:
-* milk selection and temperature
-* purging the steam wand
-* swirling
-* sound* sensory analysis of quality:
-- olfactory
-- tactile
-- tasting
-- visual* monitoring quality of espresso during the service period* deficiencies in espresso extraction:
-- evaluation
-- causes
-- indicators
-- adjustment(s)service of non-alcoholic beverages and espresso coffee* traditional and workplace-specific standards for presentation of quality non-alcoholic beverages and espresso coffee* service-ware for non-alcoholic beverages and espresso coffee:
-- glassware
-- crockery
-- takeaway cups and lids* garnishes and accompaniments for non-alcoholic beverages* sugar, sweeteners and accompaniments for espresso coffee* techniques for coffee art and use in the service of espresso coffee* importance of consistency in quality, volume and appearancecleaning* cleaning schedules:
-- frequency:
-* daily
-* weekly
-* monthly
-* other
-- timing:
-* during service period
-* end of service period
-* end of shift
-- tasks to be completed* difference between cleaning and sanitising and the importance and purpose of each* for a range of cleaning and sanitising agents and chemicals (products) for hospitality workplace and equipment:
-- interpretation of instructions on the product label, safety data sheet (SDS) and associated workplace documents
-- selection and correct use of personal protective equipment
-* aprons
-* face masks
-* gloves
-* goggles
-- safe preparation and use:
-* directions and precautions
-* recommended dosage and dilution
-* calculating quantity required
-* first aid
-* storage
-* disposal* safe work practices for the use and storage of hazardous substancescurrent industry trends* current issues and trends affecting the hospitality industry and implications for a hospitality workplace, own work practices and delivery of service* opportunities to source and use a range of current and emerging information on the hospitality industry:
-- utilise online information systems and other information and communication technologies
-- integrate into daily work activities and operational duties
-- share researched information with colleagues
-
-3.5	Kitchen Operations and Cookery - stream focus area
-3.5.1	Outcomes
-The student:
-* justifies the selection of appropriate utensils, equipment and ingredients for food preparation and cookery tasks in a commercial kitchen
-* explains a range of cookery methods and their application 
-* understands the importance and application of legislative requirements, industry standards and workplace policy and procedures for preparation, cooking, presentation and service of food
-* proposes cleaning procedures for a commercial kitchen to ensure the safety of food 
-* proposes improvements for resource efficiency and sustainability in a commercial kitchen work environment.
-3.5.2	Associated units of competency
-The scope of learning for the HSC must be read and delivered in conjunction with the following associated units of competency:
-* SITHCCC023	Use food preparation equipment
-* SITHCCC027	Prepare dishes using basic methods of cookery
-* SITHKOP009	Clean kitchen premises and equipment
-The application and elements for each of these units of competency are provided below.
-SITHCCC023	Use food preparation equipment
-Application	This unit describes the performance outcomes, skills and knowledge required to safely use commercial kitchen equipment to prepare a range of different food types.
-Elements	1.	Select food preparation equipment
-2.	Use equipment to prepare food
-3.	Clean and maintain food preparation equipment.
-Assessment requirements for SITHCCC023 Use food preparation equipment are detailed in the Training Package. 
-SITHCCC027	Prepare dishes using basic methods of cookery
-Application	This unit describes the performance outcomes, skills and knowledge required to use a range of basic cookery methods to prepare dishes.
-Elements	1.	Select ingredients
-2.	Select, prepare and use equipment
-3.	Portion and prepare ingredients
-4.	Cook dishes
-5	Present and store dishes.
-Assessment requirements for SITHCCC027 Prepare dishes using basic methods of cookery are detailed in the Training Package. 
-SITHKOP009	Clean kitchen premises and equipment
-Application	This unit describes the performance outcomes, skills and knowledge required to clean food preparation, storage areas and equipment in commercial kitchens to ensure the safety of food. It requires the ability to work safely and to use resources efficiently to reduce negative environmental impacts.
-Elements	1.	Clean and sanitise kitchen equipment
-2.	Clean service-ware and utensils
-3.	Clean and sanitise kitchen premises
-4.	Work safely and reduce negative environmental impacts.
-Assessment requirements for SITHKOP009 Clean kitchen premises and equipment are detailed in the Training Package. 
-
-3.5.3	Scope of learning for the HSC
-knives * parts of a knife* knife-handling techniques* types of knives, their characteristics and use in preparation of a range of food types, including:
-- chef
-- filleting
-- palette
-- utility
-- vegetable* techniques to sharpen knives using a steel and a stone* suitable cutting surfaces:
-- yielding
-- unyielding* safe work practices when handling, using, cleaning and storing knivesequipment for food preparation and cookery* examples of equipment classified as utensils, mechanical and fixed* equipment found in commercial kitchen work environments:
-- used to prepare different food types
-- used for different cookery methods* for a range of equipment:
-- name and general features
-- purpose and limitations
-- selection for task (functions)
-- assembly (if appropriate)
-- safe and hygienic use/operation:
-* hazard(s) and risk(s) control
-* pre-operational and safety checks
-* according to manufacturer's instructions
-- cleaning and sanitising
-- maintenance
-- storage* equipment commonly used in the hospitality industry, including:
-- blender
-- cryovac machine
-- deep-fryer
-- food processor
-- graterequipment for food preparation and cookery, continued- mandolin slicer
-- measures
-- microwave
-- mouli
-- oven
-- peeler, corer or slicer
-- planetary mixer
-- salamander
-- scales
-- slicing machine
-- stove top
-- thermometer
-- water bath
-- whisk* problems with equipment:
-- indicators of unsafe and/or faulty equipment
-- solution(s) to common problems
-- respond within scope of responsibility:
-* rectify (minor adjustments) 
-* refer to supervisor/manager
-- recording and reportingfood* types:
-- dairy products
-- dry goods
-- fruit
-- meat
-- poultry
-- seafood
-- vegetables
-- general food items:
-* batters
-* coatings
-* condiments and flavourings
-* garnishes
-* oils
-* sauces* for each food type:
-- examples
-- characteristics
-- indicators of freshness and quality
-- use in different recipes
-- preparation requirements
-- use in different dishes
-- effects of different cookery methods
-- handling and storagefood, continued* stock selection from stores:
-- date codes
-- stock rotation:
-* FIFO (first in, first out)
-* rotation labelspreparation* safe and hygienic practices for food preparation in commercial kitchen work environments* mise en place:
-- meaning
-- role in:
-* preparing food
-* cooking food
-* presenting food
-- for dishes:
-* incorporating a range of food types
-* produced by a range of cookery methods* work instructions:
-- standard recipes:
-* dishes incorporating a range of food types
-* dishes produced by a range of cookery methods
-- task sheets
-- food preparation lists* time and task management:
-- effect of poor work flow on:
-* colleagues
-* customers
-* business
-- features of effective work flow:
-* planning and organisation
-* logical sequencing of food preparation and cookery tasks
-* time efficiency
-* dealing with pressure and time constraints
-* clear communication
-* cooperation and teamwork
-- preparation, cooking and service within commercially realistic timeframes* preparation of a range of ingredients:
-- incorporating a range of food types
-- for a range of standard recipes
-- with consideration to portion control* weighing and measuring dry and wet ingredients* calculating and determining quantities and portions requiredpreparation, continued* washing, peeling and trimming of a range of foods* precision cuts:
-- brunoise
-- chiffonnade
-- concasse
-- jardinière
-- julienne
-- macedoine
-- mirepoix
-- paysanne* portioning and standard cuts of meat, poultry and seafood* storage of food items to prevent spoilage* waste-minimisation techniques for use during food preparation, cooking, presentation and service* environmentally friendly work practices during food preparation:
-- efficient use of resources, water and energy 
-- management of kitchen waste:
-* storage of re-useable by-products
-* sorting of recyclables
-* disposal of wastemenu* key features of a range of menu types and their application, including:
-- à la carte 
-- cyclic
-- function
-- set
-- table d'hôte* dealing with customer special requests and special dietary requirementscookery methods* transference of heat through convection, conduction and radiation* category of cookery:
-- dry heat method
-- moist heat method* range of cookery methods:
-- baking
-- blanching
-- boiling
-- braising
-- deep-frying
-- grillingcookery methods, continued- poaching
-- roasting
-- shallow-frying:
-* pan-frying
-* sauté
-* stir-frying
-- sous vide
-- steaming
-- stewing 
-- microwaving* for each cookery method:
-- definition
-- associated culinary terms
-- suitable foods and recipes
-- utensils and equipment required
-- potential safety and/or hygiene issues
-- principles and practices
-- characteristics of food/dishes prepared using this method
-- effect(s) on the nutritional value of food
-- cooking time and temperaturecooking process* safe and hygienic work practices for cooking in commercial kitchen work environments* problem(s) in the cooking process:
-- causes
-- indicators
-- corrective action(s)* environmentally friendly work practices in the cooking process:
-- efficient use of resources, water and energy
-- management of kitchen wastepresentation of food* importance of food presentation to the customer's dining experience* considerations when plating food:
-- appropriate crockery, service-ware and utensils
-- temperature of crockery and food
-- portion size
-- placement of food
-- presentation according to recipe
-- avoiding/removing grease marks, spills and drips
-- use of appropriate sauces and garnishes or decorations* industry and workplace standards for food presentation* current trends in the preparation, presentation and service of foodcommercial kitchen work environment * potential variations in commercial kitchen work environments:
-- commercial kitchens within hospitality or catering organisations
-- permanent or temporary kitchens
-- food preparation areas* hygiene and cross-contamination issues for commercial kitchens* importance of cleaning services to food safety and hygiene and the overall quality of service provided* industry and workplace standards for the presentation of kitchen premisescleaning regimes* importance and purpose of cleaning regimes* cleaning of kitchen premises and equipment as a component of food safety* time and task management:
-- planning and organising
-- efficiently sequencing stages of cleaning kitchen premises and equipment
-- cleaning within commercially realistic timeframes* cleaning schedules:
-- frequency:
-* daily
-* weekly
-* monthly
-* other- timing:
-* during service period
-* end of service period
-* end of shift
-* tasks to be completedkitchen premises and equipment* areas of a commercial kitchen work environment to be included in the cleaning regime and schedule:
-- utensils
-- equipment, including:
-* pots, pans and frypans
-* knives
-* containers
-* baking tray
-* handheld mixer
-* scales
-* blender
-* slicing machinekitchen premises and equipment, continued* temperature probe and thermometer
-* cryovac machine
-- service-ware
-- linen
-- premises:
-* surfaces:
-o floor
-o walls
-o windows
-o shelves
-* food preparation areas:
-o benches
-o sink
-o work area/surfaces
-* fittings and appliances:
-o stovetop
-o oven
-o microwave
-o dishwasher
-o extraction fan
-* storage areas:
-o food storage areas (cupboards, freezer, fridge/cool room, storeroom)
-o garbage/waste areaclean and sanitise* standards of presentation for the premises* safe and hygienic work practices when cleaning kitchen premises and equipment* difference between cleaning, sanitising and disinfecting and the importance and purpose of each* for a range of cleaning and sanitising agents and chemicals (products) for kitchen premises and equipment:
-- interpretation of instructions on the product label, safety data sheet (SDS) and associated workplace documents
-- safe preparation and use:
-* directions and precautions
-* recommended dosage and dilution
-* calculating quantity required
-* first aid
-* storage
-* disposal* safe work practices for the use and storage of hazardous substances* dealing with chemical-related accidents:
-- first aid:
-* chemicals absorbed through the skin
-* chemical burns
-* chemicals ingestedclean and sanitise, continued* inhaled chemical fumes
-* chemical splashes in the eye
-- workplace policy and procedures* for a range of cleaning equipment required to clean kitchen premises and equipment:
-- name and general features
-- purpose and limitations
-- selection for task (functions)
-- assembly (if appropriate)
-- safe use/operation according to manufacturer's instructions
-- maintenance
-- storage* disassembling kitchen equipment for cleaning and reassembling once complete* cleaning, sanitising and disinfecting methods/techniques for cleaning commercial kitchen work environments:
-- utensils
-- equipment
-- service-ware
-- linen
-- premises* workplace policy and procedures and industry and workplace standards for cleaning commercial kitchen premises and equipment* pest control procedures for flies, cockroaches, rats and mice* recording and reporting:
-- infestations
-- losses from damaged utensils, equipment and service-wareenvironmentally sustainable work practices when cleaning* environmental impacts of cleaning commercial kitchen premises and equipment* workplace strategies to reduce negative environmental impact* environmentally responsible products and practices in relation to cleaning* efficient use of resources, water and energy* workplace systems to manage kitchen waste:
-- storage of re-usable by-products
-- sorting of recyclables
-* glass
-* plastics
-* paper and cardboard
-* tin or aluminium containers
-- disposal of waste:
-* food wasteenvironmentally sustainable work practices when cleaning, continued* general waste
-* damaged service-ware
-* hazardous substances
-o cleaning agents
-o chemical substances
-o fats and oils
-o pest wastecurrent industry trends* current issues and trends affecting the hospitality industry and implications for a hospitality workplace, own work practices and delivery of service* opportunities to source and use a range of current and emerging information on the hospitality industry:
-- utilise online information systems and other information and communication technologies
-- integrate into daily work activities and operational duties
-- share researched information with colleagues
-
-4	HSC examination
-The Hospitality Curriculum Framework includes an HSC examination which provides the opportunity for students to have this HSC examination mark contribute to the calculation of their Australian Tertiary Admission Rank (ATAR).
-The Hospitality HSC examination can contribute up to 2 units towards the calculation of a student's ATAR.
-Students who have completed the Hospitality (240 indicative hours) course are eligible to sit for the Hospitality HSC examination. 
-Students who want to sit for the Hospitality HSC examination must be entered for both the Hospitality (240 indicative hours) course and the Hospitality examination on Schools Online.
-For the HSC examination specifications, which describe the format of the external HSC examination, see Assessment and Reporting in Hospitality.
-The HSC examination is independent of the competency-based assessment undertaken during the course and has no impact on student eligibility for AQF VET qualifications.
-4.1	Examinable outcomes and content
-The HSC examination in Hospitality is based on the HSC Content (focus areas) in this Framework. 
-The HSC Content is detailed in Section 3 of this syllabus.
-4.2	Relationship of the 240-hour course structure to the HSC examination 
-For a description of the relationship between the Hospitality (240 indicative hours) course structure, the HSC Content and the HSC examination see Assessment and Reporting in Hospitality. 
-
-
-
-5	Other important information
-5.1	Exclusions
-Where there is significant overlap between an HSC VET course and other HSC VET or general education courses, NESA has an exclusion between the courses. Exclusions are generally applied at a course level rather than at the unit of competency level.
-In this Framework, students can only undertake the Hospitality (120 indicative hours) course or the Hospitality (240 indicative hours) course.
-Schools should check all course exclusions when determining an appropriate pattern of study for their students. 
-5.2	Recognition of prior learning (RPL) and credit transfer within VET courses
-Students who have current knowledge, skills or experience relevant to a VET course may be granted credit towards the course requirements.
-Find out more about arrangements for RPL and credit transfer within VET courses, including processes, application form and examples of possible scenarios.
-5.3	School-based apprentices and trainees
-Read information about provision for school-based apprentices and trainees within the HSC. 7
-Information on requirements and arrangements for NSW school-based apprenticeships and traineeships is available on the NSW government website under Apprentices and trainees.
-5.4	Industries related to Hospitality
-VET qualifications consist of technical skills that prepare you for work or further study in a specific job or industry, as well as employability skills that can be applied across a range of industry (or career) pathways.
-Industries related to this course include, but are not limited to the following outlined on the Your Career website:
-* Accommodation and Food Services
-* Health Care and Social Assistance
-
-
-5.5	Students with disability
-Students with disability may access a VET course in one of 2 ways:
-* by undertaking the course under regular course arrangements, or 
-* by undertaking selected units of competency within the course that have been identified through the collaborative curriculum planning process.
-For more information see VET courses and students with disability and collaborative curriculum planning advice.
-5.6	Students in Years 9 and 10 (Stage 5)
-In certain circumstances students in Years 9 and 10 (Stage 5) may access Stage 6 VET courses. Further information is available in the Stage 5 VET section.
-
-
-6 	Glossary
-AQFAustralian Qualifications Framework 
-The AQF is the policy framework that defines all qualifications recognised nationally in post-compulsory education and training in Australia. The AQF comprises titles and guidelines that define each qualification, as well as the principles and protocols covering cross-sectoral qualification links and the issuing of qualifications and statements of attainment.Australian ApprenticeshipsAustralian Apprenticeships encompass all apprenticeships and traineeships. They combine time at work with training and can be full-time, part-time or school-based.
-www.australianapprenticeships.gov.aucompetencyThe broad concept of industry competency concerns the ability to perform particular tasks and duties to the standard of performance expected in the workplace. Competency requires the application of specified skills, knowledge and attitudes relevant to effective participation in an industry, industry sector or enterprise.core units of competencyUnits of competency required by the Training Package to be eligible for an AQF VET qualification.elements of competencyThe basic building blocks of a unit of competency which describe the key activities or elements of the work covered by the unit.focus areasHSC Content is organised into focus areas. HSC Content prescribes the scope of learning for the HSC.mandatory units of competencyUnits of competency that must be studied for an HSC VET course.recognition of prior learning (RPL)The result of an assessment of an individual's formal, non-formal and informal learning to determine the extent to which that individual has achieved the required learning outcomes, competency outcomes, or standards for entry to, and/or partial or total completion of, a qualification.RTORegistered Training Organisation 
-A training organisation registered by a registering body in accordance with the VET Quality Framework, within a defined scope of registration (including school system RTOs, TAFE NSW and other providers).scope of registrationThe particular services and products an RTO is registered to provide. The RTO's scope defines the specific AQF VET qualifications, units of competency and accredited courses it is registered to provide, and whether it is registered to provide: 
-* both training delivery and assessment services, and to issue the relevant AQF VET qualifications and statements of attainment, or 
-* only assessment services, and to issue the relevant AQF VET qualifications and statements of attainment.Stage 5In NSW, Stage 5 relates to Years 9 and 10 of schooling.Stage 6In NSW, Stage 6 relates to Years 11 and 12 of schooling.Statement of AttainmentMay be issued in the vocational education and training sector by an RTO when an individual has completed one or more units of competency from nationally recognised qualification(s)/course(s).training.gov.auhttp://training.gov.au 
-The national register for recording information about RTOs, Training Packages and accredited courses.Training PackageA nationally endorsed, integrated set of competency standards, assessment guidelines and AQF VET qualifications for a specific industry, industry sector or enterprise.training planA documented program of training and assessment required for an apprenticeship/traineeship training contract. It is developed by an RTO in consultation with the parties to the contract as the basis for training and assessing a person undertaking an apprenticeship or traineeship.unit of competencySpecification of industry knowledge and skill and the application of that knowledge and skill to the standard of performance expected in the workplace.VETVocational Education and TrainingVET qualificationFormal certification in the VET sector by an RTO that a person has satisfied all requirements of the units of competency or modules that comprise an AQF VET qualification, as specified by:
-* a nationally endorsed Training Package, or
-* an accredited course that provides training for the qualification.VET Quality FrameworkThe VET Quality Framework comprises:
-* the Standards for Registered Training Organisations
-* the Fit and Proper Person Requirements
-* the Financial Viability Risk Assessment Requirements
-* the Data Provision Requirements, and
-* the Australian Qualifications Framework.
-
-1	skillsiq.com.au (SkillsIQ)
-2 The NSW Industry Training Advisory Body (SkillsIQ) has advised SIT30622 is not suitable for a school-based traineeship.
-3 The NSW Industry Training Advisory Body (SkillsIQ) has advised SIT30921 is not suitable for a school-based traineeship.
-4	The Specialisation Study course would only be required if the selection of units of competency meant that Stage 1/Year 1 of the apprenticeship could not be completed within the 240-hour Hospitality course.
-5	This is a holistic unit of competency and is core for SIT20421 Certificate II in Cookery and SIT30921 Certificate III in Catering.
-6	This is a holistic unit of competency and is core for SIT20322 Certificate II in Hospitality.
-7 The NSW Industry Training Advisory Body for the hospitality industry (SkillsIQ) advises SIT30622 Certificate III in Hospitality and SIT30921 Certificate III in Catering are not suitable for delivery as school-based traineeships.
----------------
-
-------------------------------------------------------------
-
----------------
-
-------------------------------------------------------------
-
-
-
-1
-
-
-
-2
-
-NSW Education Standards Authority 	
-
-
-
-
-
-
-
-Hospitality Curriculum Framework syllabus 	Page 2 of 4
-
-
-
-
-
-
-
-
-Hospitality Curriculum Framework syllabus 	Page 5 of 84
-
-DRAFT Financial Services Curriculum Framework Stage 6 Syllabus
-
-24
-
-
-
-
-
-
-

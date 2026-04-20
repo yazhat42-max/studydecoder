@@ -1717,7 +1717,7 @@
         }
 
         // Show sale banner with live spots counter
-        if (new Date() < new Date('2026-04-25T00:00:00')) {
+        {
             document.getElementById('saleBanner').style.display = 'block';
             fetch('/api/spots-left').then(r => r.json()).then(d => {
                 var el = document.getElementById('spotsLeft');

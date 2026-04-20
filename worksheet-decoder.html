@@ -107,6 +107,36 @@
         .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
         .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        /* Fun facts during loading */
+        .fun-fact-box {
+            background: linear-gradient(135deg, rgba(108,99,255,0.08), rgba(255,101,132,0.08));
+            border: 1px solid rgba(108,99,255,0.2); border-radius: 12px;
+            padding: 16px 20px; margin-top: 12px; max-width: 600px;
+            animation: fadeIn 0.5s ease;
+        }
+        .fun-fact-box .ff-label { font-size: 11px; font-weight: 700; color: #6C63FF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .fun-fact-box .ff-text { font-size: 14px; color: #c8ccd0; line-height: 1.6; }
+        @keyframes factSwap { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
+        .ff-swap { animation: factSwap 0.4s ease; }
+        /* Recommendation cards */
+        .rec-panel {
+            background: #16202a; border: 1px solid #2f3336; border-radius: 16px;
+            padding: 20px 24px; margin: 20px 0; animation: fadeIn 0.4s ease;
+        }
+        .rec-panel h4 { font-size: 15px; font-weight: 700; color: #e7e9ea; margin-bottom: 14px; }
+        .rec-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .rec-card {
+            display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+            background: rgba(108,99,255,0.06); border: 1px solid rgba(108,99,255,0.15);
+            border-radius: 10px; cursor: pointer; transition: all 0.2s; text-decoration: none; color: inherit;
+        }
+        .rec-card:hover { background: rgba(108,99,255,0.12); border-color: rgba(108,99,255,0.35); transform: translateY(-2px); }
+        .rec-card .rc-icon { font-size: 24px; flex-shrink: 0; }
+        .rec-card .rc-info { flex: 1; min-width: 0; }
+        .rec-card .rc-title { font-size: 13px; font-weight: 600; color: #e7e9ea; }
+        .rec-card .rc-desc { font-size: 11px; color: #71767b; margin-top: 2px; }
+        .rec-card .rc-arrow { color: #6C63FF; font-size: 16px; flex-shrink: 0; }
+        @media (max-width: 768px) { .rec-cards { grid-template-columns: 1fr; } }
 
         .input-panel {
             background: #16202a; border-top: 1px solid #2f3336;
@@ -318,6 +348,58 @@
         let isLoading = false;
         let selectedFile = null;
         let selectedBase64 = null;
+        let funFactInterval = null;
+
+        // ========== FUN FACTS FOR LOADING ==========
+        const LOADING_FUN_FACTS = [
+            "Students who test themselves regularly retain 50% more information.",
+            "The 'spacing effect' — spreading study over time — beats cramming every time.",
+            "Teaching someone else is the most effective way to learn — the Feynman Technique.",
+            "Your brain forms new neural pathways every time you learn something new.",
+            "The Pomodoro Technique (25 min focus + 5 min break) boosts productivity by 25%.",
+            "Handwriting notes activates more brain regions than typing.",
+            "Your working memory can only hold about 4 items at once — chunking helps.",
+            "Exercise before studying can boost memory retention by up to 20%.",
+            "The brain processes images 60,000 times faster than text.",
+            "Studying in different locations improves memory recall."
+        ];
+
+        function startFunFacts() {
+            stopFunFacts();
+            let idx = Math.floor(Math.random() * LOADING_FUN_FACTS.length);
+            const box = document.getElementById('funFactBox');
+            if (!box) return;
+            box.style.display = 'block';
+            const textEl = box.querySelector('.ff-text');
+            textEl.className = 'ff-text ff-swap';
+            textEl.textContent = LOADING_FUN_FACTS[idx];
+            funFactInterval = setInterval(() => {
+                idx = (idx + 1) % LOADING_FUN_FACTS.length;
+                textEl.className = 'ff-text';
+                setTimeout(() => {
+                    textEl.textContent = LOADING_FUN_FACTS[idx];
+                    textEl.className = 'ff-text ff-swap';
+                }, 50);
+            }, 4500);
+        }
+
+        function stopFunFacts() {
+            if (funFactInterval) { clearInterval(funFactInterval); funFactInterval = null; }
+            const box = document.getElementById('funFactBox');
+            if (box) box.style.display = 'none';
+        }
+
+        function showRecommendations() {
+            const recDiv = document.createElement('div');
+            recDiv.className = 'rec-panel';
+            recDiv.innerHTML = `<h4>⚡ What's Next?</h4><div class="rec-cards">
+                <a class="rec-card" href="practice.html?mode=exam"><span class="rc-icon">📝</span><div class="rc-info"><div class="rc-title">Practice Exam</div><div class="rc-desc">Test yourself on this topic</div></div><span class="rc-arrow">→</span></a>
+                <a class="rec-card" href="syllabus.html"><span class="rc-icon">📖</span><div class="rc-info"><div class="rc-title">Syllabus Decoder</div><div class="rc-desc">Decode the syllabus for context</div></div><span class="rc-arrow">→</span></a>
+                <a class="rec-card" href="learn-irl.html"><span class="rc-icon">🎮</span><div class="rc-info"><div class="rc-title">Learn IRL</div><div class="rc-desc">Apply concepts in real scenarios</div></div><span class="rc-arrow">→</span></a>
+            </div>`;
+            outputContent.appendChild(recDiv);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
 
         const outputContent = document.getElementById('outputContent');
         const outputPanel = document.getElementById('outputPanel');
@@ -473,6 +555,15 @@
             loadingDiv.id = 'loadingIndicator';
             loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Decoding worksheet...</span>';
             outputContent.appendChild(loadingDiv);
+            let box = document.getElementById('funFactBox');
+            if (!box) {
+                box = document.createElement('div');
+                box.id = 'funFactBox';
+                box.className = 'fun-fact-box';
+                box.style.display = 'none';
+                box.innerHTML = '<div class="ff-label">💡 Did you know?</div><div class="ff-text"></div>';
+                outputContent.appendChild(box);
+            }
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
 
@@ -491,6 +582,7 @@
             // Show user message with image thumbnail
             addMessage('Please decode this worksheet.', true, selectedBase64);
             showLoading();
+            startFunFacts();
 
             // Build multimodal message
             const userMessage = {
@@ -517,8 +609,10 @@
 
                 const data = await response.json();
                 hideLoading();
+                stopFunFacts();
                 conversationHistory.push({ role: 'assistant', content: data.reply });
                 addMessage(data.reply, false);
+                showRecommendations();
                 saveCurrentSession(); // Save to history
 
                 // Switch to chat mode for follow-up
@@ -528,6 +622,7 @@
                 chatInput.focus();
             } catch (error) {
                 hideLoading();
+                stopFunFacts();
                 addMessage(`Error: ${error.message || 'Failed to decode worksheet. Please try again.'}`, false);
             } finally {
                 isLoading = false;

@@ -1,1333 +1,0 @@
-NSW Syllabus
-for the Australian
-Curriculum
-Mathematics Advanced
-Stage 6
-Syllabus
-
-
-Original 2017 published version updated:
-January 2018 - NESA Official Notice 29 January 2018 (NESA 2/18)
-January 2018 - NESA Official Notice 29 January 2018 (NESA 4/18)
-November 2019 - NESA Official Notice 18 November 2019 (NESA 48/19)
-
-View the online version log for all syllabus updates.
-
-(c) 2019 NSW Education Standards Authority (NESA) for and on behalf of the Crown in right of the State of New South Wales.
-
-The NESA website holds the ONLY official and up-to-date versions of these documents available on the internet. ANY other copies of these documents, or parts of these documents, that may be found elsewhere on the internet might not be current and are NOT authorised. You CANNOT rely on copies from any other source.
-
-The documents on this website contain material prepared by NESA for and on behalf of the Crown in right of the State of New South Wales. The material is protected by Crown copyright.
-
-All rights reserved. No part of the Material may be reproduced in Australia or in any other country by any process, electronic or otherwise, in any material form, or transmitted to any other person or stored electronically in any form without the prior written permission of NESA, except as permitted by the Copyright Act 1968.
-
-When you access the material you agree:
-* to use the material for information purposes only
-* to reproduce a single copy for personal bona fide study use only and not to reproduce any major extract or the entire material without the prior permission of NESA
-* to acknowledge that the material is provided by NESA
-* to include this copyright notice in any copy made
-* not to modify the material or any part of the material without the express prior written permission of NESA.
-The material may contain third-party copyright materials such as photos, diagrams, quotations, cartoons and artworks. These materials are protected by Australian and international copyright laws and may not be reproduced or transmitted in any format without the copyright owner's specific permission. Unauthorised reproduction, transmission or commercial use of such copyright materials may result in prosecution.
-
-NESA has made all reasonable attempts to locate owners of third-party copyright material and invites anyone from whom permission has not been sought to contact the Copyright Officer.
-
-Phone: (02) 9367 8289
-Fax: (02) 9279 1482
-Email: copyright@nesa.nsw.edu.au
-
-Published by
-NSW Education Standards Authority
-GPO Box 5300
-Sydney NSW 2001
-Australia
-
-www.educationstandards.nsw.edu.au
-
-PAF17/481
-D2017/35788
-
-Contents
-Introduction	4
-Mathematics Advanced Key	7
-Rationale	10
-Mathematics in Stage 6	11
-The Place of the Mathematics Advanced Stage 6 Syllabus in the K-12 Curriculum	13
-Building on Mathematics Learning in Stage 5	14
-Aim	15
-Objectives	16
-Outcomes	17
-Year 11 Course Structure and Requirements	20
-Year 12 Course Structure and Requirements	21
-Assessment and Reporting	22
-Content	23
-Mathematics Advanced Year 11 Course Content	29
-Mathematics Advanced Year 12 Course Content	48
-Glossary	68
-
-
-Introduction
-Stage 6 Curriculum
-NSW Education Standards Authority (NESA) Stage 6 syllabuses have been developed to provide students with opportunities to further develop skills which will assist in the next stage of their lives.
-
-The purpose of Stage 6 syllabuses is to:
-? develop a solid foundation of literacy and numeracy
-? provide a curriculum structure which encourages students to complete secondary education at their highest possible level
-? foster the intellectual, creative, ethical and social development of students, in particular relating to:
-- application of knowledge, understanding, skills, values and attitudes in the fields of study they choose
-- capacity to manage their own learning and to become flexible, independent thinkers, problem-solvers and decision-makers
-- capacity to work collaboratively with others
-- respect for the cultural diversity of Australian society
-- desire to continue learning in formal or informal settings after school
-? provide a flexible structure within which students can meet the challenges of and prepare for:
-- further academic study, vocational training and employment
-- changing workplaces, including an increasingly STEM-focused (Science, Technology, Engineering and Mathematics) workforce
-- full and active participation as global citizens
-? provide formal assessment and certification of students' achievements
-? promote the development of students' values, identity and self-respect.
-
-The Stage 6 syllabuses reflect the principles of the NESA K-10 Curriculum Framework and Statement of Equity Principles, the reforms of the NSW Government Stronger HSC Standards (2016), and nationally agreed educational goals. These syllabuses build on the continuum of learning developed in the K-10 syllabuses.
-
-The syllabuses provide a set of broad learning outcomes that summarise the knowledge, understanding, skills, values and attitudes important for students to succeed in and beyond their schooling. In particular, the attainment of skills in literacy and numeracy needed for further study, employment and active participation in society are provided in the syllabuses in alignment with the Australian Core Skills Framework.
-
-The Stage 6 syllabuses include the content of the Australian Curriculum and additional descriptions that clarify the scope and depth of learning in each subject.
-
-NESA syllabuses support a standards-referenced approach to assessment by detailing the important knowledge, understanding, skills, values and attitudes students will develop and outlining clear standards of what students are expected to know and be able to do. The syllabuses take into account the diverse needs of all students and provide structures and processes by which teachers can provide continuity of study for all students.
-
-
-Diversity of Learners
-NSW Stage 6 syllabuses are inclusive of the learning needs of all students. Syllabuses accommodate teaching approaches that support student diversity including students with disability, gifted and talented students, and students learning English as an additional language or dialect (EAL/D). Students may have more than one learning need.
-Students with Disability
-All students are entitled to participate in and progress through the curriculum. Schools are required to provide additional support or adjustments to teaching, learning and assessment activities for some students with disability. Adjustments are measures or actions taken in relation to teaching, learning and assessment that enable a student with special education needs to access syllabus outcomes and content, and demonstrate achievement of outcomes.
-
-Students with disability can access the outcomes and content from Stage 6 syllabuses in a range of ways. Students may engage with:
-? Stage 6 syllabus outcomes and content with adjustments to teaching, learning and/or assessment activities; or
-? selected Stage 6 Life Skills outcomes and content from one or more Stage 6 Life Skills syllabuses.
-
-Decisions regarding curriculum options, including adjustments, should be made in the context of collaborative curriculum planning with the student, parent/carer and other significant individuals to ensure that decisions are appropriate for the learning needs and priorities of individual students.
-
-Further information can be found in support materials for:
-? Mathematics Advanced
-? Special Education
-? Life Skills.
-Gifted and Talented Students
-Gifted students have specific learning needs that may require adjustments to the pace, level and content of the curriculum. Differentiated educational opportunities assist in meeting the needs of gifted students.
-
-Generally, gifted students demonstrate the following characteristics:
-? the capacity to learn at faster rates
-? the capacity to find and solve problems
-? the capacity to make connections and manipulate abstract ideas.
-
-There are different kinds and levels of giftedness. Gifted and talented students may also possess learning difficulties and/or disabilities that should be addressed when planning appropriate teaching, learning and assessment activities.
-
-
-Curriculum strategies for gifted and talented students may include:
-? differentiation: modifying the pace, level and content of teaching, learning and assessment activities
-? acceleration: promoting a student to a level of study beyond their age group
-? curriculum compacting: assessing a student's current level of learning and addressing aspects of the curriculum that have not yet been mastered.
-
-School decisions about appropriate strategies are generally collaborative and involve teachers, parents and students, with reference to documents and advice available from NESA and the education sectors.
-
-Gifted and talented students may also benefit from individual planning to determine the curriculum options, as well as teaching, learning and assessment strategies, most suited to their needs and abilities.
-Students Learning English as an Additional Language or Dialect (EAL/D)
-Many students in Australian schools are learning English as an additional language or dialect (EAL/D). EAL/D students are those whose first language is a language or dialect other than Standard Australian English and who require additional support to assist them to develop English language proficiency.
-
-EAL/D students come from diverse backgrounds and may include:
-? overseas and Australian-born students whose first language is a language other than English, including creoles and related varieties
-? Aboriginal and Torres Strait Islander students whose first language is Aboriginal English, including Kriol and related varieties.
-
-EAL/D students enter Australian schools at different ages and stages of schooling and at different stages of English language learning. They have diverse talents and capabilities and a range of prior learning experiences and levels of literacy in their first language and in English. EAL/D students represent a significant and growing percentage of learners in NSW schools. For some, school is the only place they use Standard Australian English.
-
-EAL/D students are simultaneously learning a new language and the knowledge, understanding and skills of the Mathematics Advanced Stage 6 Syllabus through that new language. They may require additional support, along with informed teaching that explicitly addresses their language needs.
-
-The ESL scales and the English as an Additional Language or Dialect: Teacher Resource provide information about the English language development phases of EAL/D students. These materials and other resources can be used to support the specific needs of English language learners and to assist students to access syllabus outcomes and content.
-
-
-Mathematics Advanced Key
-The following codes and icons are used in the Mathematics Advanced Stage 6 Syllabus.
-Outcome Coding
-Syllabus outcomes have been coded in a consistent way. The code identifies the subject, Year and outcome number. For example:
-
-
-
-Outcome codeInterpretationMA11-1Mathematics Advanced, Year 11 - Outcome number 1MA12-4Mathematics Advanced, Year 12 - Outcome number 4Coding of Australian Curriculum Content
-Australian Curriculum content descriptions included in the syllabus are identified by an Australian Curriculum code which appears in brackets at the end of each content description, for example:
-
-Understand the concept of the graph of a function (ACMMM024)
-
-
-
-Where a number of content descriptions are jointly represented, all description codes are included, eg (ACMGM001, ACMMM002, ACMSM003).
-
-
-Coding of Applications and Modelling
-The syllabus provides many opportunities for students to apply and further develop the knowledge, skills and understanding initially described in the topics.
-
-In considering various applications of mathematics, students will be required to construct and use mathematical models. Mathematical modelling gives structure to what we perceive and how we perceive it. In following a modelling process, students view a problem through their past experience, prior knowledge and areas of confidence. As a model emerges, it extends their thinking in new ways as well as enhancing what they have observed.
-
-Modelling opportunities will involve a wide variety of approaches such as generating equations or formulae that describe the behaviour of an object, or alternatively displaying, analysing and interpreting data values from a real-life situation.
-
-In the process of modelling, teachers should provide students with opportunities to make choices, state and question assumptions and make generalisations. Teachers can draw upon problems from a wide variety of sources to reinforce the skills developed, enhance students' appreciation of mathematics and where appropriate, expand their use of technology.
-
-Explicit application and modelling opportunities are identified within the syllabus by the code AAM.
-
-For example: model, analyse and solve problems involving linear functions AAM   
-
-Coding of Common Content
-In the Mathematics Advanced and Mathematics Standard syllabuses the symbol  denotes common content. For example: 
-classify data relating to a single random variable 
-
-
-Learning Across the Curriculum Icons
-Learning across the curriculum content, including cross-curriculum priorities, general capabilities and other areas identified as important learning for all students, is incorporated and identified by icons in the syllabus.
-
-Cross-curriculum priorities
- 	Aboriginal and Torres Strait Islander histories and cultures
- 	Asia and Australia's engagement with Asia
- 	Sustainability
-
-General capabilities
- 	Critical and creative thinking
- 	Ethical understanding
- 	Information and communication technology capability
- 	Intercultural understanding
- 	Literacy
- 	Numeracy
- 	Personal and social capability
-
-Other learning across the curriculum areas
- 	Civics and citizenship
- 	Difference and diversity
- 	Work and enterprise
-
-
-Rationale
-Mathematics is the study of order, relation, pattern, uncertainty and generality and is underpinned by observation, logical reasoning and deduction. From its origin in counting and measuring, its development throughout history has been catalysed by its utility in explaining real-world phenomena and its inherent beauty. It has evolved in highly sophisticated ways to become the language now used to describe many aspects of the modern world.
-
-Mathematics is an interconnected subject that involves understanding and reasoning about concepts and the relationships between those concepts. It provides a framework for thinking and a means of communication that is powerful, logical, concise and precise.
-
-The Mathematics Stage 6 syllabuses are designed to offer opportunities for students to think mathematically. Mathematical thinking is supported by an atmosphere of questioning, communicating, reasoning and reflecting and is engendered by opportunities to generalise, challenge, identify or find connections and think critically and creatively.
-
-All Mathematics Stage 6 syllabuses provide opportunities for students to develop 21st-century knowledge, skills, understanding, values and attitudes. As part of this, in all courses students are encouraged to learn with the use of appropriate technology and make appropriate choices when selecting technologies as a support for mathematical activity.
-
-The Mathematics Advanced, Mathematics Extension 1 and Mathematics Extension 2 courses form a continuum to provide opportunities at progressively higher levels for students to acquire knowledge, skills and understanding in relation to concepts within the area of mathematics that have applications in an increasing number of contexts. These concepts and applications are appropriate to the students' continued experience of mathematics as a coherent, interrelated, interesting and intrinsically valuable study that forms the basis for future learning. The concepts and techniques of differential and integral calculus form a strong basis of the courses, and are developed and used across the courses, through a range of applications and in increasing complexity.
-
-The Mathematics Advanced course is focused on enabling students to appreciate that mathematics is a unique and powerful way of viewing the world to investigate order, relation, pattern, uncertainty and generality. The course provides students with the opportunity to develop ways of thinking in which problems are explored through observation, reflection and reasoning.
-
-The Mathematics Advanced course provides a basis for further studies in disciplines in which mathematics and the skills that constitute thinking mathematically have an important role. It is designed for those students whose future pathways may involve mathematics and its applications in a range of disciplines at the tertiary level.
-
-
-Mathematics in Stage 6
-There are six Board-developed Mathematics courses of study for the Higher School Certificate: Mathematics Standard 1, Mathematics Standard 2, Mathematics Advanced, Mathematics 
-Extension 1, Mathematics Extension 2 and Mathematics Life Skills.
-
-Students studying the Mathematics Standard syllabus undertake a common course in Year 11. For the Year 12 course students can elect to study either Mathematics Standard 1 or Mathematics Standard 2.
-
-Students who intend to study the Mathematics Standard 2 course in Year 12 must study all Mathematics Standard Year 11 course content.
-
-Students who intend to study the Mathematics Standard 1 course in Year 12 must have studied the content identified by the symbol ? which forms the foundation of course. This content is important for the development and consolidation of numeracy skills.
-
-Mathematics Advanced consists of the courses Mathematics Advanced Year 11 and Mathematics Advanced Year 12. Students studying one or both Extension courses must study both Mathematics Advanced Year 11 and Mathematics Extension Year 11 courses before undertaking the study of Mathematics Extension 1 Year 12, or both Mathematics Extension 1 Year 12 and Mathematics Extension 2 Year 12. An alternative approach is for students to study both Mathematics Advanced Year 11 and Mathematics Advanced Year 12 before undertaking the study of Mathematics Extension Year 11 and Mathematics Extension 1 Year 12, or both Mathematics Extension 1 Year 12 and Mathematics Extension 2 Year 12.
-
-The Year 11 and Year 12 course components undertaken by students who study Mathematics Standard 1, Mathematics Standard 2, or Mathematics Advanced, Mathematics Extension 1 or Mathematics Extension 2 are illustrated below.
-
-
-Mathematics Standard 1 - Year 11 and Year 12 course components
-
-Mathematics Standard 1 or 2 - Year 11 and Year 12 course components
-
-Mathematics Advanced - Year 11 and Year 12 course components
-
-Mathematics Extension 1 - Co-requisites + Year 11 and Year 12 course components
-
-Mathematics Extension 2 - Co-requisites (Year 11 and Year 12 courses) + Year 12 course components
-
-
-The Place of the Mathematics Advanced Stage 6 Syllabus in the K-12 Curriculum
-
-
- 
-
-Building on Mathematics Learning in Stage 5
-The outcomes and content in the Mathematics Advanced Stage 6 syllabus are written with the assumption that students studying this course will have engaged with all substrands of Stage 5.1 and Stage 5.2. The following substrands of Stage 5.3 - Algebraic Techniques, Surds and Indices, Equations, Linear Relationships, Trigonometry and Pythagoras' theorem and Single Variable Data Analysis and at least some of the content from the following substrands of Stage 5.3 - Non-Linear Relationships and Properties of Geometrical Figures should have been covered. Content in the NSW Mathematics K-10 Syllabus up to and including this level is also implicit in this syllabus. In a number of cases where content from Stage 5 is included it is in the context of review for clarity and completeness. Schools have the opportunity to review other areas of Stage 5 content as appropriate to meet the needs of students.
-
-
-Aim
-The study of Mathematics Advanced in Stage 6 enables students to enhance their knowledge and understanding of what it means to work mathematically, develop their understanding of the relationship between 'real-world' problems and mathematical models and extend their skills of concise and systematic communication.
-
-
-Objectives
-Knowledge, Skills and Understanding
-Students:
-? develop knowledge, skills and understanding about efficient strategies for pattern recognition, generalisation and modelling techniques
-? develop the ability to use mathematical concepts and skills and apply complex techniques to the modelling and solution of problems in algebra and functions, measurement, financial mathematics, calculus, data, statistics and probability
-? develop the ability to use advanced mathematical models and techniques, aided by appropriate technology, to organise information, investigate, model and solve problems and interpret a variety of practical situations
-? develop the ability to interpret and communicate mathematics logically and concisely in a variety of forms.
-Values and Attitudes
-Students value and appreciate:
-? mathematics as an essential and relevant part of life, recognising that its development and use have been largely in response to human needs by societies all around the globe
-? the importance of resilience and self-motivation in undertaking mathematical challenges and the importance of taking responsibility for their own learning and evaluation of their mathematical development.
-
-
-Outcomes
-Table of Objectives and Outcomes - Continuum of Learning
-All aspects of Working Mathematically, as described in this syllabus document, are integral to the outcomes of the Mathematics Advanced Stage 6 course, in particular outcomes MA11-8, MA11-9, MA12-9 and MA12-10.
-
-Objective
-Students:
-* develop knowledge, skills and understanding about efficient strategies for pattern recognition, generalisation and modelling techniquesYear 11 outcomes
-A student:Year 12 outcomes
-A student:MA11-1
-uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problemsMA12-1
-uses detailed algebraic and graphical techniques to critically construct, model and evaluate arguments in a range of familiar and unfamiliar contextsMA12-2
-models and solves problems and makes informed decisions about financial situations using mathematical reasoning and techniquesMA12-3
-applies calculus techniques to model and solve problems
-
-Objective
-Students:
-* develop the ability to use mathematical concepts and skills and apply complex techniques to the modelling and solution of problems in algebra and functions, measurement, financial mathematics, calculus, data and statistics and probabilityYear 11 outcomes
-A student:Year 12 outcomes
-A student:MA11-2
-uses the concepts of functions and relations to model, analyse and solve practical problemsMA12-4
-applies the concepts and techniques of arithmetic and geometric sequences and series in the solution of problemsMA11-3
-uses the concepts and techniques of trigonometry in the solution of equations and problems involving geometric shapesMA12-5
-applies the concepts and techniques of periodic functions in the solution of problems involving trigonometric graphsMA11-4
-uses the concepts and techniques of periodic functions in the solutions of trigonometric equations or proof of trigonometric identities MA11-5
-interprets the meaning of the derivative, determines the derivative of functions and applies these to solve simple practical problemsMA12-6
-applies appropriate differentiation methods to solve problemsMA11-6
-manipulates and solves expressions using the logarithmic and index laws, and uses logarithms and exponential functions to solve practical problemsMA12-7
-applies the concepts and techniques of indefinite and definite integrals in the solution of problemsMA11-7
-uses concepts and techniques from probability to present and interpret data and solve problems in a variety of contexts, including the use of probability distributionsMA12-8
-solves problems using appropriate statistical processes
-
-Objective
-Students:
-* develop the ability to use advanced mathematical models and techniques, aided by appropriate technology, to organise information, investigate, model and solve problems and interpret a variety of practical situationsYear 11 outcomes
-A student:Year 12 outcomes
-A student:MA11-8
-uses appropriate technology to investigate, organise, model and interpret information in a range of contextsMA12-9
-chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use
-Objective
-Students:
-* develop the ability to communicate and interpret mathematics logically and concisely in a variety of formsYear 11 outcomes
-A student:Year 12 outcomes
-A student:MA11-9
-provides reasoning to support conclusions which are appropriate to the contextMA12-10
-constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context
-
-Year 11 Course Structure and Requirements
-The course is organised in topics, with the topics divided into subtopics.
-
-Year 11 course
-(120 hours)Mathematics AdvancedTopicsSubtopicsFunctions	MA-F1 Working with Functions Trigonometric Functions	MA-T1 Trigonometry and Measure of Angles
-	MA-T2 Trigonometric Functions and IdentitiesCalculus	MA-C1 Introduction to DifferentiationExponential and Logarithmic Functions	MA-E1 Logarithms and ExponentialsStatistical Analysis	MA-S1 Probability and Discrete Probability Distributions
-? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
-? Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
-
-
-Year 12 Course Structure and Requirements
-The course is organised in topics, with the topics divided into subtopics.
-
-Year 12 course (120 hours)Mathematics AdvancedTopicsSubtopicsFunctions	MA-F2 Graphing TechniquesTrigonometric Functions	MA-T3 Trigonometric Functions and GraphsCalculus	MA-C2 Differential Calculus
-	MA-C3 Applications of Differentiation
-	MA-C4 Integral CalculusFinancial Mathematics	MA-M1 Modelling Financial SituationsStatistical Analysis	MA-S2 Descriptive Statistics and Bivariate Data Analysis
-	MA-S3 Random Variables
-? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
-? Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
-
-
-Assessment and Reporting
-Information about assessment in relation to the Mathematics Advanced syllabus is contained in Assessment and Reporting in Mathematics Advanced Stage 6. It outlines course-specific advice and requirements regarding:
-? Year 11 and Year 12 school-based assessment requirements
-? Year 11 and Year 12 mandatory components and weightings
-? External assessment requirements including Higher School Certificate examination specifications.
-
-This information should be read in conjunction with requirements on the Assessment Certification Examination (ACE) website.
-
-Additional advice is available in the Principles of Assessment for Stage 6.
-
-
-Content
-Content defines what students are expected to know and do as they work towards syllabus outcomes. It provides the foundations for students to successfully progress to the next stage of schooling or post-school opportunities.
-Teachers will make decisions about content regarding the sequence, emphasis and any adjustments required based on the needs, interests, abilities and prior learning of students.
-Content in Stage 6 syllabuses defines learning expectations that may be assessed in Higher School Certificate examinations.
-Organisation of Content
-The following diagram provides an illustrative representation of elements of the course and their relationship.
-
-
-Working Mathematically
-Working Mathematically is integral to the learning process in mathematics. It provides students with the opportunity to engage in genuine mathematical activity and develop the skills to become flexible, critical and creative users of mathematics. In this syllabus, Working Mathematically builds on the skills developed in Stage 5, and encompasses six interrelated aspects which form the focus of the syllabus.
-
-These six aspects of Working Mathematically are embedded across the range of syllabus objectives, outcomes and topics. Teachers can extend students' level of proficiency in Working Mathematically by creating opportunities for development through a range of teaching and learning activities.
-
-The two key components of assessment are created from these aspects:
-* Understanding, Fluency and Communicating
-* Problem Solving, Reasoning and Justification
-
-Learning Across the Curriculum
-Learning across the curriculum content, including the cross-curriculum priorities and general capabilities, assists students to achieve the broad learning outcomes defined in the NESA Statement of Equity Principles, the Melbourne Declaration on Educational Goals for Young Australians (December 2008) and in the Australian Government's Core Skills for Work Developmental Framework (2013).
-
-Cross-curriculum priorities enable students to develop understanding about and address the contemporary issues they face.
-
-The cross-curriculum priorities are:
-? Aboriginal and Torres Strait Islander histories and cultures 
-? Asia and Australia's engagement with Asia 
-? Sustainability 
-
-General capabilities encompass the knowledge, skills, attitudes and behaviours to assist students to live and work successfully in the 21st century.
-
-The general capabilities are:
-? Critical and creative thinking 
-? Ethical understanding 
-? Information and communication technology capability 
-? Intercultural understanding 
-? Literacy 
-? Numeracy 
-? Personal and social capability 
-
-NESA syllabuses include other areas identified as important learning for all students:
-? Civics and citizenship 
-? Difference and diversity 
-? Work and enterprise 
-
-Learning across the curriculum content is incorporated, and identified by icons, in the content of the Mathematics Advanced Stage 6 Syllabus in the following ways.
-
-
-Aboriginal and Torres Strait Islander Histories and Cultures 
-Through application and modelling across the topics of the syllabus, students have the opportunity to experience the significance of mathematics in Aboriginal and Torres Strait Islander histories and cultures. Opportunities are provided to connect mathematics with Aboriginal and Torres Strait Islander Peoples' cultural, linguistic and historical experiences. The narrative of the development of mathematics and its integration with cultural development can be explored in the context of some topics. Through the evaluation of statistical data where appropriate, students can deepen their understanding of the lives of Aboriginal and Torres Strait Islander Peoples.
-
-When planning and programming content relating to Aboriginal and Torres Strait Islander histories and cultures teachers are encouraged to:
-? involve local Aboriginal communities and/or appropriate knowledge holders in determining suitable resources, or to use Aboriginal or Torres Strait Islander authored or endorsed publications
-? read the Principles and Protocols relating to teaching and learning about Aboriginal and Torres Strait Islander histories and cultures and the involvement of local Aboriginal communities.
-Asia and Australia's Engagement with Asia 
-Students have the opportunity to learn about the understandings and applications of mathematics in Asia and the way mathematicians from Asia continue to contribute to the ongoing development of mathematics. By drawing on knowledge of and examples from the Asia region, such as calculation, money, art, architecture, design and travel, students have the opportunity to develop mathematical understanding in fields such as numbers, patterns, measurement, symmetry and statistics. Through the evaluation of statistical data, students have the opportunity to examine issues pertinent to the Asia region.
-Sustainability 
-Mathematics provides a foundation for the exploration of issues of sustainability. Students have the opportunity to learn about the mathematics underlying topics in sustainability such as energy use and how to reduce consumption, alternative energy using solar cells and wind turbines, climate science and mathematical modelling. Through measurement and the reasoned use of data, students have the opportunity to measure and evaluate sustainability changes over time and develop a deeper appreciation of the world around them. Mathematical knowledge, skills and understanding are necessary to monitor and quantify both the impact of human activity on ecosystems and changes to conditions in the biosphere.
-Critical and Creative Thinking 
-Critical and creative thinking are key to the development of mathematical understanding. Mathematical reasoning and logical thought are fundamental elements of critical and creative thinking. Students are encouraged to be critical thinkers when justifying their choice of a calculation strategy or identifying relevant questions during an investigation. They are encouraged to look for alternative ways to approach mathematical problems; for example identifying when a problem is similar to a previous one, drawing diagrams or simplifying a problem to control some variables. Students are encouraged to be creative in their approach to solving new problems, combining the skills and knowledge they have acquired in their study of a number of different topics, within a new context.
-
-
-Ethical Understanding 
-Mathematics makes a clear distinction between the deductions made from basic principles and their consequences in different circumstances. Students have opportunities to explore, develop and apply ethical understanding to mathematics in a range of contexts. Examples include: collecting, displaying and interpreting data; examining selective use of data by individuals and organisations; detecting and eliminating bias in the reporting of information; exploring the importance of fair comparison; and interrogating financial claims and sources.
-Information and Communication Technology Capability 
-Mathematics provides opportunities for students to develop their information and communication technology (ICT) capability when they investigate, create and communicate mathematical ideas and concepts using fast, automated, interactive and multimodal technologies. Students can use their ICT capability to perform calculations; draw graphs; collect, manage, analyse and interpret data; share and exchange information and ideas; and investigate and model concepts and relationships. Digital technologies, such as calculators, spreadsheets, dynamic geometry software, graphing software and computer algebra software, can engage students and promote understanding of key concepts.
-Intercultural Understanding 
-Students have opportunities to understand that mathematical expressions use universal
-symbols, while mathematical knowledge has its origin in many cultures. Students are provided 
-with opportunities to realise that proficiencies such as understanding, fluency, reasoning and problem solving are not culture or language-specific, but that mathematical reasoning and understanding 
-can find different expression in different cultures and languages. The curriculum provides contexts 
-for exploring mathematical problems from a range of cultural perspectives and within diverse cultural contexts. Students can apply mathematical thinking to identify and resolve issues related to living 
-with diversity.
-Literacy 
-Literacy is used throughout mathematics to understand and interpret word problems and instructions containing particular language featured in mathematics. Students have the opportunity to learn the vocabulary associated with mathematics, including synonyms, technical terminology, passive voice and common words with specific meanings in a mathematical context. Literacy is used to pose and answer questions, engage in mathematical problem solving and to discuss, produce and explain solutions. There are opportunities for students to develop the ability to create and interpret a range of media typical of mathematics, ranging from graphs to complex data displays.
-Numeracy 
-Numeracy is embedded throughout the Mathematics Stage 6 syllabuses. It relates to a high proportion of the content descriptions across Years 11 and 12. Consequently, this particular general capability is not tagged in this syllabus.
-
-Numeracy involves drawing on knowledge of particular contexts and circumstances in deciding when to use mathematics, choosing the mathematics to use and critically evaluating its use. To be numerate is to use mathematics effectively to meet the general demands of life at home, at work, and for participation in community and civic life. It is therefore important that the Mathematics curriculum provides the opportunity to apply mathematical understanding and skills in context, in other learning areas and in real-world scenarios.
-Personal and Social Capability 
-Students are provided with opportunities to develop personal and social competence as they learn to understand and manage themselves, their relationships and their lives more effectively. Mathematics enhances the development of students' personal and social capabilities by providing opportunities for initiative-taking, decision-making, communicating their processes and findings, and working independently and collaboratively in the mathematics classroom. Students have the opportunity to apply mathematical skills in a range of personal and social contexts. This may be through activities that relate learning to their own lives and communities, such as time management, budgeting and financial management, and understanding statistics in everyday contexts.
-Civics and Citizenship 
-Mathematics has an important role in civics and citizenship education because it has the potential to help us understand our society and our role in shaping it. The role of mathematics in society has expanded significantly in recent decades as almost all aspects of modern-day life are now quantified. Through modelling reality using mathematics and then manipulating the mathematics in order to understand and/or predict reality, students have the opportunity to learn mathematical knowledge, skills and understanding that are essential for active participation in the world in which we live.
-Difference and Diversity 
-Students make sense of and construct mathematical ideas in different ways, drawing upon their own unique experiences in life and prior learning. By valuing students' diversity of ideas, teachers foster students' efficacy in learning mathematics.
-Work and Enterprise 
-Students have the opportunity to develop work and enterprise knowledge, skills and understanding through their study of mathematics in a work-related context. Students are encouraged to select and apply appropriate mathematical techniques and problem solving strategies through work-related experiences in the Financial Mathematics and Statistical Analysis topics. This allows them to make informed financial decisions by selecting and analysing relevant information.
-Mathematics Advanced Year 11 Course Content
-Year 11 Course Structure and Requirements
-The course is organised in topics, with the topics divided into subtopics.
-
-Year 11 course
-(120 hours)Mathematics AdvancedTopicsSubtopicsFunctions	MA-F1 Working with FunctionsTrigonometric Functions	MA-T1 Trigonometry and Measure of Angles
-	MA-T2 Trigonometric Functions and IdentitiesCalculus	MA-C1 Introduction to DifferentiationExponential and Logarithmic Functions	MA-E1 Logarithms and ExponentialsStatistical Analysis	MA-S1 Probability and Discrete Probability Distributions
-? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
-? Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
-
-
-Topic: Functions
-Outcomes
-A student:
-› uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problems MA11-1
-› uses the concepts of functions and relations to model, analyse and solve practical problems MA11-2
-› uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
-› provides reasoning to support conclusions which are appropriate to the context MA11-9
-Topic Focus
-The topic Functions involves the use of both algebraic and graphical conventions and terminology to describe, interpret and model relationships of and between changing quantities.
-
-A knowledge of functions enables students to discover, recognise and generalise connections between algebraic and graphical representations of the same expression and to describe interactions through the use of both dependent and independent variables.
-
-The study of functions is important in developing students' ability to find connections and patterns, to communicate concisely and precisely, to use algebraic techniques and manipulations, to describe and solve problems, and to predict future outcomes in areas such as finance, economics, data analysis, marketing and weather.
-Subtopics
-MA-F1 Working with Functions 
-
-
-Functions
-MA-F1 Working with Functions 
-Outcomes
-A student:
-› uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problems MA11-1
-› uses the concepts of functions and relations to model, analyse and solve practical problems MA11-2
-› uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
-› provides reasoning to support conclusions which are appropriate to the context MA11-9
-Subtopic Focus
-The principal focus of this subtopic is to introduce students to the concept of a function and develop their knowledge of functions and their respective graphs. Function notation is introduced, which is essential for describing the ideas of calculus.
-
-Students develop their use of mathematical language to describe functions, their properties and respective graphs while applying this knowledge to everyday problems and applications. In business and economics, for example revenue depends on the number of items sold, and expressing this relationship as a function allows the investigation of changes in revenue as sales change.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-F1.1: Algebraic techniques
-Students:
-? use index laws and surds
-? solve quadratic equations using the quadratic formula and by completing the square (ACMMM008)
-? manipulate complex algebraic expressions involving algebraic fractions
-
-F1.2: Introduction to functions
-Students:
-? define and use a function and a relation as mappings between sets, and as a rule or a formula that defines one variable quantity in terms of another
-- define a relation as any set of ordered pairs (x,y) of real numbers
-- understand the formal definition of a function as a set of ordered pairs (x,y) of real numbers such that no two ordered pairs have the same first component (or x-component)
-? use function notation, domain and range, independent and dependent variables (ACMMM023) 
-- understand and use interval notation as a way of representing domain and range, eg [4,+ 8)¦
-? understand the concept of the graph of a function (ACMMM024)
-
-
-? identify types of functions and relations on a given domain, using a variety of methods
-- know what is meant by one-to-one, one-to-many, many-to-one and many-to-many
-- use the vertical line test to identify a function
-- determine if a function is one-to-one (ACMSM094)
-? define odd and even functions algebraically and recognise their geometric properties
-? define the sum, difference, product and quotient of functions and consider their domains and ranges where possible
-? define and use the composite function f(g(x)) of functions f(x) and g(x) where appropriate
-- identify the domain and range of a composite function
-? recognise that solving the equation f(x)=0 corresponds to finding the values of x for which the graph of y=f(x) cuts the x-axis (the x-intercepts)
-
-F1.3: Linear, quadratic and cubic functions
-Students:
-? model, analyse and solve problems involving linear functions AAM   
-- recognise that a direct variation relationship produces a straight-line graph
-- explain the geometrical significance of m and c in the equation f(x)=mx+c
-- derive the equation of a straight line passing through a fixed point (x_1,y_1) and having a given gradient m using the formula y-y_1=m(x-x_1)
-- derive the equation of a straight line passing through two points (x_1,y_1) and (x_2,y_2) by first calculating its gradient m using the formula m=(y_2-y_1)/(x_2-x_1 )
-- understand and use the fact that parallel lines have the same gradient and that two lines with gradient m_1 and m_2 respectively are perpendicular if and only if m_1 m_2=-1
-- find the equations of straight lines, including parallel and perpendicular lines, given sufficient information (ACMMM004) 
-? model, analyse and solve problems involving quadratic functions AAM    
-- recognise features of the graph of a quadratic, including its parabolic nature, turning point, axis of symmetry and intercepts (ACMMM007)
-- find the vertex and intercepts of a quadratic graph by either factorising, completing the square or solving the quadratic equation as appropriate
-- understand the role of the discriminant in relation to the position of the graph 
-- find the equation of a quadratic given sufficient information (ACMMM009)
-? solve practical problems involving a pair of simultaneous linear and/or quadratic functions algebraically and graphically, with or without the aid of technology; including determining and interpreting the break-even point of a simple business problem AAM   
-- understand that solving f(x)=k corresponds to finding the values of x for which the graph y=f(x) cuts the line y=k
-? recognise cubic functions of the form: f(x)=kx^3, f(x)=k?(x-b)?^3+c and 
-f(x)=k(x-a)(x-b)(x-c), where a, b, c and k are constants, from their equation and/or graph and identify important features of the graph 
-
-
-F1.4: Further functions and relations
-Students:
-? define a real polynomial P(x) as the expression a_n x^n+a_(n-1) x^(n-1)+ . . . +a_2 x^2+a_1 x+a_0   where n=0,1,2,... and a_0,a_1,a_2,...,a_n are real numbers
-? identify the coefficients and the degree of a polynomial (ACMMM015)
-? identify the shape and features of graphs of polynomial functions of any degree in factored form and sketch their graphs   
-? recognise that functions of the form f(x)=k/x represent inverse variation, identify the hyperbolic shape of their graphs and identify their asymptotes AAM  
-? define the absolute value |x| of a real number x as the distance of the number from the origin on a number line without regard to its sign
-? use and apply the notation |x| for the absolute value of the real number x and the graph of y=|x| (ACMSM098)
-- recognise the shape and features of the graph of y=|ax+b| and hence sketch the graph
-? solve simple absolute value equations of the form |ax+b|=k both algebraically and graphically 
-? given the graph of y=f(x), sketch y=-f(x) and y=f(-x) and y=-f(-x) using reflections in the x and y-axes
-? recognise features of the graphs of x^2+y^2=r^2 and ?(x-a)?^2+?(y-b)?^2=r^2, including their circular shapes, their centres and their radii (ACMMM020)  
-- derive the equation of a circle, centre the origin, by considering Pythagoras' theorem and recognise that a circle is not a function
-- transform equations of the form x^2+y^2+ax+by+c=0 into the form
-?(x-a)?^2+?(y-b)?^2=r^2, by completing the square
-- sketch circles given their equations and find the equation of a circle from its graph
-- recognise that y=v(r^2-x^2 ) and y=-v(r^2-x^2 ) are functions, identify the semicircular shape of their graphs and sketch them
-
-
-Topic: Trigonometric Functions
-Outcomes
-A student:
-› uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problems MA11-1
-› uses the concepts and techniques of trigonometry in the solution of equations and problems involving geometric shapes MA11-3
-› uses the concepts and techniques of periodic functions in the solutions of trigonometric equations or proof of trigonometric identities MA11-4
-› uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
-› provides reasoning to support conclusions which are appropriate to the context MA11-9
-Topic Focus
-The topic Trigonometric Functions involves the study of periodic functions in geometric, algebraic, numerical and graphical representations.
-
-A knowledge of trigonometric functions enables the solving of practical problems involving triangles or periodic graphs, such as waves and signals.
-
-The study of trigonometric functions is important in developing students' understanding of periodic behaviour, a property not possessed by any previously studied functions. Utilising this property, mathematical models have been developed that describe the behaviour of many naturally occurring periodic phenomena, such as vibrations or waves, as well as oscillatory behaviour found in pendulums, electric currents and radio signals.
-Subtopics
-MA-T1 Trigonometry and Measure of Angles 
-MA-T2 Trigonometric Functions and Identities
-
-
-Trigonometric Functions
-MA-T1 Trigonometry and Measure of Angles 
-Outcomes
-A student:
-› uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problems MA11-1
-› uses the concepts and techniques of trigonometry in the solution of equations and problems involving geometric shapes MA11-3
-› uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
-› provides reasoning to support conclusions which are appropriate to the context MA11-9
-Subtopic Focus
-The principal focus of this subtopic is to solve problems involving triangles using trigonometry, and to understand and use angular measure expressed in radians and degrees. This has practical and analytical applications in areas including surveying, navigation, meteorology, architecture, construction and electronics.
-
-Students develop techniques to solve problems involving triangles, and then extend these ideas to include the exact ratios for angles, and also to the study of non-right-angled triangles. This introduces the need to define the trigonometric ratios for obtuse angles, which is followed by the establishment of trigonometric ratios of angles of any size. Radians are introduced as another measure in which angles of any size can be found. Radians are important for the study of the calculus of trigonometric functions in Year 12.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-T1.1 Trigonometry
-Students:
-? use the sine, cosine and tangent ratios to solve problems involving right-angled triangles where angles are measured in degrees, or degrees and minutes 
-? establish and use the sine rule, cosine rule and the area of a triangle formula for solving problems where angles are measured in degrees, or degrees and minutes AAM  
-? find angles and sides involving the ambiguous case of the sine rule
-- use technology and/or geometric construction to investigate the ambiguous case of the sine rule when finding an angle, and the condition for it to arise  
-? solve problems involving the use of trigonometry in two and three dimensions AAM 
-- interpret information about a two or three-dimensional context given in diagrammatic or written form and construct diagrams where required
-? solve practical problems involving Pythagoras' theorem and the trigonometry of triangles, which may involve the ambiguous case, including finding and using angles of elevation and depression and the use of true bearings and compass bearings in navigation AAM  
-
-T1.2 Radians
-Students:
-? understand the unit circle definition of sin??, cos?? and tan?? and periodicity using degrees (ACMMM029)
-- sketch the trigonometric functions in degrees for 0°=x=360°
-? define and use radian measure and understand its relationship with degree measure (ACMMM032) 
-- convert between the two measures, using the fact that 360°=2p radians
-- recognise and use the exact values of sin ?, cos ? and tan?? in both degrees and radians for integer multiples of  p/6 and p/4 (ACMMM035)
-? understand the unit circle definition of sin??, cos?? and tan?? and periodicity using radians (ACMMM034)
-? solve problems involving trigonometric ratios of angles of any magnitude in both degrees and radians
-? recognise the graphs of y=sin x, y=cos x and y=tan x and sketch on extended domains in degrees and radians (ACMMM036)
-? derive the formula for arc length, l=r? and for the area of a sector of a circle, A=1/2 r^2 ? 
-? solve problems involving sector areas, arc lengths and combinations of either areas or lengths
- 
-
-Trigonometric Functions
-MA-T2 Trigonometric Functions and Identities
-Outcomes
-A student:
-› uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problems MA11-1
-› uses the concepts and techniques of periodic functions in the solutions of trigonometric equations or proof of trigonometric identities MA11-4
-› uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
-› provides reasoning to support conclusions which are appropriate to the context MA11-9
-Subtopic Focus
-The principal focus of this subtopic is to use trigonometric identities and reciprocal relationships to simplify expressions, to prove equivalences and to solve equations.
-
-Students develop their ability to prove identities, simplify expressions and solve trigonometric equations. Trigonometric expressions and equations provide a powerful tool for modelling quantities that vary in a cyclical way such as tides, seasons, demand for resources, and alternating current. The solution of trigonometric equations may require the use of trigonometric identities.
-Content
-Students:
-? define the reciprocal trigonometric functions, y=cosec x, y=sec x and y=cot x
-- cosec A =  1/(sin A),  sin A?0
-- sec A =  1/(cos A),  cos A ?0
-- cot A =  (cos A)/(sin A),  sin A?0
-? sketch the graphs of reciprocal trigonometric functions in both radians and degrees
-? prove and apply the Pythagorean identities cos^2 x+sin^2 x=1, ? 1+tan?^2 x=sec^2 x and 
-1+cot^2 x=cosec^2 x (ACMSM046)
-- know the difference between an equation and an identity
-? use tan x=(sin x)/(cos x) provided that cos??x?0?
-? prove trigonometric identities
-? evaluate trigonometric expressions using angles of any magnitude and complementary angle results
-? simplify trigonometric expressions and solve trigonometric equations, including those that reduce to quadratic equations  
-
-
-Topic: Calculus
-Outcomes
-A student:
-› uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problems MA11-1
-› interprets the meaning of the derivative, determines the derivative of functions and applies these to solve simple practical problems MA11-5
-› uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
-› provides reasoning to support conclusions which are appropriate to the context MA11-9
-Topic Focus
-The topic Calculus is concerned with how quantities change and provides a framework for developing quantitative models of change and deducing their consequences. The topic involves the development of the basic concepts upon which differential calculus is built, namely the connection between the gradient of the tangent to a curve and the instantaneous rate of change of a function, rates of change and derivatives of functions and the manipulative skills necessary for the effective use of differential calculus.
-
-The study of calculus is important in developing students' ability to solve problems involving algebraic and graphical representations of functions and rates of change of a function with relevance to all quantitative fields of study including physics, chemistry, medicine, engineering, computing, statistics, business, finance, economics and the construction industry.
-Subtopics
-MA-C1 Introduction to Differentiation
-
-
-Calculus
-MA-C1 Introduction to Differentiation
-Outcomes
-A student:
-› uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problems MA11-1
-› interprets the meaning of the derivative, determines the derivative of functions and applies these to solve simple practical problems MA11-5
-› uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
-› provides reasoning to support conclusions which are appropriate to the context MA11-9
-Subtopic Focus
-The principal focus of this subtopic is for students to develop an understanding of the concept of a derivative as a function that defines the rate of change of a given function. This concept is reinforced numerically, by calculating difference quotients, geometrically, as gradients of secants and tangents, and algebraically. The derivatives of power functions are found and used to solve simple problems, including calculating gradients and equations of tangents and normals.
-
-Students develop an understanding of derivatives as representations of rates of change. This process is of fundamental importance in Mathematics and has applications in all quantitative fields of study including physics, chemistry, medicine, engineering, computing, statistics, business, finance and economics.
-Content
-C1.1: Gradients of tangents
-Students:
-? distinguish between continuous and discontinuous functions, identifying key elements which distinguish each type of function
-- sketch graphs of functions that are continuous and compare them with graphs of functions that have discontinuities
-- describe continuity informally, and identify continuous functions from their graphs
-? describe the gradient of a secant drawn through two nearby points on the graph of a continuous function as an approximation of the gradient of the tangent to the graph at those points, which improves in accuracy as the distance between the two points decreases
-? examine and use the relationship between the angle of inclination of a line or tangent, ?, with the positive x-axis, and the gradient, m, of that line or tangent, and establish that tan??=m AAM
-
-
-C1.2: Difference quotients
-Students:
-? describe the behaviour of a function and its tangent at a point, using language including increasing, decreasing, constant, stationary, increasing at an increasing rate AAM  
-? interpret and use the difference quotient (f(x+h)-f(x))/h as the average rate of change of f(x) or the gradient of a chord or secant of the graph y=f(x)  
-? interpret the meaning of the gradient of a function in a variety of contexts, for example on distance-time or velocity-time graphs  
-
-C1.3: The derivative function and its graph
-Students:
-? examine the behaviour of the difference quotient (f(x+h)-f(x))/h as h?0 as an informal introduction to the concept of a limit (ACMMM081)
-? interpret the derivative as the gradient of the tangent to the graph of y=f(x) at a point x (ACMMM085)
-? estimate numerically the value of the derivative at a point, for simple power functions (ACMMM086)  
-? define the derivative f^' (x) from first principles, as lim-(h?0)  (f(x+h)-f(x))/h  and use the notation for the derivative: dy/dx=f^' (x)=y', where y=f(x)
-? use first principles to find the derivative of simple polynomials, up to and including degree 3
-? understand the concept of the derivative as a function (ACMMM089)
-? sketch the derivative function (or gradient function) for a given graph of a function, without the use of algebraic techniques and in a variety of contexts including motion in a straight line   
-- establish that f^' (x)=0 at a stationary point, f^' (x)>0 when the function is increasing and f^' (x)<0 when it is decreasing, to form a framework for sketching the derivative function
-- identify families of curves with the same derivative function (ACMMM121)
-- use technology to plot functions and their gradient functions
-? interpret and use the derivative at a point as the instantaneous rate of change of a function at that point AAM
-- examine examples of variable rates of change of non-linear functions (ACMMM087)
-
-C1.4: Calculating with derivatives
-Students:
-? use the formula d/dx(x^n)=nx^(n-1) for all real values of n 
-? differentiate a constant multiple of a function and the sum or difference of two functions  
-? understand and use the product, quotient and chain rules to differentiate functions of the form f(x)g(x),  (f(x))/(g(x)) and f(g(x)) where f(x) and g(x) are functions
-- apply the product rule: If h(x)=f(x) g(x) then h'(x)=f(x) g'(x) + f'(x) g(x), or if u and v are both functions of x then d/dx(uv)=u dv/dx+v du/dx
-- apply the quotient rule: If h(x)=(f(x))/(g(x)) then h'(x)=(g(x)f^' (x)-f(x)g^' (x))/?g(x)?^2 , or if u and v are both functions of x then d/dx (u/v)=(v du/dx-u dv/dx)/v^2 
-- apply the chain rule: If h(x)=f(g(x)) then h'(x)=f'(g(x)) g'(x), or if y is a function of u and u is a function of x then dy/dx  =  dy/du  ×  du/dx
-? calculate derivatives of power functions to solve problems, including finding an instantaneous rate of change of a function in both real life and abstract situations AAM
-? use the derivative in a variety of contexts, including to finding the equation of a tangent or normal to a graph of a power function at a given point AAM
-? determine the velocity of a particle given its displacement from a point as a function of time
-? determine the acceleration of a particle given its velocity at a point as a function of time
-
-
-Topic: Exponential and Logarithmic Functions
-Outcomes
-A student:
-› manipulates and solves expressions using the logarithmic and index laws, and uses logarithms and exponential functions to solve practical problems MA11-6
-› uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
-› provides reasoning to support conclusions which are appropriate to the context MA11-9
-Topic Focus
-The topic Exponential and Logarithmic Functions introduces exponential and logarithmic functions and develops their properties, including the manipulation of expressions involving them. The exponential function e^x is introduced by considering graphs of the derivative of exponential functions.
-
-A knowledge of exponential and logarithmic functions enables an understanding of practical applications, such as exponential growth and decay, as well as applications within the Calculus topic.
-
-The study of exponential and logarithmic functions is important in developing students' ability to solve practical problems involving rates of change in contexts such as population growth and compound interest.
-Subtopics
-MA-E1 Logarithms and Exponentials 
-
-
-Exponential and Logarithmic Functions
-MA-E1 Logarithms and Exponentials 
-Outcomes
-A student:
-› manipulates and solves expressions using the logarithmic and index laws, and uses logarithms and exponential functions to solve practical problems MA11-6
-› uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
-› provides reasoning to support conclusions which are appropriate to the context MA11-9
-Subtopic Focus
-The principal focus of this subtopic is for students to learn about Euler's number e, become fluent in manipulating logarithms and exponentials and to use their knowledge, skills and understanding to solve problems relating to exponentials and logarithms.
-
-Students develop an understanding of numbering systems, their representations and connections to observable phenomena such as exponential growth and decay. The exponential and logarithmic functions f(x)=e^x and f(x)=log_e x are important non-linear functions in Mathematics, and have many applications in industry, finance and science. They are also fundamental functions in the study of more advanced Mathematics.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-E1.1: Introducing logarithms
-Students:
-? define logarithms as indices: y=a^x is equivalent to x=log_a y, and explain why this definition only makes sense when a>0,  a?1
-? recognise and sketch the graphs of y=?ka?^x, y=?ka?^(-x) where k is a constant, and y=log_a x 
-? recognise and use the inverse relationship between logarithms and exponentials
-- understand and use the fact that log_a a^x=x for all real x, and a^(log_a x)=x for all x>0
-
-E1.2: Logarithmic laws and applications
-? derive the logarithmic laws from the index laws and use the algebraic properties of logarithms to simplify and evaluate logarithmic expressions
-log_a m+log_a n=log_a (mn), log_a m-log_a n=log_a (m/n), log_a (m^n )=n log_a m,
- log_a  a=1, log_a  1=0, log_a   1/x=-log_a  x 
-? consider different number bases and prove and use the change of base law log_a  x=(log_b  x)/(log_b a) AAM  
-? interpret and use logarithmic scales, for example decibels in acoustics, different seismic scales for earthquake magnitude, octaves in music or pH in chemistry (ACMMM154) AAM
-? solve algebraic, graphical and numerical problems involving logarithms in a variety of practical and abstract contexts, including applications from financial, scientific, medical and industrial contexts AAM 
-
-E1.3: The exponential function and natural logarithms
-? establish and use the formula (d(e^x))/dx=e^x (ACMMM100)
-- using technology, sketch and explore the gradient function of exponential functions and determine that there is a unique number e˜ 2.71828182845, for which (d(e^x))/dx=e^x where e is called Euler's number 
-? apply the differentiation rules to functions involving the exponential function, f(x)=ke^ax, where k and a are constants
-? work with natural logarithms in a variety of practical and abstract contexts AAM
-- define the natural logarithm ln x=log_e x from the exponential function ?f(x)=e?^x (ACMMM159)
-- recognise and use the inverse relationship of the functions y=e^x  and y=ln x (ACMMM160)
-- use the natural logarithm and the relationships e^ln?x =x where x>0, and ? ln???(e^x )=x? for all real x in both algebraic and practical contexts
-- use the logarithmic laws to simplify and evaluate natural logarithmic expressions and solve equations
-
-E1.4: Graphs and applications of exponential and logarithmic functions
-? solve equations involving indices using logarithms (ACMMM155)
-? graph an exponential function of the form y=a^x for a>0 and its transformations y=ka^x+c and y=ka^(x+b)  where k, b and c are constants  
-- interpret the meaning of the intercepts of an exponential graph and explain the circumstances in which these do not exist 
-? establish and use the algebraic properties of exponential functions to simplify and solve problems (ACMMM064)
-? solve problems involving exponential functions in a variety of practical and abstract contexts, using technology, and algebraically in simple cases (ACMMM067) AAM  
-? graph a logarithmic function y=log_a  x for a>0 and its transformations y=k log_a?x+c, using technology or otherwise, where k and c are constants  
-- recognise that the graphs of y=a^x and y=log_a x are reflections in the line y=x
-? model situations and solve simple equations involving logarithmic or exponential functions algebraically and graphically AAM
-? identify contexts suitable for modelling by exponential and logarithmic functions and use these functions to solve practical problems (ACMMM066, ACMMM158) AAM
-
-
-Topic: Statistical Analysis
-Outcomes
-A student:
-› uses concepts and techniques from probability to present and interpret data and solve problems in a variety of contexts, including the use of probability distributions MA11-7
-› uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
-› provides reasoning to support conclusions which are appropriate to the context MA11-9
-Topic Focus
-The topic Statistical Analysis involves the exploration, display, analysis and interpretation of data to identify and communicate key information.
-
-A knowledge of statistical analysis enables careful interpretation of situations and an awareness of the contributing factors when presented with information by third parties, including its possible misrepresentation.
-
-The study of statistical analysis is important in developing students' ability to recognise, describe and apply statistical techniques in order to analyse current situations or to predict future outcomes. It also develops an awareness of how conclusions drawn from data can be used to inform decisions made by groups such as scientific investigators, business people and policy-makers.
-Subtopics
-MA-S1 Probability and Discrete Probability Distributions 
-
-
-Statistical Analysis
-MA-S1 Probability and Discrete Probability Distributions 
-Outcomes
-A student:
-› uses concepts and techniques from probability to present and interpret data and solve problems in a variety of contexts, including the use of probability distributions MA11-7
-› uses appropriate technology to investigate, organise, model and interpret information in a range of contexts MA11-8
-› provides reasoning to support conclusions which are appropriate to the context MA11-9
-Subtopic Focus
-The principal focus of this subtopic is to introduce the concepts of conditional probability and independence and develop an understanding of discrete random variables and their uses in modelling random processes involving chance.
-
-Students develop their skills related to probability, its language and visual representations, and use these skills to solve practical problems. They develop an understanding of probability distributions and associated statistical analysis methods and their use in modelling binomial events. These concepts play an important role in later studies of statistics, particularly in beginning to understand the concept of statistical significance.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-S1.1: Probability and Venn diagrams
-Students:
-? understand and use the concepts and language associated with theoretical probability, relative frequency and the probability scale  
-? solve problems involving simulations or trials of experiments in a variety of contexts AAM  
-- identify factors that could complicate the simulation of real-world events (ACMEM153)
-- use relative frequencies obtained from data as point estimates of probabilities (ACMMM055)
-? use arrays and tree diagrams to determine the outcomes and probabilities for multi-stage experiments (ACMEM156) AAM 
-? use Venn diagrams, set language and notation for events, including A ¯ (or A^'  or A^c) for the complement of an event A, AnB for 'A and B', the intersection of events A and B, and A?B for 'A or B', the union of events A and B, and recognise mutually exclusive events (ACMMM050) AAM
-- use everyday occurrences to illustrate set descriptions and representations of events and set operations (ACMMM051)
-? establish and use the rules: P(A ¯ )=1-P(A) and P(A?B)=P(A)+P(B)-P(AnB) (ACMMM054) AAM 
-? understand the notion of conditional probability and recognise and use language that indicates conditionality (ACMMM056)
-? use the notation P(A|B) and the formula P(A|B)=(P(AnB))/(P(B)),  P(B)?0 for conditional probability (ACMMM057) AAM
-? understand the notion of independence of an event A from an event B, as defined by
-P(A¦B)=P(A) (ACMMM058)
-? use the multiplication law P(AnB)=P(A)P(B) for independent events A and B and recognise the symmetry of independence in simple probability situations (ACMMM059)
-
-S1.2: Discrete probability distributions
-? define and categorise random variables
-- know that a random variable describes some aspect in a population from which samples can be drawn
-- know the difference between a discrete random variable and a continuous random variable
-? use discrete random variables and associated probabilities to solve practical problems (ACMMM142) AAM
-- use relative frequencies obtained from data to obtain point estimates of probabilities associated with a discrete random variable (ACMMM137)
-- recognise uniform discrete random variables and use them to model random phenomena with equally likely outcomes (ACMMM138)
-- examine simple examples of non-uniform discrete random variables, and recognise that for any random variable, X, the sum of the probabilities is 1 (ACMMM139)
-- recognise the mean or expected value, E(X)=µ, of a discrete random variable X as a measure of centre, and evaluate it in simple cases (ACMMM140)
-- recognise the variance, Var(X), and standard deviation (s)  of a discrete random variable as measures of spread, and evaluate them in simple cases (ACMMM141)
-- use Var(X)=E((X-µ)^2 )=E(X^2 )-µ^2 for a random variable and Var(x)=s^2 for a dataset
-? understand that a sample mean, x ¯, is an estimate of the associated population mean µ, and that the sample standard deviation, s, is an estimate of the associated population standard deviation, s, and that these estimates get better as the sample size increases and when we have independent observations
-
-Mathematics Advanced Year 12 Course Content
-Year 12 Course Structure and Requirements
-The course is organised in topics, with the topics divided into subtopics.
-
-Year 12 course (120 hours)Mathematics AdvancedTopicsSubtopicsFunctions	MA-F2 Graphing TechniquesTrigonometric Functions	MA-T3 Trigonometric Functions and GraphsCalculus	MA-C2 Differential Calculus
-	MA-C3 Applications of Differentiation
-	MA-C4 Integral CalculusFinancial Mathematics	MA-M1 Modelling Financial SituationsStatistical Analysis	MA-S2 Descriptive Statistics and Bivariate Data Analysis
-	MA-S3 Random Variables
-? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
-? Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
-
-
-Topic: Functions
-Outcomes
-A student:
-› uses detailed algebraic and graphical techniques to critically construct, model and evaluate arguments in a range of familiar and unfamiliar contexts MA12-1
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Topic Focus
-The topic Functions involves the use of both algebraic and graphical conventions and terminology to describe, interpret and model relationships of and between changing quantities.
-
-A knowledge of functions enables students to discover, recognise and generalise connections between algebraic and graphical representations of the same expression and to describe interactions between dependent and independent variables.
-
-The study of functions is important in developing students' ability to find and recognise connections and patterns, to communicate concisely and precisely, to use algebraic techniques and manipulations to describe and solve problems, and predict future outcomes in areas such as finance, economics and weather.
-Subtopics
-MA-F2 Graphing Techniques 
-
-
-Functions
-MA-F2 Graphing Techniques 
-Outcomes
-A student:
-› uses detailed algebraic and graphical techniques to critically construct, model and evaluate arguments in a range of familiar and unfamiliar contexts MA12-1
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Subtopic Focus
-The principal focus of this subtopic is to become more familiar with key features of graphs of functions, as well as develop an understanding of and use of the effect of basic transformations of these graphs to explain graphical behaviour.
-
-Students develop an understanding of transformations from a graphical and algebraic approach, including the use of technology, and thus develop a deeper understanding of the properties of functions. As graphing software becomes more widely accessible, skills in reading scales and interpreting magnification effects become essential.
-Content
-Students:
-? apply transformations to sketch functions of the form y=kf(a(x+b))+c, where f(x) is a polynomial, reciprocal, absolute value, exponential or logarithmic function and a, b,c and k are constants
-- examine translations and the graphs of y=f(x)+c and y=f(x+b) using technology 
-- examine dilations and the graphs of y=kf(x) and y=f(ax) using technology 
-- recognise that the order in which transformations are applied is important in the construction of the resulting function or graph
-? use graphical methods with supporting algebraic working to solve a variety of practical problems involving any of the functions within the scope of this syllabus, in both real-life and abstract contexts AAM   
-- select and use an appropriate method to graph a given function, including finding intercepts, considering the sign of f(x) and using symmetry 
-- determine asymptotes and discontinuities where appropriate (vertical and horizontal asymptotes only) 
-- determine the number of solutions of an equation by considering appropriate graphs 
-- solve linear and quadratic inequalities by sketching appropriate graphs  
-
-
-Topic: Trigonometric Functions
-Outcomes
-A student:
-› uses detailed algebraic and graphical techniques to critically construct, model and evaluate arguments in a range of familiar and unfamiliar contexts MA12-1
-› applies the concepts and techniques of periodic functions in the solution of problems involving trigonometric graphs MA12-5
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Topic Focus
-The topic Trigonometric Functions involves the study of periodic functions in geometric, algebraic, numerical and graphical representations.
-
-A knowledge of trigonometric functions enables the solving of practical problems involving the manipulation of trigonometric expressions to model behaviour of naturally occurring periodic phenomena such as waves and signals and to predict future outcomes.
-
-Study of trigonometric functions is important in developing students' understanding of periodic functions. Utilising the properties of periodic functions, mathematical models have been developed that describe the behaviour of many naturally occurring periodic phenomena, such as vibrations or waves, as well as oscillatory behaviour found in pendulums, electric currents and radio signals.
-Subtopics
-MA-T3 Trigonometric Functions and Graphs
-
-
-Trigonometric Functions
-MA-T3 Trigonometric Functions and Graphs
-Outcomes
-A student:
-› uses detailed algebraic and graphical techniques to critically construct, model and evaluate arguments in a range of familiar and unfamiliar contexts MA12-1
-› applies the concepts and techniques of periodic functions in the solution of problems involving trigonometric graphs MA12-5
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Subtopic Focus
-The principal focus of this subtopic is to explore the key features of the graphs of trigonometric functions and to understand and use basic transformations to solve trigonometric equations.
-
-Students develop an understanding of the way that graphs of trigonometric functions change when the functions are altered in a systematic way. This is important in understanding how mathematical models of real-world phenomena can be developed.
-Content
-Students:
-? examine and apply transformations to sketch functions of the form y=kf(a(x+b))+c, where a,b,c and k are constants, in a variety of contexts, where f(x) is one of sin x, cos x or tan x, stating the domain and range when appropriate
-- use technology or otherwise to examine the effect on the graphs of changing the amplitude (where appropriate), y=kf(x), the period, y=f(ax), the phase, y=f(x+b), and the vertical shift, y=f(x)+c 
-- use k, a, b,c to describe transformational shifts and sketch graphs  
-? solve trigonometric equations involving functions of the form kf(a(x+b))+c, using technology or otherwise, within a specified domain AAM 
-? use trigonometric functions of the form kf(a(x+b))+c to model and/or solve practical problems involving periodic phenomena AAM 
-
-
-Topic: Calculus
-Outcomes
-A student:
-› applies calculus techniques to model and solve problems MA12-3
-› applies appropriate differentiation methods to solve problems MA12-6
-› applies the concepts and techniques of indefinite and definite integrals in the solution of problems MA12-7
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Topic Focus
-The topic Calculus involves the study of how things change and provides a framework for developing quantitative models of change and deducing their consequences. It involves the development of two key aspects of calculus, namely differentiation and integration.
-
-The study of calculus is important in developing students' capacity to operate with and model situations involving change, using algebraic and graphical techniques to describe and solve problems and to predict outcomes in fields such as biomathematics, economics, engineering and the construction industry.
-Subtopics
-MA-C2 Differential Calculus
-MA-C3 Applications of Differentiation
-MA-C4 Integral Calculus 
-
-
-Calculus
-MA-C2 Differential Calculus
-Outcomes
-A student:
-› applies calculus techniques to model and solve problems MA12-3
-› applies appropriate differentiation methods to solve problems MA12-6
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Subtopic Focus
-The principal focus of this subtopic is to develop and apply rules for differentiation to a variety of functions.
-
-Students develop an understanding of the interconnectedness of topics from across the syllabus and the use of calculus to help solve problems from each topic. These skills are then applied in the following subtopic on the second derivative in order to investigate applications of the calculus of trigonometric, exponential and logarithmic functions.
-Content
-C2.1: Differentiation of trigonometric, exponential and logarithmic functions
-Students:
-* establish the formulae d/dx (sin?x )=cos?x   and d/dx (cos?x )=-sin?x by numerical estimations of the limits and informal proofs based on geometric constructions (ACMMM102) 
-* calculate derivatives of trigonometric functions
-* establish and use the formula d/dx (a^x )= (ln?a)a^x
-- using graphing software or otherwise, sketch and explore the gradient function for a given exponential function, recognise it as another exponential function and hence determine the relationship between exponential functions and their derivatives 
-* calculate the derivative of the natural logarithm function d/dx (ln?x )=1/x
-* establish and use the formula d/dx (log_a x)=  1/?x ln??a 
-
-
-C2.2: Rules of differentiation
-Students:
-* apply the product, quotient and chain rules to differentiate functions of the form
- f(x)g(x),  f(x)/g(x)  and f(g(x)) where f(x) and g(x) are any of the functions covered in the scope of this syllabus, for example xe^x,  tan?x,  1/x^n , x sin?x, e^(-x)  sin?x and f(ax+b) (ACMMM106)  
-- use the composite function rule (chain rule) to establish that d/dx {e^f(x)  }=f'(x)e^(f(x))
-- use the composite function rule (chain rule) to establish that d/dx {ln??f(x)? }=(f^' (x))/(f(x))
-- use the logarithmic laws to simplify an expression before differentiating
-- use the composite function rule (chain rule) to establish and use the derivatives of sin??(f(x))?, cos??(f(x))? and tan?(f(x))
-- 
-
-Calculus
-MA-C3 Applications of Differentiation
-Outcomes
-A student:
-› applies calculus techniques to model and solve problems MA12-3
-› applies appropriate differentiation methods to solve problems MA12-6
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Subtopic Focus
-The principal focus of this subtopic is to introduce the second derivative, its meanings and applications to the behaviour of graphs and functions, such as stationary points and the concavity of the graph.
-
-Students develop an understanding of the interconnectedness of topics from across the syllabus and the use of calculus to help solve problems such as optimisation, from each topic. The solution of optimisation problems is an important area of applied Mathematics and involves the location of the maximum or minimum values of a function.
-Content
-C3.1: The first and second derivatives
-Students:
-? use the first derivative to investigate the shape of the graph of a function
-- deduce from the sign of the first derivative whether a function is increasing, decreasing or stationary at a given point or in a given interval
-- use the first derivative to find intervals over which a function is increasing or decreasing, and where its stationary points are located
-- use the first derivative to investigate a stationary point of a function over a given domain,  classifying it as a local maximum, local minimum or neither
-- determine the greatest or least value of a function over a given domain (if the domain is not given, the natural domain of the function is assumed) and distinguish between local and global minima and maxima
-? define and interpret the concept of the second derivative as the rate of change of the first derivative function in a variety of contexts, for example recognise acceleration as the second derivative of displacement with respect to time (ACMMM108, ACMMM109) AAM   
-- understand the concepts of concavity and points of inflection and their relationship with the second derivative (ACMMM110)
-- use the second derivative to determine concavity and the nature of stationary points
-- understand that when the second derivative is equal to 0 this does not necessarily represent a point of inflection
-
-
-C3.2: Applications of the derivative
-Students:
-* use any of the functions covered in the scope of this syllabus and their derivatives to solve practical and abstract problems AAM
-? use calculus to determine and verify the nature of stationary points, find local and global maxima and minima and points of inflection (horizontal or otherwise), examine behaviour of a function as x?8 and x?-8 and hence sketch the graph of the function (ACMMM095)   
-? solve optimisation problems for any of the functions covered in the scope of this syllabus, in a wide variety of contexts including displacement, velocity, acceleration, area, volume, business, finance and growth and decay AAM    
-- define variables and construct functions to represent the relationships between variables related to contexts involving optimisation, sketching diagrams or completing diagrams if necessary
-- use calculus to establish the location of local and global maxima and minima, including checking endpoints of an interval if required
-- evaluate solutions and their reasonableness given the constraints of the domain and formulate appropriate conclusions to optimisation problems
-
-
-Calculus
-MA-C4 Integral Calculus 
-Outcomes
-A student:
-› applies calculus techniques to model and solve problems MA12-3
-› applies the concepts and techniques of indefinite and definite integrals in the solution of problems MA12-7
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Subtopic Focus
-The principal focus of this subtopic is to introduce the anti-derivative or indefinite integral and to develop and apply methods for finding the area under a curve, including the Trapezoidal rule and the definite integral, for a range of functions in a variety of contexts.
-
-Students develop their understanding of how integral calculus relates to area under curves and a further understanding of the interconnectedness of topics from across the syllabus. Geometrical representation assists in understanding the development of this topic, but careful sequencing of the ideas is required so that students can see that integration has many applications, not only in mathematics but also in other fields such as the sciences and engineering.
-Content
-C4.1: The anti-derivative
-Students:
-? define anti-differentiation as the reverse of differentiation and use the notation ?¦?f(x)? dx for anti-derivatives or indefinite integrals (ACMMM114, ACMMM115)
-? recognise that any two anti-derivatives of f(x) differ by a constant
-? establish and use the formula ?x^n dx=1/(n+1) x^(n+1)+c, for n?-1 (ACMMM116) 
-? establish and use the formula ?f'(x)[f(x)]^n dx=1/(n+1) [f(x)]^(n+1)+c where n?-1 (the reverse chain rule) 
-? establish and use the formulae for the anti-derivatives of sin (ax+b), cos (ax+b) and 
-sec^2 (ax+b)
-? establish and use the formulae ?e^x dx=e^x+c and ??e^(ax+b) dx=1/a e^(ax+b)+c?^ 
-? establish and use the formulae ?1/x dx=ln |x|+c and ?(f^' (x))/(f(x)) dx=ln |f(x)|+c for x?0, f(x)?0, respectively
-? establish and use the formulae ?a^x dx=a^x/(ln a)+c
-? recognise and use linearity of anti-differentiation (ACMMM119)
-- examine families of anti-derivatives of a given function graphically
-? determine indefinite integrals of the form ?¦?f(ax+b)? dx (ACMMM120)
-? determine f(x), given f'(x) and an initial condition f(a)=b in a range of practical and abstract applications including coordinate geometry, business and science
-C4.2: Areas and the definite integral
-Students:
-? know that 'the area under a curve' refers to the area between a function and the x-axis, bounded by two values of the independent variable and interpret the area under a curve in a variety of contexts AAM  
-? determine the approximate area under a curve using a variety of shapes including squares, rectangles (inner and outer rectangles), triangles or trapezia   
-- consider functions which cannot be integrated in the scope of this syllabus, for example f(x)=ln x, and explore the effect of increasing the number of shapes used
-? use the notation of the definite integral ?_a^b¦f(x) dx for the area under the curve y=f(x) from x=a to x=b if f(x)=0
-? use the Trapezoidal rule to estimate areas under curves AAM 
-- use geometric arguments (rather than substitution into a given formula) to approximate a definite integral of the form ?_a^b¦f(x) dx, where f(x)=0, on the interval a=x=b, by dividing the area into a given number of trapezia with equal widths 
-- demonstrate understanding of the formula:
-?_a^b¦f(x) dx˜(b-a)/2n[f(a)+f(b)+2{f(x_1 )+...+f(x_(n-1) )}] where a=x_0 and b=x_n, and the values of x_0,  x_1, ? x?_2, ..., x_n are found by dividing the interval a=x=b into n equal sub-intervals  
-? use geometric ideas to find the definite integral ?_a^b¦f(x) dx where f(x) is positive throughout an interval a=x=b and the shape of f(x) allows such calculations, for example when f(x) is a straight line in the interval or f(x) is a semicircle in the interval AAM  
-? understand the relationship of position to signed areas, namely that the signed area above the horizontal axis is positive and the signed area below the horizontal axis is negative
-? using technology or otherwise, investigate the link between the anti-derivative and the area under a curve  
-- interpret ?_a^b¦  f(x) dx as a sum of signed areas (ACMMM127)  
-- understand the concept of the signed area function F(x)=?_a^x¦?f(t)  dt? (ACMMM129)
-? use the formula ?_a^b¦  f(x) dx=F(b)-F(a), where F(x) is the anti-derivative of f(x), to calculate definite integrals (ACMMM131) AAM 
-- understand and use the Fundamental Theorem of Calculus, F^' (x)=d/dx[?_a^x¦?f(t)  dt]=f(x)? and illustrate its proof geometrically (ACMMM130)
-- use symmetry properties of even and odd functions to simplify calculations of area
-- recognise and use the additivity and linearity of definite integrals (ACMMM128)
-- calculate total change by integrating instantaneous rate of change
-? calculate the area under a curve (ACMMM132) 
-? calculate areas between curves determined by any functions within the scope of this syllabus (ACMMM134) AAM 
-? integrate functions and find indefinite or definite integrals and apply this technique to solving practical problems AAM  
-
-Topic: Financial Mathematics
-Outcomes
-A student:
-› models and solves problems and makes informed decisions about financial situations using mathematical reasoning and techniques MA12-2
-› applies the concepts and techniques of arithmetic and geometric sequences and series in the solution of problems MA12-4
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Topic Focus
-The topic Financial Mathematics involves sequences and series and their application to financial situations.
-
-A knowledge of financial mathematics enables analysis and interpretation of different financial situations, the calculation of the best options for the circumstances, and the solving of financial problems.
-
-The study of financial mathematics is important in developing students' ability to make informed financial decisions, to be aware of the consequences of such decisions, and to manage personal financial resources prudently.
-Subtopics
-MA-M1 Modelling Financial Situations 
-
-
-Financial Mathematics
-MA-M1 Modelling Financial Situations 
-Outcomes
-A student:
-› models and solves problems and makes informed decisions about financial situations using mathematical reasoning and techniques MA12-2
-› applies the concepts and techniques of arithmetic and geometric sequences and series in the solution of problems MA12-4
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Subtopic Focus
-The principal focus of this subtopic is the meaning and mathematics of annuities, including the introduction of arithmetic and geometric sequences and series with their application to financial situations.
-
-Students develop an understanding for the use of series in the borrowing and investing of money, which are common activities for many adults in contemporary society. Annuities represent financial plans involving the sum of a geometric series and can be used to model regular savings plans, including superannuation.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-M1.1: Modelling investments and loans
-Students:
-? solve compound interest problems involving financial decisions, including a home loan, a savings account, a car loan or superannuation AAM     
-- identify an annuity (present or future value) as an investment account with regular, equal contributions and interest compounding at the end of each period, or a single-sum investment from which regular, equal withdrawals are made 
-- use technology to model an annuity as a recurrence relation and investigate (numerically or graphically) the effect of varying the interest rate or the amount and frequency of each contribution or a withdrawal on the duration and/or future or present value of the annuity 
-- use a table of interest factors to perform annuity calculations, eg calculating the present or future value of an annuity, the contribution amount required to achieve a given future value or the single sum that would produce the same future value as a given annuity   
-
-
-M1.2: Arithmetic sequences and series
-Students:
-? know the difference between a sequence and a series
-? recognise and use the recursive definition of an arithmetic sequence: T_n=T_(n-1)+d, ? T?_1=a AAM 
-? establish and use the formula for the nth term (where n is a positive integer) of an arithmetic sequence: T_n=a+(n-1) d, where a is the first term and d is the common difference, and recognise its linear nature AAM 
-? establish and use the formulae for the sum of the first n terms of an arithmetic sequence: 
-S_n=n/2(a+l) where l is the last term in the sequence and S_n=n/2{2a+(n-1) d}  AAM 
-? identify and use arithmetic sequences and arithmetic series in contexts involving discrete linear growth or decay such as simple interest (ACMMM070) AAM
-
-M1.3: Geometric sequences and series
-Students:
-? recognise and use the recursive definition of a geometric sequence: T_n=rT_(n-1),  T_1=a (ACMMM072) AAM
-? establish and use the formula for the nth term of a geometric sequence: T_n=ar^(n-1), where a is the first term, r is the common ratio and n is a positive integer, and recognise its exponential nature (ACMMM073) AAM
-? establish and use the formula for the sum of the first n terms of a geometric sequence: 
-S_n=(a(1-r^n))/(1-r)=(a(r^n-1))/(r-1) (ACMMM075) AAM 
-? derive and use the formula for the limiting sum of a geometric series with |r|<1: S=a/(1-r) AAM 
-- understand the limiting behaviour as n?8 and its application to a geometric series as a limiting sum
-- use the notation lim-(n?8) r^n=0 for |r|<1
-
-M1.4: Financial applications of sequences and series
-Students:
-? use geometric sequences to model and analyse practical problems involving exponential growth and decay (ACMMM076) AAM   
-- calculate the effective annual rate of interest and use results to compare investment returns and cost of loans when interest is paid or charged daily, monthly, quarterly or six-monthly (ACMGM095)
-- solve problems involving compound interest loans or investments, eg determining the future value of an investment or loan, the number of compounding periods for an investment to exceed a given value and/or the interest rate needed for an investment to exceed a given value (ACMGM096)
-- recognise a reducing balance loan as a compound interest loan with periodic repayments, and solve problems including the amount owing on a reducing balance loan after each payment is made 
-? solve problems involving financial decisions, including a home loan, a savings account, a car loan or superannuation AAM     
-- calculate the future value or present value of an annuity by developing an expression for the sum of the calculated compounded values of each contribution and using the formula for the sum of the first n terms of a geometric sequence  
-- verify entries in tables of future values or annuities by using geometric series
-
-
-Topic: Statistical Analysis
-Outcomes
-A student:
-› solves problems using appropriate statistical processes MA12-8
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Topic Focus
-The topic Statistical Analysis involves the exploration, display, analysis and interpretation of data to identify and communicate key information.
-
-Knowledge of statistical analysis enables careful interpretation of situations and an awareness of the contributing factors when presented with information by third parties, including its possible misrepresentation.
-
-The study of statistical analysis is important in developing students' ability to recognise, describe and apply statistical techniques in order to analyse current situations or to predict future outcomes. It also develops an awareness of how conclusions drawn from data can be used to inform decisions made by groups such as scientific investigators, business people and policy-makers.
-Subtopics
-MA-S2 Descriptive Statistics and Bivariate Data Analysis 
-MA-S3 Random Variables 
-
-Statistical Analysis
-MA-S2 Descriptive Statistics and Bivariate Data Analysis 
-Outcomes
-A student:
-› solves problems using appropriate statistical processes MA12-8
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Subtopic Focus
-The principal focus of this subtopic is to introduce students to some methods for identifying, analysing and describing associations between pairs of variables (bivariate data).
-
-Students develop the ability to display, interpret and analyse statistical relationships within bivariate data. Statistical results form the basis of many decisions affecting society, and also inform individual decision-making.
-
-Within this subtopic, schools have the opportunity to identify areas of Stage 5 content which may need to be reviewed to meet the needs of students.
-Content
-S2.1: Data (grouped and ungrouped) and summary statistics
-Students:
-? classify data relating to a single random variable 
-? organise, interpret and display data into appropriate tabular and/or graphical representations including Pareto charts, cumulative frequency distribution tables or graphs, parallel box-plots and two-way tables AAM   
-- compare the suitability of different methods of data presentation in real-world contexts (ACMEM048)
-? summarise and interpret grouped and ungrouped data through appropriate graphs and summary statistics AAM 
-? calculate measures of central tendency and spread and investigate their suitability in real-world contexts and use to compare large datasets  
-- investigate real-world examples from the media illustrating appropriate and inappropriate uses or misuses of measures of central tendency and spread (ACMEM056) AAM
-? identify outliers and investigate and describe the effect of outliers on summary statistics 
-- use different approaches for identifying outliers, for example consideration of the distance from the mean or median, or the use of below Q_1-1.5 × IQR and above Q_3  + 1.5 × IQR as criteria, recognising and justifying when each approach is appropriate
-- investigate and recognise the effect of outliers on the mean, median and standard deviation
-? describe, compare and interpret the distributions of graphical displays and/or numerical datasets and report findings in a systematic and concise manner AAM    
-
-
-S2.2: Bivariate data analysis
-Students:
-? construct a bivariate scatterplot to identify patterns in the data that suggest the presence of an association (ACMGM052) 
-? use bivariate scatterplots (constructing them where needed), to describe the patterns, features and associations of bivariate datasets, justifying any conclusions AAM 
-- describe bivariate datasets in terms of form (linear/non-linear) and in the case of linear, also the direction (positive/negative) and strength of association (strong/moderate/weak)
-- identify the dependent and independent variables within bivariate datasets where appropriate
-- describe and interpret a variety of bivariate datasets involving two numerical variables using real-world examples in the media or those freely available from government or business datasets  
-? calculate and interpret Pearson's correlation coefficient (r) using technology to quantify the strength of a linear association of a sample (ACMGM054)  
-? model a linear relationship by fitting an appropriate line of best fit to a scatterplot and using it to describe and quantify associations AAM 
-- fit a line of best fit to the data by eye and using technology (ACMEM141, ACMEM142)
-- fit a least-squares regression line to the data using technology (ACMGM057)
-- interpret the intercept and gradient of the fitted line (ACMGM059)
-? use the appropriate line of best fit, both found by eye and by applying the equation of the fitted line, to make predictions by either interpolation or extrapolation AAM 
-- distinguish between interpolation and extrapolation, recognising the limitations of using the fitted line to make predictions, and interpolate from plotted data to make predictions where appropriate 
-? solve problems that involve identifying, analysing and describing associations between two numeric variables AAM 
-? construct, interpret and analyse scatterplots for bivariate numerical data in practical contexts AAM     
-- demonstrate an awareness of issues of privacy and bias, ethics, and responsiveness to diverse groups and cultures when collecting and using data
-
-
-Statistical Analysis
-MA-S3 Random Variables 
-Outcomes
-A student:
-› solves problems using appropriate statistical processes MA12-8
-› chooses and uses appropriate technology effectively in a range of contexts, models and applies critical thinking to recognise appropriate times for such use MA12-9
-› constructs arguments to prove and justify results and provides reasoning to support conclusions which are appropriate to the context MA12-10
-Subtopic Focus
-The principal focus of this subtopic is to introduce students to continuous random variables, the normal distribution and its use in a variety of contexts.
-
-Students develop understanding of the probability density function, how integration or the area under the function determines probabilities to solve problems involving random variables, and an understanding of the normal distribution, its properties and uses. Students make connections between calculus skills developed earlier in the course and their applications in Statistics, and lay the foundations for future study in this area.
-Content
-S3.1: Continuous random variables
-Students:
-? use relative frequencies and histograms obtained from data to estimate probabilities associated with a continuous random variable (ACMMM164)
-? understand and use the concepts of a probability density function of a continuous random variable AAM
-- know the two properties of a probability density function: f(x)=0 for all real x and ?_(-8)^8¦f(x)dx=1
-- define the probability as the area under the graph of the probability density function using the notation P(X=r)=?_a^r¦f(x)dx, where f(x) is the probability density function defined on [a,b]
-- examine simple types of continuous random variables and use them in appropriate contexts 
-- explore properties of a continuous random variable that is uniformly distributed
-- find the mode from a given probability density function
-? obtain and analyse a cumulative distribution function with respect to a given probability density function
-- understand the meaning of a cumulative distribution function with respect to a given probability density function
-- use a cumulative distribution function to calculate the median and other percentiles
-
-
-S3.2: The normal distribution
-Students:
-? identify the numerical and graphical properties of data that is normally distributed 
-? calculate probabilities and quantiles associated with a given normal distribution using technology and otherwise, and use these to solve practical problems (ACMMM170) AAM  
-- identify contexts that are suitable for modelling by normal random variables, eg the height of a group of students (ACMMM168)
-- recognise features of the graph of the probability density function of the normal distribution with mean µ and standard deviation s, and the use of the standard normal distribution (ACMMM169)
-- visually represent probabilities by shading areas under the normal curve, eg identifying the value above which the top 10% of data lies
-? understand and calculate the z-score (standardised score) corresponding to a particular value in a dataset AAM 
-- use the formula z=(x-µ)/s, where µ is the mean and s is the standard deviation 
-- describe the z-score as the number of standard deviations a value lies above or below the mean
-? use z-scores to compare scores from different datasets, for example comparing students' subject examination scores AAM 
-? use collected data to illustrate the empirical rules for normally distributed random variables 
-- apply the empirical rule to a variety of problems
-- sketch the graphs of f(x)=e^(-x^2 ) and the probability density function for the normal distribution f(x)=1/(sv2p) e^(-((?x-µ)?^2)/(2s^2 )) using technology 
-- verify, using the Trapezoidal rule, the results concerning the areas under the normal curve
-? use z-scores to identify probabilities of events less or more extreme than a given event AAM 
-- use statistical tables to determine probabilities 
-- use technology to determine probabilities 
-? use z-scores to make judgements related to outcomes of a given event or sets of data AAM  
-
-
-Glossary
-Glossary termElaborationAboriginal and Torres Strait Islander PeoplesAboriginal Peoples are the first peoples of Australia and are represented by over 250 language groups each associated with a particular Country or territory. Torres Strait Islander Peoples whose island territories to the north east of Australia were annexed by Queensland in 1879 are also Indigenous Australians and are represented by five cultural groups.
-
-An Aboriginal and/or Torres Strait Islander person is someone who:
-* is of Aboriginal and/or Torres Strait Islander descent
-* identifies as an Aboriginal person and/or Torres Strait Islander person, and
-* is accepted as such by the Aboriginal and/or Torres Strait Islander community in which they live.absolute valueThe absolute value |x| of a real number x is the magnitude or size of x without regard to its sign, ie on a number line, the distance of the number from the origin. Formally, |x|=x if x=0, |x|=-x if x<0.ambiguous case in trigonometryIn trigonometry, the ambiguous case refers to using the sine rule to calculate the size of an angle in a triangle where there are two possibilities for the angle, one obtuse and one acute, leading to two possible triangles.amplitudeThe amplitude of a wave function is the height from the horizontal centre line to the peak (or to the trough) of the graph of the function. Alternatively, it is half the distance between the maximum and minimum values.angle of inclinationThe angle of inclination of a straight line is the angle the line makes with the positive x-axis.annuityAn annuity is a compound interest investment from which payments are made or received on a regular basis for a fixed period of time.anti-derivativeAn anti-derivative, primitive or indefinite integral of a function f(x) is a function F(x) whose derivative is f(x), ie F^' (x)=f(x).
-
-The process of finding the anti-derivative is called integration.arithmetic sequenceAn arithmetic sequence is a sequence of numbers such that the difference of any two successive members of the sequence is a constant.arithmetic seriesAn arithmetic series is a sum whose terms form an arithmetic sequence.arrayAn array is an ordered rectangular collection of objects or numbers arranged in rows and columns.asymptoteAn asymptote is a line.
-* A horizontal asymptote is a horizontal line whose distance from the function f(x) becomes as small as we please for all large values of x.
-* The line x=a is a vertical asymptote if the function f is not defined at x=a and values of f(x) become as large as we please (positive or negative) as x approaches a.break-even pointThe break-even point is the point at which income and cost of production are equal.compass bearingCompass bearings are specified as angles either side of north or south. For example a compass bearing of N50°E is found by facing north and moving through an angle of 50° to the east.composite functionsIn a composite function, the output of one function becomes the input of a second function.
-
-More formally, the composite of f and g, acting on x, can be written as f(g(x)), with g(x)  being performed first.concavityIf a function f(x) is a differentiable function on a given interval, I, then:
-* f(x) is concave up on I if and only if f'(x) is increasing on I. Graphically if the tangent at x=a lies below the curve (locally), then the function is concave up at x=a.
-* f(x) is concave down on I if and only if f'(x) is decreasing on I. Graphically if the tangent at x=a lies above the curve (locally), then the function is concave down at x=a.
-
-If f(x) is doubly differentiable at x=a then the second derivative can be used to identify concavity in the following way:
-* If f''(a) is positive then the curve is concave up at x=a
-* If f''(a) is negative then the curve is concave down at x=a
-* If f''(a) is zero then the curve could be concave up, concave down or a point of inflection and further work is required to determine which one of these three cases applies at x=a.conditional probabilityThe probability that an event A occurs can change if it becomes known that another event B has occurred. The new probability is known as conditional probability and is written as P(A|B). If B has occurred, the sample space is reduced by discarding all outcomes that are not in the event B.continuous functionA function is continuous when sufficiently small changes in the input result in arbitrarily small changes in the output. Its graph is an unbroken curve.continuous random variableA continuous random variable is a numerical variable that can take any value along a continuum.cumulative distribution functionGiven a continuous random variable X, the cumulative distribution function F(x) is the probability that X=x.cumulative frequencyThe cumulative frequency is the accumulating total of frequencies within an ordered dataset.dilationA dilation stretches or compresses the graph of a function. This could happen either in the x or y direction or both.direct variation Two variables are in direct variation if one is a constant multiple of the other. This can be represented by the equation y=kx, where k is the constant of variation (or proportion). Also known as direct proportion, it produces a linear graph through the origin.discontinuous functionIf a function f(x) is not continuous at x=a, then f(x) is said to be discontinuous at x=a.discrete random variableA discrete random variable is a numerical variable whose values can be listed.domainThe domain of a function is the set of x values of y=f(x) for which the function is defined. Also known as the 'input' of a function.empirical ruleThe empirical rule for normally distributed random variables is:
-* approximately 68% of data will have z-scores between -1 and 1
-* approximately 95% of data will have z-scores between -2 and 2
-* approximately 99.7% of data will have z-scores between -3 and 3.even functionAlgebraically, a function is even if f(-x)=f(x), for all values of x in the domain.
-
-An even function has line symmetry about the y-axis.expected valueIn statistics, the expected value E(X) of a random variable X is a measure of the central tendency of its distribution. Also known as the expectation or mean. E(X) is calculated differently depending on whether the random variable is discrete or continuous.exponential growth and decayExponential growth occurs when the rate of change of a mathematical function is positive and proportional to the function's current value. Exponential decay occurs in the same way when the growth rate is negative.extrapolationExtrapolation occurs when the fitted model is used to make predictions using values that are outside the range of the original data upon which the fitted model was based. Extrapolation far beyond the range of the original data is not advisable as it can sometimes lead to quite erroneous predictions.functionA function f is a rule that associates each element x in a set S with a unique element f(x) from a set T.
-
-The set S is called the domain of f and the set T is called the co-domain of f. The subset of T consisting of those elements of T which occur as values of the function is called the range of f. The functions most commonly encountered in elementary mathematics are real functions of a real variable, for which both the domain and co-domain are subsets of the real numbers.
-
-If we write y=f(x), then we say that x is the independent variable and y is the dependent variable.future valueThe future value of an investment or annuity is the total value of the investment at the end of the term of the investment, including all contributions and interest earned.future value interest factorsFuture value interest factors are the values of an investment at a specific date. A table of these factors can be used to calculate the future value of different amounts of money that are invested at a certain interest rate for a specified period of time.geometric sequenceA geometric sequence is a sequence of numbers where each term after the first is found by multiplying the previous one by a fixed number called the common ratio.geometric seriesA geometric series is a sum whose terms form a geometric sequence.horizontal line testThe horizontal line test is a method that can be used to determine whether a function is a one-to-one function. If any horizontal line intersects the graph of a function more than once then the function is not a one-to-one function.identityAn identity is a statement involving a variable(s) that is true for all possible values of the variable(s).independent events (independence)In probability, two events are independent of each other if the occurrence of one does not affect the probability of the occurrence of the other.instantaneous rate of changeThe instantaneous rate of change is the rate of change at a particular moment. For a differentiable function, the instantaneous rate of change at a point is the same as the gradient of the tangent to the curve at that point. This is defined to be the value of the derivative at that particular point.interpolationInterpolation occurs when a fitted model is used to make predictions using values that lie within the range of the original data.interval notationInterval notation is a notation for representing an interval by its endpoints. Parentheses and/or square brackets are used respectively to show whether the endpoints are excluded or included.least-squares regression lineLeast-squares regression is a method for finding a straight line that best summarises the relationship between two variables, within the range of the dataset.
-
-The least-squares regression line is the line that minimises the sum of the squares of the residuals. Also known as the least-squares line of best fit.limitThe limit of a function at a point a, if it exists, is the value the function approaches as the independent variable approaches a.
-
-The notation used is: lim-(x?a) f(x)=L
-This is read as 'the limit of f(x) as x approaches a is L'.line of best fitA line of best fit is a line drawn through a scatterplot of data points that most closely represents the relationship between two variables.local and global maximum and minimumf(x_0) is a local maximum of the function f(x) if f(x)=f(x_0) for all values of x near x_0. We say that f(x_0) is a global maximum of the function f(x) if f(x)=f(x_0) for all values of x in the domain of f.
-
-f(x_0) is a local minimum of the function f(x) if f(x)=f(x_0) for all values of x near x_0. We say that f(x_0) is a global minimum of the function f(x) if f(x)=f(x_0) for all values of x in the domain of f.measures of central tendencyMeasures of central tendency are the values about which the set of data values for a particular variable are scattered. They are a measure of the centre or location of the data.
-
-The two most common measures of central tendency are the mean and the median.measures of spreadMeasures of spread describe how similar or varied the set of data values are for a particular variable.
-
-Common measures of spread include the range, combinations of quantiles (deciles, quartiles, percentiles), the interquartile range, variance and standard deviation.normal distributionThe normal distribution is a type of continuous distribution whose graph looks like this:
-
-
-The mean, median and mode are equal and the scores are symmetrically arranged either side of the mean.
-
-The graph of a normal distribution is often called a 'bell curve' due to its shape.normal random variableA normal random variable is a variable which varies according to the normal distribution.normal to a curveIn calculus, the normal to a curve at a given point P is the straight line that is perpendicular to the tangent to the curve at that point.odd functionAlgebraically, a function is odd if f(-x)=-f(x), for all values of x in the domain.
-
-An odd function has point symmetry about the origin.one-to-one functionIn a one-to-one function, every element in the range of a function corresponds to exactly one element of the domain.Pareto chartA Pareto chart is a type of chart that contains both a bar and a line graph, where individual values are represented in descending order by the bars and the cumulative total is represented by the line graph.Pearson's correlation coefficientPearson's correlation coefficient is a statistic that measures the strength of the linear relationship between a pair of variables or datasets. Its value lies between -1 and 1 (inclusive). Also known as simply the correlation coefficient. For a sample, it is denoted by r.periodThe period of a trigonometric function is the smallest interval for which the function repeats itself.phaseWhen a trigonometric function is translated horizontally, the phase (or phase shift) is the magnitude of this translation.point of inflectionA point of inflection is a point on a curve where the tangent exists and crosses the curve.
-
-Within these courses, points of inflection can be found by taking the zeros of the second derivative and checking whether the concavity changes around the point.polynomialA polynomial is an expression of the form a_n x^n+a_(n-1) x^(n-1)+ . . . +a_2 x^2+a_1 x+a_0, where n is a non-negative integer.populationThe population in statistics is the entire dataset from which a statistical sample may be drawn.power functionA power function is a function of the form f(x)=kx^n, where k and n are real numbers.present valueThe present value of an investment or annuity is the single sum of money (or principal) that could be initially invested to produce a future value over a given period of time.quadratic inequalityA quadratic inequality is an inequality involving a quadratic expression.random variableA random variable is a variable whose possible values are outcomes of a statistical experiment or a random phenomenon.range (of function)The range of a function is the set of values of the dependent variable for which the function is defined.rate of changeA rate of change of a function, y=f(x) is ?y/?x where ?x is the change in x and ?y is the corresponding change in y.real numberThe set of real numbers consists of the set of all rational and irrational numbers.reducing balance loanA reducing balance loan is a compound interest loan where the loan is repaid by making regular payments and the interest paid is calculated on the amount still owing (the reducing balance of the loan) after each payment is made.scatterplotA scatterplot is a two-dimensional data plot using Cartesian coordinates to display the values of two variables in a bivariate dataset. Also known as a scatter graph.secant (line)A secant is the straight line passing through two points on the graph of a function.second derivativeThe second derivative is the derivative of the first derivative. It is denoted by: f''(x) or (d^2 y)/(dx^2 )sequenceIn mathematics, a sequence is a set of numbers whose terms follow a prescribed pattern. Mathematical sequences include arithmetic sequences and geometric sequences.seriesA series is the sum of the terms of a particular sequence.set language and notationA set is a collection of distinct objects called elements.
-
-The language and notation used in the study of sets includes:
-A set is a collection of objects, for example 'A is the set of the numbers 1, 3 and 5' is written as A={1, 3, 5}.
-
-Each object is an element or member of a set, for example '1 is an element of set A' is written as 1?A.
-
-The number of elements in set A={1, 3, 5} is written as n(A)=3, or 
-|A|=3.
-
-The empty set is the set with no members and is written as { } or Ø.
-
-The universal set contains all elements involved in a particular problem.
-
-B is a subset of A if every member of B is a member of A and is written as B?A, ie 'B is a subset of A'. B may also be equal to A in this scenario, and we can therefore write B?A.
-
-The complement of a set A is the set of all elements in the universal set that are not in A and is written as A ¯ or A^c.
-
-The intersection of sets A and B is the set of elements which are in both A and B and is written as AnB, ie 'A intersection B'.
-
-The union of sets A and B is the set of elements which are in A or B or both and is written as A?B, ie 'A union B'.sketchA sketch is an approximate representation of a graph, including labelled axes, intercepts and any other important relevant features. Compared to the corresponding graph, a sketch should be recognisably similar but does not need to be precise.standard deviationStandard deviation is a measure of the spread of a dataset. It gives an indication of how far, on average, individual data values are spread from the mean.stationary pointA stationary point on the graph y=f(x) of a differentiable function is a point where f'(x)=0.
-
-A stationary point could be classified as a local or global maximum or minimum or a horizontal point of inflection.tangentThe tangent to a curve at a given point P can be described intuitively as the straight line that 'just touches' the curve at that point. At P the curve has 'the same direction' as the tangent. In this sense it is the best straight-line approximation to the curve at point P.true bearingTrue bearings are measured in degrees clockwise from true north and are written with three digits being used to specify the direction.
-
-For example the direction of north is specified 000°, east is specified as 090°, south is specified as 180° and north-west is specified as 315°.variance In statistics, the variance Var(X) of a random variable X is a measure of the spread of its distribution. Var(X) is calculated differently depending on whether the random variable is discrete or continuous.vertical line testThe vertical line test determines whether a relation or graph is a function. If a vertical line intersects or touches a graph at more than one point, then the graph is not a function.z-score A z-score is a statistical measurement of how many standard deviations a raw score is above or below the mean. A z-score can be positive or negative, indicating whether it is above or below the mean, or zero. Also known as a standardised score.
-
-
-
-
-Mathematics Advanced Stage 6 Syllabus (2017)		18
-
-
-
-
-
-Year 11
-
-
-
-
-
-Year 12
-
-
-
-
-
-
-
-
-

@@ -74,6 +74,36 @@
         .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
         .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        /* Fun facts during loading */
+        .fun-fact-box {
+            background: linear-gradient(135deg, rgba(79,140,255,0.08), rgba(108,99,255,0.08));
+            border: 1px solid rgba(79,140,255,0.2); border-radius: 12px;
+            padding: 16px 20px; margin-top: 12px; max-width: 600px;
+            animation: fadeIn 0.5s ease;
+        }
+        .fun-fact-box .ff-label { font-size: 11px; font-weight: 700; color: #4f8cff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .fun-fact-box .ff-text { font-size: 14px; color: #c8ccd0; line-height: 1.6; }
+        @keyframes factSwap { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
+        .ff-swap { animation: factSwap 0.4s ease; }
+        /* Recommendation cards */
+        .rec-panel {
+            background: #16202a; border: 1px solid #2f3336; border-radius: 16px;
+            padding: 20px 24px; margin: 20px 0; animation: fadeIn 0.4s ease;
+        }
+        .rec-panel h4 { font-size: 15px; font-weight: 700; color: #e7e9ea; margin-bottom: 14px; }
+        .rec-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .rec-card {
+            display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+            background: rgba(79,140,255,0.06); border: 1px solid rgba(79,140,255,0.15);
+            border-radius: 10px; cursor: pointer; transition: all 0.2s; text-decoration: none; color: inherit;
+        }
+        .rec-card:hover { background: rgba(79,140,255,0.12); border-color: rgba(79,140,255,0.35); transform: translateY(-2px); }
+        .rec-card .rc-icon { font-size: 24px; flex-shrink: 0; }
+        .rec-card .rc-info { flex: 1; min-width: 0; }
+        .rec-card .rc-title { font-size: 13px; font-weight: 600; color: #e7e9ea; }
+        .rec-card .rc-desc { font-size: 11px; color: #71767b; margin-top: 2px; }
+        .rec-card .rc-arrow { color: #4f8cff; font-size: 16px; flex-shrink: 0; }
+        @media (max-width: 768px) { .rec-cards { grid-template-columns: 1fr; } }
         .input-panel {
             background: #16202a; border-top: 1px solid #2f3336;
             padding: 20px 24px; flex-shrink: 0;
@@ -220,6 +250,266 @@
         let conversationHistory = [];
         let isLoading = false;
         let subjects = [];
+        let funFactInterval = null;
+
+        // ========== FUN FACTS DATABASE ==========
+        const SUBJECT_FUN_FACTS = {
+            biology: [
+                "Your DNA stretched out would reach from the Sun to Pluto and back — 17 times.",
+                "The human body contains about 37.2 trillion cells.",
+                "Octopuses have three hearts and blue blood.",
+                "A single teaspoon of soil contains more microorganisms than people on Earth.",
+                "Tardigrades can survive in outer space for 10 days."
+            ],
+            chemistry: [
+                "A teaspoon of neutron star material would weigh about 6 billion tonnes.",
+                "The only letter not on the periodic table is J.",
+                "Gallium metal melts in your hand — its melting point is 29.76°C.",
+                "Honey never spoils due to its unique chemical composition.",
+                "Water expands by 9% when it freezes, which is why ice floats."
+            ],
+            physics: [
+                "Light takes 8 minutes 20 seconds to travel from the Sun to Earth.",
+                "If you could fold a piece of paper 42 times, it would reach the Moon.",
+                "A neutron star is so dense that a matchbox of it would weigh 3 billion tonnes.",
+                "Sound travels about 4.3 times faster in water than in air.",
+                "GPS satellites must account for time dilation from Einstein's relativity."
+            ],
+            mathematics_advanced: [
+                "Zero is the only number that cannot be represented in Roman numerals.",
+                "A 'jiffy' is an actual unit of time — 1/100th of a second.",
+                "111,111,111 × 111,111,111 = 12,345,678,987,654,321.",
+                "The word 'algebra' comes from the Arabic 'al-jabr' meaning 'reunion of broken parts'.",
+                "Pi has been calculated to over 100 trillion digits — and it never repeats."
+            ],
+            mathematics_extension_1: [
+                "Euler's identity e^(iπ) + 1 = 0 links five fundamental constants.",
+                "The Fibonacci sequence appears in sunflowers, pinecones, and galaxies.",
+                "There are more possible chess games than atoms in the observable universe.",
+                "The number 0.999... repeating is exactly equal to 1.",
+                "A Möbius strip has only one side and one edge."
+            ],
+            mathematics_extension_2: [
+                "The sum of all positive integers (1+2+3+...) can be assigned the value -1/12 in certain contexts.",
+                "Cantor proved there are different sizes of infinity.",
+                "The Four Colour Theorem was the first major theorem proved by computer.",
+                "i^i (imaginary unit to imaginary power) is a real number ≈ 0.2079.",
+                "The Riemann Hypothesis, worth $1M, remains unsolved after 160+ years."
+            ],
+            mathematics_standard: [
+                "Ancient Egyptians used fractions with numerator 1 almost exclusively.",
+                "The equals sign (=) was invented in 1557 by Robert Recorde.",
+                "Australians spend an average of $1,384 per year on coffee — that's compound interest motivation.",
+                "A marathon is exactly 42.195 km due to the 1908 London Olympics route.",
+                "The chance of two people sharing a birthday in a room of 23 is over 50%."
+            ],
+            english_advanced: [
+                "Shakespeare invented over 1,700 words including 'lonely', 'generous', and 'critical'.",
+                "The longest English word without a vowel is 'rhythms'.",
+                "George Orwell's '1984' saw a 9,500% sales spike after the Snowden leaks.",
+                "Mary Shelley wrote Frankenstein when she was just 18 years old.",
+                "The Oxford comma debate has led to an actual $5 million lawsuit settlement."
+            ],
+            english_standard: [
+                "The most common English letter is 'e' — it appears in 11% of all words.",
+                "'Set' has the most definitions of any English word — over 430.",
+                "English is the only major language that doesn't have a word for the day after tomorrow.",
+                "The shortest complete sentence in English is 'I am' (or debatably 'Go').",
+                "Dr. Seuss wrote 'Green Eggs and Ham' on a bet using only 50 words."
+            ],
+            english_extension_1: [
+                "The Epic of Gilgamesh, from ~2100 BC, is the oldest known literary work.",
+                "Virginia Woolf wrote her novels standing up at a specially designed desk.",
+                "Kafka asked his friend to burn all his manuscripts — his friend published them instead.",
+                "T.S. Eliot originally titled 'The Waste Land' as 'He Do the Police in Different Voices'.",
+                "The unreliable narrator technique dates back to Geoffrey Chaucer in the 14th century."
+            ],
+            english_extension_2: [
+                "Jacques Derrida's 'Of Grammatology' argues writing precedes speech philosophically.",
+                "The term 'postmodernism' was first used in the 1870s, not the 1960s.",
+                "Roland Barthes declared 'The Death of the Author' in a 1967 essay.",
+                "Sylvia Plath's 'The Bell Jar' was first published under the pseudonym Victoria Lucas.",
+                "Margaret Atwood writes parts of her novels in longhand in notebooks."
+            ],
+            english_studies: [
+                "Australia's first published novel was 'Quintus Servinton' in 1831.",
+                "The word 'selfie' was added to the Oxford Dictionary in 2013 — coined by an Australian.",
+                "Banjo Paterson's face is on the Australian $10 note.",
+                "The term 'tall poppy syndrome' originated in Australian English.",
+                "Tim Winton's 'Cloudstreet' took six years to write."
+            ],
+            english_eald: [
+                "There are over 300 languages spoken in Australian homes today.",
+                "English borrows words from over 350 other languages.",
+                "The word 'kangaroo' likely comes from the Guugu Yimithirr word 'gangurru'.",
+                "Bilingual brains show enhanced executive function and delayed cognitive decline.",
+                "Australia has no official national language — English is the de facto standard."
+            ],
+            modern_history: [
+                "The Berlin Wall fell on November 9, 1989 — partly due to a miscommunicated press conference.",
+                "During WWI, a Christmas truce in 1914 saw soldiers playing football in no man's land.",
+                "The term 'Cold War' was first used by George Orwell in 1945.",
+                "The Space Race cost the US over $25 billion (~$200B today) to reach the Moon.",
+                "Nelson Mandela was on the US terror watch list until 2008."
+            ],
+            ancient_history: [
+                "Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid.",
+                "The Library of Alexandria may have held up to 400,000 scrolls.",
+                "Ancient Romans used urine as mouthwash — it contains ammonia.",
+                "The ancient Olympic Games ran for over 1,000 years from 776 BC to 393 AD.",
+                "Gladiator sweat was sold as a beauty product in ancient Rome."
+            ],
+            legal_studies: [
+                "The longest trial in Australian history lasted 360 days (the Bell Group case).",
+                "The Australian Constitution was partly drafted in a hotel room in Melbourne.",
+                "The 'neighbour principle' from Donoghue v Stevenson (1932) shapes all negligence law.",
+                "Australia was the second country in the world to give women the right to vote federally.",
+                "The High Court of Australia has decided over 7,000 cases since 1903."
+            ],
+            economics: [
+                "Australia has had 33 consecutive years without a recession (1991–2020, pre-COVID).",
+                "The RBA adjusts interest rates in increments of 0.25% — each change affects billions.",
+                "If inflation is 3%, your money loses half its value in about 24 years.",
+                "The Australian dollar is one of the most traded currencies in the world (5th).",
+                "GDP was invented by Simon Kuznets in 1934 — he warned it shouldn't measure welfare."
+            ],
+            business_studies: [
+                "90% of Australian businesses are small businesses (under 20 employees).",
+                "The average Australian startup takes 3.5 years to become profitable.",
+                "Atlassian, founded in Sydney, is now worth over $40 billion.",
+                "Australia ranks 5th globally for ease of starting a business.",
+                "The concept of limited liability was only established in the 1850s."
+            ],
+            geography: [
+                "Australia is both a country and a continent — the world's smallest continent.",
+                "70% of Australia's land mass is classified as arid or semi-arid.",
+                "The Great Barrier Reef is visible from space and stretches over 2,300 km.",
+                "Urbanisation means 86% of Australians live in urban areas.",
+                "Lake Hillier in Western Australia is naturally bubblegum pink."
+            ],
+            pdhpe: [
+                "Your heart beats about 100,000 times per day — ~35 million times a year.",
+                "Regular exercise can improve academic performance by up to 20%.",
+                "The human brain uses 20% of the body's total energy.",
+                "Laughing 100 times burns roughly the same calories as 10 minutes on a rowing machine.",
+                "Sleep deprivation affects driving ability as much as being legally drunk."
+            ],
+            health_movement_science: [
+                "The human body has over 600 muscles — your tongue alone has 8.",
+                "VO2 max is the single best predictor of cardiovascular fitness.",
+                "Bones are about 5 times stronger than steel of the same weight.",
+                "The fastest human nerve signals travel at 120 metres per second.",
+                "Astronauts lose 1-2% bone mass per month in space due to zero gravity."
+            ],
+            enterprise_computing: [
+                "The first computer bug was an actual moth found in a Harvard Mark II in 1947.",
+                "Over 90% of the world's data was created in the last 2 years.",
+                "Australia's NBN network spans over 12 million premises.",
+                "The average cost of a data breach in Australia is $4.03 million.",
+                "Python was named after Monty Python, not the snake."
+            ],
+            software_design: [
+                "The first programmable computer was built by Konrad Zuse in 1941.",
+                "Git was created by Linus Torvalds in just 10 days.",
+                "There are approximately 700 programming languages in existence.",
+                "The term 'bug' predates computers — Thomas Edison used it in 1878.",
+                "The Apollo 11 guidance computer had less power than a modern calculator."
+            ],
+            information_processes_technology: [
+                "The internet weighs about 50 grams — the weight of the electrons carrying data.",
+                "The first email was sent by Ray Tomlinson in 1971 — he can't remember what it said.",
+                "QR codes were invented in 1994 for tracking car parts in Japan.",
+                "More than 500 hours of video are uploaded to YouTube every minute.",
+                "The first website (info.cern.ch) is still online today."
+            ],
+            music: [
+                "The world's oldest known instrument is a 40,000-year-old bone flute.",
+                "Mozart wrote his first composition at age 5.",
+                "A 'semitone' is the smallest interval in Western music.",
+                "The vibration frequency of middle C is approximately 261.63 Hz.",
+                "Finland has more heavy metal bands per capita than any other country."
+            ],
+            visual_arts: [
+                "The Mona Lisa has no eyebrows — it was fashionable to shave them in the Renaissance.",
+                "Picasso could draw before he could talk — his first word was 'pencil'.",
+                "The colour orange was named after the fruit, not the other way around.",
+                "Van Gogh sold only one painting during his lifetime.",
+                "The human eye can distinguish about 10 million different colours."
+            ],
+            drama: [
+                "The word 'theatre' comes from the Greek 'theatron' meaning 'seeing place'.",
+                "Ancient Greek actors wore platform shoes called 'kothornoi' to appear taller.",
+                "Shakespeare's Globe Theatre could hold 3,000 people.",
+                "Method acting was developed by Konstantin Stanislavski in the early 1900s.",
+                "The longest running musical is The Phantom of the Opera — over 35 years."
+            ],
+            _default: [
+                "Students who test themselves regularly retain 50% more information.",
+                "The 'spacing effect' — spreading study over time — beats cramming every time.",
+                "Teaching someone else is the most effective way to learn — the Feynman Technique.",
+                "Your brain forms new neural pathways every time you learn something new.",
+                "The Pomodoro Technique (25 min focus + 5 min break) boosts productivity by 25%."
+            ]
+        };
+
+        function getFactsForSubject(subjectId) {
+            return SUBJECT_FUN_FACTS[subjectId] || SUBJECT_FUN_FACTS._default;
+        }
+
+        function startFunFacts(subjectId) {
+            stopFunFacts();
+            const facts = getFactsForSubject(subjectId);
+            let idx = Math.floor(Math.random() * facts.length);
+            const box = document.getElementById('funFactBox');
+            if (!box) return;
+            box.style.display = 'block';
+            const textEl = box.querySelector('.ff-text');
+            textEl.className = 'ff-text ff-swap';
+            textEl.textContent = facts[idx];
+            funFactInterval = setInterval(() => {
+                idx = (idx + 1) % facts.length;
+                textEl.className = 'ff-text';
+                setTimeout(() => {
+                    textEl.textContent = facts[idx];
+                    textEl.className = 'ff-text ff-swap';
+                }, 50);
+            }, 4500);
+        }
+
+        function stopFunFacts() {
+            if (funFactInterval) { clearInterval(funFactInterval); funFactInterval = null; }
+            const box = document.getElementById('funFactBox');
+            if (box) box.style.display = 'none';
+        }
+
+        function showRecommendations(subjectId, topicName) {
+            const enc = s => encodeURIComponent(s);
+            const subjectName = subjectSelect.options[subjectSelect.selectedIndex]?.text || '';
+            const cards = [
+                {
+                    icon: '📝', title: 'Practice Exam',
+                    desc: `Test yourself on ${topicName}`,
+                    href: `practice.html?mode=exam&subject=${enc(subjectId)}&topic=${enc(topicName)}`
+                },
+                {
+                    icon: '🎮', title: 'Learn IRL',
+                    desc: `Apply ${subjectName} in real scenarios`,
+                    href: `learn-irl.html?subject=${enc(subjectId)}&topic=${enc(topicName)}`
+                },
+                {
+                    icon: '📋', title: 'Notes Transcriber',
+                    desc: 'Transcribe & organise your notes',
+                    href: 'notes-transcriber.html'
+                }
+            ];
+            const recDiv = document.createElement('div');
+            recDiv.className = 'rec-panel';
+            recDiv.innerHTML = `<h4>⚡ What's Next?</h4><div class="rec-cards">${cards.map(c =>
+                `<a class="rec-card" href="${c.href}"><span class="rc-icon">${c.icon}</span><div class="rc-info"><div class="rc-title">${c.title}</div><div class="rc-desc">${c.desc}</div></div><span class="rc-arrow">→</span></a>`
+            ).join('')}</div>`;
+            outputContent.appendChild(recDiv);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
         
         const form = document.getElementById('inputForm');
         const outputContent = document.getElementById('outputContent');
@@ -496,6 +786,16 @@
             loadingDiv.id = 'loadingIndicator';
             loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div><span>Decoding syllabus...</span>';
             outputContent.appendChild(loadingDiv);
+            // Fun fact box
+            let box = document.getElementById('funFactBox');
+            if (!box) {
+                box = document.createElement('div');
+                box.id = 'funFactBox';
+                box.className = 'fun-fact-box';
+                box.style.display = 'none';
+                box.innerHTML = '<div class="ff-label">💡 Did you know?</div><div class="ff-text"></div>';
+                outputContent.appendChild(box);
+            }
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
         
@@ -517,6 +817,7 @@
                 conversationHistory.push({ role: 'user', content: userMessage });
                 addMessage(userMessage, true);
                 showLoading();
+                startFunFacts(subjectId);
                 
                 const detail = parseInt(detailSlider.value) || 2;
                 
@@ -540,6 +841,7 @@
                     const errorData = await response.json().catch(() => ({}));
                     if (errorData.freeTierExhausted) {
                         hideLoading();
+                        stopFunFacts();
                         showFreeTierUpsell(errorData.botType, errorData.limitType);
                         return;
                     }
@@ -550,8 +852,13 @@
                 console.log('[DEBUG] Received response:', data.reply.substring(0, 100));
                 
                 hideLoading();
+                stopFunFacts();
                 conversationHistory.push({ role: 'assistant', content: data.reply });
                 addMessage(data.reply, false);
+                
+                // Show cross-bot recommendations
+                const topicName = topicSelect.options[topicSelect.selectedIndex]?.text || '';
+                showRecommendations(subjectId, topicName);
                 
                 // Clear history after response for independent topic decoding
                 console.log('[DEBUG] Response received and displayed. Clearing history for next independent decode.');
@@ -559,6 +866,7 @@
             } catch (error) {
                 console.error('[DEBUG] sendMessage error:', error);
                 hideLoading();
+                stopFunFacts();
                 addMessage(`Error: ${error.message || 'Unable to process your request. Please try again.'}`, false);
             } finally {
                 isLoading = false;
@@ -579,9 +887,10 @@
             
             console.log('[DEBUG] Subject:', subjectName, 'Topic:', topic, 'SubjectId:', subjectId);
             
-            // Save to sessionStorage so practice.html can auto-preload this subject
+            // Save to sessionStorage so other bots can auto-preload this subject/topic
             try {
                 sessionStorage.setItem('sd_last_decoded_subject', subjectId);
+                sessionStorage.setItem('sd_last_decoded_topic', topic);
             } catch (e) { /* silent */ }
             
             // Clear conversation history for fresh decode
@@ -651,6 +960,16 @@ Output the complete decoded content for this topic. Do not ask any questions. Do
                 // User has access - show content
                 document.getElementById('authOverlay').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
+                
+                // Auto-preset from URL params (from cross-bot recommendations)
+                const urlParams = new URLSearchParams(window.location.search);
+                const urlSubject = urlParams.get('subject');
+                if (urlSubject) {
+                    setTimeout(() => {
+                        subjectSelect.value = urlSubject;
+                        subjectSelect.dispatchEvent(new Event('change'));
+                    }, 300);
+                }
                 
                 if (!data.subscribed && data.role !== 'owner' && data.role !== 'lifetime' && data.role !== 'og_tester') {
                     const upgradeBtn = document.createElement('a');

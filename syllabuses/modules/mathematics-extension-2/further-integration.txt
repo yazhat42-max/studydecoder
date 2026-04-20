@@ -1,111 +1,0 @@
-﻿=== Further integration ===
-Subject: mathematics-extension-2
-============================================================
-
-MEX-N2 Using Complex NumbersCalculusMEX-C1 Further IntegrationMechanicsMEX-M1 Applications of Calculus to Mechanics
-For this course:
-? The Mathematics Extension 1 Year 12 course should be taught prior to or concurrently with this course.
-? Students should experience content in the course in familiar and routine situations as well as unfamiliar situations.
-? Students should be provided with regular opportunities involving the integration of technology to enrich the learning experience.
-
-
-Assessment and Reporting
-Information about assessment in relation to the Mathematics Extension 2 syllabus is contained in Assessment and Reporting in Mathematics Extension 2 Stage 6. It outlines course-specific advice and requirements regarding:
-? Year 12 school-based assessment requirements
-? Year 12 mandatory components and weightings
-? External assessment requirements, including HSC examination specifications.
-
-This information should be read in conjunction with requirements on the Assessment Certification Examination (ACE) website.
-
-Additional advice is available in the Principles of Assessment for Stage 6.
-
-
-Content
-Content defines what students are expected to know and do as they work towards syllabus outcomes. It provides the foundations for students to successfully progress to the next stage of schooling or post-school opportunities.
-Teachers will make decisions about content regarding the sequence, emphasis and any adjustments required based on the needs, interests, abilities and prior learning of students.
-Content in Stage 6 syllabuses defines learning expectations that may be assessed in Higher School Certificate examinations.
-
-Organisation of Content
-The following diagram provides an illustrative representation of elements of the course and their relationship. The Mathematics Extension 2 course includes all of the Mathematics Extension 1 and Mathematics Advanced content.
-
-
-Working Mathematically
-Working Mathematically is integral to the learning process in mathematics. It provides students with the opportunity to engage in genuine mathematical activity and develop the skills to become flexible, critical and creative users of mathematics. In this syllabus, Working Mathematically builds on the skills developed in Stage 5, and encompasses six interrelated aspects which form the focus of the syllabus:
-
-These six aspects of Working Mathematically are embedded across the range of syllabus objectives, outcomes and topics. Teachers extend students' level of proficiency in Working Mathematically by creating opportunities for development through a range of teaching and learning activities they design.
-
-The two key components of assessment are created from these aspects:
-* Understanding, Fluency and Communicating
-* Problem Solving, Reasoning and Justification
-
-Learning Across the Curriculum
-Learning across the curriculum content, including the cross-curriculum priorities and general capabilities, assists students to achieve the broad learning outcomes defined in the NESA Statement of Equity Principles, the Melbourne Declaration on Educational Goals for Young Australians (December 2008) and in the Australian Government's Core Skills for Work Developmental Framework (2013).
-
-Cross-curriculum priorities enable students to develop understanding about and address the contemporary issues they face.
-
-The cross-curriculum priorities are:
-? Aboriginal and Torres Strait Islander histories and cultures 
-? Asia and Australia's engagement with Asia 
-? Sustainability 
-
-General capabilities encompass the knowledge, skills, attitudes and behaviours to assist students to live and work successfully in the 21st century.
-
-The general capabilities are:
-? Critical and creative thinking 
-? Ethical understanding 
-? Information and communication technology capability 
-? Intercultural understanding 
-? Literacy 
-? Numeracy 
-? Personal and social capability 
-
-NESA syllabuses include other areas identified as important learning for all students:
-? Civics and citizenship 
-? Difference and diversity 
-? Work and enterprise 
-
-Learning across the curriculum content is incorporated, and identified by icons, in the content of the Mathematics Extension 2 Stage 6 Syllabus in the following ways.
-
-
-Aboriginal and Torres Strait Islander Histories and Cultures 
-Through application and modelling across the topics of the syllabus, students have the opportunity to experience the significance of mathematics in Aboriginal and Torres Strait Islander histories and cultures. Opportunities are provided to connect mathematics with Aboriginal and Torres Strait Islander Peoples' cultural, linguistic and historical experiences. The narrative of the development of mathematics and its integration with cultural development can be explored in the context of some topics. Through the evaluation of statistical data where appropriate, students can deepen their understanding of the lives of Aboriginal and Torres Strait Islander Peoples.
-
-When planning and programming content relating to Aboriginal and Torres Strait Islander histories and cultures teachers are encouraged to:
-? involve local Aboriginal communities and/or appropriate knowledge holders in determining suitable resources, or to use Aboriginal or Torres Strait Islander authored or endorsed publications
-? read the Principles and Protocols relating to teaching and learning about Aboriginal and Torres Strait Islander histories and cultures and the involvement of local Aboriginal communities.
-Asia and Australia's Engagement with Asia 
-Students have the opportunity to learn about the understandings and applications of mathematics in Asia and the way mathematicians from Asia continue to contribute to the ongoing development of mathematics. By drawing on knowledge of and examples from the Asia region, such as calculation, money, art, architecture, design and travel, students have the opportunity to develop mathematical understanding in fields such as numbers, patterns, measurement, symmetry and statistics. Through the evaluation of statistical data, students have the opportunity to examine issues pertinent to the Asia region.
-Sustainability 
-Mathematics provides a foundation for the exploration of issues of sustainability. Students have the opportunity to learn about the mathematics underlying topics in sustainability such as energy use and how to reduce consumption, alternative energy using solar cells and wind turbines, climate science and mathematical modelling. Through measurement and the reasoned use of data, students have the opportunity to measure and evaluate sustainability changes over time and develop a deeper appreciation of the world around them. Mathematical knowledge, skills and understanding are necessary to monitor and quantify both the impact of human activity on ecosystems and changes to conditions in the biosphere.
-Critical and Creative Thinking 
-Critical and creative thinking are key to the development of mathematical understanding. Mathematical reasoning and logical thought are fundamental elements of critical and creative thinking. Students are encouraged to be critical thinkers when justifying their choice of a calculation strategy or identifying relevant questions during an investigation. They are encouraged to look for alternative ways to approach mathematical problems, for example identifying when a problem is similar to a previous one, drawing diagrams or simplifying a problem to control some variables. Students are encouraged to be creative in their approach to solving new problems, combining the skills and knowledge they have acquired in their study of a number of different topics, within a new context.
-
-
-Ethical Understanding 
-Mathematics makes a clear distinction between the deductions made from basic principles and their consequences in different circumstances. Students have opportunities to explore, develop and apply ethical understanding to mathematics in a range of contexts. Examples include: collecting, displaying and interpreting data; examining selective use of data by individuals and organisations; detecting and eliminating bias in the reporting of information; exploring the importance of fair comparison; and interrogating financial claims and sources.
-Information and Communication Technology Capability 
-Mathematics provides opportunities for students to develop their information and communication technology (ICT) capability when they investigate, create and communicate mathematical ideas and concepts using fast, automated, interactive and multimodal technologies. Students can use their ICT capability to perform calculations; draw graphs; collect, manage, analyse and interpret data; share and exchange information and ideas; and investigate and model concepts and relationships. Digital technologies, such as calculators, spreadsheets, dynamic geometry software, graphing software and computer algebra software, can engage students and promote understanding of key concepts.
-Intercultural Understanding 
-Students have opportunities to understand that mathematical expressions use universal symbols, while mathematical knowledge has its origin in many cultures. Students are provided with opportunities to realise that proficiencies such as understanding, fluency, reasoning and problem-solving are not culture or language-specific, but that mathematical reasoning and understanding can find different expression in different cultures and languages. The curriculum provides contexts for exploring mathematical problems from a range of cultural perspectives and within diverse cultural contexts. Students can apply mathematical thinking to identify and resolve issues related to living with diversity.
-Literacy 
-Literacy is used throughout mathematics to understand and interpret word problems and instructions containing particular language featured in mathematics. Students have the opportunity to learn the vocabulary associated with mathematics, including synonyms, technical terminology, passive voice and common words with specific meanings in a mathematical context. Literacy is used to pose and answer questions, engage in mathematical problem-solving and to discuss, produce and explain solutions. There are opportunities for students to develop the ability to create and interpret a range of media typical of mathematics, ranging from graphs to complex data displays.
-Numeracy 
-Numeracy is embedded throughout the Mathematics Stage 6 syllabuses. It relates to a high proportion of the content descriptions across Years 11 and 12. Consequently, this particular general capability is not tagged in this syllabus.
-
-Numeracy involves drawing on knowledge of particular contexts and circumstances in deciding when to use mathematics, choosing the mathematics to use and critically evaluating its use. To be numerate is to use mathematics effectively to meet the general demands of life at home, at work, and for participation in community and civic life. It is therefore important that the mathematics curriculum provides the opportunity to apply mathematical understanding and skills in context, in other learning areas and in real-world scenarios.
-Personal and Social Capability 
-Students are provided with opportunities to develop personal and social competence as they learn to understand and manage themselves, their relationships and their lives more effectively. Mathematics enhances the development of students' personal and social capabilities by providing opportunities for initiative-taking, decision-making, communicating their processes and findings, and working independently and collaboratively in the mathematics classroom. Students have the opportunity to apply mathematical skills in a range of personal and social contexts. This may be through activities that relate learning to their own lives and communities, such as time management, budgeting and financial management, and understanding statistics in everyday contexts.
-Civics and Citizenship 
-Mathematics has an important role in civics and citizenship education because it has the potential to help us understand our society and our role in shaping it. The role of mathematics in society has expanded significantly in recent decades as almost all aspects of modern-day life are now quantified. Through modelling reality using mathematics and then manipulating the mathematics in order to understand and/or predict reality, students have the opportunity to learn mathematical knowledge, skills and understanding that are essential for active participation in the world in which we live.
-Difference and Diversity 
-Students make sense of and construct mathematical ideas in different ways, drawing upon their own unique experiences in life and prior learning. By valuing students' diversity of ideas, teachers foster students' efficacy in learning mathematics.
-Work and Enterprise 
-Students have the opportunity to develop work and enterprise knowledge, skills and understanding through their study of mathematics in a work-related context. Students are encouraged to select and apply appropriate mathematical techniques and problem-solving strategies through work-related experience. This allows them to make informed financial decisions by selecting and analysing relevant information.
-
-Mathematics Extension 2 Year 12 Course Content
-Course Structure and Requirements
-The course is organised in topics, with the topics divided into subtopics.
-
-Year 12 course
-(60 hours)Mathematics Extension 2TopicsSubtopicsProofMEX-P1 The Nature of Proof
-MEX-P2 Further Proof by Mathematical InductionVectorsMEX-V1 Further Work with VectorsComplex NumbersMEX-N1 Introduction to Complex Numbers
