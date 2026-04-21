@@ -1410,16 +1410,6 @@
         if (hasAccess) {
             document.getElementById('ctaLoggedIn').style.display = 'block';
         }
-
-        // Featured exam card — clicks go to login if not authenticated
-        const examCard = document.getElementById('featuredExamCard');
-        if (hasAccess) {
-            // Let the <a href="practice.html?mode=exam"> work naturally
-            examCard.onclick = null;
-        } else {
-            examCard.href = 'login.html';
-            examCard.onclick = null;
-        }
     }
 
     function showLoggedOutUI() {
