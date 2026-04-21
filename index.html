@@ -208,6 +208,38 @@
         .scroll-line { width:1px; height:40px; background:linear-gradient(to bottom, var(--primary), transparent); animation:scrollPulse 2s infinite; }
         @keyframes scrollPulse { 0%,100%{opacity:1;height:40px} 50%{opacity:0.4;height:25px} }
 
+        /* ── HERO SPLIT (motto top / streak bottom) ── */
+        .hero-split { display:flex; flex-direction:column; align-items:center; width:100%; max-width:840px; margin:0 auto; position:relative; z-index:1; animation:heroReveal 1s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .hero-motto { text-align:center; width:100%; padding-bottom:3.5rem; border-bottom:1px solid rgba(255,255,255,0.07); }
+        .motto-stack { display:flex; flex-direction:column; align-items:center; line-height:1; margin-bottom:1.6rem; }
+        .motto-line { font-weight:800; letter-spacing:-2px; display:block; }
+        .motto-line-1 { font-size:clamp(2rem,5vw,3.2rem); color:rgba(255,255,255,0.5); margin-bottom:0.1em; }
+        .motto-line-2 { font-size:clamp(3.2rem,9vw,6rem); color:var(--text); }
+        .motto-fun { background:linear-gradient(135deg,#ff6b35,#f7c948,#ff6b35); background-size:200% auto; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:funGrad 3s linear infinite; }
+        .motto-line-3 { font-size:clamp(2rem,5vw,3.2rem); color:rgba(255,255,255,0.5); margin-top:0.05em; }
+        @keyframes funGrad { to { background-position:200% center; } }
+        .hero-streak-widget { width:100%; padding-top:3rem; text-align:center; }
+        .hero-streak-out, .hero-streak-in { display:flex; flex-direction:column; align-items:center; gap:1.4rem; }
+        .hs-fires { font-size:2rem; letter-spacing:6px; display:block; }
+        .hs-header h3 { font-size:clamp(1.3rem,3.5vw,1.8rem); font-weight:700; margin:0 0 0.4rem; }
+        .hs-header p { color:var(--text-sec); font-size:0.95rem; margin:0; }
+        .hs-days-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+        .hs-day { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); color:rgba(255,255,255,0.22); }
+        .hs-day.hs-done { background:rgba(255,107,53,0.1); border-color:rgba(255,107,53,0.28); color:#ff9165; }
+        .hs-day.hs-today { background:rgba(255,107,53,0.2); border-color:#ff6b35; color:#ff6b35; box-shadow:0 0 14px rgba(255,107,53,0.22); }
+        .btn-streak { background:linear-gradient(135deg,#ff6b35,#f7931e); color:#fff !important; font-weight:700; padding:0.85rem 2.2rem; border-radius:50px; text-decoration:none; display:inline-block; transition:all 0.3s; box-shadow:0 0 22px rgba(255,107,53,0.28); font-size:0.95rem; border:none; cursor:pointer; }
+        .btn-streak:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,107,53,0.42); }
+        .hs-count-block { display:flex; align-items:center; gap:18px; justify-content:center; }
+        .hs-big-fire { font-size:3.5rem; line-height:1; }
+        .hs-big-count { font-size:4.5rem; font-weight:900; color:#ff6b35; line-height:1; text-shadow:0 0 30px rgba(255,107,53,0.35); }
+        .hs-count-label { font-size:0.85rem; font-weight:600; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1.5px; margin-top:4px; }
+        .hs-streak-msg { color:var(--text-sec); font-size:0.95rem; margin:0; }
+        @media (max-width:500px) {
+            .hs-day { width:38px; height:38px; font-size:0.7rem; }
+            .hs-big-count { font-size:3rem; }
+            .motto-line-2 { font-size:3rem; }
+        }
+
         /* ── SUBJECT TICKER ── */
         .ticker {
             overflow:hidden; padding:0.9rem 0;
@@ -610,19 +642,65 @@
         <div class="hero-grid-bg"></div>
         <div class="hero-glow"></div>
         <div class="hero-inner">
-            <div class="hero-text">
-                <div class="hero-badge">AI-Powered Study Platform</div>
-                <h1>Study <span class="highlight">Decoded</span>.</h1>
-                <p class="hero-sub">Generate full practice exams, get instant AI marking, and decode your syllabus — everything you need to ace the HSC, in one platform.</p>
-                <div class="hero-buttons" id="heroButtons">
-                    <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" id="featuredExamCard" onclick="return goExamMode(event)">Start Practice Exam — Free</a>
-                    <a href="login.html" class="btn btn-ghost" id="heroSignInBtn">Sign In to Access</a>
+            <div class="hero-split">
+
+                <!-- TOP HALF: Motto -->
+                <div class="hero-motto">
+                    <div class="hero-badge">🎓 AI-Powered Study Platform</div>
+                    <div class="motto-stack">
+                        <span class="motto-line motto-line-1">make study</span>
+                        <span class="motto-line motto-line-2">actually <span class="motto-fun">fun</span></span>
+                        <span class="motto-line motto-line-3">again.</span>
+                    </div>
+                    <p class="hero-sub">AI tools built for the NSW HSC — decode your syllabus, practise exams, organise notes, and actually enjoy the process.</p>
+                    <div class="hero-buttons" id="heroButtons">
+                        <a href="login.html" class="btn btn-primary btn-glow" id="heroSignInBtn">Join Free →</a>
+                        <a href="#tools" class="btn btn-ghost">Explore Tools ↓</a>
+                    </div>
+                    <div class="hero-buttons" id="heroLoggedIn" style="display:none;">
+                        <a href="#tools" class="btn btn-primary btn-glow">Keep Studying →</a>
+                        <a href="#tools" class="btn btn-ghost">All Tools ↓</a>
+                    </div>
+                    <p class="hero-trust">🇦🇺 NSW curriculum &nbsp;·&nbsp; Free to start &nbsp;·&nbsp; No card required</p>
                 </div>
-                <div class="hero-buttons" id="heroLoggedIn" style="display: none;">
-                    <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" onclick="return goExamMode(event)">Start Practice Exam</a>
-                    <a href="#tools" class="btn btn-ghost">Explore All Tools ↓</a>
+
+                <!-- BOTTOM HALF: Streak Widget -->
+                <div class="hero-streak-widget">
+
+                    <!-- State: logged out (default) -->
+                    <div class="hero-streak-out" id="heroStreakOut">
+                        <div class="hs-header">
+                            <span class="hs-fires">🔥🔥🔥</span>
+                            <h3>Build your <span style="color:#ff6b35;">study streak.</span></h3>
+                            <p>Show up every day. Watch your knowledge compound.</p>
+                        </div>
+                        <div class="hs-days-row">
+                            <div class="hs-day hs-done">M</div>
+                            <div class="hs-day hs-done">T</div>
+                            <div class="hs-day hs-done">W</div>
+                            <div class="hs-day hs-done">T</div>
+                            <div class="hs-day hs-today">F</div>
+                            <div class="hs-day">S</div>
+                            <div class="hs-day">S</div>
+                        </div>
+                        <a href="login.html" class="btn-streak" id="streakCTA">Sign In to Start Your Streak →</a>
+                    </div>
+
+                    <!-- State: logged in with streak -->
+                    <div class="hero-streak-in" id="heroStreakIn" style="display:none;">
+                        <div class="hs-count-block">
+                            <span class="hs-big-fire">🔥</span>
+                            <div>
+                                <div class="hs-big-count" id="heroStreakCount">0</div>
+                                <div class="hs-count-label">day streak</div>
+                            </div>
+                        </div>
+                        <p class="hs-streak-msg" id="heroStreakMsg">You're on a roll. Come back tomorrow to keep it going.</p>
+                        <a href="#tools" class="btn btn-primary btn-glow">Continue Studying →</a>
+                    </div>
+
                 </div>
-                <p class="hero-trust">🇦🇺 Built for the NSW curriculum &nbsp;·&nbsp; Free to start, no card required</p>
+
             </div>
         </div>
         <div class="hero-scroll">
@@ -1225,6 +1303,32 @@
             if (banner) banner.style.display = 'none';
         }
         
+        // Hero streak widget — show logged-in state
+        document.getElementById('heroStreakOut').style.display = 'none';
+        try {
+            const streakData = JSON.parse(localStorage.getItem('sd_study_streak') || '{"count":0}');
+            if (streakData.count > 0) {
+                document.getElementById('heroStreakCount').textContent = streakData.count;
+                const msgs = [
+                    'You\'re on a roll. Come back tomorrow to keep it going.',
+                    `${streakData.count} days strong — don't break it now! 💪`,
+                    'Consistency is your superpower. Keep showing up.',
+                ];
+                document.getElementById('heroStreakMsg').textContent = msgs[Math.min(streakData.count - 1, msgs.length - 1)] || msgs[2];
+                document.getElementById('heroStreakIn').style.display = '';
+            } else {
+                // Logged-in but no streak yet — encourage them to start
+                document.getElementById('heroStreakOut').style.display = '';
+                const cta = document.getElementById('streakCTA');
+                if (cta) { cta.textContent = 'Start Your Streak Today →'; cta.href = '#tools'; }
+                const h3 = document.querySelector('.hs-header h3');
+                if (h3) h3.innerHTML = 'Start your <span style="color:#ff6b35;">streak today.</span>';
+                const p = document.querySelector('.hs-header p');
+                if (p) p.textContent = 'Use any tool today and your streak begins.';
+            }
+        } catch(e) {
+            document.getElementById('heroStreakOut').style.display = '';
+        }
         // Show manage subscription button for subscribers (not owner)
         if (user.subscribed && user.role !== 'owner' && user.role !== 'lifetime' && user.role !== 'og_tester') {
             document.getElementById('manageSubNavBtn').style.display = 'inline-block';
@@ -1294,17 +1398,17 @@
         document.getElementById('heroLoggedIn').style.display = 'none';
         document.getElementById('heroButtons').style.display = 'flex';
         document.getElementById('heroSignInBtn').style.display = 'inline-block';
-        document.getElementById('heroSignInBtn').textContent = 'Sign In to Access';
+        document.getElementById('heroSignInBtn').textContent = 'Join Free →';
         document.getElementById('heroSignInBtn').href = 'login.html';
         document.getElementById('ctaSignIn').style.display = 'inline-block';
         document.getElementById('ctaLoggedIn').style.display = 'none';
-        const examCardOut = document.getElementById('featuredExamCard');
-        examCardOut.href = 'login.html';
-        examCardOut.onclick = null;
         document.querySelectorAll('.course-link-locked').forEach(el => el.style.display = 'inline-block');
         document.querySelectorAll('.course-link-unlocked').forEach(el => el.style.display = 'none');
         // Show streak promo for logged-out users
         document.getElementById('streakPromoCard').style.display = '';
+        // Hero streak widget stays as logged-out default
+        document.getElementById('heroStreakOut').style.display = '';
+        document.getElementById('heroStreakIn').style.display = 'none';
     }
 
     async function logout() {

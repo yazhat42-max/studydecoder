@@ -594,7 +594,7 @@
             const answerDiv = document.getElementById('askAnswer');
             const sendBtn = document.getElementById('askSendBtn');
             const question = input.value.trim();
-            if (!question) return;
+            if (!question || question.length < 4) return;
 
             const subjectId = subjectSelect.value;
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex]?.text || '';
@@ -604,10 +604,19 @@
             sendBtn.textContent = '...';
             answerDiv.innerHTML = '<div class="loading-dots" style="justify-content:center;margin:12px 0;"><span></span><span></span><span></span></div>';
 
-            // Build messages: last decoded context + question, constrained to syllabus
+            // Strict system prompt — AI must refuse non-syllabus questions
+            const systemContent = `You are a focused HSC syllabus assistant for ${subjectName}, specifically the "${topicName}" topic.
+
+STRICT RULES — you MUST follow these without exception:
+1. ONLY answer questions that are directly about the ${subjectName} syllabus content or the "${topicName}" topic.
+2. If the question is NOT about HSC study, this subject, or this topic — respond with exactly this message and nothing else: "I'm here to help with ${subjectName} (${topicName}) only. Please ask a question about the syllabus content."
+3. Do NOT engage with personal questions, jokes, roleplay, hypotheticals unrelated to study, or anything off-topic.
+4. Do NOT answer questions about other school subjects unless the user is specifically asking about ${subjectName}.
+5. Base all answers strictly on NESA syllabus content. Be concise, exam-focused, and accurate.`;
+
             const messages = [
-                { role: 'system', content: `You are a syllabus expert for HSC ${subjectName}. The student just decoded ${topicName}. Answer their question based only on the NESA syllabus content for this topic. Do not go off-topic. Be concise and exam-focused.` },
-                ...conversationHistory.slice(-4), // keep last decoded response as context
+                { role: 'system', content: systemContent },
+                ...conversationHistory.slice(-4),
                 { role: 'user', content: question }
             ];
 
@@ -621,10 +630,17 @@
                 });
                 if (!response.ok) throw new Error('Request failed');
                 const data = await response.json();
-                answerDiv.innerHTML = `<p>${data.reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')}</p>`;
-                // Update conversation history so follow-up questions retain context
-                conversationHistory.push({ role: 'user', content: question });
-                conversationHistory.push({ role: 'assistant', content: data.reply });
+                const reply = data.reply || '';
+                // Check if the AI gave a refusal — style it differently
+                const isRefusal = reply.includes("I'm here to help with") || reply.includes("only. Please ask");
+                if (isRefusal) {
+                    answerDiv.innerHTML = `<p style="color:#71767b;font-style:italic;">${reply}</p>`;
+                } else {
+                    answerDiv.innerHTML = `<p>${reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')}</p>`;
+                    // Only add to history if it was a real answer
+                    conversationHistory.push({ role: 'user', content: question });
+                    conversationHistory.push({ role: 'assistant', content: reply });
+                }
                 input.value = '';
             } catch (e) {
                 answerDiv.innerHTML = '<p style="color:#ff6b6b;">Something went wrong. Please try again.</p>';
