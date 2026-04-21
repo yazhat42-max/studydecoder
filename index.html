@@ -639,9 +639,9 @@
     </div>
 
     <!-- Continue Where You Left Off -->
-    <div class="continue-section" id="continueSection">
+    <div class="continue-section active" id="continueSection">
         <div class="continue-inner">
-            <a class="continue-card" id="continueCard" href="#">
+            <a class="continue-card" id="continueCard" href="#" style="display:none;">
                 <span class="cc-icon" id="continueIcon">📝</span>
                 <div class="cc-info">
                     <div class="cc-label">Pick up where you left off</div>
@@ -655,6 +655,16 @@
                 <span class="streak-num" id="streakNum">0</span>
                 <span class="streak-label">day streak</span>
             </div>
+            <!-- Shown for logged-out users -->
+            <a class="continue-card" id="streakPromoCard" href="login.html" style="display:none; background:rgba(255,107,53,0.06); border-color:rgba(255,107,53,0.2);">
+                <span class="cc-icon">🔥</span>
+                <div class="cc-info">
+                    <div class="cc-label" style="color:#ff6b35;">Study Streak</div>
+                    <div class="cc-title">Sign in to build your streak</div>
+                    <div class="cc-desc">Come back daily to keep your streak alive — track your study consistency.</div>
+                </div>
+                <span class="cc-arrow" style="color:#ff6b35;">→</span>
+            </a>
         </div>
     </div>
 
@@ -1151,7 +1161,7 @@
                 document.getElementById('continueTitle').textContent = meta.name;
                 document.getElementById('continueDesc').textContent = last.subject_name ? last.subject_name + (last.topic ? ' · ' + last.topic : '') : 'Continue your session';
                 document.getElementById('continueCard').href = href;
-                document.getElementById('continueSection').classList.add('active');
+                document.getElementById('continueCard').style.display = '';
             }
 
             // Study streak
@@ -1159,9 +1169,6 @@
             if (streakData.count > 0) {
                 document.getElementById('streakNum').textContent = streakData.count;
                 document.getElementById('streakCard').style.display = '';
-                if (!document.getElementById('continueSection').classList.contains('active')) {
-                    document.getElementById('continueSection').classList.add('active');
-                }
             }
         } catch(e) {}
     })();
@@ -1296,6 +1303,8 @@
         examCardOut.onclick = null;
         document.querySelectorAll('.course-link-locked').forEach(el => el.style.display = 'inline-block');
         document.querySelectorAll('.course-link-unlocked').forEach(el => el.style.display = 'none');
+        // Show streak promo for logged-out users
+        document.getElementById('streakPromoCard').style.display = '';
     }
 
     async function logout() {

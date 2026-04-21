@@ -75,16 +75,17 @@
         .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
         /* Fun facts during loading */
+        /* Fun facts during loading — prominent */
         .fun-fact-box {
-            background: linear-gradient(135deg, rgba(79,140,255,0.08), rgba(108,99,255,0.08));
-            border: 1px solid rgba(79,140,255,0.2); border-radius: 12px;
-            padding: 16px 20px; margin-top: 12px; max-width: 600px;
-            animation: fadeIn 0.5s ease;
+            background: linear-gradient(135deg, rgba(79,140,255,0.10), rgba(108,99,255,0.10));
+            border: 1px solid rgba(79,140,255,0.25); border-radius: 20px;
+            padding: 36px 40px; margin: 28px auto; max-width: 680px; width: 100%;
+            animation: fadeIn 0.5s ease; text-align: center;
         }
-        .fun-fact-box .ff-label { font-size: 11px; font-weight: 700; color: #4f8cff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-        .fun-fact-box .ff-text { font-size: 14px; color: #c8ccd0; line-height: 1.6; }
-        @keyframes factSwap { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
-        .ff-swap { animation: factSwap 0.4s ease; }
+        .fun-fact-box .ff-label { font-size: 12px; font-weight: 700; color: #4f8cff; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; display: block; }
+        .fun-fact-box .ff-text { font-size: 20px; color: #e7e9ea; line-height: 1.7; font-weight: 500; }
+        @keyframes factSwap { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+        .ff-swap { animation: factSwap 0.5s ease; }
         /* Recommendation cards */
         .rec-panel {
             background: #16202a; border: 1px solid #2f3336; border-radius: 16px;
@@ -104,6 +105,30 @@
         .rec-card .rc-desc { font-size: 11px; color: #71767b; margin-top: 2px; }
         .rec-card .rc-arrow { color: #4f8cff; font-size: 16px; flex-shrink: 0; }
         @media (max-width: 768px) { .rec-cards { grid-template-columns: 1fr; } }
+        /* Ask-more Q&A panel */
+        .ask-more-panel {
+            background: #16202a; border: 1px solid #2f3336; border-radius: 16px;
+            padding: 20px 24px; margin: 16px 0; animation: fadeIn 0.35s ease;
+        }
+        .ask-more-panel h4 { font-size: 14px; font-weight: 700; color: #e7e9ea; margin-bottom: 14px; }
+        .ask-input-row { display: flex; gap: 10px; align-items: flex-end; }
+        .ask-textarea {
+            flex: 1; background: #0f1419; border: 1px solid #2f3336; border-radius: 10px;
+            color: #e7e9ea; font-size: 14px; padding: 12px 14px; resize: none; min-height: 52px;
+            font-family: inherit; outline: none; transition: border-color 0.2s;
+        }
+        .ask-textarea:focus { border-color: #4f8cff; }
+        .ask-send-btn {
+            background: linear-gradient(135deg, #4f8cff, #6c63ff); color: #fff;
+            border: none; border-radius: 10px; padding: 12px 20px; font-weight: 600;
+            font-size: 14px; cursor: pointer; white-space: nowrap; transition: opacity 0.2s;
+        }
+        .ask-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .ask-answer { margin-top: 16px; font-size: 14px; color: #c8ccd0; line-height: 1.7; }
+        .ask-answer p { margin: 0 0 10px; }
+        /* Input panel hide/show transition */
+        .input-panel { transition: all 0.3s ease; }
+        .input-panel.hidden-panel { display: none; }
         .input-panel {
             background: #16202a; border-top: 1px solid #2f3336;
             padding: 20px 24px; flex-shrink: 0;
@@ -483,33 +508,133 @@
         }
 
         function showRecommendations(subjectId, topicName) {
+            // Hide input panel
+            const inputPanel = document.querySelector('.input-panel');
+            if (inputPanel) inputPanel.classList.add('hidden-panel');
+
             const enc = s => encodeURIComponent(s);
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex]?.text || '';
             const cards = [
                 {
                     icon: '📝', title: 'Practice Exam',
                     desc: `Test yourself on ${topicName}`,
-                    href: `practice.html?mode=exam&subject=${enc(subjectId)}&topic=${enc(topicName)}`
+                    href: `practice.html?mode=exam&subject=${enc(subjectId)}&topic=${enc(topicName)}`,
+                    isLink: true
                 },
                 {
                     icon: '🎮', title: 'Learn IRL',
                     desc: `Apply ${subjectName} in real scenarios`,
-                    href: `learn-irl.html?subject=${enc(subjectId)}&topic=${enc(topicName)}`
+                    href: `learn-irl.html?subject=${enc(subjectId)}&topic=${enc(topicName)}`,
+                    isLink: true
                 },
                 {
                     icon: '📋', title: 'Notes Transcriber',
                     desc: 'Transcribe & organise your notes',
-                    href: 'notes-transcriber.html'
+                    href: 'notes-transcriber.html',
+                    isLink: true
+                },
+                {
+                    icon: '🔄', title: 'Decode Another Topic',
+                    desc: 'Choose a different subject or module',
+                    onclick: 'decodeAnother()',
+                    isLink: false
+                },
+                {
+                    icon: '💬', title: 'Ask More Questions',
+                    desc: `Keep exploring ${topicName}`,
+                    onclick: 'showAskMorePanel()',
+                    isLink: false
                 }
             ];
             const recDiv = document.createElement('div');
             recDiv.className = 'rec-panel';
+            recDiv.id = 'recPanel';
             recDiv.innerHTML = `<h4>⚡ What's Next?</h4><div class="rec-cards">${cards.map(c =>
-                `<a class="rec-card" href="${c.href}"><span class="rc-icon">${c.icon}</span><div class="rc-info"><div class="rc-title">${c.title}</div><div class="rc-desc">${c.desc}</div></div><span class="rc-arrow">→</span></a>`
+                c.isLink
+                    ? `<a class="rec-card" href="${c.href}"><span class="rc-icon">${c.icon}</span><div class="rc-info"><div class="rc-title">${c.title}</div><div class="rc-desc">${c.desc}</div></div><span class="rc-arrow">→</span></a>`
+                    : `<button class="rec-card" onclick="${c.onclick}" style="width:100%;text-align:left;background:none;border:1px solid rgba(79,140,255,0.15);cursor:pointer;"><span class="rc-icon">${c.icon}</span><div class="rc-info"><div class="rc-title">${c.title}</div><div class="rc-desc">${c.desc}</div></div><span class="rc-arrow">→</span></button>`
             ).join('')}</div>`;
             outputContent.appendChild(recDiv);
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
+
+        function decodeAnother() {
+            // Remove rec panel and ask-more panel, show input panel
+            const recPanel = document.getElementById('recPanel');
+            if (recPanel) recPanel.remove();
+            const askPanel = document.getElementById('askMorePanel');
+            if (askPanel) askPanel.remove();
+            const inputPanel = document.querySelector('.input-panel');
+            if (inputPanel) inputPanel.classList.remove('hidden-panel');
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
+
+        function showAskMorePanel() {
+            // Remove existing ask-more panel if any
+            const existing = document.getElementById('askMorePanel');
+            if (existing) existing.remove();
+
+            const panel = document.createElement('div');
+            panel.className = 'ask-more-panel';
+            panel.id = 'askMorePanel';
+            panel.innerHTML = `
+                <h4>💬 Ask a question about this topic</h4>
+                <div class="ask-input-row">
+                    <textarea class="ask-textarea" id="askMoreInput" placeholder="e.g. What are the key themes in this module? How does this appear in exams?" rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitAskMore();}"></textarea>
+                    <button class="ask-send-btn" id="askSendBtn" onclick="submitAskMore()">Ask</button>
+                </div>
+                <div class="ask-answer" id="askAnswer"></div>`;
+            outputContent.appendChild(panel);
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+            document.getElementById('askMoreInput').focus();
+        }
+
+        async function submitAskMore() {
+            const input = document.getElementById('askMoreInput');
+            const answerDiv = document.getElementById('askAnswer');
+            const sendBtn = document.getElementById('askSendBtn');
+            const question = input.value.trim();
+            if (!question) return;
+
+            const subjectId = subjectSelect.value;
+            const subjectName = subjectSelect.options[subjectSelect.selectedIndex]?.text || '';
+            const topicName = topicSelect.options[topicSelect.selectedIndex]?.text || '';
+
+            sendBtn.disabled = true;
+            sendBtn.textContent = '...';
+            answerDiv.innerHTML = '<div class="loading-dots" style="justify-content:center;margin:12px 0;"><span></span><span></span><span></span></div>';
+
+            // Build messages: last decoded context + question, constrained to syllabus
+            const messages = [
+                { role: 'system', content: `You are a syllabus expert for HSC ${subjectName}. The student just decoded ${topicName}. Answer their question based only on the NESA syllabus content for this topic. Do not go off-topic. Be concise and exam-focused.` },
+                ...conversationHistory.slice(-4), // keep last decoded response as context
+                { role: 'user', content: question }
+            ];
+
+            try {
+                const detail = parseInt(detailSlider.value) || 2;
+                const response = await fetch(`${API_BASE}/api/chat/syllabus`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ messages, subject: subjectId, detailLevel: detail })
+                });
+                if (!response.ok) throw new Error('Request failed');
+                const data = await response.json();
+                answerDiv.innerHTML = `<p>${data.reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')}</p>`;
+                // Update conversation history so follow-up questions retain context
+                conversationHistory.push({ role: 'user', content: question });
+                conversationHistory.push({ role: 'assistant', content: data.reply });
+                input.value = '';
+            } catch (e) {
+                answerDiv.innerHTML = '<p style="color:#ff6b6b;">Something went wrong. Please try again.</p>';
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Ask';
+            }
+            outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
+
         
         const form = document.getElementById('inputForm');
         const outputContent = document.getElementById('outputContent');
@@ -860,9 +985,8 @@
                 const topicName = topicSelect.options[topicSelect.selectedIndex]?.text || '';
                 showRecommendations(subjectId, topicName);
                 
-                // Clear history after response for independent topic decoding
-                console.log('[DEBUG] Response received and displayed. Clearing history for next independent decode.');
-                conversationHistory = [];
+                // Keep conversationHistory for Ask More Questions context
+                // (cleared on next decode or subject change)
             } catch (error) {
                 console.error('[DEBUG] sendMessage error:', error);
                 hideLoading();
