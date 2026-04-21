@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Profile — Study Decoder</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --primary-glow: rgba(108,99,255,0.3);
+            --bg: #08080d;
+            --bg-card: #111118;
+            --bg-elevated: #1a1a26;
+            --text: #ffffff;
+            --text-sec: rgba(255,255,255,0.6);
+            --text-muted: rgba(255,255,255,0.3);
+            --border: rgba(255,255,255,0.07);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            --streak-fire: #ff6b35;
+            --streak-glow: rgba(255,107,53,0.22);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+        body { background:var(--bg); color:var(--text); min-height:100vh; }
+
+        /* NAV */
+        .navbar { display:flex; justify-content:space-between; align-items:center; padding:1rem 5%; background:rgba(8,8,13,0.9); backdrop-filter:blur(24px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+        .logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+        .logo img { height:38px; }
+        .logo span { font-size:1.3rem; font-weight:700; color:var(--primary); }
+        .nav-back { color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem; font-weight:500; display:flex; align-items:center; gap:6px; transition:color 0.2s; }
+        .nav-back:hover { color:#fff; }
+
+        /* PAGE WRAPPER */
+        .page { max-width:860px; margin:0 auto; padding:3rem 5% 5rem; }
+
+        /* ── PROFILE HEADER ── */
+        .profile-header { display:flex; align-items:center; gap:2rem; margin-bottom:3rem; flex-wrap:wrap; }
+        .profile-avatar { width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--streak-fire)); display:flex; align-items:center; justify-content:center; font-size:2.2rem; font-weight:800; color:#fff; flex-shrink:0; box-shadow:0 0 30px var(--streak-glow); }
+        .profile-info { flex:1; min-width:0; }
+        .profile-name { font-size:1.8rem; font-weight:800; letter-spacing:-0.5px; }
+        .profile-email { font-size:0.9rem; color:var(--text-muted); margin-top:2px; }
+        .profile-level { display:inline-flex; align-items:center; gap:8px; margin-top:10px; padding:5px 16px; border-radius:50px; font-size:0.85rem; font-weight:700; }
+
+        /* ── STAT CARDS ROW ── */
+        .stat-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:16px; margin-bottom:3rem; }
+        .stat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:22px 24px; }
+        .stat-card .sc-label { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); margin-bottom:8px; }
+        .stat-card .sc-value { font-size:2rem; font-weight:900; line-height:1; }
+        .stat-card .sc-sub   { font-size:0.82rem; color:var(--text-muted); margin-top:4px; }
+        .stat-streak .sc-value { color:var(--streak-fire); text-shadow:0 0 24px var(--streak-glow); }
+        .stat-shields .sc-value { color:#4f8cff; }
+        .stat-total .sc-value { color:#4ade80; }
+        .stat-level .sc-value { font-size:1.4rem; }
+
+        /* ── HEATMAP ── */
+        .section-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:18px; }
+        .section-head h2 { font-size:1.1rem; font-weight:700; }
+        .section-head .hm-legend { display:flex; align-items:center; gap:10px; font-size:0.75rem; color:var(--text-muted); }
+        .hm-legend-cells { display:flex; gap:4px; }
+        .hm-legend-cell { width:13px; height:13px; border-radius:3px; }
+        .heatmap-wrap { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin-bottom:3rem; overflow-x:auto; }
+        .heatmap-labels { display:flex; gap:0; margin-bottom:6px; }
+        .heatmap-months { display:flex; gap:0; margin-bottom:4px; padding-left:28px; }
+        .hm-month { font-size:0.7rem; color:var(--text-muted); font-weight:600; flex-shrink:0; }
+        .heatmap-body { display:flex; gap:0; }
+        .hm-day-labels { display:flex; flex-direction:column; gap:3px; padding-right:6px; padding-top:1px; }
+        .hm-day-label { font-size:0.65rem; color:var(--text-muted); height:13px; line-height:13px; font-weight:500; width:22px; text-align:right; }
+        .heatmap-grid { display:flex; gap:3px; }
+        .hm-col { display:flex; flex-direction:column; gap:3px; }
+        .hm-cell { width:13px; height:13px; border-radius:3px; cursor:default; transition:transform 0.1s; }
+        .hm-cell:hover { transform:scale(1.3); }
+        .hm-empty { background:rgba(255,255,255,0.05); }
+        .hm-done  { background:var(--streak-fire); opacity:0.85; box-shadow:0 0 4px var(--streak-glow); }
+        .hm-future { background:rgba(255,255,255,0.02); }
+
+        /* Tooltip */
+        .hm-cell[data-tip]:hover::after {
+            content:attr(data-tip);
+            position:absolute; background:#111118; border:1px solid rgba(255,255,255,0.12);
+            color:#fff; font-size:0.72rem; padding:4px 10px; border-radius:6px;
+            white-space:nowrap; pointer-events:none; transform:translate(-50%,-130%);
+            z-index:10; font-family:'Poppins',sans-serif;
+        }
+        .hm-cell[data-tip] { position:relative; }
+
+        /* ── LEVEL JOURNEY ── */
+        .levels-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-bottom:3rem; }
+        .level-card { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:20px 18px; text-align:center; transition:var(--transition); }
+        .level-card.unlocked { border-color:var(--lc-color,var(--border)); background:var(--lc-bg,var(--bg-card)); }
+        .level-card.locked { opacity:0.4; }
+        .level-card .lc-emoji { font-size:2rem; display:block; margin-bottom:8px; }
+        .level-card .lc-name { font-size:0.9rem; font-weight:700; }
+        .level-card .lc-days { font-size:0.75rem; color:var(--text-muted); margin-top:3px; }
+        .level-card .lc-perk { font-size:0.72rem; margin-top:8px; padding:4px 10px; border-radius:20px; display:inline-block; font-weight:600; }
+
+        /* ── QUICK LINKS ── */
+        .quick-links { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
+        .quick-link { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:18px; display:flex; align-items:center; gap:14px; text-decoration:none; color:inherit; transition:var(--transition); }
+        .quick-link:hover { border-color:rgba(108,99,255,0.35); background:rgba(108,99,255,0.06); transform:translateY(-2px); }
+        .quick-link .ql-icon { font-size:1.6rem; flex-shrink:0; }
+        .quick-link .ql-name { font-size:0.9rem; font-weight:600; }
+        .quick-link .ql-sub  { font-size:0.75rem; color:var(--text-muted); margin-top:2px; }
+
+        /* section label */
+        .section-label { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); margin-bottom:14px; }
+
+        /* Not logged in state */
+        #notLoggedIn { text-align:center; padding:4rem 1rem; }
+        #notLoggedIn h2 { font-size:1.6rem; margin-bottom:0.8rem; }
+        #notLoggedIn p { color:var(--text-sec); margin-bottom:1.8rem; }
+        .btn-primary-inline { display:inline-block; padding:0.85rem 2.2rem; background:var(--primary); color:#fff; border-radius:50px; text-decoration:none; font-weight:700; font-size:0.95rem; }
+
+        @media (max-width:600px) {
+            .profile-header { gap:1.2rem; }
+            .profile-avatar { width:60px; height:60px; font-size:1.6rem; }
+            .profile-name { font-size:1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Study Decoder">
+            <span>Study Decoder</span>
+        </a>
+        <a href="index.html" class="nav-back">← Back to Home</a>
+    </nav>
+
+    <div class="page" id="profileContent" style="display:none;">
+
+        <!-- Header -->
+        <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">?</div>
+            <div class="profile-info">
+                <div class="profile-name" id="profileName">Loading…</div>
+                <div class="profile-email" id="profileEmail"></div>
+                <div class="profile-level" id="profileLevelBadge" style="display:none;"></div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stat-row">
+            <div class="stat-card stat-streak">
+                <div class="sc-label">Current Streak</div>
+                <div class="sc-value" id="statStreak">0</div>
+                <div class="sc-sub">days in a row</div>
+            </div>
+            <div class="stat-card stat-shields">
+                <div class="sc-label">🛡️ Shields</div>
+                <div class="sc-value" id="statShields">0</div>
+                <div class="sc-sub">earned at each 7-day milestone</div>
+            </div>
+            <div class="stat-card stat-total">
+                <div class="sc-label">Total Study Days</div>
+                <div class="sc-value" id="statTotal">0</div>
+                <div class="sc-sub">all-time sessions</div>
+            </div>
+        </div>
+
+        <!-- Heatmap -->
+        <div>
+            <div class="section-head">
+                <h2>📅 Study Activity — Last 91 Days</h2>
+                <div class="hm-legend">
+                    <span>Less</span>
+                    <div class="hm-legend-cells">
+                        <div class="hm-legend-cell" style="background:rgba(255,255,255,0.05);"></div>
+                        <div class="hm-legend-cell" style="background:var(--streak-fire);opacity:0.4;"></div>
+                        <div class="hm-legend-cell" style="background:var(--streak-fire);opacity:0.7;"></div>
+                        <div class="hm-legend-cell" style="background:var(--streak-fire);opacity:1;"></div>
+                    </div>
+                    <span>More</span>
+                </div>
+            </div>
+            <div class="heatmap-wrap">
+                <div id="heatmapMonths" class="heatmap-months"></div>
+                <div class="heatmap-body">
+                    <div class="hm-day-labels">
+                        <div class="hm-day-label"></div>
+                        <div class="hm-day-label">M</div>
+                        <div class="hm-day-label"></div>
+                        <div class="hm-day-label">W</div>
+                        <div class="hm-day-label"></div>
+                        <div class="hm-day-label">F</div>
+                        <div class="hm-day-label"></div>
+                    </div>
+                    <div class="heatmap-grid" id="heatmapGrid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level Journey -->
+        <div style="margin-bottom:3rem;">
+            <div class="section-label">Streak Levels</div>
+            <div class="levels-grid" id="levelsGrid"></div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+            <div class="section-label">Jump Back In</div>
+            <div class="quick-links">
+                <a href="syllabus.html" class="quick-link"><span class="ql-icon">📖</span><div><div class="ql-name">Syllabus Decoder</div><div class="ql-sub">Decode any topic</div></div></a>
+                <a href="practice.html?mode=exam" class="quick-link"><span class="ql-icon">📝</span><div><div class="ql-name">Practice Exam</div><div class="ql-sub">Test yourself</div></div></a>
+                <a href="notes-transcriber.html" class="quick-link"><span class="ql-icon">📋</span><div><div class="ql-name">Notes Transcriber</div><div class="ql-sub">Organise your notes</div></div></a>
+                <a href="learn-irl.html" class="quick-link"><span class="ql-icon">🎮</span><div><div class="ql-name">Learn IRL</div><div class="ql-sub">Apply it in real life</div></div></a>
+                <a href="worksheet-decoder.html" class="quick-link"><span class="ql-icon">📄</span><div><div class="ql-name">Worksheet Decoder</div><div class="ql-sub">Crack any question</div></div></a>
+                <a href="subject-advisor.html" class="quick-link"><span class="ql-icon">🧭</span><div><div class="ql-name">Subject Advisor</div><div class="ql-sub">Get subject guidance</div></div></a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Not logged in -->
+    <div id="notLoggedIn" style="display:none;">
+        <h2>Sign in to view your profile</h2>
+        <p>Your study streak, shields, and heatmap live here.</p>
+        <a href="login.html" class="btn-primary-inline">Sign In →</a>
+    </div>
+
+    <script src="streak.js"></script>
+    <script>
+    (function () {
+        var API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://studydecoder-api.onrender.com';
+
+        var LEVELS = [
+            { min: 7,   name: 'Bronze',   color: '#fb923c', bg: 'rgba(251,146,60,0.1)',  emoji: '🥉', perk: 'Streak Shields unlock',     theme: 'bronze' },
+            { min: 30,  name: 'Silver',   color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', emoji: '🥈', perk: 'Silver theme accent',        theme: 'silver' },
+            { min: 60,  name: 'Gold',     color: '#f7c948', bg: 'rgba(247,201,72,0.1)',  emoji: '🥇', perk: 'Gold theme accent',          theme: 'gold' },
+            { min: 100, name: 'Platinum', color: '#a855f7', bg: 'rgba(168,85,247,0.1)',  emoji: '💎', perk: 'Platinum theme accent',      theme: 'platinum' },
+        ];
+
+        function getLevel(count) {
+            for (var i = LEVELS.length - 1; i >= 0; i--) {
+                if (count >= LEVELS[i].min) return LEVELS[i];
+            }
+            return null;
+        }
+
+        function buildHeatmap(days) {
+            var grid = document.getElementById('heatmapGrid');
+            var monthsEl = document.getElementById('heatmapMonths');
+            grid.innerHTML = '';
+            monthsEl.innerHTML = '';
+
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Go back to the Sunday before 91 days ago
+            var startDay = new Date(today);
+            startDay.setDate(startDay.getDate() - 90);
+            // Adjust to the preceding Sunday
+            startDay.setDate(startDay.getDate() - startDay.getDay());
+
+            var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            var cursor = new Date(startDay);
+            var monthTracker = {}; // week index → month label
+
+            var weekIdx = 0;
+            while (cursor <= today) {
+                var col = document.createElement('div');
+                col.className = 'hm-col';
+
+                for (var d = 0; d < 7; d++) {
+                    var cell = document.createElement('div');
+                    cell.className = 'hm-cell';
+                    var iso = cursor.toISOString().slice(0, 10);
+
+                    if (cursor > today) {
+                        cell.classList.add('hm-future');
+                    } else if (days[iso]) {
+                        cell.classList.add('hm-done');
+                        cell.setAttribute('data-tip', iso);
+                    } else {
+                        cell.classList.add('hm-empty');
+                        cell.setAttribute('data-tip', iso);
+                    }
+
+                    // Track month label for this column
+                    if (d === 0 && !monthTracker[weekIdx]) {
+                        monthTracker[weekIdx] = MONTHS[cursor.getMonth()];
+                    }
+
+                    col.appendChild(cell);
+                    cursor.setDate(cursor.getDate() + 1);
+                }
+
+                grid.appendChild(col);
+                weekIdx++;
+            }
+
+            // Build month label row
+            var totalWeeks = weekIdx;
+            var lastMonth = null;
+            var colWidth = 16; // 13px cell + 3px gap
+            for (var w = 0; w < totalWeeks; w++) {
+                var span = document.createElement('div');
+                span.className = 'hm-month';
+                span.style.width = colWidth + 'px';
+                span.style.minWidth = colWidth + 'px';
+                if (monthTracker[w] && monthTracker[w] !== lastMonth) {
+                    span.textContent = monthTracker[w];
+                    lastMonth = monthTracker[w];
+                } else {
+                    span.textContent = '';
+                }
+                monthsEl.appendChild(span);
+            }
+        }
+
+        function buildLevels(count) {
+            var grid = document.getElementById('levelsGrid');
+            grid.innerHTML = '';
+            LEVELS.forEach(function (l) {
+                var unlocked = count >= l.min;
+                var card = document.createElement('div');
+                card.className = 'level-card ' + (unlocked ? 'unlocked' : 'locked');
+                if (unlocked) {
+                    card.style.setProperty('--lc-color', l.color);
+                    card.style.setProperty('--lc-bg', l.bg);
+                }
+                card.innerHTML =
+                    '<span class="lc-emoji">' + l.emoji + '</span>' +
+                    '<div class="lc-name" style="color:' + (unlocked ? l.color : 'inherit') + '">' + l.name + '</div>' +
+                    '<div class="lc-days">' + l.min + '+ day streak</div>' +
+                    '<div class="lc-perk" style="background:' + l.bg + ';color:' + l.color + '">' + l.perk + '</div>';
+                grid.appendChild(card);
+            });
+        }
+
+        function render(user) {
+            var s = window.StreakManager ? window.StreakManager.load() : { count:0, shields:0, totalDays:0, days:{}, theme:'default' };
+
+            // Apply theme
+            if (window.StreakManager) window.StreakManager.applyTheme(s.theme);
+
+            // Header
+            var name = (user && user.name) || (user && user.email && user.email.split('@')[0]) || 'Student';
+            var initials = name.slice(0, 1).toUpperCase();
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('profileName').textContent = name;
+            if (user && user.email) document.getElementById('profileEmail').textContent = user.email;
+
+            var level = getLevel(s.count);
+            if (level) {
+                var badge = document.getElementById('profileLevelBadge');
+                badge.style.display = 'inline-flex';
+                badge.style.background = level.bg;
+                badge.style.color = level.color;
+                badge.style.border = '1px solid ' + level.color + '44';
+                badge.textContent = level.emoji + ' ' + level.name;
+            }
+
+            // Stats
+            document.getElementById('statStreak').textContent = s.count;
+            document.getElementById('statShields').textContent = s.shields || 0;
+            document.getElementById('statTotal').textContent = s.totalDays || Object.keys(s.days || {}).length;
+
+            // Heatmap
+            buildHeatmap(s.days || {});
+
+            // Levels
+            buildLevels(s.count);
+
+            document.getElementById('profileContent').style.display = '';
+        }
+
+        // Auth check
+        async function init() {
+            // Try cache first for instant render
+            var cached = null;
+            try { cached = JSON.parse(localStorage.getItem('sd_user_cache') || 'null'); } catch(e) {}
+            if (cached) render(cached);
+
+            try {
+                var res = await fetch(API_BASE + '/api/subscription', { credentials: 'include' });
+                if (res.ok) {
+                    var data = await res.json();
+                    if (data.email) {
+                        render(data);
+                        return;
+                    }
+                }
+            } catch(e) {}
+
+            // Not logged in
+            if (!cached) {
+                document.getElementById('profileContent').style.display = 'none';
+                document.getElementById('notLoggedIn').style.display = '';
+            }
+        }
+
+        init();
+    })();
+    </script>
+</body>
+</html>

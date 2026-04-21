@@ -2797,13 +2797,15 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         function trackUsage(botName, subjectId, subjectName, topic) {
             try {
                 localStorage.setItem('sd_last_activity', JSON.stringify({ bot: botName, subject: subjectId || '', subject_name: subjectName || '', topic: topic || '', ts: Date.now() }));
-                var today = new Date().toISOString().slice(0,10);
-                var s = JSON.parse(localStorage.getItem('sd_study_streak') || '{"count":0,"lastDate":""}');
-                if (s.lastDate !== today) { var yday = new Date(Date.now()-864e5).toISOString().slice(0,10); s.count = (s.lastDate === yday) ? s.count + 1 : 1; s.lastDate = today; localStorage.setItem('sd_study_streak', JSON.stringify(s)); }
+                if (window.StreakManager) {
+                    var result = window.StreakManager.track();
+                    if (window.sdHandleTracking) window.sdHandleTracking(result);
+                }
             } catch(e) {}
         }
 
         checkAuth();
     </script>
+    <script src="streak.js"></script>
 </body>
 </html>

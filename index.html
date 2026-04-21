@@ -695,8 +695,15 @@
                                 <div class="hs-count-label">day streak</div>
                             </div>
                         </div>
+                        <div style="display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                            <div id="heroLevelBadge" style="display:none;"></div>
+                            <div id="heroShieldBadge" style="display:none;"></div>
+                        </div>
                         <p class="hs-streak-msg" id="heroStreakMsg">You're on a roll. Come back tomorrow to keep it going.</p>
-                        <a href="#tools" class="btn btn-primary btn-glow">Continue Studying →</a>
+                        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+                            <a href="#tools" class="btn btn-primary btn-glow">Continue Studying →</a>
+                            <a href="profile.html" style="display:inline-block;padding:0.85rem 1.8rem;border-radius:50px;border:2px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-weight:600;font-size:0.9rem;text-decoration:none;transition:all .25s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='rgba(255,255,255,0.7)'">View Profile →</a>
+                        </div>
                     </div>
 
                 </div>
@@ -1306,23 +1313,47 @@
         // Hero streak widget — show logged-in state
         document.getElementById('heroStreakOut').style.display = 'none';
         try {
-            const streakData = JSON.parse(localStorage.getItem('sd_study_streak') || '{"count":0}');
-            if (streakData.count > 0) {
-                document.getElementById('heroStreakCount').textContent = streakData.count;
-                const msgs = [
+            const s = window.StreakManager ? window.StreakManager.load() : JSON.parse(localStorage.getItem('sd_study_streak') || '{"count":0,"shields":0}');
+            if (window.StreakManager) window.StreakManager.applyTheme(s.theme || 'default');
+            
+            if (s.count > 0) {
+                document.getElementById('heroStreakCount').textContent = s.count;
+                const STREAK_MSGS = [
                     'You\'re on a roll. Come back tomorrow to keep it going.',
-                    `${streakData.count} days strong — don't break it now! 💪`,
+                    `${s.count} days strong — don't break it now! 💪`,
                     'Consistency is your superpower. Keep showing up.',
                 ];
-                document.getElementById('heroStreakMsg').textContent = msgs[Math.min(streakData.count - 1, msgs.length - 1)] || msgs[2];
+                document.getElementById('heroStreakMsg').textContent = STREAK_MSGS[Math.min(Math.floor(s.count/7), STREAK_MSGS.length-1)];
+                
+                // Level badge
+                const LEVELS = [
+                    { min:100, name:'Platinum', color:'#a855f7', bg:'rgba(168,85,247,0.12)', emoji:'💎' },
+                    { min:60,  name:'Gold',     color:'#f7c948', bg:'rgba(247,201,72,0.12)',  emoji:'🥇' },
+                    { min:30,  name:'Silver',   color:'#94a3b8', bg:'rgba(148,163,184,0.12)', emoji:'🥈' },
+                    { min:7,   name:'Bronze',   color:'#fb923c', bg:'rgba(251,146,60,0.12)',  emoji:'🥉' },
+                ];
+                const level = LEVELS.find(l => s.count >= l.min);
+                if (level) {
+                    const lb = document.getElementById('heroLevelBadge');
+                    lb.style.display = 'inline-flex';
+                    lb.style.cssText += `;background:${level.bg};border:1px solid ${level.color}44;color:${level.color};padding:5px 16px;border-radius:50px;font-size:0.82rem;font-weight:700;align-items:center;gap:6px;`;
+                    lb.textContent = level.emoji + ' ' + level.name;
+                }
+                // Shields badge
+                if (s.shields > 0) {
+                    const sb = document.getElementById('heroShieldBadge');
+                    sb.style.display = 'inline-flex';
+                    sb.style.cssText += `;background:rgba(79,140,255,0.1);border:1px solid rgba(79,140,255,0.25);color:#4f8cff;padding:5px 16px;border-radius:50px;font-size:0.82rem;font-weight:700;align-items:center;gap:6px;`;
+                    sb.textContent = '🛡️ ' + s.shields + ' shield' + (s.shields !== 1 ? 's' : '');
+                }
                 document.getElementById('heroStreakIn').style.display = '';
             } else {
-                // Logged-in but no streak yet — encourage them to start
+                // Logged-in but no streak yet
                 document.getElementById('heroStreakOut').style.display = '';
                 const cta = document.getElementById('streakCTA');
                 if (cta) { cta.textContent = 'Start Your Streak Today →'; cta.href = '#tools'; }
                 const h3 = document.querySelector('.hs-header h3');
-                if (h3) h3.innerHTML = 'Start your <span style="color:#ff6b35;">streak today.</span>';
+                if (h3) h3.innerHTML = 'Start your <span style="color:var(--streak-fire,#ff6b35);">streak today.</span>';
                 const p = document.querySelector('.hs-header p');
                 if (p) p.textContent = 'Use any tool today and your streak begins.';
             }
@@ -2021,5 +2052,6 @@
     if (syllDecoded) syllDemoObs.observe(syllDecoded);
 
     </script>
+    <script src="streak.js"></script>
 </body>
 </html>
