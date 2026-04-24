@@ -332,6 +332,15 @@
         .exam-generate-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(79,140,255,0.3); }
         .exam-generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+        /* Quick Paper duration buttons */
+        .quick-dur-btn {
+            flex: 1; background: #1a1f2e; border: 1px solid #2f3336; color: #e7e9ea;
+            border-radius: 10px; padding: 12px 8px; font-size: 0.9rem; font-weight: 600;
+            cursor: pointer; text-align: center; transition: all 0.2s; line-height: 1.4;
+        }
+        .quick-dur-btn:hover { border-color: #4f8cff; background: #1a2340; }
+        .quick-dur-btn.active { border-color: #4f8cff; background: linear-gradient(135deg,#1a2340,#1a1a2e); color: #4f8cff; }
+
         /* Question display */
         .exam-question-card {
             background: #16202a; border: 1px solid #2f3336; border-radius: 16px;
@@ -552,47 +561,11 @@
             <div class="history-list" id="historyList"></div>
         </div>
 
-        <!-- MODE SELECTION LANDING (shown first, like senior-bot.html grid) -->
-        <div id="modeLanding">
-            <div style="padding: 20px 24px;">
-                <a href="index.html" class="back-btn">← Back to Home</a>
-            </div>
-            <div style="max-width: 1100px; margin: 0 auto; padding: 0 24px 60px;">
-                <div style="text-align: center; padding: 30px 20px 10px;">
-                    <h1 style="font-size: 2.4rem; font-weight: 700; color: #e7e9ea; margin-bottom: 12px;">Practice Question Generator</h1>
-                    <p style="font-size: 1.1rem; color: #71767b; max-width: 550px; margin: 0 auto; line-height: 1.6;">Generate authentic HSC exam-style questions. Choose a mode below.</p>
-                </div>
-                <div style="text-align: center; margin-bottom: 24px;">
-                    <button class="history-btn" onclick="openHistory()">📋 Past Questions</button>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-                    <div class="mode-card" onclick="selectMode('standard')">
-                        <div class="mode-card-icon">✏️</div>
-                        <h2>Standard Questions</h2>
-                        <p>Generate individual practice questions by subject, topic, and difficulty.</p>
-                        <span class="mode-card-cta">Start →</span>
-                    </div>
-                    <div class="mode-card" onclick="selectMode('exam')">
-                        <div class="mode-card-icon">📝</div>
-                        <h2>Full Exam Paper</h2>
-                        <p>Generate complete 1, 2, or 3 hour HSC-style exam papers.</p>
-                        <span class="mode-card-cta">Start →</span>
-                    </div>
-                    <div class="mode-card" onclick="selectMode('feedback')">
-                        <div class="mode-card-icon">📊</div>
-                        <h2>Get Feedback</h2>
-                        <p>Paste a question and your answer to get HSC marking feedback.</p>
-                        <span class="mode-card-cta">Start →</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ACTIVE MODE VIEW (shown after selecting a mode) -->
+        <!-- ACTIVE MODE VIEW -->
         <div id="activeView" style="display: none; height: 100vh; flex-direction: column;">
             <header class="header">
                 <div class="header-left">
-                    <a href="#" class="back-btn" onclick="backToModes(event)">← Modes</a>
+                    <a href="index.html" class="back-btn">← Home</a>
                     <div>
                         <div class="header-title" id="activeTitle">Practice Question Generator</div>
                         <div class="header-subtitle">Generate real NSW HSC exam-style questions</div>
@@ -1319,36 +1292,41 @@
             });
         }
         
-        // Mode selection from landing page
+        // Mode selection
         function selectMode(mode) {
             currentMode = mode;
             conversationHistory = [];
             outputContent.innerHTML = '';
-            
+
             // Exam mode uses its own full-screen view
             if (mode === 'exam') {
-                document.getElementById('modeLanding').style.display = 'none';
                 document.getElementById('activeView').style.display = 'none';
                 document.getElementById('examView').classList.add('active');
                 showExamSetup();
                 return;
             }
-            
-            // Hide landing, show active view
-            document.getElementById('modeLanding').style.display = 'none';
+
+            // Quick Paper mode uses examView with compact setup
+            if (mode === 'quick') {
+                document.getElementById('activeView').style.display = 'none';
+                document.getElementById('examView').classList.add('active');
+                showQuickPaperSetup();
+                return;
+            }
+
             const activeView = document.getElementById('activeView');
             activeView.style.display = 'flex';
-            
+
             // Update title
-            const titles = { standard: 'Standard Questions', feedback: 'Get Feedback' };
+            const titles = { standard: 'Practice Questions', feedback: 'Get Feedback' };
             document.getElementById('activeTitle').textContent = titles[mode] || 'Practice Questions';
             document.getElementById('formTitle').textContent = titles[mode] || 'Practice Questions';
-            
+
             // Show correct panel
             standardPanel.style.display = 'none';
             examPanel.style.display = 'none';
             feedbackPanel.style.display = 'none';
-            
+
             if (mode === 'feedback') {
                 feedbackPanel.style.display = 'block';
                 submitBtn.textContent = 'Get Feedback';
@@ -1357,15 +1335,10 @@
                 submitBtn.textContent = 'Generate Questions';
             }
         }
-        
+
         function backToModes(e) {
-            e.preventDefault();
-            document.getElementById('activeView').style.display = 'none';
-            document.getElementById('examView').classList.remove('active');
-            document.getElementById('modeLanding').style.display = 'block';
-            conversationHistory = [];
-            outputContent.innerHTML = '';
-            stopExamTimer();
+            if (e) e.preventDefault();
+            window.location.href = 'index.html';
         }
         
         function parseMarkdownTables(text) {
@@ -1797,9 +1770,13 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     document.body.appendChild(upgradeBtn);
                 }
 
-                // Auto-open exam mode if ?mode=exam in URL
+                // Auto-open mode from URL param
                 const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('mode') === 'exam') {
+                const modeParam = urlParams.get('mode');
+                if (modeParam === 'exam' || modeParam === 'standard' || modeParam === 'feedback' || modeParam === 'quick') {
+                    selectMode(modeParam);
+                } else {
+                    // Default: go straight to exam mode
                     selectMode('exam');
                 }
                 
@@ -1863,7 +1840,6 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             const timerEl = document.getElementById('examTimer');
             timerEl.classList.remove('warning', 'critical');
             document.getElementById('examView').classList.remove('active');
-            document.getElementById('modeLanding').style.display = 'block';
         }
 
         function stopExamTimer() {
@@ -2017,6 +1993,205 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             // Small delay so student sees the message, then mark
             await new Promise(r => setTimeout(r, 1500));
             await doSubmitExam();
+        }
+
+        // ===== QUICK PAPER MODE =====
+        let quickDurationMinutes = 20;
+
+        async function showQuickPaperSetup() {
+            document.getElementById('examNav').style.display = 'none';
+            document.getElementById('examDots').style.display = 'none';
+            document.getElementById('examTimer').textContent = '00:00:00';
+            document.getElementById('examTimer').classList.remove('warning', 'critical');
+            document.getElementById('examTitle').textContent = '⚡ Quick Paper';
+            document.getElementById('examMeta').textContent = '';
+            stopExamTimer();
+            examTimeExpired = false;
+            examDurationSeconds = 0;
+
+            // Build subject options
+            let subjectOpts = '<option value="">Select your subject...</option>';
+            const byCat = {};
+            subjects.forEach(s => {
+                if (!byCat[s.category]) byCat[s.category] = [];
+                byCat[s.category].push(s);
+            });
+            Object.keys(byCat).sort().forEach(cat => {
+                subjectOpts += `<optgroup label="${cat}">`;
+                byCat[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                    subjectOpts += `<option value="${s.id}">${s.name}</option>`;
+                });
+                subjectOpts += '</optgroup>';
+            });
+
+            // Pre-select from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const preSubject = urlParams.get('subject') || '';
+            const preDuration = urlParams.get('duration') || '20';
+            quickDurationMinutes = parseInt(preDuration) || 20;
+
+            document.getElementById('examContent').innerHTML = `
+                <div class="exam-setup">
+                    <div class="exam-setup-title">⚡ Quick Paper</div>
+                    <div class="exam-setup-sub">A focused timed practice session — fewer questions, same exam quality. Perfect when you've got 10–30 minutes.</div>
+                    <div class="exam-setup-form">
+                        <div class="exam-setup-field">
+                            <label class="exam-setup-label">Subject</label>
+                            <select id="quickSubjectSelect" class="exam-setup-select">${subjectOpts}</select>
+                        </div>
+                        <div class="exam-setup-field">
+                            <label class="exam-setup-label">Duration</label>
+                            <div style="display:flex;gap:12px;margin-top:4px;">
+                                <button class="quick-dur-btn${quickDurationMinutes===10?' active':''}" onclick="setQuickDuration(10,this)">10 min<br><small style="opacity:0.6">~3 questions</small></button>
+                                <button class="quick-dur-btn${quickDurationMinutes===20?' active':''}" onclick="setQuickDuration(20,this)">20 min<br><small style="opacity:0.6">~6 questions</small></button>
+                                <button class="quick-dur-btn${quickDurationMinutes===30?' active':''}" onclick="setQuickDuration(30,this)">30 min<br><small style="opacity:0.6">~9 questions</small></button>
+                            </div>
+                        </div>
+                        <div class="exam-setup-field">
+                            <label class="exam-setup-label">Topic <span style="opacity:0.5">(optional)</span></label>
+                            <select id="quickTopicSelect" class="exam-setup-select" disabled><option value="All">All Topics</option></select>
+                        </div>
+                        <button class="exam-generate-btn" id="quickGenerateBtn" onclick="startQuickPaper()">⚡ Start Quick Paper</button>
+                    </div>
+                </div>`;
+
+            // Pre-select subject if in URL
+            if (preSubject) {
+                const sel = document.getElementById('quickSubjectSelect');
+                if (sel) { sel.value = preSubject; sel.dispatchEvent(new Event('change')); }
+            }
+
+            // Subject change → populate topics
+            const quickSubjectSelect = document.getElementById('quickSubjectSelect');
+            if (quickSubjectSelect) {
+                quickSubjectSelect.addEventListener('change', async function() {
+                    const sid = this.value;
+                    const topicSel = document.getElementById('quickTopicSelect');
+                    topicSel.innerHTML = '<option value="All">All Topics</option>';
+                    topicSel.disabled = !sid;
+                    if (!sid) return;
+                    try {
+                        const r = await fetch(`${API_BASE}/api/topics/${sid}`, { credentials: 'include' });
+                        if (r.ok) {
+                            const data = await r.json();
+                            (data.topics || []).forEach(t => {
+                                topicSel.innerHTML += `<option value="${t}">${t}</option>`;
+                            });
+                            topicSel.disabled = false;
+                        }
+                    } catch(e) {}
+                });
+            }
+        }
+
+        function setQuickDuration(mins, btn) {
+            quickDurationMinutes = mins;
+            document.querySelectorAll('.quick-dur-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        async function startQuickPaper() {
+            const subjectEl = document.getElementById('quickSubjectSelect');
+            const topicEl = document.getElementById('quickTopicSelect');
+            const genBtn = document.getElementById('quickGenerateBtn');
+
+            const subjectId = subjectEl.value;
+            if (!subjectId) { alert('Please select a subject.'); return; }
+
+            const subjectName = subjectEl.options[subjectEl.selectedIndex].text;
+            const selectedTopic = topicEl.value || 'All';
+            const topics = selectedTopic === 'All' ? 'All Year 12 content' : selectedTopic;
+            const questionCount = Math.round(quickDurationMinutes / 10) * 3; // 3/6/9
+
+            genBtn.disabled = true;
+            genBtn.textContent = 'Generating...';
+            trackUsage('quick', subjectId, subjectName, topics);
+
+            const examFacts = getFactsForSubject(subjectId);
+            let examFactIdx = Math.floor(Math.random() * examFacts.length);
+            document.getElementById('examContent').innerHTML = `
+                <div class="exam-loading">
+                    <div class="loading-dots" style="justify-content:center;"><span></span><span></span><span></span></div>
+                    <div class="exam-loading-text">Building your ${quickDurationMinutes}-minute ${subjectName} quick paper...</div>
+                    <div class="fun-fact-box" style="margin:20px auto;max-width:500px;">
+                        <div class="ff-label">💡 Did you know?</div>
+                        <div class="ff-text ff-swap" id="quickGenFact">${examFacts[examFactIdx]}</div>
+                    </div>
+                </div>`;
+            const factInterval = setInterval(() => {
+                examFactIdx = (examFactIdx + 1) % examFacts.length;
+                const el = document.getElementById('quickGenFact');
+                if (el) { el.className = 'ff-text'; setTimeout(() => { el.textContent = examFacts[examFactIdx]; el.className = 'ff-text ff-swap'; }, 50); }
+                else clearInterval(factInterval);
+            }, 4500);
+
+            try {
+                // Reuse exam API with a short duration and pass a question count hint via topics string
+                const res = await fetch(`${API_BASE}/api/exam/generate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ subject: subjectId, topics, duration: '0.5', difficulty: 'medium', questionCount })
+                });
+
+                clearInterval(factInterval);
+
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    if (err.examLimitReached) {
+                        document.getElementById('examContent').innerHTML = `
+                            <div style="text-align:center;padding:60px 20px;">
+                                <h2 style="color:#e7e9ea;margin-bottom:12px;">⚡ Weekly Limit Reached</h2>
+                                <p style="color:#71767b;margin-bottom:20px;">You've used all 3 free exams this week. Upgrade for unlimited access.</p>
+                                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="exam-generate-btn" style="display:inline-block;text-decoration:none;max-width:300px;">Upgrade to Premium</a>
+                                <br><button class="exam-nav-btn" style="margin-top:16px;" onclick="showQuickPaperSetup()">← Back</button>
+                            </div>`;
+                        return;
+                    }
+                    throw new Error(err.error || 'Generation failed');
+                }
+
+                const data = await res.json();
+                examData = data.exam;
+                examIsPremium = data.isPremium;
+                examAnswers = {};
+
+                // Limit to questionCount questions across sections
+                examQuestions = [];
+                for (const section of examData.sections) {
+                    for (const q of section.questions) {
+                        examQuestions.push({ ...q, sectionName: section.name });
+                    }
+                }
+                // Trim to questionCount if API returned more
+                if (examQuestions.length > questionCount) examQuestions = examQuestions.slice(0, questionCount);
+
+                if (examQuestions.length === 0) throw new Error('No questions generated');
+
+                let verifiedTotal = 0;
+                for (const q of examQuestions) verifiedTotal += (q.marks || 0);
+                examData.totalMarks = verifiedTotal;
+
+                examSubjectId = subjectId;
+                examCurrentIdx = 0;
+                examDurationSeconds = quickDurationMinutes * 60;
+                document.getElementById('examTitle').textContent = `⚡ Quick Paper — ${subjectName}`;
+                document.getElementById('examMeta').textContent = `${quickDurationMinutes} min · ${verifiedTotal} marks · ${examQuestions.length} questions`;
+                document.getElementById('examNav').style.display = 'flex';
+                document.getElementById('examDots').style.display = 'flex';
+                startExamTimer();
+                renderExamDots();
+                renderExamQuestion();
+
+            } catch (error) {
+                clearInterval(factInterval);
+                document.getElementById('examContent').innerHTML = `
+                    <div style="text-align:center;padding:60px 20px;">
+                        <h2 style="color:#ef4444;margin-bottom:12px;">Failed to Generate Quick Paper</h2>
+                        <p style="color:#71767b;margin-bottom:20px;">${error.message}</p>
+                        <button class="exam-nav-btn" onclick="showQuickPaperSetup()">← Try Again</button>
+                    </div>`;
+            }
         }
 
         async function showExamSetup() {
