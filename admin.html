@@ -594,6 +594,10 @@
                     <span class="stat-label">Lifetime Plans</span>
                     <span class="stat-value" id="statLifetime">-</span>
                 </div>
+                <div class="stat-card">
+                    <span class="stat-label">Active Day Passes</span>
+                    <span class="stat-value" id="statDayPass">-</span>
+                </div>
                 <div class="stat-card og">
                     <span class="stat-label">OG Testers</span>
                     <span class="stat-value" id="statOG">-</span>
@@ -991,6 +995,7 @@
                 document.getElementById('statMonthly').textContent = data.monthlyPlans;
                 document.getElementById('statYearly').textContent = data.yearlyPlans;
                 document.getElementById('statLifetime').textContent = data.lifetimePlans || 0;
+                document.getElementById('statDayPass').textContent = data.activeDayPasses || 0;
                 document.getElementById('statOG').textContent = data.ogTesters;
                 document.getElementById('statOGSlots').textContent = data.ogSlotsRemaining;
                 

@@ -1688,12 +1688,21 @@ app.get('/api/admin/live-users', requireOwner, (req, res) => {
 app.get('/api/admin/stats', requireOwner, (req, res) => {
     const users = Object.values(db.users);
     const ogRedemptions = ogCodesState.redemptions;
+    const now = new Date();
+    const activeDayPasses = users.filter(u =>
+        u.plan === 'day_pass' &&
+        u.subscribed === true &&
+        u.expiresAt &&
+        new Date(u.expiresAt) > now
+    ).length;
     
     const stats = {
         totalUsers: users.length,
         subscribers: users.filter(u => u.subscribed).length,
         monthlyPlans: users.filter(u => u.plan === 'monthly').length,
         yearlyPlans: users.filter(u => u.plan === 'yearly').length,
+        lifetimePlans: users.filter(u => u.plan === 'lifetime').length,
+        activeDayPasses,
         ogTesters: ogRedemptions.length,
         ogSlotsRemaining: OG_CODE_CONFIG.maxRedemptions - ogRedemptions.length,
         recentSignups: users
