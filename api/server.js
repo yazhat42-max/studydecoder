@@ -1746,20 +1746,22 @@ app.post('/api/admin/grant-access', requireOwner, (req, res) => {
         return res.status(404).json({ error: 'User not found' });
     }
     
+    const selectedPlan = plan || 'granted';
+    const grantedDays = selectedPlan === 'day_pass' ? 1 : Math.max(1, parseInt(days, 10) || 30);
     const expiration = new Date();
-    expiration.setDate(expiration.getDate() + (days || 30));
+    expiration.setDate(expiration.getDate() + grantedDays);
     
     upsertUser(user.userId, {
         ...user,
         subscribed: true,
-        plan: plan || 'granted',
+        plan: selectedPlan,
         subscribedAt: new Date().toISOString(),
         expiresAt: expiration.toISOString()
     });
     
-    console.log(`👑 Owner granted ${days || 30} days access to ${email}`);
+    console.log(`👑 Owner granted ${grantedDays} days access (${selectedPlan}) to ${email}`);
     
-    res.json({ success: true, message: `Granted ${days || 30} days access to ${email}` });
+    res.json({ success: true, message: `Granted ${grantedDays} day${grantedDays === 1 ? '' : 's'} access to ${email}` });
 });
 
 /**

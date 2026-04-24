@@ -614,6 +614,9 @@
                         <button class="action-btn action-btn-primary" onclick="showGrantAccessModal()">
                             🎁 Grant Access
                         </button>
+                        <button class="action-btn action-btn-primary" onclick="showGrantDayPassModal()">
+                            ⏰ Grant 1-Day Full Access
+                        </button>
                         <button class="action-btn action-btn-secondary" onclick="showRevokeAccessModal()">
                             ❌ Revoke Access
                         </button>
@@ -851,6 +854,7 @@
                     <label class="form-label">Plan Type</label>
                     <select class="form-input" id="grantPlan">
                         <option value="granted">Granted (Free)</option>
+                        <option value="day_pass">1-Day Full Access Pass</option>
                         <option value="monthly">Monthly</option>
                         <option value="yearly">Yearly</option>
                         <option value="lifetime">Lifetime</option>
@@ -1099,6 +1103,16 @@
         function showGrantAccessModal() {
             document.getElementById('grantModal').classList.add('active');
         }
+
+        function showGrantDayPassModal() {
+            const planEl = document.getElementById('grantPlan');
+            const daysEl = document.getElementById('grantDays');
+            const emailEl = document.getElementById('grantEmail');
+            if (planEl) planEl.value = 'day_pass';
+            if (daysEl) daysEl.value = 1;
+            document.getElementById('grantModal').classList.add('active');
+            if (emailEl) emailEl.focus();
+        }
         
         function showRevokeAccessModal() {
             document.getElementById('revokeModal').classList.add('active');
@@ -1137,6 +1151,21 @@
                 
             } catch (error) {
                 alert('Error: ' + error.message);
+            }
+        });
+
+        document.getElementById('grantPlan').addEventListener('change', () => {
+            const plan = document.getElementById('grantPlan').value;
+            const daysEl = document.getElementById('grantDays');
+            if (!daysEl) return;
+            if (plan === 'day_pass') {
+                daysEl.value = 1;
+                daysEl.min = 1;
+                daysEl.max = 1;
+            } else {
+                daysEl.min = 1;
+                daysEl.max = 36500;
+                if (parseInt(daysEl.value || '0', 10) < 1) daysEl.value = 30;
             }
         });
         
