@@ -234,6 +234,20 @@ function canUseFreeTier(userId, botType) {
     return getTotalFreeTierUsage(userId) < FREE_TIER_CONFIG.totalUsesPerDay;
 }
 
+/**
+ * Atomic check-and-increment for free tier.
+ * Prevents race conditions: claims the slot synchronously before any async work.
+ * Returns true if allowed (usage has been recorded), false if limit reached.
+ */
+function tryUseFreeTier(userId, botType) {
+    if (!FREE_TIER_CONFIG.enabled) return false;
+    const specialLimit = FREE_TIER_CONFIG.specialLimits[botType];
+    if (specialLimit !== undefined && getFreeTierUsage(userId, botType) >= specialLimit) return false;
+    if (getTotalFreeTierUsage(userId) >= FREE_TIER_CONFIG.totalUsesPerDay) return false;
+    incrementFreeTierUsage(userId, botType);
+    return true;
+}
+
 function getFreeTierRemaining(userId, botType) {
     const totalUsed = getTotalFreeTierUsage(userId);
     return Math.max(0, FREE_TIER_CONFIG.totalUsesPerDay - totalUsed);
@@ -293,9 +307,7 @@ if (!emailTransporter) {
 
 async function sendPasswordResetEmail(email, resetToken) {
     if (!emailTransporter) {
-        console.error('❌ EMAIL NOT CONFIGURED - Cannot send password reset to:', email);
-        console.error('   Reset token was generated:', resetToken.substring(0, 8) + '...');
-        console.error('   To fix: Add EMAIL_USER and EMAIL_APP_PASSWORD to Render environment variables');
+        console.error('❌ EMAIL NOT CONFIGURED - Cannot send password reset. Set EMAIL_USER and EMAIL_APP_PASSWORD in environment variables.');
         return false;
     }
     
@@ -333,7 +345,6 @@ async function sendPasswordResetEmail(email, resetToken) {
         return true;
     } catch (error) {
         console.error('❌ Failed to send email:', error.message);
-        console.error('   Full error:', error);
         return false;
     }
 }
@@ -471,6 +482,21 @@ const authLimiter = rateLimit({
 app.use('/api/', limiter);
 app.use('/api/login', authLimiter);
 
+const forgotPasswordLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: config.isDev ? 20 : 5,
+    message: { error: 'Too many password reset requests. Please try again in an hour.' }
+});
+
+const ogCodeLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: config.isDev ? 50 : 10,
+    message: { error: 'Too many redemption attempts. Please try again later.' }
+});
+
+app.use('/api/auth/forgot-password', forgotPasswordLimiter);
+app.use('/api/og-code/redeem', ogCodeLimiter);
+
 // CORS
 const corsOptions = {
     origin: function(origin, callback) {
@@ -525,7 +551,7 @@ if (!fs.existsSync(sessionsPath)) {
 app.use(session({
     store: new FileStore({
         path: sessionsPath,
-        ttl: 365 * 24 * 60 * 60, // 1 year
+        ttl: 30 * 24 * 60 * 60, // 30 days
         retries: 0,
         logFn: () => {} // Disable logging
     }),
@@ -536,7 +562,7 @@ app.use(session({
     cookie: {
         secure: !config.isDev,
         httpOnly: true,
-        maxAge: 365 * 24 * 60 * 60 * 1000, // 1 year
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         sameSite: 'lax'
     }
 }));
@@ -931,6 +957,8 @@ app.post('/api/auth/google', async (req, res) => {
         // Get updated user after potential sync
         const updatedUser = getUser(userId) || user;
         
+        // Regenerate session to prevent session fixation
+        await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
         req.session.userId = userId;
         const role = getUserRole(updatedUser.email);
         
@@ -1005,6 +1033,8 @@ app.post('/api/auth/google-oauth', async (req, res) => {
         // Get updated user after potential sync
         const updatedUser = getUser(userId) || user;
         
+        // Regenerate session to prevent session fixation
+        await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
         req.session.userId = userId;
         const role = getUserRole(updatedUser.email);
         
@@ -1069,6 +1099,8 @@ app.post('/api/auth/register', async (req, res) => {
         user.preferences = { ...(user.preferences || {}), onboarded: false };
         scheduleSave();
         
+        // Regenerate session to prevent session fixation
+        await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
         req.session.userId = userId;
         const role = getUserRole(user.email);
         
@@ -1134,7 +1166,8 @@ app.post('/api/auth/login', async (req, res) => {
         // Get updated user after potential sync
         const updatedUser = getUser(user.userId) || user;
         
-        // Set session
+        // Regenerate session to prevent session fixation
+        await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
         req.session.userId = user.userId;
         
         const role = getUserRole(updatedUser.email);
@@ -1226,7 +1259,21 @@ app.post('/api/auth/reset-password', async (req, res) => {
         
         const user = getUserByEmail(email);
         
-        if (!user || user.resetToken !== token) {
+        if (!user || !user.resetToken) {
+            return res.status(401).json({ error: 'Invalid or expired reset link' });
+        }
+        
+        // Timing-safe token comparison to prevent timing attacks
+        let tokenMatch = false;
+        try {
+            const tokenBuf = Buffer.from(token, 'hex');
+            const storedBuf = Buffer.from(user.resetToken, 'hex');
+            tokenMatch = tokenBuf.length === storedBuf.length && crypto.timingSafeEqual(tokenBuf, storedBuf);
+        } catch {
+            tokenMatch = false;
+        }
+        
+        if (!tokenMatch) {
             return res.status(401).json({ error: 'Invalid or expired reset link' });
         }
         
@@ -1479,11 +1526,14 @@ app.post('/api/login', async (req, res) => {
                 name: verified.name,
                 provider: 'google'
             });
-            req.session.userId = verified.userId;
             
             // Auto-sync subscription for Google users
                 await autoSyncStripeSubscription(verified.userId, verified.email);
                 user = getUser(verified.userId) || user;
+            
+            // Regenerate session to prevent session fixation
+            await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
+            req.session.userId = verified.userId;
             
         } else if (email && password) {
             // Email/Password
@@ -1508,7 +1558,7 @@ app.post('/api/login', async (req, res) => {
             } else {
                 // Register new user
                 if (!isValidPassword(password)) {
-                    return res.status(400).json({ error: 'Password must be at least 8 characters' });
+                    return res.status(400).json({ error: 'Password must be at least 8 characters with uppercase, lowercase, and number' });
                 }
                 
                 const passwordHash = await hashPassword(password);
@@ -1519,6 +1569,8 @@ app.post('/api/login', async (req, res) => {
                 });
             }
             
+            // Regenerate session to prevent session fixation
+            await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
             req.session.userId = userId;
         } else {
             return res.status(400).json({ error: 'Email and password required' });
@@ -2226,12 +2278,7 @@ app.get('/api/health', (req, res) => {
     
     res.json({
         status: 'healthy',
-        timestamp: new Date().toISOString(),
-        environment: config.nodeEnv,
-        version: '2.0.0',
-        database: 'json-file',
-        stripe: stripe ? 'configured' : 'not configured',
-        users: userCount
+        timestamp: new Date().toISOString()
     });
 });
 
@@ -2240,10 +2287,11 @@ app.get('/api/health', (req, res) => {
  */
 app.get('/api/spots-left', (req, res) => {
     const TOTAL_SPOTS = 100;
+    const GRANTED_PLANS = ['granted', 'day_pass'];
     let claimed = 0;
     for (const uid of Object.keys(db.users)) {
         const u = db.users[uid];
-        if (u.subscribed === true) claimed++;
+        if (u.subscribed === true && !GRANTED_PLANS.includes(u.plan)) claimed++;
     }
     const spotsLeft = Math.max(0, TOTAL_SPOTS - claimed);
     res.set('Cache-Control', 'public, max-age=60');
@@ -3215,7 +3263,7 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
     
     // Check subscription or free tier
     const hasFull = hasFullAccess(user);
-    const canUseFree = canUseFreeTier(req.session.userId, 'subject-advisor');
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'subject-advisor');
     
     if (!hasFull && !canUseFree) {
         return res.status(403).json({ 
@@ -3273,11 +3321,6 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
         
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'Unable to generate response. Please try again.';
-        
-        // Increment free tier usage ONLY for free users
-        if (!hasFull) {
-            incrementFreeTierUsage(req.session.userId, 'subject-advisor');
-        }
         
         // Include remaining questions in response for free users only
         const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'subject-advisor');
@@ -4150,7 +4193,7 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
         return res.status(401).json({ error: 'User not found' });
     }
     const hasFull = hasFullAccess(user);
-    const canUseFree = canUseFreeTier(req.session.userId, 'worksheet');
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'worksheet');
     if (!hasFull && !canUseFree) {
         const status = getFreeTierStatus(req.session.userId, 'worksheet');
         return res.status(403).json({ 
@@ -4173,7 +4216,7 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
         const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
         const requestBody = {
             model: aiSettings.model,
-            messages: [{ role: 'system', content: systemPrompt }, ...messages.map(m => ({ role: m.role, content: m.content }))],
+            messages: [{ role: 'system', content: systemPrompt }, ...messages.slice(-20).map(m => ({ role: m.role, content: m.content }))],
             [tokenParam]: aiSettings.maxTokens
         };
         if (!isGpt5) requestBody.temperature = 0.3;
@@ -4189,7 +4232,6 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
         }
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'No response generated';
-        if (!hasFull) incrementFreeTierUsage(req.session.userId, 'worksheet');
         const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'worksheet');
         res.json({ reply, freeTierRemaining: remaining });
     } catch (error) {
@@ -4208,7 +4250,7 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
         return res.status(401).json({ error: 'User not found' });
     }
     const hasFull = hasFullAccess(user);
-    const canUseFree = canUseFreeTier(req.session.userId, 'notes-transcriber');
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'notes-transcriber');
     if (!hasFull && !canUseFree) {
         const status = getFreeTierStatus(req.session.userId, 'notes-transcriber');
         return res.status(403).json({ 
@@ -4247,7 +4289,6 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
         }
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'No response generated';
-        if (!hasFull) incrementFreeTierUsage(req.session.userId, 'notes-transcriber');
         const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'notes-transcriber');
         res.json({ reply, freeTierRemaining: remaining });
     } catch (error) {
@@ -4610,7 +4651,7 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
 
     const hasFull = hasFullAccess(user);
 
-    // Free tier: 3 exams per week
+    // Free tier: 3 exams per week (atomic check-and-increment)
     if (!hasFull) {
         const weeklyCount = getExamWeeklyCount(req.session.userId);
         if (weeklyCount >= 3) {
@@ -4621,6 +4662,8 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
                 maxPerWeek: 3
             });
         }
+        // Reserve slot atomically before async generation
+        incrementExamWeeklyCount(req.session.userId);
     }
 
     const { subject, topics, duration, difficulty } = req.body;
@@ -5481,9 +5524,8 @@ CRITICAL JSON RULES:
             return res.status(500).json({ error: 'Failed to generate valid exam structure. Please try again.' });
         }
 
-        // Increment free tier usage
+        // Increment daily free tier usage
         if (!hasFull) {
-            incrementExamWeeklyCount(req.session.userId);
             incrementFreeTierUsage(req.session.userId, 'practice');
         }
 
@@ -5859,7 +5901,7 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     
     // Check access: full subscribers OR free tier with per-bot daily limit
     const hasFull = hasFullAccess(user);
-    const canUseFree = canUseFreeTier(req.session.userId, botType);
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, botType);
     
     if (!hasFull && !canUseFree) {
         return res.status(403).json({ 
@@ -6013,7 +6055,7 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             model: aiSettings.model,
             messages: [
                 { role: 'system', content: systemPrompt },
-                ...messages.map(m => {
+                ...messages.slice(-20).map(m => {
                     // Support multimodal content (arrays with text + image_url for worksheet decoder)
                     if (Array.isArray(m.content)) {
                         return { role: m.role, content: m.content };
@@ -6041,11 +6083,6 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'No response generated';
-        
-        // Increment free tier usage ONLY for free users (not paid, lifetime, or owner)
-        if (!hasFull) {
-            incrementFreeTierUsage(req.session.userId, botType);
-        }
         
         // Include remaining questions in response for free users only
         const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, botType);
@@ -6078,7 +6115,7 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
     
     // Check access: full subscribers OR free tier
     const hasFull = hasFullAccess(user);
-    const canUseFree = canUseFreeTier(req.session.userId, 'jr_' + botType);
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'jr_' + botType);
     
     if (!hasFull && !canUseFree) {
         return res.status(403).json({ 
@@ -6130,7 +6167,7 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
             model: aiSettings.model,
             messages: [
                 { role: 'system', content: systemPrompt },
-                ...messages.map(m => ({
+                ...messages.slice(-20).map(m => ({
                     role: m.role,
                     content: m.content
                 }))
@@ -6155,11 +6192,6 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
         
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'No response generated';
-        
-        // Increment free tier usage ONLY for free users
-        if (!hasFull) {
-            incrementFreeTierUsage(req.session.userId, 'jr_' + botType);
-        }
         
         const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'jr_' + botType);
         

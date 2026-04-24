@@ -612,7 +612,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <a href="index.html" class="logo">
-            <img src="logo.png" alt="Study Decoder">
+            <img src="logo.png" alt="Study Decoder" width="42" height="42">
             <span>Study Decoder</span>
         </a>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
@@ -1360,8 +1360,7 @@
             'exam': { icon: '🎓', name: 'Full Exam Bot', page: 'practice.html?mode=exam' },
             'learn-irl': { icon: '🎮', name: 'Learn IRL', page: 'learn-irl.html' },
             'worksheet': { icon: '📄', name: 'Worksheet Decoder', page: 'worksheet-decoder.html' },
-            'notes': { icon: '📋', name: 'Notes Transcriber', page: 'notes-transcriber.html' },
-            'advisor': { icon: '🧭', name: 'Subject Advisor', page: 'subject-advisor.html' }
+            'notes': { icon: '📋', name: 'Notes Transcriber', page: 'notes-transcriber.html' }
         };
         try {
             const last = JSON.parse(localStorage.getItem('sd_last_activity') || 'null');
@@ -1809,10 +1808,6 @@
     }
 
     function openTool(tool) {
-        if (tool === 'subject-advisor') {
-            window.location.href = 'subject-advisor.html';
-            return;
-        }
         if (tool === 'learn-irl') {
             window.location.href = 'learn-irl.html';
             return;

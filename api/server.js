@@ -39,6 +39,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const nodemailer = require('nodemailer');
 
 const app = express();
 
@@ -300,6 +301,20 @@ function canUseFreeTier(userId, botType) {
     return getTotalFreeTierUsage(userId) < FREE_TIER_CONFIG.totalUsesPerDay;
 }
 
+/**
+ * Atomic check-and-increment for free tier.
+ * Prevents race conditions: claims the slot synchronously before any async work.
+ * Returns true if allowed (usage has been recorded), false if limit reached.
+ */
+function tryUseFreeTier(userId, botType) {
+    if (!FREE_TIER_CONFIG.enabled) return false;
+    const specialLimit = FREE_TIER_CONFIG.specialLimits[botType];
+    if (specialLimit !== undefined && getFreeTierUsage(userId, botType) >= specialLimit) return false;
+    if (getTotalFreeTierUsage(userId) >= FREE_TIER_CONFIG.totalUsesPerDay) return false;
+    incrementFreeTierUsage(userId, botType);
+    return true;
+}
+
 function getFreeTierStatus(userId, botType) {
     const totalUsed = getTotalFreeTierUsage(userId);
     const totalRemaining = Math.max(0, FREE_TIER_CONFIG.totalUsesPerDay - totalUsed);
@@ -389,18 +404,32 @@ const authLimiter = rateLimit({
     message: { error: 'Too many login attempts, please try again later.' }
 });
 
+const forgotPasswordLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: config.isDev ? 20 : 5,
+    message: { error: 'Too many password reset requests. Please try again in an hour.' }
+});
+
+const ogCodeLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: config.isDev ? 50 : 10,
+    message: { error: 'Too many redemption attempts. Please try again later.' }
+});
+
 app.use('/api/', limiter);
 app.use('/api/login', authLimiter);
+app.use('/api/auth/forgot-password', forgotPasswordLimiter);
+app.use('/api/og-code/redeem', ogCodeLimiter);
 
 // Health check endpoint (before other middleware)
 app.get('/api/health', (req, res) => {
-    res.json({ 
-        status: 'ok', 
-        timestamp: new Date().toISOString(),
-        env: config.isDev ? 'development' : 'production',
-        stripeConfigured: !!config.stripe.secretKey,
-        openaiConfigured: !!config.openaiApiKey
-    });
+    const response = { status: 'ok', timestamp: new Date().toISOString() };
+    if (config.isDev) {
+        response.env = 'development';
+        response.stripeConfigured = !!config.stripe.secretKey;
+        response.openaiConfigured = !!config.openaiApiKey;
+    }
+    res.json(response);
 });
 
 // CORS
@@ -455,7 +484,7 @@ if (!fs.existsSync(sessionsPath)) {
 app.use(session({
     store: new FileStore({
         path: sessionsPath,
-        ttl: 365 * 24 * 60 * 60, // 1 year
+        ttl: 30 * 24 * 60 * 60, // 30 days
         retries: 0,
         logFn: () => {} // Disable logging
     }),
@@ -466,7 +495,7 @@ app.use(session({
     cookie: {
         secure: !config.isDev,
         httpOnly: true,
-        maxAge: 365 * 24 * 60 * 60 * 1000, // 1 year
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         sameSite: 'lax'
     }
 }));
@@ -738,6 +767,63 @@ function ensureOnboardingFlag(user) {
     }
 }
 
+// ==================== EMAIL CONFIGURATION ====================
+const emailTransporter = process.env.EMAIL_USER && process.env.EMAIL_APP_PASSWORD
+    ? nodemailer.createTransport({
+        host: 'smtp.titan.email',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_APP_PASSWORD
+        }
+    })
+    : null;
+
+if (!emailTransporter) {
+    console.warn('⚠️ EMAIL NOT CONFIGURED - Password reset will NOT work!');
+    console.warn('⚠️ Set EMAIL_USER and EMAIL_APP_PASSWORD in environment');
+}
+
+async function sendPasswordResetEmail(email, resetToken) {
+    if (!emailTransporter) {
+        console.error('❌ EMAIL NOT CONFIGURED - Cannot send password reset to:', email);
+        return false;
+    }
+    const resetLink = `${config.frontendUrl}/reset-password.html?token=${resetToken}&email=${encodeURIComponent(email)}`;
+    const mailOptions = {
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: 'Reset Your Study Decoder Password',
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h2 style="color: #6366f1;">Password Reset Request</h2>
+                <p>Hi,</p>
+                <p>We received a request to reset your password for your Study Decoder account.</p>
+                <p>Click the button below to reset your password. This link will expire in 1 hour.</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="${resetLink}" style="background-color: #6366f1; color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; display: inline-block;">Reset Password</a>
+                </div>
+                <p>If you didn't request this, you can safely ignore this email.</p>
+                <p style="color: #666; font-size: 12px; margin-top: 30px;">
+                    If the button doesn't work, copy and paste this link into your browser:<br>
+                    <a href="${resetLink}" style="color: #6366f1;">${resetLink}</a>
+                </p>
+                <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                <p style="color: #999; font-size: 11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
+            </div>
+        `
+    };
+    try {
+        await emailTransporter.sendMail(mailOptions);
+        console.log(`✅ Password reset email sent to: ${email}`);
+        return true;
+    } catch (error) {
+        console.error('❌ Failed to send password reset email:', error.message);
+        return false;
+    }
+}
+
 // ==================== ENTERPRISE AUTH ROUTES ======================================
 
 /**
@@ -776,6 +862,8 @@ app.post('/api/auth/google', async (req, res) => {
             ensureOnboardingFlag(user);
         }
         
+        // Regenerate session to prevent session fixation
+        await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
         req.session.userId = userId;
         const role = getUserRole(user.email);
         
@@ -840,6 +928,8 @@ app.post('/api/auth/register', async (req, res) => {
         user.preferences = { ...(user.preferences || {}), onboarded: false };
         scheduleSave();
         
+        // Regenerate session to prevent session fixation
+        await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
         req.session.userId = userId;
         const role = getUserRole(user.email);
         
@@ -902,7 +992,8 @@ app.post('/api/auth/login', async (req, res) => {
         // Update user role in case it changed
         const updatedUser = upsertUser(user.userId, user);
         
-        // Set session
+        // Regenerate session to prevent session fixation
+        await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
         req.session.userId = user.userId;
         
         const role = getUserRole(user.email);
@@ -935,23 +1026,27 @@ app.post('/api/auth/forgot-password', async (req, res) => {
             return res.status(400).json({ error: 'Valid email required' });
         }
         
+        // Check if email system is configured
+        if (!emailTransporter) {
+            return res.status(503).json({
+                error: 'Password reset is currently unavailable. Please contact support or use Google Sign-In.'
+            });
+        }
+
         // Always return success to prevent email enumeration
         console.log(`📧 Password reset requested for: ${email}`);
-        
-        // In production, you would send an email here
-        // For now, we'll just log it
+
         const user = getUserByEmail(email);
         if (user) {
-            // Generate reset token (would be sent via email)
             const resetToken = generateSecureToken();
             const resetExpiry = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
-            
-            // Store reset token (in production, store in DB)
             user.resetToken = resetToken;
             user.resetExpiry = resetExpiry;
             upsertUser(user.userId, user);
-            
-            console.log(`🔑 Reset token for ${email}: ${resetToken.substring(0, 8)}...`);
+            const sent = await sendPasswordResetEmail(email, resetToken);
+            if (!sent) {
+                console.error(`❌ Failed to send password reset email to: ${email}`);
+            }
         }
         
         res.json({ 
@@ -1622,10 +1717,11 @@ app.get('/api/health', (req, res) => {
  */
 app.get('/api/spots-left', (req, res) => {
     const TOTAL_SPOTS = 100;
+    const GRANTED_PLANS = ['granted', 'day_pass'];
     let claimed = 0;
     for (const uid of Object.keys(db.users)) {
         const u = db.users[uid];
-        if (u.subscribed === true) claimed++;
+        if (u.subscribed === true && !GRANTED_PLANS.includes(u.plan)) claimed++;
     }
     const spotsLeft = Math.max(0, TOTAL_SPOTS - claimed);
     res.set('Cache-Control', 'public, max-age=60');
@@ -2527,7 +2623,7 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
     
     // Check subscription or free tier
     const hasFull = hasFullAccess(user);
-    const canUseFree = canUseFreeTier(req.session.userId, 'subject-advisor');
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'subject-advisor');
     
     if (!hasFull && !canUseFree) {
         const status = getFreeTierStatus(req.session.userId, 'subject-advisor');
@@ -2577,11 +2673,6 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
         
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'Unable to generate response. Please try again.';
-        
-        // Increment free tier usage for free users
-        if (!hasFull) {
-            incrementFreeTierUsage(req.session.userId, 'subject-advisor');
-        }
         
         const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'subject-advisor');
         
@@ -3304,7 +3395,7 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
     
     // Check access: full subscribers OR free tier with per-bot daily limit
     const hasFull = hasFullAccess(user);
-    const canUseFree = canUseFreeTier(req.session.userId, 'worksheet');
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'worksheet');
     
     if (!hasFull && !canUseFree) {
         const status = getFreeTierStatus(req.session.userId, 'worksheet');
@@ -3356,11 +3447,6 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'No response generated';
         
-        // Increment free tier usage ONLY for free users
-        if (!hasFull) {
-            incrementFreeTierUsage(req.session.userId, 'worksheet');
-        }
-        
         const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'worksheet');
         
         res.json({ reply, freeTierRemaining: remaining });
@@ -3380,7 +3466,7 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
         return res.status(401).json({ error: 'User not found' });
     }
     const hasFull = hasFullAccess(user);
-    const canUseFree = canUseFreeTier(req.session.userId, 'notes-transcriber');
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'notes-transcriber');
     if (!hasFull && !canUseFree) {
         const status = getFreeTierStatus(req.session.userId, 'notes-transcriber');
         return res.status(403).json({ 
@@ -3416,7 +3502,6 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
         }
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'No response generated';
-        if (!hasFull) incrementFreeTierUsage(req.session.userId, 'notes-transcriber');
         const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'notes-transcriber');
         res.json({ reply, freeTierRemaining: remaining });
     } catch (error) {
@@ -3447,7 +3532,7 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     
     // Check access: full subscribers OR free tier with per-bot daily limit
     const hasFull = hasFullAccess(user);
-    const canUseFree = canUseFreeTier(req.session.userId, botType);
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, botType);
     
     if (!hasFull && !canUseFree) {
         const status = getFreeTierStatus(req.session.userId, botType);
@@ -3614,11 +3699,6 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'No response generated';
         
-        // Increment free tier usage ONLY for free users
-        if (!hasFull) {
-            incrementFreeTierUsage(req.session.userId, botType);
-        }
-        
         const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, botType);
         
         res.json({ reply, freeTierRemaining: remaining });
@@ -3649,7 +3729,7 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
     
     // Check access: full subscribers OR free tier with per-bot daily limit
     const hasFull = hasFullAccess(user);
-    const canUseFree = canUseFreeTier(req.session.userId, 'jr_' + botType);
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'jr_' + botType);
     
     if (!hasFull && !canUseFree) {
         const status = getFreeTierStatus(req.session.userId, 'jr_' + botType);
@@ -3720,11 +3800,6 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
         
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'No response generated';
-        
-        // Increment free tier usage ONLY for free users
-        if (!hasFull) {
-            incrementFreeTierUsage(req.session.userId, 'jr_' + botType);
-        }
         
         const remaining = hasFull ? null : getFreeTierRemaining(req.session.userId, 'jr_' + botType);
         
