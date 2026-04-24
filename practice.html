@@ -335,6 +335,7 @@
         .exam-limits-banner strong { color: #4f8cff; }
         .exam-setup-form { display: flex; flex-direction: column; gap: 14px; }
         .exam-setup-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .exam-setup-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
         .exam-generate-btn {
             width: 100%; background: linear-gradient(135deg, #4f8cff, #6C63FF); color: #fff;
             border: none; border-radius: 10px; padding: 14px 24px; font-size: 15px;
@@ -342,6 +343,21 @@
         }
         .exam-generate-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(79,140,255,0.3); }
         .exam-generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .exam-print-setup-btn {
+            width: 100%; background: #16181c; color: #e7e9ea;
+            border: 1px solid #2f3336; border-radius: 10px; padding: 14px 24px; font-size: 15px;
+            font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 8px;
+        }
+        .exam-print-setup-btn:hover:not(:disabled) { border-color: #4f8cff; color: #4f8cff; transform: translateY(-1px); }
+        .exam-print-setup-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .print-answer-key { background: #16202a; border: 1px solid #2f3336; border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+        .print-answer-key h3 { color: #e7e9ea; margin-bottom: 8px; font-size: 1.05rem; }
+        .print-answer-key .key-meta { color: #8b949e; font-size: 0.9rem; margin-bottom: 10px; }
+        .print-answer-key .key-q { border-top: 1px solid #2f3336; padding-top: 12px; margin-top: 12px; }
+        .print-answer-key .key-q-title { color: #e7e9ea; font-weight: 700; margin-bottom: 8px; }
+        .print-answer-key .key-answer { color: #22c55e; font-weight: 600; margin-bottom: 8px; }
+        .print-answer-key .key-block { background: #0f1419; border: 1px solid #2f3336; border-radius: 8px; padding: 10px 12px; color: #c9d1d9; font-size: 0.9rem; line-height: 1.5; white-space: pre-wrap; }
 
         /* Quick Paper duration buttons */
         .quick-dur-btn {
@@ -2419,7 +2435,10 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                                 </select>
                             </div>
                         </div>
-                        <button type="button" class="exam-generate-btn" id="examGenerateBtn" onclick="generateExam()">📝 Generate Exam</button>
+                        <div class="exam-setup-actions">
+                            <button type="button" class="exam-generate-btn" id="examGenerateBtn" onclick="generateExam()">📝 Generate Exam</button>
+                            <button type="button" class="exam-print-setup-btn" id="examPrintSetupBtn" onclick="printExamFromSetup()">🖨 Print Exam</button>
+                        </div>
                     </div>
                     <div class="exam-history-section" id="examHistorySection" style="display:none;">
                         <div class="exam-history-header">
@@ -2601,6 +2620,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             const topicsEl = document.getElementById('examSetupTopics');
             const difficultyEl = document.getElementById('examSetupDifficulty');
             const genBtn = document.getElementById('examGenerateBtn');
+            const printBtn = document.getElementById('examPrintSetupBtn');
 
             examSubjectId = subjectEl.value;
             if (!examSubjectId) { alert('Please select a subject.'); return; }
@@ -2612,6 +2632,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             const difficulty = difficultyEl.value;
 
             genBtn.disabled = true;
+            if (printBtn) printBtn.disabled = true;
             genBtn.textContent = 'Generating exam...';
             trackUsage('exam', examSubjectId, subjectName, topics);
 
@@ -2702,7 +2723,193 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                         <p style="color:#71767b;margin-bottom:20px;">${error.message}</p>
                         <button class="exam-nav-btn primary" onclick="showExamSetup()">Try Again</button>
                     </div>`;
+            } finally {
+                const setupGenBtn = document.getElementById('examGenerateBtn');
+                const setupPrintBtn = document.getElementById('examPrintSetupBtn');
+                if (setupGenBtn) {
+                    setupGenBtn.disabled = false;
+                    setupGenBtn.textContent = '📝 Generate Exam';
+                }
+                if (setupPrintBtn) setupPrintBtn.disabled = false;
             }
+        }
+
+        async function printExamFromSetup() {
+            const subjectEl = document.getElementById('examSetupSubject');
+            const durationEl = document.getElementById('examSetupDuration');
+            const topicsEl = document.getElementById('examSetupTopics');
+            const difficultyEl = document.getElementById('examSetupDifficulty');
+            const genBtn = document.getElementById('examGenerateBtn');
+            const printBtn = document.getElementById('examPrintSetupBtn');
+
+            examSubjectId = subjectEl.value;
+            if (!examSubjectId) { alert('Please select a subject.'); return; }
+
+            const subjectName = subjectEl.options[subjectEl.selectedIndex].text;
+            const duration = durationEl.value;
+            const selectedTopic = topicsEl.value;
+            const topics = selectedTopic === 'All' ? 'All Year 12 content' : selectedTopic;
+            const difficulty = difficultyEl.value;
+
+            if (genBtn) genBtn.disabled = true;
+            if (printBtn) {
+                printBtn.disabled = true;
+                printBtn.textContent = 'Preparing print...';
+            }
+            trackUsage('exam', examSubjectId, subjectName, topics);
+
+            const examFacts = getFactsForSubject(examSubjectId);
+            let examFactIdx = Math.floor(Math.random() * examFacts.length);
+            document.getElementById('examContent').innerHTML = `
+                <div class="exam-loading">
+                    <div class="loading-dots" style="justify-content:center;"><span></span><span></span><span></span></div>
+                    <div class="exam-loading-text">Generating printable ${subjectName} exam paper...</div>
+                    <div class="fun-fact-box" style="margin:20px auto;max-width:500px;">
+                        <div class="ff-label">💡 Did you know?</div>
+                        <div class="ff-text ff-swap" id="examPrintFact">${examFacts[examFactIdx]}</div>
+                    </div>
+                </div>`;
+            const examFactInterval = setInterval(() => {
+                examFactIdx = (examFactIdx + 1) % examFacts.length;
+                const el = document.getElementById('examPrintFact');
+                if (el) { el.className = 'ff-text'; setTimeout(() => { el.textContent = examFacts[examFactIdx]; el.className = 'ff-text ff-swap'; }, 50); }
+                else clearInterval(examFactInterval);
+            }, 4500);
+
+            try {
+                const res = await fetch(`${API_BASE}/api/exam/generate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ subject: examSubjectId, topics, duration, difficulty })
+                });
+
+                clearInterval(examFactInterval);
+
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    if (err.examLimitReached) {
+                        document.getElementById('examContent').innerHTML = `
+                            <div style="text-align:center;padding:60px 20px;">
+                                <h2 style="color:#e7e9ea;margin-bottom:12px;">⚡ Weekly Exam Limit Reached</h2>
+                                <p style="color:#71767b;margin-bottom:20px;">You've used all 3 free exams this week. Upgrade for unlimited exams.</p>
+                                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="exam-generate-btn" style="display:inline-block;text-decoration:none;max-width:300px;">Upgrade to Premium</a>
+                                <br><button class="exam-nav-btn" style="margin-top:16px;" onclick="showExamSetup()">← Back</button>
+                            </div>`;
+                        return;
+                    }
+                    throw new Error(err.error || 'Failed to generate exam');
+                }
+
+                const data = await res.json();
+                examData = data.exam;
+                examIsPremium = data.isPremium;
+                examAnswers = {};
+
+                examQuestions = [];
+                for (const section of examData.sections) {
+                    for (const q of section.questions) {
+                        examQuestions.push({ ...q, sectionName: section.name });
+                    }
+                }
+
+                if (examQuestions.length === 0) {
+                    throw new Error('No questions generated');
+                }
+
+                let verifiedTotal = 0;
+                for (const q of examQuestions) verifiedTotal += (q.marks || 0);
+                if (verifiedTotal > 0 && verifiedTotal !== examData.totalMarks) {
+                    examData.totalMarks = verifiedTotal;
+                }
+
+                document.getElementById('examTitle').textContent = examData.title || `${subjectName} Exam`;
+                document.getElementById('examMeta').textContent = `${examData.duration || duration + ' hour(s)'} · ${examData.totalMarks} marks · ${examQuestions.length} questions`;
+                setExamPrintVisible(true);
+                printExamPaper();
+
+                setTimeout(() => {
+                    const revealKey = confirm('If you finished the printed exam, click OK to load answers and NESA-style marking criteria now.');
+                    if (revealKey) showPrintedAnswerKey();
+                    else showExamSetup();
+                }, 500);
+
+            } catch (error) {
+                clearInterval(examFactInterval);
+                document.getElementById('examContent').innerHTML = `
+                    <div style="text-align:center;padding:60px 20px;">
+                        <h2 style="color:#ef4444;margin-bottom:12px;">Failed to Prepare Printable Exam</h2>
+                        <p style="color:#71767b;margin-bottom:20px;">${error.message}</p>
+                        <button class="exam-nav-btn primary" onclick="showExamSetup()">Try Again</button>
+                    </div>`;
+            } finally {
+                const setupGenBtn = document.getElementById('examGenerateBtn');
+                const setupPrintBtn = document.getElementById('examPrintSetupBtn');
+                if (setupGenBtn) {
+                    setupGenBtn.disabled = false;
+                    setupGenBtn.textContent = '📝 Generate Exam';
+                }
+                if (setupPrintBtn) {
+                    setupPrintBtn.disabled = false;
+                    setupPrintBtn.textContent = '🖨 Print Exam';
+                }
+            }
+        }
+
+        function showPrintedAnswerKey() {
+            if (!examData || !examData.sections || examData.sections.length === 0) {
+                alert('No generated exam found. Please generate or print an exam first.');
+                return;
+            }
+
+            document.getElementById('examNav').style.display = 'none';
+            document.getElementById('examDots').style.display = 'none';
+            stopExamTimer();
+
+            const sectionsHtml = examData.sections.map((section, sIdx) => {
+                const questionsHtml = (section.questions || []).map((q, qIdx) => {
+                    const qTitle = `Q${q.number || (qIdx + 1)}${q.marks ? ` (${q.marks} marks)` : ''}`;
+                    let answerLine = '';
+                    if (q.type === 'mc') {
+                        const letter = (q.correctAnswer || '').toString().trim();
+                        const optionText = Array.isArray(q.options)
+                            ? (q.options.find(opt => String(opt).trim().startsWith(letter + '.')) || '')
+                            : '';
+                        answerLine = `<div class="key-answer">Correct Answer: ${escapeHtml(letter)}${optionText ? ` — ${escapeHtml(optionText)}` : ''}</div>`;
+                    }
+
+                    const sampleAnswer = q.sampleAnswer ? escapeHtml(q.sampleAnswer) : 'Sample answer unavailable for this question.';
+                    const criteria = q.markingCriteria ? escapeHtml(q.markingCriteria) : 'Marking criteria unavailable for this question.';
+
+                    return `
+                        <div class="key-q">
+                            <div class="key-q-title">${escapeHtml(qTitle)}</div>
+                            <div class="key-meta">${escapeHtml(section.name || `Section ${sIdx + 1}`)}</div>
+                            ${answerLine}
+                            ${q.type !== 'mc' ? `<div class="key-meta">Band 6 Sample Answer</div><div class="key-block">${sampleAnswer}</div>` : ''}
+                            ${q.type !== 'mc' ? `<div class="key-meta" style="margin-top:10px;">NESA-style Marking Criteria</div><div class="key-block">${criteria}</div>` : ''}
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="print-answer-key">
+                        <h3>${escapeHtml(section.name || `Section ${sIdx + 1}`)}</h3>
+                        ${questionsHtml}
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('examContent').innerHTML = `
+                <div style="text-align:center;margin-bottom:16px;">
+                    <h2 style="color:#e7e9ea;margin-bottom:8px;">✅ Answer Key + NESA-style Marking Criteria</h2>
+                    <p style="color:#8b949e;">Only use this after completing your printed exam under timed conditions.</p>
+                    <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:10px;">
+                        <button class="exam-nav-btn" onclick="printExamPaper()">🖨 Reprint Questions</button>
+                        <button class="exam-nav-btn primary" onclick="showExamSetup()">Generate New Exam</button>
+                    </div>
+                </div>
+                ${sectionsHtml}`;
         }
 
         function renderExamDots() {

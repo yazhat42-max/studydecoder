@@ -5290,7 +5290,8 @@ Return ONLY valid JSON (no markdown, no code fences) in this exact structure:
           "options": ["A. option", "B. option", "C. option", "D. option"],
           "correctAnswer": "B",
           "stimulus": "Optional stimulus material or null",
-          "markingCriteria": "Detailed marking criteria with band descriptors. For 5+ mark questions include: Band 6 (full marks) criteria, Band 4-5 (partial) criteria, and what earns 0-1 marks. For 2-4 mark questions list each mark's required element. For MC: omit this field."
+                    "markingCriteria": "NESA-aligned marking criteria. For 5+ mark questions include clear Band 6 full-mark features, Band 4-5 partial features, and low-band/common error indicators. For 2-4 mark questions, map each mark point to explicit required evidence/idea. For MC: omit this field.",
+                    "sampleAnswer": "For non-MC only: a concise Band 6 exemplar response aligned directly to the question, syllabus dot points, and marking criteria."
         }
       ]
     }
@@ -5303,7 +5304,9 @@ CRITICAL JSON RULES:
 - Short/Extended questions with 4+ marks MUST have "parts" — an array of sub-questions with labels like "(a)", "(b)", "(c)". Each part has its own "text" and "marks". The question's total "marks" must equal the sum of all part marks. This is NOT optional — real HSC exams almost ALWAYS use sub-parts for questions worth 4+ marks in Science, Maths, PDHPE, TAS, Geography, and Business subjects.
 - Short/Extended questions with 2-3 marks can omit "parts" (single question is fine).
 - For Science, Mathematics, PDHPE, Geography, TAS subjects: even 3-mark questions often have sub-parts. Prefer sub-parts over single monolithic questions.
-- For non-MC: include detailed "markingCriteria" with specific band-level descriptors (what earns full marks vs partial vs zero). Optionally include "stimulus".
+- For non-MC: include BOTH "markingCriteria" and "sampleAnswer".
+- "markingCriteria" MUST be NESA-style and specific: no vague wording like "good understanding" alone. It must explicitly identify what evidence, terminology, reasoning depth, and syllabus alignment earns each level/mark point.
+- "sampleAnswer" MUST model a Band 6 response that directly satisfies the marking criteria and stays strictly within the selected module/topic.
 - For MC: "correctAnswer" should be JUST the letter (A, B, C, or D). "markingCriteria" is NOT needed for MC.
 - DATA TABLES in stimulus: Format ALL tables as proper markdown tables with | separators. EVERY row must use the pipe format — including the LAST row. Structure: "| Column 1 | Column 2 |\n|---|---|\n| data1 | data2 |\n| data3 | data4 |" — NEVER drop the pipe format mid-table. If a table has 5 rows of data, ALL 5 rows must use | separators. Incomplete tables where the last rows become plain text are INVALID.
 - Match section names and structure to the EXAM STRUCTURE specified above.
@@ -5330,7 +5333,7 @@ CRITICAL JSON RULES:
                 model: aiSettings.model,
                 messages: [
                     { role: 'system', content: systemPrompt },
-                    { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}` }
+                    { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. Include NESA-aligned markingCriteria and Band 6 sampleAnswer for every non-MC question. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}` }
                 ],
                 [tokenParam]: examTokenBudget
             };
