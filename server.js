@@ -3924,7 +3924,8 @@ You MUST return ONLY valid JSON in this exact format:
 {
   "message": "scenario narration text",
   "choices": ["option A", "option B", "option C"],
-  "effects": { "money": number, "time": number, "risk": number, "energy": number }
+    "effects": { "money": number, "time": number, "risk": number, "energy": number },
+    "final": false
 }
 
 === OBJECTIVE & FAIL CONDITIONS ===
@@ -3943,6 +3944,7 @@ On the VERY FIRST message, you MUST:
 FAIL CONDITIONS: The game MUST be losable. Track the 4 stats (money, time, risk, energy — each starts at 50):
 - If ANY stat hits 0 or below → GAME OVER. The final message must narrate the failure dramatically and explain what went wrong, tying it back to the subject content they missed or misunderstood.
 - If risk hits 100 → also GAME OVER (too much risk accumulated).
+- Do NOT force game over in the first 3 turns unless the user chooses an obviously catastrophic option (eg reckless, illegal, life-threatening choice). Early turns should build tension, not instantly end the game.
 - When a stat drops below 20, the narrative MUST warn the player organically ("Your funds are dangerously low...", "You're running out of time...").
 - Make effects impactful: bad choices should cost -15 to -25 on relevant stats, not just -3 or -5.
 
@@ -3978,6 +3980,9 @@ The game MUST teach by progressing through the module's content:
 - Keep message concise (3-5 sentences) but immersive. Don't pad with unnecessary description.
 - Increase tension gradually — the late game should feel high-stakes
 - When game ends (win or lose), include a brief summary of what content they learned and what they missed
+- If the game is NOT over: ALWAYS provide 2-4 meaningful choices and set "final": false.
+- If the game IS over (win or lose): set "final": true and return choices as an empty array.
+- Never end a turn without either choices (non-final) or explicit final=true.
 
 BREAKDOWN MODE (when mode = "breakdown"):
 

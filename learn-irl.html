@@ -542,6 +542,7 @@
         let currentMode = 'game';
         let conversationHistory = [];
         let gameState = null;
+        let gameTurnCount = 0;
         let isLoading = false;
         let pendingScenario = null; // stores selected scenario context
 
@@ -997,6 +998,7 @@
             modeLanding.classList.add('active');
             conversationHistory = [];
             gameState = null;
+            gameTurnCount = 0;
             chatMessages.innerHTML = '';
             choicesContainer.innerHTML = '';
         }
@@ -1075,6 +1077,7 @@
 
             conversationHistory = [];
             gameState = null;
+            gameTurnCount = 0;
 
             const theme = SUBJECT_THEMES[subj?.category] || SUBJECT_THEMES['Science'];
             const gv = document.getElementById('gameView');
@@ -1214,11 +1217,38 @@
             return null;
         }
 
+        function sanitizeEffectDelta(val) {
+            const n = Number(val);
+            if (!Number.isFinite(n)) return 0;
+            return Math.max(-25, Math.min(25, Math.round(n)));
+        }
+
+        function getFallbackChoices() {
+            return [
+                'Take a cautious approach and reassess the situation',
+                'Commit to a decisive action to stabilise the scenario',
+                'Gather more evidence before making the next move'
+            ];
+        }
+
         function renderGameResponse(data) {
+            gameTurnCount += 1;
+
             if (data.effects) {
                 if (!gameState) gameState = { money: 50, time: 50, risk: 50, energy: 50 };
                 for (const [key, val] of Object.entries(data.effects)) {
-                    if (gameState[key] !== undefined) gameState[key] = Math.max(0, Math.min(100, gameState[key] + val));
+                    if (gameState[key] !== undefined) {
+                        const delta = sanitizeEffectDelta(val);
+                        gameState[key] = Math.max(0, Math.min(100, gameState[key] + delta));
+                    }
+                }
+
+                // Prevent unfair instant deaths in the opening turns.
+                if (gameTurnCount <= 2) {
+                    if (gameState.money <= 0) gameState.money = 5;
+                    if (gameState.time <= 0) gameState.time = 5;
+                    if (gameState.energy <= 0) gameState.energy = 5;
+                    if (gameState.risk >= 100) gameState.risk = 95;
                 }
             }
             updateGameStats();
@@ -1233,13 +1263,18 @@
                 }
             }
 
-            // Check for game over: any stat at 0 or risk at 100
-            const isGameOver = gameState && (
+            // Check for game over: any stat at 0 or risk at 100 (after initial grace turns)
+            const statGameOver = gameState && gameTurnCount > 2 && (
                 gameState.money <= 0 || gameState.time <= 0 || gameState.energy <= 0 || gameState.risk >= 100
             );
 
-            // Also detect if AI sent no choices (narrative ending)
-            const hasChoices = data.choices && data.choices.length > 0 && !isGameOver;
+            const explicitFinal = data && data.final === true;
+            const isGameOver = !!(statGameOver || explicitFinal);
+
+            const rawChoices = Array.isArray(data.choices) ? data.choices.filter(c => typeof c === 'string' && c.trim()) : [];
+            const fallbackChoices = getFallbackChoices();
+            const choicesToShow = !isGameOver && rawChoices.length >= 2 ? rawChoices : (!isGameOver ? fallbackChoices : []);
+            const hasChoices = choicesToShow.length > 0;
 
             const narrativeEl = document.getElementById('gameNarrative');
             narrativeEl.className = 'game-narrative';
@@ -1256,7 +1291,7 @@
                 choicesEl.classList.add('fade-in');
             } else if (hasChoices) {
                 choicesEl.className = 'game-choices';
-                choicesEl.innerHTML = data.choices.map(c =>
+                choicesEl.innerHTML = choicesToShow.map(c =>
                     `<button class="gchoice-btn" onclick="pickChoice(this, '${escapeAttr(c)}')">${escapeHtml(c)}</button>`
                 ).join('');
                 void choicesEl.offsetWidth;
