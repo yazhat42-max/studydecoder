@@ -3925,8 +3925,16 @@ You MUST return ONLY valid JSON in this exact format:
   "message": "scenario narration text",
   "choices": ["option A", "option B", "option C"],
     "effects": { "money": number, "time": number, "risk": number, "energy": number },
+    "flashcard": { "term": "HSC concept name", "definition": "one-sentence plain-English explanation tied to the syllabus", "tag": "module_keyword" },
     "final": false
 }
+
+FLASHCARD RULES:
+- Include "flashcard" when the player just made a choice that reveals they likely misunderstood a key subject concept. The flashcard reinforces what they missed.
+- Set "flashcard" to null if the player made a smart choice OR on the very first turn.
+- The "term" must be an exact HSC concept (e.g. "Cash flow" not "money", "Market segmentation" not "targeting", "Punnett square" not "genetics").
+- The "definition" must be a single plain-English sentence a student would actually remember.
+- The "tag" is a short keyword: the module name or topic area (e.g. "Finance", "Heredity", "Markets").
 
 === OBJECTIVE & FAIL CONDITIONS ===
 
@@ -3981,7 +3989,7 @@ The game MUST teach by progressing through the module's content:
 - Increase tension gradually — the late game should feel high-stakes
 - When game ends (win or lose), include a brief summary of what content they learned and what they missed
 - If the game is NOT over: ALWAYS provide 2-4 meaningful choices and set "final": false.
-- If the game IS over (win or lose): set "final": true and return choices as an empty array.
+- If the game IS over (win or lose): set "final": true and return choices as an empty array and flashcard as null.
 - Never end a turn without either choices (non-final) or explicit final=true.
 
 BREAKDOWN MODE (when mode = "breakdown"):

@@ -419,6 +419,63 @@
             .gchoice-btn { padding: 14px 18px; font-size: 0.88rem; }
             .gchoice-btn:hover { transform: translateX(4px); }
         }
+
+        /* ── FLASHCARD OVERLAY ── */
+        .flashcard-overlay {
+            position: fixed; bottom: 80px; left: 50%;
+            transform: translateX(-50%) translateY(160%);
+            width: min(460px, calc(100% - 32px)); z-index: 220;
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+        }
+        .flashcard-overlay.show {
+            transform: translateX(-50%) translateY(0);
+            pointer-events: all;
+        }
+        .flashcard {
+            background: linear-gradient(135deg, #0d1b2a, #1a2744);
+            border: 1.5px solid var(--gv-accent, #10b981);
+            border-radius: 16px; padding: 18px 22px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.65), 0 0 30px var(--gv-glow, rgba(16,185,129,0.15));
+            position: relative;
+        }
+        .flashcard-label {
+            font-size: 0.66rem; text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--gv-accent, #10b981); font-weight: 700; margin-bottom: 6px;
+        }
+        .flashcard-term {
+            font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.95); margin-bottom: 6px;
+        }
+        .flashcard-def {
+            font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; display: none;
+        }
+        .flashcard-def.revealed { display: block; }
+        .flashcard-reveal-btn {
+            margin-top: 8px; font-size: 0.78rem; color: var(--gv-accent, #10b981);
+            background: none; border: 1px solid var(--gv-accent, #10b981);
+            border-radius: 6px; padding: 4px 12px; cursor: pointer;
+            font-family: 'Poppins', sans-serif; transition: opacity 0.2s;
+        }
+        .flashcard-reveal-btn:hover { opacity: 0.7; }
+        .flashcard-close {
+            position: absolute; top: 10px; right: 14px;
+            background: none; border: none; color: rgba(255,255,255,0.3);
+            font-size: 15px; cursor: pointer; font-family: 'Poppins', sans-serif;
+            transition: color 0.2s; padding: 0; line-height: 1;
+        }
+        .flashcard-close:hover { color: rgba(255,255,255,0.7); }
+        .flashcard-tag {
+            margin-top: 6px; font-size: 0.7rem; color: rgba(255,255,255,0.28);
+        }
+        /* ── STAT VALUE TEXT ── */
+        .gstat-group { display: flex; flex-direction: column; align-items: flex-start; }
+        .gstat-value { font-size: 0.6rem; color: rgba(255,255,255,0.3); margin-top: 3px; text-align: center; white-space: nowrap; min-width: 72px; }
+        /* ── MISCONCEPTION REVIEW ── */
+        .misconception-review { margin-top: 16px; text-align: left; max-width: 420px; margin-left: auto; margin-right: auto; }
+        .misconception-review-label { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .misconception-item { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; border-left: 2px solid var(--gv-accent, #10b981); }
+        .misconception-item-term { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.85); }
+        .misconception-item-def { font-size: 0.77rem; color: rgba(255,255,255,0.5); margin-top: 3px; line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -514,10 +571,10 @@
             <button class="game-new-btn" onclick="resetSession()">New Scenario</button>
         </div>
         <div class="game-stats" id="gameStats">
-            <div class="gstat"><span class="gstat-icon">💰</span><span class="gstat-label">Resources</span><div class="gstat-bar"><div class="gstat-fill money" id="statMoney"></div></div></div>
-            <div class="gstat"><span class="gstat-icon">⏱️</span><span class="gstat-label">Time</span><div class="gstat-bar"><div class="gstat-fill time" id="statTime"></div></div></div>
-            <div class="gstat"><span class="gstat-icon">⚠️</span><span class="gstat-label">Risk</span><div class="gstat-bar"><div class="gstat-fill risk" id="statRisk"></div></div></div>
-            <div class="gstat"><span class="gstat-icon">⚡</span><span class="gstat-label">Energy</span><div class="gstat-bar"><div class="gstat-fill energy" id="statEnergy"></div></div></div>
+            <div class="gstat"><span class="gstat-icon">💰</span><div class="gstat-group"><span class="gstat-label">Resources</span><div class="gstat-bar"><div class="gstat-fill money" id="statMoney"></div></div><div class="gstat-value" id="statMoneyVal"></div></div></div>
+            <div class="gstat"><span class="gstat-icon">⏱️</span><div class="gstat-group"><span class="gstat-label">Time</span><div class="gstat-bar"><div class="gstat-fill time" id="statTime"></div></div><div class="gstat-value" id="statTimeVal"></div></div></div>
+            <div class="gstat"><span class="gstat-icon">⚠️</span><div class="gstat-group"><span class="gstat-label">Risk</span><div class="gstat-bar"><div class="gstat-fill risk" id="statRisk"></div></div><div class="gstat-value" id="statRiskVal"></div></div></div>
+            <div class="gstat"><span class="gstat-icon">⚡</span><div class="gstat-group"><span class="gstat-label">Energy</span><div class="gstat-bar"><div class="gstat-fill energy" id="statEnergy"></div></div><div class="gstat-value" id="statEnergyVal"></div></div></div>
         </div>
         <div class="game-objective" id="gameObjective">
             <div class="game-objective-label">&#127919; Objective</div>
@@ -534,6 +591,18 @@
             </div>
         </div>
         <div class="game-choices" id="gameChoices"></div>
+
+        <!-- Flashcard overlay — slides up after a wrong choice reveals a missed concept -->
+        <div class="flashcard-overlay" id="flashcardOverlay">
+            <div class="flashcard">
+                <button class="flashcard-close" onclick="dismissFlashcard()">✕</button>
+                <div class="flashcard-label">📚 Concept Check</div>
+                <div class="flashcard-term" id="flashcardTerm"></div>
+                <div class="flashcard-def" id="flashcardDef"></div>
+                <button class="flashcard-reveal-btn" id="flashcardRevealBtn" onclick="revealFlashcard()">Show Answer</button>
+                <div class="flashcard-tag" id="flashcardTag"></div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -567,6 +636,42 @@
                 { icon: '🏢', title: 'Startup Founder', desc: 'You just launched a business with $10,000. Every dollar and decision counts.', context: 'Scenario: Startup founder — business planning, operations, marketing, finance, and HR decisions from day one' },
                 { icon: '📉', title: 'Turnaround Manager', desc: 'A once-profitable company is bleeding money. The board hired you to fix it.', context: 'Scenario: Business turnaround manager — diagnosing operational, financial, and marketing failures' },
                 { icon: '🌏', title: 'Franchise Expansion', desc: 'Your business is ready to go national. But expanding too fast could destroy everything.', context: 'Scenario: Business owner planning franchise expansion — growth strategy, operations, finance, and risk' }
+            ],
+            // Business Studies — module-specific scenarios (3 per module)
+            'business-studies_nature-of-business': [
+                { icon: '🌱', title: 'Starting a Business', desc: 'You\'ve had a business idea since school. With $8,000 saved, you\'re ready. But which structure do you choose?', context: 'Scenario: New entrepreneur choosing business structure and entering the market — types of businesses, business environment, stakeholders' },
+                { icon: '📊', title: 'Market Disruption', desc: 'A tech giant just moved into your market. Your business model is suddenly outdated.', context: 'Scenario: Business owner analysing the impact of a new competitor — business environment, SWOT, influences on business' },
+                { icon: '🔄', title: 'Structural Change', desc: 'Your sole trader business is growing fast. A partner wants in — but restructuring changes everything.', context: 'Scenario: Sole trader evaluating a change in legal structure — types of businesses, stakeholders, business planning' }
+            ],
+            'business-studies_business-management': [
+                { icon: '👥', title: 'Team in Crisis', desc: 'Your best employee quit and took clients with them. Your management approach is under scrutiny.', context: 'Scenario: Manager handling a staff and client crisis — management approaches, leadership styles, corporate culture' },
+                { icon: '📋', title: 'Strategic Overhaul', desc: 'Revenue dropped 25% with no obvious cause. You must diagnose the management failure — fast.', context: 'Scenario: Manager diagnosing strategic and operational failures — management styles, strategic planning, performance indicators' },
+                { icon: '🎯', title: 'Culture Clash', desc: 'Half your team wants autonomy, the other half needs direction. Your leadership will define this company.', context: 'Scenario: Manager navigating a divided workforce — leadership styles, corporate culture, staff management approaches' }
+            ],
+            'business-studies_business-planning': [
+                { icon: '📝', title: 'Bank or Bust', desc: 'A bank will only approve your loan if the business plan is bulletproof. You have 24 hours to fix it.', context: 'Scenario: Entrepreneur preparing a business plan for finance approval — business planning process, financial forecasting, SWOT' },
+                { icon: '💡', title: 'Feasibility Check', desc: 'Your idea sounds brilliant — but the numbers are shaky. Do you push forward anyway?', context: 'Scenario: Entrepreneur assessing business feasibility — market research, financial viability, risk assessment' },
+                { icon: '🎯', title: 'Strategy Rewrite', desc: 'A major market shift just made your 5-year plan irrelevant. Rebuild it or go under.', context: 'Scenario: Business owner revising strategy after industry disruption — business planning, goal setting, contingency planning' }
+            ],
+            'business-studies_operations': [
+                { icon: '⚙️', title: 'Supply Chain Failure', desc: 'Your main supplier just went bankrupt. Production stops in 3 days unless you act now.', context: 'Scenario: Operations manager during a supply chain crisis — operations processes, supply chain, inputs and transformation' },
+                { icon: '🏭', title: 'Quality Recall', desc: 'A defective batch of products just came back. Fix it fast or lose your biggest account.', context: 'Scenario: Operations manager handling a quality control failure — quality management, production processes, customer relations' },
+                { icon: '📦', title: 'Inventory Overload', desc: 'You over-ordered stock and now can\'t cover rent. Unload inventory without sinking the business.', context: 'Scenario: Operations manager dealing with excess inventory — inventory management, cost control, operational efficiency' }
+            ],
+            'business-studies_marketing': [
+                { icon: '📱', title: 'Campaign That Flopped', desc: 'Your ad campaign is getting clicks but zero sales. Something is wrong — diagnose it before the budget runs dry.', context: 'Scenario: Marketer diagnosing a failed campaign — marketing mix, target market, consumer behaviour, digital marketing' },
+                { icon: '🎯', title: 'Wrong Audience', desc: 'Six months and $15,000 spent targeting the wrong customers. Course-correct before the season ends.', context: 'Scenario: Marketer correcting a target market mistake — market segmentation, consumer behaviour, marketing strategy' },
+                { icon: '💰', title: 'Price War', desc: 'A competitor slashed prices 30%. Match them and hurt margins, or hold your ground and risk losing customers.', context: 'Scenario: Marketer navigating a competitive price war — pricing strategies, marketing mix, competitive positioning' }
+            ],
+            'business-studies_finance': [
+                { icon: '💰', title: 'Cash Flow Crisis', desc: 'Your business is profitable on paper — but you can\'t pay wages this week. The bank account is empty.', context: 'Scenario: Business owner managing a cash flow crisis — financial management, cash flow statements, working capital' },
+                { icon: '📊', title: 'Reading the Numbers', desc: 'The bank wants your financial statements before extending credit. What story do they tell?', context: 'Scenario: Business owner interpreting financial reports — financial statements, profitability ratios, financial performance' },
+                { icon: '💳', title: 'Funding Crossroads', desc: 'You need $60,000 to expand. Debt or equity — each option changes the business forever. Choose.', context: 'Scenario: Business owner choosing a funding strategy — sources of finance, debt vs equity, financial management' }
+            ],
+            'business-studies_human-resources': [
+                { icon: '👔', title: 'First Hire Decision', desc: 'Your first employee will define the culture. Two very different candidates, one critical role.', context: 'Scenario: Business owner making a critical hiring decision — HR management, recruitment, selection processes' },
+                { icon: '⚖️', title: 'Workplace Dispute', desc: 'An employee filed a harassment complaint. Ignore it and risk legal action, or investigate and face the fallout.', context: 'Scenario: Manager handling a workplace dispute — workplace relations, HR legislation, employment law' },
+                { icon: '🎓', title: 'Training vs Survival', desc: 'Training your team costs money you don\'t have — but poor skills are already costing you clients. Decide.', context: 'Scenario: Business owner deciding on staff development investment — HR management, training, employee performance' }
             ],
             'chemistry': [
                 { icon: '⚗️', title: 'Forensic Analyst', desc: 'A crime scene has unknown substances. You\'re the chemist who needs to identify them.', context: 'Scenario: Forensic chemist analysing unknown substances — applying knowledge of reactions, properties, and analytical techniques' },
@@ -1032,7 +1137,10 @@
         function showScenarioPicker(subj, subject, topic) {
             const category = subj?.category || 'Science';
             const subjectId = subj?.id || '';
-            const scenarios = SUBJECT_SCENARIOS[subjectId] || SUBJECT_SCENARIOS['biology'];
+            // Module-specific lookup: try subjectId_module-slug first, fallback to subjectId
+            const moduleSlug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            const moduleKey = subjectId + '_' + moduleSlug;
+            const scenarios = SUBJECT_SCENARIOS[moduleKey] || SUBJECT_SCENARIOS[subjectId] || SUBJECT_SCENARIOS['biology'];
             const theme = SUBJECT_THEMES[category] || SUBJECT_THEMES['Science'];
 
             const picker = document.getElementById('scenarioPicker');
@@ -1091,7 +1199,7 @@
             document.getElementById('gameObjectiveText').textContent = scenario.desc;
             objEl.classList.add('active');
 
-            gameState = { money: 50, time: 50, risk: 50, energy: 50 };
+            gameState = { money: 50, time: 50, risk: 50, energy: 50, misconceptions: [] };
             updateGameStats();
             document.getElementById('gameNarrative').innerHTML = '';
             document.getElementById('gameChoices').innerHTML = '';
@@ -1253,6 +1361,11 @@
             }
             updateGameStats();
 
+            // Show flashcard if AI flagged a missed concept (bad choice consequence)
+            if (data.flashcard && data.flashcard.term) {
+                setTimeout(() => renderFlashcard(data.flashcard), 700);
+            }
+
             // Extract objective from first AI response
             if (conversationHistory.length <= 2 && data.message) {
                 const objMatch = data.message.match(/[Oo]bjective:\s*(.+?)(?:\.\s|\n|$)/);
@@ -1284,9 +1397,16 @@
 
             const choicesEl = document.getElementById('gameChoices');
             if (isGameOver) {
-                // Game over — show restart button instead of choices
+                // Build misconceptions review if any concepts were missed
+                let reviewHtml = '';
+                const mc = gameState && gameState.misconceptions;
+                if (mc && mc.length > 0) {
+                    reviewHtml = '<div class="misconception-review"><div class="misconception-review-label">Concepts to review</div>' +
+                        mc.map(m => '<div class="misconception-item"><div class="misconception-item-term">' + escapeHtml(m.term) + '</div><div class="misconception-item-def">' + escapeHtml(m.definition) + '</div></div>').join('') +
+                        '</div>';
+                }
                 choicesEl.className = 'game-choices';
-                choicesEl.innerHTML = `<button class="gchoice-btn" style="border-color: var(--gv-accent); text-align: center; font-weight: 600;" onclick="resetSession()">Play Again</button>`;
+                choicesEl.innerHTML = `<button class="gchoice-btn" style="border-color: var(--gv-accent); text-align: center; font-weight: 600;" onclick="resetSession()">Play Again</button>${reviewHtml}`;
                 void choicesEl.offsetWidth;
                 choicesEl.classList.add('fade-in');
             } else if (hasChoices) {
@@ -1322,6 +1442,10 @@
         // Game view helpers
         function updateGameStats() {
             if (!gameState) return;
+            const sid = subjectInput ? subjectInput.value : '';
+            const moneySubjects = ['business-studies', 'economics', 'mathematics-standard', 'mathematics-advanced', 'mathematics-extension-1', 'mathematics-extension-2'];
+            const isMoneySubject = moneySubjects.includes(sid);
+
             ['money', 'time', 'risk', 'energy'].forEach(key => {
                 const el = document.getElementById('stat' + key.charAt(0).toUpperCase() + key.slice(1));
                 const val = Math.max(0, Math.min(100, gameState[key]));
@@ -1330,6 +1454,23 @@
                 const isCritical = key === 'risk' ? val > 80 : val < 20;
                 el.style.animation = isCritical ? 'statPulse 1s ease-in-out infinite' : 'none';
             });
+
+            // Show real-money values for business/econ subjects
+            const moneyValEl = document.getElementById('statMoneyVal');
+            if (moneyValEl) {
+                if (isMoneySubject) {
+                    const cash = Math.round(gameState.money * 200);
+                    moneyValEl.textContent = '$' + cash.toLocaleString('en-AU');
+                } else {
+                    moneyValEl.textContent = '';
+                }
+            }
+            // Time value
+            const timeValEl = document.getElementById('statTimeVal');
+            if (timeValEl) {
+                const wks = Math.round(gameState.time / 10);
+                timeValEl.textContent = isMoneySubject ? (wks + ' wks left') : '';
+            }
         }
 
         function formatGameText(text) {
@@ -1346,6 +1487,41 @@
             void narrativeEl.offsetWidth;
             narrativeEl.classList.add('fade-in');
             document.getElementById('gameChoices').innerHTML = '';
+        }
+
+        // ── FLASHCARD FUNCTIONS ──
+        let flashcardTimer = null;
+
+        function renderFlashcard(fc) {
+            if (!fc || !fc.term || !fc.definition) return;
+            if (gameState) {
+                if (!gameState.misconceptions) gameState.misconceptions = [];
+                gameState.misconceptions.push(fc);
+            }
+            const overlay = document.getElementById('flashcardOverlay');
+            document.getElementById('flashcardTerm').textContent = fc.term;
+            const defEl = document.getElementById('flashcardDef');
+            defEl.textContent = fc.definition;
+            defEl.classList.remove('revealed');
+            const revBtn = document.getElementById('flashcardRevealBtn');
+            revBtn.style.display = 'inline-block';
+            document.getElementById('flashcardTag').textContent = fc.tag ? '🏷 ' + fc.tag : '';
+            overlay.classList.add('show');
+            clearTimeout(flashcardTimer);
+            // Auto-reveal answer after 2s, then auto-dismiss after another 4s
+            flashcardTimer = setTimeout(() => revealFlashcard(), 2000);
+        }
+
+        function revealFlashcard() {
+            document.getElementById('flashcardDef').classList.add('revealed');
+            document.getElementById('flashcardRevealBtn').style.display = 'none';
+            clearTimeout(flashcardTimer);
+            flashcardTimer = setTimeout(() => dismissFlashcard(), 4000);
+        }
+
+        function dismissFlashcard() {
+            clearTimeout(flashcardTimer);
+            document.getElementById('flashcardOverlay').classList.remove('show');
         }
 
         let gameFunFactInterval = null;
