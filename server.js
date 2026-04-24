@@ -5318,6 +5318,7 @@ CRITICAL JSON RULES:
         let generateAttempts = 0;
         const maxGenerateAttempts = 2;
         let lastError = null;
+        const examTokenBudget = hasFull ? Math.min(aiSettings.maxTokens, 16000) : 7000;
 
         while (generateAttempts < maxGenerateAttempts && !exam) {
             generateAttempts++;
@@ -5331,7 +5332,7 @@ CRITICAL JSON RULES:
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}` }
                 ],
-                [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
+                [tokenParam]: examTokenBudget
             };
             if (!isGpt5) requestBody.temperature = Math.min(aiSettings.temperature, 0.7);
 

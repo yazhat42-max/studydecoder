@@ -292,6 +292,17 @@
         .exam-timer { font-size: 14px; font-weight: 600; color: #4f8cff; background: rgba(79,140,255,0.1); padding: 6px 14px; border-radius: 8px; transition: color 0.3s, background 0.3s; }
         .exam-timer.warning { color: #f59e0b; background: rgba(245,158,11,0.15); }
         .exam-timer.critical { color: #ef4444; background: rgba(239,68,68,0.15); animation: timerPulse 1s infinite; }
+        .exam-print-btn {
+            border: 1px solid #2f3336;
+            background: #16181c;
+            color: #e7e9ea;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .exam-print-btn:hover { border-color: #4f8cff; color: #4f8cff; }
         @keyframes timerPulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
 
         /* Lockdown overlay for tab-switch violations */
@@ -709,6 +720,7 @@
                     </div>
                 </div>
                 <div class="exam-timer" id="examTimer">00:00:00</div>
+                <button type="button" class="exam-print-btn" id="examPrintBtn" style="display:none;" onclick="printExamPaper()">🖨 Print Exam</button>
                 <span class="lockdown-badge" id="lockdownBadge">🔒 LOCKED</span>
             </div>
             <div class="exam-body" id="examBody">
@@ -1825,6 +1837,105 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         let examFinalViolations = 0; // preserved for results display after lockdown disabled
         let lockdownDebounce = 0;    // prevent double-counting from blur+visibility firing together
 
+        function setExamPrintVisible(visible) {
+            const btn = document.getElementById('examPrintBtn');
+            if (btn) btn.style.display = visible ? 'inline-block' : 'none';
+        }
+
+        function escapeHtml(text) {
+            return String(text || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function printExamPaper() {
+            if (!examData || !examData.sections || examData.sections.length === 0) {
+                alert('Generate an exam first, then print.');
+                return;
+            }
+
+            const instructions = examData.instructions ? `<p class="instructions">${escapeHtml(examData.instructions)}</p>` : '';
+            const sectionsHtml = examData.sections.map((section, sIdx) => {
+                const questionsHtml = (section.questions || []).map((q, qIdx) => {
+                    const marks = q.marks ? `<span class="marks">(${q.marks} marks)</span>` : '';
+                    const stimulus = q.stimulus ? `<div class="stimulus"><strong>Stimulus:</strong><br>${escapeHtml(q.stimulus)}</div>` : '';
+                    const options = (q.type === 'mc' && Array.isArray(q.options) && q.options.length)
+                        ? `<ul class="options">${q.options.map(opt => `<li>${escapeHtml(opt)}</li>`).join('')}</ul>`
+                        : '';
+                    const parts = (Array.isArray(q.parts) && q.parts.length)
+                        ? `<div class="parts">${q.parts.map(p => `<p><strong>${escapeHtml(p.label || '')}</strong> ${escapeHtml(p.text || '')} ${p.marks ? `<em>(${p.marks} marks)</em>` : ''}</p>`).join('')}</div>`
+                        : '<div class="answer-space"></div>';
+
+                    return `
+                        <div class="question">
+                            <h4>Q${q.number || (qIdx + 1)} ${marks}</h4>
+                            <p>${escapeHtml(q.text || '')}</p>
+                            ${stimulus}
+                            ${options}
+                            ${parts}
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <section class="exam-section">
+                        <h3>${escapeHtml(section.name || `Section ${sIdx + 1}`)}</h3>
+                        ${section.instructions ? `<p class="section-instructions">${escapeHtml(section.instructions)}</p>` : ''}
+                        ${questionsHtml}
+                    </section>
+                `;
+            }).join('');
+
+            const html = `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>${escapeHtml(examData.title || 'Practice Exam')}</title>
+  <style>
+    body { font-family: Arial, sans-serif; color: #111; max-width: 900px; margin: 0 auto; padding: 24px; line-height: 1.5; }
+    h1 { font-size: 24px; margin-bottom: 6px; }
+    .meta { color: #444; margin-bottom: 10px; }
+    .instructions { background: #f5f5f5; border-left: 4px solid #333; padding: 10px 12px; }
+    .exam-section { margin-top: 28px; page-break-inside: avoid; }
+    .exam-section h3 { border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+    .section-instructions { color: #333; font-style: italic; }
+    .question { margin: 18px 0; page-break-inside: avoid; }
+    .question h4 { margin: 0 0 6px; font-size: 16px; }
+    .marks { font-weight: normal; color: #444; }
+    .stimulus { background: #fafafa; border: 1px solid #e4e4e4; padding: 10px; margin: 10px 0; white-space: pre-wrap; }
+    .options { margin: 8px 0 0 18px; }
+    .options li { margin: 4px 0; }
+    .parts p { margin: 6px 0; }
+    .answer-space { min-height: 80px; border-bottom: 1px dashed #bbb; margin-top: 10px; }
+    @media print {
+      body { padding: 12mm; }
+      .question { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <h1>${escapeHtml(examData.title || 'Practice Exam')}</h1>
+  <div class="meta">Duration: ${escapeHtml(examData.duration || '')} • Total Marks: ${escapeHtml(examData.totalMarks || '')}</div>
+  ${instructions}
+  ${sectionsHtml}
+</body>
+</html>`;
+
+            const printWin = window.open('', '_blank', 'width=980,height=1200');
+            if (!printWin) {
+                alert('Popup blocked. Please allow popups and try again.');
+                return;
+            }
+            printWin.document.open();
+            printWin.document.write(html);
+            printWin.document.close();
+            printWin.focus();
+            setTimeout(() => printWin.print(), 250);
+        }
+
         function exitExam(e) {
             e.preventDefault();
             if (examData && examQuestions.length > 0 && !examTimeExpired) {
@@ -1840,6 +1951,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             const timerEl = document.getElementById('examTimer');
             timerEl.classList.remove('warning', 'critical');
             document.getElementById('examView').classList.remove('active');
+            setExamPrintVisible(false);
         }
 
         function stopExamTimer() {
@@ -2001,6 +2113,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         async function showQuickPaperSetup() {
             document.getElementById('examNav').style.display = 'none';
             document.getElementById('examDots').style.display = 'none';
+            setExamPrintVisible(false);
             document.getElementById('examTimer').textContent = '00:00:00';
             document.getElementById('examTimer').classList.remove('warning', 'critical');
             document.getElementById('examTitle').textContent = '⚡ Quick Paper';
@@ -2179,6 +2292,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 document.getElementById('examMeta').textContent = `${quickDurationMinutes} min · ${verifiedTotal} marks · ${examQuestions.length} questions`;
                 document.getElementById('examNav').style.display = 'flex';
                 document.getElementById('examDots').style.display = 'flex';
+                setExamPrintVisible(true);
                 startExamTimer();
                 renderExamDots();
                 renderExamQuestion();
@@ -2219,6 +2333,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
             document.getElementById('examNav').style.display = 'none';
             document.getElementById('examDots').style.display = 'none';
+            setExamPrintVisible(false);
             const timerEl = document.getElementById('examTimer');
             timerEl.textContent = '00:00:00';
             timerEl.classList.remove('warning', 'critical');
@@ -2574,6 +2689,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 document.getElementById('examMeta').textContent = `${examData.duration || duration + ' hour(s)'} · ${examData.totalMarks} marks · ${examQuestions.length} questions`;
                 document.getElementById('examNav').style.display = 'flex';
                 document.getElementById('examDots').style.display = 'flex';
+                setExamPrintVisible(true);
                 if (examIsOwner) enableLockdown();
                 startExamTimer();
                 renderExamDots();
