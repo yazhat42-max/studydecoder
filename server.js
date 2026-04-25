@@ -288,8 +288,8 @@ function getAllFreeTierUsage(userId) {
 const emailTransporter = process.env.EMAIL_USER && process.env.EMAIL_APP_PASSWORD 
     ? nodemailer.createTransport({
         host: 'smtp.titan.email',
-        port: 465,
-        secure: true,
+        port: 587,
+        secure: false, // STARTTLS (port 587) — more reliable on cloud hosts than 465/SSL
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_APP_PASSWORD
