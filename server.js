@@ -480,7 +480,10 @@ const authLimiter = rateLimit({
 });
 
 app.use('/api/', limiter);
-app.use('/api/login', authLimiter);
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
+app.use('/api/auth/google', authLimiter);
+app.use('/api/login', authLimiter); // legacy route
 
 const forgotPasswordLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
@@ -495,7 +498,9 @@ const ogCodeLimiter = rateLimit({
 });
 
 app.use('/api/auth/forgot-password', forgotPasswordLimiter);
+app.use('/api/auth/resend-verification', forgotPasswordLimiter);
 app.use('/api/og-code/redeem', ogCodeLimiter);
+app.use('/api/og-code/complete-setup', authLimiter);
 
 // CORS
 const corsOptions = {
@@ -859,6 +864,19 @@ function isValidEmail(email) {
 }
 
 /**
+ * Sanitize display name: strip HTML tags, control chars, limit length
+ */
+function sanitizeName(name) {
+    if (!name) return '';
+    return name
+        .replace(/<[^>]*>/g, '')
+        .replace(/[<>"'`]/g, '')
+        .replace(/[\x00-\x1F\x7F]/g, '')
+        .trim()
+        .slice(0, 50);
+}
+
+/**
  * Sanitize user input to prevent XSS
  * Strips HTML tags and encodes special characters
  */
@@ -910,6 +928,45 @@ function ensureOnboardingFlag(user) {
         if (!user.preferences) user.preferences = {};
         user.preferences.onboarded = false;
         scheduleSave();
+    }
+}
+
+async function sendVerificationEmail(email, token) {
+    if (!emailTransporter) {
+        console.error('❌ EMAIL NOT CONFIGURED - Cannot send verification to:', email);
+        return false;
+    }
+    const verifyLink = `${config.frontendUrl}/verify-email.html?token=${token}&email=${encodeURIComponent(email)}`;
+    const mailOptions = {
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: 'Verify Your Study Decoder Email',
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h2 style="color: #6366f1;">Verify Your Email</h2>
+                <p>Hi,</p>
+                <p>Thanks for signing up to Study Decoder! Please verify your email address to activate your account.</p>
+                <p>Click the button below — this link expires in 24 hours.</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="${verifyLink}" style="background-color: #6366f1; color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; display: inline-block;">Verify Email</a>
+                </div>
+                <p>If you didn't create an account, you can safely ignore this email.</p>
+                <p style="color: #666; font-size: 12px; margin-top: 30px;">
+                    If the button doesn't work, copy and paste this link:<br>
+                    <a href="${verifyLink}" style="color: #6366f1;">${verifyLink}</a>
+                </p>
+                <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                <p style="color: #999; font-size: 11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
+            </div>
+        `
+    };
+    try {
+        await emailTransporter.sendMail(mailOptions);
+        console.log(`✅ Verification email sent to: ${email}`);
+        return true;
+    } catch (error) {
+        console.error('❌ Failed to send verification email:', error.message);
+        return false;
     }
 }
 
@@ -1061,7 +1118,8 @@ app.post('/api/auth/google-oauth', async (req, res) => {
  */
 app.post('/api/auth/register', async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name: rawName, email, password } = req.body;
+        const name = sanitizeName(rawName);
         
         // Validation
         if (!name || !email || !password) {
@@ -1087,33 +1145,36 @@ app.post('/api/auth/register', async (req, res) => {
         const userId = `email:${email.toLowerCase()}`;
         const passwordHash = await hashPassword(password);
         
+        // Generate email verification token (24h expiry)
+        const verifyToken = generateSecureToken();
+        const verifyExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+        
         const user = upsertUser(userId, {
             email,
             name,
             passwordHash,
             provider: 'email',
-            emailVerified: false
+            emailVerified: false,
+            verifyToken,
+            verifyExpiry
         });
         
         // Mark new registration as not onboarded
         user.preferences = { ...(user.preferences || {}), onboarded: false };
         scheduleSave();
         
-        // Regenerate session to prevent session fixation
-        await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
-        req.session.userId = userId;
-        const role = getUserRole(user.email);
+        // Send verification email
+        const emailSent = await sendVerificationEmail(email, verifyToken);
+        if (!emailSent) {
+            console.error(`⚠️ Verification email failed for ${email}`);
+        }
         
-        console.log(`✅ New registration: ${user.email} (${role})`);
+        console.log(`✅ New registration (unverified): ${user.email}`);
         
+        // Do NOT create a session — user must verify email first
         res.json({
-            email: user.email,
-            name: user.name,
-            role: role,
-            subscribed: hasFullAccess(user),
-            plan: user.plan,
-            expiresAt: user.expiresAt,
-            onboarded: false
+            requiresVerification: true,
+            message: 'Check your email to verify your account before signing in.'
         });
         
     } catch (error) {
@@ -1155,6 +1216,14 @@ app.post('/api/auth/login', async (req, res) => {
         const valid = await verifyPassword(password, user.passwordHash);
         if (!valid) {
             return res.status(401).json({ error: 'Invalid email or password' });
+        }
+        
+        // Block unverified email accounts
+        if (user.provider !== 'google' && !user.emailVerified) {
+            return res.status(403).json({
+                error: 'Please verify your email before signing in. Check your inbox for a verification link.',
+                requiresVerification: true
+            });
         }
         
         // Check if user signed up before preferences update
@@ -1358,6 +1427,99 @@ app.post('/api/contact', contactLimiter, (req, res) => {
         });
 });
 
+// ==================== EMAIL VERIFICATION ROUTES ====================
+
+/**
+ * GET /api/auth/verify-email - Verify email with token
+ */
+app.get('/api/auth/verify-email', async (req, res) => {
+    try {
+        const { token, email } = req.query;
+
+        if (!token || !email) {
+            return res.status(400).json({ error: 'Token and email are required' });
+        }
+
+        const user = getUserByEmail(email);
+        if (!user) {
+            return res.status(400).json({ error: 'Invalid verification link' });
+        }
+
+        if (user.emailVerified) {
+            return res.json({ success: true, message: 'Email already verified' });
+        }
+
+        if (!user.verifyToken) {
+            return res.status(400).json({ error: 'No pending verification for this account' });
+        }
+
+        // Timing-safe comparison
+        let tokenMatch = false;
+        try {
+            const tokenBuf = Buffer.from(token, 'hex');
+            const storedBuf = Buffer.from(user.verifyToken, 'hex');
+            if (tokenBuf.length === storedBuf.length) {
+                tokenMatch = crypto.timingSafeEqual(tokenBuf, storedBuf);
+            }
+        } catch (e) {
+            tokenMatch = false;
+        }
+
+        if (!tokenMatch) {
+            return res.status(401).json({ error: 'Invalid verification link' });
+        }
+
+        if (new Date() > new Date(user.verifyExpiry)) {
+            return res.status(410).json({ error: 'Verification link has expired', expired: true });
+        }
+
+        // Mark verified and clear token
+        user.emailVerified = true;
+        delete user.verifyToken;
+        delete user.verifyExpiry;
+        upsertUser(user.userId, user);
+        scheduleSave();
+
+        console.log(`✅ Email verified: ${email}`);
+        res.json({ success: true, message: 'Email verified successfully! You can now sign in.' });
+
+    } catch (error) {
+        console.error('Verify email error:', error);
+        res.status(500).json({ error: 'Verification failed' });
+    }
+});
+
+/**
+ * POST /api/auth/resend-verification - Resend verification email
+ */
+app.post('/api/auth/resend-verification', async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email || !isValidEmail(email)) {
+            return res.status(400).json({ error: 'Valid email required' });
+        }
+
+        // Always return success to prevent email enumeration
+        const user = getUserByEmail(email);
+        if (user && !user.emailVerified && user.provider !== 'google') {
+            const verifyToken = generateSecureToken();
+            const verifyExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+            user.verifyToken = verifyToken;
+            user.verifyExpiry = verifyExpiry;
+            upsertUser(user.userId, user);
+            scheduleSave();
+            await sendVerificationEmail(email, verifyToken);
+        }
+
+        res.json({ success: true, message: 'If an unverified account exists, a verification email has been sent.' });
+
+    } catch (error) {
+        console.error('Resend verification error:', error);
+        res.status(500).json({ error: 'Failed to resend verification email' });
+    }
+});
+
 // ==================== OG CODE ROUTES ====================
 
 /**
@@ -1420,7 +1582,8 @@ app.post('/api/og-code/redeem', (req, res) => {
  */
 app.post('/api/og-code/complete-setup', async (req, res) => {
     try {
-        const { token, name, email, password } = req.body;
+        const { token, name: rawName, email, password } = req.body;
+        const name = sanitizeName(rawName);
         
         // Validate token
         const pendingToken = ogCodesState.pendingTokens[token];
@@ -1556,16 +1719,16 @@ app.post('/api/login', async (req, res) => {
                 }
                 user = existingUser;
             } else {
-                // Register new user
-                if (!isValidPassword(password)) {
-                    return res.status(400).json({ error: 'Password must be at least 8 characters with uppercase, lowercase, and number' });
-                }
-                
-                const passwordHash = await hashPassword(password);
-                user = upsertUser(userId, {
-                    email,
-                    passwordHash,
-                    provider: 'email'
+                // Legacy endpoint no longer supports new registrations
+                // New users must register via /api/auth/register
+                return res.status(400).json({ error: 'Please create an account at the sign in page.' });
+            }
+            
+            // Block unverified accounts
+            if (user.provider !== 'google' && !user.emailVerified) {
+                return res.status(403).json({
+                    error: 'Please verify your email before signing in.',
+                    requiresVerification: true
                 });
             }
             
@@ -2470,6 +2633,34 @@ app.post('/api/admin/revoke-access', requireOwner, (req, res) => {
     console.log(`👑 Owner revoked access for ${email}`);
     
     res.json({ success: true, message: `Revoked access for ${email}` });
+});
+
+/**
+ * DELETE /api/admin/delete-user - Owner permanently deletes a user account
+ */
+app.delete('/api/admin/delete-user', requireOwner, (req, res) => {
+    const { email } = req.body;
+    
+    if (!email) {
+        return res.status(400).json({ error: 'Email required' });
+    }
+    
+    const user = getUserByEmail(email);
+    if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+    }
+    
+    // Safety: can't delete owner or OG tester accounts
+    const role = getUserRole(email);
+    if (role === 'owner' || role === 'og_tester') {
+        return res.status(403).json({ error: 'Cannot delete owner or OG tester accounts' });
+    }
+    
+    delete db.users[user.userId];
+    scheduleSave();
+    
+    console.log(`👑 Owner deleted account: ${email}`);
+    res.json({ success: true, message: `Deleted account: ${email}` });
 });
 
 // ==================== SYLLABUS DATA ====================
