@@ -417,9 +417,14 @@ const ogCodeLimiter = rateLimit({
 });
 
 app.use('/api/', limiter);
-app.use('/api/login', authLimiter);
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
+app.use('/api/auth/google', authLimiter);
 app.use('/api/auth/forgot-password', forgotPasswordLimiter);
+app.use('/api/auth/resend-verification', forgotPasswordLimiter); // prevent email spam abuse
 app.use('/api/og-code/redeem', ogCodeLimiter);
+app.use('/api/og-code/complete-setup', authLimiter);
+app.use('/api/login', authLimiter); // legacy route
 
 // Health check endpoint (before other middleware)
 app.get('/api/health', (req, res) => {
@@ -1268,7 +1273,8 @@ app.post('/api/og-code/redeem', (req, res) => {
  */
 app.post('/api/og-code/complete-setup', async (req, res) => {
     try {
-        const { token, name, email, password } = req.body;
+        const { token, name: rawName, email, password } = req.body;
+        const name = sanitizeName(rawName);
         
         // Validate token
         const pendingToken = ogCodesState.pendingTokens[token];
@@ -1397,16 +1403,16 @@ app.post('/api/login', async (req, res) => {
                 }
                 user = existingUser;
             } else {
-                // Register new user
-                if (!isValidPassword(password)) {
-                    return res.status(400).json({ error: 'Password must be at least 8 characters' });
-                }
-                
-                const passwordHash = await hashPassword(password);
-                user = upsertUser(userId, {
-                    email,
-                    passwordHash,
-                    provider: 'email'
+                // Legacy endpoint no longer supports new registrations
+                // New users must register via /api/auth/register
+                return res.status(400).json({ error: 'Please create an account at the sign in page.' });
+            }
+            
+            // Block unverified accounts
+            if (user.provider !== 'google' && !user.emailVerified) {
+                return res.status(403).json({
+                    error: 'Please verify your email before signing in.',
+                    requiresVerification: true
                 });
             }
             
