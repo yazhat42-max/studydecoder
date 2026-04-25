@@ -303,6 +303,16 @@ if (!emailTransporter) {
     console.warn('⚠️ EMAIL NOT CONFIGURED - Password reset will NOT work!');
     console.warn('⚠️ Set EMAIL_USER and EMAIL_APP_PASSWORD in environment');
     console.warn('⚠️ =====================================================');
+} else {
+    // Verify SMTP connection at startup
+    emailTransporter.verify((error) => {
+        if (error) {
+            console.error('❌ SMTP CONNECTION FAILED:', error.message);
+            console.error('   Check EMAIL_USER and EMAIL_APP_PASSWORD are correct');
+        } else {
+            console.log(`✅ SMTP ready — EMAIL_USER: ${process.env.EMAIL_USER}`);
+        }
+    });
 }
 
 async function sendPasswordResetEmail(email, resetToken) {
@@ -2665,6 +2675,32 @@ app.delete('/api/admin/delete-user', requireOwner, (req, res) => {
     
     console.log(`👑 Owner deleted account: ${email}`);
     res.json({ success: true, message: `Deleted account: ${email}` });
+});
+
+/**
+ * POST /api/admin/test-email - Send a test email to verify SMTP is working
+ */
+app.post('/api/admin/test-email', requireOwner, async (req, res) => {
+    if (!emailTransporter) {
+        return res.status(503).json({
+            error: 'Email not configured. Set EMAIL_USER and EMAIL_APP_PASSWORD in Render environment variables.',
+            emailUser: process.env.EMAIL_USER || '(not set)',
+            emailPassSet: !!process.env.EMAIL_APP_PASSWORD
+        });
+    }
+    try {
+        await emailTransporter.verify();
+        const toEmail = req.body.to || process.env.EMAIL_USER;
+        await emailTransporter.sendMail({
+            from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+            to: toEmail,
+            subject: 'Study Decoder – SMTP Test',
+            text: 'SMTP is working correctly.'
+        });
+        res.json({ success: true, message: `Test email sent to ${toEmail}` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 // ==================== SYLLABUS DATA ====================
