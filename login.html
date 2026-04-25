@@ -610,6 +610,9 @@
             <div class="alert alert-error" id="alertError">
                 <span class="alert-icon">&#x26A0;&#xFE0F;</span>
                 <span id="alertErrorText">An error occurred</span>
+                <div id="alertResendLink" style="margin-top:8px; display:none;">
+                    <a href="verify-email.html" style="color:inherit; font-weight:600; text-decoration:underline;">Resend verification email</a>
+                </div>
             </div>
             
             <div class="alert alert-success" id="alertSuccess">
@@ -628,7 +631,7 @@
                 <form onsubmit="handleEmailLogin(event)">
                     <div class="form-group">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-input" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
+                        <input type="email" class="form-input" id="loginEmail" placeholder="you@example.com" required autocomplete="email" autofocus>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Password</label>
@@ -802,7 +805,13 @@
                     body: JSON.stringify({ email, password })
                 });
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Login failed');
+                if (!res.ok) {
+                    showError(data.error || 'Login failed');
+                    if (data.requiresVerification) {
+                        document.getElementById('alertResendLink').style.display = 'block';
+                    }
+                    return;
+                }
                 showSuccess('Signed in! Redirecting...');
                 await redirectAfterLogin(data);
             } catch (err) {
@@ -832,6 +841,10 @@
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Registration failed');
+                if (data.requiresVerification) {
+                    showSuccess('Account created! Check your email to verify your account before signing in.');
+                    return;
+                }
                 showSuccess('Account created! Redirecting...');
                 await redirectAfterLogin(data);
             } catch (err) {
@@ -985,6 +998,7 @@
         function hideAlerts() {
             alertError.classList.remove('visible');
             alertSuccess.classList.remove('visible');
+            document.getElementById('alertResendLink').style.display = 'none';
         }
         
         function setLoading(loading) {

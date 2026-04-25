@@ -655,10 +655,11 @@
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th>Joined</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="recentSignups">
-                            <tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">Loading...</td></tr>
+                            <tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1039,7 +1040,7 @@
             const tbody = document.getElementById('recentSignups');
             
             if (!signups || signups.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">No signups yet</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">No signups yet</td></tr>';
                 return;
             }
             
@@ -1054,6 +1055,9 @@
                     <td>${getRoleBadge(u.role)}</td>
                     <td>${u.subscribed ? '<span class="badge badge-active">Active</span>' : '<span class="badge badge-free">Free</span>'}</td>
                     <td style="color: var(--text-secondary); font-size: 0.9rem;">${formatDate(u.createdAt)}</td>
+                    <td>
+                        <button onclick="deleteUser('${escapeAttr(u.email)}')" style="background:#ef4444;color:white;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:0.8rem;" title="Delete account">🗑️ Delete</button>
+                    </td>
                 </tr>
             `).join('');
         }
@@ -1090,6 +1094,32 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+        
+        function escapeAttr(text) {
+            if (!text) return '';
+            return text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+        
+        async function deleteUser(email) {
+            if (!confirm(`Delete account for ${email}?\n\nThis is permanent and cannot be undone.`)) return;
+            try {
+                const res = await fetch('/api/admin/delete-user', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ email })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    alert('Error: ' + (data.error || 'Failed to delete'));
+                    return;
+                }
+                alert(data.message || 'Account deleted');
+                loadStats();
+            } catch (e) {
+                alert('Network error. Please try again.');
+            }
         }
         
         function formatDate(dateStr) {
