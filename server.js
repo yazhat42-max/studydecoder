@@ -804,7 +804,11 @@ function upsertUser(userId, data) {
         emailVerified: data.emailVerified !== undefined ? data.emailVerified : (existing.emailVerified || false),
         preferences: data.preferences || existing.preferences || {},
         createdAt: existing.createdAt || new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
+        verifyToken: data.verifyToken !== undefined ? data.verifyToken : existing.verifyToken,
+        verifyExpiry: data.verifyExpiry !== undefined ? data.verifyExpiry : existing.verifyExpiry,
+        resetToken: data.resetToken !== undefined ? data.resetToken : existing.resetToken,
+        resetExpiry: data.resetExpiry !== undefined ? data.resetExpiry : existing.resetExpiry
     };
     scheduleSave();
     return db.users[userId];
