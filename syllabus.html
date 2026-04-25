@@ -1124,27 +1124,6 @@ STRICT RULES — you MUST follow these without exception:
 
             return wrapper;
         }
-                    scrollTimer = setTimeout(() => {
-                        const mid = scrollEl.scrollLeft + scrollEl.clientWidth / 2;
-                        let closest = 0, minDist = Infinity;
-                        cards.forEach((c, i) => {
-                            const dist = Math.abs((c.offsetLeft + c.offsetWidth / 2) - scrollEl.offsetLeft - mid);
-                            if (dist < minDist) { minDist = dist; closest = i; }
-                        });
-                        updateNav(closest);
-                    }, 60);
-                }, { passive: true });
-
-                // Keyboard arrow support
-                scrollEl.setAttribute('tabindex', '0');
-                scrollEl.addEventListener('keydown', e => {
-                    if (e.key === 'ArrowRight') { e.preventDefault(); goTo(Math.min(sections.length - 1, currentIdx + 1)); }
-                    if (e.key === 'ArrowLeft')  { e.preventDefault(); goTo(Math.max(0, currentIdx - 1)); }
-                });
-            }
-
-            return wrapper;
-        }
         
         function showFreeTierUpsell(botType, limitType) {
             const welcome = outputContent.querySelector('.welcome-message');
