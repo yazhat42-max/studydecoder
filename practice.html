@@ -2193,22 +2193,22 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             // Subject change → populate topics
             const quickSubjectSelect = document.getElementById('quickSubjectSelect');
             if (quickSubjectSelect) {
-                quickSubjectSelect.addEventListener('change', async function() {
+                quickSubjectSelect.addEventListener('change', function() {
                     const sid = this.value;
                     const topicSel = document.getElementById('quickTopicSelect');
                     topicSel.innerHTML = '<option value="All">All Topics</option>';
                     topicSel.disabled = !sid;
                     if (!sid) return;
-                    try {
-                        const r = await fetch(`${API_BASE}/api/topics/${sid}`, { credentials: 'include' });
-                        if (r.ok) {
-                            const data = await r.json();
-                            (data.topics || []).forEach(t => {
-                                topicSel.innerHTML += `<option value="${t}">${t}</option>`;
-                            });
-                            topicSel.disabled = false;
-                        }
-                    } catch(e) {}
+                    const topics = subjectTopics[sid];
+                    if (topics && topics.length > 0) {
+                        topics.forEach(t => {
+                            const opt = document.createElement('option');
+                            opt.value = t;
+                            opt.textContent = t;
+                            topicSel.appendChild(opt);
+                        });
+                    }
+                    topicSel.disabled = false;
                 });
             }
         }
