@@ -2166,7 +2166,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     <div class="exam-setup-form">
                         <div class="exam-setup-field">
                             <label class="exam-setup-label">Subject</label>
-                            <select id="quickSubjectSelect" class="exam-setup-select">${subjectOpts}</select>
+                            <select id="quickSubjectSelect" class="form-select">${subjectOpts}</select>
                         </div>
                         <div class="exam-setup-field">
                             <label class="exam-setup-label">Duration</label>
@@ -2178,7 +2178,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                         </div>
                         <div class="exam-setup-field">
                             <label class="exam-setup-label">Topic <span style="opacity:0.5">(optional)</span></label>
-                            <select id="quickTopicSelect" class="exam-setup-select" disabled><option value="All">All Topics</option></select>
+                            <select id="quickTopicSelect" class="form-select" disabled><option value="All">All Topics</option></select>
                         </div>
                         <button class="exam-generate-btn" id="quickGenerateBtn" onclick="startQuickPaper()">⚡ Start Quick Paper</button>
                     </div>
@@ -2260,7 +2260,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ subject: subjectId, topics, duration: '0.5', difficulty: 'medium', questionCount })
+                    body: JSON.stringify({ subject: subjectId, topics, duration: '1', difficulty: 'medium', questionCount })
                 });
 
                 clearInterval(factInterval);
