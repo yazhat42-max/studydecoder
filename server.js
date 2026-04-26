@@ -7088,6 +7088,12 @@ setInterval(async () => {
 }, 60 * 60 * 1000); // every hour
 
 
+// Serve static files (HTML, CSS, JS, images) from the project root
+app.use(express.static(path.join(__dirname), {
+    index: false,  // Let the catch-all below handle / -> index.html
+    dotfiles: 'deny'
+}));
+
 // Serve index.html for SPA-like behavior (only for non-API routes)
 app.get('*', (req, res, next) => {
     // Don't serve HTML for API routes
