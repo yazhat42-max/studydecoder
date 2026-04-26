@@ -6400,7 +6400,9 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             console.log(`[Syllabus] Loaded ${truncatedSyllabus.length} chars for ${subjectName}`);
             
             // For syllabus bot, add strong instruction with the content
-            if (botType === 'syllabus') {
+            if (botType === 'tutor') {
+                systemPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) — TUTOR REFERENCE ===\nUse this as your knowledge base when answering questions about ${subjectName}. Ground your explanations in the actual syllabus dot points, outcomes, and themes. When a student asks about a concept, link it to the relevant syllabus section or module.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
+            } else if (botType === 'syllabus') {
                 systemPrompt += `\n\n========== SYLLABUS CONTENT FOR ${subjectName.toUpperCase()} ==========\nThis is the COMPLETE official syllabus. Search this content for the requested topic and decode it.\n\n${truncatedSyllabus}\n\n========== END SYLLABUS ==========\n\nNow decode the requested topic using the syllabus above. OUTPUT ONLY - no questions.`;
                 
                 // Inject detail level preference
@@ -6411,6 +6413,7 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
                     systemPrompt += `\n\nDETAIL LEVEL: DETAILED - Provide an extremely thorough breakdown. Explain every dot point in depth with examples, include detailed HSC exam analysis with past question references, provide extended study notes, and cover edge cases and common misunderstandings. Be as comprehensive as possible.`;
                 }
             } else {
+                // practice bot
                 systemPrompt += `\n\n=== OFFICIAL ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) ===\nThe following is the official syllabus content. Use this as your ONLY source of truth for content. All questions MUST be based on this syllabus.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
             }
         } else {
