@@ -1422,14 +1422,28 @@
         function showFreeTierUpsell(botType, limitType) {
             const welcome = outputContent.querySelector('.welcome-message');
             if (welcome) welcome.remove();
-            const isSpecial = limitType === 'special';
-            const toolName = botType === 'worksheet' ? 'worksheet decode' : botType === 'notes-transcriber' ? 'notes transcription' : 'free use';
-            const heading = isSpecial ? `You've used your 1 daily ${toolName}.` : `You've used all 10 free uses for today.`;
+            const mode = limitType === 'special' ? 'quick' : 'exam';
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message message-assistant';
-            const isSale = new Date() < new Date('2026-04-25T00:00:00');
-            const yearlyText = isSale ? '🔥 Study Break Sale — $37.50 for life' : 'Yearly — $75/yr';
-            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+            if (window.Upsell) {
+                const overlay = document.createElement('div');
+                overlay.style.cssText = 'display:flex;justify-content:center;padding:16px 0;';
+                Upsell.renderModal(overlay, 'practice', mode,
+                    () => { window.location.href = 'index.html#pricing'; },
+                    () => { messageDiv.innerHTML = '<p style="text-align:center;color:#71767b;padding:16px;">👍 We\'ll remind you tomorrow. Come back for more free uses!</p>'; }
+                );
+                messageDiv.appendChild(overlay);
+                // Notify on reset button
+                const notifyBtn = document.createElement('button');
+                notifyBtn.textContent = '🔔 Email me when my uses reset';
+                notifyBtn.style.cssText = 'display:block;margin:0 auto 12px;background:none;border:none;color:#4f8cff;font-size:0.82rem;cursor:pointer;font-family:inherit;';
+                notifyBtn.onclick = () => window.Upsell && Upsell.notifyOnReset(notifyBtn);
+                messageDiv.appendChild(notifyBtn);
+            } else {
+                const isSale = new Date() < new Date('2026-04-25T00:00:00');
+                const yearlyText = isSale ? '🔥 Study Break Sale — $37.50 for life' : 'Yearly — $75/yr';
+                messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ Free uses for today are up.</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+            }
             outputContent.appendChild(messageDiv);
             outputPanel.scrollTop = outputPanel.scrollHeight;
         }
@@ -1808,6 +1822,9 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     selectMode('exam');
                 }
                 
+                // Check for a saved in-progress exam from a previous session
+                checkForActiveExam();
+                
                 // Auto-preset subject/topic from URL params (from cross-bot recommendations)
                 const urlSubject = urlParams.get('subject');
                 const urlTopic = urlParams.get('topic');
@@ -1852,6 +1869,89 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         let examViolations = 0;
         let examFinalViolations = 0; // preserved for results display after lockdown disabled
         let lockdownDebounce = 0;    // prevent double-counting from blur+visibility firing together
+        let _activeExamSaveDebounce = null;
+
+        // Save active exam state to server (debounced)
+        function saveActiveExam() {
+            if (!examData || !examSubjectId) return;
+            clearTimeout(_activeExamSaveDebounce);
+            _activeExamSaveDebounce = setTimeout(() => {
+                fetch(`${API_BASE}/api/exam/active`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ examData, examAnswers, examSubjectId, examDurationSeconds })
+                }).catch(() => {});
+            }, 1500);
+        }
+
+        function clearActiveExam() {
+            fetch(`${API_BASE}/api/exam/active`, { method: 'DELETE', credentials: 'include' }).catch(() => {});
+        }
+
+        // Check for a saved active exam on page load
+        async function checkForActiveExam() {
+            try {
+                const res = await fetch(`${API_BASE}/api/exam/active`, { credentials: 'include' });
+                if (!res.ok) return;
+                const { activeExam } = await res.json();
+                if (!activeExam) return;
+                // Show a resume banner above the exam setup area
+                const banner = document.createElement('div');
+                banner.id = 'resumeExamBanner';
+                banner.style.cssText = 'background:rgba(79,140,255,0.1);border:1px solid rgba(79,140,255,0.3);border-radius:12px;padding:14px 18px;margin:0 0 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;';
+                const savedDate = new Date(activeExam.savedAt).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+                const answerCount = Object.keys(activeExam.examAnswers || {}).length;
+                const totalQ = (activeExam.examData?.sections || []).reduce((a, s) => a + (s.questions?.length || 0), 0);
+                banner.innerHTML = `<span style="font-size:1.3rem;">&#128203;</span><div style="flex:1;"><strong style="color:#4f8cff;">Resume Exam</strong><div style="font-size:0.82rem;color:#8899a6;margin-top:2px;">Saved ${savedDate} &middot; ${answerCount}/${totalQ} questions answered</div></div><button onclick="resumeSavedExam(window._savedActiveExam)" style="background:#4f8cff;color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;">Resume &#x2192;</button><button onclick="document.getElementById('resumeExamBanner').remove();clearActiveExam();" style="background:none;border:1px solid #2f3336;color:#71767b;padding:8px 12px;border-radius:8px;cursor:pointer;font-family:inherit;margin-left:4px;">Discard</button>`;
+                window._savedActiveExam = activeExam;
+                // Insert before exam setup area
+                const examContent = document.getElementById('examContent');
+                if (examContent && examContent.parentNode) examContent.parentNode.insertBefore(banner, examContent);
+            } catch (e) { /* non-critical */ }
+        }
+
+        // Restore a saved exam
+        function resumeSavedExam(saved) {
+            if (!saved) return;
+            const banner = document.getElementById('resumeExamBanner');
+            if (banner) banner.remove();
+            examData = saved.examData;
+            examAnswers = saved.examAnswers || {};
+            examSubjectId = saved.examSubjectId;
+            examDurationSeconds = saved.examDurationSeconds || 3600;
+            examQuestions = [];
+            for (const section of examData.sections) {
+                for (const q of section.questions) {
+                    examQuestions.push({ ...q, sectionName: section.name });
+                }
+            }
+            let verifiedTotal = 0;
+            for (const q of examQuestions) verifiedTotal += (q.marks || 0);
+            if (verifiedTotal > 0) examData.totalMarks = verifiedTotal;
+            // Find which question to resume from (first unanswered)
+            examCurrentIdx = Math.max(0, examQuestions.findIndex(q => !examAnswers[q.number]));
+            if (examCurrentIdx < 0) examCurrentIdx = examQuestions.length - 1;
+            // Update UI
+            const subjectEl = document.getElementById('examSetupSubject');
+            if (subjectEl) subjectEl.value = examSubjectId;
+            document.getElementById('examTitle').textContent = examData.title || 'Resumed Exam';
+            document.getElementById('examMeta').textContent = `${examData.totalMarks} marks · ${examQuestions.length} questions (resumed)`;
+            document.getElementById('examNav').style.display = 'flex';
+            document.getElementById('examDots').style.display = 'flex';
+            setExamPrintVisible(true);
+            startExamTimer();
+            renderExamDots();
+            renderExamQuestion();
+        }
+
+        // Autosave answers when user navigates away mid-exam
+        window.addEventListener('beforeunload', () => {
+            if (examData && examSubjectId && examQuestions.length > 0) {
+                const payload = JSON.stringify({ examData, examAnswers, examSubjectId, examDurationSeconds });
+                navigator.sendBeacon(`${API_BASE}/api/exam/active`, new Blob([payload], { type: 'application/json' }));
+            }
+        });
 
         function setExamPrintVisible(visible) {
             const btn = document.getElementById('examPrintBtn');
@@ -2715,6 +2815,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 startExamTimer();
                 renderExamDots();
                 renderExamQuestion();
+                saveActiveExam(); // persist to server so it can be resumed
 
             } catch (error) {
                 document.getElementById('examContent').innerHTML = `
@@ -2970,6 +3071,8 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     else delete examAnswers['working_' + q.number];
                 }
             }
+            // Persist to server (debounced — fires 1.5s after last answer change)
+            saveActiveExam();
         }
 
         function examNeedsWorking() {
@@ -3132,7 +3235,10 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
                 const data = await res.json();
                 sessionStorage.removeItem('examBackup');
+                clearActiveExam(); // exam is done, remove the saved state
                 renderExamResults(data);
+                // Record score to profile
+                recordExamScore(data);
 
             } catch (error) {
                 document.getElementById('examContent').innerHTML = `
@@ -3235,6 +3341,11 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     if (r.sampleAnswer) {
                         html += `<div class="exam-result-sample"><strong>Sample Answer:</strong> ${parseMarkdownTables(r.sampleAnswer)}</div>`;
                     }
+                    // "Explain my mark" button — only for non-MC questions
+                    if (origQ && origQ.type !== 'mc') {
+                        const qKey = JSON.stringify({ q: r.questionNumber, subj: examSubjectId });
+                        html += `<button class="explain-btn" onclick="explainMark(${r.questionNumber}, this)" style="margin-top:8px;padding:6px 14px;border:1px solid rgba(79,140,255,0.3);border-radius:8px;background:transparent;color:#4f8cff;font-size:0.8rem;cursor:pointer;font-family:inherit;">💬 Why did I get this mark?</button><div class="explain-box" id="explainBox_${r.questionNumber}" style="display:none;margin-top:8px;"></div>`;
+                    }
                     html += `</div>`;
                 }
             }
@@ -3276,8 +3387,47 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             document.getElementById('examBody').scrollTop = 0;
         }
 
+        async function recordExamScore(data) {
+            try {
+                const { marking } = data;
+                const pct = marking.percentage || 0;
+                const band = pct >= 90 ? 6 : pct >= 80 ? 5 : pct >= 70 ? 4 : pct >= 60 ? 3 : pct >= 50 ? 2 : 1;
+                await fetch(`${API_BASE}/api/user/record-score`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ subject: examSubjectId, module: '', band, score: marking.totalMarksAwarded || 0, totalMarks: marking.totalMarksPossible || 0, mode: 'exam' })
+                });
+                await fetch(`${API_BASE}/api/user/achievement`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ achievementId: 'first_exam' }) });
+                if (band >= 6) {
+                    await fetch(`${API_BASE}/api/user/achievement`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ achievementId: 'band6' }) });
+                }
+            } catch (e) { /* score recording is non-critical */ }
+        }
+
+        async function explainMark(questionNumber, btn) {
+            const box = document.getElementById('explainBox_' + questionNumber);
+            if (!box) return;
+            if (box.style.display !== 'none') { box.style.display = 'none'; btn.textContent = '💬 Why did I get this mark?'; return; }
+            btn.disabled = true; btn.textContent = '⏳ Explaining…';
+            try {
+                const origQ = examQuestions.find(q => q.number === questionNumber);
+                const answer = examAnswers[questionNumber] || '';
+                const res = await fetch(`${API_BASE}/api/ask`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+                    body: JSON.stringify({ subject: examSubjectId, message: `You are an HSC marker. Explain in plain language (2-3 short paragraphs) why the student received the mark they did, what they should have written to get full marks, and one specific improvement tip.\n\nQuestion (${origQ?.marks || '?'} marks): ${origQ?.question || ''}\n\nStudent answer: ${answer}`, mode: 'explain' })
+                });
+                const rdata = await res.json();
+                box.innerHTML = `<div style="font-size:0.85rem;color:#8b949e;line-height:1.65;background:rgba(79,140,255,0.06);border:1px solid rgba(79,140,255,0.15);border-radius:8px;padding:12px 14px;">${(rdata.reply || rdata.message || '').replace(/\n/g,'<br>')}</div>`;
+                box.style.display = 'block'; btn.textContent = '✕ Hide explanation';
+            } catch {
+                box.innerHTML = '<div style="font-size:0.82rem;color:#ef4444;padding:8px;">Could not load — try again.</div>';
+                box.style.display = 'block'; btn.textContent = '💬 Why did I get this mark?';
+            }
+            btn.disabled = false;
+        }
+
         function retryExam() {
-            if (!examData) { showExamSetup(); return; }
             examAnswers = {};
             examCurrentIdx = 0;
             examTimeExpired = false;
@@ -3305,5 +3455,6 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         checkAuth();
     </script>
     <script src="streak.js"></script>
-</body>
-</html>
+    <script src="upsell.js"></script>
+    <script src="pwa.js"></script>
+</body></html>

@@ -223,8 +223,27 @@ function incrementFreeTierUsage(userId, botType) {
     return _getCount(totalKey);
 }
 
+// Check if a user is within the 3-day "unlimited trial" grace period
+function isWithinGracePeriod(userId) {
+    const user = getUser(userId);
+    if (!user || !user.createdAt) return false;
+    return (Date.now() - new Date(user.createdAt).getTime()) < 3 * 24 * 60 * 60 * 1000;
+}
+
+// Check if a user is on their final grace period day (day 3)
+function isGracePeriodEnding(userId) {
+    const user = getUser(userId);
+    if (!user || !user.createdAt) return false;
+    const ageMs = Date.now() - new Date(user.createdAt).getTime();
+    const twoDays = 2 * 24 * 60 * 60 * 1000;
+    const threeDays = 3 * 24 * 60 * 60 * 1000;
+    return ageMs >= twoDays && ageMs < threeDays;
+}
+
 function canUseFreeTier(userId, botType) {
     if (!FREE_TIER_CONFIG.enabled) return false;
+    // During 3-day grace period: unlimited access
+    if (isWithinGracePeriod(userId)) return true;
     // Check special per-bot limit (worksheet, notes-transcriber)
     const specialLimit = FREE_TIER_CONFIG.specialLimits[botType];
     if (specialLimit !== undefined) {
@@ -241,6 +260,8 @@ function canUseFreeTier(userId, botType) {
  */
 function tryUseFreeTier(userId, botType) {
     if (!FREE_TIER_CONFIG.enabled) return false;
+    // During 3-day grace period: allow without counting usage
+    if (isWithinGracePeriod(userId)) return true;
     const specialLimit = FREE_TIER_CONFIG.specialLimits[botType];
     if (specialLimit !== undefined && getFreeTierUsage(userId, botType) >= specialLimit) return false;
     if (getTotalFreeTierUsage(userId) >= FREE_TIER_CONFIG.totalUsesPerDay) return false;
@@ -404,8 +425,16 @@ function hasFullAccess(user) {
     if (role === 'owner' || role === 'lifetime' || role === 'og_tester') {
         return true;
     }
+    // Active day pass counts as full access
+    if (user.dayPassExpiry && user.dayPassExpiry > Date.now()) {
+        return true;
+    }
     // Regular users need subscription
     return user.subscribed === true;
+}
+
+function hasDayPassActive(user) {
+    return !!(user && user.dayPassExpiry && user.dayPassExpiry > Date.now());
 }
 
 // In-memory database with persistence
@@ -1173,6 +1202,15 @@ app.post('/api/auth/register', async (req, res) => {
             verifyExpiry
         });
         
+        // Capture referral code if provided
+        const { ref } = req.body;
+        if (ref && typeof ref === 'string' && ref.length <= 16) {
+            const referrer = Object.values(db.users).find(u => u.referralCode === ref.toUpperCase().trim());
+            if (referrer && referrer.userId !== userId) {
+                user.referredBy = referrer.userId;
+            }
+        }
+
         // Mark new registration as not onboarded
         user.preferences = { ...(user.preferences || {}), onboarded: false };
         scheduleSave();
@@ -1803,6 +1841,9 @@ app.post('/api/logout', (req, res) => {
  */
 app.get('/api/subscription', requireAuth, (req, res) => {
     const user = req.user;
+    // Track last activity for re-engagement emails (non-blocking)
+    user.lastActivity = Date.now();
+    scheduleSave();
     const role = getUserRole(user.email);
     const hasFull = hasFullAccess(user);
     
@@ -1819,13 +1860,17 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         plan: role === 'owner' ? 'owner' : (role === 'og_tester' ? 'og_lifetime' : user.plan),
         expiresAt: (role === 'owner' || role === 'og_tester') ? null : user.expiresAt,
         preferences: user.preferences || {},
+        dayPassActive: hasDayPassActive(user),
+        dayPassExpiry: hasDayPassActive(user) ? user.dayPassExpiry : null,
         freeTier: !hasFull ? {
             enabled: FREE_TIER_CONFIG.enabled,
             totalUsesPerDay: FREE_TIER_CONFIG.totalUsesPerDay,
             specialLimits: FREE_TIER_CONFIG.specialLimits,
             usage: getAllFreeTierUsage(req.session.userId),
             totalUsed: getTotalFreeTierUsage(req.session.userId),
-            totalRemaining: Math.max(0, FREE_TIER_CONFIG.totalUsesPerDay - getTotalFreeTierUsage(req.session.userId))
+            totalRemaining: Math.max(0, FREE_TIER_CONFIG.totalUsesPerDay - getTotalFreeTierUsage(req.session.userId)),
+            inGracePeriod: isWithinGracePeriod(req.session.userId),
+            gracePeriodEnding: isGracePeriodEnding(req.session.userId)
         } : null
     });
 });
@@ -2061,6 +2106,52 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
     } catch (error) {
         console.error('Checkout session error:', error);
         res.status(500).json({ error: 'Failed to create checkout session' });
+    }
+});
+
+/**
+/**
+ * POST /api/create-daypass-session
+ * Create a Stripe Checkout session for a 24-hour Day Pass ($1.99 AUD)
+ */
+app.post('/api/create-daypass-session', requireAuth, async (req, res) => {
+    if (!stripe) return res.status(503).json({ error: 'Payment system not configured' });
+    const DAYPASS_PRICE_ID = process.env.STRIPE_DAYPASS_PRICE_ID;
+    if (!DAYPASS_PRICE_ID) return res.status(503).json({ error: 'Day Pass not configured' });
+
+    try {
+        const user = req.user;
+        // Don't let already-subscribed users buy a day pass (waste of money)
+        if (hasFullAccess(user) && !hasDayPassActive(user)) {
+            // they already have full access — just redirect them to the tool
+            return res.json({ alreadySubscribed: true });
+        }
+
+        let customerId = user.stripeCustomerId;
+        if (!customerId) {
+            const customer = await stripe.customers.create({
+                email: user.email.toLowerCase(),
+                metadata: { userId: user.userId }
+            });
+            customerId = customer.id;
+            upsertUser(user.userId, { stripeCustomerId: customerId });
+        }
+
+        const session = await stripe.checkout.sessions.create({
+            customer: customerId,
+            payment_method_types: ['card'],
+            mode: 'payment',
+            line_items: [{ price: DAYPASS_PRICE_ID, quantity: 1 }],
+            success_url: `${config.frontendUrl}/?daypass=success&session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${config.frontendUrl}/?cancelled=true`,
+            metadata: { userId: user.userId, plan: 'daypass' }
+        });
+
+        console.log(`💳 Day Pass session created for ${user.email}`);
+        res.json({ url: session.url });
+    } catch (error) {
+        console.error('Day Pass checkout error:', error);
+        res.status(500).json({ error: 'Failed to create Day Pass session' });
     }
 });
 
@@ -2307,6 +2398,29 @@ app.post('/api/stripe-webhook', async (req, res) => {
                 let userId = session.metadata?.userId;
                 // Detect plan from metadata, or fallback to amount-based detection
                 const plan = session.metadata?.plan || (session.amount_total <= 1000 ? 'monthly' : session.amount_total <= 5000 ? 'lifetime' : 'yearly');
+
+                // ── Day Pass ──
+                if (plan === 'daypass') {
+                    if (!userId && session.customer_details?.email) {
+                        const email = session.customer_details.email.toLowerCase();
+                        const matchedUser = Object.values(db.users).find(u => u.email && u.email.toLowerCase() === email);
+                        if (matchedUser) userId = matchedUser.userId;
+                    }
+                    if (userId) {
+                        const expiry = Date.now() + 86400000; // 24 hours
+                        upsertUser(userId, { dayPassExpiry: expiry });
+                        logPayment({
+                            userId,
+                            stripeEventId: event.id,
+                            eventType: event.type,
+                            amount: session.amount_total,
+                            currency: session.currency,
+                            status: 'daypass_activated'
+                        });
+                        console.log(`⚡ Day Pass activated for ${userId} until ${new Date(expiry).toISOString()}`);
+                    }
+                    break;
+                }
                 
                 // If no userId in metadata (Payment Links), match by email
                 if (!userId && session.customer_details?.email) {
@@ -2343,6 +2457,14 @@ app.post('/api/stripe-webhook', async (req, res) => {
                     });
                     
                     console.log(`✅ Subscription activated for ${userId} - ${plan}`);
+
+                    // Grant referral bonus to referrer (if this is their first subscription)
+                    const newSub = getUser(userId);
+                    if (newSub && newSub.referredBy && !newSub.referralBonusGranted) {
+                        newSub.referralBonusGranted = true;
+                        scheduleSave();
+                        grantReferralBonus(newSub.referredBy).catch(() => {});
+                    }
                 }
                 break;
             }
@@ -3582,15 +3704,16 @@ const BOT_PROMPTS = {
 IMPORTANT: The COMPLETE official syllabus content is included below in this prompt between the SYLLABUS CONTENT markers. You have ALL the information you need — do NOT say the syllabus is missing or not provided.
 
 YOUR ONLY FUNCTION:
-1. Receive: Subject name + Topic name
+1. Receive: Subject name + Topic name (and optionally a specific dot point)
 2. Search the syllabus content below for that topic
-3. Output: Complete decoded content for that topic
+3. Output: Complete decoded content using the EXACT emoji-section format below
 
 RULES:
 - The syllabus content IS provided below. Search through it thoroughly for the requested topic.
 - Topic names in the syllabus may use slightly different wording, capitalisation, or formatting — look for close matches.
 - Use the syllabus content as your primary source. You may add helpful context and explanations to make the content useful for students.
 - Do NOT say "the syllabus does not contain" or "no content found" unless you have genuinely searched the entire provided text and the topic truly does not exist.
+- If a "Specific Dot Point" is given, focus your ENTIRE response on that dot point only — go deep rather than broad.
 
 NEVER OUTPUT ANY OF THESE (automatic failure):
 - "Please provide..."
@@ -3601,29 +3724,40 @@ NEVER OUTPUT ANY OF THESE (automatic failure):
 - Any question marks asking the user for information
 - Any request for the user to provide anything
 
-YOU MUST IMMEDIATELY OUTPUT:
-When you receive "Subject: X, Topic: Y", search the syllabus content below for topic Y and output:
+⚠️ CRITICAL FORMATTING RULE ⚠️
+You MUST start each section with EXACTLY one of these emoji markers (on its own line, at the very start):
+📌 Overview
+🧠 Key Concepts
+📖 Syllabus Content
+✍️ Exam Focus
+🎯 Study Strategy
+🔑 Key Terms
 
-## 📚 [Topic Name]
+These emojis are used by the front-end to create separate interactive cards. If you omit them or change them, the cards will not render correctly.
 
-### Overview
-[2-3 sentence overview of this topic based on the syllabus]
+YOU MUST OUTPUT ALL 6 SECTIONS, IN THIS EXACT ORDER:
 
-### Syllabus Content
-[List ALL dot points and learning outcomes for this topic as they appear in the syllabus. Quote them faithfully.]
+📌 Overview
+[2-3 sentence plain-English overview of this topic. No bullet points — just a brief engaging paragraph.]
 
-### Key Concepts Explained
-[Explain each major concept from the syllabus dot points above]
+🧠 Key Concepts
+[Explain 3-5 key concepts from the syllabus dot points. Use short paragraphs or bullet points starting with •. Bold the concept name using **Name**: then explain it.]
 
-### HSC Exam Focus
-[How this topic appears in exams, question types, mark allocations]
+📖 Syllabus Content
+[List ALL dot points and learning outcomes for this topic EXACTLY as they appear in the syllabus. Use bullet points starting with •. Quote them faithfully.]
 
-### Study Recommendations
-[What to focus on, common mistakes to avoid]
+✍️ Exam Focus
+[How this topic appears in HSC exams: typical question types, common verbs used (analyse, evaluate, describe), typical mark allocations, what markers look for in responses.]
+
+🎯 Study Strategy
+[What to prioritise, common student mistakes, memory tips, and how to approach practice questions for this topic. Use bullet points starting with •.]
+
+🔑 Key Terms
+[A glossary of 5-8 essential terms for this topic. Format each as: **Term**: definition]
 
 ---
 
-If you cannot find the exact topic name, look for the closest matching section and decode that instead.
+If a "Specific Dot Point" is provided in the message, replace the broad topic overview with a DEEP DIVE into just that one dot point — still using the same 6 section structure.
 
 REMEMBER: You are a content OUTPUT system, not a conversation system. Never ask for input.`,
 
@@ -4282,7 +4416,51 @@ What this represents in reality with a specific scenario
 Clear benefit or consequence
 
 ## Memory Hook
-Short, sticky phrase to remember it`
+Short, sticky phrase to remember it`,
+
+    tutor: `You are an expert HSC tutor for Years 11-12 Australian students. You help students deeply understand their subjects — not just memorise facts.
+
+TUTOR PERSONALITY:
+- Warm, encouraging, and patient
+- Explain at the right level — never condescending, never over-complicated
+- Use real-world examples and analogies when explaining abstract concepts
+- Celebrate progress and good reasoning
+
+DEFAULT MODE (EXPLAIN mode):
+- Give clear, complete answers
+- Structure responses with headers/bullets where helpful
+- For maths: show full worked steps
+- For science: explain the underlying mechanism, not just the rule
+- For English/Humanities: connect to themes, context, and essay technique
+
+TUTOR MODE (when user says "tutor mode on" or message starts with [TUTOR MODE]):
+- NEVER directly answer the question
+- Instead, ask 2-3 Socratic questions that guide the student toward the answer
+- Start with what they already know: "What do you already know about...?"
+- Build on their response step by step
+- Only confirm/correct after they've attempted their own reasoning
+
+STUDY MODE (when message starts with [STUDY MODE]):
+- Run a structured 10-15 minute quiz session on the requested topic/module
+- Ask one question at a time, wait for student response
+- Mark each answer with feedback: ✅ correct | ⚠️ partially correct | ❌ incorrect
+- Keep a running score in brackets e.g. [Score: 3/5]
+- At the end, summarise strong areas and areas to review
+- Mix question types: recall, application, short-answer
+
+SIMPLIFY MODE (when message starts with [SIMPLIFY]):
+- Re-explain the previous concept at a simpler level
+- Use an analogy or metaphor a Year 7 student would understand
+- Keep it under 5 sentences
+- End with: "Does that make more sense? Ask me to go deeper when you're ready."
+
+FORMATTING RULES:
+- Use **bold** for key terms and important concepts
+- Use bullet points (•) for lists
+- Use numbered lists for steps/sequences
+- For code (Software Engineering): wrap in triple backticks with the language name e.g. \`\`\`python
+- For maths: write equations in plain readable text (e.g. x² + 3x + 2 = 0, NOT LaTeX like \\frac{}{})
+- Keep responses focused — don't pad with unnecessary preamble`
 };
 
 // Junior Bot Prompts (Years 7-10)
@@ -6435,10 +6613,480 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
 
 // ==================== STATIC FILES (after API routes) ====================
 // Serve static files from current directory
-app.use(express.static(__dirname, {
-    maxAge: config.isDev ? 0 : '1d',
-    etag: true
-}));
+// ==================== SCORE HISTORY ====================
+
+/**
+ * POST /api/user/record-score
+ * Record an exam score entry for history/weakness tracking
+ */
+app.post('/api/user/record-score', requireAuth, express.json(), (req, res) => {
+    const { subject, module, band, score, totalMarks, mode } = req.body;
+    if (!subject || band === undefined) {
+        return res.status(400).json({ error: 'subject and band are required' });
+    }
+    const user = req.user;
+    if (!user.examHistory) user.examHistory = [];
+    user.examHistory.push({
+        subject: String(subject).substring(0, 80),
+        module: String(module || '').substring(0, 80),
+        band: Math.min(6, Math.max(1, parseInt(band) || 1)),
+        score: parseFloat(score) || 0,
+        totalMarks: parseFloat(totalMarks) || 0,
+        mode: ['quick', 'full', 'exam'].includes(mode) ? mode : 'quick',
+        date: new Date().toISOString()
+    });
+    // Keep max 100 entries
+    if (user.examHistory.length > 100) user.examHistory = user.examHistory.slice(-100);
+    scheduleSave();
+    res.json({ success: true });
+});
+
+/**
+ * GET /api/user/exam-history
+ * Get exam score history
+ */
+app.get('/api/user/exam-history', requireAuth, (req, res) => {
+    const user = req.user;
+    res.json(user.examHistory || []);
+});
+
+// ==================== SYLLABUS PROGRESS ====================
+
+/**
+ * POST /api/user/syllabus-progress
+ * Record a dot-point decode event
+ */
+app.post('/api/user/syllabus-progress', requireAuth, express.json(), (req, res) => {
+    const { subject, module, dotPoint, understood } = req.body;
+    if (!subject) return res.status(400).json({ error: 'subject required' });
+    const user = req.user;
+    if (!user.syllabusProgress) user.syllabusProgress = {};
+    const key = `${String(subject).substring(0, 60)}||${String(module || '').substring(0, 80)}||${String(dotPoint || '').substring(0, 200)}`;
+    user.syllabusProgress[key] = {
+        subject: String(subject).substring(0, 60),
+        module: String(module || '').substring(0, 80),
+        dotPoint: String(dotPoint || '').substring(0, 200),
+        understood: !!understood,
+        lastDecoded: new Date().toISOString()
+    };
+    scheduleSave();
+    res.json({ success: true });
+});
+
+/**
+ * GET /api/user/syllabus-progress
+ * Get syllabus progress
+ */
+app.get('/api/user/syllabus-progress', requireAuth, (req, res) => {
+    const user = req.user;
+    res.json(Object.values(user.syllabusProgress || {}));
+});
+
+// ==================== ACHIEVEMENTS ====================
+const ACHIEVEMENT_DEFS = [
+    { id: 'survived_10', label: 'Survived 10 Days', desc: 'Reached Day 10 in Learn IRL', emoji: '🏆' },
+    { id: 'no_lifelines', label: 'Going Solo', desc: 'Completed a game without using any lifelines', emoji: '💪' },
+    { id: 'first_exam', label: 'First Exam', desc: 'Completed your first practice exam', emoji: '✏️' },
+    { id: 'band6', label: 'Band 6 Achieved', desc: 'Scored Band 6 on a practice exam', emoji: '⭐' },
+    { id: 'streak_7', label: '7-Day Streak', desc: 'Studied 7 days in a row', emoji: '🔥' },
+    { id: 'syllabus_module', label: 'Module Master', desc: 'Decoded all dot points in a syllabus module', emoji: '📘' },
+    { id: 'first_decode', label: 'First Decode', desc: 'Used the Worksheet Decoder for the first time', emoji: '📄' }
+];
+
+/**
+ * POST /api/user/achievement
+ * Add an achievement (deduplicates)
+ */
+app.post('/api/user/achievement', requireAuth, express.json(), (req, res) => {
+    const { achievementId } = req.body;
+    const def = ACHIEVEMENT_DEFS.find(a => a.id === achievementId);
+    if (!def) return res.status(400).json({ error: 'Unknown achievement' });
+    const user = req.user;
+    if (!user.achievements) user.achievements = [];
+    if (!user.achievements.find(a => a.id === achievementId)) {
+        user.achievements.push({ ...def, earnedAt: new Date().toISOString() });
+        scheduleSave();
+    }
+    res.json({ success: true });
+});
+
+/**
+ * GET /api/user/achievements
+ * Get user achievements + all definitions (for lock icons on unearned)
+ */
+app.get('/api/user/achievements', requireAuth, (req, res) => {
+    const user = req.user;
+    res.json({
+        earned: user.achievements || [],
+        all: ACHIEVEMENT_DEFS
+    });
+});
+
+// ==================== REFERRAL SYSTEM ====================
+const { randomBytes } = require('crypto');
+
+function getOrCreateReferralCode(user) {
+    if (!user.referralCode) {
+        user.referralCode = randomBytes(4).toString('hex').toUpperCase();
+        scheduleSave();
+    }
+    return user.referralCode;
+}
+
+/**
+ * GET /api/user/referral
+ * Get referral code + stats
+ */
+app.get('/api/user/referral', requireAuth, (req, res) => {
+    const user = req.user;
+    const code = getOrCreateReferralCode(user);
+    const referralCount = Object.values(db.users).filter(u => u.referredBy === user.userId).length;
+    const paidReferrals = Object.values(db.users).filter(u => u.referredBy === user.userId && u.subscribed).length;
+    res.json({
+        code,
+        url: `${config.frontendUrl}/login.html?ref=${code}`,
+        referralCount,
+        paidReferrals,
+        bonusDaysEarned: paidReferrals * 7
+    });
+});
+
+// ==================== NOTIFY ON RESET ====================
+
+/**
+ * POST /api/notify/reset
+ * Flag user to receive an email when their daily usage resets
+ */
+app.post('/api/notify/reset', requireAuth, (req, res) => {
+    const user = req.user;
+    user.notifyOnReset = true;
+    scheduleSave();
+    res.json({ success: true });
+});
+
+// ==================== DAILY CHALLENGE ====================
+let _dailyChallengeCache = { date: null, question: null };
+
+/**
+ * GET /api/challenge/today
+ * Get today's challenge question (same for all users, cached in memory)
+ */
+app.get('/api/challenge/today', requireAuth, async (req, res) => {
+    const today = new Date().toISOString().split('T')[0];
+    if (_dailyChallengeCache.date === today && _dailyChallengeCache.question) {
+        const user = req.user;
+        const answered = (user.challengeHistory || []).some(c => c.date === today);
+        return res.json({ ..._dailyChallengeCache.question, answered });
+    }
+
+    // Pick a subject deterministically from today's date
+    const subjects = ['Biology', 'Chemistry', 'Physics', 'Modern History', 'English Advanced', 'Mathematics Advanced', 'Economics', 'Legal Studies', 'Business Studies', 'Geography'];
+    const dayIndex = Math.floor(Date.now() / 86400000) % subjects.length;
+    const subject = subjects[dayIndex];
+
+    try {
+        const OPENAI_API_KEY = config.openaiApiKey;
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                    { role: 'system', content: 'You are an HSC exam question generator. Generate a single short-answer question (4-6 marks) for the given subject. Respond ONLY with valid JSON: {"question":"...","marks":4,"hint":"..."}' },
+                    { role: 'user', content: `Generate a daily challenge question for ${subject} Year 12 HSC.` }
+                ],
+                max_tokens: 400,
+                temperature: 0.8
+            })
+        });
+        const data = await response.json();
+        const raw = data.choices?.[0]?.message?.content || '{}';
+        let parsed;
+        try { parsed = JSON.parse(raw); } catch { parsed = { question: 'No question available today.', marks: 4, hint: '' }; }
+        _dailyChallengeCache = { date: today, question: { subject, ...parsed } };
+        const user = req.user;
+        const answered = (user.challengeHistory || []).some(c => c.date === today);
+        res.json({ ..._dailyChallengeCache.question, answered });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to generate daily challenge' });
+    }
+});
+
+/**
+ * POST /api/challenge/submit
+ * Submit an answer to today's challenge
+ */
+app.post('/api/challenge/submit', requireAuth, express.json(), async (req, res) => {
+    const today = new Date().toISOString().split('T')[0];
+    const { answer } = req.body;
+    const user = req.user;
+
+    if (!answer) return res.status(400).json({ error: 'Answer required' });
+    if ((user.challengeHistory || []).some(c => c.date === today)) {
+        return res.status(409).json({ error: 'Already submitted today' });
+    }
+    if (!_dailyChallengeCache.question || _dailyChallengeCache.date !== today) {
+        return res.status(400).json({ error: 'No challenge loaded. Fetch /api/challenge/today first.' });
+    }
+
+    const { subject, question, marks } = _dailyChallengeCache.question;
+    try {
+        const OPENAI_API_KEY = config.openaiApiKey;
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                    { role: 'system', content: 'You are an HSC marker. Mark the student answer and respond ONLY with JSON: {"score":X,"outOf":Y,"band":Z,"feedback":"...","sampleAnswer":"..."}' },
+                    { role: 'user', content: `Subject: ${subject}\nQuestion (${marks} marks): ${question}\nStudent answer: ${answer}` }
+                ],
+                max_tokens: 600,
+                temperature: 0.3
+            })
+        });
+        const data = await response.json();
+        const raw = data.choices?.[0]?.message?.content || '{}';
+        let result;
+        try { result = JSON.parse(raw); } catch { result = { score: 0, outOf: marks, band: 2, feedback: 'Could not mark answer.', sampleAnswer: '' }; }
+
+        if (!user.challengeHistory) user.challengeHistory = [];
+        user.challengeHistory.push({ date: today, subject, score: result.score, outOf: result.outOf, band: result.band });
+        if (user.challengeHistory.length > 365) user.challengeHistory = user.challengeHistory.slice(-365);
+        scheduleSave();
+
+        res.json({ success: true, ...result });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to mark answer' });
+    }
+});
+
+// ==================== PARENT EMAIL ====================
+
+/**
+ * POST /api/user/parent-email
+ * Save/update parent email for weekly progress summaries
+ */
+app.post('/api/user/parent-email', requireAuth, express.json(), (req, res) => {
+    const { parentEmail } = req.body;
+    if (!parentEmail || !isValidEmail(parentEmail)) {
+        return res.status(400).json({ error: 'Valid parent email required' });
+    }
+    const user = req.user;
+    user.parentEmail = parentEmail.toLowerCase().trim();
+    scheduleSave();
+    res.json({ success: true });
+});
+
+// ==================== ACTIVE EXAM SAVE/RESUME ====================
+
+/**
+ * POST /api/exam/active
+ * Save the current in-progress exam state (questions + answers) to the user record.
+ */
+app.post('/api/exam/active', requireAuth, express.json(), (req, res) => {
+    const user = req.user;
+    const { examData, examAnswers, examSubjectId, examDurationSeconds } = req.body;
+    if (!examData || !examSubjectId) return res.status(400).json({ error: 'Missing examData or examSubjectId' });
+    user.activeExam = {
+        examData,
+        examAnswers: examAnswers || {},
+        examSubjectId,
+        examDurationSeconds: examDurationSeconds || 0,
+        savedAt: Date.now()
+    };
+    scheduleSave();
+    res.json({ success: true });
+});
+
+/**
+ * GET /api/exam/active
+ * Return the saved active exam if it was saved within the last 24 hours.
+ */
+app.get('/api/exam/active', requireAuth, (req, res) => {
+    const user = req.user;
+    const ae = user.activeExam;
+    if (!ae || !ae.savedAt || Date.now() - ae.savedAt > 86400000) {
+        return res.json({ activeExam: null });
+    }
+    res.json({ activeExam: ae });
+});
+
+/**
+ * DELETE /api/exam/active
+ * Clear the active exam after submission or explicit discard.
+ */
+app.delete('/api/exam/active', requireAuth, (req, res) => {
+    const user = req.user;
+    user.activeExam = null;
+    scheduleSave();
+    res.json({ success: true });
+});
+
+// ==================== REFERRAL BONUS ====================
+
+async function grantReferralBonus(referrerId) {
+    const referrer = getUser(referrerId);
+    if (!referrer) return;
+    // Extend expiresAt by 7 days
+    const base = referrer.expiresAt ? new Date(referrer.expiresAt) : new Date();
+    if (base.getTime() < Date.now()) base.setTime(Date.now());
+    base.setDate(base.getDate() + 7);
+    referrer.expiresAt = base.toISOString();
+    referrer.referralBonusDaysTotal = (referrer.referralBonusDaysTotal || 0) + 7;
+    scheduleSave();
+    console.log(`🎁 Referral bonus: +7 days for ${referrerId}, new expiry ${referrer.expiresAt}`);
+    if (referrer.email && emailTransporter) {
+        emailTransporter.sendMail({
+            from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+            to: referrer.email,
+            subject: 'You earned 7 free days! 🎉',
+            html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<h2 style="color:#6366f1;">You earned 7 free days!</h2>
+<p>A friend you referred just upgraded to Study Decoder Premium. As a thank you, we've added <strong>7 days free</strong> to your account.</p>
+<p>Your new expiry: <strong>${referrer.expiresAt.split('T')[0]}</strong></p>
+<p>Keep sharing your referral link to earn more!</p>
+<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
+<p style="color:#999;font-size:11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
+</div>`
+        }).catch(() => {});
+    }
+}
+
+// ==================== NOTIFY/RE-ENGAGEMENT EMAIL HELPERS ====================
+
+async function sendUsageResetEmail(user) {
+    if (!emailTransporter || !user.email) return;
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: 'Your Study Decoder uses are back — pick up where you left off',
+        html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<h2 style="color:#6366f1;">Your daily uses have reset ✅</h2>
+<p>Hi ${user.name || 'there'},</p>
+<p>Your free Study Decoder uses have reset for today. Come back and keep studying!</p>
+<div style="text-align:center;margin:30px 0;">
+  <a href="${config.frontendUrl}/senior-bot.html" style="background-color:#6366f1;color:white;padding:12px 30px;text-decoration:none;border-radius:8px;display:inline-block;">Continue Studying →</a>
+</div>
+<p style="color:#666;font-size:13px;">Want unlimited uses? <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">Upgrade for $5/month</a>.</p>
+<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
+<p style="color:#999;font-size:11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
+</div>`
+    });
+}
+
+async function sendReengagementEmail(user) {
+    if (!emailTransporter || !user.email) return;
+    const msgs = [
+        { subject: 'Your streak is at risk 🔥', body: 'You haven\'t studied in 5 days. Log back in to keep your streak alive.' },
+        { subject: 'Don\'t let your hard work fade 📚', body: 'It\'s been a while since you last studied. Jump back in — your subjects are waiting.' },
+        { subject: 'HSC waits for no one ⏰', body: 'You haven\'t used Study Decoder in 5 days. A quick 10-minute session can make all the difference.' }
+    ];
+    const pick = msgs[Math.floor(Math.random() * msgs.length)];
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: pick.subject,
+        html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<h2 style="color:#6366f1;">${pick.subject}</h2>
+<p>Hi ${user.name || 'there'},</p>
+<p>${pick.body}</p>
+<div style="text-align:center;margin:30px 0;">
+  <a href="${config.frontendUrl}/senior-bot.html" style="background-color:#6366f1;color:white;padding:12px 30px;text-decoration:none;border-radius:8px;display:inline-block;">Study Now →</a>
+</div>
+<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
+<p style="color:#999;font-size:11px;">Study Decoder - You're receiving this because you signed up at studydecoder.com.au. <a href="${config.frontendUrl}/index.html" style="color:#999;">Manage preferences</a></p>
+</div>`
+    });
+}
+
+async function sendParentSummaryEmail(user) {
+    if (!emailTransporter || !user.parentEmail || !user.email) return;
+    const streak = user.streak || 0;
+    const examCount = (user.examHistory || []).length;
+    const lastActivity = user.lastActivity ? new Date(user.lastActivity).toLocaleDateString('en-AU') : 'Unknown';
+    const isSubscribed = hasFullAccess(user);
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.parentEmail,
+        subject: `Weekly Study Report — ${user.name || user.email}`,
+        html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<h2 style="color:#6366f1;">Weekly Study Decoder Report</h2>
+<p>Here's a summary of <strong>${user.name || 'your student'}</strong>'s activity this week on Study Decoder.</p>
+<table style="width:100%;border-collapse:collapse;margin:20px 0;">
+  <tr><td style="padding:10px;border-bottom:1px solid #eee;">🔥 Current Streak</td><td style="padding:10px;border-bottom:1px solid #eee;font-weight:600;">${streak} days</td></tr>
+  <tr><td style="padding:10px;border-bottom:1px solid #eee;">📝 Practice Exams</td><td style="padding:10px;border-bottom:1px solid #eee;font-weight:600;">${examCount} total</td></tr>
+  <tr><td style="padding:10px;border-bottom:1px solid #eee;">📅 Last Active</td><td style="padding:10px;border-bottom:1px solid #eee;font-weight:600;">${lastActivity}</td></tr>
+  <tr><td style="padding:10px;">⚡ Account</td><td style="padding:10px;font-weight:600;">${isSubscribed ? 'Premium' : 'Free Tier'}</td></tr>
+</table>
+${!isSubscribed ? `<p style="color:#666;font-size:13px;">Your student is on the free tier (10 uses/day). <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">Upgrade to Premium for $5/month</a> for unlimited access.</p>` : ''}
+<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
+<p style="color:#999;font-size:11px;">You're receiving this because ${user.name || 'a student'} added your email as a parent contact on Study Decoder.</p>
+</div>`
+    });
+}
+
+// ==================== SCHEDULED JOBS (hourly) ====================
+
+// Guard: only run each daily task once per calendar day
+let _lastCronDate = '';
+let _lastParentEmailWeek = '';
+
+setInterval(async () => {
+    try {
+        const todayStr = _getToday();
+        const now = Date.now();
+        const users = Object.values(db.users);
+
+        // ── 1) NOTIFY ON RESET — send once per user per new day ──
+        if (todayStr !== _lastCronDate) {
+            _lastCronDate = todayStr;
+            for (const user of users) {
+                if (user.notifyOnReset && user.email) {
+                    await sendUsageResetEmail(user).catch(() => {});
+                    user.notifyOnReset = false;
+                }
+            }
+        }
+
+        // ── 2) RE-ENGAGEMENT — 5-day inactive free users (max once per 7 days) ──
+        for (const user of users) {
+            if (!user.email) continue;
+            if (hasFullAccess(user)) continue;  // premium users don't need nudging
+            const lastAct = user.lastActivity || (user.createdAt ? new Date(user.createdAt).getTime() : 0);
+            const daysSince = (now - lastAct) / 86400000;
+            const daysSinceEmail = user.lastReengagementEmail ? (now - user.lastReengagementEmail) / 86400000 : 999;
+            if (daysSince >= 5 && daysSinceEmail >= 7) {
+                await sendReengagementEmail(user).catch(() => {});
+                user.lastReengagementEmail = now;
+            }
+        }
+
+        // ── 3) PARENT WEEKLY DIGEST — Sundays only, once per ISO week ──
+        const weekKey = (() => {
+            const d = new Date();
+            const dayNum = d.getDay(); // 0=Sun
+            if (dayNum !== 0) return null;
+            // ISO week identifier: year + week number
+            const startOfYear = new Date(d.getFullYear(), 0, 1);
+            const weekNum = Math.ceil(((d - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
+            return `${d.getFullYear()}-W${weekNum}`;
+        })();
+        if (weekKey && weekKey !== _lastParentEmailWeek) {
+            _lastParentEmailWeek = weekKey;
+            for (const user of users) {
+                if (user.parentEmail) {
+                    await sendParentSummaryEmail(user).catch(() => {});
+                }
+            }
+        }
+
+        scheduleSave();
+    } catch (e) {
+        console.error('Scheduled jobs error:', e.message);
+    }
+}, 60 * 60 * 1000); // every hour
+
 
 // Serve index.html for SPA-like behavior (only for non-API routes)
 app.get('*', (req, res, next) => {

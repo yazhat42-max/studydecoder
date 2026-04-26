@@ -65,14 +65,26 @@
         .message-assistant p { margin-bottom: 12px; line-height: 1.7; }
         .message-assistant ul, .message-assistant ol { margin: 12px 0; padding-left: 24px; }
         .message-assistant li { margin-bottom: 8px; line-height: 1.6; }
-        /* ── HORIZONTAL RESPONSE CARDS ── */
-        .response-cards-wrapper { animation: fadeIn 0.3s ease; }
+
+        /* ── ADHD-OPTIMISED RESPONSE CARDS ── */
+        .response-cards-wrapper { animation: fadeIn 0.4s ease; }
+
+        /* Card type colour themes */
+        :root {
+            --card-overview:    #3b82f6;
+            --card-content:     #8b5cf6;
+            --card-concepts:    #06b6d4;
+            --card-exam:        #f59e0b;
+            --card-study:       #10b981;
+            --card-default:     #4f8cff;
+        }
+
         .response-cards-scroll {
-            display: flex; gap: 14px;
+            display: flex; gap: 16px;
             overflow-x: auto; overflow-y: hidden;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
-            padding: 4px 4px 14px;
+            padding: 6px 4px 18px;
             scrollbar-width: thin;
             scrollbar-color: #2f3336 transparent;
             cursor: grab;
@@ -81,56 +93,153 @@
         .response-cards-scroll::-webkit-scrollbar { height: 4px; }
         .response-cards-scroll::-webkit-scrollbar-thumb { background: #2f3336; border-radius: 2px; }
         .response-cards-scroll::-webkit-scrollbar-track { background: transparent; }
+
         .response-card {
-            flex: 0 0 min(520px, 84vw);
+            flex: 0 0 min(540px, 88vw);
             scroll-snap-align: start;
-            background: #16202a;
-            border: 1px solid #2f3336;
-            border-radius: 16px;
-            padding: 22px 24px;
-            transition: border-color 0.25s, box-shadow 0.25s;
+            background: linear-gradient(160deg, #1a2332 0%, #151e2b 100%);
+            border: 1px solid #2a3548;
+            border-radius: 20px;
+            padding: 0;
+            overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+        }
+        .response-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.35);
         }
         .response-card.active-card {
-            border-color: rgba(79,140,255,0.4);
-            box-shadow: 0 0 0 1px rgba(79,140,255,0.12);
+            border-color: rgba(79,140,255,0.5);
+            box-shadow: 0 0 0 2px rgba(79,140,255,0.12), 0 8px 32px rgba(0,0,0,0.3);
         }
+
+        /* Coloured top bar per card type */
+        .response-card-accent {
+            height: 4px;
+            background: var(--card-color, var(--card-default));
+        }
+
         .response-card-header {
-            display: flex; align-items: flex-start; gap: 10px;
-            margin-bottom: 14px; padding-bottom: 12px;
-            border-bottom: 1px solid #232e38;
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 18px 22px 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .response-card-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-        .response-card-title { font-size: 14px; font-weight: 700; color: #e7e9ea; flex: 1; line-height: 1.4; }
-        .response-card-num { font-size: 11px; color: #71767b; flex-shrink: 0; font-weight: 600; white-space: nowrap; }
-        .response-card-body { font-size: 14px; color: #c8ccd0; line-height: 1.78; }
-        .response-card-body p { margin: 0 0 10px; }
+        .response-card-icon-wrap {
+            width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+            background: rgba(255,255,255,0.07);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        }
+        .response-card-meta { flex: 1; min-width: 0; }
+        .response-card-title { font-size: 15px; font-weight: 700; color: #e7e9ea; line-height: 1.3; }
+        .response-card-subtitle { font-size: 11px; color: #71767b; margin-top: 3px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .response-card-badge {
+            font-size: 11px; font-weight: 700; color: #fff;
+            background: var(--card-color, var(--card-default));
+            border-radius: 20px; padding: 3px 10px; flex-shrink: 0; opacity: 0.9;
+        }
+
+        .response-card-body {
+            font-size: 14px; color: #c8ccd0; line-height: 1.85;
+            padding: 18px 22px 22px;
+        }
+        .response-card-body p { margin: 0 0 12px; }
         .response-card-body p:last-child { margin-bottom: 0; }
         .response-card-body strong { color: #e7e9ea; }
         .response-card-body em { color: #a8b3c0; font-style: italic; }
-        .response-card-body ul, .response-card-body ol { padding-left: 18px; margin: 6px 0 10px; }
-        .response-card-body li { margin-bottom: 4px; }
-        .response-card-body li:last-child { margin-bottom: 0; }
+
+        /* ADHD-friendly bullet styling */
+        .response-card-body ul {
+            padding-left: 0; margin: 8px 0 14px; list-style: none;
+        }
+        .response-card-body ul li {
+            position: relative; padding: 8px 12px 8px 36px;
+            margin-bottom: 6px; border-radius: 10px;
+            background: rgba(255,255,255,0.03);
+            border-left: 3px solid var(--card-color, var(--card-default));
+            line-height: 1.6;
+        }
+        .response-card-body ul li::before {
+            content: ''; position: absolute; left: 12px; top: 50%;
+            transform: translateY(-50%);
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--card-color, var(--card-default));
+        }
+        .response-card-body ul li:last-child { margin-bottom: 0; }
+
+        /* Numbered list styling */
+        .response-card-body ol {
+            padding-left: 0; margin: 8px 0 14px; list-style: none; counter-reset: card-ol;
+        }
+        .response-card-body ol li {
+            counter-increment: card-ol;
+            position: relative; padding: 8px 12px 8px 44px;
+            margin-bottom: 6px; border-radius: 10px;
+            background: rgba(255,255,255,0.03); line-height: 1.6;
+        }
+        .response-card-body ol li::before {
+            content: counter(card-ol); position: absolute; left: 10px; top: 50%;
+            transform: translateY(-50%);
+            width: 24px; height: 24px; border-radius: 8px;
+            background: var(--card-color, var(--card-default));
+            color: #fff; font-size: 12px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Highlight callout blocks (lines starting with >) */
+        .response-card-callout {
+            background: rgba(79,140,255,0.07);
+            border: 1px solid rgba(79,140,255,0.2);
+            border-left: 4px solid var(--card-color, var(--card-default));
+            border-radius: 10px; padding: 12px 16px;
+            margin: 10px 0; font-style: italic; color: #b8c8d8;
+        }
+
+        /* Key term chips */
+        .response-card-body .key-term {
+            display: inline-block;
+            background: rgba(79,140,255,0.12);
+            border: 1px solid rgba(79,140,255,0.25);
+            border-radius: 6px; padding: 1px 7px;
+            font-size: 13px; font-weight: 600; color: #7eb8ff;
+        }
+
+        /* Progress bar under card (shows position in deck) */
+        .card-progress-bar {
+            height: 3px; background: #1e2d3d; border-radius: 0 0 20px 20px; overflow: hidden;
+        }
+        .card-progress-fill {
+            height: 100%; background: var(--card-color, var(--card-default));
+            transition: width 0.35s ease;
+        }
+
+        /* Nav */
         .response-card-nav {
             display: flex; align-items: center; justify-content: space-between;
-            margin-top: 8px; padding: 0 2px;
+            margin-top: 10px; padding: 0 2px;
         }
         .card-nav-btn {
-            background: rgba(79,140,255,0.07);
-            border: 1px solid rgba(79,140,255,0.18);
-            color: #4f8cff; border-radius: 8px;
-            padding: 7px 18px; font-size: 13px; font-weight: 600;
+            background: rgba(79,140,255,0.08);
+            border: 1px solid rgba(79,140,255,0.2);
+            color: #4f8cff; border-radius: 10px;
+            padding: 8px 20px; font-size: 13px; font-weight: 600;
             cursor: pointer; transition: all 0.2s; font-family: inherit;
         }
-        .card-nav-btn:hover:not(:disabled) { background: rgba(79,140,255,0.16); border-color: rgba(79,140,255,0.45); }
-        .card-nav-btn:disabled { opacity: 0.2; cursor: default; }
+        .card-nav-btn:hover:not(:disabled) { background: rgba(79,140,255,0.18); border-color: rgba(79,140,255,0.5); transform: translateY(-1px); }
+        .card-nav-btn:disabled { opacity: 0.2; cursor: default; transform: none; }
         .card-dots { display: flex; gap: 6px; align-items: center; }
         .card-dot {
-            width: 6px; height: 6px; border-radius: 3px;
-            background: #2f3336; cursor: pointer; transition: all 0.25s;
+            width: 7px; height: 7px; border-radius: 4px;
+            background: #2f3336; cursor: pointer; transition: all 0.3s;
         }
-        .card-dot.active { background: #4f8cff; width: 20px; }
+        .card-dot.active { background: #4f8cff; width: 22px; border-radius: 4px; }
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(14px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
         @media (max-width: 600px) {
-            .response-card { flex: 0 0 87vw; padding: 16px 16px; }
+            .response-card { flex: 0 0 90vw; }
             .response-cards-scroll { gap: 10px; }
         }
         .loading { display: flex; align-items: center; gap: 8px; color: #71767b; padding: 16px; }
@@ -333,7 +442,22 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-grid" style="grid-template-columns: 1fr; margin-bottom: 0;">
+                        <div class="form-group">
+                            <label class="form-label" style="display:flex;align-items:center;gap:6px;">
+                                🎯 Specific Dot Point
+                                <span style="font-size:10px;background:rgba(79,140,255,0.15);color:#4f8cff;border-radius:4px;padding:2px 7px;font-weight:600;">OPTIONAL</span>
+                            </label>
+                            <textarea class="form-textarea" id="dotPoint" rows="2" placeholder="Paste a specific dot point to get a laser-focused decode, e.g. &#34;analyse the role of enzymes in metabolic pathways&#34;"></textarea>
+                        </div>
+                    </div>
                     <button type="submit" class="submit-btn" id="submitBtn">Decode Topic</button>
+                    <div style="display:flex;align-items:center;gap:8px;margin-top:12px;">
+                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.85rem;color:#71767b;user-select:none;">
+                            <input type="checkbox" id="examinerModeToggle" style="width:16px;height:16px;accent-color:#6C63FF;cursor:pointer;">
+                            <span>🔍 <strong style="color:#e7e9ea;">Examiner's Lens</strong> — see it through the marker's eyes</span>
+                        </label>
+                    </div>
                 </form>
             </div>
         </main>
@@ -965,8 +1089,23 @@ STRICT RULES — you MUST follow these without exception:
         }
 
         // ── Parse AI response into horizontal swipeable cards ──
+        // Per-section accent colours for ADHD card theming
+        const CARD_COLORS = {
+            '📌': '#3b82f6', '🧠': '#8b5cf6', '📖': '#06b6d4', '✍️': '#f59e0b',
+            '💡': '#facc15', '🎯': '#ef4444', '📊': '#10b981', '🔑': '#f97316',
+            '⚡': '#a855f7', '✅': '#22c55e', '🔥': '#f43f5e', '⭐': '#eab308',
+            '📋': '#4f8cff'
+        };
+        // Human-readable subtitle per section type
+        const CARD_SUBTITLES = {
+            '📌': 'Overview', '🧠': 'Key Concepts', '📖': 'Syllabus Content', '✍️': 'Exam Focus',
+            '💡': 'Pro Tips', '🎯': 'Study Focus', '📊': 'Data & Stats', '🔑': 'Key Terms',
+            '⚡': 'Quick Facts', '✅': 'Checklist', '🔥': 'Must Know', '⭐': 'Highlights',
+            '📋': 'Decoded Content'
+        };
+
         function buildResponseCards(text) {
-            const sectionRE = /^(📌|🧠|📖|✍️|💡|🎯|📊|🔑|⚡|✅|🔥|⭐)/;
+            const sectionRE = /^(📌|🧠|📖|✍️|💡|🎯|📊|🔑|⚡|✅|🔥|⭐)/u;
             const lines = text.split('\n');
             const sections = [];
             let current = null;
@@ -975,7 +1114,6 @@ STRICT RULES — you MUST follow these without exception:
                 const m = line.match(sectionRE);
                 if (m) {
                     if (current) sections.push(current);
-                    // Strip all ** markers and trailing colon from title
                     const title = line.slice(m[1].length).trim().replace(/\*\*/g, '').replace(/:$/, '').trim();
                     current = { icon: m[1], title: title || m[1], body: [] };
                 } else {
@@ -986,24 +1124,25 @@ STRICT RULES — you MUST follow these without exception:
             if (current) sections.push(current);
             if (!sections.length) sections.push({ icon: '📋', title: 'Decoded Content', body: text.split('\n') });
 
-            // Convert body lines array → clean HTML (no wrapping block-in-inline issues)
-            function fmt(bodyLines) {
-                // Apply inline markdown first
-                function inline(s) {
-                    // Entity-escape raw text before applying markdown to prevent XSS
-                    s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                    return s
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/\*(.*?)\*/g, '<em>$1</em>');
-                }
+            // ── Inline markdown + XSS sanitisation ──
+            function inline(s) {
+                s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return s
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>');
+            }
 
+            // ── Body → HTML ──
+            function fmt(bodyLines) {
                 let html = '';
                 let listBuf = [];
+                let listType = null; // 'ul' | 'ol'
 
                 function flushList() {
                     if (listBuf.length) {
-                        html += '<ul>' + listBuf.join('') + '</ul>';
+                        html += `<${listType}>${listBuf.join('')}</${listType}>`;
                         listBuf = [];
+                        listType = null;
                     }
                 }
 
@@ -1012,11 +1151,24 @@ STRICT RULES — you MUST follow these without exception:
                     const trimmed = line.trim();
                     if (!trimmed) { flushList(); continue; }
 
+                    // Callout block: lines starting with >
+                    if (trimmed.startsWith('> ') || trimmed.startsWith('>')) {
+                        flushList();
+                        const calloutText = inline(trimmed.replace(/^>\s*/, ''));
+                        html += `<div class="response-card-callout">${calloutText}</div>`;
+                        continue;
+                    }
+
                     const bulletM = trimmed.match(/^[•\-\*]\s+(.+)$/);
                     const numM    = trimmed.match(/^(\d+)[.)]\s+(.+)$/);
+
                     if (bulletM) {
+                        if (listType === 'ol') flushList();
+                        listType = 'ul';
                         listBuf.push(`<li>${inline(bulletM[1])}</li>`);
                     } else if (numM) {
+                        if (listType === 'ul') flushList();
+                        listType = 'ol';
                         listBuf.push(`<li>${inline(numM[2])}</li>`);
                     } else {
                         flushList();
@@ -1034,24 +1186,38 @@ STRICT RULES — you MUST follow these without exception:
             scrollEl.className = 'response-cards-scroll';
 
             sections.forEach((sec, i) => {
+                const color = CARD_COLORS[sec.icon] || '#4f8cff';
+                const subtitle = CARD_SUBTITLES[sec.icon] || '';
                 const card = document.createElement('div');
                 card.className = 'response-card' + (i === 0 ? ' active-card' : '');
                 card.dataset.index = i;
+                card.style.setProperty('--card-color', color);
+                // Staggered entrance animation
+                card.style.animation = `cardEntrance 0.35s ease both`;
+                card.style.animationDelay = `${i * 60}ms`;
+
                 const bodyHTML = fmt(sec.body);
                 const safeTitle = sec.title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const pct = Math.round((i + 1) / sections.length * 100);
+
                 card.innerHTML = `
+                    <div class="response-card-accent"></div>
                     <div class="response-card-header">
-                        <span class="response-card-icon">${sec.icon}</span>
-                        <span class="response-card-title">${safeTitle}</span>
-                        <span class="response-card-num">${i + 1}&thinsp;/&thinsp;${sections.length}</span>
+                        <div class="response-card-icon-wrap">${sec.icon}</div>
+                        <div class="response-card-meta">
+                            <div class="response-card-title">${safeTitle}</div>
+                            ${subtitle ? `<div class="response-card-subtitle">${subtitle}</div>` : ''}
+                        </div>
+                        <span class="response-card-badge">${i + 1} / ${sections.length}</span>
                     </div>
-                    <div class="response-card-body">${bodyHTML || '<p style="color:#71767b;font-style:italic;">No content.</p>'}</div>`;
+                    <div class="response-card-body">${bodyHTML || '<p style="color:#71767b;font-style:italic;">No content.</p>'}</div>
+                    <div class="card-progress-bar"><div class="card-progress-fill" style="width:${pct}%"></div></div>`;
                 scrollEl.appendChild(card);
             });
 
             wrapper.appendChild(scrollEl);
 
-            // Nav bar (only if multiple cards)
+            // Nav (only if multiple cards)
             if (sections.length > 1) {
                 const nav = document.createElement('div');
                 nav.className = 'response-card-nav';
@@ -1066,6 +1232,8 @@ STRICT RULES — you MUST follow these without exception:
                 sections.forEach((_, i) => {
                     const dot = document.createElement('div');
                     dot.className = 'card-dot' + (i === 0 ? ' active' : '');
+                    const color = CARD_COLORS[sections[i].icon] || '#4f8cff';
+                    dot.style.setProperty('--dot-color', color);
                     dot.addEventListener('click', () => goTo(i));
                     dotsEl.appendChild(dot);
                 });
@@ -1087,7 +1255,17 @@ STRICT RULES — you MUST follow these without exception:
                     prevBtn.disabled = idx === 0;
                     nextBtn.disabled = idx === sections.length - 1;
                     cards.forEach((c, i) => c.classList.toggle('active-card', i === idx));
-                    dotsEl.querySelectorAll('.card-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+                    dotsEl.querySelectorAll('.card-dot').forEach((d, i) => {
+                        const active = i === idx;
+                        d.classList.toggle('active', active);
+                        d.style.background = active ? (CARD_COLORS[sections[i].icon] || '#4f8cff') : '';
+                    });
+                    // Sync nav button accent colour to current card
+                    const activeColor = CARD_COLORS[sections[idx].icon] || '#4f8cff';
+                    [prevBtn, nextBtn].forEach(b => {
+                        b.style.color = activeColor;
+                        b.style.borderColor = activeColor + '55';
+                    });
                 }
 
                 function goTo(idx) {
@@ -1099,7 +1277,7 @@ STRICT RULES — you MUST follow these without exception:
                 prevBtn.addEventListener('click', () => goTo(Math.max(0, currentIdx - 1)));
                 nextBtn.addEventListener('click', () => goTo(Math.min(sections.length - 1, currentIdx + 1)));
 
-                // Sync dots/buttons on manual scroll
+                // Sync dots on manual scroll
                 let scrollTimer;
                 scrollEl.addEventListener('scroll', () => {
                     clearTimeout(scrollTimer);
@@ -1114,7 +1292,7 @@ STRICT RULES — you MUST follow these without exception:
                     }, 60);
                 }, { passive: true });
 
-                // Keyboard arrow support
+                // Keyboard arrows
                 scrollEl.setAttribute('tabindex', '0');
                 scrollEl.addEventListener('keydown', e => {
                     if (e.key === 'ArrowRight') { e.preventDefault(); goTo(Math.min(sections.length - 1, currentIdx + 1)); }
@@ -1217,7 +1395,21 @@ STRICT RULES — you MUST follow these without exception:
                     if (errorData.freeTierExhausted) {
                         hideLoading();
                         stopFunFacts();
-                        showFreeTierUpsell(errorData.botType, errorData.limitType);
+                        const msgDiv = document.createElement('div');
+                        msgDiv.className = 'message message-assistant';
+                        if (window.Upsell) {
+                            const wrap = document.createElement('div');
+                            wrap.style.cssText = 'display:flex;justify-content:center;padding:16px 0;';
+                            Upsell.renderModal(wrap, 'syllabus', 'default',
+                                () => { window.location.href = 'index.html#pricing'; },
+                                () => { msgDiv.innerHTML = '<p style="text-align:center;color:#71767b;padding:16px;">👍 Remind set. Come back tomorrow for more!</p>'; }
+                            );
+                            msgDiv.appendChild(wrap);
+                        } else {
+                            msgDiv.innerHTML = '<p style="text-align:center;padding:20px;"><strong>Free uses for today are up.</strong> <a href="index.html#pricing" style="color:#6C63FF;">Upgrade to Premium →</a></p>';
+                        }
+                        outputContent.appendChild(msgDiv);
+                        outputPanel.scrollTop = outputPanel.scrollHeight;
                         return;
                     }
                     throw new Error(`API Error ${response.status}: ${errorData.error || 'Unknown error'}`);
@@ -1230,7 +1422,34 @@ STRICT RULES — you MUST follow these without exception:
                 stopFunFacts();
                 conversationHistory.push({ role: 'assistant', content: data.reply });
                 addMessage(data.reply, false);
-                
+
+                // Record syllabus progress
+                try {
+                    const topicNameRec = topicSelect.options[topicSelect.selectedIndex]?.text || '';
+                    const dotPointRec = (document.getElementById('dotPoint')?.value || '').trim();
+                    fetch(`${API_BASE}/api/user/syllabus-progress`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+                        body: JSON.stringify({ subject: subjectId, module: topicNameRec, dotPoint: dotPointRec, understood: true })
+                    });
+                    // Trigger first_decode achievement
+                    fetch(`${API_BASE}/api/user/achievement`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ achievementId: 'first_decode' }) });
+                } catch(e) { /* silent */ }
+
+                // Show "Generate Practice Question" button
+                (function() {
+                    const tp = topicSelect.options[topicSelect.selectedIndex]?.text || '';
+                    const dp = (document.getElementById('dotPoint')?.value || '').trim();
+                    const practiceUrl = `practice.html?subject=${encodeURIComponent(subjectId)}&module=${encodeURIComponent(tp)}${dp?'&dotpoint='+encodeURIComponent(dp):''}`;
+                    const msgDivs = outputContent.querySelectorAll('.message-assistant');
+                    const lastMsg = msgDivs[msgDivs.length - 1];
+                    if (lastMsg) {
+                        const practiceBtn = document.createElement('div');
+                        practiceBtn.style.cssText = 'margin-top:10px;text-align:right;';
+                        practiceBtn.innerHTML = `<a href="${practiceUrl}" style="display:inline-block;padding:7px 16px;border:1px solid rgba(108,99,255,0.35);border-radius:8px;background:rgba(108,99,255,0.08);color:#a78bfa;font-size:0.82rem;font-weight:600;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(108,99,255,0.15)'" onmouseout="this.style.background='rgba(108,99,255,0.08)'">✏️ Generate practice question →</a>`;
+                        lastMsg.appendChild(practiceBtn);
+                    }
+                })();
+
                 // Show cross-bot recommendations
                 const topicName = topicSelect.options[topicSelect.selectedIndex]?.text || '';
                 showRecommendations(subjectId, topicName);
@@ -1269,10 +1488,21 @@ STRICT RULES — you MUST follow these without exception:
             
             // Clear conversation history for fresh decode
             conversationHistory = [];
-            
-            const message = `DECODE NOW - Subject: ${subjectName} | Topic: ${topic}
+
+            const dotPoint = (document.getElementById('dotPoint')?.value || '').trim();
+            const examinerMode = document.getElementById('examinerModeToggle')?.checked;
+            const examinerPrefix = examinerMode ? `EXAMINER MODE: Respond as a senior HSC examiner and Chief Marker. For every concept, explicitly state what examiners reward, what common mistakes cost marks, and the exact language needed for Band 6. ` : '';
+            let message;
+            if (dotPoint) {
+                message = `${examinerPrefix}DECODE NOW - Subject: ${subjectName} | Topic: ${topic}
+Specific Dot Point: ${dotPoint}
+
+Focus your ENTIRE response exclusively on this specific dot point. Do not ask any questions. Use the syllabus content you have and decode only this dot point in depth.`;
+            } else {
+                message = `${examinerPrefix}DECODE NOW - Subject: ${subjectName} | Topic: ${topic}
 
 Output the complete decoded content for this topic. Do not ask any questions. Do not request additional information. Just decode the topic using the syllabus content you have.`;
+            }
             console.log('[DEBUG] Calling sendMessage with message length:', message.length);
             trackUsage(subjectId, subjectName, topic);
             sendMessage(message, subjectId);
@@ -1378,5 +1608,7 @@ Output the complete decoded content for this topic. Do not ask any questions. Do
         checkAuth();
     </script>
     <script src="streak.js"></script>
+    <script src="upsell.js"></script>
+    <script src="pwa.js"></script>
 </body>
 </html>

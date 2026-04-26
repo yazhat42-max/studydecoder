@@ -30,7 +30,8 @@
     <meta name="msapplication-TileImage" content="logo.png">
     <meta name="msapplication-TileColor" content="#6C63FF">
     <meta name="theme-color" content="#6C63FF">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -78,7 +79,7 @@
             --radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; scroll-behavior:smooth; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif; scroll-behavior:smooth; }
         body { background:var(--bg); color:var(--text); line-height:1.6; }
         body::after {
             content:''; position:fixed; inset:0; z-index:9998; pointer-events:none;
@@ -646,13 +647,13 @@
 
                 <!-- TOP HALF: Motto -->
                 <div class="hero-motto">
-                    <div class="hero-badge">🎓 AI-Powered Study Platform</div>
+                    <div class="hero-badge">� AI Chat Tutor · 7 Study Tools · Built for HSC</div>
                     <div class="motto-stack">
                         <span class="motto-line motto-line-1">make study</span>
                         <span class="motto-line motto-line-2">actually <span class="motto-fun">fun</span></span>
                         <span class="motto-line motto-line-3">again.</span>
                     </div>
-                    <p class="hero-sub">AI tools built for the NSW HSC — decode your syllabus, practise exams, organise notes, and actually enjoy the process.</p>
+                    <p class="hero-sub">Your personal AI tutor, full exam simulator, syllabus decoder, and more — 7 tools built specifically for the NSW HSC.</p>
                     <div class="hero-buttons" id="heroButtons">
                         <a href="login.html" class="btn btn-primary btn-glow" id="heroSignInBtn">Join Free →</a>
                         <a href="#tools" class="btn btn-ghost">Explore Tools ↓</a>
@@ -723,6 +724,12 @@
         </div>
     </div>
 
+    <!-- Day Pass Quick Strip -->
+    <div id="daypassQuickStrip" style="display:none;background:linear-gradient(90deg,rgba(245,158,11,0.10),rgba(239,68,68,0.07),rgba(245,158,11,0.10));border-top:1px solid rgba(245,158,11,0.18);border-bottom:1px solid rgba(245,158,11,0.18);padding:11px 5%;text-align:center;cursor:pointer;" onclick="buyDayPass()">
+        <span style="font-size:0.88rem;color:rgba(255,255,255,0.72);">⚡ <strong style="color:#f59e0b;">Day Pass</strong> — Unlock all 7 tools for just <strong style="color:#fff;">$1.99 today</strong>. No subscription, no commitment.</span>
+        <span style="margin-left:14px;font-size:0.82rem;font-weight:700;color:#f59e0b;text-decoration:underline;">Get it now →</span>
+    </div>
+
     <!-- Continue Where You Left Off -->
     <div class="continue-section active" id="continueSection">
         <div class="continue-inner">
@@ -746,9 +753,29 @@
                 <div class="cc-info">
                     <div class="cc-label" style="color:#ff6b35;">Study Streak</div>
                     <div class="cc-title">Sign in to build your streak</div>
-                    <div class="cc-desc">Come back daily to keep your streak alive — track your study consistency.</div>
+                    <div class="cc-desc">Come back daily to keep your study streak alive — track your consistency.</div>
                 </div>
                 <span class="cc-arrow" style="color:#ff6b35;">→</span>
+            </a>
+            <!-- Daily challenge card (logged-in only) -->
+            <a class="continue-card" id="dailyChallengeCard" href="profile.html#challengeSection" style="display:none; background:rgba(108,99,255,0.06); border-color:rgba(108,99,255,0.2);">
+                <span class="cc-icon" id="challengeIcon">⚡</span>
+                <div class="cc-info">
+                    <div class="cc-label" style="color:#6C63FF;">Today's Challenge</div>
+                    <div class="cc-title" id="challengeCardTitle">Daily Challenge</div>
+                    <div class="cc-desc" id="challengeCardDesc">Answer today's question to earn XP</div>
+                </div>
+                <span class="cc-arrow" style="color:#6C63FF;" id="challengeCardArrow">→</span>
+            </a>
+            <!-- Chat Tutor featured card (logged-in only) -->
+            <a class="continue-card" id="chatTutorCard" href="chat-tutor.html" style="display:none; background:linear-gradient(135deg,rgba(26,18,48,0.8),rgba(22,32,42,0.8)); border-color:rgba(108,99,255,0.35);">
+                <span class="cc-icon">🤖</span>
+                <div class="cc-info">
+                    <div class="cc-label" style="color:#8b5cf6;">⭐ Flagship — AI Chat Tutor</div>
+                    <div class="cc-title">Ask anything. Get instant explanations.</div>
+                    <div class="cc-desc">Socratic coaching · KaTeX maths · Code help · Quiz mode · Conversation history</div>
+                </div>
+                <span class="cc-arrow" style="color:#8b5cf6;">→</span>
             </a>
         </div>
     </div>
@@ -756,16 +783,66 @@
     <!-- Tools Section Header -->
     <div class="section-divider reveal" id="tools">
         <h2>Every Tool You Need, <span class="highlight">One Platform</span></h2>
-        <p>Six AI-powered tools built for HSC students. Scroll to explore each one.</p>
+        <p>Seven AI-powered tools built for HSC students — including the brand new AI Chat Tutor. Scroll to explore each one.</p>
     </div>
+
+    <!-- Demo: AI Chat Tutor -->
+    <section class="showcase showcase-reverse" id="chatTutorDemo">
+        <div class="showcase-inner">
+            <div class="showcase-demo reveal-left">
+                <div class="demo-window">
+                    <div class="demo-topbar">
+                        <div class="demo-dots"><span></span><span></span><span></span></div>
+                        <span class="demo-title">AI Chat Tutor — Biology</span>
+                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                    </div>
+                    <div class="demo-content" style="padding:8px 0;display:flex;flex-direction:column;gap:10px;">
+                        <div style="display:flex;gap:8px;">
+                            <div style="background:#1a1f2e;border:1px solid rgba(139,92,246,0.3);border-radius:6px;padding:4px 10px;font-size:0.75rem;color:#8b5cf6;font-weight:600;">🧬 Biology · Tutor Mode</div>
+                        </div>
+                        <div style="display:flex;justify-content:flex-end;">
+                            <div style="background:rgba(108,99,255,0.18);border:1px solid rgba(108,99,255,0.25);border-radius:12px 12px 3px 12px;padding:8px 11px;max-width:82%;font-size:0.8rem;color:#e7e9ea;line-height:1.4;">Explain enzyme inhibition — I have a test tomorrow</div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:flex-start;">
+                            <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#6C63FF,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;">🤖</div>
+                            <div style="background:#16202a;border:1px solid #2f3336;border-radius:3px 12px 12px 12px;padding:9px 11px;font-size:0.78rem;color:#a1a1aa;line-height:1.55;">
+                                <strong style="color:#e7e9ea;">Two types the HSC tests:</strong><br>
+                                <span style="color:#8b5cf6;">▸ Competitive</span> — inhibitor mimics substrate, fights for the active site. Can be overcome by adding more substrate.<br>
+                                <span style="color:#4f8cff;">▸ Non-competitive</span> — binds allosteric site, changes enzyme shape. Adding substrate won't help.<br>
+                                <span style="font-size:0.72rem;color:#71767b;display:block;margin-top:6px;">💡 Want a quick quiz on this before your test?</span>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:6px;padding:4px 10px;font-size:0.72rem;color:#22c55e;">📚 Study Mode</div>
+                            <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:6px;padding:4px 10px;font-size:0.72rem;color:#f59e0b;">📌 Pin this</div>
+                            <div style="background:rgba(79,140,255,0.08);border:1px solid rgba(79,140,255,0.2);border-radius:6px;padding:4px 10px;font-size:0.72rem;color:#4f8cff;">🎙️ Voice input</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="showcase-text reveal-right">
+                <div class="showcase-label">⭐ New Flagship</div>
+                <h2>AI Chat <span class="highlight">Tutor</span></h2>
+                <p>Your personal HSC tutor, available 24/7. Ask anything, get Socratic coaching, work through maths step-by-step with LaTeX rendering, and test yourself with built-in Study Mode — all in one conversation.</p>
+                <div class="showcase-pills">
+                    <span>Conversation History</span>
+                    <span>Voice Input</span>
+                    <span>LaTeX Maths</span>
+                    <span>Study / Quiz Mode</span>
+                    <span>Pin Responses</span>
+                </div>
+                <a href="chat-tutor.html" class="btn btn-primary btn-glow">Start Chatting →</a>
+            </div>
+        </div>
+    </section>
 
     <!-- Demo: Exam Bot -->
     <section class="showcase" id="examDemo">
         <div class="showcase-inner">
             <div class="showcase-text reveal-left">
-                <div class="showcase-label">Flagship Tool</div>
+                <div class="showcase-label">Exam Simulator</div>
                 <h2>Full Exam <span class="highlight">Simulation</span></h2>
-                <p>Sit a complete, timed HSC exam with authentic structure. Multiple choice, short answer, and extended response — auto-marked with band-level feedback.</p>
+                <p>Sit a full timed HSC exam under realistic conditions. MC, short answer, and extended response — auto-marked with a band verdict and exactly where you dropped marks.</p>
                 <div class="showcase-pills">
                     <span>Timed Conditions</span>
                     <span>MC + Short Answer + Essays</span>
@@ -834,7 +911,7 @@
             <div class="showcase-text reveal-right">
                 <div class="showcase-label">New Mode</div>
                 <h2>Quick <span class="highlight">Paper</span></h2>
-                <p>Short on time? Get a focused 10, 20, or 30-minute practice session — same exam-quality questions, scaled down for your schedule.</p>
+                <p>Not enough time for a full exam? Pick 10, 20, or 30 minutes and get a focused sprint — same quality questions, done in your lunch break.</p>
                 <div class="showcase-pills">
                     <span>10 / 20 / 30 min</span>
                     <span>3–9 questions</span>
@@ -842,48 +919,6 @@
                     <span>Auto-marked</span>
                 </div>
                 <a href="practice.html?mode=quick" class="btn btn-primary btn-glow">Start Quick Paper →</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo: Practice Questions -->
-    <section class="showcase" id="practiceDemo">
-        <div class="showcase-inner">
-            <div class="showcase-text reveal-left">
-                <div class="showcase-label">Drill Any Topic</div>
-                <h2>Practice <span class="highlight">Questions</span></h2>
-                <p>Generate targeted HSC-style questions on any topic, at any difficulty. Drill the exact content you're studying — not a random mix.</p>
-                <div class="showcase-pills">
-                    <span>Any Topic</span>
-                    <span>Easy → Hard</span>
-                    <span>Instant Feedback</span>
-                    <span>45 Subjects</span>
-                </div>
-                <a href="practice.html?mode=standard" class="btn btn-primary btn-glow">Generate Questions →</a>
-            </div>
-            <div class="showcase-demo reveal-right">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Practice Questions</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
-                    </div>
-                    <div class="demo-content">
-                        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
-                            <div style="background:#1a1f2e;border:1px solid #4f8cff55;border-radius:6px;padding:5px 10px;font-size:0.78rem;color:#4f8cff;">Biology</div>
-                            <div style="background:#1a1f2e;border:1px solid #2f3336;border-radius:6px;padding:5px 10px;font-size:0.78rem;color:#71767b;">Genetics</div>
-                            <div style="background:#1a1f2e;border:1px solid #6C63FF55;border-radius:6px;padding:5px 10px;font-size:0.78rem;color:#6C63FF;">Hard</div>
-                        </div>
-                        <div style="background:#16202a;border:1px solid #2f3336;border-radius:10px;padding:12px 14px;margin-bottom:8px;">
-                            <div style="font-size:0.78rem;color:#f7c948;font-weight:600;margin-bottom:6px;">Extended Response · 6 marks</div>
-                            <div style="font-size:0.87rem;color:#e7e9ea;line-height:1.5;">Evaluate the role of meiosis in generating genetic variation in sexually reproducing organisms.</div>
-                        </div>
-                        <div style="background:#0d1f12;border:1px solid #22c55e44;border-radius:8px;padding:10px 12px;">
-                            <div style="font-size:0.75rem;color:#22c55e;font-weight:600;margin-bottom:4px;">✓ Model Answer</div>
-                            <div style="font-size:0.8rem;color:#a1a1aa;line-height:1.5;">Meiosis generates variation through independent assortment, crossing over, and random fertilisation...</div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -920,7 +955,7 @@
             <div class="showcase-text reveal-right">
                 <div class="showcase-label">Mark Your Own Work</div>
                 <h2>Self <span class="highlight">Marking</span></h2>
-                <p>Paste any HSC question and your own answer, and get instant band-level feedback — exactly like a real marker would give you.</p>
+                <p>Paste any question and your answer. Get a band verdict, a mark, and specific suggestions in under 10 seconds — faster than any teacher.</p>
                 <div class="showcase-pills">
                     <span>Any Question</span>
                     <span>Band-level Verdict</span>
@@ -961,7 +996,13 @@
             <div class="showcase-text reveal-right">
                 <div class="showcase-label">Decode Anything</div>
                 <h2>Syllabus <span class="highlight">Decoder</span></h2>
-                <p>Paste any syllabus point and get a clear breakdown of exactly what you need to know — with key terms, concepts, and how they connect.</p>
+                <p>Paste any dot-point and get a plain-English breakdown: what it means, what to study, and how it'll be examined — delivered as interactive scroll cards.</p>
+                <div class="showcase-pills">
+                    <span>Interactive Cards</span>
+                    <span>Examiner's Lens</span>
+                    <span>Practice Q Generator</span>
+                    <span>All Subjects</span>
+                </div>
                 <a href="#" onclick="openTool('syllabus'); return false;" class="btn btn-primary btn-glow">Decode Your Syllabus →</a>
             </div>
         </div>
@@ -973,7 +1014,12 @@
             <div class="showcase-text reveal-left">
                 <div class="showcase-label">Interactive Game</div>
                 <h2>Learn <span class="highlight">IRL</span></h2>
-                <p>Play through real-world scenarios where your subject knowledge determines survival. Manage resources, make decisions, and actually learn by doing.</p>
+                <p>Apply your HSC content in real-world survival scenarios. Make decisions, manage resources, and see what happens when the wrong answer has consequences.</p>
+                <div class="showcase-pills">
+                    <span>Real-World Scenarios</span>
+                    <span>Resource Management</span>
+                    <span>Any HSC Subject</span>
+                </div>
                 <a href="#" onclick="openTool('learn-irl'); return false;" class="btn btn-primary btn-glow">Play Now →</a>
             </div>
             <div class="showcase-demo reveal-right">
@@ -1028,9 +1074,9 @@
                 </div>
             </div>
             <div class="showcase-text reveal-right">
-                <div class="showcase-label">Flagship Tool</div>
+                <div class="showcase-label">Photo-to-Notes</div>
                 <h2>Worksheet <span class="highlight">Decoder</span></h2>
-                <p>Upload a photo of any worksheet and get a clean, readable version with structured hints — no more squinting at blurry handouts.</p>
+                <p>Photograph any worksheet, teacher handout, or textbook exercise and get structured notes back with built-in hints for every question.</p>
                 <div class="showcase-pills">
                     <span>Image Upload</span>
                     <span>OCR Recognition</span>
@@ -1046,9 +1092,9 @@
     <section class="showcase" id="notesDemo">
         <div class="showcase-inner">
             <div class="showcase-text reveal-left">
-                <div class="showcase-label">Flagship Tool</div>
+                <div class="showcase-label">Digitise Notes</div>
                 <h2>Notes <span class="highlight">Transcriber</span></h2>
-                <p>Upload a photo of your handwritten notes and get clean, perfectly organised digital text — ready to study from, share, or revise.</p>
+                <p>Take a photo of your handwritten notes and get formatted digital text in seconds — ready to share, search, and revise later.</p>
                 <div class="showcase-pills">
                     <span>Handwriting Recognition</span>
                     <span>Auto-formatting</span>
@@ -1134,7 +1180,7 @@
             <div class="showcase-text reveal-left">
                 <div class="showcase-label">Smart Scheduling</div>
                 <h2>Timetable <span class="highlight">Generator</span></h2>
-                <p>Input your subjects, commitments, and exam dates — get a personalised study timetable that maximises your revision time.</p>
+                <p>Add your subjects, exam dates, and commitments — get a personalised weekly plan weighted towards the subjects you need the most work on.</p>
                 <div class="showcase-pills">
                     <span>Personalised</span>
                     <span>Exam-weighted</span>
@@ -1186,7 +1232,7 @@
     <section class="stats-strip">
         <div class="stats-inner">
             <div class="stat-item reveal stagger-1"><div class="stat-number" data-target="45">0</div><div class="stat-label">HSC Subjects Covered</div></div>
-            <div class="stat-item reveal stagger-2"><div class="stat-number" data-target="6">0</div><div class="stat-label">AI-Powered Tools</div></div>
+            <div class="stat-item reveal stagger-2"><div class="stat-number" data-target="7">0</div><div class="stat-label">AI-Powered Tools</div></div>
             <div class="stat-item reveal stagger-3"><div class="stat-number" data-target="1000" data-suffix="+">0</div><div class="stat-label">Questions Generated</div></div>
             <div class="stat-item reveal stagger-4"><div class="stat-number" data-target="100" data-suffix="%">0</div><div class="stat-label">NESA Curriculum Aligned</div></div>
         </div>
@@ -1194,22 +1240,101 @@
 
     <!-- Features Section (Why Choose Us) -->
     <section class="features">
-        <h2 class="section-title reveal">Why <span class="highlight">Study Decoder</span> Gets Results</h2>
+        <h2 class="section-title reveal">Why Students Who Use <span class="highlight">Study Decoder</span> Improve Faster</h2>
         <div class="features-grid">
             <div class="feature-card reveal stagger-1">
-                <div class="feature-icon">📋</div>
-                <h3>Based on Real Past Papers</h3>
-                <p>Every question modelled on official NESA past papers — matching the exact format, structure, and difficulty you'll see on exam day.</p>
+                <div class="feature-icon">🤖</div>
+                <h3>Your Own AI Tutor, 24/7</h3>
+                <p>Ask any question and get a clear explanation — not a generic answer. The AI Chat Tutor uses Socratic coaching, renders maths in LaTeX, and can quiz you on demand before any test.</p>
             </div>
             <div class="feature-card reveal stagger-2">
-                <div class="feature-icon">⚡</div>
-                <h3>Instant AI Marking</h3>
-                <p>Submit your answers and get band-level feedback in seconds — no waiting for a teacher. See exactly where you lost marks and how to fix it.</p>
+                <div class="feature-icon">🎯</div>
+                <h3>Know Exactly What You're Missing</h3>
+                <p>Submit any answer and get a band verdict plus specific, actionable feedback in seconds. Track your scores over time and watch your weakness radar update after every session.</p>
             </div>
             <div class="feature-card reveal stagger-3">
-                <div class="feature-icon">🎯</div>
-                <h3>Walk In Already Prepared</h3>
-                <p>Timed exams with authentic structure — MC, short answer, and extended response. No surprises on the day because you've already done it all.</p>
+                <div class="feature-icon">📊</div>
+                <h3>Built Around Your Actual Syllabus</h3>
+                <p>Every tool is aligned to the NSW NESA curriculum. Decode any syllabus dot-point into what's actually examined, practise 45 subjects worth of questions, and build a study plan around your real exam schedule.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" style="padding:5rem 5%;border-top:1px solid var(--border);">
+        <div style="text-align:center;margin-bottom:3rem;">
+            <h2 class="section-title reveal">Simple, <span class="highlight">Honest Pricing</span></h2>
+            <p class="reveal" style="color:var(--text-sec);font-size:1.05rem;margin-top:0.5rem;">Start free — no card required. Upgrade when you're ready.</p>
+            <!-- Monthly / Yearly toggle -->
+            <div class="reveal" style="display:inline-flex;gap:4px;background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:4px;margin-top:1.5rem;">
+                <button id="pricingToggleMonthly" onclick="setPricingPeriod('monthly')" style="padding:8px 22px;border:none;border-radius:50px;cursor:pointer;font-size:0.9rem;font-weight:600;transition:all .2s;background:var(--primary);color:#fff;font-family:inherit;">Monthly</button>
+                <button id="pricingToggleYearly" onclick="setPricingPeriod('yearly')" style="padding:8px 22px;border:none;border-radius:50px;cursor:pointer;font-size:0.9rem;font-weight:600;transition:all .2s;background:transparent;color:var(--text-muted);font-family:inherit;">Yearly <span style="font-size:0.75rem;color:#22c55e;font-weight:700;">2 months free</span></button>
+            </div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;max-width:1000px;margin:0 auto;">
+            <!-- Free -->
+            <div class="reveal stagger-1" style="flex:1;min-width:260px;max-width:300px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:2rem;">
+                <div style="font-size:0.8rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem;">Free</div>
+                <div style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$0</div>
+                <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">Always free</div>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:1.8rem;">
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> 3 days unlimited on signup</li>
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> 10 uses/day across all tools</li>
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> All 6 AI tools</li>
+                    <li style="font-size:0.9rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;"><span style="color:#2f3336;">✗</span> Lower AI quality</li>
+                    <li style="font-size:0.9rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;"><span style="color:#2f3336;">✗</span> No score history</li>
+                </ul>
+                <a href="login.html" id="pricingFreeCta" style="display:block;text-align:center;padding:12px;border:1px solid var(--border);border-radius:12px;color:var(--text-sec);font-weight:600;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-sec)'">Get Started Free</a>
+            </div>
+            <!-- Premium (Monthly / Yearly) -->
+            <div class="reveal stagger-2" style="flex:1;min-width:260px;max-width:300px;background:linear-gradient(160deg,#1a1235 0%,#16202a 100%);border:1px solid rgba(108,99,255,0.4);border-radius:20px;padding:2rem;position:relative;">
+                <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap;">MOST POPULAR</div>
+                <div style="font-size:0.8rem;font-weight:700;color:rgba(108,99,255,0.8);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem;">Premium</div>
+                <div id="pricingMonthlyPrice" style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$5<span style="font-size:1rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
+                <div id="pricingYearlyPrice" style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;display:none;">$50<span style="font-size:1rem;font-weight:500;color:var(--text-muted)">/yr</span></div>
+                <div id="pricingBillingNote" style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">Billed monthly</div>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:1.8rem;">
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Unlimited uses — no daily cap</li>
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> All 6 AI tools</li>
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Full score history + weakness radar</li>
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Higher quality AI responses</li>
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Cancel anytime</li>
+                </ul>
+                <button onclick="showUpgradeModal()" style="display:block;width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(108,99,255,0.3);transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Upgrade to Premium →</button>
+            </div>
+            <!-- Lifetime -->
+            <div class="reveal stagger-3" style="flex:1;min-width:260px;max-width:300px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;">
+                <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap;">🔥 LIMITED DEAL</div>
+                <div style="font-size:0.8rem;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem;">Lifetime</div>
+                <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:2px;">
+                    <span style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;">$37.50</span>
+                </div>
+                <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:4px;"><s style="color:#666;">$75/yr normally</s> — pay once, use forever</div>
+                <div style="font-size:0.8rem;color:#f59e0b;font-weight:600;margin-bottom:1.2rem;">⚡ Only <span id="pricingSpotsLeft">??</span> spots left</div>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:1.8rem;">
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Everything in Premium</li>
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> One-time payment</li>
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Covers all future tools</li>
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Early adopter OG badge</li>
+                </ul>
+                <button onclick="showUpgradeModal()" style="display:block;width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Grab Lifetime Deal →</button>
+            </div>
+        </div>
+        <!-- Day Pass Row -->
+        <div class="reveal" style="max-width:1000px;margin:1.5rem auto 0;padding:0 0.5rem;">
+            <div style="background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(239,68,68,0.06));border:1px solid rgba(245,158,11,0.3);border-radius:16px;padding:1.25rem 1.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+                <div>
+                    <div style="font-size:0.75rem;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Day Pass</div>
+                    <div style="font-size:1.4rem;font-weight:800;color:var(--text);display:inline-flex;align-items:baseline;gap:8px;">$1.99 <span style="font-size:0.85rem;font-weight:500;color:var(--text-muted);">one-time · 24 hrs of full access</span></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+                    <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;margin:0;">
+                        <li style="font-size:0.85rem;color:var(--text-sec);display:flex;align-items:center;gap:6px;"><span style="color:#22c55e;">✓</span> Unlimited uses for 24 hours</li>
+                        <li style="font-size:0.85rem;color:var(--text-sec);display:flex;align-items:center;gap:6px;"><span style="color:#22c55e;">✓</span> All 6 AI tools unlocked</li>
+                        <li style="font-size:0.85rem;color:var(--text-sec);display:flex;align-items:center;gap:6px;"><span style="color:#22c55e;">✓</span> No recurring charge</li>
+                    </ul>
+                    <button id="dayPassPricingBtn" onclick="buyDayPass()" style="padding:12px 28px;border:none;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Get Day Pass →</button>
+                </div>
             </div>
         </div>
     </section>
@@ -1435,6 +1560,12 @@
         if (user.subscribed || user.role === 'owner' || user.role === 'lifetime' || user.role === 'og_tester') {
             var banner = document.getElementById('saleBanner');
             if (banner) banner.style.display = 'none';
+            var strip = document.getElementById('daypassQuickStrip');
+            if (strip) strip.style.display = 'none';
+        } else {
+            // Show day pass strip for free users
+            var strip = document.getElementById('daypassQuickStrip');
+            if (strip) strip.style.display = '';
         }
         
         // Hero streak widget — show logged-in state
@@ -1537,6 +1668,32 @@
         if (hasAccess) {
             document.getElementById('ctaLoggedIn').style.display = 'block';
         }
+
+        // Load daily challenge card
+        loadIndexDailyChallenge();
+
+        // Show Chat Tutor card for logged-in users
+        const tutorCard = document.getElementById('chatTutorCard');
+        if (tutorCard) tutorCard.style.display = '';
+    }
+
+    async function loadIndexDailyChallenge() {
+        try {
+            const res = await fetch(API_BASE + '/api/challenge/today', { credentials: 'include' });
+            if (!res.ok) return;
+            const d = await res.json();
+            const card = document.getElementById('dailyChallengeCard');
+            if (!card) return;
+            const title = d.answered ? '✅ Challenge Complete' : (d.subject || 'Today\'s Challenge');
+            const desc = d.answered ? 'You\'ve answered today\'s challenge. Check your profile for results.' : ((d.question || '').substring(0, 72) + (d.question && d.question.length > 72 ? '…' : ''));
+            document.getElementById('challengeCardTitle').textContent = title;
+            document.getElementById('challengeCardDesc').textContent = desc;
+            if (d.answered) {
+                document.getElementById('challengeIcon').textContent = '✅';
+                document.getElementById('challengeCardArrow').style.display = 'none';
+            }
+            card.style.display = '';
+        } catch(e) { /* non-critical */ }
     }
 
     function showLoggedOutUI() {
@@ -1554,6 +1711,9 @@
         document.querySelectorAll('.course-link-unlocked').forEach(el => el.style.display = 'none');
         // Show streak promo for logged-out users
         document.getElementById('streakPromoCard').style.display = '';
+        // Show day pass strip for logged-out users
+        var strip = document.getElementById('daypassQuickStrip');
+        if (strip) strip.style.display = '';
         // Hero streak widget stays as logged-out default
         document.getElementById('heroStreakOut').style.display = '';
         document.getElementById('heroStreakIn').style.display = 'none';
@@ -1700,6 +1860,30 @@
             }
         } catch (e) {
             alert('Error starting checkout. Please try again.');
+        }
+    }
+
+    async function buyDayPass() {
+        const btn = document.getElementById('dayPassPricingBtn');
+        if (btn) { btn.disabled = true; btn.textContent = 'Loading...'; }
+        try {
+            const res = await fetch(API_BASE + '/api/create-daypass-session', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await res.json();
+            if (data.url) {
+                window.location.href = data.url;
+            } else if (data.error === 'Not authenticated') {
+                window.location.href = 'login.html';
+            } else {
+                alert(data.error || 'Failed to start checkout. Please try again.');
+                if (btn) { btn.disabled = false; btn.textContent = 'Get Day Pass →'; }
+            }
+        } catch (e) {
+            alert('Error starting checkout. Please try again.');
+            if (btn) { btn.disabled = false; btn.textContent = 'Get Day Pass →'; }
         }
     }
     
@@ -2047,7 +2231,17 @@
     // Handle Stripe redirect after payment
     (function handleStripeReturn() {
         const params = new URLSearchParams(window.location.search);
-        if (params.has('plan') || params.has('session_id')) {
+
+        if (params.has('daypass') && params.get('daypass') === 'success') {
+            window.history.replaceState({}, document.title, window.location.pathname);
+            checkAuthStatus();
+            // Show Day Pass success toast
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:14px 28px;border-radius:12px;font-size:0.95rem;font-weight:700;z-index:9999;box-shadow:0 8px 32px rgba(245,158,11,0.35);pointer-events:none;';
+            toast.textContent = '⚡ Day Pass activated! Enjoy 24 hours of unlimited access.';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+        } else if (params.has('plan') || params.has('session_id')) {
             // Clean up URL params, then verify payment via polling endpoint
             window.history.replaceState({}, document.title, window.location.pathname);
             fetch(API_BASE + '/api/verify-payment', {
@@ -2067,8 +2261,10 @@
             document.getElementById('saleBanner').style.display = 'block';
             fetch('/api/spots-left').then(r => r.json()).then(d => {
                 var el = document.getElementById('spotsLeft');
-                if (el && d.spotsLeft !== undefined) {
-                    el.textContent = d.spotsLeft;
+                var el2 = document.getElementById('pricingSpotsLeft');
+                if (d.spotsLeft !== undefined) {
+                    if (el) el.textContent = d.spotsLeft;
+                    if (el2) el2.textContent = d.spotsLeft;
                     if (d.spotsLeft <= 0) {
                         document.getElementById('saleBanner').style.display = 'none';
                     }
@@ -2166,5 +2362,44 @@
 
     </script>
     <script src="streak.js"></script>
+    <script src="upsell.js"></script>
+    <script src="pwa.js"></script>
+    <script>
+    // ── Pricing toggle ──
+    function setPricingPeriod(period) {
+        const monthlyPrice = document.getElementById('pricingMonthlyPrice');
+        const yearlyPrice = document.getElementById('pricingYearlyPrice');
+        const billingNote = document.getElementById('pricingBillingNote');
+        const btnMonthly = document.getElementById('pricingToggleMonthly');
+        const btnYearly = document.getElementById('pricingToggleYearly');
+        if (period === 'yearly') {
+            if (monthlyPrice) monthlyPrice.style.display = 'none';
+            if (yearlyPrice) yearlyPrice.style.display = 'block';
+            if (billingNote) billingNote.textContent = 'Billed yearly (~$4.17/mo)';
+            if (btnMonthly) { btnMonthly.style.background = 'transparent'; btnMonthly.style.color = 'var(--text-muted)'; }
+            if (btnYearly) { btnYearly.style.background = 'var(--primary)'; btnYearly.style.color = '#fff'; }
+        } else {
+            if (monthlyPrice) monthlyPrice.style.display = 'block';
+            if (yearlyPrice) yearlyPrice.style.display = 'none';
+            if (billingNote) billingNote.textContent = 'Billed monthly';
+            if (btnMonthly) { btnMonthly.style.background = 'var(--primary)'; btnMonthly.style.color = '#fff'; }
+            if (btnYearly) { btnYearly.style.background = 'transparent'; btnYearly.style.color = 'var(--text-muted)'; }
+        }
+    }
+    // Set lifetime spots remaining (fetched from /api/spots-left above; this is just a guard fallback)
+    (function() {
+        // If spotsLeft didn't populate yet, keep '??' until the fetch resolves
+        // If user is already subscribed, hide pricing free CTA
+        if (window.userData && window.userData.subscribed) {
+            const freeCta = document.getElementById('pricingFreeCta');
+            if (freeCta) { freeCta.textContent = '✓ Already Free'; freeCta.style.pointerEvents = 'none'; }
+        }
+    })();
+
+    // Grace period ending banner
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.Upsell) window.Upsell.checkReminder();
+    });
+    </script>
 </body>
 </html>
