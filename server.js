@@ -902,8 +902,55 @@ function requireAuth(req, res, next) {
 /**
  * Validate email format
  */
+const DISPOSABLE_EMAIL_DOMAINS = new Set([
+    'passmail.com','passmail.net','guerrillamail.com','guerrillamail.net','guerrillamail.org',
+    'guerrillamail.biz','guerrillamail.de','guerrillamail.info','guerrillamailblock.com',
+    'grr.la','sharklasers.com','guerrillamailblock.com','spam4.me','yopmail.com',
+    'yopmail.fr','cool.fr.nf','jetable.fr.nf','nospam.ze.tc','nomail.xl.cx','mega.zik.dj',
+    'speed.1s.fr','courriel.fr.nf','moncourrier.fr.nf','monemail.fr.nf','monmail.fr.nf',
+    'mailnull.com','spamgourmet.com','spamgourmet.net','spamgourmet.org','trashmail.at',
+    'trashmail.com','trashmail.io','trashmail.me','trashmail.net','trashmail.org',
+    'tempmail.com','temp-mail.org','temp-mail.io','tempinbox.com','tempr.email',
+    'throwam.com','throwam.net','dispostable.com','mailnesia.com','mailnull.com',
+    'mailinator.com','mailinator2.com','mailinator.net','maildrop.cc','throwam.com',
+    'sharklasers.com','discard.email','fakeinbox.com','getairmail.com','filzmail.com',
+    'mailexpire.com','spamevader.com','anonaddy.com','anonaddy.me','simplelogin.co',
+    'inboxkitten.com','mohmal.com','e4ward.com','emailondeck.com','getnada.com',
+    'harakirimail.com','imgof.com','inoutmail.de','inoutmail.eu','inoutmail.info',
+    'inoutmail.net','jetable.com','jetable.net','jetable.org','kasmail.com',
+    'killmail.com','killmail.net','klassmaster.com','klassmaster.net','link2mail.net',
+    'lol.ovpn.to','lookugly.com','lortemail.dk','mailandftp.com','mailbidon.com',
+    'mailboxy.fun','mailcatch.com','mailfreeonline.com','mailin8r.com','mailme24.com',
+    'mailmetrash.com','mailmoat.com','mailnew.com','mailnull.com','mailpick.biz',
+    'mailrock.biz','mailscrap.com','mailsiphon.com','mailslite.com','mailtemp.info',
+    'mailtome.de','mailtothis.com','mailzilla.org','makemetheking.com','manybrain.com',
+    'mbx.cc','mega.zik.dj','meltmail.com','mfsa.ru','mierdamail.com','migumail.com',
+    'mintemail.com','misterpinball.de','mji.ro','mobi.web.id','moburl.com','moncourrier.fr.nf',
+    'monemail.fr.nf','monmail.fr.nf','mt2009.com','mt2014.com','mt2015.com','myspaceinc.com',
+    'myspaceinc.net','myspaceinc.org','myspacepimpedup.com','myspamless.com','mytempemail.com',
+    'mytempmail.com','mytrashmail.com','nabuma.com','netzidiot.de','neverbox.com',
+    'nice-4u.com','nincsmail.hu','nmail.cf','no-spam.ws','nobulk.com','noclickemail.com',
+    'nogmailspam.info','noicd.com','nomorespamemails.com','nospam.ze.tc','nospam4.us',
+    'nospamfor.us','nospammail.net','nospamthanks.info','notmailinator.com','nwytg.net',
+    'objectmail.com','obobbo.com','odaymail.com','oneoffemail.com','onewaymail.com',
+    'online.ms','oopi.org','opentrash.com','ordinaryamerican.net','otherinbox.comsafe-mail.net',
+    'ourklips.com','outlawspam.com','ovpn.to','owlpic.com','pecinan.com','pepbot.com',
+    'peterdethier.com','petml.com','photo-impact.eu','pingir.com','pjjkp.com',
+    'plexolan.de','poczta.onet.pl','politikerclub.de','pompfl.com','popesodomy.com',
+    'poofy.org','pookmail.com','postalmail.biz','privacy.net','proxymail.eu',
+    'prtnx.com','prtz.eu','putthisinyourspamdatabase.com','puttingthisindoesnthelp.com',
+    'qq.com' // not disposable but often used for throwaway accs; remove if you want to allow
+].filter(d => d !== 'qq.com')); // keep qq.com allowed
+
+function isDisposableEmail(email) {
+    const domain = email.split('@')[1]?.toLowerCase();
+    return domain ? DISPOSABLE_EMAIL_DOMAINS.has(domain) : false;
+}
+
 function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return false;
+    if (isDisposableEmail(email)) return false;
+    return true;
 }
 
 /**
