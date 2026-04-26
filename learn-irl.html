@@ -321,6 +321,7 @@
         .game-narrative {
             max-width: 660px; font-size: 1.15rem; line-height: 1.9;
             text-align: center; color: rgba(255,255,255,0.88);
+            margin-left: auto; margin-right: auto;
         }
         .game-narrative.fade-in { animation: gvFadeIn 0.6s ease forwards; }
         .game-narrative p { margin-bottom: 14px; }
@@ -336,7 +337,7 @@
         .game-loading-el .loading-dots { display: flex; gap: 6px; }
 
         .game-choices {
-            padding: 0 28px 36px; max-width: 660px; margin: 0 auto;
+            padding: 16px 0 36px; max-width: 660px; margin-left: auto; margin-right: auto;
             width: 100%; display: flex; flex-direction: column; gap: 12px;
             flex-shrink: 0;
         }
@@ -413,11 +414,15 @@
             .game-stats { gap: 14px; padding: 14px 16px 6px; flex-wrap: wrap; justify-content: center; }
             .gstat-bar { width: 48px; }
             .gstat-label { display: none; }
-            .game-stage { padding: 24px 18px; }
             .game-narrative { font-size: 1rem; line-height: 1.75; }
-            .game-choices { padding: 0 18px 28px; gap: 10px; }
+            .game-play-area { display: flex; flex-direction: column; padding: 16px 14px 24px; }
+            .game-main-col { order: 1; }
+            .lifeline-panel { flex-direction: row; justify-content: center; padding-top: 0; padding-bottom: 12px; order: 2; }
+            .lifeline-panel:last-child { order: 3; }
+            .game-choices { padding: 12px 0 28px; gap: 10px; }
             .gchoice-btn { padding: 14px 18px; font-size: 0.88rem; }
             .gchoice-btn:hover { transform: translateX(4px); }
+            .lifeline-btn { width: 54px; }
         }
 
         /* ── FLASHCARD OVERLAY ── */
@@ -476,6 +481,103 @@
         .misconception-item { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; border-left: 2px solid var(--gv-accent, #10b981); }
         .misconception-item-term { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.85); }
         .misconception-item-def { font-size: 0.77rem; color: rgba(255,255,255,0.5); margin-top: 3px; line-height: 1.5; }
+
+        /* ── SPENT-STYLE PLAY AREA: narrative + lifelines on sides ── */
+        .game-play-area {
+            display: grid;
+            grid-template-columns: 76px 1fr 76px;
+            align-items: start;
+            padding: 28px 16px 0;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .game-main-col {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            padding: 0 12px;
+        }
+
+        /* ── DAY COUNTER ── */
+        .game-day-badge {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .game-day-text {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--gv-accent, #10b981);
+            background: rgba(16,185,129,0.08);
+            border: 1px solid rgba(16,185,129,0.22);
+            border-radius: 20px;
+            padding: 4px 18px;
+        }
+        @keyframes dayUpdate {
+            0% { opacity: 0; transform: scale(0.85); }
+            60% { transform: scale(1.08); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .game-day-badge.day-anim .game-day-text { animation: dayUpdate 0.45s ease forwards; }
+
+        /* ── LIFELINE PANELS ── */
+        .lifeline-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            padding-top: 52px;
+        }
+        .lifeline-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 12px;
+            padding: 10px 6px;
+            cursor: pointer;
+            transition: all 0.25s;
+            color: rgba(255,255,255,0.55);
+            font-family: 'Poppins', sans-serif;
+            width: 58px;
+        }
+        .lifeline-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.09);
+            border-color: var(--gv-accent, #10b981);
+            color: rgba(255,255,255,0.9);
+            transform: scale(1.07);
+        }
+        .lifeline-btn:disabled { opacity: 0.22; cursor: not-allowed; transform: none; }
+        .ll-icon { font-size: 1.15rem; line-height: 1; }
+        .ll-label { font-size: 0.48rem; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; text-align: center; line-height: 1.3; }
+        .ll-count { font-size: 0.6rem; color: var(--gv-accent, #10b981); font-weight: 600; }
+
+        /* ── LIFELINE HINT PANEL ── */
+        .lifeline-hint {
+            display: none;
+            background: linear-gradient(135deg, rgba(16,185,129,0.07), rgba(59,130,246,0.07));
+            border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin: 0 auto 16px;
+            max-width: 660px;
+            width: 100%;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.78);
+            line-height: 1.6;
+            box-sizing: border-box;
+        }
+        .lifeline-hint.active { display: block; animation: gvFadeIn 0.35s ease forwards; }
+        .lifeline-hint-label {
+            font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--gv-accent, #10b981); margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -580,17 +682,51 @@
             <div class="game-objective-label">&#127919; Objective</div>
             <div class="game-objective-text" id="gameObjectiveText"></div>
         </div>
-        <div class="game-stage" id="gameStage">
-            <div class="game-narrative" id="gameNarrative"></div>
-            <div class="game-loading-el" id="gameLoadingEl">
-                <div class="loading-dots"><span></span><span></span><span></span></div>
-                <div class="fun-fact-box" id="gameFunFactBox" style="display:none;">
-                    <div class="ff-label">💡 Did you know?</div>
-                    <div class="ff-text" id="gameFunFactText"></div>
+        <!-- Play area: lifelines on sides, narrative + choices in centre -->
+        <div class="game-play-area">
+            <!-- Left lifelines: Hint + Context -->
+            <div class="lifeline-panel">
+                <button class="lifeline-btn" id="lifelineHintBtn" onclick="useLifeline('hint')" title="Get a hint (2 uses)">
+                    <span class="ll-icon">💡</span>
+                    <span class="ll-label">Hint</span>
+                    <span class="ll-count" id="hintCount">×2</span>
+                </button>
+                <button class="lifeline-btn" id="lifelineContextBtn" onclick="useLifeline('context')" title="Background context (1 use)">
+                    <span class="ll-icon">📖</span>
+                    <span class="ll-label">Context</span>
+                    <span class="ll-count" id="contextCount">×1</span>
+                </button>
+            </div>
+
+            <!-- Main content: day counter + narrative + choices -->
+            <div class="game-main-col">
+                <div class="game-day-badge" id="gameDayBadge" style="display:none;">
+                    <span class="game-day-text" id="gameDayText">DAY 1</span>
                 </div>
+                <div class="game-narrative" id="gameNarrative"></div>
+                <div class="game-loading-el" id="gameLoadingEl">
+                    <div class="loading-dots"><span></span><span></span><span></span></div>
+                    <div class="fun-fact-box" id="gameFunFactBox" style="display:none;">
+                        <div class="ff-label">💡 Did you know?</div>
+                        <div class="ff-text" id="gameFunFactText"></div>
+                    </div>
+                </div>
+                <div class="lifeline-hint" id="lifelineHintPanel">
+                    <div class="lifeline-hint-label" id="lifelineHintLabel">💡 Hint</div>
+                    <div id="lifelineHintText"></div>
+                </div>
+                <div class="game-choices" id="gameChoices"></div>
+            </div>
+
+            <!-- Right lifeline: Skip Day -->
+            <div class="lifeline-panel">
+                <button class="lifeline-btn" id="lifelineSkipBtn" onclick="useLifeline('skip')" title="Skip this day (1 use)">
+                    <span class="ll-icon">⏭️</span>
+                    <span class="ll-label">Skip Day</span>
+                    <span class="ll-count" id="skipCount">×1</span>
+                </button>
             </div>
         </div>
-        <div class="game-choices" id="gameChoices"></div>
 
         <!-- Flashcard overlay — slides up after a wrong choice reveals a missed concept -->
         <div class="flashcard-overlay" id="flashcardOverlay">
@@ -614,6 +750,7 @@
         let gameTurnCount = 0;
         let isLoading = false;
         let pendingScenario = null; // stores selected scenario context
+        let lifelineUses = { hint: 2, context: 1, skip: 1 };
 
         // Scenario starters per subject (keyed by subject ID)
         const SUBJECT_SCENARIOS = {
@@ -2801,6 +2938,11 @@
             conversationHistory = [];
             gameState = null;
             gameTurnCount = 0;
+            lifelineUses = { hint: 2, context: 1, skip: 1 };
+            updateLifelineUI();
+            hideLifelineHint();
+            const dayBadge = document.getElementById('gameDayBadge');
+            if (dayBadge) dayBadge.style.display = 'none';
 
             const theme = SUBJECT_THEMES[subj?.category] || SUBJECT_THEMES['Science'];
             const gv = document.getElementById('gameView');
@@ -2837,6 +2979,12 @@
             topicInput.value = '';
             setupPanel.style.display = 'block';
             chatContainer.classList.remove('active');
+            // Reset lifelines and day counter
+            lifelineUses = { hint: 2, context: 1, skip: 1 };
+            updateLifelineUI();
+            hideLifelineHint();
+            const dayBadge = document.getElementById('gameDayBadge');
+            if (dayBadge) dayBadge.style.display = 'none';
         }
 
         function closeGameView() {
@@ -2956,6 +3104,17 @@
 
         function renderGameResponse(data) {
             gameTurnCount += 1;
+            // Update day counter
+            const dayBadge = document.getElementById('gameDayBadge');
+            const dayTextEl = document.getElementById('gameDayText');
+            if (dayBadge && dayTextEl) {
+                dayTextEl.textContent = 'DAY ' + gameTurnCount;
+                dayBadge.style.display = 'block';
+                dayBadge.classList.remove('day-anim');
+                void dayBadge.offsetWidth;
+                dayBadge.classList.add('day-anim');
+            }
+            hideLifelineHint();
 
             if (data.effects) {
                 if (!gameState) gameState = { money: 50, time: 50, risk: 50, energy: 50 };
@@ -3187,6 +3346,7 @@
             document.getElementById('gameNarrative').innerHTML = '';
             document.getElementById('gameChoices').innerHTML = '';
             document.getElementById('gameLoadingEl').classList.add('active');
+            hideLifelineHint();
             startGameFunFacts();
         }
 
@@ -3282,6 +3442,79 @@
                     if (window.sdHandleTracking) window.sdHandleTracking(result);
                 }
             } catch(e) {}
+        }
+
+        // ── LIFELINE FUNCTIONS ──
+        function updateLifelineUI() {
+            const btnMap = { hint: 'lifelineHintBtn', context: 'lifelineContextBtn', skip: 'lifelineSkipBtn' };
+            const countMap = { hint: 'hintCount', context: 'contextCount', skip: 'skipCount' };
+            Object.keys(lifelineUses).forEach(type => {
+                const btn = document.getElementById(btnMap[type]);
+                const countEl = document.getElementById(countMap[type]);
+                if (countEl) countEl.textContent = '\u00d7' + lifelineUses[type];
+                if (btn) btn.disabled = lifelineUses[type] <= 0 || isLoading;
+            });
+        }
+
+        function showLifelineHint(label, text) {
+            const panel = document.getElementById('lifelineHintPanel');
+            const labelEl = document.getElementById('lifelineHintLabel');
+            const textEl = document.getElementById('lifelineHintText');
+            if (labelEl) labelEl.textContent = label;
+            if (textEl) textEl.textContent = text;
+            if (panel) panel.classList.add('active');
+        }
+
+        function hideLifelineHint() {
+            const panel = document.getElementById('lifelineHintPanel');
+            if (panel) panel.classList.remove('active');
+        }
+
+        async function useLifeline(type) {
+            if (isLoading || lifelineUses[type] <= 0) return;
+            lifelineUses[type]--;
+            updateLifelineUI();
+
+            if (type === 'hint' || type === 'context') {
+                const label = type === 'hint' ? '\ud83d\udca1 Hint' : '\ud83d\udcd6 Context';
+                const prompt = type === 'hint'
+                    ? '[LIFELINE: HINT] Give the player a 1-2 sentence hint about what factors to consider in this decision. Do not reveal the best choice. Be educational and relevant to the subject.'
+                    : '[LIFELINE: CONTEXT] Share one key real-world background fact directly relevant to the current situation. Keep it to 2-3 sentences.';
+                showLifelineHint(label, '\u22ef loading\u2026');
+                isLoading = true;
+                updateLifelineUI();
+                try {
+                    const hintMessages = [...conversationHistory, { role: 'user', content: prompt }];
+                    const res = await fetch(API_BASE + '/api/chat/learn-irl', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ messages: hintMessages })
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        let hintText = data.reply || data.content || 'No hint available.';
+                        // Strip JSON wrapper if the AI returned structured response
+                        try {
+                            const parsed = JSON.parse(hintText);
+                            if (parsed.message) hintText = parsed.message;
+                        } catch (e) {
+                            const jm = hintText.match(/"message"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+                            if (jm) hintText = jm[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+                        }
+                        showLifelineHint(label, hintText.trim() || hintText);
+                    } else {
+                        showLifelineHint(label, 'Unable to load hint. Try again.');
+                    }
+                } catch (e) {
+                    showLifelineHint(label, 'Unable to load hint. Try again.');
+                } finally {
+                    isLoading = false;
+                    updateLifelineUI();
+                }
+            } else if (type === 'skip') {
+                await sendMessage('[LIFELINE: SKIP DAY] The player is using a Skip Day lifeline. Advance to the next day/situation without requiring a choice from the current scenario. Keep the story progressing naturally.', false);
+            }
         }
 
         checkAuth();
