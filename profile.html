@@ -6,7 +6,8 @@
     <title>Study Profile — Study Decoder</title>
     <meta name="robots" content="noindex">
     <link rel="icon" type="image/png" href="logo.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
         :root {
             --primary: #6C63FF;
@@ -23,7 +24,7 @@
             --streak-fire: #ff6b35;
             --streak-glow: rgba(255,107,53,0.22);
         }
-        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif; }
         body { background:var(--bg); color:var(--text); min-height:100vh; }
 
         /* NAV */
@@ -119,6 +120,70 @@
             .profile-avatar { width:60px; height:60px; font-size:1.6rem; }
             .profile-name { font-size:1.4rem; }
         }
+
+        /* ── NEW SECTIONS ── */
+        .sec-header { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border); margin-top:3rem; }
+        .new-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:22px 24px; margin-bottom:0; }
+
+        /* challenge */
+        #challengeCard .ch-subject { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--primary); margin-bottom:8px; }
+        #challengeCard .ch-q { font-size:0.95rem; color:var(--text); line-height:1.65; margin-bottom:10px; }
+        #challengeCard .ch-marks { font-size:0.8rem; color:var(--text-muted); margin-bottom:12px; }
+        #challengeAnswer { width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); background:rgba(255,255,255,0.04); color:var(--text); font-size:0.9rem; font-family:inherit; resize:vertical; min-height:90px; outline:none; transition:border-color .2s; }
+        #challengeAnswer:focus { border-color:var(--primary); }
+        .ch-submit { margin-top:10px; padding:10px 22px; border:none; border-radius:10px; background:linear-gradient(135deg,var(--primary),#8b5cf6); color:#fff; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit; }
+        .ch-hint-toggle { font-size:0.8rem; color:#4f8cff; cursor:pointer; margin-top:8px; display:inline-block; }
+        .ch-result { margin-top:14px; padding:14px; border-radius:12px; background:rgba(108,99,255,0.07); border:1px solid rgba(108,99,255,0.2); }
+        .ch-score { font-size:1.1rem; font-weight:800; color:var(--primary); margin-bottom:6px; }
+        .ch-feedback { font-size:0.88rem; color:var(--text-sec); line-height:1.6; }
+        .ch-sample { margin-top:10px; font-size:0.82rem; color:var(--text-sec); border-top:1px solid var(--border); padding-top:10px; }
+
+        /* score chart */
+        #scoreCanvas { width:100%; height:160px; display:block; }
+
+        /* weakness bars */
+        .wb-item { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+        .wb-label { font-size:0.85rem; color:var(--text); width:160px; flex-shrink:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .wb-bar-wrap { flex:1; height:7px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden; }
+        .wb-bar { height:100%; border-radius:4px; background:linear-gradient(90deg,var(--primary),#8b5cf6); }
+        .wb-val { font-size:0.78rem; color:var(--text-muted); width:36px; text-align:right; flex-shrink:0; }
+
+        /* rings */
+        .rings-grid { display:flex; flex-wrap:wrap; gap:16px; }
+        .ring-item { display:flex; flex-direction:column; align-items:center; gap:6px; width:80px; }
+        .ring-label { font-size:0.7rem; color:var(--text-muted); text-align:center; line-height:1.2; }
+
+        /* achievements */
+        .ach-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:12px; }
+        .ach-item { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:12px; padding:16px 12px; text-align:center; }
+        .ach-item.earned { background:rgba(108,99,255,0.07); border-color:rgba(108,99,255,0.25); }
+        .ach-item.locked { opacity:0.38; filter:grayscale(1); }
+        .ach-emoji { font-size:1.8rem; display:block; margin-bottom:8px; }
+        .ach-name { font-size:0.78rem; font-weight:700; color:var(--text); line-height:1.2; margin-bottom:4px; }
+        .ach-desc { font-size:0.7rem; color:var(--text-muted); line-height:1.3; }
+        .ach-date { font-size:0.68rem; color:var(--primary); margin-top:4px; font-weight:600; }
+
+        /* referral */
+        .ref-code-box { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:12px; padding:12px 16px; margin-bottom:14px; }
+        .ref-code { font-size:1.4rem; font-weight:800; color:var(--primary); letter-spacing:3px; flex:1; font-family:monospace; }
+        .copy-btn { padding:8px 16px; border:1px solid rgba(108,99,255,0.25); border-radius:9px; background:rgba(108,99,255,0.12); color:var(--primary); font-size:0.85rem; font-weight:700; cursor:pointer; font-family:inherit; transition:all .2s; }
+        .copy-btn:hover { background:rgba(108,99,255,0.22); }
+        .ref-stats { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
+        .ref-stat { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; padding:12px 16px; flex:1; min-width:90px; }
+        .ref-stat .rv { font-size:1.3rem; font-weight:800; color:var(--text); }
+        .ref-stat .rl { font-size:0.75rem; color:var(--text-muted); margin-top:2px; }
+        .ref-link { font-size:0.78rem; color:var(--text-muted); word-break:break-all; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; padding:10px 14px; }
+
+        /* parent email */
+        .parent-form { display:flex; gap:10px; }
+        .parent-input { flex:1; padding:10px 14px; border-radius:10px; border:1px solid var(--border); background:rgba(255,255,255,0.04); color:var(--text); font-size:0.9rem; font-family:inherit; outline:none; transition:border-color .2s; }
+        .parent-input:focus { border-color:var(--primary); }
+        .parent-input::placeholder { color:var(--text-muted); }
+        .parent-save { padding:10px 20px; border:none; border-radius:10px; background:var(--primary); color:#fff; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit; }
+
+        .spinner-sm { display:inline-block; width:18px; height:18px; border:2px solid var(--border); border-top-color:var(--primary); border-radius:50%; animation:spin 0.7s linear infinite; vertical-align:middle; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        .empty-note { color:var(--text-muted); font-size:0.88rem; text-align:center; padding:20px 0; }
     </style>
 </head>
 <body>
@@ -208,8 +273,45 @@
                 <a href="notes-transcriber.html" class="quick-link"><span class="ql-icon">📋</span><div><div class="ql-name">Notes Transcriber</div><div class="ql-sub">Organise your notes</div></div></a>
                 <a href="learn-irl.html" class="quick-link"><span class="ql-icon">🎮</span><div><div class="ql-name">Learn IRL</div><div class="ql-sub">Apply it in real life</div></div></a>
                 <a href="worksheet-decoder.html" class="quick-link"><span class="ql-icon">📄</span><div><div class="ql-name">Worksheet Decoder</div><div class="ql-sub">Crack any question</div></div></a>
-                <a href="subject-advisor.html" class="quick-link"><span class="ql-icon">🧭</span><div><div class="ql-name">Subject Advisor</div><div class="ql-sub">Get subject guidance</div></div></a>
             </div>
+        </div>
+
+        <!-- Daily Challenge -->
+        <div class="sec-header">⚡ Today's Daily Challenge</div>
+        <div class="new-card" id="challengeCard"><div class="empty-note"><span class="spinner-sm"></span> Loading challenge…</div></div>
+
+        <!-- Score History -->
+        <div class="sec-header">📈 Score History</div>
+        <div class="new-card">
+            <canvas id="scoreCanvas"></canvas>
+            <div class="empty-note" id="scoreEmpty" style="display:none;">Complete practice exams to see your score history here.</div>
+        </div>
+
+        <!-- Weaknesses -->
+        <div class="sec-header">🎯 Weakest Subjects</div>
+        <div class="new-card"><div id="weaknessList"><div class="empty-note"><span class="spinner-sm"></span></div></div></div>
+
+        <!-- Syllabus Coverage -->
+        <div class="sec-header">📘 Syllabus Coverage</div>
+        <div class="new-card"><div class="rings-grid" id="ringsGrid"><div class="empty-note" style="width:100%;">Decode syllabus dot points to see coverage here.</div></div></div>
+
+        <!-- Achievements -->
+        <div class="sec-header">🏆 Achievements</div>
+        <div class="new-card"><div class="ach-grid" id="achGrid"><div class="empty-note"><span class="spinner-sm"></span></div></div></div>
+
+        <!-- Referral -->
+        <div class="sec-header">🔗 Referral Programme</div>
+        <div class="new-card" id="referralCard"><div class="empty-note"><span class="spinner-sm"></span></div></div>
+
+        <!-- Parent Email -->
+        <div class="sec-header">📧 Parent / Guardian Email</div>
+        <div class="new-card">
+            <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:12px;">We'll send a weekly progress summary to your parent or guardian.</p>
+            <div class="parent-form">
+                <input type="email" class="parent-input" id="parentEmailInput" placeholder="parent@example.com">
+                <button class="parent-save" onclick="saveParentEmail()">Save</button>
+            </div>
+            <div id="parentNote" style="font-size:0.78rem;margin-top:8px;"></div>
         </div>
 
     </div>
@@ -222,9 +324,125 @@
     </div>
 
     <script src="streak.js"></script>
+    <script src="upsell.js"></script>
+    <script src="pwa.js"></script>
+    <script>
+    const _PROFILE_API = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:3001' : '';
+    async function _apiFetch(path, opts) {
+        const r = await fetch(_PROFILE_API + path, { credentials:'include', ...opts });
+        if (!r.ok) throw new Error(r.status);
+        return r.json();
+    }
+    let _challengeData = null;
+
+    async function loadNewSections() {
+        await Promise.allSettled([loadExamHistory(), loadSyllabusProgress(), loadAchievements(), loadReferral(), loadDailyChallenge()]);
+    }
+
+    async function loadExamHistory() {
+        let history = [];
+        try { history = await _apiFetch('/api/user/exam-history'); } catch {}
+        if (!history.length) {
+            document.getElementById('scoreCanvas').style.display = 'none';
+            document.getElementById('scoreEmpty').style.display = 'block';
+            document.getElementById('weaknessList').innerHTML = '<div class="empty-note">Do practice exams to see weaknesses.</div>';
+            return;
+        }
+        const canvas = document.getElementById('scoreCanvas');
+        const recent = history.slice(-20);
+        const W = canvas.offsetWidth || 600, H = 160;
+        canvas.setAttribute('width', W); canvas.setAttribute('height', H);
+        const ctx = canvas.getContext('2d');
+        const PAD = {top:12,right:12,bottom:28,left:32};
+        const CW = W - PAD.left - PAD.right, CH = H - PAD.top - PAD.bottom;
+        ctx.clearRect(0,0,W,H);
+        for (let i=0;i<=6;i++) {
+            const y = PAD.top + CH - (CH*i/6);
+            ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+            ctx.beginPath(); ctx.moveTo(PAD.left,y); ctx.lineTo(W-PAD.right,y); ctx.stroke();
+            ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.font='10px sans-serif';
+            ctx.fillText('B'+i,2,y+4);
+        }
+        const pts = recent.map((e,i)=>({ x:PAD.left+(i/Math.max(recent.length-1,1))*CW, y:PAD.top+CH-((e.band||1)/6)*CH }));
+        const grad = ctx.createLinearGradient(0,PAD.top,0,H-PAD.bottom);
+        grad.addColorStop(0,'rgba(108,99,255,0.3)'); grad.addColorStop(1,'rgba(108,99,255,0)');
+        ctx.beginPath(); ctx.moveTo(pts[0].x,H-PAD.bottom);
+        pts.forEach(p=>ctx.lineTo(p.x,p.y));
+        ctx.lineTo(pts[pts.length-1].x,H-PAD.bottom); ctx.closePath();
+        ctx.fillStyle=grad; ctx.fill();
+        ctx.beginPath(); ctx.strokeStyle='#6C63FF'; ctx.lineWidth=2.5; ctx.lineJoin='round';
+        pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y)); ctx.stroke();
+        pts.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2); ctx.fillStyle='#6C63FF'; ctx.fill(); ctx.strokeStyle='#08080d'; ctx.lineWidth=2; ctx.stroke(); });
+
+        const subMap = {};
+        history.forEach(e=>{ if(!e.subject)return; if(!subMap[e.subject])subMap[e.subject]=[]; subMap[e.subject].push(e.band||1); });
+        const subs = Object.entries(subMap).map(([s,b])=>({s,avg:b.reduce((a,v)=>a+v,0)/b.length})).sort((a,b)=>a.avg-b.avg).slice(0,6);
+        document.getElementById('weaknessList').innerHTML = subs.length ? subs.map(x=>`<div class="wb-item"><div class="wb-label" title="${x.s}">${x.s}</div><div class="wb-bar-wrap"><div class="wb-bar" style="width:${(x.avg/6*100).toFixed(0)}%;background:${x.avg<3?'#ef4444':x.avg<4.5?'#f59e0b':'linear-gradient(90deg,#6C63FF,#8b5cf6)'}"></div></div><div class="wb-val">B${x.avg.toFixed(1)}</div></div>`).join('') : '<div class="empty-note">Do more exams to see weaknesses.</div>';
+    }
+
+    async function loadSyllabusProgress() {
+        let prog = [];
+        try { prog = await _apiFetch('/api/user/syllabus-progress'); } catch {}
+        const grid = document.getElementById('ringsGrid');
+        if (!prog.length) { grid.innerHTML = '<div class="empty-note" style="width:100%;">Decode syllabus dot points to see coverage here.</div>'; return; }
+        const byS = {};
+        prog.forEach(p=>{ if(!byS[p.subject])byS[p.subject]=0; byS[p.subject]++; });
+        const entries = Object.entries(byS).slice(0,12);
+        const maxD = Math.max(...entries.map(([,v])=>v),1);
+        grid.innerHTML = entries.map(([s,d])=>{ const pct=Math.min(100,Math.round(d/maxD*100)); const r=26,cx=34,cy=34,circ=2*Math.PI*r; return `<div class="ring-item"><svg viewBox="0 0 68 68" width="68" height="68"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#6C63FF" stroke-width="6" stroke-dasharray="${circ*pct/100} ${circ}" stroke-dashoffset="${circ*0.25}" stroke-linecap="round"/><text x="${cx}" y="${cy+5}" text-anchor="middle" fill="#e7e9ea" font-size="11" font-weight="700">${d}</text></svg><div class="ring-label">${s}</div></div>`; }).join('');
+    }
+
+    async function loadAchievements() {
+        let data = {earned:[],all:[]};
+        try { data = await _apiFetch('/api/user/achievements'); } catch {}
+        const earnedIds = new Set(data.earned.map(a=>a.id));
+        document.getElementById('achGrid').innerHTML = data.all.map(def=>{ const earned=earnedIds.has(def.id); const ee=data.earned.find(a=>a.id===def.id); const ds=ee?new Date(ee.earnedAt).toLocaleDateString('en-AU',{day:'numeric',month:'short'}):''; return `<div class="ach-item ${earned?'earned':'locked'}" title="${def.desc}"><span class="ach-emoji">${def.emoji}</span><div class="ach-name">${def.label}</div><div class="ach-desc">${def.desc}</div>${earned?`<div class="ach-date">${ds}</div>`:''}</div>`; }).join('');
+    }
+
+    async function loadReferral() {
+        const card = document.getElementById('referralCard');
+        try {
+            const d = await _apiFetch('/api/user/referral');
+            card.innerHTML = `<p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:14px;">Share your code. Every friend who upgrades earns you 7 bonus free days.</p><div class="ref-code-box"><span class="ref-code">${d.code}</span><button class="copy-btn" onclick="_copyRef('${d.url}')">Copy Link</button></div><div class="ref-stats"><div class="ref-stat"><div class="rv">${d.referralCount}</div><div class="rl">Friends Referred</div></div><div class="ref-stat"><div class="rv">${d.paidReferrals}</div><div class="rl">Paid Referrals</div></div><div class="ref-stat"><div class="rv" style="color:#22c55e;">+${d.bonusDaysEarned}</div><div class="rl">Bonus Days</div></div></div><div class="ref-link">${d.url}</div>`;
+        } catch { card.innerHTML = '<div class="empty-note">Could not load referral info.</div>'; }
+    }
+    function _copyRef(url) {
+        navigator.clipboard.writeText(url).then(()=>{ const b=document.querySelector('.copy-btn'); if(b){b.textContent='✓ Copied!';setTimeout(()=>{b.textContent='Copy Link';},2000);}});
+    }
+
+    async function loadDailyChallenge() {
+        const card = document.getElementById('challengeCard');
+        try {
+            _challengeData = await _apiFetch('/api/challenge/today');
+            if (_challengeData.answered) { card.innerHTML = '<div class="empty-note">✅ Already answered today. Come back tomorrow!</div>'; return; }
+            card.innerHTML = `<div class="ch-subject">${_challengeData.subject}</div><div class="ch-q">${_challengeData.question}</div><div class="ch-marks">${_challengeData.marks} marks</div><textarea id="challengeAnswer" rows="4" placeholder="Write your answer here…"></textarea>${_challengeData.hint?`<span class="ch-hint-toggle" onclick="document.getElementById('chHint').style.display='block';this.style.display='none'">💡 Show hint</span><div id="chHint" style="display:none;font-size:0.8rem;color:#71767b;margin-top:6px;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:8px;">${_challengeData.hint}</div>`:''}<button class="ch-submit" onclick="submitChallenge()">Submit Answer</button>`;
+        } catch { card.innerHTML = '<div class="empty-note">Could not load today\'s challenge.</div>'; }
+    }
+    async function submitChallenge() {
+        const ans = document.getElementById('challengeAnswer')?.value.trim();
+        if (!ans) return;
+        const btn = document.querySelector('.ch-submit');
+        if (btn) { btn.disabled=true; btn.textContent='Marking…'; }
+        try {
+            const r = await _apiFetch('/api/challenge/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answer:ans})});
+            const q = _challengeData;
+            document.getElementById('challengeCard').innerHTML = `<div class="ch-subject">${q.subject}</div><div class="ch-q">${q.question}</div><div class="ch-result"><div class="ch-score">Band ${r.band} · ${r.score}/${r.outOf} marks</div><div class="ch-feedback">${r.feedback}</div>${r.sampleAnswer?`<div class="ch-sample"><strong style="color:var(--text);">Sample answer:</strong> ${r.sampleAnswer}</div>`:''}</div>`;
+        } catch { if(btn){btn.disabled=false;btn.textContent='Submit Answer';} alert('Could not submit — please try again.'); }
+    }
+    async function saveParentEmail() {
+        const val = document.getElementById('parentEmailInput').value.trim();
+        if (!val) return;
+        const note = document.getElementById('parentNote');
+        try {
+            await _apiFetch('/api/user/parent-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({parentEmail:val})});
+            note.style.color='#22c55e'; note.textContent='✓ Saved!';
+        } catch { note.style.color='#ef4444'; note.textContent='Could not save — check the email.'; }
+    }
+
+    </script>
     <script>
     (function () {
-        var API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://studydecoder-api.onrender.com';
+        var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:3001' : '';
 
         var LEVELS = [
             { min: 7,   name: 'Bronze',   color: '#fb923c', bg: 'rgba(251,146,60,0.1)',  emoji: '🥉', perk: 'Streak Shields unlock',     theme: 'bronze' },
@@ -396,5 +614,6 @@
         init();
     })();
     </script>
+    <script>document.addEventListener('DOMContentLoaded', () => { if (window.loadNewSections) loadNewSections(); });</script>
 </body>
 </html>

@@ -516,14 +516,21 @@
         }
 
         function showFreeTierUpsell(botType, limitType) {
-            const isSpecial = limitType === 'special';
-            const toolName = botType === 'worksheet' ? 'worksheet decode' : botType === 'notes-transcriber' ? 'notes transcription' : 'free use';
-            const heading = isSpecial ? `You've used your 1 daily ${toolName}.` : `You've used all 10 free uses for today.`;
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message message-assistant';
-            const isSale = new Date() < new Date('2026-04-25T00:00:00');
-            const yearlyText = isSale ? '🔥 Study Break Sale — $37.50 for life' : 'Yearly — $75/yr';
-            messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ ${heading}</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses, longer responses, and better quality answers.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+            if (window.Upsell) {
+                const wrap = document.createElement('div');
+                wrap.style.cssText = 'display:flex;justify-content:center;padding:16px 0;';
+                Upsell.renderModal(wrap, 'worksheet', 'default',
+                    () => { window.location.href = 'index.html#pricing'; },
+                    () => { messageDiv.innerHTML = '<p style="text-align:center;color:#71767b;padding:16px;">👍 Reminder set!</p>'; }
+                );
+                messageDiv.appendChild(wrap);
+            } else {
+                const isSale = new Date() < new Date('2026-04-25T00:00:00');
+                const yearlyText = isSale ? '🔥 Study Break Sale — $37.50 for life' : 'Yearly — $75/yr';
+                messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ Free uses for today are up.</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited decodes.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a></div>`;
+            }
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
@@ -821,6 +828,7 @@
         }
 
         function deleteSession(sessionId) {
+            if (!confirm('Delete this history item?')) return;
             let history = getHistoryFromCache();
             history = history.filter(h => h.id !== sessionId);
             historyCache = history;
@@ -884,5 +892,7 @@
         checkAuth();
     </script>
     <script src="streak.js"></script>
+    <script src="upsell.js"></script>
+    <script src="pwa.js"></script>
 </body>
 </html>

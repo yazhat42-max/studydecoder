@@ -1080,7 +1080,7 @@ The AI will transform them into polished, professional-looking notes with proper
 
             list.innerHTML = history.map(function(h) {
                 return '<div class="history-item" onclick="loadSession(\'' + h.id + '\')">' +
-                    '<div class="history-item-title">\ud83d\udcdd ' + h.title + '</div>' +
+                    '<div class="history-item-title" title="' + h.title.replace(/"/g, '&quot;') + '">\ud83d\udcdd ' + h.title + '</div>' +
                     '<div class="history-item-date">' + new Date(h.date).toLocaleDateString() + ' ' + new Date(h.date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) + '</div>' +
                     '<div class="history-item-preview">' + h.preview + '</div>' +
                     '<div class="history-item-actions"><button class="history-delete" onclick="event.stopPropagation(); deleteSession(\'' + h.id + '\')">Delete</button></div>' +
@@ -1409,5 +1409,7 @@ The AI will transform them into polished, professional-looking notes with proper
         checkAuth();
     </script>
     <script src="streak.js"></script>
+    <script src="upsell.js"></script>
+    <script src="pwa.js"></script>
 </body>
 </html>
