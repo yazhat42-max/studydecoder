@@ -6459,6 +6459,8 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
                 } else if (level === 3) {
                     systemPrompt += `\n\nDETAIL LEVEL: DETAILED - Provide an extremely thorough breakdown. Explain every dot point in depth with examples, include detailed HSC exam analysis with past question references, provide extended study notes, and cover edge cases and common misunderstandings. Be as comprehensive as possible.`;
                 }
+            } else if (botType === 'learn-irl') {
+                systemPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) — LEARN IRL REFERENCE ===\nCRITICAL: Every concept, formula, term, and scenario MUST come exclusively from this official NSW NESA syllabus. Do NOT introduce any content, formulas, or concepts that are not in this syllabus. If a formula or concept is not listed here, do not use it.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
             } else {
                 // practice bot
                 systemPrompt += `\n\n=== OFFICIAL ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) ===\nThe following is the official syllabus content. Use this as your ONLY source of truth for content. All questions MUST be based on this syllabus.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;

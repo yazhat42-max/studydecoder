@@ -748,6 +748,7 @@
         let conversationHistory = [];
         let gameState = null;
         let gameTurnCount = 0;
+        let lifelineUsedCount = 0;
         let isLoading = false;
         let pendingScenario = null; // stores selected scenario context
         let lifelineUses = { hint: 2, context: 1, skip: 1 };
@@ -2938,6 +2939,7 @@
             conversationHistory = [];
             gameState = null;
             gameTurnCount = 0;
+            lifelineUsedCount = 0;
             lifelineUses = { hint: 2, context: 1, skip: 1 };
             updateLifelineUI();
             hideLifelineHint();
@@ -3020,7 +3022,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ messages: conversationHistory })
+                    body: JSON.stringify({ messages: conversationHistory, subject: subjectInput ? subjectInput.value : null })
                 });
 
                 if (!res.ok) {
@@ -3171,6 +3173,18 @@
 
             const choicesEl = document.getElementById('gameChoices');
             if (isGameOver) {
+                // Fire achievements
+                (async () => {
+                    try {
+                        if (gameTurnCount >= 10) {
+                            await fetch(`${API_BASE}/api/user/achievement`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ achievementId: 'survived_10' }) });
+                        }
+                        if (lifelineUsedCount === 0) {
+                            await fetch(`${API_BASE}/api/user/achievement`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ achievementId: 'no_lifelines' }) });
+                        }
+                    } catch(e) { /* non-critical */ }
+                })();
+
                 // Build misconceptions review if any concepts were missed
                 let reviewHtml = '';
                 const mc = gameState && gameState.misconceptions;
@@ -3179,8 +3193,19 @@
                         mc.map(m => '<div class="misconception-item"><div class="misconception-item-term">' + escapeHtml(m.term) + '</div><div class="misconception-item-def">' + escapeHtml(m.definition) + '</div></div>').join('') +
                         '</div>';
                 }
+
+                // Build share + challenge URLs
+                const scenarioId = pendingScenario ? encodeURIComponent(pendingScenario.title || 'scenario') : 'game';
+                const daysSurvived = gameTurnCount;
+                const challengeUrl = `${location.origin}${location.pathname}?challenge=${scenarioId}&days=${daysSurvived}`;
+
                 choicesEl.className = 'game-choices';
-                choicesEl.innerHTML = `<button class="gchoice-btn" style="border-color: var(--gv-accent); text-align: center; font-weight: 600;" onclick="resetSession()">Play Again</button>${reviewHtml}`;
+                choicesEl.innerHTML = `
+                    <button class="gchoice-btn" style="border-color: var(--gv-accent); text-align: center; font-weight: 600;" onclick="resetSession()">Play Again</button>
+                    <button class="gchoice-btn" style="text-align:center;font-weight:600;" onclick="shareResult(${daysSurvived})">📤 Share Result</button>
+                    <button class="gchoice-btn" style="text-align:center;font-weight:600;" onclick="copyChallenge('${escapeAttr(challengeUrl)}')">🏆 Challenge a Classmate</button>
+                    ${reviewHtml}
+                `;
                 void choicesEl.offsetWidth;
                 choicesEl.classList.add('fade-in');
             } else if (hasChoices) {
@@ -3358,12 +3383,20 @@
         function showGameUpsell() {
             const narrativeEl = document.getElementById('gameNarrative');
             narrativeEl.className = 'game-narrative fade-in';
-            narrativeEl.innerHTML = `<div class="game-upsell">
-                <h3>You've used your free session for today.</h3>
-                <p>Upgrade to <strong>Premium</strong> for unlimited games and higher quality scenarios.</p>
-                <a href="index.html">See Plans</a>
-                <small>Come back tomorrow for more free uses!</small>
-            </div>`;
+            if (window.Upsell) {
+                narrativeEl.innerHTML = '<div class="game-upsell"></div>';
+                Upsell.renderModal(narrativeEl.querySelector('.game-upsell'), 'learn-irl', 'default',
+                    () => { window.location.href = 'index.html#pricing'; },
+                    () => { narrativeEl.innerHTML = '<p style="text-align:center;padding:20px;color:#71767b;">👍 Reminder set. Come back tomorrow!</p>'; }
+                );
+            } else {
+                narrativeEl.innerHTML = `<div class="game-upsell">
+                    <h3>You've used your free session for today.</h3>
+                    <p>Upgrade to <strong>Premium</strong> for unlimited games and higher quality scenarios.</p>
+                    <a href="index.html#pricing">See Plans</a>
+                    <small>Come back tomorrow for more free uses!</small>
+                </div>`;
+            }
             document.getElementById('gameChoices').innerHTML = '';
         }
 
@@ -3408,12 +3441,22 @@
         function showFreeTierUpsell() {
             const div = document.createElement('div');
             div.className = 'message message-bot';
-            div.innerHTML = `<div style="text-align:center;padding:20px 10px;">
-                <h3 style="margin:0 0 8px;">You've used your free Learn IRL session for today.</h3>
-                <p style="color:#666;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses and better quality answers.</p>
-                <a href="index.html" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;">See Plans</a>
-                <p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p>
-            </div>`;
+            if (window.Upsell) {
+                const wrap = document.createElement('div');
+                wrap.style.cssText = 'display:flex;justify-content:center;padding:16px 0;';
+                Upsell.renderModal(wrap, 'learn-irl', 'default',
+                    () => { window.location.href = 'index.html#pricing'; },
+                    () => { div.innerHTML = '<p style="text-align:center;color:#71767b;padding:16px;">👍 Reminder set!</p>'; }
+                );
+                div.appendChild(wrap);
+            } else {
+                div.innerHTML = `<div style="text-align:center;padding:20px 10px;">
+                    <h3 style="margin:0 0 8px;">You've used your free Learn IRL session for today.</h3>
+                    <p style="color:#666;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses.</p>
+                    <a href="index.html#pricing" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;">See Plans</a>
+                    <p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p>
+                </div>`;
+            }
             chatMessages.appendChild(div);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
@@ -3473,6 +3516,7 @@
         async function useLifeline(type) {
             if (isLoading || lifelineUses[type] <= 0) return;
             lifelineUses[type]--;
+            lifelineUsedCount++;
             updateLifelineUI();
 
             if (type === 'hint' || type === 'context') {
@@ -3489,7 +3533,7 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         credentials: 'include',
-                        body: JSON.stringify({ messages: hintMessages })
+                        body: JSON.stringify({ messages: hintMessages, subject: subjectInput ? subjectInput.value : null })
                     });
                     if (res.ok) {
                         const data = await res.json();
@@ -3518,7 +3562,81 @@
         }
 
         checkAuth();
+
+        // Share result card using Canvas
+        async function shareResult(days) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 375; canvas.height = 667;
+            const ctx = canvas.getContext('2d');
+            // Background
+            ctx.fillStyle = '#0d1117';
+            ctx.fillRect(0, 0, 375, 667);
+            // Accent gradient top bar
+            const grad = ctx.createLinearGradient(0, 0, 375, 0);
+            grad.addColorStop(0, '#6C63FF'); grad.addColorStop(1, '#9333ea');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 375, 6);
+            // Branding
+            ctx.fillStyle = '#6C63FF'; ctx.font = 'bold 18px system-ui, sans-serif';
+            ctx.fillText('Study Decoder', 30, 54);
+            ctx.fillStyle = '#71767b'; ctx.font = '13px system-ui, sans-serif';
+            ctx.fillText('Learn IRL', 30, 76);
+            // Subject
+            const subjLabel = document.getElementById('gameSubjectLabel')?.textContent || '';
+            const topicLabel = document.getElementById('gameTopicLabel')?.textContent || '';
+            ctx.fillStyle = '#e7e9ea'; ctx.font = 'bold 22px system-ui, sans-serif';
+            ctx.fillText(subjLabel.substring(0, 32), 30, 130);
+            ctx.fillStyle = '#8b949e'; ctx.font = '14px system-ui, sans-serif';
+            ctx.fillText(topicLabel.substring(0, 45), 30, 155);
+            // Days
+            ctx.fillStyle = '#6C63FF'; ctx.font = 'bold 80px system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(days, 187, 300);
+            ctx.fillStyle = '#e7e9ea'; ctx.font = 'bold 22px system-ui, sans-serif';
+            ctx.fillText('days survived', 187, 335);
+            // Footer
+            ctx.fillStyle = '#71767b'; ctx.font = '13px system-ui, sans-serif';
+            ctx.fillText('studydecoder.com.au', 187, 630);
+            ctx.textAlign = 'left';
+
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], 'study-decoder-result.png', { type: 'image/png' });
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try { await navigator.share({ files: [file], title: `I survived ${days} days on Study Decoder!`, text: `Can you beat ${days} days? studydecoder.com.au` }); } catch(e) {}
+                } else {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a'); a.href = url; a.download = 'study-decoder-result.png';
+                    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                    setTimeout(() => URL.revokeObjectURL(url), 5000);
+                }
+            }, 'image/png');
+        }
+
+        function copyChallenge(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                const t = document.createElement('div');
+                t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#6C63FF;color:#fff;padding:10px 20px;border-radius:8px;font-size:0.88rem;font-weight:600;z-index:9999;pointer-events:none;';
+                t.textContent = '🔗 Challenge link copied!';
+                document.body.appendChild(t);
+                setTimeout(() => t.remove(), 2500);
+            }).catch(() => { prompt('Copy this challenge link:', url); });
+        }
+
+        // Show challenger banner from URL params
+        (function() {
+            const params = new URLSearchParams(location.search);
+            const challenge = params.get('challenge');
+            const days = params.get('days');
+            if (challenge && days) {
+                const banner = document.createElement('div');
+                banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#1a1033,#2d1b69);border-bottom:1px solid rgba(108,99,255,0.4);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;font-size:0.88rem;color:#e7e9ea;';
+                banner.innerHTML = `<span>🎮 <strong>Challenge:</strong> Can you survive more than <strong>${escapeHtml(days)} days</strong> in <em>${escapeHtml(decodeURIComponent(challenge))}</em>?</span><button onclick="this.parentElement.remove()" style="background:none;border:none;color:#8b949e;font-size:1.2rem;cursor:pointer;padding:0 4px;">&times;</button>`;
+                document.body.prepend(banner);
+            }
+        })();
     </script>
     <script src="streak.js"></script>
+    <script src="upsell.js"></script>
+    <script src="pwa.js"></script>
 </body>
 </html>
