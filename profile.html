@@ -415,7 +415,20 @@
         try {
             _challengeData = await _apiFetch('/api/challenge/today');
             if (_challengeData.answered) { card.innerHTML = '<div class="empty-note">✅ Already answered today. Come back tomorrow!</div>'; return; }
-            card.innerHTML = `<div class="ch-subject">${_challengeData.subject}</div><div class="ch-q">${_challengeData.question}</div><div class="ch-marks">${_challengeData.marks} marks</div><textarea id="challengeAnswer" rows="4" placeholder="Write your answer here…"></textarea>${_challengeData.hint?`<span class="ch-hint-toggle" onclick="document.getElementById('chHint').style.display='block';this.style.display='none'">💡 Show hint</span><div id="chHint" style="display:none;font-size:0.8rem;color:#71767b;margin-top:6px;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:8px;">${_challengeData.hint}</div>`:''}<button class="ch-submit" onclick="submitChallenge()">Submit Answer</button>`;
+
+            const weakBadge = _challengeData.isWeakArea
+                ? `<span style="display:inline-flex;align-items:center;gap:5px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#ef4444;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:50px;margin-left:8px;vertical-align:middle;">📉 Weak area</span>`
+                : (_challengeData.hasHistory ? `<span style="display:inline-flex;align-items:center;gap:5px;background:rgba(108,99,255,0.12);border:1px solid rgba(108,99,255,0.3);color:#6C63FF;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:50px;margin-left:8px;vertical-align:middle;">📊 Your subject</span>` : '');
+
+            card.innerHTML = `
+                <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-bottom:14px;">
+                    <div class="ch-subject" style="margin:0;">${_challengeData.subject}</div>${weakBadge}
+                </div>
+                <div class="ch-q">${_challengeData.question}</div>
+                <div class="ch-marks">${_challengeData.marks} marks</div>
+                <textarea id="challengeAnswer" rows="4" placeholder="Write your answer here…"></textarea>
+                ${_challengeData.hint ? `<span class="ch-hint-toggle" onclick="document.getElementById('chHint').style.display='block';this.style.display='none'">💡 Show hint</span><div id="chHint" style="display:none;font-size:0.8rem;color:#71767b;margin-top:6px;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:8px;">${_challengeData.hint}</div>` : ''}
+                <button class="ch-submit" onclick="submitChallenge()">Submit Answer</button>`;
         } catch { card.innerHTML = '<div class="empty-note">Could not load today\'s challenge.</div>'; }
     }
     async function submitChallenge() {

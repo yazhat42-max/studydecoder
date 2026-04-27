@@ -6852,24 +6852,69 @@ app.post('/api/notify/reset', requireAuth, (req, res) => {
 });
 
 // ==================== DAILY CHALLENGE ====================
-let _dailyChallengeCache = { date: null, question: null };
+const DEFAULT_CHALLENGE_SUBJECTS = ['Biology', 'Chemistry', 'Physics', 'Modern History', 'English Advanced', 'Mathematics Advanced', 'Economics', 'Legal Studies', 'Business Studies', 'Geography'];
+
+/**
+ * Pick the best subject for today's daily challenge based on:
+ *  1. The subjects the user selected during onboarding
+ *  2. Which of those they've been weakest in (lowest average band)
+ */
+function pickChallengeSubject(user) {
+    let userSubjects = (user.preferences?.subjects || []).filter(Boolean);
+    if (!userSubjects.length) userSubjects = DEFAULT_CHALLENGE_SUBJECTS;
+
+    // Aggregate band data from both challenge history and exam history
+    const bandSum = {}, bandCount = {};
+    const allHistory = [...(user.challengeHistory || []), ...(user.examHistory || [])];
+    for (const entry of allHistory) {
+        if (!entry.subject || typeof entry.band !== 'number') continue;
+        const entryNorm = entry.subject.toLowerCase().trim();
+        const matched = userSubjects.find(s => s.toLowerCase().trim() === entryNorm) ||
+                        userSubjects.find(s => entryNorm.startsWith(s.toLowerCase().split(' ')[0]));
+        if (!matched) continue;
+        bandSum[matched]  = (bandSum[matched]  || 0) + entry.band;
+        bandCount[matched] = (bandCount[matched] || 0) + 1;
+    }
+
+    // Weight = 7 - avgBand: weaker subjects get higher weight so they're picked more often
+    const weights = userSubjects.map(s => {
+        const avg = bandCount[s] ? bandSum[s] / bandCount[s] : 3.5; // neutral default
+        return { subject: s, avgBand: avg, weight: Math.max(0.5, 7 - avg) };
+    });
+
+    const total = weights.reduce((sum, w) => sum + w.weight, 0);
+    let rand = Math.random() * total;
+    let chosen = weights[0];
+    for (const w of weights) { rand -= w.weight; if (rand <= 0) { chosen = w; break; } }
+
+    return {
+        subject:    chosen.subject,
+        avgBand:    chosen.avgBand,
+        isWeakArea: bandCount[chosen.subject] > 0 && chosen.avgBand < 3.5,
+        hasHistory: (bandCount[chosen.subject] || 0) > 0,
+    };
+}
 
 /**
  * GET /api/challenge/today
- * Get today's challenge question (same for all users, cached in memory)
+ * Get today's personalised challenge question (per-user, cached daily)
  */
 app.get('/api/challenge/today', requireAuth, async (req, res) => {
     const today = new Date().toISOString().split('T')[0];
-    if (_dailyChallengeCache.date === today && _dailyChallengeCache.question) {
-        const user = req.user;
+    const user  = req.user;
+
+    // Return cached challenge for today if already generated
+    if (user.todaysChallenge?.date === today && user.todaysChallenge?.question) {
         const answered = (user.challengeHistory || []).some(c => c.date === today);
-        return res.json({ ..._dailyChallengeCache.question, answered });
+        return res.json({ ...user.todaysChallenge.question, answered });
     }
 
-    // Pick a subject deterministically from today's date
-    const subjects = ['Biology', 'Chemistry', 'Physics', 'Modern History', 'English Advanced', 'Mathematics Advanced', 'Economics', 'Legal Studies', 'Business Studies', 'Geography'];
-    const dayIndex = Math.floor(Date.now() / 86400000) % subjects.length;
-    const subject = subjects[dayIndex];
+    const pick = pickChallengeSubject(user);
+
+    // Build a prompt that steers GPT toward the user's actual weak areas
+    const focusNote = pick.isWeakArea
+        ? ` The student has been averaging Band ${pick.avgBand.toFixed(1)} in this subject so focus on a concept they are likely finding difficult.`
+        : '';
 
     try {
         const OPENAI_API_KEY = config.openaiApiKey;
@@ -6880,20 +6925,23 @@ app.get('/api/challenge/today', requireAuth, async (req, res) => {
                 model: 'gpt-4o-mini',
                 messages: [
                     { role: 'system', content: 'You are an HSC exam question generator. Generate a single short-answer question (4-6 marks) for the given subject. Respond ONLY with valid JSON: {"question":"...","marks":4,"hint":"..."}' },
-                    { role: 'user', content: `Generate a daily challenge question for ${subject} Year 12 HSC.` }
+                    { role: 'user',   content: `Generate a daily challenge question for ${pick.subject} Year 12 HSC.${focusNote}` }
                 ],
                 max_tokens: 400,
                 temperature: 0.8
             })
         });
-        const data = await response.json();
-        const raw = data.choices?.[0]?.message?.content || '{}';
+        const data  = await response.json();
+        const raw   = data.choices?.[0]?.message?.content || '{}';
         let parsed;
         try { parsed = JSON.parse(raw); } catch { parsed = { question: 'No question available today.', marks: 4, hint: '' }; }
-        _dailyChallengeCache = { date: today, question: { subject, ...parsed } };
-        const user = req.user;
+
+        const question = { subject: pick.subject, isWeakArea: pick.isWeakArea, hasHistory: pick.hasHistory, ...parsed };
+        user.todaysChallenge = { date: today, question };
+        scheduleSave();
+
         const answered = (user.challengeHistory || []).some(c => c.date === today);
-        res.json({ ..._dailyChallengeCache.question, answered });
+        res.json({ ...question, answered });
     } catch (e) {
         res.status(500).json({ error: 'Failed to generate daily challenge' });
     }
@@ -6912,11 +6960,11 @@ app.post('/api/challenge/submit', requireAuth, express.json(), async (req, res) 
     if ((user.challengeHistory || []).some(c => c.date === today)) {
         return res.status(409).json({ error: 'Already submitted today' });
     }
-    if (!_dailyChallengeCache.question || _dailyChallengeCache.date !== today) {
+    if (!user.todaysChallenge?.question || user.todaysChallenge.date !== today) {
         return res.status(400).json({ error: 'No challenge loaded. Fetch /api/challenge/today first.' });
     }
 
-    const { subject, question, marks } = _dailyChallengeCache.question;
+    const { subject, question, marks } = user.todaysChallenge.question;
     try {
         const OPENAI_API_KEY = config.openaiApiKey;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
