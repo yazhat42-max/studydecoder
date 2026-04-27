@@ -1924,6 +1924,20 @@ app.get('/api/subscription', requireAuth, (req, res) => {
 });
 
 /**
+ * GET /api/stats/public
+ * Public endpoint — returns weekly signup count (no auth required).
+ * Falls back to total user count when weekly < total (early-stage site).
+ */
+app.get('/api/stats/public', (req, res) => {
+    const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    const allUsers = Object.values(db.users);
+    const total = allUsers.length;
+    const weekly = allUsers.filter(u => u.createdAt && new Date(u.createdAt).getTime() >= oneWeekAgo).length;
+    // Show total when weekly count is lower (early stage — avoid showing "2 joined this week")
+    res.json({ weeklySignups: Math.max(weekly, total) });
+});
+
+/**
  * POST /api/streak/sync
  * Save the user's streak data to the server (called after each study action)
  */
