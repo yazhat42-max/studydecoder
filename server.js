@@ -224,17 +224,22 @@ function incrementFreeTierUsage(userId, botType) {
 }
 
 // Check if a user is within the 3-day "unlimited trial" grace period
+// Uses trialStart if set (allows admin reset), otherwise falls back to createdAt
 function isWithinGracePeriod(userId) {
     const user = getUser(userId);
-    if (!user || !user.createdAt) return false;
-    return (Date.now() - new Date(user.createdAt).getTime()) < 3 * 24 * 60 * 60 * 1000;
+    if (!user) return false;
+    const ref = user.trialStart || user.createdAt;
+    if (!ref) return false;
+    return (Date.now() - new Date(ref).getTime()) < 3 * 24 * 60 * 60 * 1000;
 }
 
 // Check if a user is on their final grace period day (day 3)
 function isGracePeriodEnding(userId) {
     const user = getUser(userId);
-    if (!user || !user.createdAt) return false;
-    const ageMs = Date.now() - new Date(user.createdAt).getTime();
+    if (!user) return false;
+    const ref = user.trialStart || user.createdAt;
+    if (!ref) return false;
+    const ageMs = Date.now() - new Date(ref).getTime();
     const twoDays = 2 * 24 * 60 * 60 * 1000;
     const threeDays = 3 * 24 * 60 * 60 * 1000;
     return ageMs >= twoDays && ageMs < threeDays;
@@ -7309,6 +7314,19 @@ app.listen(config.port, () => {
 ║  • CORS protection: ✅                                            ║
 ╚═══════════════════════════════════════════════════════════════════╝
     `);
+
+    // ── Retroactive trial grant ──────────────────────────────────────
+    // Any free user who existed before trialStart was introduced gets
+    // their 3-day trial reset to now, so they don't miss out.
+    const now = new Date().toISOString();
+    let granted = 0;
+    for (const user of Object.values(db.users)) {
+        if (!user.trialStart && !user.subscribed && !user.plan && getUserRole(user.email) === 'user') {
+            upsertUser(user.userId, { ...user, trialStart: now });
+            granted++;
+        }
+    }
+    if (granted > 0) console.log(`🎁 Retroactive trial granted to ${granted} existing free user${granted === 1 ? '' : 's'}`);
 });
 
 module.exports = app;
