@@ -1570,6 +1570,8 @@
         
         // Hero streak widget — show logged-in state
         document.getElementById('heroStreakOut').style.display = 'none';
+        // Merge server streak (cross-device sync) before reading localStorage
+        if (user.streak && window.StreakManager) window.StreakManager.mergeFromServer(user.streak);
         try {
             const s = window.StreakManager ? window.StreakManager.load() : JSON.parse(localStorage.getItem('sd_study_streak') || '{"count":0,"shields":0}');
             if (window.StreakManager) window.StreakManager.applyTheme(s.theme || 'default');
@@ -1601,6 +1603,20 @@
                     document.documentElement.style.setProperty('--primary', level.color);
                     document.documentElement.style.setProperty('--primary-glow', glowAlpha);
                     document.documentElement.style.setProperty('--accent', level.color);
+                    // Background tints per level
+                    const BG_THEMES = {
+                        Bronze:   { bg: '#110e0a', bgCard: '#181310', bgElev: '#201a12' },
+                        Silver:   { bg: '#090b0e', bgCard: '#0f1218', bgElev: '#141b24' },
+                        Gold:     { bg: '#110e06', bgCard: '#181308', bgElev: '#201a0a' },
+                        Platinum: { bg: '#0c0810', bgCard: '#140f1c', bgElev: '#1c1228' },
+                    };
+                    const bgT = BG_THEMES[level.name];
+                    if (bgT) {
+                        document.documentElement.style.setProperty('--bg', bgT.bg);
+                        document.documentElement.style.setProperty('--bg-card', bgT.bgCard);
+                        document.documentElement.style.setProperty('--bg-elevated', bgT.bgElev);
+                        document.body.style.background = bgT.bg;
+                    }
                 }
                 // Shields badge
                 if (s.shields > 0) {

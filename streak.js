@@ -23,6 +23,9 @@
     };
 
     /* ─── Data layer ─────────────────────────────────────────────── */
+    var _API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? 'http://localhost:3001' : '';
+
     var StreakManager = {
         KEY: 'sd_study_streak',
 
@@ -123,6 +126,7 @@
 
             this.save(s);
             this.applyTheme(s.theme);
+            this.syncToServer(s);
             return { s: s, isNew: true, newMilestone: newMilestone, shieldEarned: shieldEarned, shieldUsed: shieldUsed };
         },
 
@@ -132,6 +136,32 @@
             for (var k in vars) {
                 root.style.setProperty(k, vars[k]);
             }
+        },
+
+        syncToServer: function (s) {
+            try {
+                fetch(_API_BASE + '/api/streak/sync', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ streak: s })
+                }).catch(function () {}); // fire-and-forget
+            } catch (e) {}
+        },
+
+        mergeFromServer: function (serverStreak) {
+            if (!serverStreak) return;
+            try {
+                var local = this.load();
+                var useServer = !local.count ||
+                    serverStreak.count > local.count ||
+                    (serverStreak.count === local.count && (serverStreak.lastDate || '') >= (local.lastDate || ''));
+                if (useServer) {
+                    var merged = Object.assign({}, local, serverStreak);
+                    this.save(merged);
+                    this.applyTheme(merged.theme || 'default');
+                }
+            } catch (e) {}
         },
     };
 

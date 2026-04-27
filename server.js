@@ -1909,6 +1909,7 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         preferences: user.preferences || {},
         dayPassActive: hasDayPassActive(user),
         dayPassExpiry: hasDayPassActive(user) ? user.dayPassExpiry : null,
+        streak: user.streak || null,
         freeTier: !hasFull ? {
             enabled: FREE_TIER_CONFIG.enabled,
             totalUsesPerDay: FREE_TIER_CONFIG.totalUsesPerDay,
@@ -1920,6 +1921,33 @@ app.get('/api/subscription', requireAuth, (req, res) => {
             gracePeriodEnding: isGracePeriodEnding(req.session.userId)
         } : null
     });
+});
+
+/**
+ * POST /api/streak/sync
+ * Save the user's streak data to the server (called after each study action)
+ */
+app.post('/api/streak/sync', requireAuth, express.json(), (req, res) => {
+    const { streak } = req.body;
+    if (!streak || typeof streak.count !== 'number') {
+        return res.status(400).json({ error: 'Invalid streak data' });
+    }
+    const user = req.user;
+    const existing = user.streak;
+    // Accept if incoming count is higher OR same count with same/newer date
+    if (!existing || streak.count > existing.count ||
+        (streak.count === existing.count && (streak.lastDate || '') >= (existing.lastDate || ''))) {
+        user.streak = {
+            count:          streak.count,
+            lastDate:       streak.lastDate || '',
+            shields:        typeof streak.shields === 'number' ? streak.shields : 0,
+            shieldsEarned:  typeof streak.shieldsEarned === 'number' ? streak.shieldsEarned : 0,
+            totalDays:      typeof streak.totalDays === 'number' ? streak.totalDays : 0,
+            theme:          streak.theme || 'default'
+        };
+        scheduleSave();
+    }
+    res.json({ ok: true, streak: user.streak });
 });
 
 /**
@@ -6512,17 +6540,24 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         // GPT-5 models use max_completion_tokens instead of max_tokens
         const isGpt5 = aiSettings.model.startsWith('gpt-5');
         const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+
+        // For tutor: prepend a synthetic subject-establishment exchange so the model
+        // never asks "which subject?" — it already "remembers" confirming it.
+        let apiMessages = messages.slice(-20).map(m => ({ role: m.role, content: m.content }));
+        if (botType === 'tutor' && subjectId) {
+            const sName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
+            apiMessages = [
+                { role: 'user',      content: `My subject is ${sName}.` },
+                { role: 'assistant', content: `Got it — I'm your dedicated ${sName} tutor. I know the NSW NESA syllabus for this subject. What would you like help with?` },
+                ...apiMessages
+            ];
+        }
+
         const requestBody = {
             model: aiSettings.model,
             messages: [
                 { role: 'system', content: systemPrompt },
-                ...messages.slice(-20).map(m => {
-                    // Support multimodal content (arrays with text + image_url for worksheet decoder)
-                    if (Array.isArray(m.content)) {
-                        return { role: m.role, content: m.content };
-                    }
-                    return { role: m.role, content: m.content };
-                })
+                ...apiMessages
             ],
             [tokenParam]: aiSettings.maxTokens
         };
