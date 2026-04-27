@@ -672,18 +672,25 @@
 
                     <!-- State: logged out (default) -->
                     <div class="hero-streak-out" id="heroStreakOut">
-                        <!-- Compact Chat Demo Widget -->
-                        <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:16px;overflow:hidden;max-width:400px;margin:0 auto;font-size:0.88rem;">
+                        <!-- Interactive Chat Demo Widget -->
+                        <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:16px;overflow:hidden;max-width:420px;margin:0 auto;font-size:0.88rem;">
                             <div style="background:rgba(108,99,255,0.12);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:8px;">
                                 <span style="font-size:1rem;">🤖</span>
                                 <span style="font-weight:600;color:var(--text);font-size:0.85rem;">Chat Tutor</span>
-                                <span style="margin-left:auto;font-size:0.75rem;color:var(--text-muted);">Biology · HSC</span>
+                                <span style="margin-left:auto;font-size:0.75rem;color:var(--text-muted);">Try it ↓</span>
                             </div>
-                            <div style="padding:14px;display:flex;flex-direction:column;gap:10px;min-height:130px;">
-                                <!-- User message -->
-                                <div style="align-self:flex-end;background:var(--primary);color:#fff;border-radius:12px 12px 3px 12px;padding:8px 12px;max-width:80%;line-height:1.4;">What is enzyme inhibition?</div>
-                                <!-- AI response with typewriter -->
-                                <div style="align-self:flex-start;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px 12px 12px 3px;padding:8px 12px;max-width:90%;line-height:1.5;color:var(--text-sec);" id="heroDemoResponse"></div>
+                            <!-- Preset question buttons -->
+                            <div id="heroDemoQuestions" style="padding:12px 12px 8px;display:flex;flex-direction:column;gap:7px;">
+                                <p style="font-size:0.75rem;color:var(--text-muted);margin:0 0 4px;text-align:center;">Ask a question:</p>
+                                <button onclick="heroDemoAsk(0)" style="text-align:left;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text-sec);font-size:0.82rem;cursor:pointer;font-family:inherit;transition:all .15s;line-height:1.3;" onmouseover="this.style.borderColor='var(--primary)';this.style.background='rgba(108,99,255,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='rgba(255,255,255,0.04)'">💬 What is enzyme inhibition?</button>
+                                <button onclick="heroDemoAsk(1)" style="text-align:left;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text-sec);font-size:0.82rem;cursor:pointer;font-family:inherit;transition:all .15s;line-height:1.3;" onmouseover="this.style.borderColor='var(--primary)';this.style.background='rgba(108,99,255,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='rgba(255,255,255,0.04)'">💬 Explain Newton's second law</button>
+                                <button onclick="heroDemoAsk(2)" style="text-align:left;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text-sec);font-size:0.82rem;cursor:pointer;font-family:inherit;transition:all .15s;line-height:1.3;" onmouseover="this.style.borderColor='var(--primary)';this.style.background='rgba(108,99,255,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='rgba(255,255,255,0.04)'">💬 What caused WW1?</button>
+                            </div>
+                            <!-- Chat exchange (hidden until a question is clicked) -->
+                            <div id="heroDemoChat" style="display:none;flex-direction:column;gap:10px;padding:12px;">
+                                <div id="heroDemoQ" style="align-self:flex-end;background:var(--primary);color:#fff;border-radius:12px 12px 3px 12px;padding:8px 12px;max-width:85%;line-height:1.4;"></div>
+                                <div id="heroDemoA" style="align-self:flex-start;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px 12px 12px 3px;padding:8px 12px;max-width:92%;line-height:1.55;color:var(--text-sec);"></div>
+                                <button onclick="heroDemoReset()" style="align-self:center;background:none;border:none;color:var(--text-muted);font-size:0.75rem;cursor:pointer;font-family:inherit;text-decoration:underline;padding:2px;">← Ask another</button>
                             </div>
                         </div>
                         <a href="login.html" class="btn-streak" id="streakCTA" style="margin-top:1.2rem;display:inline-block;">Try it free — no card needed →</a>
@@ -2375,20 +2382,51 @@
         revealObserver.observe(el);
     });
 
-    // ========== HERO DEMO TYPEWRITER ==========
-    (function() {
-        const el = document.getElementById('heroDemoResponse');
-        if (!el) return;
-        const text = 'Enzyme inhibition is when a molecule reduces or blocks an enzyme\'s activity. There are two main types: competitive inhibitors bind to the active site, while non-competitive inhibitors bind elsewhere, changing the enzyme\'s shape. 🧬';
+    // ========== HERO DEMO INTERACTIVE ==========
+    const _heroDemoData = [
+        {
+            q: 'What is enzyme inhibition?',
+            a: 'Enzyme inhibition is when a molecule reduces or blocks an enzyme\'s activity. Competitive inhibitors bind to the active site and block the substrate, while non-competitive inhibitors bind elsewhere, changing the enzyme\'s shape. Both reduce the reaction rate. 🧬'
+        },
+        {
+            q: 'Explain Newton\'s second law',
+            a: 'Newton\'s second law states that F = ma — the net force on an object equals its mass multiplied by its acceleration. So a larger force produces more acceleration, and a heavier object needs more force to accelerate at the same rate. ⚡'
+        },
+        {
+            q: 'What caused WW1?',
+            a: 'WW1 was triggered by the assassination of Archduke Franz Ferdinand in 1914, but the deeper causes were militarism, alliances, imperialism, and nationalism (MAIN). The alliance system meant a regional conflict quickly escalated into a world war. 🌍'
+        }
+    ];
+    let _heroDemoTyping = false;
+
+    function heroDemoAsk(idx) {
+        if (_heroDemoTyping) return;
+        const data = _heroDemoData[idx];
+        document.getElementById('heroDemoQuestions').style.display = 'none';
+        const chat = document.getElementById('heroDemoChat');
+        chat.style.display = 'flex';
+        document.getElementById('heroDemoQ').textContent = data.q;
+        const ansEl = document.getElementById('heroDemoA');
+        ansEl.textContent = '';
+        _heroDemoTyping = true;
         let i = 0;
         function type() {
-            if (i < text.length) {
-                el.textContent += text[i++];
-                setTimeout(type, i < 3 ? 0 : 28);
+            if (i < data.a.length) {
+                ansEl.textContent += data.a[i++];
+                setTimeout(type, 18);
+            } else {
+                _heroDemoTyping = false;
             }
         }
-        setTimeout(type, 900);
-    })();
+        setTimeout(type, 300);
+    }
+
+    function heroDemoReset() {
+        document.getElementById('heroDemoChat').style.display = 'none';
+        document.getElementById('heroDemoQuestions').style.display = 'flex';
+        document.getElementById('heroDemoA').textContent = '';
+        _heroDemoTyping = false;
+    }
 
     // ========== DEMO ANIMATIONS ==========
     // Exam demo typewriter
