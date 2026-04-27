@@ -1596,6 +1596,11 @@
                     lb.style.display = 'inline-flex';
                     lb.style.cssText += `;background:${level.bg};border:1px solid ${level.color}44;color:${level.color};padding:5px 16px;border-radius:50px;font-size:0.82rem;font-weight:700;align-items:center;gap:6px;`;
                     lb.textContent = level.emoji + ' ' + level.name;
+                    // Theme entire page to the level colour
+                    const glowAlpha = level.color.startsWith('#') ? level.color + '4d' : level.color.replace(')', ',0.3)').replace('rgb(','rgba(');
+                    document.documentElement.style.setProperty('--primary', level.color);
+                    document.documentElement.style.setProperty('--primary-glow', glowAlpha);
+                    document.documentElement.style.setProperty('--accent', level.color);
                 }
                 // Shields badge
                 if (s.shields > 0) {
