@@ -92,6 +92,7 @@ const DB_PATH = config.isDev ? path.join(__dirname, 'data') : '/var/data';
 const USERS_FILE = path.join(DB_PATH, 'users.json');
 const PAYMENTS_FILE = path.join(DB_PATH, 'payments.json');
 const OG_CODES_FILE = path.join(DB_PATH, 'og-codes.json');
+const ANALYTICS_FILE = path.join(DB_PATH, 'analytics.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DB_PATH)) {
@@ -661,6 +662,52 @@ setInterval(() => {
         }
     }
 }, 30000); // Check every 30 seconds
+
+// ==================== VISITOR ANALYTICS ====================
+// Tracks real daily page views + unique visitors (by IP, deduped per day)
+const _analyticsDB = loadDB(ANALYTICS_FILE, {}); // { "2026-04-27": { views: N, unique: N } }
+const _uniqueIpsToday = new Set(); // in-memory dedup, resets on restart (approximate is fine)
+let _analyticsLastDate = _getToday ? _getToday() : new Date().toISOString().split('T')[0];
+
+function _analyticsToday() { return new Date().toISOString().split('T')[0]; }
+
+function recordPageView(ip) {
+    const today = _analyticsToday();
+    // Reset in-memory set if the day rolled over
+    if (today !== _analyticsLastDate) {
+        _uniqueIpsToday.clear();
+        _analyticsLastDate = today;
+    }
+    if (!_analyticsDB[today]) _analyticsDB[today] = { views: 0, unique: 0 };
+    _analyticsDB[today].views++;
+    if (!_uniqueIpsToday.has(ip)) {
+        _uniqueIpsToday.add(ip);
+        _analyticsDB[today].unique++;
+    }
+    // Persist every 10 views to avoid hammering disk
+    if (_analyticsDB[today].views % 10 === 0) saveDB(ANALYTICS_FILE, _analyticsDB);
+}
+
+// Flush to disk on process exit
+process.on('beforeExit', () => saveDB(ANALYTICS_FILE, _analyticsDB));
+
+const BOT_UA_RE = /bot|crawl|spider|slurp|facebookexternalhit|Twitterbot|LinkedInBot|WhatsApp|Googlebot|Bingbot|YandexBot|DuckDuckBot|Baiduspider|Sogou/i;
+const TRACKED_EXT_RE = /\.(html|htm)$|^\/$/;
+const SKIP_PREFIX_RE = /^\/api\//;
+
+app.use((req, res, next) => {
+    if (req.method === 'GET' && !SKIP_PREFIX_RE.test(req.path)) {
+        const p = req.path === '/' || TRACKED_EXT_RE.test(req.path);
+        if (p) {
+            const ua = req.headers['user-agent'] || '';
+            if (!BOT_UA_RE.test(ua)) {
+                const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip || 'unknown';
+                recordPageView(ip);
+            }
+        }
+    }
+    next();
+});
 
 // ==================== HELPER FUNCTIONS ====================
 
@@ -2797,6 +2844,30 @@ app.get('/api/admin/users', requireOwner, (req, res) => {
     }));
     
     res.json({ users });
+});
+
+/**
+ * GET /api/admin/analytics - Last 7 days of page views + unique visitors
+ */
+app.get('/api/admin/analytics', requireOwner, (req, res) => {
+    // Build the last 7 days array (oldest → newest)
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().split('T')[0];
+        days.push({
+            date: key,
+            views: (_analyticsDB[key] || {}).views || 0,
+            unique: (_analyticsDB[key] || {}).unique || 0
+        });
+    }
+    const todayKey = _analyticsToday();
+    res.json({
+        days,
+        todayViews: (_analyticsDB[todayKey] || {}).views || 0,
+        todayUnique: (_analyticsDB[todayKey] || {}).unique || 0
+    });
 });
 
 /**
