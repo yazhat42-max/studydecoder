@@ -626,14 +626,14 @@
                             <div style="font-size:2rem;font-weight:800;color:var(--text-primary);" id="analyticsTodayUnique">—</div>
                         </div>
                         <div style="flex:1;min-width:140px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:12px;padding:16px 20px;">
-                            <div style="font-size:0.75rem;font-weight:700;color:#22c55e;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">7-Day Total Views</div>
+                            <div style="font-size:0.75rem;font-weight:700;color:#22c55e;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Total Views (All Time)</div>
                             <div style="font-size:2rem;font-weight:800;color:var(--text-primary);" id="analyticsWeekTotal">—</div>
                         </div>
                     </div>
                     <!-- Bar chart -->
-                    <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border-color);border-radius:12px;padding:20px 16px 12px;">
-                        <div id="analyticsChart" style="display:flex;align-items:flex-end;gap:8px;height:120px;justify-content:space-around;"></div>
-                        <div id="analyticsLabels" style="display:flex;gap:8px;justify-content:space-around;margin-top:8px;"></div>
+                    <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border-color);border-radius:12px;padding:20px 16px 12px;overflow-x:auto;">
+                        <div id="analyticsChart" style="display:flex;align-items:flex-end;gap:6px;height:120px;min-width:100%;width:max-content;justify-content:flex-start;"></div>
+                        <div id="analyticsLabels" style="display:flex;gap:6px;margin-top:8px;min-width:100%;width:max-content;justify-content:flex-start;"></div>
                     </div>
                 </div>
             </div>
@@ -1062,24 +1062,28 @@
             const maxViews = Math.max(...aData.days.map(d => d.views), 1);
             const chartEl = document.getElementById('analyticsChart');
             const labelsEl = document.getElementById('analyticsLabels');
-            const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+            const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
             const todayKey = new Date().toISOString().split('T')[0];
+            const BAR_W = 36; // px per bar
 
             chartEl.innerHTML = aData.days.map(d => {
                 const pct = Math.max((d.views / maxViews) * 100, 2);
                 const isToday = d.date === todayKey;
-                const dayName = days[new Date(d.date + 'T12:00:00').getDay()];
-                return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:default;" title="${d.date}: ${d.views} views, ${d.unique} unique">
-                    <span style="font-size:0.7rem;color:${isToday ? '#667eea' : 'var(--text-secondary)'};font-weight:${isToday ? '700' : '400'}">${d.views}</span>
-                    <div style="width:100%;border-radius:6px 6px 0 0;background:${isToday ? 'linear-gradient(180deg,#667eea,#764ba2)' : 'rgba(102,126,234,0.35)'};height:${pct}%;min-height:3px;transition:height .4s ease;"></div>
+                return `<div style="flex:0 0 ${BAR_W}px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:default;" title="${d.date}: ${d.views} views, ${d.unique} unique">
+                    <span style="font-size:0.65rem;color:${isToday ? '#667eea' : 'var(--text-secondary)'};font-weight:${isToday ? '700' : '400'}">${d.views}</span>
+                    <div style="width:22px;border-radius:4px 4px 0 0;background:${isToday ? 'linear-gradient(180deg,#667eea,#764ba2)' : d.views > 0 ? 'rgba(102,126,234,0.45)' : 'rgba(255,255,255,0.07)'};height:${pct}%;min-height:3px;transition:height .4s ease;"></div>
                 </div>`;
             }).join('');
 
             labelsEl.innerHTML = aData.days.map(d => {
                 const isToday = d.date === todayKey;
-                const dayName = days[new Date(d.date + 'T12:00:00').getDay()];
-                return `<div style="flex:1;text-align:center;font-size:0.72rem;color:${isToday ? '#667eea' : 'var(--text-secondary)'};font-weight:${isToday ? '700' : '400'}">${isToday ? 'Today' : dayName}</div>`;
+                const dayName = dayNames[new Date(d.date + 'T12:00:00').getDay()];
+                return `<div style="flex:0 0 ${BAR_W}px;text-align:center;font-size:0.65rem;color:${isToday ? '#667eea' : 'var(--text-secondary)'};font-weight:${isToday ? '700' : '400'}">${isToday ? 'Today' : dayName}</div>`;
             }).join('');
+
+            // Scroll to the right so today is always visible
+            const wrap = chartEl.closest('div[style*="overflow-x"]');
+            if (wrap) setTimeout(() => { wrap.scrollLeft = wrap.scrollWidth; }, 50);
         }
         
         function renderOGList(redemptions) {

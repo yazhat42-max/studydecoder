@@ -2847,21 +2847,26 @@ app.get('/api/admin/users', requireOwner, (req, res) => {
 });
 
 /**
- * GET /api/admin/analytics - Last 7 days of page views + unique visitors
+ * GET /api/admin/analytics - Page views from April 25 2026 to today (grows each day)
  */
 app.get('/api/admin/analytics', requireOwner, (req, res) => {
-    // Build the last 7 days array (oldest → newest)
+    const LAUNCH_DATE = '2026-04-25';
+    const start = new Date(LAUNCH_DATE + 'T00:00:00Z');
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+
     const days = [];
-    for (let i = 6; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        const key = d.toISOString().split('T')[0];
+    const cursor = new Date(start);
+    while (cursor <= today) {
+        const key = cursor.toISOString().split('T')[0];
         days.push({
             date: key,
             views: (_analyticsDB[key] || {}).views || 0,
             unique: (_analyticsDB[key] || {}).unique || 0
         });
+        cursor.setUTCDate(cursor.getUTCDate() + 1);
     }
+
     const todayKey = _analyticsToday();
     res.json({
         days,
