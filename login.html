@@ -13,614 +13,334 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         :root {
             --primary: #6C63FF;
-            --primary-dark: #5a52e0;
             --primary-glow: rgba(108,99,255,0.3);
             --accent: #FF6584;
+            --bg: #08080d;
+            --bg-card: #111118;
+            --bg-elevated: #1a1a26;
+            --text: #ffffff;
+            --text-sec: rgba(255,255,255,0.6);
+            --text-muted: rgba(255,255,255,0.3);
+            --border: rgba(255,255,255,0.08);
             --success: #10b981;
             --error: #ef4444;
             --warning: #f59e0b;
-            --bg-light: rgba(255,255,255,0.04);
-            --bg-card: #1a1a26;
-            --bg-elevated: #1a1a26;
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255,255,255,0.6);
-            --text-muted: rgba(255,255,255,0.3);
-            --border: rgba(255,255,255,0.08);
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
-            --shadow: 0 4px 6px -1px rgba(0,0,0,0.4);
             --shadow-lg: 0 20px 60px rgba(0,0,0,0.6);
             --radius: 12px;
-            --radius-lg: 20px;
+            --radius-lg: 16px;
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #08080d;
-            color: var(--text-primary);
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
 
+        /* grain texture */
         body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
+            content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            opacity: 0.025;
-            mix-blend-mode: overlay;
+            opacity: 0.025; mix-blend-mode: overlay;
         }
-        
+
+        /* grid bg */
+        body::before {
+            content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+                linear-gradient(rgba(108,99,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(108,99,255,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+        }
+
         .login-container {
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
             animation: fadeInUp 0.6s ease-out;
             position: relative;
             z-index: 1;
         }
-        
+
+        /* glow behind card */
+        .login-container::before {
+            content: '';
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(108,99,255,0.1) 0%, transparent 70%);
+            border-radius: 50%; filter: blur(60px);
+            pointer-events: none; z-index: -1;
+        }
+
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-        
+
         .login-card {
             background: var(--bg-card);
-            border: 1px solid var(--border);
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(108,99,255,0.08);
-            padding: 36px 32px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            padding: 40px 36px;
             position: relative;
             overflow: hidden;
         }
-        
+
+        /* top shimmer line */
         .login-card::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(108,99,255,0.6), transparent);
         }
-        
-        .brand {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-        
+
+        .brand { text-align: center; margin-bottom: 32px; }
+
         .brand-logo {
-            width: 56px;
-            height: 56px;
-            margin-bottom: 14px;
-            border-radius: 14px;
-            box-shadow: 0 4px 20px rgba(108,99,255,0.3);
+            width: 64px; height: 64px;
+            margin-bottom: 16px; border-radius: 16px;
         }
-        
+
         .brand h1 {
             font-family: 'Poppins', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 8px;
+            font-size: 1.75rem; font-weight: 700;
+            color: var(--text); margin-bottom: 8px;
         }
-        
-        .brand p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-        
-        /* Tab Navigation */
+
+        .brand p { color: var(--text-sec); font-size: 0.95rem; }
+
+        /* Tabs */
         .auth-tabs {
             display: flex;
-            background: var(--bg-light);
-            border-radius: var(--radius);
-            padding: 4px;
-            margin-bottom: 24px;
-        }
-        
-        .auth-tab {
-            flex: 1;
-            padding: 12px 16px;
-            text-align: center;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            background: transparent;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .auth-tab.active {
-            background: rgba(108,99,255,0.15);
-            color: var(--primary);
-        }
-        
-        .auth-tab:hover:not(.active) {
-            color: var(--text-primary);
-        }
-        
-        /* Forms */
-        .auth-form {
-            display: none;
-        }
-        
-        .auth-form.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 0.95rem;
+            background: rgba(255,255,255,0.04);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            background: rgba(255,255,255,0.04);
-            color: var(--text-primary);
-            transition: all 0.2s ease;
-            font-family: inherit;
+            padding: 4px; margin-bottom: 24px;
         }
-        
+
+        .auth-tab {
+            flex: 1; padding: 11px 16px;
+            text-align: center; font-size: 0.88rem; font-weight: 600;
+            color: var(--text-muted);
+            background: transparent; border: none; border-radius: 9px;
+            cursor: pointer; transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .auth-tab.active {
+            background: rgba(108,99,255,0.15);
+            color: #a59fff;
+            box-shadow: inset 0 0 0 1px rgba(108,99,255,0.25);
+        }
+
+        .auth-tab:hover:not(.active) { color: var(--text-sec); }
+
+        /* Forms */
+        .auth-form { display: none; }
+        .auth-form.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .form-group { margin-bottom: 18px; }
+
+        .form-label {
+            display: block; font-size: 0.82rem; font-weight: 500;
+            color: var(--text-sec); margin-bottom: 7px; letter-spacing: 0.2px;
+        }
+
+        .form-input {
+            width: 100%; padding: 13px 16px;
+            font-size: 0.95rem;
+            border: 1px solid var(--border); border-radius: var(--radius);
+            background: rgba(255,255,255,0.04);
+            color: var(--text);
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
         .form-input:focus {
             outline: none;
             border-color: rgba(108,99,255,0.5);
-            box-shadow: 0 0 0 3px rgba(108,99,255,0.12);
-            background: rgba(255,255,255,0.06);
-        }
-        
-        .form-input::placeholder {
-            color: var(--text-secondary);
-        }
-        
-        .form-input.error {
-            border-color: var(--error);
-        }
-        
-        .password-wrapper {
-            position: relative;
-        }
-        
-        .password-toggle {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 4px;
-            font-size: 1.1rem;
-        }
-        
-        .password-strength {
-            height: 4px;
-            background: var(--border);
-            border-radius: 2px;
-            margin-top: 8px;
-            overflow: hidden;
-        }
-        
-        .password-strength-bar {
-            height: 100%;
-            width: 0;
-            transition: all 0.3s ease;
-            border-radius: 2px;
-        }
-        
-        .password-strength-bar.weak { width: 33%; background: var(--error); }
-        .password-strength-bar.medium { width: 66%; background: var(--warning); }
-        .password-strength-bar.strong { width: 100%; background: var(--success); }
-        
-        .form-helper {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 6px;
-        }
-        
-        .form-error {
-            font-size: 0.8rem;
-            color: var(--error);
-            margin-top: 6px;
-            display: none;
-        }
-        
-        .form-error.visible {
-            display: block;
-        }
-        
-        /* Checkbox */
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-        
-        .checkbox-input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-        
-        .checkbox-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        .checkbox-label a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-        
-        .checkbox-label a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Buttons */
-        .btn {
-            width: 100%;
-            padding: 14px 24px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 20px rgba(108,99,255,0.3);
-        }
-        
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(108,99,255,0.45);
-        }
-        
-        .btn-primary:active:not(:disabled) {
-            transform: translateY(0);
-        }
-        
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        .btn-loading::after {
-            content: '';
-            width: 18px;
-            height: 18px;
-            border: 2px solid transparent;
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Divider */
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 24px 0;
-            gap: 16px;
-        }
-        
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-        
-        .divider span {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        /* Google Button */
-        .google-btn-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        
-        .google-btn-custom {
-            width: 100%;
-            padding: 13px 20px;
-            font-size: 0.93rem;
-            font-weight: 500;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: var(--radius);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            transition: all 0.2s ease;
-            color: var(--text-primary);
-            font-family: inherit;
-        }
-        
-        .google-btn-custom:hover {
-            background: rgba(255,255,255,0.09);
-            border-color: rgba(255,255,255,0.22);
-            transform: translateY(-1px);
+            box-shadow: 0 0 0 3px rgba(108,99,255,0.1);
+            background: rgba(108,99,255,0.05);
         }
 
-        .google-btn-custom:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        .form-input::placeholder { color: var(--text-muted); }
+        .form-input.error { border-color: var(--error); }
+
+        .password-wrapper { position: relative; }
+
+        .password-toggle {
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none;
+            color: var(--text-muted); cursor: pointer;
+            padding: 4px; font-size: 1.1rem;
+            transition: color 0.2s;
         }
-        
-        .google-btn-custom svg {
-            flex-shrink: 0;
+        .password-toggle:hover { color: var(--text-sec); }
+
+        .password-strength {
+            height: 3px; background: var(--border);
+            border-radius: 2px; margin-top: 8px; overflow: hidden;
         }
-        
-        /* OG Tester Section */
-        .og-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            display: none;
+        .password-strength-bar {
+            height: 100%; width: 0;
+            transition: all 0.3s ease; border-radius: 2px;
         }
-        
-        .og-section.visible {
-            display: block;
+        .password-strength-bar.weak   { width: 33%; background: var(--error); }
+        .password-strength-bar.medium { width: 66%; background: var(--warning); }
+        .password-strength-bar.strong { width: 100%; background: var(--success); }
+
+        .form-helper { font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; }
+        .form-error  { font-size: 0.8rem; color: var(--error);      margin-top: 6px; display: none; }
+        .form-error.visible { display: block; }
+
+        /* Checkbox */
+        .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+        .checkbox-input  { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+        .checkbox-label  { font-size: 0.875rem; color: var(--text-sec); }
+        .checkbox-label a { color: var(--primary); text-decoration: none; }
+        .checkbox-label a:hover { text-decoration: underline; }
+
+        /* Buttons */
+        .btn {
+            width: 100%; padding: 14px 24px;
+            font-size: 0.95rem; font-weight: 600;
+            border: none; border-radius: 50px;
+            cursor: pointer; transition: all 0.2s ease;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            font-family: 'Inter', sans-serif;
         }
-        
-        .og-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            cursor: pointer;
-            padding: 8px;
-            transition: color 0.2s ease;
+
+        .btn-primary {
+            background: var(--primary); color: white;
+            box-shadow: 0 4px 20px rgba(108,99,255,0.35);
         }
-        
-        .og-toggle:hover {
-            color: var(--primary);
-        }
-        
-        .og-form {
-            margin-top: 16px;
-            display: none;
-        }
-        
-        .og-form.visible {
-            display: block;
-        }
-        
-        .og-input-wrapper {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .og-input-wrapper .form-input {
-            flex: 1;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-            text-align: center;
-        }
-        
-        .og-submit {
-            padding: 14px 24px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .og-submit:hover:not(:disabled) {
+        .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4);
+            box-shadow: 0 8px 28px rgba(108,99,255,0.5);
         }
-        
-        .og-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+        .btn-primary:active:not(:disabled) { transform: translateY(0); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-loading::after {
+            content: ''; width: 18px; height: 18px;
+            border: 2px solid transparent; border-top-color: white;
+            border-radius: 50%; animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Divider */
+        .divider { display: flex; align-items: center; margin: 22px 0; gap: 16px; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .divider span { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Google Button */
+        .google-btn-custom {
+            width: 100%; padding: 13px 24px;
+            font-size: 0.95rem; font-weight: 500;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border); border-radius: 50px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            transition: all 0.2s ease; color: var(--text);
+            font-family: 'Inter', sans-serif;
+        }
+        .google-btn-custom:hover {
+            background: rgba(255,255,255,0.09);
+            border-color: rgba(255,255,255,0.16);
+        }
+        .google-btn-custom img { width: 20px; height: 20px; }
+
+        /* OG Section */
+        .og-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); display: none; }
+        .og-section.visible { display: block; }
+        .og-toggle {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            color: var(--text-muted); font-size: 0.875rem;
+            cursor: pointer; padding: 8px; transition: color 0.2s ease;
+        }
+        .og-toggle:hover { color: var(--primary); }
+        .og-form { margin-top: 16px; display: none; }
+        .og-form.visible { display: block; }
+        .og-input-wrapper { display: flex; gap: 12px; }
+        .og-input-wrapper .form-input { flex: 1; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; text-align: center; }
+        .og-submit {
+            padding: 13px 20px;
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            color: white; border: none; border-radius: var(--radius);
+            font-weight: 600; cursor: pointer; transition: all 0.2s ease;
         }
-        
-        /* Alert Messages */
+        .og-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(240,147,251,0.4); }
+        .og-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 600;
+        }
+
+        /* Alerts */
         .alert {
-            padding: 14px 16px;
-            border-radius: var(--radius);
-            margin-bottom: 20px;
-            font-size: 0.875rem;
-            display: none;
-            align-items: center;
-            gap: 10px;
+            padding: 13px 16px; border-radius: var(--radius);
+            margin-bottom: 20px; font-size: 0.875rem;
+            display: none; align-items: center; gap: 10px;
         }
-        
-        .alert.visible {
-            display: flex;
-        }
-        
-        .alert-error {
-            background: rgba(239,68,68,0.1);
-            color: #fca5a5;
-            border: 1px solid rgba(239,68,68,0.25);
-        }
-        
-        .alert-success {
-            background: rgba(16,185,129,0.1);
-            color: #6ee7b7;
-            border: 1px solid rgba(16,185,129,0.25);
-        }
-        
-        .alert-icon {
-            font-size: 1.2rem;
-        }
-        
-        /* Forgot Password Link */
-        .forgot-link {
-            text-align: right;
-            margin-top: -12px;
-            margin-bottom: 20px;
-        }
-        
-        .forgot-link a {
-            font-size: 0.875rem;
-            color: var(--primary);
-            text-decoration: none;
-        }
-        
-        .forgot-link a:hover {
-            text-decoration: underline;
-        }
-        
+        .alert.visible { display: flex; }
+        .alert-error   { background: rgba(239,68,68,0.1);  color: #fca5a5; border: 1px solid rgba(239,68,68,0.2); }
+        .alert-success { background: rgba(16,185,129,0.1); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.2); }
+        .alert-icon { font-size: 1.2rem; }
+
+        /* Forgot Password */
+        .forgot-link { text-align: right; margin-top: -10px; margin-bottom: 18px; }
+        .forgot-link a { font-size: 0.85rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .forgot-link a:hover { color: var(--primary); }
+
         /* Footer */
-        .login-footer {
-            text-align: center;
-            margin-top: 24px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-        }
-        
-        .login-footer p {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        .login-footer a {
-            color: var(--primary);
-            font-weight: 500;
-            text-decoration: none;
-        }
-        
-        .login-footer a:hover {
-            text-decoration: underline;
-        }
-        
+        .login-footer { text-align: center; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--border); }
+        .login-footer p { font-size: 0.875rem; color: var(--text-muted); }
+        .login-footer a { color: var(--primary); font-weight: 500; text-decoration: none; }
+        .login-footer a:hover { text-decoration: underline; }
+
         /* Back to Home */
-        .back-home {
-            text-align: center;
-            margin-top: 24px;
-        }
-        
+        .back-home { text-align: center; margin-top: 22px; }
         .back-home a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.87rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            color: var(--text-muted); text-decoration: none; font-size: 0.88rem;
+            display: inline-flex; align-items: center; gap: 6px;
             transition: color 0.2s ease;
         }
-        
-        .back-home a:hover {
-            color: var(--text-primary);
-        }
-        
-        /* Mobile Responsive */
+        .back-home a:hover { color: var(--text-sec); }
+
         @media (max-width: 480px) {
-            .login-card {
-                padding: 32px 24px;
-            }
-            
-            .brand h1 {
-                font-size: 1.5rem;
-            }
-            
-            .og-input-wrapper {
-                flex-direction: column;
-            }
+            .login-card { padding: 32px 22px; }
+            .brand h1 { font-size: 1.5rem; }
+            .og-input-wrapper { flex-direction: column; }
         }
-        
+
         /* Password Requirements */
         .password-requirements {
-            margin-top: 10px;
-            padding: 12px;
-            background: rgba(255,255,255,0.03);
+            margin-top: 10px; padding: 12px;
+            background: rgba(255,255,255,0.04);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.8rem;
+            border-radius: 8px; font-size: 0.8rem;
         }
-        
-        .password-requirements p {
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-        }
-        
-        .password-requirements ul {
-            list-style: none;
-            display: grid;
-            gap: 4px;
-        }
-        
-        .password-requirements li {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-secondary);
-        }
-        
-        .password-requirements li.valid {
-            color: var(--success);
-        }
-        
-        .req-icon {
-            font-size: 0.9rem;
-        }
+        .password-requirements p { color: var(--text-muted); margin-bottom: 6px; }
+        .password-requirements ul { list-style: none; display: grid; gap: 4px; }
+        .password-requirements li { display: flex; align-items: center; gap: 6px; color: var(--text-muted); }
+        .password-requirements li.valid { color: var(--success); }
+        .req-icon { font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -674,7 +394,7 @@
                 <div class="divider"><span>or</span></div>
                 
                 <button type="button" class="google-btn-custom" id="googleSignInBtn">
-                    <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    <img src="https://www.google.com/favicon.ico" alt="Google">
                     Continue with Google
                 </button>
             </div>
@@ -719,7 +439,7 @@
                 <div class="divider"><span>or</span></div>
                 
                 <button type="button" class="google-btn-custom" id="googleSignUpBtn">
-                    <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    <img src="https://www.google.com/favicon.ico" alt="Google">
                     Sign up with Google
                 </button>
             </div>
@@ -731,7 +451,15 @@
             <a href="index.html">&#x2190; Back to Home</a>
         </div>
     </div>
-
+    
+    <!-- Hidden Google Sign-In -->
+    <div id="g_id_onload"
+         data-client_id="875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com"
+         data-callback="handleGoogleResponse"
+         data-auto_prompt="false"
+         style="display: none;">
+    </div>
+    
     <script>
         // ==================== Configuration ====================
         const API_BASE = '';
@@ -739,6 +467,11 @@
         
         // ==================== State ====================
         let isLoading = false;
+        let googleInitialized = false;
+        let googleTokenClient = null;
+        let oneTapAvailable = false;
+        let googleInitRetries = 0;
+        const MAX_GOOGLE_RETRIES = 6;
         
         // ==================== DOM Elements ====================
         const alertError = document.getElementById('alertError');
@@ -868,22 +601,9 @@
         
         // ==================== Initialization ====================
         document.addEventListener('DOMContentLoaded', async () => {
-            // Capture referral code from URL
+            // Capture referral code from URL and store for use during registration
             const _refParam = new URLSearchParams(window.location.search).get('ref');
             if (_refParam) localStorage.setItem('sd_pendingRef', _refParam.trim().toUpperCase());
-
-            // Show error message from Google OAuth redirect callback
-            const _errParam = new URLSearchParams(window.location.search).get('error');
-            if (_errParam) {
-                const errMsgs = {
-                    invalid_state: 'Google sign-in failed (security check). Please try again.',
-                    no_code: 'Google sign-in was cancelled.',
-                    no_token: 'Google sign-in failed. Please try again.',
-                    invalid_token: 'Could not verify your Google account. Please try again.',
-                    auth_failed: 'Google sign-in failed. Please try again or use email and password.'
-                };
-                showError(errMsgs[_errParam] || 'Google sign-in failed. Please try again.');
-            }
 
             // Check if already logged in
             try {
@@ -894,19 +614,122 @@
                     return;
                 }
             } catch (e) {}
+            
+            // Initialize Google Sign-In (optional — works if not blocked)
+            initializeGoogleSignIn();
         });
         
-        // ==================== Google Sign-In (server-side redirect — works with all browsers/extensions) ====================
-        function triggerGoogleSignIn(btn) {
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" style="animation:spin 0.7s linear infinite"><circle cx="12" cy="12" r="10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/><path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/></svg> Connecting…';
+        function initializeGoogleSignIn() {
+            if (typeof google !== 'undefined' && google.accounts) {
+                try {
+                    google.accounts.id.initialize({
+                        client_id: GOOGLE_CLIENT_ID,
+                        callback: handleGoogleResponse,
+                        auto_select: false,
+                        cancel_on_tap_outside: true
+                    });
+                    oneTapAvailable = true;
+                } catch (e) {
+                    console.log('One Tap not available:', e);
+                }
+                
+                if (google.accounts.oauth2) {
+                    googleTokenClient = google.accounts.oauth2.initTokenClient({
+                        client_id: GOOGLE_CLIENT_ID,
+                        scope: 'email profile openid',
+                        callback: handleOAuthTokenResponse,
+                    });
+                }
+                
+                googleInitialized = true;
+            } else {
+                googleInitRetries++;
+                if (googleInitRetries < MAX_GOOGLE_RETRIES) {
+                    setTimeout(initializeGoogleSignIn, 500);
+                } else {
+                    // Google blocked — hide Google buttons, email/password still works fine
+                    document.querySelectorAll('.google-btn-custom').forEach(btn => {
+                        btn.style.display = 'none';
+                    });
+                    document.querySelectorAll('.divider').forEach(d => {
+                        d.style.display = 'none';
+                    });
+                }
             }
-            window.location.href = '/api/auth/google-redirect';
         }
-
-        document.getElementById('googleSignInBtn').addEventListener('click', function() { triggerGoogleSignIn(this); });
-        document.getElementById('googleSignUpBtn').addEventListener('click', function() { triggerGoogleSignIn(this); });
+        
+        // ==================== Google Sign-In ====================
+        function triggerGoogleSignIn() {
+            if (!googleInitialized) {
+                showError('Google Sign-In is blocked by your browser. Use email and password instead.');
+                return;
+            }
+            if (oneTapAvailable) {
+                try {
+                    google.accounts.id.prompt((notification) => {
+                        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                            if (googleTokenClient) googleTokenClient.requestAccessToken();
+                            else showError('Google Sign-In unavailable. Use email and password instead.');
+                        }
+                    });
+                } catch (e) {
+                    if (googleTokenClient) googleTokenClient.requestAccessToken();
+                }
+            } else if (googleTokenClient) {
+                googleTokenClient.requestAccessToken();
+            } else {
+                showError('Google Sign-In unavailable. Use email and password instead.');
+            }
+        }
+        
+        document.getElementById('googleSignInBtn').addEventListener('click', triggerGoogleSignIn);
+        document.getElementById('googleSignUpBtn').addEventListener('click', triggerGoogleSignIn);
+        
+        async function handleOAuthTokenResponse(tokenResponse) {
+            if (isLoading || !tokenResponse.access_token) return;
+            setLoading(true);
+            hideAlerts();
+            try {
+                const res = await fetch('/api/auth/google-oauth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ accessToken: tokenResponse.access_token })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Authentication failed');
+                showSuccess('Signed in! Redirecting...');
+                await redirectAfterLogin(data);
+            } catch (err) {
+                showError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+        
+        async function handleGoogleResponse(response) {
+            if (isLoading) return;
+            setLoading(true);
+            hideAlerts();
+            try {
+                const res = await fetch('/api/auth/google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ idToken: response.credential })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Authentication failed');
+                showSuccess('Signed in! Redirecting...');
+                await redirectAfterLogin(data);
+            } catch (err) {
+                showError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+        
+        window.handleGoogleResponse = handleGoogleResponse;
         
         // ==================== Helpers ====================
         function showError(message) {
@@ -995,22 +818,23 @@
     </script>
 
     <!-- Trial Welcome Overlay (shown immediately after registration) -->
-    <div id="trialWelcomeOverlay" style="display:none;position:fixed;inset:0;background:rgba(8,8,13,0.97);z-index:99999;align-items:center;justify-content:center;padding:20px;">
-        <div style="background:#1a1a26;border:1px solid rgba(108,99,255,0.2);border-radius:24px;padding:40px 36px;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.7),0 0 80px rgba(108,99,255,0.06);">
+    <div id="trialWelcomeOverlay" style="display:none;position:fixed;inset:0;background:#08080d;z-index:99999;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:#111118;border:1px solid rgba(255,255,255,0.08);border-radius:24px;padding:40px 36px;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.6);position:relative;overflow:hidden;">
+            <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(108,99,255,0.6),transparent);"></div>
             <div style="font-size:3rem;margin-bottom:12px;">&#x1F389;</div>
-            <h1 style="font-size:1.6rem;font-weight:800;color:#ffffff;margin-bottom:8px;">Your free trial has started<span id="trialWelcomeName" style="color:#6C63FF;"></span>!</h1>
-            <p style="color:rgba(255,255,255,0.6);font-size:0.95rem;margin-bottom:20px;">You have <strong style="color:#6C63FF;">3 days of unlimited access</strong> to all 7 tools.</p>
-            <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.15);border-radius:12px;padding:16px;margin-bottom:20px;text-align:left;">
-                <p style="font-size:0.82rem;font-weight:700;color:#6C63FF;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">&#x23F3; Trial ends: <span id="trialEndDate" style="color:rgba(255,255,255,0.85);text-transform:none;font-weight:500;"></span></p>
+            <h1 style="font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:8px;">Your free trial has started<span id="trialWelcomeName" style="color:#a59fff;"></span>!</h1>
+            <p style="color:rgba(255,255,255,0.55);font-size:0.95rem;margin-bottom:20px;">You have <strong style="color:#a59fff;">3 days of unlimited access</strong> to all 7 tools.</p>
+            <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:12px;padding:16px;margin-bottom:20px;text-align:left;">
+                <p style="font-size:0.82rem;font-weight:700;color:#a59fff;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">&#x23F3; Trial ends: <span id="trialEndDate" style="color:rgba(255,255,255,0.8);text-transform:none;font-weight:600;"></span></p>
                 <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;">
-                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> All 7 AI tools unlocked</li>
-                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> Unlimited uses during trial</li>
-                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> Practice exams, syllabus decoder, AI tutor</li>
-                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> No card required</li>
+                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> All 7 AI tools unlocked</li>
+                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> Unlimited uses during trial</li>
+                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> Practice exams, syllabus decoder, AI tutor</li>
+                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> No card required</li>
                 </ul>
             </div>
-            <a href="/index.html#tools" onclick="this.textContent='Loading…';this.style.pointerEvents='none';" style="display:block;padding:15px 24px;background:#6C63FF;color:#fff;border-radius:12px;text-decoration:none;font-weight:700;font-size:1rem;margin-bottom:12px;box-shadow:0 4px 20px rgba(108,99,255,0.4);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Start Exploring Tools &#x2192;</a>
-            <p style="font-size:0.78rem;color:rgba(255,255,255,0.35);">After 3 days you'll have 10 free uses/day forever, or upgrade to keep unlimited.</p>
+            <a href="/index.html#tools" onclick="this.textContent='Loading…';this.style.pointerEvents='none';" style="display:block;padding:15px 24px;background:#6C63FF;color:#fff;border-radius:50px;text-decoration:none;font-weight:700;font-size:1rem;margin-bottom:12px;box-shadow:0 4px 20px rgba(108,99,255,0.4);transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(108,99,255,0.5)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 20px rgba(108,99,255,0.4)'">Start Exploring Tools &#x2192;</a>
+            <p style="font-size:0.78rem;color:rgba(255,255,255,0.3);">After 3 days you'll have 10 free uses/day forever, or upgrade to keep unlimited.</p>
         </div>
     </div>
 </body>
