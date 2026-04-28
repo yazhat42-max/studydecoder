@@ -806,7 +806,7 @@ async function autoSyncStripeSubscription(userId, email) {
         );
         
         if (completedSession) {
-            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 500 ? 'monthly' : completedSession.amount_total <= 750 ? 'exam_sprint' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
+            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 1000 ? 'monthly' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
             const existingUser = getUser(userId);
             
             // If already valid but plan is wrong, correct it
@@ -816,7 +816,6 @@ async function autoSyncStripeSubscription(userId, email) {
                     const sessionDate = new Date(completedSession.created * 1000);
                     const correctedExp = new Date(sessionDate);
                     if (plan === 'lifetime') correctedExp.setFullYear(correctedExp.getFullYear() + 100);
-                    else if (plan === 'exam_sprint') correctedExp.setDate(correctedExp.getDate() + 21);
                     else if (plan === 'yearly') correctedExp.setFullYear(correctedExp.getFullYear() + 1);
                     else correctedExp.setMonth(correctedExp.getMonth() + 1);
                     upsertUser(userId, { plan, expiresAt: correctedExp.toISOString() });
@@ -831,8 +830,6 @@ async function autoSyncStripeSubscription(userId, email) {
             const expiration = new Date(sessionDate);
             if (plan === 'lifetime') {
                 expiration.setFullYear(expiration.getFullYear() + 100);
-            } else if (plan === 'exam_sprint') {
-                expiration.setDate(expiration.getDate() + 21);
             } else if (plan === 'yearly') {
                 expiration.setFullYear(expiration.getFullYear() + 1);
             } else {
@@ -2172,7 +2169,7 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
     
     try {
         const { plan } = req.body;
-        if (!['monthly', 'yearly', 'lifetime', 'exam_sprint'].includes(plan)) {
+        if (!['monthly', 'yearly', 'lifetime'].includes(plan)) {
             return res.status(400).json({ error: 'Invalid plan' });
         }
         
@@ -2220,30 +2217,16 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
                 },
                 quantity: 1
             }];
-        } else if (plan === 'exam_sprint') {
-            // One-time 21-day access — perfect for exam periods
+        } else if (plan === 'yearly') {
             sessionParams.mode = 'payment';
             sessionParams.line_items = [{
                 price_data: {
                     currency: 'aud',
                     product_data: {
-                        name: 'Study Decoder — Exam Sprint (21 Days)',
-                        description: '21 days of unlimited access, one-time payment'
+                        name: 'Study Decoder Premium — Yearly Access',
+                        description: '12 months of unlimited access'
                     },
-                    unit_amount: 699 // $6.99 AUD
-                },
-                quantity: 1
-            }];
-        } else if (plan === 'yearly') {
-            sessionParams.mode = 'subscription';
-            sessionParams.line_items = [{
-                price_data: {
-                    currency: 'aud',
-                    product_data: {
-                        name: 'Study Decoder Premium — Annual',
-                    },
-                    unit_amount: 3600, // $36.00 AUD
-                    recurring: { interval: 'year' }
+                    unit_amount: 5000 // $50.00 AUD
                 },
                 quantity: 1
             }];
@@ -2409,12 +2392,10 @@ app.post('/api/verify-payment', requireAuth, async (req, res) => {
             s.payment_status === 'paid' || s.payment_status === 'no_payment_required'
         );
         if (completedSession) {
-            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 500 ? 'monthly' : completedSession.amount_total <= 750 ? 'exam_sprint' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
+            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 1000 ? 'monthly' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
             const expiration = new Date();
             if (plan === 'lifetime') {
                 expiration.setFullYear(expiration.getFullYear() + 100);
-            } else if (plan === 'exam_sprint') {
-                expiration.setDate(expiration.getDate() + 21);
             } else if (plan === 'yearly') {
                 expiration.setFullYear(expiration.getFullYear() + 1);
             } else {
@@ -2469,8 +2450,6 @@ app.post('/api/subscribe', requireAuth, (req, res) => {
     const expiration = new Date();
     if (plan === 'lifetime') {
         expiration.setFullYear(expiration.getFullYear() + 100);
-    } else if (plan === 'exam_sprint') {
-        expiration.setDate(expiration.getDate() + 21);
     } else if (plan === 'yearly') {
         expiration.setFullYear(expiration.getFullYear() + 1);
     } else {
@@ -2566,7 +2545,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
                 const session = event.data.object;
                 let userId = session.metadata?.userId;
                 // Detect plan from metadata, or fallback to amount-based detection
-                const plan = session.metadata?.plan || (session.amount_total <= 500 ? 'monthly' : session.amount_total <= 750 ? 'exam_sprint' : session.amount_total <= 5000 ? 'lifetime' : 'yearly');
+                const plan = session.metadata?.plan || (session.amount_total <= 1000 ? 'monthly' : session.amount_total <= 5000 ? 'lifetime' : 'yearly');
 
                 // ── Day Pass ──
                 if (plan === 'daypass') {
@@ -2602,8 +2581,6 @@ app.post('/api/stripe-webhook', async (req, res) => {
                     const expiration = new Date();
                     if (plan === 'lifetime') {
                         expiration.setFullYear(expiration.getFullYear() + 100);
-                    } else if (plan === 'exam_sprint') {
-                        expiration.setDate(expiration.getDate() + 21);
                     } else if (plan === 'yearly') {
                         expiration.setFullYear(expiration.getFullYear() + 1);
                     } else {

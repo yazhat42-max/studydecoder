@@ -237,18 +237,6 @@ window.Upsell = (function () {
                         </button>
                     </div>
 
-                    <!-- EXAM SPRINT (secondary card) -->
-                    <button id="sdUMSprintBtn" style="width:100%;padding:16px 20px;background:rgba(16,185,129,0.08);color:#fff;border:1px solid rgba(16,185,129,0.3);border-radius:12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;margin-bottom:10px;transition:border-color .15s;" onmouseover="this.style.borderColor='rgba(16,185,129,0.6)'" onmouseout="this.style.borderColor='rgba(16,185,129,0.3)'">
-                        <div style="text-align:left;">
-                            <div style="font-weight:700;font-size:0.9rem;">⚡ Exam Sprint <span style="font-size:0.72rem;background:rgba(16,185,129,0.15);color:#34d399;border-radius:6px;padding:2px 8px;margin-left:6px;font-weight:600;">21 DAYS</span></div>
-                            <div style="font-size:0.75rem;color:rgba(255,255,255,0.45);margin-top:2px;">Full access for one exam period — no ongoing commitment</div>
-                        </div>
-                        <div style="text-align:right;flex-shrink:0;margin-left:16px;">
-                            <div style="font-size:1.4rem;font-weight:800;color:#34d399;">$6.99</div>
-                            <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);">one-time</div>
-                        </div>
-                    </button>
-
                     <!-- MONTHLY FOOTNOTE (not a card) -->
                     <p style="color:rgba(255,255,255,0.3);font-size:0.78rem;margin-bottom:14px;">
                         Not sure yet? <button id="sdUMMonthlyBtn" style="background:none;border:none;color:#6C63FF;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">$5/month</button> — cancel anytime.
@@ -315,7 +303,6 @@ window.Upsell = (function () {
                 } catch(e) { alert('Error starting checkout. Please try again.'); }
             };
             document.getElementById('sdUMLifetimeBtn').onclick = () => checkout('lifetime');
-            document.getElementById('sdUMSprintBtn').onclick = () => checkout('exam_sprint');
             document.getElementById('sdUMMonthlyBtn').onclick = () => checkout('monthly');
             document.getElementById('sdUMDayPassBtn').onclick = async () => {
                 const btn = document.getElementById('sdUMDayPassBtn');
