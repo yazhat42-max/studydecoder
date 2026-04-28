@@ -119,8 +119,8 @@
 
         /* ── SALE BANNER ── */
         .sale-banner {
-            background:linear-gradient(135deg,#ff6b35 0%,#f7c948 50%,#ff6b35 100%);
-            background-size:200% 200%; animation:salePulse 3s ease-in-out infinite;
+            background:linear-gradient(135deg,rgba(108,99,255,0.95) 0%,rgba(139,92,246,0.9) 100%);
+            background-size:200% 200%; animation:salePulse 4s ease-in-out infinite;
             color:#fff; text-align:center; padding:0.9rem 5%; font-weight:600;
             font-size:1.05rem; letter-spacing:0.3px; cursor:pointer; position:relative; z-index:999;
         }
@@ -646,7 +646,7 @@
 
                 <!-- TOP HALF: Motto -->
                 <div class="hero-motto">
-                    <div class="hero-badge">� AI Chat Tutor · 7 Study Tools · Built for HSC</div>
+                    <div class="hero-badge">🤖 AI Tutor · Official NESA Syllabuses · Built for HSC</div>
                     <div class="motto-stack">
                         <span class="motto-line motto-line-1">make study</span>
                         <span class="motto-line motto-line-2">actually <span class="motto-fun">fun</span></span>
@@ -661,7 +661,7 @@
                         <a href="#tools" class="btn btn-primary btn-glow">Keep Studying →</a>
                         <a href="#tools" class="btn btn-ghost">All Tools ↓</a>
                     </div>
-                    <p class="hero-trust" id="heroTrustLine">🇦🇺 NSW curriculum &nbsp;·&nbsp; Free to start &nbsp;·&nbsp; No card required</p>
+                    <p class="hero-trust" id="heroTrustLine">🇦🇺 Official NESA syllabuses &nbsp;·&nbsp; Free to start &nbsp;·&nbsp; No card required</p>
                     <div id="heroSignupsLine" style="display:none;margin-top:1rem;"></div>
                 </div>
 
@@ -1262,9 +1262,14 @@
         <div class="stats-inner">
             <div class="stat-item reveal stagger-1"><div class="stat-number">45</div><div class="stat-label">HSC Subjects Covered</div></div>
             <div class="stat-item reveal stagger-2"><div class="stat-number">7</div><div class="stat-label">AI-Powered Tools</div></div>
-            <div class="stat-item reveal stagger-3"><div class="stat-number">100%</div><div class="stat-label">NESA Curriculum Aligned</div></div>
+            <div class="stat-item reveal stagger-3"><div class="stat-number">100%</div><div class="stat-label">Official NESA Curriculum</div></div>
         </div>
     </section>
+
+    <!-- NESA Trust Bar -->
+    <div style="padding:0 5% 2.8rem;text-align:center;">
+        <p style="display:inline-flex;align-items:center;gap:8px;background:rgba(108,99,255,0.06);border:1px solid rgba(108,99,255,0.14);border-radius:50px;padding:8px 20px;font-size:0.82rem;color:var(--text-muted);margin:0;">📋 <span>All content is built directly from <strong style="color:var(--text-sec);">official NESA-published syllabus documents</strong> — the same ones used by NSW teachers and schools.</span></p>
+    </div>
 
     <!-- Features Section (Why Choose Us) -->
     <section class="features">
@@ -1281,9 +1286,9 @@
                 <p>Submit any answer and get a band verdict plus specific, actionable feedback in seconds. Track your scores over time and watch your weakness radar update after every session.</p>
             </div>
             <div class="feature-card reveal stagger-3">
-                <div class="feature-icon">📊</div>
-                <h3>Built Around Your Actual Syllabus</h3>
-                <p>Every tool is aligned to the NSW NESA curriculum. Decode any syllabus dot-point into what's actually examined, practise 45 subjects worth of questions, and build a study plan around your real exam schedule.</p>
+                <div class="feature-icon">�</div>
+                <h3>Built Directly From Official Syllabuses</h3>
+                <p>Every tool is built directly from <strong>official NESA-published syllabus documents</strong> — the same ones your teachers and schools use. Decode any dot-point into what's actually examined, practise across 45 HSC subjects, and study exactly what NESA tests.</p>
             </div>
         </div>
     </section>
@@ -1331,7 +1336,7 @@
             </div>
             <!-- Lifetime -->
             <div class="reveal stagger-3" style="flex:1;min-width:260px;max-width:300px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;">
-                <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap;">🔥 LIMITED DEAL</div>
+                <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap;">First 100 Users Only</div>
                 <div style="font-size:0.8rem;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem;">Lifetime</div>
                 <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:2px;">
                     <span style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;">$37.50</span>
@@ -1344,14 +1349,14 @@
                     <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Covers all future tools</li>
                     <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Early adopter OG badge</li>
                 </ul>
-                <button onclick="showUpgradeModal()" style="display:block;width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Grab Lifetime Deal →</button>
+                <button onclick="showUpgradeModal()" style="display:block;width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(108,99,255,0.3);transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Get Lifetime Access →</button>
             </div>
         </div>
         <!-- Day Pass Row -->
         <div class="reveal" style="max-width:1000px;margin:1.5rem auto 0;padding:0 0.5rem;">
-            <div style="background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(239,68,68,0.06));border:1px solid rgba(245,158,11,0.3);border-radius:16px;padding:1.25rem 1.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+            <div style="background:rgba(108,99,255,0.05);border:1px solid rgba(108,99,255,0.2);border-radius:16px;padding:1.25rem 1.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
                 <div>
-                    <div style="font-size:0.75rem;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Day Pass</div>
+                    <div style="font-size:0.75rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Day Pass</div>
                     <div style="font-size:1.4rem;font-weight:800;color:var(--text);display:inline-flex;align-items:baseline;gap:8px;">$1.99 <span style="font-size:0.85rem;font-weight:500;color:var(--text-muted);">one-time · No subscription. No commitment. Full access for 24 hrs — perfect before an exam.</span></div>
                 </div>
                 <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
@@ -1360,7 +1365,7 @@
                         <li style="font-size:0.85rem;color:var(--text-sec);display:flex;align-items:center;gap:6px;"><span style="color:#22c55e;">✓</span> All 6 AI tools unlocked</li>
                         <li style="font-size:0.85rem;color:var(--text-sec);display:flex;align-items:center;gap:6px;"><span style="color:#22c55e;">✓</span> No recurring charge</li>
                     </ul>
-                    <button id="dayPassPricingBtn" onclick="buyDayPass()" style="padding:12px 28px;border:none;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Get Day Pass →</button>
+                    <button id="dayPassPricingBtn" onclick="buyDayPass()" style="padding:12px 28px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:0 4px 16px rgba(108,99,255,0.3);transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Get Day Pass →</button>
                 </div>
             </div>
         </div>
@@ -1462,11 +1467,11 @@
             <div style="display: flex; gap: 16px; align-items: stretch; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;">
                 <!-- DEAL CARD (left, bigger) -->
                 <button id="upgradeYearlyBtn" onclick="createCheckout('lifetime')" style="flex: 1.3; min-width: 240px; max-width: 320px; padding: 28px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(102,126,234,0.35); cursor: pointer; font-family:inherit;">
-                    <span style="position: absolute; top: -12px; background: #f59e0b; color: #000; font-weight: 700; font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; letter-spacing: 0.5px;">🔥 LIMITED DEAL</span>
+                    <span style="position: absolute; top: -12px; background: linear-gradient(135deg,var(--primary),#8b5cf6); color: #fff; font-weight: 700; font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; letter-spacing: 0.5px;">First 100 Users Only</span>
                     <span style="font-size: 0.85rem; opacity: 0.85; margin-top: 8px;">One-Time Payment — Lifetime Access</span>
                     <span style="font-size: 2.2rem; font-weight: 800; margin: 8px 0 4px;">$37.50</span>
                     <span style="text-decoration: line-through; opacity: 0.6; font-size: 1rem;">$5/month</span>
-                    <span style="font-size: 0.8rem; opacity: 0.8; margin-top: 8px;">Offer ends soon — pay once, use forever</span>
+                    <span style="font-size: 0.8rem; opacity: 0.8; margin-top: 8px;">First 100 users only — pay once, use forever</span>
                 </button>
                 <!-- MONTHLY CARD (right, smaller) -->
                 <button onclick="createCheckout('monthly')" style="flex: 0.9; min-width: 200px; max-width: 260px; padding: 24px 18px; background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; font-family:inherit;">
@@ -1604,7 +1609,7 @@
         if (user.subscribed && user.plan === 'day_pass') {
             // Already on day pass → upsell the lifetime deal
             if (banner) {
-                banner.innerHTML = '🔥 <strong>First 100 Users Deal</strong> — Upgrade to lifetime for just <strong>$37.50</strong>! Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="showUpgradeModal(); return false;">Grab yours →</a>';
+                banner.innerHTML = '⭐ <strong>First 100 Users Deal</strong> — Upgrade to lifetime for just <strong>$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="showUpgradeModal(); return false;">See the deal →</a>';
                 banner.onclick = function() { showUpgradeModal(); };
                 banner.style.display = '';
             }
@@ -2293,11 +2298,11 @@
         const modal = document.getElementById('onboardingModal');
         if (!modal) return;
 
-        // Pick recommended tools based on subject categories
-        const scienceIds = ['biology','chemistry','physics','earth-enviro','science-extension'];
-        const mathIds = ['math-advanced','math-ext1','math-ext2','math-standard'];
-        const humanitiesIds = ['modern-history','ancient-history','history-extension','geography','legal-studies','business-studies','economics','society-culture','religion1','religion2'];
-        const englishIds = ['eng-advanced','eng-standard','eng-ext1','eng-ext2','eng-eald','eng-studies'];
+        // Pick recommended tools based on subject categories (IDs must match seniorSubjects array)
+        const scienceIds = ['biology','chemistry','physics','earth-environmental-science','science-extension','investigating-science'];
+        const mathIds = ['mathematics-advanced','mathematics-extension-1','mathematics-extension-2','mathematics-standard'];
+        const humanitiesIds = ['modern-history','ancient-history','history-extension','geography','legal-studies','business-studies','economics','society-culture','studies-of-religion'];
+        const englishIds = ['english-advanced','english-standard','english-extension','english-eald','english-studies'];
 
         let hasSci = selectedSubjectIds.some(id => scienceIds.includes(id));
         let hasMath = selectedSubjectIds.some(id => mathIds.includes(id));
@@ -2318,7 +2323,7 @@
 
         const recsHtml = recs.map(r => `<a href="${r.href}" style="flex:1;min-width:120px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-decoration:none;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.background='rgba(108,99,255,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='rgba(255,255,255,0.05)'"><div style="font-size:1.5rem;margin-bottom:6px;">${r.icon}</div><div style="font-size:0.82rem;font-weight:600;color:var(--text);">${r.name}</div></a>`).join('');
 
-        modal.querySelector('.onboarding-inner').innerHTML = `
+        modal.querySelector('.onboarding-modal').innerHTML = `
             <div style="text-align:center;padding:8px 0 16px;">
                 <div style="font-size:2.8rem;margin-bottom:12px;">🎉</div>
                 <h2 style="font-size:1.5rem;font-weight:800;color:var(--text);margin-bottom:8px;">You're all set!</h2>
