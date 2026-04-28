@@ -1294,27 +1294,10 @@
     </section>
 
     <!-- Social Proof -->
-    <section style="padding:3rem 5% 4rem;border-top:1px solid var(--border);">
-        <div style="max-width:1000px;margin:0 auto;">
-            <p style="text-align:center;font-size:0.82rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem;">What students are saying</p>
-            <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
-                <div style="flex:1;min-width:240px;max-width:320px;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.4rem;">
-                    <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:8px;">★★★★★</div>
-                    <p style="color:var(--text-sec);font-size:0.88rem;line-height:1.6;margin-bottom:10px;">&ldquo;Finally something that breaks down the syllabus in a way that makes sense! My study sessions are so much more productive now.&rdquo;</p>
-                    <p style="color:var(--text-muted);font-size:0.75rem;">— HSC Student, Jan 2026</p>
-                </div>
-                <div style="flex:1;min-width:240px;max-width:320px;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.4rem;">
-                    <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:8px;">★★★★★</div>
-                    <p style="color:var(--text-sec);font-size:0.88rem;line-height:1.6;margin-bottom:10px;">&ldquo;Love how it explains things simply. The AI tutor feels like having a smart friend who actually understands the HSC.&rdquo;</p>
-                    <p style="color:var(--text-muted);font-size:0.75rem;">— Year 12 Student, Jan 2026</p>
-                </div>
-                <div style="flex:1;min-width:240px;max-width:320px;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.4rem;">
-                    <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:8px;">★★★★☆</div>
-                    <p style="color:var(--text-sec);font-size:0.88rem;line-height:1.6;margin-bottom:10px;">&ldquo;The practice questions are really helpful for exam prep. Saved me hours of trying to figure out what to focus on.&rdquo;</p>
-                    <p style="color:var(--text-muted);font-size:0.75rem;">— Year 11 Student, Jan 2026</p>
-                </div>
-            </div>
-            <p id="socialProofCount" style="text-align:center;font-size:0.88rem;color:var(--text-muted);margin-top:1.5rem;"></p>
+    <section style="padding:2.5rem 5% 3rem;border-top:1px solid var(--border);">
+        <div style="max-width:700px;margin:0 auto;text-align:center;">
+            <div id="socialProofWeeklyBadge" style="display:none;margin-bottom:0.8rem;"></div>
+            <p id="socialProofCount" style="font-size:0.9rem;color:var(--text-muted);"></p>
         </div>
     </section>
 
@@ -1489,23 +1472,24 @@
             <h2 style="margin-bottom: 8px; font-size: 1.5rem; color: var(--primary);">⭐ Upgrade to Premium</h2>
             <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">Premium = <strong style="color:var(--text-sec);">unlimited uses</strong>, longer responses &amp; better quality answers.</p>
             
-            <div style="display: flex; gap: 16px; align-items: stretch; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;">
-                <!-- DEAL CARD (left, bigger) -->
-                <button id="upgradeYearlyBtn" onclick="createCheckout('lifetime')" style="flex: 1.3; min-width: 240px; max-width: 320px; padding: 28px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(102,126,234,0.35); cursor: pointer; font-family:inherit;">
-                    <span style="position: absolute; top: -12px; background: linear-gradient(135deg,var(--primary),#8b5cf6); color: #fff; font-weight: 700; font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; letter-spacing: 0.5px;">First 100 Users Only</span>
-                    <span style="font-size: 0.85rem; opacity: 0.85; margin-top: 8px;">One-Time Payment — Lifetime Access</span>
-                    <span style="font-size: 2.2rem; font-weight: 800; margin: 8px 0 4px;">$37.50</span>
-                    <span style="text-decoration: line-through; opacity: 0.6; font-size: 1rem;">$5/month</span>
-                    <span style="font-size: 0.8rem; opacity: 0.8; margin-top: 8px;">First 100 users only — pay once, use forever</span>
-                </button>
-                <!-- MONTHLY CARD (right, smaller) -->
-                <button onclick="createCheckout('monthly')" style="flex: 0.9; min-width: 200px; max-width: 260px; padding: 24px 18px; background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; font-family:inherit;">
-                    <span style="font-size: 0.85rem; color: var(--text-muted);">Monthly Subscription</span>
-                    <span style="font-size: 1.8rem; font-weight: 700; margin: 8px 0 4px; color: var(--primary);">$5</span>
-                    <span style="font-size: 0.85rem; color: var(--text-muted);">/month (AUD)</span>
-                    <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">Cancel anytime</span>
+            <!-- LIFETIME HERO (full width) -->
+            <div id="upgradeModalLifetimeWrap" style="position:relative;margin-bottom:10px;">
+                <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;font-weight:800;font-size:0.68rem;padding:3px 14px;border-radius:20px;letter-spacing:0.5px;z-index:1;">
+                    ⭐ FOUNDING OFFER — FIRST 100 USERS ONLY &nbsp;·&nbsp; <span id="upgradeModalSpotsLeft">?? spots</span> left
+                </div>
+                <button id="upgradeYearlyBtn" onclick="createCheckout('lifetime')" style="width:100%;padding:28px 20px 22px;background:linear-gradient(135deg,#4f3dc4,#7c3aed);color:#fff;border:2px solid rgba(167,139,250,0.4);border-radius:16px;display:flex;flex-direction:column;align-items:center;cursor:pointer;font-family:inherit;box-shadow:0 6px 30px rgba(102,126,234,0.4);transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 40px rgba(102,126,234,0.55)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 6px 30px rgba(102,126,234,0.4)'">
+                    <span style="font-size:0.78rem;opacity:0.7;letter-spacing:0.5px;text-transform:uppercase;">One-Time Payment &nbsp;&middot;&nbsp; Lifetime Access</span>
+                    <span style="font-size:2.8rem;font-weight:900;margin:6px 0 0;line-height:1;">$37.50</span>
+                    <span style="font-size:0.8rem;opacity:0.55;text-decoration:line-through;margin-bottom:6px;">$60/yr if you paid monthly</span>
+                    <span style="background:rgba(255,255,255,0.12);border-radius:8px;padding:5px 14px;font-size:0.8rem;font-weight:600;">Pay once. Use through all of Year 11 &amp; 12. ✓</span>
                 </button>
             </div>
+            <!-- MONTHLY FOOTNOTE -->
+            <p style="color:rgba(255,255,255,0.3);font-size:0.78rem;margin-bottom:12px;">
+                Not sure yet? <button onclick="createCheckout('monthly')" style="background:none;border:none;color:#6C63FF;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">$5/month</button> — cancel anytime.
+            </p>
+            <!-- DAY PASS -->
+            <button onclick="buyDayPass()" style="display:block;width:100%;background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.25);border-radius:10px;color:#fbbf24;padding:10px 20px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:16px;">⚡ Just need today? Day Pass — $1.99</button>
             
             <div id="paymentPollingStatus" style="display: none; text-align: center; margin-bottom: 12px; padding: 12px; background: rgba(22,163,74,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px;">
                 <span style="font-size: 0.9rem; color: #22c55e;">⏳ Waiting for payment confirmation... This will activate automatically.</span>
@@ -1869,6 +1853,11 @@
                 if (countEl && d.totalUsers > 0) {
                     countEl.textContent = `Join ${d.totalUsers}+ HSC students already using Study Decoder`;
                 }
+                const badge = document.getElementById('socialProofWeeklyBadge');
+                if (badge && d.weeklySignups > 0) {
+                    badge.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.2);border-radius:50px;padding:7px 18px;font-size:0.88rem;font-weight:700;color:#ff9165;">🔥 ${d.weeklySignups} students joined this week</span>`;
+                    badge.style.display = 'block';
+                }
             }).catch(() => {});
     }
 
@@ -1985,15 +1974,19 @@
         const modal = document.getElementById('upgradeModalOverlay');
         modal.style.display = 'flex';
         modal.classList.remove('hidden');
-        // Study Break sale: before April 25 2026
-        const yearlyBtn = document.getElementById('upgradeYearlyBtn');
-        if (yearlyBtn) {
-            if (new Date() >= new Date('2026-04-25T00:00:00')) {
-                // Sale over — revert to standard yearly card
-                yearlyBtn.setAttribute('onclick', "createCheckout('monthly')");
-                yearlyBtn.innerHTML = '<span style="font-size:0.85rem;opacity:0.85;">Monthly Subscription</span><span style="font-size:2.2rem;font-weight:800;margin:8px 0 4px;">$5</span><span style="font-size:0.85rem;opacity:0.8;">/month (AUD)</span>';
-            }
-        }
+        // Fetch live spots left and update badge
+        fetch(API_BASE + '/api/spots-left')
+            .then(r => r.json())
+            .then(d => {
+                const el = document.getElementById('upgradeModalSpotsLeft');
+                if (el && d.spotsLeft !== undefined) {
+                    el.textContent = d.spotsLeft + ' spot' + (d.spotsLeft !== 1 ? 's' : '');
+                }
+                if (d.spotsLeft <= 0) {
+                    const wrap = document.getElementById('upgradeModalLifetimeWrap');
+                    if (wrap) wrap.style.display = 'none';
+                }
+            }).catch(() => {});
     }
 
     async function createCheckout(plan) {
