@@ -13,44 +13,60 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         :root {
             --primary: #6C63FF;
             --primary-dark: #5a52e0;
-            --secondary: #1a1a2e;
+            --primary-glow: rgba(108,99,255,0.3);
             --accent: #FF6584;
             --success: #10b981;
             --error: #ef4444;
             --warning: #f59e0b;
-            --bg-light: #f8fafc;
-            --bg-card: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --border: #e2e8f0;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+            --bg-light: rgba(255,255,255,0.04);
+            --bg-card: #1a1a26;
+            --bg-elevated: #1a1a26;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.6);
+            --text-muted: rgba(255,255,255,0.3);
+            --border: rgba(255,255,255,0.08);
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.4);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.6);
             --radius: 12px;
-            --radius-lg: 16px;
+            --radius-lg: 20px;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6C63FF 100%);
+            background: #08080d;
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            mix-blend-mode: overlay;
+        }
         
         .login-container {
             width: 100%;
-            max-width: 440px;
+            max-width: 420px;
             animation: fadeInUp 0.6s ease-out;
+            position: relative;
+            z-index: 1;
         }
         
         @keyframes fadeInUp {
@@ -60,9 +76,10 @@
         
         .login-card {
             background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.1);
-            padding: 40px 36px;
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(108,99,255,0.08);
+            padding: 36px 32px;
             position: relative;
             overflow: hidden;
         }
@@ -83,11 +100,11 @@
         }
         
         .brand-logo {
-            width: 64px;
-            height: 64px;
-            margin-bottom: 16px;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
+            width: 56px;
+            height: 56px;
+            margin-bottom: 14px;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(108,99,255,0.3);
         }
         
         .brand h1 {
@@ -127,9 +144,8 @@
         }
         
         .auth-tab.active {
-            background: var(--bg-card);
+            background: rgba(108,99,255,0.15);
             color: var(--primary);
-            box-shadow: var(--shadow-sm);
         }
         
         .auth-tab:hover:not(.active) {
@@ -167,17 +183,19 @@
             width: 100%;
             padding: 14px 16px;
             font-size: 0.95rem;
-            border: 2px solid var(--border);
+            border: 1px solid var(--border);
             border-radius: var(--radius);
-            background: var(--bg-card);
+            background: rgba(255,255,255,0.04);
             color: var(--text-primary);
             transition: all 0.2s ease;
+            font-family: inherit;
         }
         
         .form-input:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+            border-color: rgba(108,99,255,0.5);
+            box-shadow: 0 0 0 3px rgba(108,99,255,0.12);
+            background: rgba(255,255,255,0.06);
         }
         
         .form-input::placeholder {
@@ -287,14 +305,14 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--primary);
             color: white;
-            box-shadow: 0 4px 14px rgba(108, 99, 255, 0.35);
+            box-shadow: 0 4px 20px rgba(108,99,255,0.3);
         }
         
         .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.45);
+            box-shadow: 0 8px 28px rgba(108,99,255,0.45);
         }
         
         .btn-primary:active:not(:disabled) {
@@ -352,11 +370,11 @@
         
         .google-btn-custom {
             width: 100%;
-            padding: 14px 24px;
-            font-size: 0.95rem;
+            padding: 13px 20px;
+            font-size: 0.93rem;
             font-weight: 500;
-            background: white;
-            border: 2px solid var(--border);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
             border-radius: var(--radius);
             cursor: pointer;
             display: flex;
@@ -365,16 +383,23 @@
             gap: 12px;
             transition: all 0.2s ease;
             color: var(--text-primary);
+            font-family: inherit;
         }
         
         .google-btn-custom:hover {
-            background: var(--bg-light);
-            border-color: #d1d5db;
+            background: rgba(255,255,255,0.09);
+            border-color: rgba(255,255,255,0.22);
+            transform: translateY(-1px);
+        }
+
+        .google-btn-custom:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
         
-        .google-btn-custom img {
-            width: 20px;
-            height: 20px;
+        .google-btn-custom svg {
+            flex-shrink: 0;
         }
         
         /* OG Tester Section */
@@ -471,15 +496,15 @@
         }
         
         .alert-error {
-            background: #fef2f2;
-            color: var(--error);
-            border: 1px solid #fecaca;
+            background: rgba(239,68,68,0.1);
+            color: #fca5a5;
+            border: 1px solid rgba(239,68,68,0.25);
         }
         
         .alert-success {
-            background: #ecfdf5;
-            color: var(--success);
-            border: 1px solid #a7f3d0;
+            background: rgba(16,185,129,0.1);
+            color: #6ee7b7;
+            border: 1px solid rgba(16,185,129,0.25);
         }
         
         .alert-icon {
@@ -533,18 +558,17 @@
         }
         
         .back-home a {
-            color: white;
-            opacity: 0.9;
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.87rem;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: opacity 0.2s ease;
+            transition: color 0.2s ease;
         }
         
         .back-home a:hover {
-            opacity: 1;
+            color: var(--text-primary);
         }
         
         /* Mobile Responsive */
@@ -566,7 +590,8 @@
         .password-requirements {
             margin-top: 10px;
             padding: 12px;
-            background: var(--bg-light);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 0.8rem;
         }
@@ -649,7 +674,7 @@
                 <div class="divider"><span>or</span></div>
                 
                 <button type="button" class="google-btn-custom" id="googleSignInBtn">
-                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                    <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                     Continue with Google
                 </button>
             </div>
@@ -694,7 +719,7 @@
                 <div class="divider"><span>or</span></div>
                 
                 <button type="button" class="google-btn-custom" id="googleSignUpBtn">
-                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                    <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                     Sign up with Google
                 </button>
             </div>
@@ -706,15 +731,7 @@
             <a href="index.html">&#x2190; Back to Home</a>
         </div>
     </div>
-    
-    <!-- Hidden Google Sign-In -->
-    <div id="g_id_onload"
-         data-client_id="875851537672-mn188te4kip14c0f6th40o9ui9ccuevs.apps.googleusercontent.com"
-         data-callback="handleGoogleResponse"
-         data-auto_prompt="false"
-         style="display: none;">
-    </div>
-    
+
     <script>
         // ==================== Configuration ====================
         const API_BASE = '';
@@ -722,11 +739,6 @@
         
         // ==================== State ====================
         let isLoading = false;
-        let googleInitialized = false;
-        let googleTokenClient = null;
-        let oneTapAvailable = false;
-        let googleInitRetries = 0;
-        const MAX_GOOGLE_RETRIES = 6;
         
         // ==================== DOM Elements ====================
         const alertError = document.getElementById('alertError');
@@ -856,9 +868,22 @@
         
         // ==================== Initialization ====================
         document.addEventListener('DOMContentLoaded', async () => {
-            // Capture referral code from URL and store for use during registration
+            // Capture referral code from URL
             const _refParam = new URLSearchParams(window.location.search).get('ref');
             if (_refParam) localStorage.setItem('sd_pendingRef', _refParam.trim().toUpperCase());
+
+            // Show error message from Google OAuth redirect callback
+            const _errParam = new URLSearchParams(window.location.search).get('error');
+            if (_errParam) {
+                const errMsgs = {
+                    invalid_state: 'Google sign-in failed (security check). Please try again.',
+                    no_code: 'Google sign-in was cancelled.',
+                    no_token: 'Google sign-in failed. Please try again.',
+                    invalid_token: 'Could not verify your Google account. Please try again.',
+                    auth_failed: 'Google sign-in failed. Please try again or use email and password.'
+                };
+                showError(errMsgs[_errParam] || 'Google sign-in failed. Please try again.');
+            }
 
             // Check if already logged in
             try {
@@ -869,122 +894,19 @@
                     return;
                 }
             } catch (e) {}
-            
-            // Initialize Google Sign-In (optional — works if not blocked)
-            initializeGoogleSignIn();
         });
         
-        function initializeGoogleSignIn() {
-            if (typeof google !== 'undefined' && google.accounts) {
-                try {
-                    google.accounts.id.initialize({
-                        client_id: GOOGLE_CLIENT_ID,
-                        callback: handleGoogleResponse,
-                        auto_select: false,
-                        cancel_on_tap_outside: true
-                    });
-                    oneTapAvailable = true;
-                } catch (e) {
-                    console.log('One Tap not available:', e);
-                }
-                
-                if (google.accounts.oauth2) {
-                    googleTokenClient = google.accounts.oauth2.initTokenClient({
-                        client_id: GOOGLE_CLIENT_ID,
-                        scope: 'email profile openid',
-                        callback: handleOAuthTokenResponse,
-                    });
-                }
-                
-                googleInitialized = true;
-            } else {
-                googleInitRetries++;
-                if (googleInitRetries < MAX_GOOGLE_RETRIES) {
-                    setTimeout(initializeGoogleSignIn, 500);
-                } else {
-                    // Google blocked — hide Google buttons, email/password still works fine
-                    document.querySelectorAll('.google-btn-custom').forEach(btn => {
-                        btn.style.display = 'none';
-                    });
-                    document.querySelectorAll('.divider').forEach(d => {
-                        d.style.display = 'none';
-                    });
-                }
+        // ==================== Google Sign-In (server-side redirect — works with all browsers/extensions) ====================
+        function triggerGoogleSignIn(btn) {
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" style="animation:spin 0.7s linear infinite"><circle cx="12" cy="12" r="10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/><path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/></svg> Connecting…';
             }
+            window.location.href = '/api/auth/google-redirect';
         }
-        
-        // ==================== Google Sign-In ====================
-        function triggerGoogleSignIn() {
-            if (!googleInitialized) {
-                showError('Google Sign-In is blocked by your browser. Use email and password instead.');
-                return;
-            }
-            if (oneTapAvailable) {
-                try {
-                    google.accounts.id.prompt((notification) => {
-                        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                            if (googleTokenClient) googleTokenClient.requestAccessToken();
-                            else showError('Google Sign-In unavailable. Use email and password instead.');
-                        }
-                    });
-                } catch (e) {
-                    if (googleTokenClient) googleTokenClient.requestAccessToken();
-                }
-            } else if (googleTokenClient) {
-                googleTokenClient.requestAccessToken();
-            } else {
-                showError('Google Sign-In unavailable. Use email and password instead.');
-            }
-        }
-        
-        document.getElementById('googleSignInBtn').addEventListener('click', triggerGoogleSignIn);
-        document.getElementById('googleSignUpBtn').addEventListener('click', triggerGoogleSignIn);
-        
-        async function handleOAuthTokenResponse(tokenResponse) {
-            if (isLoading || !tokenResponse.access_token) return;
-            setLoading(true);
-            hideAlerts();
-            try {
-                const res = await fetch('/api/auth/google-oauth', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ accessToken: tokenResponse.access_token })
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Authentication failed');
-                showSuccess('Signed in! Redirecting...');
-                await redirectAfterLogin(data);
-            } catch (err) {
-                showError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-        
-        async function handleGoogleResponse(response) {
-            if (isLoading) return;
-            setLoading(true);
-            hideAlerts();
-            try {
-                const res = await fetch('/api/auth/google', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ idToken: response.credential })
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Authentication failed');
-                showSuccess('Signed in! Redirecting...');
-                await redirectAfterLogin(data);
-            } catch (err) {
-                showError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-        
-        window.handleGoogleResponse = handleGoogleResponse;
+
+        document.getElementById('googleSignInBtn').addEventListener('click', function() { triggerGoogleSignIn(this); });
+        document.getElementById('googleSignUpBtn').addEventListener('click', function() { triggerGoogleSignIn(this); });
         
         // ==================== Helpers ====================
         function showError(message) {
@@ -1073,22 +995,22 @@
     </script>
 
     <!-- Trial Welcome Overlay (shown immediately after registration) -->
-    <div id="trialWelcomeOverlay" style="display:none;position:fixed;inset:0;background:linear-gradient(135deg,#667eea,#764ba2);z-index:99999;align-items:center;justify-content:center;padding:20px;">
-        <div style="background:#fff;border-radius:24px;padding:40px 36px;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+    <div id="trialWelcomeOverlay" style="display:none;position:fixed;inset:0;background:rgba(8,8,13,0.97);z-index:99999;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:#1a1a26;border:1px solid rgba(108,99,255,0.2);border-radius:24px;padding:40px 36px;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.7),0 0 80px rgba(108,99,255,0.06);">
             <div style="font-size:3rem;margin-bottom:12px;">&#x1F389;</div>
-            <h1 style="font-size:1.6rem;font-weight:800;color:#1e293b;margin-bottom:8px;">Your free trial has started<span id="trialWelcomeName" style="color:#6C63FF;"></span>!</h1>
-            <p style="color:#64748b;font-size:0.95rem;margin-bottom:20px;">You have <strong style="color:#6C63FF;">3 days of unlimited access</strong> to all 7 tools.</p>
-            <div style="background:#f0f0ff;border-radius:12px;padding:16px;margin-bottom:20px;text-align:left;">
-                <p style="font-size:0.82rem;font-weight:700;color:#6C63FF;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">&#x23F3; Trial ends: <span id="trialEndDate" style="color:#1e293b;text-transform:none;"></span></p>
+            <h1 style="font-size:1.6rem;font-weight:800;color:#ffffff;margin-bottom:8px;">Your free trial has started<span id="trialWelcomeName" style="color:#6C63FF;"></span>!</h1>
+            <p style="color:rgba(255,255,255,0.6);font-size:0.95rem;margin-bottom:20px;">You have <strong style="color:#6C63FF;">3 days of unlimited access</strong> to all 7 tools.</p>
+            <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.15);border-radius:12px;padding:16px;margin-bottom:20px;text-align:left;">
+                <p style="font-size:0.82rem;font-weight:700;color:#6C63FF;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">&#x23F3; Trial ends: <span id="trialEndDate" style="color:rgba(255,255,255,0.85);text-transform:none;font-weight:500;"></span></p>
                 <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;">
-                    <li style="font-size:0.88rem;color:#334155;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> All 7 AI tools unlocked</li>
-                    <li style="font-size:0.88rem;color:#334155;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> Unlimited uses during trial</li>
-                    <li style="font-size:0.88rem;color:#334155;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> Practice exams, syllabus decoder, AI tutor</li>
-                    <li style="font-size:0.88rem;color:#334155;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> No card required</li>
+                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> All 7 AI tools unlocked</li>
+                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> Unlimited uses during trial</li>
+                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> Practice exams, syllabus decoder, AI tutor</li>
+                    <li style="font-size:0.88rem;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> No card required</li>
                 </ul>
             </div>
-            <a href="/index.html#tools" onclick="this.textContent='Loading…';this.style.pointerEvents='none';" style="display:block;padding:15px 24px;background:linear-gradient(135deg,#6C63FF,#8b5cf6);color:#fff;border-radius:12px;text-decoration:none;font-weight:700;font-size:1rem;margin-bottom:12px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Start Exploring Tools &#x2192;</a>
-            <p style="font-size:0.78rem;color:#94a3b8;">After 3 days you'll have 10 free uses/day forever, or upgrade to keep unlimited.</p>
+            <a href="/index.html#tools" onclick="this.textContent='Loading…';this.style.pointerEvents='none';" style="display:block;padding:15px 24px;background:#6C63FF;color:#fff;border-radius:12px;text-decoration:none;font-weight:700;font-size:1rem;margin-bottom:12px;box-shadow:0 4px 20px rgba(108,99,255,0.4);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Start Exploring Tools &#x2192;</a>
+            <p style="font-size:0.78rem;color:rgba(255,255,255,0.35);">After 3 days you'll have 10 free uses/day forever, or upgrade to keep unlimited.</p>
         </div>
     </div>
 </body>

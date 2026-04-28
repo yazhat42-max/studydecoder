@@ -44,6 +44,7 @@ const config = {
     isDev: (process.env.NODE_ENV || 'development') !== 'production',
     sessionSecret: process.env.SESSION_SECRET,
     googleClientId: process.env.GOOGLE_CLIENT_ID,
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     openaiApiKey: process.env.OPENAI_API_KEY,
     ownerEmail: process.env.OWNER_EMAIL || 'yazhat42@gmail.com',
     frontendUrl: process.env.FRONTEND_URL || 'https://studydecoder.onrender.com',
@@ -528,6 +529,8 @@ app.use('/api/', limiter);
 app.use('/api/auth/login', authLimiter);
 app.use('/api/auth/register', authLimiter);
 app.use('/api/auth/google', authLimiter);
+app.use('/api/auth/google-redirect', authLimiter);
+app.use('/api/auth/google-callback', authLimiter);
 app.use('/api/login', authLimiter); // legacy route
 
 const forgotPasswordLimiter = rateLimit({
@@ -1255,6 +1258,116 @@ app.post('/api/auth/google-oauth', async (req, res) => {
     } catch (error) {
         console.error('Google OAuth error:', error);
         res.status(500).json({ error: 'Authentication failed' });
+    }
+});
+
+/**
+ * GET /api/auth/google-redirect - Start Google OAuth via page redirect
+ * Works with all browsers and extensions (no popup, no iframe, no JS dependency)
+ */
+app.get('/api/auth/google-redirect', (req, res) => {
+    if (!config.googleClientId) {
+        return res.redirect('/login.html?error=auth_failed');
+    }
+    const state = crypto.randomBytes(16).toString('hex');
+    req.session.oauthState = state;
+    req.session.save(err => {
+        if (err) return res.redirect('/login.html?error=auth_failed');
+        const baseUrl = config.isDev ? 'http://localhost:3001' : 'https://www.studydecoder.com.au';
+        const params = new URLSearchParams({
+            client_id: config.googleClientId,
+            redirect_uri: `${baseUrl}/api/auth/google-callback`,
+            response_type: 'code',
+            scope: 'email profile openid',
+            state,
+            access_type: 'online',
+            prompt: 'select_account'
+        });
+        res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params}`);
+    });
+});
+
+/**
+ * GET /api/auth/google-callback - Handle Google OAuth redirect callback
+ */
+app.get('/api/auth/google-callback', async (req, res) => {
+    const { code, state, error: oauthError } = req.query;
+
+    if (oauthError || !code) {
+        return res.redirect('/login.html?error=no_code');
+    }
+
+    // Validate CSRF state
+    if (!state || state !== req.session.oauthState) {
+        return res.redirect('/login.html?error=invalid_state');
+    }
+    delete req.session.oauthState;
+
+    if (!config.googleClientSecret) {
+        console.error('❌ GOOGLE_CLIENT_SECRET not configured for redirect flow');
+        return res.redirect('/login.html?error=auth_failed');
+    }
+
+    try {
+        const baseUrl = config.isDev ? 'http://localhost:3001' : 'https://www.studydecoder.com.au';
+        const redirectUri = `${baseUrl}/api/auth/google-callback`;
+
+        // Exchange authorization code for tokens
+        const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                code,
+                client_id: config.googleClientId,
+                client_secret: config.googleClientSecret,
+                redirect_uri: redirectUri,
+                grant_type: 'authorization_code'
+            })
+        });
+
+        const tokens = await tokenRes.json();
+        if (!tokens.id_token) {
+            console.error('Google token exchange failed:', tokens.error);
+            return res.redirect('/login.html?error=no_token');
+        }
+
+        // Verify ID token using existing verifyGoogleToken
+        const verified = await verifyGoogleToken(tokens.id_token);
+        if (!verified) {
+            return res.redirect('/login.html?error=invalid_token');
+        }
+
+        let existingUser = getUserByEmail(verified.email);
+        let userId = existingUser ? existingUser.userId : verified.userId;
+
+        const user = upsertUser(userId, {
+            email: verified.email,
+            name: verified.name,
+            provider: existingUser?.provider || 'google',
+            emailVerified: true
+        });
+
+        if (!existingUser) {
+            user.preferences = { ...(user.preferences || {}), onboarded: false };
+            scheduleSave();
+        } else {
+            ensureOnboardingFlag(user);
+        }
+
+        await autoSyncStripeSubscription(userId, verified.email);
+        const updatedUser = getUser(userId) || user;
+
+        // Regenerate session to prevent session fixation
+        await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
+        req.session.userId = userId;
+        const role = getUserRole(updatedUser.email);
+        console.log(`✅ Google OAuth redirect sign-in: ${updatedUser.email} (${role})`);
+
+        if (role === 'owner') return res.redirect('/admin.html');
+        return res.redirect('/index.html');
+    } catch (err) {
+        console.error('Google callback error:', err);
+        return res.redirect('/login.html?error=auth_failed');
     }
 });
 
