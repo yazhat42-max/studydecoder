@@ -634,10 +634,8 @@
         </ul>
     </nav>
 
-    <!-- Sale Banner -->
-    <div class="sale-banner" id="saleBanner" style="display: none;" onclick="showUpgradeModal()">
-        🔥 <strong>First 100 Users Deal</strong> — Get lifetime access for just <strong>$37.50</strong> (normally $5/month)! Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="showUpgradeModal(); return false;">Grab yours →</a>
-    </div>
+    <!-- Sale Banner (content set dynamically based on user plan) -->
+    <div class="sale-banner" id="saleBanner" style="display: none;"></div>
 
     <!-- Hero Section -->
     <section class="hero" id="heroSection">
@@ -664,7 +662,7 @@
                         <a href="#tools" class="btn btn-ghost">All Tools ↓</a>
                     </div>
                     <p class="hero-trust" id="heroTrustLine">🇦🇺 NSW curriculum &nbsp;·&nbsp; Free to start &nbsp;·&nbsp; No card required</p>
-                    <p id="heroSignupsLine" style="display:none;margin-top:0.5rem;font-size:0.85rem;color:var(--text-sec);"></p>
+                    <div id="heroSignupsLine" style="display:none;margin-top:1rem;"></div>
                 </div>
 
                 <!-- BOTTOM HALF: Streak Widget -->
@@ -1599,16 +1597,27 @@
         document.getElementById('navUserMenu').style.display = 'flex';
         document.getElementById('navUserName').textContent = user.name || user.email.split('@')[0];
         
-        // Hide sale banner for paid/OG/owner/lifetime users
-        if (user.subscribed || user.role === 'owner' || user.role === 'lifetime' || user.role === 'og_tester') {
-            var banner = document.getElementById('saleBanner');
-            if (banner) banner.style.display = 'none';
-            var strip = document.getElementById('daypassQuickStrip');
-            if (strip) strip.style.display = 'none';
+        // Top banner: day pass for free users, deal for day-pass holders, hidden for paid
+        var banner = document.getElementById('saleBanner');
+        var strip = document.getElementById('daypassQuickStrip');
+        if (strip) strip.style.display = 'none'; // strip replaced by top banner
+        if (user.subscribed && user.plan === 'day_pass') {
+            // Already on day pass → upsell the lifetime deal
+            if (banner) {
+                banner.innerHTML = '🔥 <strong>First 100 Users Deal</strong> — Upgrade to lifetime for just <strong>$37.50</strong>! Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="showUpgradeModal(); return false;">Grab yours →</a>';
+                banner.onclick = function() { showUpgradeModal(); };
+                banner.style.display = '';
+            }
+        } else if (!user.subscribed && user.role !== 'owner' && user.role !== 'og_tester' && user.role !== 'lifetime') {
+            // Free user → advertise day pass
+            if (banner) {
+                banner.innerHTML = '⚡ <strong>Day Pass — $1.99</strong> · Full access for <strong>24 hours</strong>. No subscription. Perfect before an exam. <a href="#" onclick="buyDayPass(); return false;">Get it now →</a>';
+                banner.onclick = null;
+                banner.style.display = '';
+            }
         } else {
-            // Show day pass strip for free users
-            var strip = document.getElementById('daypassQuickStrip');
-            if (strip) strip.style.display = '';
+            // Paid / OG / owner → no banner
+            if (banner) banner.style.display = 'none';
         }
         
         // Hero streak widget — show logged-in state
@@ -1775,19 +1784,26 @@
         document.querySelectorAll('.course-link-unlocked').forEach(el => el.style.display = 'none');
         // Show streak promo for logged-out users
         document.getElementById('streakPromoCard').style.display = '';
-        // Show day pass strip for logged-out users
+        // Top banner: advertise day pass for logged-out visitors
+        var banner = document.getElementById('saleBanner');
+        if (banner) {
+            banner.innerHTML = '⚡ <strong>Day Pass — $1.99</strong> · Full access for <strong>24 hours</strong>. No subscription needed. Perfect before an exam. <a href="#" onclick="buyDayPass(); return false;">Get it now →</a>';
+            banner.onclick = null;
+            banner.style.display = '';
+        }
+        // Hide day pass strip (replaced by top banner)
         var strip = document.getElementById('daypassQuickStrip');
-        if (strip) strip.style.display = '';
+        if (strip) strip.style.display = 'none';
         // Hero streak widget stays as logged-out default
         document.getElementById('heroStreakOut').style.display = '';
         document.getElementById('heroStreakIn').style.display = 'none';
-        // Fetch weekly signups and show below hero-trust
+        // Fetch weekly signups and show as prominent badge
         fetch(API_BASE + '/api/stats/public')
             .then(r => r.json())
             .then(d => {
                 const line = document.getElementById('heroSignupsLine');
                 if (line && d.weeklySignups > 0) {
-                    line.textContent = '🔥 ' + d.weeklySignups + ' students joined this week';
+                    line.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.25);border-radius:50px;padding:6px 16px;font-size:0.9rem;font-weight:700;color:#ff9165;">🔥 ${d.weeklySignups} students joined this week</span>`;
                     line.style.display = '';
                 }
             }).catch(() => {});
@@ -2373,9 +2389,8 @@
             checkAuthStatus();
         }
 
-        // Show sale banner with live spots counter
+        // Fetch spots left — updates #spotsLeft if deal banner is visible, updates pricing section
         {
-            document.getElementById('saleBanner').style.display = 'block';
             fetch('/api/spots-left').then(r => r.json()).then(d => {
                 var el = document.getElementById('spotsLeft');
                 var el2 = document.getElementById('pricingSpotsLeft');
@@ -2383,7 +2398,9 @@
                     if (el) el.textContent = d.spotsLeft;
                     if (el2) el2.textContent = d.spotsLeft;
                     if (d.spotsLeft <= 0) {
-                        document.getElementById('saleBanner').style.display = 'none';
+                        // No spots left: hide deal banner if it's the deal variant
+                        var b = document.getElementById('saleBanner');
+                        if (b && b.innerHTML.includes('spotsLeft')) b.style.display = 'none';
                     }
                 }
             }).catch(function(){});
