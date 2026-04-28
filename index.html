@@ -1293,6 +1293,31 @@
         </div>
     </section>
 
+    <!-- Social Proof -->
+    <section style="padding:3rem 5% 4rem;border-top:1px solid var(--border);">
+        <div style="max-width:1000px;margin:0 auto;">
+            <p style="text-align:center;font-size:0.82rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem;">What students are saying</p>
+            <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+                <div style="flex:1;min-width:240px;max-width:320px;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.4rem;">
+                    <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:8px;">★★★★★</div>
+                    <p style="color:var(--text-sec);font-size:0.88rem;line-height:1.6;margin-bottom:10px;">&ldquo;Finally something that breaks down the syllabus in a way that makes sense! My study sessions are so much more productive now.&rdquo;</p>
+                    <p style="color:var(--text-muted);font-size:0.75rem;">— HSC Student, Jan 2026</p>
+                </div>
+                <div style="flex:1;min-width:240px;max-width:320px;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.4rem;">
+                    <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:8px;">★★★★★</div>
+                    <p style="color:var(--text-sec);font-size:0.88rem;line-height:1.6;margin-bottom:10px;">&ldquo;Love how it explains things simply. The AI tutor feels like having a smart friend who actually understands the HSC.&rdquo;</p>
+                    <p style="color:var(--text-muted);font-size:0.75rem;">— Year 12 Student, Jan 2026</p>
+                </div>
+                <div style="flex:1;min-width:240px;max-width:320px;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.4rem;">
+                    <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:8px;">★★★★☆</div>
+                    <p style="color:var(--text-sec);font-size:0.88rem;line-height:1.6;margin-bottom:10px;">&ldquo;The practice questions are really helpful for exam prep. Saved me hours of trying to figure out what to focus on.&rdquo;</p>
+                    <p style="color:var(--text-muted);font-size:0.75rem;">— Year 11 Student, Jan 2026</p>
+                </div>
+            </div>
+            <p id="socialProofCount" style="text-align:center;font-size:0.88rem;color:var(--text-muted);margin-top:1.5rem;"></p>
+        </div>
+    </section>
+
     <!-- Pricing Section -->
     <section id="pricing" style="padding:5rem 5%;border-top:1px solid var(--border);">
         <div style="text-align:center;margin-bottom:3rem;">
@@ -1311,7 +1336,7 @@
                 <div style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$0</div>
                 <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">Always free</div>
                 <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:1.8rem;">
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> 3 days full access on signup, then 10 uses/day free forever</li>
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> 3 days full access on signup, then 10 uses/day free forever <span style="color:var(--text-muted);font-size:0.8rem;">(≈ 1 full exam or 10 chat messages)</span></li>
                     <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> All 6 AI tools</li>
                     <li style="font-size:0.9rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;"><span style="color:#2f3336;">✗</span> Lower AI quality</li>
                     <li style="font-size:0.9rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;"><span style="color:#2f3336;">✗</span> No score history</li>
@@ -1602,23 +1627,46 @@
         document.getElementById('navUserMenu').style.display = 'flex';
         document.getElementById('navUserName').textContent = user.name || user.email.split('@')[0];
         
-        // Top banner: day pass for free users, deal for day-pass holders, hidden for paid
+        // Top banner: trial countdown takes priority; then day pass/deal for others
         var banner = document.getElementById('saleBanner');
         var strip = document.getElementById('daypassQuickStrip');
         if (strip) strip.style.display = 'none'; // strip replaced by top banner
-        if (user.subscribed && user.plan === 'day_pass') {
+        if (user.freeTier && user.freeTier.inGracePeriod && !user.subscribed) {
+            // Trial active — show countdown (takes priority over everything)
+            var trialEndStr = '';
+            if (user.freeTier.trialEndsAt) {
+                var tEnd = new Date(user.freeTier.trialEndsAt);
+                trialEndStr = tEnd.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
+            }
+            if (banner) {
+                if (user.freeTier.gracePeriodEnding) {
+                    banner.innerHTML = '⏳ <strong>Your free trial ends tonight</strong> — don\'t lose unlimited access. <a href="#" onclick="showUpgradeModal(); return false;" style="color:#fff;font-weight:700;">Lock in lifetime for $37.50 →</a>';
+                    banner.style.background = 'linear-gradient(90deg,#ef4444,#dc2626)';
+                } else {
+                    banner.innerHTML = '⏳ <strong>Free trial active</strong> — Unlimited access until <strong>' + (trialEndStr || '3 days after signup') + '</strong>. Try everything while it lasts. <a href="#tools" style="color:#fff;font-weight:600;">Explore tools →</a>';
+                    banner.style.background = 'linear-gradient(90deg,#6C63FF,#8b5cf6)';
+                }
+                banner.style.color = '#fff';
+                banner.style.borderBottom = 'none';
+                banner.style.display = '';
+            }
+        } else if (user.subscribed && user.plan === 'day_pass') {
             // Already on day pass → upsell the lifetime deal
             if (banner) {
                 banner.innerHTML = '⭐ <strong>First 100 Users Deal</strong> — Upgrade to lifetime for just <strong>$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="showUpgradeModal(); return false;">See the deal →</a>';
                 banner.onclick = function() { showUpgradeModal(); };
                 banner.style.display = '';
+                banner.style.background = '';
+                banner.style.color = '';
             }
         } else if (!user.subscribed && user.role !== 'owner' && user.role !== 'og_tester' && user.role !== 'lifetime') {
-            // Free user → advertise day pass
+            // Free user (post-trial) → advertise day pass
             if (banner) {
                 banner.innerHTML = '⚡ <strong>Day Pass — $1.99</strong> · Full access for <strong>24 hours</strong>. No subscription. Perfect before an exam. <a href="#" onclick="buyDayPass(); return false;">Get it now →</a>';
                 banner.onclick = null;
                 banner.style.display = '';
+                banner.style.background = '';
+                banner.style.color = '';
             }
         } else {
             // Paid / OG / owner → no banner
@@ -1753,6 +1801,12 @@
         // Show Chat Tutor card for logged-in users
         const tutorCard = document.getElementById('chatTutorCard');
         if (tutorCard) tutorCard.style.display = '';
+
+        // Auto-open upgrade modal if ?upgrade=1 was in URL
+        if (window._autoOpenUpgrade) {
+            window._autoOpenUpgrade = false;
+            setTimeout(() => showUpgradeModal(), 400);
+        }
     }
 
     async function loadIndexDailyChallenge() {
@@ -1802,7 +1856,7 @@
         // Hero streak widget stays as logged-out default
         document.getElementById('heroStreakOut').style.display = '';
         document.getElementById('heroStreakIn').style.display = 'none';
-        // Fetch weekly signups and show as prominent badge
+        // Fetch weekly signups and show as prominent badge; also populate social proof count
         fetch(API_BASE + '/api/stats/public')
             .then(r => r.json())
             .then(d => {
@@ -1810,6 +1864,10 @@
                 if (line && d.weeklySignups > 0) {
                     line.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.25);border-radius:50px;padding:6px 16px;font-size:0.9rem;font-weight:700;color:#ff9165;">🔥 ${d.weeklySignups} students joined this week</span>`;
                     line.style.display = '';
+                }
+                const countEl = document.getElementById('socialProofCount');
+                if (countEl && d.totalUsers > 0) {
+                    countEl.textContent = `Join ${d.totalUsers}+ HSC students already using Study Decoder`;
                 }
             }).catch(() => {});
     }
@@ -2323,11 +2381,25 @@
 
         const recsHtml = recs.map(r => `<a href="${r.href}" style="flex:1;min-width:120px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-decoration:none;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.background='rgba(108,99,255,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='rgba(255,255,255,0.05)'"><div style="font-size:1.5rem;margin-bottom:6px;">${r.icon}</div><div style="font-size:0.82rem;font-weight:600;color:var(--text);">${r.name}</div></a>`).join('');
 
+        // Check if user is in trial to show countdown
+        const trialData = window.currentUser?.freeTier;
+        const inTrial = trialData && trialData.inGracePeriod;
+        const trialEndStr = trialData && trialData.trialEndsAt
+            ? new Date(trialData.trialEndsAt).toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' })
+            : null;
+        const trialBannerHtml = inTrial ? `
+            <div style="background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.3);border-radius:12px;padding:14px 16px;margin-bottom:20px;">
+                <p style="color:var(--primary);font-weight:700;font-size:0.9rem;margin-bottom:4px;">⏳ You have 3 days of unlimited access${trialEndStr ? ' — until ' + trialEndStr : ''}</p>
+                <p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:10px;">Try everything while it lasts. Or skip the trial:</p>
+                <button onclick="document.getElementById('onboardingModal').style.display='none';showUpgradeModal();" style="padding:9px 20px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:inherit;">Get Lifetime Access — $37.50 →</button>
+            </div>` : '';
+
         modal.querySelector('.onboarding-modal').innerHTML = `
             <div style="text-align:center;padding:8px 0 16px;">
                 <div style="font-size:2.8rem;margin-bottom:12px;">🎉</div>
                 <h2 style="font-size:1.5rem;font-weight:800;color:var(--text);margin-bottom:8px;">You're all set!</h2>
                 <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:20px;">Your subjects have been saved. Here's where to start:</p>
+                ${trialBannerHtml}
                 ${chips ? `<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:20px;">${chips}</div>` : ''}
                 <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Recommended for you</p>
                 <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;">${recsHtml}</div>
@@ -2369,6 +2441,12 @@
     // Handle Stripe redirect after payment
     (function handleStripeReturn() {
         const params = new URLSearchParams(window.location.search);
+
+        // Handle ?upgrade=1 to auto-open upgrade modal after login
+        if (params.get('upgrade') === '1') {
+            window.history.replaceState({}, document.title, window.location.pathname);
+            window._autoOpenUpgrade = true;
+        }
 
         if (params.has('daypass') && params.get('daypass') === 'success') {
             window.history.replaceState({}, document.title, window.location.pathname);

@@ -664,6 +664,13 @@
             const data = await res.json();
             if (!data.email) { window.location.href = '/login.html'; return; }
             if (data.freeTier?.gracePeriodEnding && window.Upsell) Upsell.checkGracePeriodEnding(data.freeTier);
+            if (data.freeTier?.inGracePeriod) {
+                const badge = document.createElement('span');
+                badge.style.cssText = 'background:rgba(108,99,255,0.15);border:1px solid rgba(108,99,255,0.3);border-radius:6px;color:#a78bfa;font-size:0.72rem;font-weight:700;padding:3px 10px;white-space:nowrap;margin-left:auto;';
+                badge.textContent = data.freeTier.gracePeriodEnding ? '⏳ Trial ends tonight' : '⏳ Free trial active';
+                const topbar = document.querySelector('.topbar');
+                if (topbar) topbar.appendChild(badge);
+            }
         } catch (e) {
             window.location.href = '/login.html';
         }
@@ -964,7 +971,11 @@
                             null
                         );
                     } else {
-                        wrap.innerHTML = '<p style="text-align:center;padding:20px;"><strong>Free uses for today are up.</strong> <a href="index.html#pricing" style="color:#6C63FF;">Upgrade →</a></p>';
+                        if (window.Upsell) {
+                            Upsell.showPageUpgradeModal();
+                        } else {
+                            wrap.innerHTML = '<p style="text-align:center;padding:20px;"><strong>Free uses for today are up.</strong> <a href="index.html?upgrade=1" style="color:#6C63FF;">Upgrade →</a></p>';
+                        }
                     }
                     document.getElementById('chatMessages').appendChild(wrap);
                 } else {

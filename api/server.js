@@ -1973,7 +1973,11 @@ app.get('/api/subscription', requireAuth, (req, res) => {
             totalUsed: getTotalFreeTierUsage(req.session.userId),
             totalRemaining: Math.max(0, FREE_TIER_CONFIG.totalUsesPerDay - getTotalFreeTierUsage(req.session.userId)),
             inGracePeriod: isWithinGracePeriod(req.session.userId),
-            gracePeriodEnding: isGracePeriodEnding(req.session.userId)
+            gracePeriodEnding: isGracePeriodEnding(req.session.userId),
+            trialEndsAt: (() => {
+                const refMs = user.trialStart ? new Date(user.trialStart).getTime() : (user.createdAt ? new Date(user.createdAt).getTime() : null);
+                return refMs ? new Date(refMs + 3 * 24 * 60 * 60 * 1000).toISOString() : null;
+            })()
         } : null
     });
 });
@@ -1989,7 +1993,7 @@ app.get('/api/stats/public', (req, res) => {
     const total = allUsers.length;
     const weekly = allUsers.filter(u => u.createdAt && new Date(u.createdAt).getTime() >= oneWeekAgo).length;
     // Show total when weekly count is lower (early stage — avoid showing "2 joined this week")
-    res.json({ weeklySignups: Math.max(weekly, total) });
+    res.json({ weeklySignups: Math.max(weekly, total), totalUsers: total });
 });
 
 /**
@@ -7233,6 +7237,61 @@ async function sendReengagementEmail(user) {
     });
 }
 
+async function sendTrialEndingSoonEmail(user) {
+    if (!emailTransporter || !user.email) return;
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: '⏳ One day left on your free trial — here\'s what to use it on',
+        html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<h2 style="color:#6366f1;">Your unlimited trial ends tomorrow 🔥</h2>
+<p>Hi ${user.name || 'there'},</p>
+<p>Your 3-day unlimited trial on Study Decoder expires <strong>tomorrow</strong>. Here's what to squeeze in tonight:</p>
+<ul style="margin:12px 0;padding-left:20px;line-height:2.2;">
+  <li>📝 Run a full practice exam for an upcoming assessment</li>
+  <li>📖 Decode your syllabus dot points for the next module</li>
+  <li>🤖 Ask the AI tutor anything you've been stuck on</li>
+</ul>
+<div style="text-align:center;margin:30px 0;">
+  <a href="${config.frontendUrl}/index.html#tools" style="background-color:#6366f1;color:white;padding:13px 32px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;font-size:1rem;">Study Now →</a>
+</div>
+<p style="color:#666;font-size:13px;">Want to keep unlimited access after tomorrow? <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">Upgrade for $5/month</a> — or grab a <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">$1.99 Day Pass</a> when you need it.</p>
+<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
+<p style="color:#999;font-size:11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
+</div>`
+    });
+}
+
+async function sendTrialExpiredEmail(user) {
+    if (!emailTransporter || !user.email) return;
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: 'Your trial ended — here\'s what you still have for free',
+        html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<h2 style="color:#6366f1;">Your 3-day trial has ended</h2>
+<p>Hi ${user.name || 'there'},</p>
+<p>Your unlimited trial on Study Decoder is over — but you haven't lost everything:</p>
+<div style="background:#f8f9fa;border-radius:10px;padding:16px;margin:16px 0;">
+  <p style="margin:0 0 8px;font-weight:600;color:#333;">✅ What you still have (free, forever):</p>
+  <ul style="margin:0;padding-left:20px;line-height:2;color:#555;">
+    <li>10 uses per day across all 7 tools</li>
+    <li>All tools still accessible</li>
+    <li>Your study history and streaks saved</li>
+  </ul>
+</div>
+<p>To get back to unlimited:</p>
+<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0;text-align:center;">
+  <a href="${config.frontendUrl}/index.html#pricing" style="background-color:#6366f1;color:white;padding:12px 24px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;">Upgrade — $5/month →</a>
+  <a href="${config.frontendUrl}/index.html#pricing" style="background-color:#f59e0b;color:white;padding:12px 24px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;">Day Pass — $1.99 →</a>
+</div>
+<p style="color:#666;font-size:13px;">The Day Pass is perfect if you have an exam coming up — full access for 24 hours with no subscription.</p>
+<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
+<p style="color:#999;font-size:11px;">Study Decoder - You're receiving this because you signed up at studydecoder.com.au.</p>
+</div>`
+    });
+}
+
 async function sendParentSummaryEmail(user) {
     if (!emailTransporter || !user.parentEmail || !user.email) return;
     const streak = user.streak || 0;
@@ -7282,7 +7341,28 @@ setInterval(async () => {
             }
         }
 
-        // ── 2) RE-ENGAGEMENT — 5-day inactive free users (max once per 7 days) ──
+        // ── 2) TRIAL LIFECYCLE EMAILS ──
+        for (const user of users) {
+            if (!user.email) continue;
+            if (hasFullAccess(user)) continue;
+            const ref = user.trialStart || user.createdAt;
+            if (!ref) continue;
+            const refMs = new Date(ref).getTime();
+            const ageMs = now - refMs;
+            const oneDayMs = 24 * 60 * 60 * 1000;
+            // Day 2: trial ending soon (send once, between 1-2 days old)
+            if (ageMs >= oneDayMs && ageMs < 2 * oneDayMs && !user.trialEndingEmailSent) {
+                await sendTrialEndingSoonEmail(user).catch(() => {});
+                user.trialEndingEmailSent = true;
+            }
+            // Day 3+: trial expired (send once, after 3 days)
+            if (ageMs >= 3 * oneDayMs && !user.trialExpiredEmailSent) {
+                await sendTrialExpiredEmail(user).catch(() => {});
+                user.trialExpiredEmailSent = true;
+            }
+        }
+
+        // ── 3) RE-ENGAGEMENT — 5-day inactive free users (max once per 7 days) ──
         for (const user of users) {
             if (!user.email) continue;
             if (hasFullAccess(user)) continue;  // premium users don't need nudging

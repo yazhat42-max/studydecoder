@@ -1440,9 +1440,10 @@
                 notifyBtn.onclick = () => window.Upsell && Upsell.notifyOnReset(notifyBtn);
                 messageDiv.appendChild(notifyBtn);
             } else {
-                const isSale = new Date() < new Date('2026-04-25T00:00:00');
-                const yearlyText = isSale ? '🔥 Study Break Sale — $37.50 for life' : 'Yearly — $75/yr';
-                messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ Free uses for today are up.</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses.</p><a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="display:inline-block;padding:10px 24px;background:#6C63FF;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">Monthly — $7.50/mo</a> <a href="https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03" target="_blank" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:4px;">${yearlyText}</a><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+            const isSale = false; // Sale ended — kept for compat
+                const yearlyText = 'Lifetime — $37.50 one-time';
+                messageDiv.innerHTML = `<div style="text-align:center;padding:20px 10px;"><h3 style="margin:0 0 8px;">⚡ Free uses for today are up.</h3><p style="color:#aaa;margin:0 0 16px;">Upgrade to <strong>Premium</strong> for unlimited uses.</p><button onclick="window.Upsell && window.Upsell.showPageUpgradeModal()" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#6C63FF,#8b5cf6);color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-family:inherit;margin:4px;">Upgrade to Premium →</button><button onclick="window.Upsell && window.Upsell.showPageUpgradeModal()" style="display:inline-block;padding:10px 24px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.35);color:#fbbf24;border-radius:8px;font-weight:600;cursor:pointer;font-family:inherit;margin:4px;">⚡ Day Pass — $1.99</button><p style="color:#888;font-size:0.85rem;margin-top:12px;">Come back tomorrow for more free uses!</p></div>`;
+                
             }
             outputContent.appendChild(messageDiv);
             outputPanel.scrollTop = outputPanel.scrollHeight;

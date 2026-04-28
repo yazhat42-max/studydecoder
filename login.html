@@ -846,8 +846,7 @@
                     showSuccess('Account created! Check your email to verify your account before signing in.');
                     return;
                 }
-                showSuccess('Account created! Redirecting...');
-                await redirectAfterLogin(data);
+                showTrialWelcome(name);
             } catch (err) {
                 showError(err.message);
             } finally {
@@ -1062,6 +1061,35 @@
                 window.location.replace('/index.html');
             }
         }
+
+        function showTrialWelcome(name) {
+            const trialEnd = new Date();
+            trialEnd.setDate(trialEnd.getDate() + 3);
+            const dateStr = trialEnd.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' });
+            document.getElementById('trialWelcomeName').textContent = name ? ', ' + name.split(' ')[0] : '';
+            document.getElementById('trialEndDate').textContent = dateStr;
+            document.getElementById('trialWelcomeOverlay').style.display = 'flex';
+        }
     </script>
+
+    <!-- Trial Welcome Overlay (shown immediately after registration) -->
+    <div id="trialWelcomeOverlay" style="display:none;position:fixed;inset:0;background:linear-gradient(135deg,#667eea,#764ba2);z-index:99999;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:#fff;border-radius:24px;padding:40px 36px;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+            <div style="font-size:3rem;margin-bottom:12px;">&#x1F389;</div>
+            <h1 style="font-size:1.6rem;font-weight:800;color:#1e293b;margin-bottom:8px;">Your free trial has started<span id="trialWelcomeName" style="color:#6C63FF;"></span>!</h1>
+            <p style="color:#64748b;font-size:0.95rem;margin-bottom:20px;">You have <strong style="color:#6C63FF;">3 days of unlimited access</strong> to all 7 tools.</p>
+            <div style="background:#f0f0ff;border-radius:12px;padding:16px;margin-bottom:20px;text-align:left;">
+                <p style="font-size:0.82rem;font-weight:700;color:#6C63FF;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">&#x23F3; Trial ends: <span id="trialEndDate" style="color:#1e293b;text-transform:none;"></span></p>
+                <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;">
+                    <li style="font-size:0.88rem;color:#334155;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> All 7 AI tools unlocked</li>
+                    <li style="font-size:0.88rem;color:#334155;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> Unlimited uses during trial</li>
+                    <li style="font-size:0.88rem;color:#334155;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> Practice exams, syllabus decoder, AI tutor</li>
+                    <li style="font-size:0.88rem;color:#334155;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> No card required</li>
+                </ul>
+            </div>
+            <a href="/index.html#tools" onclick="this.textContent='Loading…';this.style.pointerEvents='none';" style="display:block;padding:15px 24px;background:linear-gradient(135deg,#6C63FF,#8b5cf6);color:#fff;border-radius:12px;text-decoration:none;font-weight:700;font-size:1rem;margin-bottom:12px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Start Exploring Tools &#x2192;</a>
+            <p style="font-size:0.78rem;color:#94a3b8;">After 3 days you'll have 10 free uses/day forever, or upgrade to keep unlimited.</p>
+        </div>
+    </div>
 </body>
 </html>

@@ -202,5 +202,111 @@ window.Upsell = (function () {
         document.body.prepend(banner);
     }
 
-    return { get, renderModal, notifyOnReset, checkReminder, checkGracePeriodEnding };
+    /**
+     * Show a full upgrade modal — works on any page (tool pages don't have #upgradeModalOverlay).
+     * Falls back to window.showUpgradeModal() if available (index.html).
+     */
+    function showPageUpgradeModal() {
+        // On index.html, use the built-in modal
+        if (typeof window.showUpgradeModal === 'function' && document.getElementById('upgradeModalOverlay')) {
+            window.showUpgradeModal();
+            return;
+        }
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
+        let overlay = document.getElementById('sdUpgradeModalOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'sdUpgradeModalOverlay';
+            overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px;';
+            overlay.onclick = e => { if (e.target === overlay) overlay.style.display = 'none'; };
+            overlay.innerHTML = `
+                <div style="background:#1a1a26;border:1px solid rgba(108,99,255,0.3);border-radius:20px;padding:32px;max-width:640px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.7);">
+                    <h2 style="color:#a78bfa;font-size:1.4rem;margin-bottom:6px;">⭐ Upgrade to Premium</h2>
+                    <p style="color:rgba(255,255,255,0.45);font-size:0.88rem;margin-bottom:24px;">Unlimited uses &middot; Better AI quality &middot; All 7 tools</p>
+                    <div style="display:flex;gap:14px;align-items:stretch;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">
+                        <button id="sdUMLifetimeBtn" style="flex:1.2;min-width:220px;max-width:300px;padding:24px 18px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(102,126,234,0.35);transition:transform .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                            <span style="position:absolute;top:-11px;background:linear-gradient(135deg,#6C63FF,#8b5cf6);color:#fff;font-weight:700;font-size:0.7rem;padding:3px 12px;border-radius:20px;">First 100 Users Only</span>
+                            <span style="font-size:0.8rem;opacity:0.8;margin-top:8px;">One-Time Payment &middot; Lifetime</span>
+                            <span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$37.50</span>
+                            <span style="font-size:0.8rem;opacity:0.65;text-decoration:line-through;">$60/yr at monthly</span>
+                            <span style="font-size:0.75rem;opacity:0.8;margin-top:6px;">Pay once, use forever</span>
+                        </button>
+                        <button id="sdUMMonthlyBtn" style="flex:0.9;min-width:180px;max-width:240px;padding:20px 14px;background:rgba(255,255,255,0.05);color:#fff;border:1px solid rgba(255,255,255,0.1);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;transition:transform .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                            <span style="font-size:0.8rem;color:rgba(255,255,255,0.45);">Monthly</span>
+                            <span style="font-size:1.8rem;font-weight:700;margin:6px 0 2px;color:#6C63FF;">$5</span>
+                            <span style="font-size:0.8rem;color:rgba(255,255,255,0.45);">/month (AUD)</span>
+                            <span style="font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:6px;">Cancel anytime</span>
+                        </button>
+                    </div>
+                    <button id="sdUMDayPassBtn" style="display:block;width:100%;max-width:360px;margin:0 auto 16px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);border-radius:10px;color:#fbbf24;padding:10px 20px;font-size:0.88rem;font-weight:600;cursor:pointer;font-family:inherit;">⚡ Not ready? Get 24 hours for $1.99 →</button>
+                    <div id="sdUMPollingStatus" style="display:none;text-align:center;margin-bottom:10px;padding:10px;background:rgba(22,163,74,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;color:#22c55e;font-size:0.85rem;">⏳ Waiting for payment... Will activate automatically.</div>
+                    <p id="sdUMManualHint" style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin-bottom:10px;display:none;">Not detected? <a href="#" id="sdUMManualCheck" style="color:#6C63FF;">Check manually</a></p>
+                    <button id="sdUMCloseBtn" style="width:100%;padding:11px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-weight:600;cursor:pointer;font-family:inherit;font-size:0.9rem;">Close</button>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+
+            let sdPollInterval = null;
+            const startPoll = () => {
+                const s = document.getElementById('sdUMPollingStatus');
+                const h = document.getElementById('sdUMManualHint');
+                if (s) s.style.display = 'block';
+                setTimeout(() => { if (h) h.style.display = 'block'; }, 15000);
+                if (sdPollInterval) return;
+                let att = 0;
+                sdPollInterval = setInterval(async () => {
+                    if (++att > 60) { clearInterval(sdPollInterval); sdPollInterval = null; return; }
+                    try {
+                        const r = await fetch(API_BASE + '/api/verify-payment', { method: 'POST', credentials: 'include' });
+                        const d = await r.json();
+                        if (d.success && d.subscribed) {
+                            clearInterval(sdPollInterval); sdPollInterval = null;
+                            const s = document.getElementById('sdUMPollingStatus');
+                            if (s) s.innerHTML = '✅ Payment confirmed! Activating...';
+                            setTimeout(() => window.location.reload(), 1200);
+                        }
+                    } catch(e) {}
+                }, 5000);
+            };
+            const checkout = async (plan) => {
+                try {
+                    const r = await fetch(API_BASE + '/api/create-checkout-session', {
+                        method: 'POST', credentials: 'include',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ plan })
+                    });
+                    const d = await r.json();
+                    if (d.url) { startPoll(); window.open(d.url, '_blank'); }
+                    else if (d.error === 'Not authenticated') { window.location.href = '/login.html'; }
+                    else alert(d.error || 'Could not start checkout. Please try again.');
+                } catch(e) { alert('Error starting checkout. Please try again.'); }
+            };
+            document.getElementById('sdUMLifetimeBtn').onclick = () => checkout('lifetime');
+            document.getElementById('sdUMMonthlyBtn').onclick = () => checkout('monthly');
+            document.getElementById('sdUMDayPassBtn').onclick = async () => {
+                const btn = document.getElementById('sdUMDayPassBtn');
+                btn.textContent = '⏳ Redirecting…'; btn.disabled = true;
+                try {
+                    const r = await fetch(API_BASE + '/api/create-daypass-session', { method: 'POST', credentials: 'include' });
+                    const d = await r.json();
+                    if (d.url) window.location.href = d.url;
+                    else if (d.error === 'Not authenticated') window.location.href = '/login.html';
+                    else { btn.textContent = '⚡ Not ready? Get 24 hours for $1.99 →'; btn.disabled = false; }
+                } catch(e) { btn.textContent = '⚡ Not ready? Get 24 hours for $1.99 →'; btn.disabled = false; }
+            };
+            document.getElementById('sdUMManualCheck').onclick = async (e) => {
+                e.preventDefault();
+                try {
+                    const r = await fetch(API_BASE + '/api/verify-payment', { method: 'POST', credentials: 'include' });
+                    const d = await r.json();
+                    if (d.success && d.subscribed) window.location.reload();
+                    else alert(d.message || 'No payment found yet.');
+                } catch(e) {}
+            };
+            document.getElementById('sdUMCloseBtn').onclick = () => { overlay.style.display = 'none'; };
+        }
+        overlay.style.display = 'flex';
+    }
+
+    return { get, renderModal, notifyOnReset, checkReminder, checkGracePeriodEnding, showPageUpgradeModal };
 })();
