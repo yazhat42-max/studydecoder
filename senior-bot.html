@@ -677,27 +677,46 @@
         function showPaywall(user) {
             const paywall = document.getElementById('paywallOverlay');
             paywall.classList.remove('hidden');
-            const dealCard = `<button onclick="createCheckoutAndPoll('lifetime')" style="flex:1.3;min-width:220px;max-width:300px;padding:24px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 20px rgba(102,126,234,0.35);cursor:pointer;font-family:inherit;"><span style="position:absolute;top:-12px;background:linear-gradient(135deg,#6C63FF,#8b5cf6);color:#fff;font-weight:700;font-size:0.7rem;padding:3px 12px;border-radius:20px;">First 100 Users Only</span><span style="font-size:0.8rem;opacity:0.85;margin-top:8px;">One-Time Payment — Lifetime</span><span style="font-size:2rem;font-weight:800;margin:6px 0 2px;">$37.50</span><span style="text-decoration:line-through;opacity:0.6;font-size:0.9rem;">$60/yr at monthly</span><span style="font-size:0.75rem;opacity:0.8;margin-top:6px;">Pay once, use forever</span></button>`;
             paywall.innerHTML = `
                 <div class="paywall-card">
                     <img src="logo.png" alt="Logo">
                     <h2>Welcome to Study Decoder!</h2>
-                    <p style="font-size: 1rem; color: #444; margin-bottom: 8px;">Hey <strong>${user.name || user.email}</strong>! 👋</p>
-                    
-                    <button id="continueFreeBtnPaywall" class="paywall-btn paywall-btn-activate" style="background: #10b981;">✓ Continue with Free Plan</button>
-                    
-                    <p style="color: #94a3b8; font-size: 0.85rem; margin: 16px 0;">─── or upgrade for unlimited ───</p>
-                    
-                    <div style="display:flex;gap:12px;align-items:stretch;justify-content:center;flex-wrap:wrap;margin:16px 0;">
-                        ${dealCard}
-                        <button onclick="createCheckoutAndPoll('monthly')" style="flex:0.9;min-width:180px;max-width:240px;padding:20px 14px;background:#f8f9fa;color:#2A2A2A;border:2px solid #e0e0e0;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;">
-                            <span style="font-size:0.8rem;color:#888;">Monthly</span>
-                            <span style="font-size:1.6rem;font-weight:700;margin:6px 0 2px;color:#6C63FF;">$5</span>
-                            <span style="font-size:0.8rem;color:#888;">/month</span>
-                            <span style="font-size:0.7rem;color:#aaa;margin-top:6px;">Cancel anytime</span>
+                    <p style="font-size:1rem;color:#444;margin-bottom:8px;">Hey <strong>${user.name || user.email}</strong>! 👋</p>
+
+                    <button id="continueFreeBtnPaywall" class="paywall-btn paywall-btn-activate" style="background:#10b981;">✓ Continue with Free Plan</button>
+
+                    <p style="color:#94a3b8;font-size:0.85rem;margin:16px 0;">─── or upgrade for unlimited ───</p>
+
+                    <!-- LIFETIME HERO -->
+                    <div style="position:relative;margin-bottom:10px;">
+                        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);white-space:nowrap;background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;font-weight:800;font-size:0.65rem;padding:3px 12px;border-radius:20px;letter-spacing:0.5px;">
+                            ⭐ FOUNDING OFFER — FIRST 100 ONLY &nbsp;·&nbsp; <span id="paywallSpotsLeft">?? spots</span> left
+                        </div>
+                        <button onclick="createCheckoutAndPoll('lifetime')" style="width:100%;padding:26px 18px 20px;background:linear-gradient(135deg,#4f3dc4,#7c3aed);color:#fff;border:2px solid rgba(167,139,250,0.4);border-radius:14px;display:flex;flex-direction:column;align-items:center;cursor:pointer;font-family:inherit;box-shadow:0 6px 28px rgba(102,126,234,0.4);">
+                            <span style="font-size:0.75rem;opacity:0.7;letter-spacing:0.5px;text-transform:uppercase;">One-Time Payment &middot; Lifetime Access</span>
+                            <span style="font-size:2.4rem;font-weight:900;margin:6px 0 0;line-height:1;">$37.50</span>
+                            <span style="font-size:0.78rem;opacity:0.5;text-decoration:line-through;margin-bottom:6px;">$60/yr if paid monthly</span>
+                            <span style="background:rgba(255,255,255,0.12);border-radius:8px;padding:4px 12px;font-size:0.78rem;font-weight:600;">Pay once. Use through Year 11 &amp; 12. ✓</span>
                         </button>
                     </div>
-                    
+
+                    <!-- EXAM SPRINT -->
+                    <button onclick="createCheckoutAndPoll('exam_sprint')" style="width:100%;padding:14px 18px;background:rgba(16,185,129,0.06);color:#1e293b;border:1px solid rgba(16,185,129,0.3);border-radius:12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;margin-bottom:8px;">
+                        <div style="text-align:left;">
+                            <div style="font-weight:700;font-size:0.88rem;color:#064e3b;">⚡ Exam Sprint <span style="font-size:0.68rem;background:rgba(16,185,129,0.12);color:#059669;border-radius:6px;padding:2px 7px;margin-left:5px;font-weight:600;">21 DAYS</span></div>
+                            <div style="font-size:0.73rem;color:#64748b;margin-top:2px;">Full access for one exam period</div>
+                        </div>
+                        <div style="text-align:right;flex-shrink:0;margin-left:14px;">
+                            <div style="font-size:1.3rem;font-weight:800;color:#059669;">$6.99</div>
+                            <div style="font-size:0.68rem;color:#94a3b8;">one-time</div>
+                        </div>
+                    </button>
+
+                    <!-- MONTHLY FOOTNOTE -->
+                    <p style="color:#94a3b8;font-size:0.78rem;margin-bottom:12px;">
+                        Not sure yet? <button onclick="createCheckoutAndPoll('monthly')" style="background:none;border:none;color:#6C63FF;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">$5/month</button> — cancel anytime.
+                    </p>
+
                     <div class="trust-badges">
                         <div class="trust-badge">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="#10b981"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
@@ -712,7 +731,7 @@
                             <span>Cancel Anytime</span>
                         </div>
                     </div>
-                    
+
                     <div id="paymentPollingStatus" style="display:none;text-align:center;margin:12px 0;">
                         <span style="font-size:0.85rem;color:#6C63FF;">⏳ Waiting for payment confirmation...</span>
                     </div>
@@ -722,7 +741,15 @@
                     <button id="logoutBtn" class="paywall-btn paywall-btn-signout">Sign Out</button>
                 </div>
             `;
-            
+
+            // Load live spot count
+            fetch(API_BASE + '/api/spots-left')
+                .then(r => r.json())
+                .then(d => {
+                    const el = document.getElementById('paywallSpotsLeft');
+                    if (el && d.spotsLeft !== undefined) el.textContent = d.spotsLeft + ' spot' + (d.spotsLeft !== 1 ? 's' : '');
+                }).catch(() => {});
+
             document.getElementById('continueFreeBtnPaywall').addEventListener('click', async () => {
                 try {
                     await fetch(API_BASE + '/api/acknowledge-free', { method: 'POST', credentials: 'include' });
