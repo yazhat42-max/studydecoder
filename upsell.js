@@ -238,8 +238,8 @@ window.Upsell = (function () {
                     </div>
 
                     <!-- MONTHLY FOOTNOTE (not a card) -->
-                    <p style="color:rgba(255,255,255,0.3);font-size:0.78rem;margin-bottom:14px;">
-                        Not sure yet? <button id="sdUMMonthlyBtn" style="background:none;border:none;color:#6C63FF;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">$5/month</button> — cancel anytime.
+                    <p style="color:rgba(255,255,255,0.45);font-size:0.82rem;margin-bottom:14px;">
+                        Not sure yet? <button id="sdUMMonthlyBtn" style="background:none;border:none;color:#a59fff;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">$5/month</button> — cancel anytime.
                     </p>
 
                     <!-- DAY PASS -->
