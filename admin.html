@@ -654,10 +654,62 @@
                         <button class="action-btn action-btn-secondary" onclick="showRevokeAccessModal()">
                             ❌ Revoke Access
                         </button>
+                        <button class="action-btn action-btn-secondary" onclick="toggleUserStats()">
+                            👥 User Stats
+                        </button>
+                        <button class="action-btn action-btn-secondary" onclick="toggleReviewsPanel()">
+                            ⭐ Reviews
+                        </button>
                         <button class="action-btn action-btn-secondary" onclick="refreshData()">
                             🔄 Refresh Data
                         </button>
                     </div>
+                </div>
+            </div>
+
+            <!-- User Stats Panel (hidden by default, toggle via button) -->
+            <div class="admin-section" id="userStatsPanel" style="display:none;">
+                <div class="section-header">
+                    <h2>👥 User Stats</h2>
+                    <div style="display:flex;gap:10px;align-items:center;">
+                        <input type="text" id="userStatsSearch" placeholder="Search by email…" oninput="filterUserStats()" style="padding:7px 12px;border:1px solid var(--border);border-radius:8px;font-size:0.85rem;font-family:inherit;background:var(--bg-light);color:var(--text-primary);width:200px;">
+                        <select id="userStatsPlanFilter" onchange="filterUserStats()" style="padding:7px 12px;border:1px solid var(--border);border-radius:8px;font-size:0.85rem;font-family:inherit;background:var(--bg-light);color:var(--text-primary);">
+                            <option value="">All plans</option>
+                            <option value="free">Free</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                            <option value="lifetime">Lifetime</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="section-content">
+                    <table class="admin-table" id="userStatsTable">
+                        <thead>
+                            <tr>
+                                <th onclick="sortUserStats('email')" style="cursor:pointer;">Email ↕</th>
+                                <th onclick="sortUserStats('plan')" style="cursor:pointer;">Plan ↕</th>
+                                <th onclick="sortUserStats('totalUses')" style="cursor:pointer;">Total Uses ↕</th>
+                                <th>Most Used Bot</th>
+                                <th onclick="sortUserStats('activeDays')" style="cursor:pointer;">Days Active ↕</th>
+                                <th onclick="sortUserStats('lastActive')" style="cursor:pointer;">Last Active ↕</th>
+                                <th>Return User</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userStatsBody">
+                            <tr><td colspan="7" style="text-align:center;color:var(--text-secondary);">Loading…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reviews Moderation Panel (hidden by default) -->
+            <div class="admin-section" id="reviewsPanel" style="display:none;">
+                <div class="section-header">
+                    <h2>⭐ Reviews Moderation</h2>
+                    <span id="reviewsPendingBadge" style="background:#fef3c7;color:#92400e;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;">Loading…</span>
+                </div>
+                <div class="section-content" id="reviewsModerationBody" style="padding:16px;">
+                    <p style="text-align:center;color:var(--text-secondary);">Loading…</p>
                 </div>
             </div>
             
@@ -1641,6 +1693,155 @@
             }
         }
         
+        // ========== USER STATS ==========
+        let _userStatsData = [];
+        let _userStatsSortKey = 'totalUses';
+        let _userStatsSortDir = -1; // -1 = desc
+
+        async function loadUserStats() {
+            try {
+                const res = await fetch('/api/admin/user-stats', { credentials: 'include' });
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                _userStatsData = data.users || [];
+                renderUserStats();
+            } catch(e) {
+                document.getElementById('userStatsBody').innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--error);">Failed to load user stats.</td></tr>';
+            }
+        }
+
+        function sortUserStats(key) {
+            if (_userStatsSortKey === key) _userStatsSortDir *= -1;
+            else { _userStatsSortKey = key; _userStatsSortDir = -1; }
+            renderUserStats();
+        }
+
+        function filterUserStats() {
+            renderUserStats();
+        }
+
+        function renderUserStats() {
+            const search = (document.getElementById('userStatsSearch')?.value || '').toLowerCase();
+            const planFilter = document.getElementById('userStatsPlanFilter')?.value || '';
+            let rows = _userStatsData.filter(u => {
+                if (search && !u.email?.toLowerCase().includes(search) && !u.name?.toLowerCase().includes(search)) return false;
+                if (planFilter && u.plan !== planFilter) return false;
+                return true;
+            });
+            rows.sort((a, b) => {
+                let av = a[_userStatsSortKey], bv = b[_userStatsSortKey];
+                if (typeof av === 'string') av = av.toLowerCase();
+                if (typeof bv === 'string') bv = bv.toLowerCase();
+                if (av == null) av = '';
+                if (bv == null) bv = '';
+                return av < bv ? _userStatsSortDir : av > bv ? -_userStatsSortDir : 0;
+            });
+
+            const botDisplay = {
+                practice: 'Practice Q', 'chat-tutor': 'Chat Tutor', worksheet: 'Worksheet',
+                'notes-transcriber': 'Notes', timetable: 'Timetable', syllabus: 'Syllabus'
+            };
+
+            const tbody = document.getElementById('userStatsBody');
+            if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-secondary);">No users match filter.</td></tr>'; return; }
+
+            tbody.innerHTML = rows.map(u => `
+                <tr>
+                    <td>
+                        <div style="display:flex;flex-direction:column;">
+                            <span style="font-weight:500;font-size:0.9rem;">${escapeHtml(u.email)}</span>
+                            ${u.name ? `<span style="font-size:0.78rem;color:var(--text-secondary);">${escapeHtml(u.name)}</span>` : ''}
+                        </div>
+                    </td>
+                    <td>${getRoleBadge(u.role)} <span style="font-size:0.8rem;color:var(--text-secondary);">${u.plan || 'free'}</span></td>
+                    <td style="font-weight:700;font-size:1rem;color:${u.totalUses > 50 ? 'var(--success)' : u.totalUses > 10 ? 'var(--primary)' : 'var(--text-primary)'};">${u.totalUses}</td>
+                    <td style="font-size:0.85rem;">${u.mostUsedBot ? (botDisplay[u.mostUsedBot] || u.mostUsedBot) : '—'}</td>
+                    <td>${u.activeDays}</td>
+                    <td style="color:var(--text-secondary);font-size:0.85rem;">${u.lastActive ? formatDate(u.lastActive) : '—'}</td>
+                    <td>${u.isReturnUser ? '<span class="badge badge-active">✓ Return</span>' : '<span class="badge badge-free">New</span>'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function toggleUserStats() {
+            const panel = document.getElementById('userStatsPanel');
+            const isHidden = panel.style.display === 'none';
+            panel.style.display = isHidden ? '' : 'none';
+            if (isHidden && _userStatsData.length === 0) loadUserStats();
+        }
+
+        // ========== REVIEWS MODERATION ==========
+        let _reviewsData = [];
+
+        async function loadReviews() {
+            try {
+                const res = await fetch('/api/admin/reviews', { credentials: 'include' });
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                _reviewsData = data.reviews || [];
+                renderReviewsPanel();
+            } catch(e) {
+                document.getElementById('reviewsModerationBody').innerHTML = '<p style="color:var(--error);">Failed to load reviews.</p>';
+            }
+        }
+
+        function renderReviewsPanel() {
+            const pending = _reviewsData.filter(r => !r.approved).length;
+            const badge = document.getElementById('reviewsPendingBadge');
+            badge.textContent = pending > 0 ? `${pending} pending` : 'All approved';
+            badge.style.background = pending > 0 ? '#fef3c7' : '#dcfce7';
+            badge.style.color = pending > 0 ? '#92400e' : '#15803d';
+
+            const container = document.getElementById('reviewsModerationBody');
+            if (!_reviewsData.length) { container.innerHTML = '<p style="color:var(--text-secondary);padding:10px 0;">No reviews yet.</p>'; return; }
+
+            container.innerHTML = _reviewsData.map(r => `
+                <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;background:${r.approved ? 'rgba(16,185,129,0.04)' : 'rgba(245,158,11,0.04)'};">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">
+                        <div>
+                            <span style="color:#f59e0b;font-size:1rem;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+                            ${r.text ? `<p style="margin:6px 0 4px;font-size:0.9rem;color:var(--text-primary);">"${escapeHtml(r.text)}"</p>` : ''}
+                            <div style="font-size:0.78rem;color:var(--text-secondary);">
+                                ${r.displayName ? `<strong>${escapeHtml(r.displayName)}</strong> · ` : 'Anonymous · '}
+                                ${r.botType ? escapeHtml(r.botType) + ' · ' : ''}
+                                ${formatDate(r.createdAt)}
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:8px;flex-shrink:0;">
+                            ${r.approved
+                                ? `<button onclick="reviewAction('unapprove','${r.id}')" style="background:#f59e0b;color:#fff;border:none;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:0.8rem;">Hide</button>`
+                                : `<button onclick="reviewAction('approve','${r.id}')" style="background:var(--success);color:#fff;border:none;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:0.8rem;">✓ Approve</button>`
+                            }
+                            <button onclick="reviewAction('delete','${r.id}')" style="background:var(--error);color:#fff;border:none;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:0.8rem;">🗑</button>
+                        </div>
+                    </div>
+                    <div style="margin-top:4px;">
+                        <span style="font-size:0.72rem;padding:2px 8px;border-radius:20px;${r.approved ? 'background:#dcfce7;color:#15803d;' : 'background:#fef3c7;color:#92400e;'}">
+                            ${r.approved ? '✓ Approved' : '⏳ Pending'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function reviewAction(action, id) {
+            if (action === 'delete' && !confirm('Delete this review permanently?')) return;
+            const method = action === 'delete' ? 'DELETE' : 'POST';
+            const url = action === 'delete' ? `/api/admin/reviews/${id}` : `/api/admin/reviews/${id}/${action}`;
+            try {
+                const res = await fetch(url, { method, credentials: 'include' });
+                if (!res.ok) { alert('Action failed'); return; }
+                await loadReviews();
+            } catch(e) { alert('Network error'); }
+        }
+
+        function toggleReviewsPanel() {
+            const panel = document.getElementById('reviewsPanel');
+            const isHidden = panel.style.display === 'none';
+            panel.style.display = isHidden ? '' : 'none';
+            if (isHidden && _reviewsData.length === 0) loadReviews();
+        }
+
         // Init
         init();
     </script>

@@ -93,6 +93,8 @@ const USERS_FILE = path.join(DB_PATH, 'users.json');
 const PAYMENTS_FILE = path.join(DB_PATH, 'payments.json');
 const OG_CODES_FILE = path.join(DB_PATH, 'og-codes.json');
 const ANALYTICS_FILE = path.join(DB_PATH, 'analytics.json');
+const REVIEWS_FILE = path.join(DB_PATH, 'reviews.json');
+const BOTSTATS_FILE = path.join(DB_PATH, 'botstats.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DB_PATH)) {
@@ -446,7 +448,9 @@ function hasDayPassActive(user) {
 // In-memory database with persistence
 const db = {
     users: loadDB(USERS_FILE, {}),
-    payments: loadDB(PAYMENTS_FILE, [])
+    payments: loadDB(PAYMENTS_FILE, []),
+    reviews: loadDB(REVIEWS_FILE, {}),
+    botStats: loadDB(BOTSTATS_FILE, {})
 };
 
 // Auto-save every 30 seconds and on changes
@@ -456,6 +460,8 @@ function scheduleSave() {
     saveTimeout = setTimeout(() => {
         saveDB(USERS_FILE, db.users);
         saveDB(PAYMENTS_FILE, db.payments);
+        saveDB(REVIEWS_FILE, db.reviews);
+        saveDB(BOTSTATS_FILE, db.botStats);
     }, 1000); // Debounce saves
 }
 
@@ -463,6 +469,8 @@ function scheduleSave() {
 process.on('exit', () => {
     saveDB(USERS_FILE, db.users);
     saveDB(PAYMENTS_FILE, db.payments);
+    saveDB(REVIEWS_FILE, db.reviews);
+    saveDB(BOTSTATS_FILE, db.botStats);
 });
 
 // ==================== MIDDLEWARE ====================
@@ -906,6 +914,31 @@ function upsertUser(userId, data) {
     };
     scheduleSave();
     return db.users[userId];
+}
+
+/**
+ * Record a bot use in the per-bot daily stats (for homepage usage badges)
+ */
+function recordBotStat(botType) {
+    const today = _getToday();
+    if (!db.botStats[botType]) db.botStats[botType] = {};
+    db.botStats[botType][today] = (db.botStats[botType][today] || 0) + 1;
+    scheduleSave();
+}
+
+/**
+ * Record a bot use against a user's lifetime usage map (for admin user stats)
+ */
+function recordUserBotUsage(userId, botType) {
+    const user = db.users[userId];
+    if (!user) return;
+    if (!user.botUsage) user.botUsage = {};
+    user.botUsage[botType] = (user.botUsage[botType] || 0) + 1;
+    user.lastActive = new Date().toISOString();
+    const today = _getToday();
+    if (!user.activeDays) user.activeDays = {};
+    user.activeDays[today] = true;
+    scheduleSave();
 }
 
 /**
@@ -3006,6 +3039,180 @@ app.post('/api/admin/test-email', requireOwner, async (req, res) => {
     }
 });
 
+// ==================== REVIEWS API ====================
+
+/**
+ * POST /api/reviews — Authenticated user submits a review
+ */
+app.post('/api/reviews', requireAuth, (req, res) => {
+    const { rating, text, displayName, emailConsent, botType } = req.body;
+
+    if (!rating || rating < 1 || rating > 5) {
+        return res.status(400).json({ error: 'Rating 1–5 required' });
+    }
+    if (text && text.length > 500) {
+        return res.status(400).json({ error: 'Review text too long (max 500 chars)' });
+    }
+
+    const user = req.user;
+
+    // Only allow one review per user (check existing)
+    const existing = Object.values(db.reviews).find(r => r.userId === user.userId);
+    if (existing) {
+        return res.status(409).json({ error: 'You have already submitted a review' });
+    }
+
+    const id = crypto.randomUUID();
+    db.reviews[id] = {
+        id,
+        userId: user.userId,
+        rating: Math.round(rating),
+        text: text ? sanitizeInput(text.trim().slice(0, 500)) : '',
+        displayName: displayName ? sanitizeName(displayName.trim()) : '',
+        emailConsent: emailConsent === true,
+        botType: botType || null,
+        approved: false,
+        createdAt: new Date().toISOString()
+    };
+
+    // Mark user so we don't prompt them again
+    db.users[user.userId].reviewPromptShown = true;
+    scheduleSave();
+
+    console.log(`⭐ New review from ${user.email} (rating: ${rating})`);
+    res.json({ success: true });
+});
+
+/**
+ * GET /api/reviews/public — Returns approved reviews (no emails, safe for homepage)
+ */
+app.get('/api/reviews/public', (req, res) => {
+    const approved = Object.values(db.reviews)
+        .filter(r => r.approved)
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .map(r => ({
+            id: r.id,
+            rating: r.rating,
+            text: r.text,
+            displayName: r.displayName || 'Anonymous',
+            botType: r.botType,
+            createdAt: r.createdAt
+        }));
+    res.json({ reviews: approved });
+});
+
+/**
+ * GET /api/reviews/prompt-eligible — Check if logged-in user should be shown review prompt
+ */
+app.get('/api/reviews/prompt-eligible', requireAuth, (req, res) => {
+    const user = req.user;
+    // Don't prompt if already submitted or already seen prompt
+    if (user.reviewPromptShown) return res.json({ eligible: false });
+    // Require at least 3 total lifetime bot uses
+    const totalUses = user.botUsage
+        ? Object.values(user.botUsage).reduce((a, b) => a + b, 0)
+        : 0;
+    res.json({ eligible: totalUses >= 3 });
+});
+
+/**
+ * GET /api/admin/reviews — Owner: all reviews with approval status
+ */
+app.get('/api/admin/reviews', requireOwner, (req, res) => {
+    const reviews = Object.values(db.reviews)
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.json({ reviews });
+});
+
+/**
+ * POST /api/admin/reviews/:id/approve — Owner approves a review
+ */
+app.post('/api/admin/reviews/:id/approve', requireOwner, (req, res) => {
+    const review = db.reviews[req.params.id];
+    if (!review) return res.status(404).json({ error: 'Review not found' });
+    review.approved = true;
+    scheduleSave();
+    res.json({ success: true });
+});
+
+/**
+ * POST /api/admin/reviews/:id/unapprove — Owner un-approves a review
+ */
+app.post('/api/admin/reviews/:id/unapprove', requireOwner, (req, res) => {
+    const review = db.reviews[req.params.id];
+    if (!review) return res.status(404).json({ error: 'Review not found' });
+    review.approved = false;
+    scheduleSave();
+    res.json({ success: true });
+});
+
+/**
+ * DELETE /api/admin/reviews/:id — Owner deletes a review
+ */
+app.delete('/api/admin/reviews/:id', requireOwner, (req, res) => {
+    if (!db.reviews[req.params.id]) return res.status(404).json({ error: 'Review not found' });
+    delete db.reviews[req.params.id];
+    scheduleSave();
+    res.json({ success: true });
+});
+
+// ==================== USER STATS API ====================
+
+/**
+ * GET /api/admin/user-stats — Owner: per-user bot usage, session counts, return users
+ */
+app.get('/api/admin/user-stats', requireOwner, (req, res) => {
+    const users = Object.values(db.users).map(u => {
+        const botUsage = u.botUsage || {};
+        const totalUses = Object.values(botUsage).reduce((a, b) => a + b, 0);
+        const activeDays = Object.keys(u.activeDays || {}).length;
+        const createdAt = u.createdAt ? new Date(u.createdAt) : null;
+        const lastActive = u.lastActive ? new Date(u.lastActive) : null;
+        const isReturnUser = createdAt && lastActive
+            ? (lastActive - createdAt) > 24 * 60 * 60 * 1000
+            : false;
+        const mostUsedBot = Object.entries(botUsage).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
+
+        return {
+            userId: u.userId,
+            email: u.email,
+            name: u.name,
+            plan: u.plan || 'free',
+            role: getUserRole(u.email),
+            createdAt: u.createdAt,
+            lastActive: u.lastActive || null,
+            totalUses,
+            activeDays,
+            isReturnUser,
+            mostUsedBot,
+            botUsage
+        };
+    }).sort((a, b) => b.totalUses - a.totalUses);
+
+    res.json({ users });
+});
+
+// ==================== BOT USAGE STATS (PUBLIC) ====================
+
+/**
+ * GET /api/stats/bot-usage — Returns 7-day totals per bot (for homepage badges)
+ */
+app.get('/api/stats/bot-usage', (req, res) => {
+    const today = new Date();
+    const totals = {};
+    for (let i = 0; i < 7; i++) {
+        const d = new Date(today);
+        d.setUTCDate(d.getUTCDate() - i);
+        const key = d.toISOString().split('T')[0];
+        for (const [botType, days] of Object.entries(db.botStats)) {
+            totals[botType] = (totals[botType] || 0) + (days[key] || 0);
+        }
+    }
+    res.json({ usage: totals });
+});
+
+
+
 // ==================== SYLLABUS DATA ====================
 
 // Syllabuses live at project root — static read-only files, no need for persistent disk.
@@ -4794,6 +5001,11 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
             limitType: status.hitSpecialLimit ? 'special' : 'global'
         });
     }
+
+    // Track bot usage
+    recordBotStat('worksheet');
+    recordUserBotUsage(req.session.userId, 'worksheet');
+
     const { messages } = req.body;
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
         return res.status(400).json({ error: 'Messages are required' });
@@ -4851,6 +5063,11 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
             limitType: status.hitSpecialLimit ? 'special' : 'global'
         });
     }
+
+    // Track bot usage
+    recordBotStat('notes-transcriber');
+    recordUserBotUsage(req.session.userId, 'notes-transcriber');
+
     const { messages } = req.body;
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
         return res.status(400).json({ error: 'Messages are required' });
@@ -6502,6 +6719,11 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             limitType: 'global'
         });
     }
+
+    // Track bot usage (per-bot daily stats + per-user lifetime stats)
+    recordBotStat(botType);
+    recordUserBotUsage(req.session.userId, botType);
+
     const { messages, subject, detailLevel } = req.body;
     
     // Validate messages
