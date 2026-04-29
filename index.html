@@ -1608,6 +1608,23 @@
 
     // Check if user is logged in on page load
     async function checkAuthStatus() {
+        // Optimistically show cached user while server verifies — prevents flash-of-signed-out
+        let cachedUser = null;
+        try {
+            const raw = localStorage.getItem('sd_user_cache');
+            if (raw) {
+                const c = JSON.parse(raw);
+                if (c.email && c.cachedAt && (Date.now() - c.cachedAt) < 12 * 60 * 60 * 1000) {
+                    cachedUser = c;
+                }
+            }
+        } catch(e) {}
+
+        if (cachedUser) {
+            currentUser = cachedUser;
+            showLoggedInUI(cachedUser);
+        }
+
         try {
             const res = await fetch(API_BASE + '/api/subscription', { credentials: 'include' });
             
@@ -1622,13 +1639,19 @@
                     maybeShowOnboarding(data);
                     return;
                 }
+            } else if (res.status === 401) {
+                // Confirmed not authenticated — clear cache and show logged-out
+                try { localStorage.removeItem('sd_user_cache'); } catch(e) {}
+                currentUser = null;
+                showLoggedOutUI();
+                return;
             }
+            // Other error (5xx etc): if we had a cached session, trust it temporarily
+            if (!cachedUser) { currentUser = null; showLoggedOutUI(); }
         } catch (e) {
-            // User not logged in
+            // Network error: if we had a cache, keep showing logged-in
+            if (!cachedUser) { currentUser = null; showLoggedOutUI(); }
         }
-        
-        currentUser = null;
-        showLoggedOutUI();
     }
 
     function showLoggedInUI(user) {

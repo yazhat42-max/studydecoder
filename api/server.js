@@ -637,7 +637,8 @@ app.use(session({
     store: new FileStore({
         path: sessionsPath,
         ttl: 30 * 24 * 60 * 60, // 30 days
-        retries: 0,
+        retries: 2,
+        retrySleepTime: 100,
         logFn: () => {} // Disable logging
     }),
     secret: config.sessionSecret,
