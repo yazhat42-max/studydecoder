@@ -1319,19 +1319,11 @@
         </div>
     </section>
 
-    <!-- Social Proof + Reviews -->
+    <!-- Social Proof -->
     <section id="reviews" style="padding:2.5rem 5% 3rem;border-top:1px solid var(--border);">
         <div style="max-width:640px;margin:0 auto;text-align:center;">
             <div id="socialProofWeeklyBadge" style="display:none;margin-bottom:0.8rem;"></div>
-
-            <!-- Review carousel (filled dynamically) -->
-            <div id="reviewSection" style="display:none;">
-                <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:1.2rem;">What students say</p>
-                <div class="review-carousel-wrap" id="reviewCarouselWrap"></div>
-                <div class="review-dots" id="reviewDots"></div>
-            </div>
-
-            <p id="socialProofCount" style="font-size:0.9rem;color:var(--text-muted);margin-top:1rem;"></p>
+            <p id="socialProofCount" style="font-size:0.9rem;color:var(--text-muted);"></p>
         </div>
     </section>
 
@@ -2718,52 +2710,7 @@
     </div>
 
     <script>
-    // ── REVIEW CAROUSEL ──
-    let _reviews = [];
-    let _currentReview = 0;
-    let _carouselTimer = null;
-
-    async function loadReviews() {
-        try {
-            const res = await fetch('/api/reviews/public');
-            if (!res.ok) return;
-            const data = await res.json();
-            _reviews = data.reviews || [];
-            if (_reviews.length > 0) renderCarousel();
-        } catch(e) {}
-    }
-
-    function renderCarousel() {
-        const wrap = document.getElementById('reviewCarouselWrap');
-        const dotsEl = document.getElementById('reviewDots');
-        const section = document.getElementById('reviewSection');
-        if (!wrap || _reviews.length === 0) return;
-
-        section.style.display = 'block';
-        wrap.innerHTML = _reviews.map((r, i) => `
-            <div class="review-slide${i === 0 ? ' active' : ''}" id="rslide${i}">
-                <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-                ${r.text ? `<div class="review-text">"${escHtml(r.text)}"</div>` : ''}
-                <div class="review-author">— ${escHtml(r.displayName)}${r.botType ? ` · via ${botLabel(r.botType)}` : ''}</div>
-            </div>
-        `).join('');
-
-        if (_reviews.length > 1) {
-            dotsEl.innerHTML = _reviews.map((_, i) => `<div class="review-dot${i === 0 ? ' active' : ''}" onclick="goReview(${i})"></div>`).join('');
-            _carouselTimer = setInterval(() => goReview((_currentReview + 1) % _reviews.length), 5000);
-        }
-    }
-
-    function goReview(idx) {
-        const slides = document.querySelectorAll('.review-slide');
-        const dots = document.querySelectorAll('.review-dot');
-        slides[_currentReview]?.classList.replace('active', 'exit');
-        setTimeout(() => slides[_currentReview]?.classList.remove('exit'), 560);
-        _currentReview = idx;
-        slides[idx]?.classList.add('active');
-        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    }
-
+    // ── UTILITIES ──
     function botLabel(bt) {
         const map = { practice:'Practice Questions', 'chat-tutor':'Chat Tutor', worksheet:'Worksheet Decoder', 'notes-transcriber':'Notes Transcriber', timetable:'Timetable', syllabus:'Syllabus Decoder' };
         return map[bt] || bt;
@@ -2773,35 +2720,80 @@
         const d = document.createElement('div'); d.textContent = s; return d.innerHTML;
     }
 
-    // ── BOT USAGE BADGES ──
-    const BOT_BADGE_MAP = {
-        practice:  { sectionId: 'practiceDemo',    label: 'practice exams generated' },
-        'chat-tutor': { sectionId: 'chatTutorDemo',  label: 'tutoring sessions' },
-        worksheet: { sectionId: 'worksheetDemo',   label: 'worksheets decoded' },
-        'notes-transcriber': { sectionId: 'notesDemo', label: 'notes transcribed' },
-        timetable: { sectionId: 'timetableDemo',   label: 'timetables built' },
-        syllabus:  { sectionId: 'syllabusDemo',    label: 'syllabuses decoded' }
+    // ── BOT SECTION MAP (shared by badges + reviews) ──
+    const BOT_SECTION_MAP = {
+        practice:            { sectionId: 'practiceDemo',   usageLabel: 'practice exams generated' },
+        'chat-tutor':        { sectionId: 'chatTutorDemo',  usageLabel: 'tutoring sessions' },
+        worksheet:           { sectionId: 'worksheetDemo',  usageLabel: 'worksheets decoded' },
+        'notes-transcriber': { sectionId: 'notesDemo',      usageLabel: 'notes transcribed' },
+        timetable:           { sectionId: 'timetableDemo',  usageLabel: 'timetables built' },
+        syllabus:            { sectionId: 'syllabusDemo',   usageLabel: 'syllabuses decoded' }
     };
 
+    // Insert an element into a .showcase-text div, just before the CTA button
+    function _insertBeforeCta(textDiv, el) {
+        const cta = textDiv.querySelector('a.btn, a[class*="btn"]');
+        if (cta) textDiv.insertBefore(el, cta);
+        else textDiv.appendChild(el);
+    }
+
+    // ── BOT USAGE BADGES ──
     async function loadBotUsageBadges() {
         try {
             const res = await fetch('/api/stats/bot-usage');
             if (!res.ok) return;
             const { usage } = await res.json();
-            for (const [bot, cfg] of Object.entries(BOT_BADGE_MAP)) {
+            for (const [bot, cfg] of Object.entries(BOT_SECTION_MAP)) {
                 const count = usage[bot];
-                if (!count || count < 5) continue; // don't show until meaningful
+                if (!count || count < 5) continue;
                 const section = document.getElementById(cfg.sectionId);
                 if (!section) continue;
-                // Find the showcase-text div to append badge
                 const textDiv = section.querySelector('.showcase-text');
-                if (!textDiv) continue;
-                // Avoid duplicate
-                if (textDiv.querySelector('.bot-usage-badge')) continue;
+                if (!textDiv || textDiv.querySelector('.bot-usage-badge')) continue;
                 const badge = document.createElement('div');
                 badge.className = 'bot-usage-badge';
-                badge.innerHTML = `📈 <strong>${count.toLocaleString()}</strong> ${cfg.label} this week`;
-                textDiv.appendChild(badge);
+                badge.innerHTML = `📈 <strong>${count.toLocaleString()}</strong> ${cfg.usageLabel} this week`;
+                _insertBeforeCta(textDiv, badge);
+            }
+        } catch(e) {}
+    }
+
+    // ── BOT-SORTED REVIEWS (injected into each demo section's scroll animation) ──
+    async function loadBotReviews() {
+        try {
+            const res = await fetch('/api/reviews/public');
+            if (!res.ok) return;
+            const { reviews } = await res.json();
+            if (!reviews.length) return;
+
+            // Best review per bot: highest rating, then most recent
+            const byBot = {};
+            for (const r of reviews) {
+                if (!r.botType) continue;
+                const existing = byBot[r.botType];
+                if (!existing || r.rating > existing.rating ||
+                    (r.rating === existing.rating && r.createdAt > existing.createdAt)) {
+                    byBot[r.botType] = r;
+                }
+            }
+
+            for (const [botType, r] of Object.entries(byBot)) {
+                const cfg = BOT_SECTION_MAP[botType];
+                if (!cfg) continue;
+                const section = document.getElementById(cfg.sectionId);
+                if (!section) continue;
+                const textDiv = section.querySelector('.showcase-text');
+                if (!textDiv || textDiv.querySelector('.bot-review-card')) continue;
+
+                const card = document.createElement('div');
+                card.className = 'bot-review-card';
+                card.style.cssText = 'background:rgba(108,99,255,0.07);border:1px solid rgba(108,99,255,0.18);border-radius:12px;padding:11px 14px;margin-bottom:1.1rem;text-align:left;';
+                card.innerHTML = `
+                    <div style="color:#f59e0b;font-size:0.88rem;margin-bottom:3px;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+                    ${r.text ? `<div style="font-size:0.85rem;color:rgba(255,255,255,0.72);font-style:italic;line-height:1.5;margin-bottom:3px;">&ldquo;${escHtml(r.text)}&rdquo;</div>` : ''}
+                    <div style="font-size:0.73rem;color:rgba(255,255,255,0.38);font-weight:600;">— ${escHtml(r.displayName)}</div>
+                `;
+                _insertBeforeCta(textDiv, card);
             }
         } catch(e) {}
     }
@@ -2885,7 +2877,7 @@
     }
 
     // Run on load
-    loadReviews();
+    loadBotReviews();
     loadBotUsageBadges();
     </script>
 </body>

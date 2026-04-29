@@ -3108,11 +3108,15 @@ app.get('/api/reviews/prompt-eligible', requireAuth, (req, res) => {
     const user = req.user;
     // Don't prompt if already submitted or already seen prompt
     if (user.reviewPromptShown) return res.json({ eligible: false });
-    // Require at least 3 total lifetime bot uses
+    // Require at least 3 post-update uses
     const totalUses = user.botUsage
         ? Object.values(user.botUsage).reduce((a, b) => a + b, 0)
         : 0;
-    res.json({ eligible: totalUses >= 3 });
+    if (totalUses >= 3) return res.json({ eligible: true });
+    // Fallback for pre-tracking users: account >3 days old = was engaged before tracking
+    const accountAgeMs = user.createdAt ? Date.now() - new Date(user.createdAt).getTime() : 0;
+    const isVeteranUser = accountAgeMs > 3 * 24 * 60 * 60 * 1000;
+    res.json({ eligible: isVeteranUser });
 });
 
 /**
