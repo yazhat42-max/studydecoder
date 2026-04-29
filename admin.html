@@ -1839,7 +1839,7 @@
             const panel = document.getElementById('reviewsPanel');
             const isHidden = panel.style.display === 'none';
             panel.style.display = isHidden ? '' : 'none';
-            if (isHidden && _reviewsData.length === 0) loadReviews();
+            if (isHidden) loadReviews();
         }
 
         // Init

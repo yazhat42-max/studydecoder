@@ -3140,8 +3140,10 @@ app.get('/api/reviews/prompt-eligible', requireAuth, (req, res) => {
         ? Object.values(user.botUsage).reduce((a, b) => a + b, 0)
         : 0;
     if (totalUses >= 3) return res.json({ eligible: true });
-    // Fallback for pre-tracking users: account >3 days old = was engaged before tracking
-    const accountAgeMs = user.createdAt ? Date.now() - new Date(user.createdAt).getTime() : 0;
+    // Fallback for pre-tracking users: use trialStart (most reliable), else createdAt
+    // If neither exists the user predates all tracking — treat as veteran
+    const accountDate = user.trialStart || user.createdAt;
+    const accountAgeMs = accountDate ? Date.now() - new Date(accountDate).getTime() : Infinity;
     const isVeteranUser = accountAgeMs > 3 * 24 * 60 * 60 * 1000;
     res.json({ eligible: isVeteranUser });
 });
