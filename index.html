@@ -2790,6 +2790,7 @@
             const res = await fetch('/api/reviews/public');
             if (!res.ok) return;
             const { reviews } = await res.json();
+            console.log('[reviews] loaded', reviews.length, 'approved reviews:', reviews.map(r => r.botType + ':' + r.id));
             if (!reviews.length) return;
 
             // Best review per bot: highest rating, then most recent
@@ -2821,20 +2822,25 @@
                 `;
                 _insertBeforeCta(textDiv, card);
             }
-        } catch(e) {}
+        } catch(e) { console.warn('[reviews] loadBotReviews error:', e); }
     }
 
     // ── REVIEW PROMPT TOAST ──
     let _reviewToastShown = false;
     async function maybeShowReviewToast() {
-        if (_reviewToastShown || sessionStorage.getItem('reviewToastSeen')) return;
+        if (_reviewToastShown) return;
+        // 24h localStorage cooldown (server-side reviewPromptShown handles permanent block after submission)
+        try {
+            const last = localStorage.getItem('sd_review_toast_ts');
+            if (last && Date.now() - parseInt(last) < 24 * 60 * 60 * 1000) return;
+        } catch(e) {}
         try {
             const res = await fetch('/api/reviews/prompt-eligible', { credentials: 'include' });
             if (!res.ok) return;
             const { eligible } = await res.json();
             if (!eligible) return;
             _reviewToastShown = true;
-            sessionStorage.setItem('reviewToastSeen', '1');
+            try { localStorage.setItem('sd_review_toast_ts', Date.now().toString()); } catch(e) {}
             setTimeout(() => document.getElementById('reviewToast')?.classList.add('show'), 1500);
         } catch(e) {}
     }
