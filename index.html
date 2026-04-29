@@ -1917,6 +1917,8 @@
         try {
             await fetch(API_BASE + '/api/logout', { method: 'POST', credentials: 'include' });
         } catch (e) {}
+        try { localStorage.removeItem('sd_user_cache'); } catch(e) {}
+        currentUser = null;
         showLoggedOutUI();
         window.location.href = 'login.html';
     }
