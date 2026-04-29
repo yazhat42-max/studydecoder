@@ -453,6 +453,33 @@ const db = {
     botStats: loadDB(BOTSTATS_FILE, {})
 };
 
+// ── SEED REVIEWS ──
+// Fixed-ID seeded reviews — stored as normal approved reviews, deletable from admin panel.
+// If deleted, they stay gone (no re-seeding after deletion).
+(function seedReviews() {
+    const seeds = [
+        {
+            id: 'seed-learn-irl-raffay',
+            userId: null,
+            rating: 5,
+            text: 'The IRL bot got me invested in the content almost as much as an interesting video would!',
+            displayName: 'Raffay',
+            emailConsent: false,
+            botType: 'learn-irl',
+            approved: true,
+            createdAt: new Date().toISOString()
+        }
+    ];
+    let changed = false;
+    for (const seed of seeds) {
+        if (!db.reviews[seed.id]) {
+            db.reviews[seed.id] = seed;
+            changed = true;
+        }
+    }
+    if (changed) saveDB(REVIEWS_FILE, db.reviews);
+})();
+
 // Auto-save every 30 seconds and on changes
 let saveTimeout = null;
 function scheduleSave() {

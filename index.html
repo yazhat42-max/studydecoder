@@ -2712,7 +2712,7 @@
     <script>
     // ── UTILITIES ──
     function botLabel(bt) {
-        const map = { practice:'Practice Questions', 'chat-tutor':'Chat Tutor', worksheet:'Worksheet Decoder', 'notes-transcriber':'Notes Transcriber', timetable:'Timetable', syllabus:'Syllabus Decoder' };
+        const map = { practice:'Practice Questions', 'chat-tutor':'Chat Tutor', worksheet:'Worksheet Decoder', 'notes-transcriber':'Notes Transcriber', timetable:'Timetable', syllabus:'Syllabus Decoder', 'learn-irl':'Learn IRL' };
         return map[bt] || bt;
     }
 
@@ -2727,7 +2727,8 @@
         worksheet:           { sectionId: 'worksheetDemo',  usageLabel: 'worksheets decoded' },
         'notes-transcriber': { sectionId: 'notesDemo',      usageLabel: 'notes transcribed' },
         timetable:           { sectionId: 'timetableDemo',  usageLabel: 'timetables built' },
-        syllabus:            { sectionId: 'syllabusDemo',   usageLabel: 'syllabuses decoded' }
+        syllabus:            { sectionId: 'syllabusDemo',   usageLabel: 'syllabuses decoded' },
+        'learn-irl':         { sectionId: 'irlDemo',        usageLabel: 'IRL scenarios played' }
     };
 
     // Insert an element into a .showcase-text div, just before the CTA button
