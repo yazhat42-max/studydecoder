@@ -1620,7 +1620,7 @@
             }
         } catch(e) {}
 
-        if (cachedUser) {
+        if (cachedUser && cachedUser.role) {
             currentUser = cachedUser;
             showLoggedInUI(cachedUser);
         }
@@ -1634,7 +1634,7 @@
                 if (data.email) {
                     currentUser = data;
                     // Cache user data to localStorage for surviving server restarts
-                    try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: data.email, name: data.name, preferences: data.preferences || {}, freeAcknowledged: data.freeAcknowledged || false, cachedAt: Date.now() })); } catch(e) {}
+                    try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: data.email, name: data.name, role: data.role, subscribed: data.subscribed, preferences: data.preferences || {}, freeAcknowledged: data.freeAcknowledged || false, cachedAt: Date.now() })); } catch(e) {}
                     showLoggedInUI(data);
                     maybeShowOnboarding(data);
                     return;
