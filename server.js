@@ -473,6 +473,22 @@ const db = {
         console.log(`[seed] converted legacy reviews.json (${legacy.length} legacy entries)`);
     }
 
+    // One-time cleanup: remove pre-existing AI-generated seed reviews from the legacy
+    // d613b1c "10 seed reviews" commit. Those reviews have no userId AND no displayName
+    // (or numeric id 1-10) and were never legitimate user submissions.
+    let removed = 0;
+    for (const [id, r] of Object.entries(db.reviews)) {
+        if (!r || typeof r !== 'object') continue;
+        const isLegacySeed = !r.userId && !r.displayName && /^\d+$/.test(String(id));
+        if (isLegacySeed) {
+            delete db.reviews[id];
+            removed++;
+        }
+    }
+    if (removed > 0) {
+        console.log(`[seed] purged ${removed} legacy AI-generated seed reviews`);
+    }
+
     const seeds = [
         {
             id: 'seed-learn-irl-raffay',
@@ -486,7 +502,7 @@ const db = {
             createdAt: new Date().toISOString()
         }
     ];
-    let changed = false;
+    let changed = removed > 0;
     for (const seed of seeds) {
         if (!db.reviews[seed.id]) {
             db.reviews[seed.id] = seed;

@@ -1842,7 +1842,7 @@
         }
 
         // Maybe prompt for review after demonstrated value (non-intrusive, once per session)
-        setTimeout(maybeShowReviewToast, 8000);
+        setTimeout(() => { try { maybeShowReviewToast(); } catch(e) { console.warn('[review-toast] not loaded yet:', e); } }, 8000);
     }
 
     async function loadIndexDailyChallenge() {
@@ -2817,8 +2817,7 @@
                 card.style.cssText = 'background:rgba(108,99,255,0.07);border:1px solid rgba(108,99,255,0.18);border-radius:12px;padding:11px 14px;margin-bottom:1.1rem;text-align:left;';
                 card.innerHTML = `
                     <div style="color:#f59e0b;font-size:0.88rem;margin-bottom:3px;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
-                    ${r.text ? `<div style="font-size:0.85rem;color:rgba(255,255,255,0.72);font-style:italic;line-height:1.5;margin-bottom:3px;">&ldquo;${escHtml(r.text)}&rdquo;</div>` : ''}
-                    <div style="font-size:0.73rem;color:rgba(255,255,255,0.38);font-weight:600;">— ${escHtml(r.displayName)}</div>
+                    ${r.text ? `<div style="font-size:0.85rem;color:rgba(255,255,255,0.72);font-style:italic;line-height:1.5;">&ldquo;${escHtml(r.text)}&rdquo;</div>` : ''}
                 `;
                 _insertBeforeCta(textDiv, card);
             }
