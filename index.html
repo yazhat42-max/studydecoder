@@ -2826,34 +2826,39 @@
     }
 
     // ── REVIEW PROMPT TOAST ──
+    // Spec: 8s after every login, prompt once. If user dismisses or submits, never prompt again.
+    // Server-side `reviewPromptHandled` flag is the source of truth — set on dismiss or submit.
     let _reviewToastShown = false;
     async function maybeShowReviewToast() {
+        console.log('[review-toast] check start, shown=', _reviewToastShown);
         if (_reviewToastShown) return;
-        // 24h localStorage cooldown (server-side reviewPromptShown handles permanent block after submission)
-        try {
-            const last = localStorage.getItem('sd_review_toast_ts');
-            if (last && Date.now() - parseInt(last) < 24 * 60 * 60 * 1000) return;
-        } catch(e) {}
         try {
             const res = await fetch('/api/reviews/prompt-eligible', { credentials: 'include' });
+            console.log('[review-toast] eligibility status:', res.status);
             if (!res.ok) return;
-            const { eligible } = await res.json();
-            if (!eligible) return;
+            const data = await res.json();
+            console.log('[review-toast] eligibility response:', data);
+            if (!data.eligible) return;
             _reviewToastShown = true;
-            try { localStorage.setItem('sd_review_toast_ts', Date.now().toString()); } catch(e) {}
-            setTimeout(() => document.getElementById('reviewToast')?.classList.add('show'), 1500);
-        } catch(e) {}
+            const toast = document.getElementById('reviewToast');
+            console.log('[review-toast] showing, element found:', !!toast);
+            setTimeout(() => toast?.classList.add('show'), 1500);
+        } catch(e) { console.warn('[review-toast] error:', e); }
     }
 
     function dismissReviewToast() {
         document.getElementById('reviewToast')?.classList.remove('show');
+        // Permanently mark prompt as handled so user won't see it again on future logins
+        try {
+            fetch('/api/reviews/dismiss', { method: 'POST', credentials: 'include' });
+        } catch(e) {}
     }
 
     // ── REVIEW MODAL ──
     let _selectedRating = 0;
 
     function openReviewModal() {
-        dismissReviewToast();
+        document.getElementById('reviewToast')?.classList.remove('show');
         _selectedRating = 0;
         document.querySelectorAll('.review-star').forEach(s => s.classList.remove('lit'));
         document.getElementById('reviewText').value = '';

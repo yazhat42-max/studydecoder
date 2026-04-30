@@ -457,6 +457,22 @@ const db = {
 // Fixed-ID seeded reviews — stored as normal approved reviews, deletable from admin panel.
 // If deleted, they stay gone (no re-seeding after deletion).
 (function seedReviews() {
+    // Heal legacy shape: older data files used { reviews: [...] } instead of an id-keyed object.
+    // Convert to id-keyed map so seedReviews and the public endpoint work consistently.
+    if (db.reviews && Array.isArray(db.reviews.reviews)) {
+        const legacy = db.reviews.reviews;
+        const fixed = {};
+        for (const r of legacy) {
+            if (r && r.id) fixed[r.id] = r;
+        }
+        // Preserve any already-keyed entries (besides the legacy "reviews" array)
+        for (const [k, v] of Object.entries(db.reviews)) {
+            if (k !== 'reviews' && v && typeof v === 'object' && !Array.isArray(v)) fixed[k] = v;
+        }
+        db.reviews = fixed;
+        console.log(`[seed] converted legacy reviews.json (${legacy.length} legacy entries)`);
+    }
+
     const seeds = [
         {
             id: 'seed-learn-irl-raffay',
@@ -475,9 +491,12 @@ const db = {
         if (!db.reviews[seed.id]) {
             db.reviews[seed.id] = seed;
             changed = true;
+            console.log(`[seed] inserted review ${seed.id} (${seed.botType})`);
         }
     }
     if (changed) saveDB(REVIEWS_FILE, db.reviews);
+    const approvedCount = Object.values(db.reviews).filter(r => r && r.approved).length;
+    console.log(`[seed] reviews ready: ${Object.keys(db.reviews).length} total, ${approvedCount} approved`);
 })();
 
 // Auto-save every 30 seconds and on changes
@@ -3104,7 +3123,7 @@ app.post('/api/reviews', requireAuth, (req, res) => {
     };
 
     // Mark user so we don't prompt them again
-    db.users[user.userId].reviewPromptShown = true;
+    db.users[user.userId].reviewPromptHandled = true;
     scheduleSave();
 
     console.log(`⭐ New review from ${user.email} (rating: ${rating})`);
@@ -3131,22 +3150,24 @@ app.get('/api/reviews/public', (req, res) => {
 
 /**
  * GET /api/reviews/prompt-eligible — Check if logged-in user should be shown review prompt
+ * Spec: every login, prompt once. If they decline (dismiss) or submit, never prompt again.
  */
 app.get('/api/reviews/prompt-eligible', requireAuth, (req, res) => {
     const user = req.user;
-    // Don't prompt if already submitted or already seen prompt
-    if (user.reviewPromptShown) return res.json({ eligible: false });
-    // Require at least 3 post-update uses
-    const totalUses = user.botUsage
-        ? Object.values(user.botUsage).reduce((a, b) => a + b, 0)
-        : 0;
-    if (totalUses >= 3) return res.json({ eligible: true });
-    // Fallback for pre-tracking users: use trialStart (most reliable), else createdAt
-    // If neither exists the user predates all tracking — treat as veteran
-    const accountDate = user.trialStart || user.createdAt;
-    const accountAgeMs = accountDate ? Date.now() - new Date(accountDate).getTime() : Infinity;
-    const isVeteranUser = accountAgeMs > 3 * 24 * 60 * 60 * 1000;
-    res.json({ eligible: isVeteranUser });
+    const eligible = !user.reviewPromptHandled;
+    console.log(`[review-prompt] user=${user.email} handled=${!!user.reviewPromptHandled} eligible=${eligible}`);
+    res.json({ eligible });
+});
+
+/**
+ * POST /api/reviews/dismiss — Mark prompt as handled when user dismisses without submitting
+ */
+app.post('/api/reviews/dismiss', requireAuth, (req, res) => {
+    const user = req.user;
+    db.users[user.userId].reviewPromptHandled = true;
+    scheduleSave();
+    console.log(`[review-prompt] dismissed by ${user.email}`);
+    res.json({ success: true });
 });
 
 /**
