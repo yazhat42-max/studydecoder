@@ -93,6 +93,8 @@ const USERS_FILE = path.join(DB_PATH, 'users.json');
 const PAYMENTS_FILE = path.join(DB_PATH, 'payments.json');
 const OG_CODES_FILE = path.join(DB_PATH, 'og-codes.json');
 const ANALYTICS_FILE = path.join(DB_PATH, 'analytics.json');
+const REVIEWS_FILE = path.join(DB_PATH, 'reviews.json');
+const BOTSTATS_FILE = path.join(DB_PATH, 'botstats.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DB_PATH)) {
@@ -446,8 +448,56 @@ function hasDayPassActive(user) {
 // In-memory database with persistence
 const db = {
     users: loadDB(USERS_FILE, {}),
-    payments: loadDB(PAYMENTS_FILE, [])
+    payments: loadDB(PAYMENTS_FILE, []),
+    reviews: loadDB(REVIEWS_FILE, {}),
+    botStats: loadDB(BOTSTATS_FILE, {})
 };
+
+// ── SEED REVIEWS ──
+// Fixed-ID seeded reviews — stored as normal approved reviews, deletable from admin panel.
+// If deleted, they stay gone (no re-seeding after deletion).
+(function seedReviews() {
+    // Heal legacy shape: older data files used { reviews: [...] } instead of an id-keyed object.
+    // Convert to id-keyed map so seedReviews and the public endpoint work consistently.
+    if (db.reviews && Array.isArray(db.reviews.reviews)) {
+        const legacy = db.reviews.reviews;
+        const fixed = {};
+        for (const r of legacy) {
+            if (r && r.id) fixed[r.id] = r;
+        }
+        // Preserve any already-keyed entries (besides the legacy "reviews" array)
+        for (const [k, v] of Object.entries(db.reviews)) {
+            if (k !== 'reviews' && v && typeof v === 'object' && !Array.isArray(v)) fixed[k] = v;
+        }
+        db.reviews = fixed;
+        console.log(`[seed] converted legacy reviews.json (${legacy.length} legacy entries)`);
+    }
+
+    const seeds = [
+        {
+            id: 'seed-learn-irl-raffay',
+            userId: null,
+            rating: 5,
+            text: 'The IRL bot got me invested in the content almost as much as an interesting video would!',
+            displayName: 'Raffay',
+            emailConsent: false,
+            botType: 'learn-irl',
+            approved: true,
+            createdAt: new Date().toISOString()
+        }
+    ];
+    let changed = false;
+    for (const seed of seeds) {
+        if (!db.reviews[seed.id]) {
+            db.reviews[seed.id] = seed;
+            changed = true;
+            console.log(`[seed] inserted review ${seed.id} (${seed.botType})`);
+        }
+    }
+    if (changed) saveDB(REVIEWS_FILE, db.reviews);
+    const approvedCount = Object.values(db.reviews).filter(r => r && r.approved).length;
+    console.log(`[seed] reviews ready: ${Object.keys(db.reviews).length} total, ${approvedCount} approved`);
+})();
 
 // Auto-save every 30 seconds and on changes
 let saveTimeout = null;
@@ -456,6 +506,8 @@ function scheduleSave() {
     saveTimeout = setTimeout(() => {
         saveDB(USERS_FILE, db.users);
         saveDB(PAYMENTS_FILE, db.payments);
+        saveDB(REVIEWS_FILE, db.reviews);
+        saveDB(BOTSTATS_FILE, db.botStats);
     }, 1000); // Debounce saves
 }
 
@@ -463,6 +515,8 @@ function scheduleSave() {
 process.on('exit', () => {
     saveDB(USERS_FILE, db.users);
     saveDB(PAYMENTS_FILE, db.payments);
+    saveDB(REVIEWS_FILE, db.reviews);
+    saveDB(BOTSTATS_FILE, db.botStats);
 });
 
 // ==================== MIDDLEWARE ====================
@@ -602,7 +656,8 @@ app.use(session({
     store: new FileStore({
         path: sessionsPath,
         ttl: 30 * 24 * 60 * 60, // 30 days
-        retries: 0,
+        retries: 2,
+        retrySleepTime: 100,
         logFn: () => {} // Disable logging
     }),
     secret: config.sessionSecret,
@@ -632,23 +687,27 @@ app.use((req, res, next) => {
 // ==================== LIVE USERS TRACKING ====================
 const liveUsers = new Map(); // sessionId -> { lastSeen, userId, email }
 const LIVE_USER_TIMEOUT = 60000; // 1 minute timeout
+const BOT_UA_RE = /bot|crawl|spider|slurp|facebookexternalhit|Twitterbot|LinkedInBot|WhatsApp|Googlebot|Bingbot|YandexBot|DuckDuckBot|Baiduspider|Sogou/i;
 
-// Track active users on each request
+// Track active users on page/API requests (skip bots, pure static assets)
+const LIVE_SKIP_RE = /\.(js|css|png|jpg|jpeg|svg|ico|woff2?|ttf|map)$/i;
 app.use((req, res, next) => {
-    if (req.session && req.session.userId) {
-        const user = db.users[req.session.userId];
-        liveUsers.set(req.sessionID, {
-            lastSeen: Date.now(),
-            userId: req.session.userId,
-            email: user ? user.email : 'Unknown'
-        });
-    } else if (req.sessionID) {
-        // Track anonymous visitors too
-        liveUsers.set(req.sessionID, {
-            lastSeen: Date.now(),
-            userId: null,
-            email: null
-        });
+    const ua = req.headers['user-agent'] || '';
+    if (!BOT_UA_RE.test(ua) && !LIVE_SKIP_RE.test(req.path)) {
+        if (req.session && req.session.userId) {
+            const user = db.users[req.session.userId];
+            liveUsers.set(req.sessionID, {
+                lastSeen: Date.now(),
+                userId: req.session.userId,
+                email: user ? user.email : 'Unknown'
+            });
+        } else if (req.sessionID) {
+            liveUsers.set(req.sessionID, {
+                lastSeen: Date.now(),
+                userId: null,
+                email: null
+            });
+        }
     }
     next();
 });
@@ -691,7 +750,6 @@ function recordPageView(ip) {
 // Flush to disk on process exit
 process.on('beforeExit', () => saveDB(ANALYTICS_FILE, _analyticsDB));
 
-const BOT_UA_RE = /bot|crawl|spider|slurp|facebookexternalhit|Twitterbot|LinkedInBot|WhatsApp|Googlebot|Bingbot|YandexBot|DuckDuckBot|Baiduspider|Sogou/i;
 const TRACKED_EXT_RE = /\.(html|htm)$|^\/$/;
 const SKIP_PREFIX_RE = /^\/api\//;
 
@@ -906,6 +964,31 @@ function upsertUser(userId, data) {
 }
 
 /**
+ * Record a bot use in the per-bot daily stats (for homepage usage badges)
+ */
+function recordBotStat(botType) {
+    const today = _getToday();
+    if (!db.botStats[botType]) db.botStats[botType] = {};
+    db.botStats[botType][today] = (db.botStats[botType][today] || 0) + 1;
+    scheduleSave();
+}
+
+/**
+ * Record a bot use against a user's lifetime usage map (for admin user stats)
+ */
+function recordUserBotUsage(userId, botType) {
+    const user = db.users[userId];
+    if (!user) return;
+    if (!user.botUsage) user.botUsage = {};
+    user.botUsage[botType] = (user.botUsage[botType] || 0) + 1;
+    user.lastActive = new Date().toISOString();
+    const today = _getToday();
+    if (!user.activeDays) user.activeDays = {};
+    user.activeDays[today] = true;
+    scheduleSave();
+}
+
+/**
  * Log payment
  */
 function logPayment(data) {
@@ -1000,7 +1083,11 @@ function isDisposableEmail(email) {
 }
 
 function isValidEmail(email) {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return false;
+    // Require local@domain.tld where tld is 2+ alpha chars and domain label before TLD is 2+ chars
+    if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) return false;
+    const domain = email.split('@')[1];
+    const domainParts = domain.split('.');
+    if (domainParts[domainParts.length - 2].length < 2) return false;
     if (isDisposableEmail(email)) return false;
     return true;
 }
@@ -1970,7 +2057,11 @@ app.get('/api/subscription', requireAuth, (req, res) => {
             totalUsed: getTotalFreeTierUsage(req.session.userId),
             totalRemaining: Math.max(0, FREE_TIER_CONFIG.totalUsesPerDay - getTotalFreeTierUsage(req.session.userId)),
             inGracePeriod: isWithinGracePeriod(req.session.userId),
-            gracePeriodEnding: isGracePeriodEnding(req.session.userId)
+            gracePeriodEnding: isGracePeriodEnding(req.session.userId),
+            trialEndsAt: (() => {
+                const refMs = user.trialStart ? new Date(user.trialStart).getTime() : (user.createdAt ? new Date(user.createdAt).getTime() : null);
+                return refMs ? new Date(refMs + 3 * 24 * 60 * 60 * 1000).toISOString() : null;
+            })()
         } : null
     });
 });
@@ -1986,7 +2077,7 @@ app.get('/api/stats/public', (req, res) => {
     const total = allUsers.length;
     const weekly = allUsers.filter(u => u.createdAt && new Date(u.createdAt).getTime() >= oneWeekAgo).length;
     // Show total when weekly count is lower (early stage — avoid showing "2 joined this week")
-    res.json({ weeklySignups: Math.max(weekly, total) });
+    res.json({ weeklySignups: Math.max(weekly, total), totalUsers: total });
 });
 
 /**
@@ -2727,11 +2818,11 @@ app.get('/api/health', (req, res) => {
  */
 app.get('/api/spots-left', (req, res) => {
     const TOTAL_SPOTS = 100;
-    const GRANTED_PLANS = ['granted', 'day_pass'];
+    // Only lifetime plans count toward the founding 100 spots (not monthly/annual/sprint/day_pass)
     let claimed = 0;
     for (const uid of Object.keys(db.users)) {
         const u = db.users[uid];
-        if (u.subscribed === true && !GRANTED_PLANS.includes(u.plan)) claimed++;
+        if (u.subscribed === true && u.plan === 'lifetime') claimed++;
     }
     const spotsLeft = Math.max(0, TOTAL_SPOTS - claimed);
     res.set('Cache-Control', 'public, max-age=60');
@@ -2994,6 +3085,188 @@ app.post('/api/admin/test-email', requireOwner, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+// ==================== REVIEWS API ====================
+
+/**
+ * POST /api/reviews — Authenticated user submits a review
+ */
+app.post('/api/reviews', requireAuth, (req, res) => {
+    const { rating, text, displayName, emailConsent, botType } = req.body;
+
+    if (!rating || rating < 1 || rating > 5) {
+        return res.status(400).json({ error: 'Rating 1–5 required' });
+    }
+    if (text && text.length > 500) {
+        return res.status(400).json({ error: 'Review text too long (max 500 chars)' });
+    }
+
+    const user = req.user;
+
+    // Only allow one review per user (check existing)
+    const existing = Object.values(db.reviews).find(r => r.userId === user.userId);
+    if (existing) {
+        return res.status(409).json({ error: 'You have already submitted a review' });
+    }
+
+    const id = crypto.randomUUID();
+    db.reviews[id] = {
+        id,
+        userId: user.userId,
+        rating: Math.round(rating),
+        text: text ? sanitizeInput(text.trim().slice(0, 500)) : '',
+        displayName: displayName ? sanitizeName(displayName.trim()) : '',
+        emailConsent: emailConsent === true,
+        botType: botType || null,
+        approved: false,
+        createdAt: new Date().toISOString()
+    };
+
+    // Mark user so we don't prompt them again
+    db.users[user.userId].reviewPromptHandled = true;
+    scheduleSave();
+
+    console.log(`⭐ New review from ${user.email} (rating: ${rating})`);
+    res.json({ success: true });
+});
+
+/**
+ * GET /api/reviews/public — Returns approved reviews (no emails, safe for homepage)
+ */
+app.get('/api/reviews/public', (req, res) => {
+    const approved = Object.values(db.reviews)
+        .filter(r => r.approved)
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .map(r => ({
+            id: r.id,
+            rating: r.rating,
+            text: r.text,
+            displayName: r.displayName || 'Anonymous',
+            botType: r.botType,
+            createdAt: r.createdAt
+        }));
+    res.json({ reviews: approved });
+});
+
+/**
+ * GET /api/reviews/prompt-eligible — Check if logged-in user should be shown review prompt
+ * Spec: every login, prompt once. If they decline (dismiss) or submit, never prompt again.
+ */
+app.get('/api/reviews/prompt-eligible', requireAuth, (req, res) => {
+    const user = req.user;
+    const eligible = !user.reviewPromptHandled;
+    console.log(`[review-prompt] user=${user.email} handled=${!!user.reviewPromptHandled} eligible=${eligible}`);
+    res.json({ eligible });
+});
+
+/**
+ * POST /api/reviews/dismiss — Mark prompt as handled when user dismisses without submitting
+ */
+app.post('/api/reviews/dismiss', requireAuth, (req, res) => {
+    const user = req.user;
+    db.users[user.userId].reviewPromptHandled = true;
+    scheduleSave();
+    console.log(`[review-prompt] dismissed by ${user.email}`);
+    res.json({ success: true });
+});
+
+/**
+ * GET /api/admin/reviews — Owner: all reviews with approval status
+ */
+app.get('/api/admin/reviews', requireOwner, (req, res) => {
+    const reviews = Object.values(db.reviews)
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.json({ reviews });
+});
+
+/**
+ * POST /api/admin/reviews/:id/approve — Owner approves a review
+ */
+app.post('/api/admin/reviews/:id/approve', requireOwner, (req, res) => {
+    const review = db.reviews[req.params.id];
+    if (!review) return res.status(404).json({ error: 'Review not found' });
+    review.approved = true;
+    scheduleSave();
+    res.json({ success: true });
+});
+
+/**
+ * POST /api/admin/reviews/:id/unapprove — Owner un-approves a review
+ */
+app.post('/api/admin/reviews/:id/unapprove', requireOwner, (req, res) => {
+    const review = db.reviews[req.params.id];
+    if (!review) return res.status(404).json({ error: 'Review not found' });
+    review.approved = false;
+    scheduleSave();
+    res.json({ success: true });
+});
+
+/**
+ * DELETE /api/admin/reviews/:id — Owner deletes a review
+ */
+app.delete('/api/admin/reviews/:id', requireOwner, (req, res) => {
+    if (!db.reviews[req.params.id]) return res.status(404).json({ error: 'Review not found' });
+    delete db.reviews[req.params.id];
+    scheduleSave();
+    res.json({ success: true });
+});
+
+// ==================== USER STATS API ====================
+
+/**
+ * GET /api/admin/user-stats — Owner: per-user bot usage, session counts, return users
+ */
+app.get('/api/admin/user-stats', requireOwner, (req, res) => {
+    const users = Object.values(db.users).map(u => {
+        const botUsage = u.botUsage || {};
+        const totalUses = Object.values(botUsage).reduce((a, b) => a + b, 0);
+        const activeDays = Object.keys(u.activeDays || {}).length;
+        const createdAt = u.createdAt ? new Date(u.createdAt) : null;
+        const lastActive = u.lastActive ? new Date(u.lastActive) : null;
+        const isReturnUser = createdAt && lastActive
+            ? (lastActive - createdAt) > 24 * 60 * 60 * 1000
+            : false;
+        const mostUsedBot = Object.entries(botUsage).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
+
+        return {
+            userId: u.userId,
+            email: u.email,
+            name: u.name,
+            plan: u.plan || 'free',
+            role: getUserRole(u.email),
+            createdAt: u.createdAt,
+            lastActive: u.lastActive || null,
+            totalUses,
+            activeDays,
+            isReturnUser,
+            mostUsedBot,
+            botUsage
+        };
+    }).sort((a, b) => b.totalUses - a.totalUses);
+
+    res.json({ users });
+});
+
+// ==================== BOT USAGE STATS (PUBLIC) ====================
+
+/**
+ * GET /api/stats/bot-usage — Returns 7-day totals per bot (for homepage badges)
+ */
+app.get('/api/stats/bot-usage', (req, res) => {
+    const today = new Date();
+    const totals = {};
+    for (let i = 0; i < 7; i++) {
+        const d = new Date(today);
+        d.setUTCDate(d.getUTCDate() - i);
+        const key = d.toISOString().split('T')[0];
+        for (const [botType, days] of Object.entries(db.botStats)) {
+            totals[botType] = (totals[botType] || 0) + (days[key] || 0);
+        }
+    }
+    res.json({ usage: totals });
+});
+
+
 
 // ==================== SYLLABUS DATA ====================
 
@@ -4783,6 +5056,11 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
             limitType: status.hitSpecialLimit ? 'special' : 'global'
         });
     }
+
+    // Track bot usage
+    recordBotStat('worksheet');
+    recordUserBotUsage(req.session.userId, 'worksheet');
+
     const { messages } = req.body;
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
         return res.status(400).json({ error: 'Messages are required' });
@@ -4840,6 +5118,11 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
             limitType: status.hitSpecialLimit ? 'special' : 'global'
         });
     }
+
+    // Track bot usage
+    recordBotStat('notes-transcriber');
+    recordUserBotUsage(req.session.userId, 'notes-transcriber');
+
     const { messages } = req.body;
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
         return res.status(400).json({ error: 'Messages are required' });
@@ -6491,6 +6774,11 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             limitType: 'global'
         });
     }
+
+    // Track bot usage (per-bot daily stats + per-user lifetime stats)
+    recordBotStat(botType);
+    recordUserBotUsage(req.session.userId, botType);
+
     const { messages, subject, detailLevel } = req.body;
     
     // Validate messages
@@ -7230,6 +7518,61 @@ async function sendReengagementEmail(user) {
     });
 }
 
+async function sendTrialEndingSoonEmail(user) {
+    if (!emailTransporter || !user.email) return;
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: '⏳ One day left on your free trial — here\'s what to use it on',
+        html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<h2 style="color:#6366f1;">Your unlimited trial ends tomorrow 🔥</h2>
+<p>Hi ${user.name || 'there'},</p>
+<p>Your 3-day unlimited trial on Study Decoder expires <strong>tomorrow</strong>. Here's what to squeeze in tonight:</p>
+<ul style="margin:12px 0;padding-left:20px;line-height:2.2;">
+  <li>📝 Run a full practice exam for an upcoming assessment</li>
+  <li>📖 Decode your syllabus dot points for the next module</li>
+  <li>🤖 Ask the AI tutor anything you've been stuck on</li>
+</ul>
+<div style="text-align:center;margin:30px 0;">
+  <a href="${config.frontendUrl}/index.html#tools" style="background-color:#6366f1;color:white;padding:13px 32px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;font-size:1rem;">Study Now →</a>
+</div>
+<p style="color:#666;font-size:13px;">Want to keep unlimited access after tomorrow? <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">Upgrade for $5/month</a> — or grab a <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">$1.99 Day Pass</a> when you need it.</p>
+<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
+<p style="color:#999;font-size:11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
+</div>`
+    });
+}
+
+async function sendTrialExpiredEmail(user) {
+    if (!emailTransporter || !user.email) return;
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: 'Your trial ended — here\'s what you still have for free',
+        html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<h2 style="color:#6366f1;">Your 3-day trial has ended</h2>
+<p>Hi ${user.name || 'there'},</p>
+<p>Your unlimited trial on Study Decoder is over — but you haven't lost everything:</p>
+<div style="background:#f8f9fa;border-radius:10px;padding:16px;margin:16px 0;">
+  <p style="margin:0 0 8px;font-weight:600;color:#333;">✅ What you still have (free, forever):</p>
+  <ul style="margin:0;padding-left:20px;line-height:2;color:#555;">
+    <li>10 uses per day across all 7 tools</li>
+    <li>All tools still accessible</li>
+    <li>Your study history and streaks saved</li>
+  </ul>
+</div>
+<p>To get back to unlimited:</p>
+<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0;text-align:center;">
+  <a href="${config.frontendUrl}/index.html#pricing" style="background-color:#6366f1;color:white;padding:12px 24px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;">Upgrade — $5/month →</a>
+  <a href="${config.frontendUrl}/index.html#pricing" style="background-color:#f59e0b;color:white;padding:12px 24px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;">Day Pass — $1.99 →</a>
+</div>
+<p style="color:#666;font-size:13px;">The Day Pass is perfect if you have an exam coming up — full access for 24 hours with no subscription.</p>
+<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
+<p style="color:#999;font-size:11px;">Study Decoder - You're receiving this because you signed up at studydecoder.com.au.</p>
+</div>`
+    });
+}
+
 async function sendParentSummaryEmail(user) {
     if (!emailTransporter || !user.parentEmail || !user.email) return;
     const streak = user.streak || 0;
@@ -7279,7 +7622,28 @@ setInterval(async () => {
             }
         }
 
-        // ── 2) RE-ENGAGEMENT — 5-day inactive free users (max once per 7 days) ──
+        // ── 2) TRIAL LIFECYCLE EMAILS ──
+        for (const user of users) {
+            if (!user.email) continue;
+            if (hasFullAccess(user)) continue;
+            const ref = user.trialStart || user.createdAt;
+            if (!ref) continue;
+            const refMs = new Date(ref).getTime();
+            const ageMs = now - refMs;
+            const oneDayMs = 24 * 60 * 60 * 1000;
+            // Day 2: trial ending soon (send once, between 1-2 days old)
+            if (ageMs >= oneDayMs && ageMs < 2 * oneDayMs && !user.trialEndingEmailSent) {
+                await sendTrialEndingSoonEmail(user).catch(() => {});
+                user.trialEndingEmailSent = true;
+            }
+            // Day 3+: trial expired (send once, after 3 days)
+            if (ageMs >= 3 * oneDayMs && !user.trialExpiredEmailSent) {
+                await sendTrialExpiredEmail(user).catch(() => {});
+                user.trialExpiredEmailSent = true;
+            }
+        }
+
+        // ── 3) RE-ENGAGEMENT — 5-day inactive free users (max once per 7 days) ──
         for (const user of users) {
             if (!user.email) continue;
             if (hasFullAccess(user)) continue;  // premium users don't need nudging
