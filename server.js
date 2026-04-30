@@ -510,6 +510,17 @@ const db = {
             console.log(`[seed] inserted review ${seed.id} (${seed.botType})`);
         }
     }
+    // Backfill botType on existing reviews that have text but no detected bot
+    for (const r of Object.values(db.reviews)) {
+        if (r && r.text && !r.botType) {
+            const detected = detectBotType(r.text);
+            if (detected) {
+                r.botType = detected;
+                changed = true;
+                console.log(`[seed] backfilled botType=${detected} for review ${r.id}`);
+            }
+        }
+    }
     if (changed) saveDB(REVIEWS_FILE, db.reviews);
     const approvedCount = Object.values(db.reviews).filter(r => r && r.approved).length;
     console.log(`[seed] reviews ready: ${Object.keys(db.reviews).length} total, ${approvedCount} approved`);
@@ -3105,6 +3116,34 @@ app.post('/api/admin/test-email', requireOwner, async (req, res) => {
 // ==================== REVIEWS API ====================
 
 /**
+ * Detect which bot a review is most likely about, based on keywords.
+ * Returns botType string or null. Each bot's keywords are checked; the bot with
+ * the most keyword hits wins. Ties broken by listing order (more specific first).
+ */
+function detectBotType(text) {
+    if (!text) return null;
+    const t = text.toLowerCase();
+    // Order matters for ties: more specific terms first.
+    const keywordSets = [
+        { bot: 'learn-irl',          words: ['irl', 'scenario', 'real world', 'real-world', 'survival', 'game', 'choices', 'story'] },
+        { bot: 'worksheet',          words: ['worksheet', 'handout', 'decoder'] },
+        { bot: 'notes-transcriber',  words: ['notes', 'transcrib', 'handwriting', 'handwritten', 'photo of'] },
+        { bot: 'timetable',          words: ['timetable', 'schedule', 'planner', 'organis', 'organiz', 'plan my'] },
+        { bot: 'syllabus',           words: ['syllabus', 'breakdown', 'dot point', 'dot-point', 'outcomes'] },
+        { bot: 'practice',           words: ['practice', 'past paper', 'exam', 'questions', 'mock', 'trial', 'test'] },
+        { bot: 'chat-tutor',         words: ['tutor', 'chat', 'explain', 'understand', 'asked', 'answer'] }
+    ];
+    let best = null;
+    let bestScore = 0;
+    for (const { bot, words } of keywordSets) {
+        let score = 0;
+        for (const w of words) if (t.includes(w)) score++;
+        if (score > bestScore) { best = bot; bestScore = score; }
+    }
+    return best;
+}
+
+/**
  * POST /api/reviews — Authenticated user submits a review
  */
 app.post('/api/reviews', requireAuth, (req, res) => {
@@ -3125,15 +3164,17 @@ app.post('/api/reviews', requireAuth, (req, res) => {
         return res.status(409).json({ error: 'You have already submitted a review' });
     }
 
+    const cleanText = text ? sanitizeInput(text.trim().slice(0, 500)) : '';
+    const detectedBot = botType || detectBotType(cleanText);
     const id = crypto.randomUUID();
     db.reviews[id] = {
         id,
         userId: user.userId,
         rating: Math.round(rating),
-        text: text ? sanitizeInput(text.trim().slice(0, 500)) : '',
+        text: cleanText,
         displayName: displayName ? sanitizeName(displayName.trim()) : '',
         emailConsent: emailConsent === true,
-        botType: botType || null,
+        botType: detectedBot || null,
         approved: false,
         createdAt: new Date().toISOString()
     };
@@ -3142,7 +3183,7 @@ app.post('/api/reviews', requireAuth, (req, res) => {
     db.users[user.userId].reviewPromptHandled = true;
     scheduleSave();
 
-    console.log(`⭐ New review from ${user.email} (rating: ${rating})`);
+    console.log(`⭐ New review from ${user.email} (rating: ${rating}, bot: ${detectedBot || 'unknown'})`);
     res.json({ success: true });
 });
 
