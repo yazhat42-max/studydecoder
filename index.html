@@ -2387,7 +2387,7 @@
             }
 
             // Cache to localStorage for surviving server restarts (onboarding = free plan acknowledgment)
-            try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: currentUser?.email, name: currentUser?.name, preferences: { level: onboardSelectedLevel, subjects: selectedSubjects, onboarded: true }, freeAcknowledged: true, cachedAt: Date.now() })); } catch(e) {}
+            try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: currentUser?.email, name: currentUser?.name, role: currentUser?.role, subscribed: currentUser?.subscribed, preferences: { level: onboardSelectedLevel, subjects: selectedSubjects, onboarded: true }, freeAcknowledged: true, cachedAt: Date.now() })); } catch(e) {}
 
             // Show payoff screen instead of immediately closing
             showOnboardingPayoff(selectedSubjects);
@@ -2468,7 +2468,7 @@
                 currentUser.preferences.onboarded = true;
             }
             // Cache to localStorage (onboarding = free plan acknowledgment)
-            try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: currentUser?.email, name: currentUser?.name, preferences: { ...(currentUser?.preferences || {}), onboarded: true }, freeAcknowledged: true, cachedAt: Date.now() })); } catch(e) {}
+            try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: currentUser?.email, name: currentUser?.name, role: currentUser?.role, subscribed: currentUser?.subscribed, preferences: { ...(currentUser?.preferences || {}), onboarded: true }, freeAcknowledged: true, cachedAt: Date.now() })); } catch(e) {}
         } catch (e) { /* silent */ }
         document.getElementById('onboardingModal').style.display = 'none';
     }
