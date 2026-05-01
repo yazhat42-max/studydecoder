@@ -6520,7 +6520,6 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
     const allQuestions = [];
     const unansweredQuestions = []; // Track unanswered for instant 0-mark
     const mcResults = []; // MC questions marked locally (no AI roundtrip)
-    let aiQuestionCount = 0; // Number of questions actually sent to AI
 
     for (const section of exam.sections) {
         let sectionHeaderAdded = false;
@@ -6529,13 +6528,15 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
             allQuestions.push(q);
 
             // === Server-side MC marking — skip AI entirely for these ===
-            if (isMCQuestion(q) && q.correctAnswer && (!q.parts || q.parts.length === 0)) {
+            // Only handle if correctAnswer normalises to a clean A-D letter; otherwise fall through to AI.
+            if (isMCQuestion(q) && q.correctAnswer && (!q.parts || q.parts.length === 0)
+                && normalizeMCLetter(q.correctAnswer)) {
                 const studentAnswer = answers[q.number];
                 const studentLetter = normalizeMCLetter(studentAnswer);
                 const correctLetter = normalizeMCLetter(q.correctAnswer);
                 if (!studentAnswer || !studentAnswer.toString().trim()) {
                     unansweredQuestions.push({ number: q.number, marks: q.marks, type: q.type });
-                } else if (correctLetter && studentLetter === correctLetter) {
+                } else if (studentLetter === correctLetter) {
                     mcResults.push({
                         questionNumber: q.number,
                         marksAwarded: q.marks,
@@ -6547,9 +6548,7 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
                         questionNumber: q.number,
                         marksAwarded: 0,
                         marksTotal: q.marks,
-                        feedback: correctLetter
-                            ? `Incorrect — the correct answer is ${correctLetter}.`
-                            : 'Incorrect.'
+                        feedback: `Incorrect — the correct answer is ${correctLetter}.`
                     });
                 }
                 continue;
