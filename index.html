@@ -653,6 +653,7 @@
             <li id="navSignIn"><a href="login.html" class="btn btn-primary">Sign In</a></li>
             <li id="navUserMenu" style="display: none;">
                 <span id="navUserName" style="color: var(--primary); font-weight: 600; margin-right: 12px;"></span>
+                <a href="#" onclick="showReferralModal(); return false;" class="btn btn-secondary" id="referFriendsBtn" style="background: linear-gradient(135deg,#22c55e,#16a34a); color: white; margin-right: 8px;">🔗 Refer & Earn</a>
                 <a href="#" onclick="showManageSubscription(); return false;" class="btn btn-secondary" id="manageSubNavBtn" style="display: none; background: #ef4444; margin-right: 8px;">⚙️ Manage Sub</a>
                 <a href="#" onclick="showUpgradeModal(); return false;" class="btn btn-secondary" id="upgradeNavBtn" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-right: 8px;">⭐ Upgrade</a>
                 <a href="#" onclick="logout(); return false;" class="btn btn-secondary">Sign Out</a>
@@ -2688,6 +2689,18 @@
     });
     </script>
 
+    <!-- Referral Modal -->
+    <div id="referralModalOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:var(--bg-card,#14141c);border:1px solid rgba(255,255,255,0.08);border-radius:16px;max-width:480px;width:100%;padding:28px;color:var(--text,#fff);position:relative;">
+            <button onclick="closeReferralModal()" aria-label="Close" style="position:absolute;top:12px;right:14px;background:none;border:none;color:rgba(255,255,255,0.5);font-size:1.4rem;cursor:pointer;line-height:1;">✕</button>
+            <div style="font-size:1.4rem;font-weight:800;margin-bottom:6px;">🔗 Refer Friends, Earn Bonus Days</div>
+            <div style="font-size:0.92rem;color:rgba(255,255,255,0.65);margin-bottom:18px;line-height:1.55;">Every friend who upgrades earns you <strong style="color:#22c55e;">7 free bonus days</strong>. Share your link below.</div>
+            <div id="referralModalContent" style="font-size:0.9rem;color:rgba(255,255,255,0.75);">
+                <div style="text-align:center;padding:28px 0;">Loading…</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Review Toast (non-intrusive prompt shown after demonstrated value) -->
     <div id="reviewToast" role="dialog" aria-label="Leave a review">
         <button class="toast-dismiss" onclick="dismissReviewToast()" aria-label="Dismiss">✕</button>
@@ -2915,6 +2928,57 @@
     // Run on load
     loadBotReviews();
     loadBotUsageBadges();
+
+    // ── REFERRAL MODAL ──
+    async function showReferralModal() {
+        const overlay = document.getElementById('referralModalOverlay');
+        const content = document.getElementById('referralModalContent');
+        if (!overlay || !content) return;
+        overlay.style.display = 'flex';
+        content.innerHTML = '<div style="text-align:center;padding:28px 0;">Loading…</div>';
+        try {
+            const res = await fetch('/api/user/referral', { credentials: 'include' });
+            if (!res.ok) {
+                content.innerHTML = '<div style="text-align:center;padding:20px 0;color:#ef4444;">Sign in to view your referral code.</div>';
+                return;
+            }
+            const d = await res.json();
+            content.innerHTML = `
+                <div style="display:flex;align-items:center;gap:8px;background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.25);border-radius:10px;padding:12px;margin-bottom:14px;">
+                    <span style="font-family:monospace;font-size:1.15rem;font-weight:800;color:#fff;letter-spacing:1px;flex:1;">${escHtml(d.code)}</span>
+                    <button onclick="_copyReferral('${escHtml(d.code)}', this)" style="padding:7px 12px;background:var(--primary,#6c63ff);color:#fff;border:none;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;">Copy code</button>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px;margin-bottom:18px;">
+                    <span style="font-size:0.78rem;color:rgba(255,255,255,0.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${escHtml(d.url)}</span>
+                    <button onclick="_copyReferral('${escHtml(d.url)}', this)" style="padding:7px 12px;background:#22c55e;color:#fff;border:none;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;">Copy link</button>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;">
+                    <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:10px;"><div style="font-size:1.4rem;font-weight:800;color:#fff;">${d.referralCount}</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;">Friends</div></div>
+                    <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:10px;"><div style="font-size:1.4rem;font-weight:800;color:#fff;">${d.paidReferrals}</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;">Upgraded</div></div>
+                    <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:10px;"><div style="font-size:1.4rem;font-weight:800;color:#22c55e;">+${d.bonusDaysEarned}</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;">Days</div></div>
+                </div>`;
+        } catch (e) {
+            content.innerHTML = '<div style="text-align:center;padding:20px 0;color:#ef4444;">Could not load. Please try again.</div>';
+        }
+    }
+
+    function closeReferralModal() {
+        const overlay = document.getElementById('referralModalOverlay');
+        if (overlay) overlay.style.display = 'none';
+    }
+
+    function _copyReferral(text, btn) {
+        try {
+            navigator.clipboard.writeText(text);
+            const original = btn.textContent;
+            btn.textContent = '✓ Copied';
+            setTimeout(() => { btn.textContent = original; }, 1500);
+        } catch (e) {}
+    }
+
+    document.getElementById('referralModalOverlay')?.addEventListener('click', (e) => {
+        if (e.target.id === 'referralModalOverlay') closeReferralModal();
+    });
     </script>
 </body>
 </html>

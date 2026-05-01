@@ -5675,6 +5675,12 @@ TOTAL: EXACTLY 100 marks. You MUST include both sections.`;
 - Standard: include networks, financial maths, measurement, statistics, algebra.
 - Use UNICODE for all maths: x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, °, ∈, ∪, ∩, ⊂. NEVER LaTeX.
 - Include graphs/tables described in text where appropriate.
+- DIFFICULTY FLOOR — CRITICAL: This is HSC, NOT junior high. NEVER generate trivial single-step questions like "If f(x) = 2x + 3, find f(4)" or "Solve 3x = 12" or "What is 5²". Every question must require GENUINE Year 11/12 reasoning.
+  * Standard 2 MC must test: financial maths (compound interest, depreciation, loan repayments), bivariate data interpretation, network shortest path, normal distribution z-scores, trigonometric ratio applications in 2D/3D.
+  * Advanced MC must test: derivative/integral evaluation, log/exponential equations, trig identities, function transformations, sequence sums, probability distributions.
+  * Ext 1 MC: induction validity, vector projections, parametric curves, binomial probability, harder trig.
+  * Ext 2 MC: complex number geometry, integration by substitution, mechanics, proof techniques.
+- For MC, all 4 distractors must be plausible computational errors, not random numbers. The wrong answers should reflect common student mistakes.
 - IMPORTANT: Only generate questions from the student's selected module/topic. Every question must belong to that module.`;
 
     // ===== ENGLISH (Advanced, Standard, Extension, EAL/D, Studies) =====
@@ -6686,8 +6692,39 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
             try {
                 markingResult = JSON.parse(reply);
             } catch (parseErr) {
-                console.error('Failed to parse marking JSON:', parseErr.message, 'Raw:', reply.substring(0, 500));
-                return res.status(500).json({ error: 'Failed to parse marking results. Please try again.' });
+                console.error('Failed to parse marking JSON (attempt 1):', parseErr.message, 'Raw:', reply.substring(0, 500));
+                // Retry once with stricter prompt + lower temp before giving up
+                try {
+                    const retryBody = {
+                        model: aiSettings.model,
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: `Mark the following ${subjectName} exam:\n${questionsText}\n\nReturn ONLY a single valid JSON object. No markdown, no commentary, no code fences. Start with { and end with }.` }
+                        ],
+                        [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
+                    };
+                    if (!isGpt5) retryBody.temperature = 0.1;
+                    const retryRes = await fetch('https://api.openai.com/v1/chat/completions', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
+                        body: JSON.stringify(retryBody)
+                    });
+                    if (retryRes.ok) {
+                        const retryData = await retryRes.json();
+                        let retryReply = retryData.choices?.[0]?.message?.content || '';
+                        retryReply = retryReply.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
+                        const rs = retryReply.indexOf('{');
+                        const re = retryReply.lastIndexOf('}');
+                        if (rs !== -1 && re > rs) retryReply = retryReply.substring(rs, re + 1);
+                        markingResult = JSON.parse(retryReply);
+                        console.log('[exam-mark] retry succeeded');
+                    } else {
+                        throw parseErr;
+                    }
+                } catch (retryErr) {
+                    console.error('Failed to parse marking JSON (retry):', retryErr.message);
+                    return res.status(500).json({ error: 'AI returned invalid response. Please retry — your answers are saved.' });
+                }
             }
 
             // Merge unanswered question results (0 marks each)
