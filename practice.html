@@ -3347,6 +3347,10 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                         const qKey = JSON.stringify({ q: r.questionNumber, subj: examSubjectId });
                         html += `<button class="explain-btn" onclick="explainMark(${r.questionNumber}, this)" style="margin-top:8px;padding:6px 14px;border:1px solid rgba(79,140,255,0.3);border-radius:8px;background:transparent;color:#4f8cff;font-size:0.8rem;cursor:pointer;font-family:inherit;">💬 Why did I get this mark?</button><div class="explain-box" id="explainBox_${r.questionNumber}" style="display:none;margin-top:8px;"></div>`;
                     }
+                    // "Show model answer" button — premium, non-MC. Sample is lazy-loaded so marking stays fast & reliable.
+                    if (isPremium && origQ && origQ.type !== 'mc' && !r.sampleAnswer) {
+                        html += `<button class="sample-btn" onclick="loadSampleAnswer(${r.questionNumber}, this)" style="margin-top:8px;margin-left:8px;padding:6px 14px;border:1px solid rgba(34,197,94,0.35);border-radius:8px;background:transparent;color:#22c55e;font-size:0.8rem;cursor:pointer;font-family:inherit;">⭐ Show model answer</button><div class="sample-box" id="sampleBox_${r.questionNumber}" style="display:none;margin-top:8px;"></div>`;
+                    }
                     html += `</div>`;
                 }
             }
@@ -3424,6 +3428,41 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             } catch {
                 box.innerHTML = '<div style="font-size:0.82rem;color:#ef4444;padding:8px;">Could not load — try again.</div>';
                 box.style.display = 'block'; btn.textContent = '💬 Why did I get this mark?';
+            }
+            btn.disabled = false;
+        }
+
+        // Lazy-load a Band 6 sample answer for a single question (premium only).
+        // Sample answers are no longer bundled into the marking response — keeps
+        // marking fast & reliable, generates samples on demand instead.
+        async function loadSampleAnswer(questionNumber, btn) {
+            const box = document.getElementById('sampleBox_' + questionNumber);
+            if (!box) return;
+            if (box.style.display !== 'none') { box.style.display = 'none'; btn.textContent = '⭐ Show model answer'; return; }
+            const origQ = examQuestions.find(q => q.number === questionNumber);
+            if (!origQ) return;
+            btn.disabled = true; btn.textContent = '⏳ Generating…';
+            try {
+                const studentAnswer = examAnswers[questionNumber] || '';
+                const res = await fetch(`${API_BASE}/api/exam/sample-answer`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ subject: examSubjectId, question: origQ, studentAnswer })
+                });
+                if (!res.ok) {
+                    const e = await res.json().catch(() => ({}));
+                    throw new Error(e.error || 'Failed');
+                }
+                const data = await res.json();
+                const sample = (data.sampleAnswer || '').toString();
+                box.innerHTML = `<div class="exam-result-sample"><strong>Band 6 Sample Answer:</strong><br>${parseMarkdownTables(sample)}</div>`;
+                box.style.display = 'block';
+                btn.textContent = '✕ Hide model answer';
+            } catch (err) {
+                box.innerHTML = `<div style="font-size:0.82rem;color:#ef4444;padding:8px;">Couldn't generate — please retry.</div>`;
+                box.style.display = 'block';
+                btn.textContent = '⭐ Show model answer';
             }
             btn.disabled = false;
         }

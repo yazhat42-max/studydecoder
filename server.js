@@ -6484,6 +6484,19 @@ CRITICAL JSON RULES:
     }
 });
 
+// --- Auto-mark helpers ----------------------------------------------------
+// Determine if a question is multiple-choice (handles 'mc' and 'multiple-choice')
+function isMCQuestion(q) {
+    if (!q || !q.type) return false;
+    const t = String(q.type).toLowerCase();
+    return t === 'mc' || t === 'multiple-choice' || t === 'multiplechoice';
+}
+// Normalise an MC answer to a single uppercase letter A-D (or '' if not parseable)
+function normalizeMCLetter(s) {
+    if (s === undefined || s === null) return '';
+    const m = String(s).trim().toUpperCase().match(/[A-D]/);
+    return m ? m[0] : '';
+}
 // Mark exam — takes questions + student answers, returns scores + feedback
 app.post('/api/exam/mark', express.json(), async (req, res) => {
     if (!req.session?.userId) {
@@ -6506,12 +6519,47 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
     let totalPossible = 0;
     const allQuestions = [];
     const unansweredQuestions = []; // Track unanswered for instant 0-mark
+    const mcResults = []; // MC questions marked locally (no AI roundtrip)
+    let aiQuestionCount = 0; // Number of questions actually sent to AI
 
     for (const section of exam.sections) {
-        questionsText += `\n\n--- ${section.name} ---\n`;
+        let sectionHeaderAdded = false;
         for (const q of section.questions) {
             totalPossible += q.marks;
             allQuestions.push(q);
+
+            // === Server-side MC marking — skip AI entirely for these ===
+            if (isMCQuestion(q) && q.correctAnswer && (!q.parts || q.parts.length === 0)) {
+                const studentAnswer = answers[q.number];
+                const studentLetter = normalizeMCLetter(studentAnswer);
+                const correctLetter = normalizeMCLetter(q.correctAnswer);
+                if (!studentAnswer || !studentAnswer.toString().trim()) {
+                    unansweredQuestions.push({ number: q.number, marks: q.marks, type: q.type });
+                } else if (correctLetter && studentLetter === correctLetter) {
+                    mcResults.push({
+                        questionNumber: q.number,
+                        marksAwarded: q.marks,
+                        marksTotal: q.marks,
+                        feedback: `Correct — ${correctLetter} is the right answer.`
+                    });
+                } else {
+                    mcResults.push({
+                        questionNumber: q.number,
+                        marksAwarded: 0,
+                        marksTotal: q.marks,
+                        feedback: correctLetter
+                            ? `Incorrect — the correct answer is ${correctLetter}.`
+                            : 'Incorrect.'
+                    });
+                }
+                continue;
+            }
+
+            // Add section header lazily — only when there's a non-MC question in it
+            if (!sectionHeaderAdded) {
+                questionsText += `\n\n--- ${section.name} ---\n`;
+                sectionHeaderAdded = true;
+            }
 
             // Check if this question has sub-parts
             if (q.parts && q.parts.length > 0) {
@@ -6566,8 +6614,8 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
         }
     }
 
-    const includeSampleAnswers = hasFull;
-    const answeredCount = allQuestions.length - unansweredQuestions.length;
+    const includeSampleAnswers = false; // Sample answers are now lazy-loaded via /api/exam/sample-answer
+    const answeredCount = allQuestions.length - unansweredQuestions.length - mcResults.length;
 
     // Load official marking guidelines for accurate marking
     let mgContext = '';
@@ -6637,20 +6685,26 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
     try {
         let markingResult;
 
-        // If ALL questions are unanswered, skip AI entirely — instant 0
+        // If NO questions need AI marking (all are MC + unanswered), skip AI entirely
         if (answeredCount === 0) {
+            const unansweredResults = unansweredQuestions.map(uq => ({
+                questionNumber: uq.number,
+                marksAwarded: 0,
+                marksTotal: uq.marks,
+                feedback: 'No answer provided — 0 marks awarded.'
+            }));
+            const allResults = [...mcResults, ...unansweredResults].sort((a, b) => a.questionNumber - b.questionNumber);
+            const totalAwarded = allResults.reduce((s, r) => s + (r.marksAwarded || 0), 0);
+            const pct = totalPossible > 0 ? Math.round((totalAwarded / totalPossible) * 10000) / 100 : 0;
             markingResult = {
-                results: unansweredQuestions.map(uq => ({
-                    questionNumber: uq.number,
-                    marksAwarded: 0,
-                    marksTotal: uq.marks,
-                    feedback: 'No answer provided — 0 marks awarded.'
-                })),
-                totalMarksAwarded: 0,
+                results: allResults,
+                totalMarksAwarded: totalAwarded,
                 totalMarksPossible: totalPossible,
-                percentage: 0,
-                expectedBand: 'Band 1',
-                overallFeedback: 'No answers were provided for any question. All questions received 0 marks.'
+                percentage: pct,
+                expectedBand: pct >= 90 ? 'Band 6' : pct >= 80 ? 'Band 5' : pct >= 70 ? 'Band 4' : pct >= 60 ? 'Band 3' : pct >= 50 ? 'Band 2' : 'Band 1',
+                overallFeedback: unansweredQuestions.length === allQuestions.length
+                    ? 'No answers were provided for any question. All questions received 0 marks.'
+                    : `Multiple-choice questions marked automatically. ${pct}% scored across MC questions${unansweredQuestions.length > 0 ? ` — ${unansweredQuestions.length} question${unansweredQuestions.length > 1 ? 's were' : ' was'} left blank` : ''}.`
             };
         } else {
             // Call AI to mark only the answered questions
@@ -6662,6 +6716,7 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: `Mark the following ${subjectName} exam:\n${questionsText}\n\nReturn ONLY valid JSON.` }
                 ],
+                response_format: { type: 'json_object' },
                 [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
             };
             if (!isGpt5) requestBody.temperature = 0.3; // Low temp for consistent marking
@@ -6701,6 +6756,7 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                             { role: 'system', content: systemPrompt },
                             { role: 'user', content: `Mark the following ${subjectName} exam:\n${questionsText}\n\nReturn ONLY a single valid JSON object. No markdown, no commentary, no code fences. Start with { and end with }.` }
                         ],
+                        response_format: { type: 'json_object' },
                         [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
                     };
                     if (!isGpt5) retryBody.temperature = 0.1;
@@ -6727,22 +6783,22 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                 }
             }
 
-            // Merge unanswered question results (0 marks each)
-            if (unansweredQuestions.length > 0) {
+            // Merge unanswered + MC results (0 marks each for unanswered, locally-marked for MC)
+            if (unansweredQuestions.length > 0 || mcResults.length > 0) {
                 const unansweredResults = unansweredQuestions.map(uq => ({
                     questionNumber: uq.number,
                     marksAwarded: 0,
                     marksTotal: uq.marks,
                     feedback: 'No answer provided — 0 marks awarded.'
                 }));
-                markingResult.results = [...(markingResult.results || []), ...unansweredResults];
+                markingResult.results = [...(markingResult.results || []), ...unansweredResults, ...mcResults];
                 // Sort by question number for clean display
                 markingResult.results.sort((a, b) => a.questionNumber - b.questionNumber);
-                // Recalculate totals to include unanswered
-                const aiMarks = (markingResult.results || []).reduce((sum, r) => sum + (r.marksAwarded || 0), 0);
-                markingResult.totalMarksAwarded = aiMarks;
+                // Recalculate totals to include unanswered + MC
+                const totalAwarded = (markingResult.results || []).reduce((sum, r) => sum + (r.marksAwarded || 0), 0);
+                markingResult.totalMarksAwarded = totalAwarded;
                 markingResult.totalMarksPossible = totalPossible;
-                markingResult.percentage = totalPossible > 0 ? Math.round((aiMarks / totalPossible) * 10000) / 100 : 0;
+                markingResult.percentage = totalPossible > 0 ? Math.round((totalAwarded / totalPossible) * 10000) / 100 : 0;
                 // Recalculate band
                 const pct = markingResult.percentage;
                 markingResult.expectedBand = pct >= 90 ? 'Band 6' : pct >= 80 ? 'Band 5' : pct >= 70 ? 'Band 4' : pct >= 60 ? 'Band 3' : pct >= 50 ? 'Band 2' : 'Band 1';
@@ -6800,6 +6856,107 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
     } catch (error) {
         console.error('Exam mark error:', error);
         res.status(500).json({ error: 'Failed to mark exam' });
+    }
+});
+
+// Lazy sample-answer endpoint — generates a single Band 6 model answer on demand.
+// Premium-only. Replaces the old approach of bundling all sample answers into the
+// marking call (which caused token-budget truncation and JSON-parse failures).
+app.post('/api/exam/sample-answer', express.json(), async (req, res) => {
+    if (!req.session?.userId) return res.status(401).json({ error: 'Authentication required' });
+    const user = getUser(req.session.userId);
+    if (!user) return res.status(401).json({ error: 'User not found' });
+    if (!hasFullAccess(user)) return res.status(403).json({ error: 'Premium feature' });
+
+    const { subject, question, studentAnswer } = req.body || {};
+    if (!question || typeof question !== 'object') {
+        return res.status(400).json({ error: 'Question is required' });
+    }
+    const marks = Number(question.marks) || 0;
+    if (marks <= 0) return res.status(400).json({ error: 'Invalid question marks' });
+
+    const subjectName = subjectsConfig.subjects.find(s => s.id === subject)?.name || subject || 'this subject';
+
+    // Length guidance based on marks
+    let lengthGuide;
+    if (marks <= 2) lengthGuide = '1-3 sentences (30-60 words)';
+    else if (marks <= 4) lengthGuide = 'one full paragraph with specific examples (80-150 words)';
+    else if (marks <= 6) lengthGuide = '2-3 developed paragraphs with evidence and analysis (150-250 words)';
+    else if (marks <= 9) lengthGuide = 'detailed extended response with intro, body, conclusion. Use specific terminology, examples, syllabus links (250-400 words)';
+    else if (marks <= 15) lengthGuide = 'multiple developed paragraphs with thesis, evidence, analysis, evaluation (400-600 words)';
+    else lengthGuide = 'complete essay: introduction, 3-4 body paragraphs, conclusion, with thesis, evidence, sustained analysis (600-900 words)';
+
+    const isMC = isMCQuestion(question);
+    const aiSettings = getAISettings(user);
+    const isGpt5 = aiSettings.model.startsWith('gpt-5');
+    const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+
+    let systemPrompt;
+    if (isMC) {
+        systemPrompt = `You are a senior HSC examiner for ${subjectName}. Return ONLY valid JSON: {"sampleAnswer": "<single letter A-D>"}`;
+    } else {
+        systemPrompt = `You are a senior HSC examiner for ${subjectName} with 20 years of NESA marking experience. Write a Band 6 (full marks) sample answer for the question below.
+
+LENGTH REQUIREMENT: ${lengthGuide}. A short answer for a high-mark question is unacceptable.
+
+Use HSC terminology, specific examples, syllabus links, and clear structure. Be the answer a top student would write under exam conditions.
+
+Return ONLY valid JSON: {"sampleAnswer": "<the full sample answer text>"}`;
+    }
+
+    let questionText = `Question ${question.number || ''} [${marks} mark${marks > 1 ? 's' : ''}]:\n${question.text || ''}`;
+    if (question.stimulus) questionText += `\nStimulus: ${question.stimulus}`;
+    if (question.markingCriteria) questionText += `\nMarking criteria: ${question.markingCriteria}`;
+    if (question.parts && question.parts.length > 0) {
+        question.parts.forEach((p, i) => {
+            const lab = p.label || `(${String.fromCharCode(97 + i)})`;
+            questionText += `\n  ${lab} [${p.marks} marks]: ${p.text || ''}`;
+        });
+    }
+
+    // Output token budget — sized to length guide
+    const outputBudget = isMC ? 50 : Math.min(2000, Math.max(300, marks * 120));
+
+    const requestBody = {
+        model: aiSettings.model,
+        messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: questionText }
+        ],
+        response_format: { type: 'json_object' },
+        [tokenParam]: outputBudget
+    };
+    if (!isGpt5) requestBody.temperature = 0.4;
+
+    try {
+        const r = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
+            body: JSON.stringify(requestBody)
+        });
+        if (!r.ok) {
+            const err = await r.json().catch(() => ({}));
+            console.error('Sample-answer OpenAI error:', err);
+            return res.status(500).json({ error: 'Could not generate sample answer right now. Please retry.' });
+        }
+        const data = await r.json();
+        let reply = data.choices?.[0]?.message?.content || '';
+        reply = reply.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
+        const js = reply.indexOf('{');
+        const je = reply.lastIndexOf('}');
+        if (js !== -1 && je > js) reply = reply.substring(js, je + 1);
+        let parsed;
+        try { parsed = JSON.parse(reply); }
+        catch (e) {
+            console.error('Sample-answer parse error:', e.message, 'raw:', reply.substring(0, 300));
+            return res.status(500).json({ error: 'Could not generate sample answer. Please retry.' });
+        }
+        const sampleAnswer = (parsed.sampleAnswer || '').toString().trim();
+        if (!sampleAnswer) return res.status(500).json({ error: 'Empty sample answer. Please retry.' });
+        res.json({ sampleAnswer });
+    } catch (err) {
+        console.error('Sample-answer endpoint error:', err);
+        res.status(500).json({ error: 'Could not generate sample answer.' });
     }
 });
 
