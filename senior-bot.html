@@ -694,7 +694,7 @@
                         </div>
                         <button onclick="createCheckoutAndPoll('lifetime')" style="width:100%;padding:26px 18px 20px;background:linear-gradient(135deg,#4f3dc4,#7c3aed);color:#fff;border:2px solid rgba(167,139,250,0.4);border-radius:14px;display:flex;flex-direction:column;align-items:center;cursor:pointer;font-family:inherit;box-shadow:0 6px 28px rgba(102,126,234,0.4);">
                             <span style="font-size:0.75rem;opacity:0.7;letter-spacing:0.5px;text-transform:uppercase;">One-Time Payment &middot; Lifetime Access</span>
-                            <span style="font-size:2.4rem;font-weight:900;margin:6px 0 0;line-height:1;">$37.50</span>
+                            <span style="font-size:2.4rem;font-weight:900;margin:6px 0 0;line-height:1;" id="paywallLifetimePrice">$37.50</span>
                             <span style="font-size:0.78rem;opacity:0.5;text-decoration:line-through;margin-bottom:6px;">$60/yr if paid monthly</span>
                             <span style="background:rgba(255,255,255,0.12);border-radius:8px;padding:4px 12px;font-size:0.78rem;font-weight:600;">Pay once. Use through Year 11 &amp; 12. ✓</span>
                         </button>
@@ -730,12 +730,16 @@
                 </div>
             `;
 
-            // Load live spot count
+            // Load live spot count + lifetime price
             fetch(API_BASE + '/api/spots-left')
                 .then(r => r.json())
                 .then(d => {
                     const el = document.getElementById('paywallSpotsLeft');
                     if (el && d.spotsLeft !== undefined) el.textContent = d.spotsLeft + ' spot' + (d.spotsLeft !== 1 ? 's' : '');
+                    if (d.lifetimePriceLabel) {
+                        const p = document.getElementById('paywallLifetimePrice');
+                        if (p) p.textContent = d.lifetimePriceLabel;
+                    }
                 }).catch(() => {});
 
             document.getElementById('continueFreeBtnPaywall').addEventListener('click', async () => {

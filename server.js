@@ -2320,7 +2320,11 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
         };
         
         if (plan === 'lifetime') {
-            // One-time payment for lifetime access
+            // One-time payment for lifetime access — price ratchets up by tier.
+            // Whatever tier is active at the moment of checkout creation is
+            // what Stripe charges. Tiers expand automatically based on count
+            // of lifetime claims; see /api/spots-left.
+            const lifetimeTier = getCurrentFoundingTier(countLifetimeClaimed());
             sessionParams.mode = 'payment';
             sessionParams.line_items = [{
                 price_data: {
@@ -2329,7 +2333,7 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
                         name: 'Study Decoder Premium — Lifetime Access',
                         description: 'One-time payment, unlimited access forever'
                     },
-                    unit_amount: 3750 // $37.50 AUD
+                    unit_amount: lifetimeTier.priceCents
                 },
                 quantity: 1
             }];
@@ -2848,38 +2852,55 @@ app.get('/api/health', (req, res) => {
 /**
  * GET /api/spots-left - Public endpoint for promo banner
  */
-// Tiered cap: each tier expands automatically once "spots left" drops to a
-// trigger level, so the deal feels permanently scarce. Computed purely from
-// the number of lifetime claims — deterministic, idempotent, no extra state.
+// Tiered cap + price gradient. Each tier auto-expands when claimed reaches
+// (cap - expandWhenLeftLEQ), and lifetime price ratchets up alongside.
+// Computed purely from claimed count — deterministic, idempotent, no extra
+// state. Stripe checkout reads priceCents from getCurrentFoundingTier() so
+// price changes are automatic; no manual dashboard updates needed.
 const FOUNDING_TIERS = [
-    { cap: 100, expandWhenLeftLEQ: 80 },
-    { cap: 200, expandWhenLeftLEQ: 75 },
-    { cap: 300, expandWhenLeftLEQ: 70 },
-    { cap: 400, expandWhenLeftLEQ: 65 },
-    { cap: 500, expandWhenLeftLEQ: 60 },
-    { cap: 600, expandWhenLeftLEQ: 55 },
-    { cap: 700 } // final tier — no further expansion
+    { cap: 100, expandWhenLeftLEQ: 80, priceCents: 1499, priceLabel: '$14.99' },
+    { cap: 200, expandWhenLeftLEQ: 75, priceCents: 1999, priceLabel: '$19.99' },
+    { cap: 300, expandWhenLeftLEQ: 70, priceCents: 2499, priceLabel: '$24.99' },
+    { cap: 400, expandWhenLeftLEQ: 65, priceCents: 2999, priceLabel: '$29.99' },
+    { cap: 500, expandWhenLeftLEQ: 60, priceCents: 3250, priceLabel: '$32.50' },
+    { cap: 600, expandWhenLeftLEQ: 55, priceCents: 3499, priceLabel: '$34.99' },
+    { cap: 700, priceCents: 3750, priceLabel: '$37.50' } // final tier
 ];
 
-function getFoundingCap(claimed) {
+function getCurrentFoundingTier(claimed) {
     for (let i = 0; i < FOUNDING_TIERS.length - 1; i++) {
         const t = FOUNDING_TIERS[i];
         // Stay on this tier while we haven't yet hit its expansion trigger.
-        if (claimed < t.cap - t.expandWhenLeftLEQ) return t.cap;
+        if (claimed < t.cap - t.expandWhenLeftLEQ) return t;
     }
-    return FOUNDING_TIERS[FOUNDING_TIERS.length - 1].cap;
+    return FOUNDING_TIERS[FOUNDING_TIERS.length - 1];
 }
 
-app.get('/api/spots-left', (req, res) => {
+function getFoundingCap(claimed) {
+    return getCurrentFoundingTier(claimed).cap;
+}
+
+function countLifetimeClaimed() {
     let claimed = 0;
     for (const uid of Object.keys(db.users)) {
         const u = db.users[uid];
         if (u.subscribed === true && u.plan === 'lifetime') claimed++;
     }
-    const total = getFoundingCap(claimed);
-    const spotsLeft = Math.max(0, total - claimed);
+    return claimed;
+}
+
+app.get('/api/spots-left', (req, res) => {
+    const claimed = countLifetimeClaimed();
+    const tier = getCurrentFoundingTier(claimed);
+    const spotsLeft = Math.max(0, tier.cap - claimed);
     res.set('Cache-Control', 'public, max-age=60');
-    res.json({ total, claimed, spotsLeft });
+    res.json({
+        total: tier.cap,
+        claimed,
+        spotsLeft,
+        lifetimePriceCents: tier.priceCents,
+        lifetimePriceLabel: tier.priceLabel
+    });
 });
 
 /**
