@@ -1233,7 +1233,7 @@ async function sendVerificationEmail(email, token) {
  */
 app.post('/api/auth/google', async (req, res) => {
     try {
-        const { idToken } = req.body;
+        const { idToken, ref } = req.body;
         
         if (!idToken) {
             return res.status(400).json({ error: 'ID token required' });
@@ -1258,6 +1258,7 @@ app.post('/api/auth/google', async (req, res) => {
         // If brand new user, mark as not onboarded
         if (!existingUser) {
             user.preferences = { ...(user.preferences || {}), onboarded: false };
+            applyReferralCode(user, ref);
             scheduleSave();
         } else {
             // Existing user: check if they signed up before preferences update
@@ -1299,7 +1300,7 @@ app.post('/api/auth/google', async (req, res) => {
  */
 app.post('/api/auth/google-oauth', async (req, res) => {
     try {
-        const { accessToken } = req.body;
+        const { accessToken, ref } = req.body;
         
         if (!accessToken) {
             return res.status(400).json({ error: 'Access token required' });
@@ -1334,6 +1335,7 @@ app.post('/api/auth/google-oauth', async (req, res) => {
         // If brand new user, mark as not onboarded
         if (!existingUser) {
             user.preferences = { ...(user.preferences || {}), onboarded: false };
+            applyReferralCode(user, ref);
             scheduleSave();
         } else {
             // Existing user: check if they signed up before preferences update
@@ -1417,12 +1419,7 @@ app.post('/api/auth/register', async (req, res) => {
         
         // Capture referral code if provided
         const { ref } = req.body;
-        if (ref && typeof ref === 'string' && ref.length <= 16) {
-            const referrer = Object.values(db.users).find(u => u.referralCode === ref.toUpperCase().trim());
-            if (referrer && referrer.userId !== userId) {
-                user.referredBy = referrer.userId;
-            }
-        }
+        applyReferralCode(user, ref);
 
         // Mark new registration as not onboarded
         user.preferences = { ...(user.preferences || {}), onboarded: false };
@@ -7584,6 +7581,21 @@ app.get('/api/user/achievements', requireAuth, (req, res) => {
 
 // ==================== REFERRAL SYSTEM ====================
 const { randomBytes } = require('crypto');
+
+/**
+ * Apply a referral code to a brand-new user. Idempotent: only sets `referredBy`
+ * if not already set, the code maps to a real user, and that user isn't `user` itself.
+ */
+function applyReferralCode(user, ref) {
+    if (!user || user.referredBy) return false;
+    if (!ref || typeof ref !== 'string' || ref.length > 16) return false;
+    const code = ref.toUpperCase().trim();
+    if (!code) return false;
+    const referrer = Object.values(db.users).find(u => u.referralCode === code);
+    if (!referrer || referrer.userId === user.userId) return false;
+    user.referredBy = referrer.userId;
+    return true;
+}
 
 function getOrCreateReferralCode(user) {
     if (!user.referralCode) {
