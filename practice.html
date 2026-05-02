@@ -2398,6 +2398,15 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
                 if (examQuestions.length === 0) throw new Error('No questions generated');
 
+                // Also trim examData.sections to match — otherwise marking endpoint marks the
+                // full original set (showing phantom Q7/Q8/Q9 with "No answer provided").
+                {
+                    const keepNumbers = new Set(examQuestions.map(q => q.number));
+                    examData.sections = examData.sections
+                        .map(s => ({ ...s, questions: (s.questions || []).filter(q => keepNumbers.has(q.number)) }))
+                        .filter(s => s.questions.length > 0);
+                }
+
                 let verifiedTotal = 0;
                 for (const q of examQuestions) verifiedTotal += (q.marks || 0);
                 examData.totalMarks = verifiedTotal;
