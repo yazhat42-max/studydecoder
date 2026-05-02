@@ -8520,6 +8520,58 @@ setInterval(async () => {
 
 
 // Serve static files (HTML, CSS, JS, images) from the project root
+// EXCEPT index.html — we intercept it below to inject live pricing data
+// so the founding-tier price + spotsLeft are correct on first paint
+// (no "??" or wrong-tier flash).
+const INDEX_PATH = path.join(__dirname, 'index.html');
+let _indexTemplate = null;
+function _loadIndexTemplate() {
+    if (_indexTemplate === null) {
+        try {
+            _indexTemplate = fs.readFileSync(INDEX_PATH, 'utf8');
+        } catch (e) {
+            console.error('Failed to read index.html:', e.message);
+            _indexTemplate = '';
+        }
+    }
+    return _indexTemplate;
+}
+function renderIndexHtml() {
+    const tpl = _loadIndexTemplate();
+    if (!tpl) return tpl;
+    let claimed = 0, tier = null;
+    try {
+        claimed = countLifetimeClaimed();
+        tier = getCurrentFoundingTier(claimed);
+    } catch (e) {
+        return tpl; // fall back to raw template
+    }
+    const spotsLeft = Math.max(0, tier.cap - claimed);
+    const payload = JSON.stringify({
+        spotsLeft: spotsLeft,
+        lifetimePriceLabel: tier.priceLabel,
+        lifetimePriceCents: tier.priceCents
+    });
+    // Inject as the FIRST thing in the bootstrap so it overrides the
+    // `window._sdLivePricing = null` default and runs before any DOM exists.
+    const injected =
+        '<!-- SD_PRICING_BOOTSTRAP_SSR -->\n' +
+        '<script>window._sdLivePricing=' + payload + ';</script>\n' +
+        '<!-- /SD_PRICING_BOOTSTRAP_SSR -->';
+    return tpl.replace(
+        '<!-- SD_PRICING_BOOTSTRAP -->',
+        injected + '\n    <!-- SD_PRICING_BOOTSTRAP -->'
+    );
+}
+function sendRenderedIndex(req, res) {
+    const html = renderIndexHtml();
+    if (!html) return res.status(500).send('Server error');
+    res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.send(html);
+}
+app.get(['/', '/index.html'], sendRenderedIndex);
+
 app.use(express.static(path.join(__dirname), {
     index: false,  // Let the catch-all below handle / -> index.html
     dotfiles: 'deny'
@@ -8531,7 +8583,7 @@ app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api/')) {
         return next();
     }
-    res.sendFile(path.join(__dirname, 'index.html'));
+    sendRenderedIndex(req, res);
 });
 
 // ==================== ERROR HANDLING ==

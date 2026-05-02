@@ -5,6 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="google-site-verification" content="v9ODAuxeJ2NSizFBDaV133p18_yxw1xbre9uw0UuKhg" />
     <title>Study Decoder – AI-Powered HSC & High School Study Tools | studydecoder.com.au</title>
+    <!-- SD_PRICING_BOOTSTRAP -->
+    <script>
+    // Server-injected (or null on first dev load); used to paint the right
+    // founding-tier price and remaining spots on the very first frame so
+    // visitors don't see a "$37.50 / ?? spots" placeholder flash.
+    window._sdLivePricing = null;
+    window._applyLivePricing = function (d) {
+        d = d || window._sdLivePricing;
+        if (!d) return;
+        window._sdLivePricing = d;
+        if (d.spotsLeft !== undefined && d.spotsLeft !== null) {
+            document.querySelectorAll('#spotsLeft, #pricingSpotsLeft').forEach(function (n) {
+                n.textContent = d.spotsLeft;
+            });
+            if (d.spotsLeft <= 0) {
+                var b = document.getElementById('saleBanner');
+                if (b && /spotsLeft/.test(b.innerHTML)) b.style.display = 'none';
+            }
+        }
+        if (d.lifetimePriceLabel) {
+            var p1 = document.getElementById('pricingLifetimePrice');
+            var p2 = document.getElementById('upgradeModalLifetimePrice');
+            if (p1) p1.textContent = d.lifetimePriceLabel;
+            if (p2) p2.textContent = d.lifetimePriceLabel;
+            document.querySelectorAll('.sd-lifetime-price-inline').forEach(function (n) {
+                n.textContent = d.lifetimePriceLabel;
+            });
+        }
+    };
+    // Hydrate from localStorage cache for instant repeat-visit paint
+    try {
+        var _c = localStorage.getItem('sd_pricing_cache');
+        if (_c) {
+            var _p = JSON.parse(_c);
+            if (_p && Date.now() - (_p._t || 0) < 60 * 60 * 1000) {
+                window._sdLivePricing = _p;
+            }
+        }
+    } catch (e) { /* ignore */ }
+    </script>
+    <!-- /SD_PRICING_BOOTSTRAP -->
     <meta name="description" content="Study Decoder is an AI study platform for HSC and high school students. Practice questions, syllabus decoding, smart timetables, notes transcription and more. Try free today.">
     <meta name="keywords" content="HSC study tools, AI study help, HSC practice questions, syllabus decoder, study timetable generator, NSW HSC, Australian high school, Year 11 Year 12 study, notes transcriber, worksheet decoder">
     <link rel="canonical" href="https://www.studydecoder.com.au/">
@@ -2536,47 +2577,13 @@
             checkAuthStatus();
         }
 
-        // Fetch spots left + current lifetime tier price.
-        // Cached in localStorage so returning visitors see the right price on first
-        // paint (avoids the $37.50 → $75 flash for tier-2+ users). Cache lives 1h.
-        function _applyLivePricing(d) {
-            if (!d) return;
-            window._sdLivePricing = d;
-            if (d.spotsLeft !== undefined && d.spotsLeft !== null) {
-                document.querySelectorAll('#spotsLeft, #pricingSpotsLeft').forEach(function(n){
-                    n.textContent = d.spotsLeft;
-                });
-                if (d.spotsLeft <= 0) {
-                    var b = document.getElementById('saleBanner');
-                    if (b && /spotsLeft/.test(b.innerHTML)) b.style.display = 'none';
-                }
-            }
-            if (d.lifetimePriceLabel) {
-                var p1 = document.getElementById('pricingLifetimePrice');
-                var p2 = document.getElementById('upgradeModalLifetimePrice');
-                if (p1) p1.textContent = d.lifetimePriceLabel;
-                if (p2) p2.textContent = d.lifetimePriceLabel;
-                document.querySelectorAll('.sd-lifetime-price-inline').forEach(function(n){
-                    n.textContent = d.lifetimePriceLabel;
-                });
-            }
-        }
-        window._applyLivePricing = _applyLivePricing;
-
-        // Apply cached pricing immediately for instant first paint
-        try {
-            var cached = localStorage.getItem('sd_pricing_cache');
-            if (cached) {
-                var parsed = JSON.parse(cached);
-                if (parsed && Date.now() - (parsed._t || 0) < 60 * 60 * 1000) {
-                    _applyLivePricing(parsed);
-                }
-            }
-        } catch (e) { /* ignore corrupt cache */ }
-
+        // Fetch fresh pricing from the server in the background and update the
+        // page + localStorage cache. The bootstrap script in <head> already
+        // applied the cached/SSR-injected pricing synchronously on first paint
+        // so this is purely a refresh.
         {
             fetch('/api/spots-left').then(function(r){ return r.json(); }).then(function(d){
-                _applyLivePricing(d);
+                if (typeof window._applyLivePricing === 'function') window._applyLivePricing(d);
                 try {
                     var toCache = Object.assign({}, d, { _t: Date.now() });
                     localStorage.setItem('sd_pricing_cache', JSON.stringify(toCache));
