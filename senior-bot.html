@@ -596,7 +596,7 @@
             
             // Populate subscription info
             if (window.currentSubData) {
-                document.getElementById('subPlan').textContent = window.currentSubData.plan === 'yearly' ? 'Lifetime ($37.50 one-time)' : 'Monthly ($7.50/month)';
+                document.getElementById('subPlan').textContent = window.currentSubData.plan === 'yearly' ? 'Lifetime ($37.50 one-time)' : 'Monthly ($5/month)';
                 
                 if (window.currentSubData.cancelAtPeriodEnd) {
                     document.getElementById('subStatus').textContent = 'Cancelling (access until period ends)';

@@ -582,12 +582,11 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ name, email, password, ref: localStorage.getItem('sd_pendingRef') || undefined })
+                    body: JSON.stringify({ name, email, password })
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Registration failed');
                 if (data.requiresVerification) {
-                    localStorage.removeItem('sd_pendingRef'); // clear after use
                     showSuccess('Account created! Check your email to verify your account before signing in.');
                     return;
                 }
@@ -601,10 +600,6 @@
         
         // ==================== Initialization ====================
         document.addEventListener('DOMContentLoaded', async () => {
-            // Capture referral code from URL and store for use during registration
-            const _refParam = new URLSearchParams(window.location.search).get('ref');
-            if (_refParam) localStorage.setItem('sd_pendingRef', _refParam.trim().toUpperCase());
-
             // Check if already logged in
             try {
                 const res = await fetch('/api/subscription', { credentials: 'include' });
@@ -694,11 +689,10 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ accessToken: tokenResponse.access_token, ref: localStorage.getItem('sd_pendingRef') || undefined })
+                    body: JSON.stringify({ accessToken: tokenResponse.access_token })
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Authentication failed');
-                localStorage.removeItem('sd_pendingRef');
                 showSuccess('Signed in! Redirecting...');
                 await redirectAfterLogin(data);
             } catch (err) {
@@ -717,11 +711,10 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ idToken: response.credential, ref: localStorage.getItem('sd_pendingRef') || undefined })
+                    body: JSON.stringify({ idToken: response.credential })
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Authentication failed');
-                localStorage.removeItem('sd_pendingRef');
                 showSuccess('Signed in! Redirecting...');
                 await redirectAfterLogin(data);
             } catch (err) {

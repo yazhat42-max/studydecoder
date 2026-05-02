@@ -439,13 +439,6 @@ function hasFullAccess(user) {
     }
     // Active subscription
     if (user.subscribed === true) return true;
-    // Bonus-day grace period (referral rewards). Honoured AFTER subscription
-    // ends — so a paying user gets the days at the end of their billing cycle
-    // (or immediately if they were already free-tier when they earned them).
-    if (user.expiresAt) {
-        const exp = new Date(user.expiresAt).getTime();
-        if (!isNaN(exp) && exp > Date.now()) return true;
-    }
     return false;
 }
 
@@ -1241,7 +1234,7 @@ async function sendVerificationEmail(email, token) {
  */
 app.post('/api/auth/google', async (req, res) => {
     try {
-        const { idToken, ref } = req.body;
+        const { idToken } = req.body;
         
         if (!idToken) {
             return res.status(400).json({ error: 'ID token required' });
@@ -1266,7 +1259,6 @@ app.post('/api/auth/google', async (req, res) => {
         // If brand new user, mark as not onboarded
         if (!existingUser) {
             user.preferences = { ...(user.preferences || {}), onboarded: false };
-            applyReferralCode(user, ref);
             scheduleSave();
         } else {
             // Existing user: check if they signed up before preferences update
@@ -1308,7 +1300,7 @@ app.post('/api/auth/google', async (req, res) => {
  */
 app.post('/api/auth/google-oauth', async (req, res) => {
     try {
-        const { accessToken, ref } = req.body;
+        const { accessToken } = req.body;
         
         if (!accessToken) {
             return res.status(400).json({ error: 'Access token required' });
@@ -1343,7 +1335,6 @@ app.post('/api/auth/google-oauth', async (req, res) => {
         // If brand new user, mark as not onboarded
         if (!existingUser) {
             user.preferences = { ...(user.preferences || {}), onboarded: false };
-            applyReferralCode(user, ref);
             scheduleSave();
         } else {
             // Existing user: check if they signed up before preferences update
@@ -1425,10 +1416,6 @@ app.post('/api/auth/register', async (req, res) => {
             verifyExpiry
         });
         
-        // Capture referral code if provided
-        const { ref } = req.body;
-        applyReferralCode(user, ref);
-
         // Mark new registration as not onboarded
         user.preferences = { ...(user.preferences || {}), onboarded: false };
         scheduleSave();
@@ -2725,14 +2712,6 @@ app.post('/api/stripe-webhook', async (req, res) => {
                     });
                     
                     console.log(`✅ Subscription activated for ${userId} - ${plan}`);
-
-                    // Grant referral bonus to referrer (if this is their first subscription)
-                    const newSub = getUser(userId);
-                    if (newSub && newSub.referredBy && !newSub.referralBonusGranted) {
-                        newSub.referralBonusGranted = true;
-                        scheduleSave();
-                        grantReferralBonus(newSub.referredBy).catch(() => {});
-                    }
                 }
                 break;
             }
@@ -7630,50 +7609,6 @@ app.get('/api/user/achievements', requireAuth, (req, res) => {
     });
 });
 
-// ==================== REFERRAL SYSTEM ====================
-const { randomBytes } = require('crypto');
-
-/**
- * Apply a referral code to a brand-new user. Idempotent: only sets `referredBy`
- * if not already set, the code maps to a real user, and that user isn't `user` itself.
- */
-function applyReferralCode(user, ref) {
-    if (!user || user.referredBy) return false;
-    if (!ref || typeof ref !== 'string' || ref.length > 16) return false;
-    const code = ref.toUpperCase().trim();
-    if (!code) return false;
-    const referrer = Object.values(db.users).find(u => u.referralCode === code);
-    if (!referrer || referrer.userId === user.userId) return false;
-    user.referredBy = referrer.userId;
-    return true;
-}
-
-function getOrCreateReferralCode(user) {
-    if (!user.referralCode) {
-        user.referralCode = randomBytes(4).toString('hex').toUpperCase();
-        scheduleSave();
-    }
-    return user.referralCode;
-}
-
-/**
- * GET /api/user/referral
- * Get referral code + stats
- */
-app.get('/api/user/referral', requireAuth, (req, res) => {
-    const user = req.user;
-    const code = getOrCreateReferralCode(user);
-    const referralCount = Object.values(db.users).filter(u => u.referredBy === user.userId).length;
-    const paidReferrals = Object.values(db.users).filter(u => u.referredBy === user.userId && u.subscribed).length;
-    res.json({
-        code,
-        url: `${config.frontendUrl}/login.html?ref=${code}`,
-        referralCount,
-        paidReferrals,
-        bonusDaysEarned: paidReferrals * 7
-    });
-});
-
 // ==================== NOTIFY ON RESET ====================
 
 /**
@@ -7893,37 +7828,6 @@ app.delete('/api/exam/active', requireAuth, (req, res) => {
     scheduleSave();
     res.json({ success: true });
 });
-
-// ==================== REFERRAL BONUS ====================
-
-async function grantReferralBonus(referrerId) {
-    const referrer = getUser(referrerId);
-    if (!referrer) return;
-    // Extend expiresAt by 7 days
-    const base = referrer.expiresAt ? new Date(referrer.expiresAt) : new Date();
-    if (base.getTime() < Date.now()) base.setTime(Date.now());
-    base.setDate(base.getDate() + 7);
-    referrer.expiresAt = base.toISOString();
-    referrer.referralBonusDaysTotal = (referrer.referralBonusDaysTotal || 0) + 7;
-    scheduleSave();
-    console.log(`🎁 Referral bonus: +7 days for ${referrerId}, new expiry ${referrer.expiresAt}`);
-    if (referrer.email && emailTransporter) {
-        emailTransporter.sendMail({
-            from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
-            to: referrer.email,
-            subject: 'You earned 7 free days! 🎉',
-            html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-<h2 style="color:#6366f1;">You earned 7 free days!</h2>
-<p>A friend you referred just upgraded to Study Decoder Premium. As a thank you, we've added <strong>7 days free</strong> to your account.</p>
-<p><strong>How it works:</strong> these 7 days extend your access <em>after</em> your current paid period ends. You won't be refunded, double-charged, or charged any earlier. If you ever cancel, the bonus days kick in as a free grace period.</p>
-<p>Bonus credit good through: <strong>${referrer.expiresAt.split('T')[0]}</strong></p>
-<p>Keep sharing your referral link to stack more days!</p>
-<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
-<p style="color:#999;font-size:11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
-</div>`
-        }).catch(() => {});
-    }
-}
 
 // ==================== NOTIFY/RE-ENGAGEMENT EMAIL HELPERS ====================
 
