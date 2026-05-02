@@ -793,9 +793,15 @@
             // Redirect: admin for owner, saved redirect URL, or homepage
             const params = new URLSearchParams(window.location.search);
             const redirectTo = params.get('redirect');
+            // SECURITY: only allow same-origin paths. Reject protocol-relative
+            // (//evil.com), full URLs, and anything that isn't a clean / path.
+            const isSafeRedirect = redirectTo
+                && redirectTo.startsWith('/')
+                && !redirectTo.startsWith('//')
+                && !redirectTo.startsWith('/\\');
             if (data.role === 'owner') {
                 window.location.replace('/admin.html');
-            } else if (redirectTo && redirectTo.startsWith('/')) {
+            } else if (isSafeRedirect) {
                 window.location.replace(redirectTo);
             } else {
                 window.location.replace('/index.html');

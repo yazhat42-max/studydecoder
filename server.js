@@ -629,6 +629,22 @@ app.use('/api/auth/resend-verification', forgotPasswordLimiter);
 app.use('/api/og-code/redeem', ogCodeLimiter);
 app.use('/api/og-code/complete-setup', authLimiter);
 
+// AI / OpenAI-backed endpoints — per-IP burst protection on top of the
+// per-user weekly/daily caps. Stops a single IP from running up our OpenAI
+// bill via scripted abuse (e.g. spamming /api/exam/generate from many
+// throwaway accounts behind one machine).
+const aiLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: config.isDev ? 120 : 20, // 20 AI calls / minute / IP in prod
+    message: { error: 'You\u2019re sending requests too fast. Please wait a moment and try again.' },
+    standardHeaders: true,
+    legacyHeaders: false
+});
+app.use('/api/exam/generate', aiLimiter);
+app.use('/api/exam/mark', aiLimiter);
+app.use('/api/exam/sample-answer', aiLimiter);
+app.use('/api/chat/', aiLimiter);
+
 // CORS
 const corsOptions = {
     origin: function(origin, callback) {
@@ -657,6 +673,40 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+// CSRF protection — verify Origin/Referer for state-changing requests.
+// SameSite=lax cookies block top-level form CSRF, but defense-in-depth: any
+// POST/PUT/DELETE/PATCH must come from a Study Decoder origin (or have no
+// origin header at all, which means it's a direct API client, not a browser).
+app.use((req, res, next) => {
+    if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) return next();
+    if (req.path === '/api/stripe-webhook') return next(); // Stripe-signed
+    if (config.isDev) return next();
+
+    const origin = req.get('Origin') || req.get('Referer');
+    if (!origin) {
+        // Direct API call (curl, mobile app, etc.) — not a browser CSRF vector.
+        return next();
+    }
+
+    const allowedHosts = [
+        'studydecoder.onrender.com',
+        'studydecoder.com.au',
+        'www.studydecoder.com.au'
+    ];
+
+    try {
+        const originUrl = new URL(origin);
+        if (!allowedHosts.includes(originUrl.hostname)) {
+            console.warn(`[CSRF] Blocked ${req.method} ${req.path} from ${origin}`);
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+    } catch (e) {
+        console.warn(`[CSRF] Invalid origin: ${origin}`);
+        return res.status(403).json({ error: 'Forbidden' });
+    }
+    next();
+});
 
 // Trust proxy in production
 if (!config.isDev) {
