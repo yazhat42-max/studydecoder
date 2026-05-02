@@ -95,6 +95,8 @@ const OG_CODES_FILE = path.join(DB_PATH, 'og-codes.json');
 const ANALYTICS_FILE = path.join(DB_PATH, 'analytics.json');
 const REVIEWS_FILE = path.join(DB_PATH, 'reviews.json');
 const BOTSTATS_FILE = path.join(DB_PATH, 'botstats.json');
+const FREEUSAGE_FILE = path.join(DB_PATH, 'free-usage.json');
+const EXAMUSAGE_FILE = path.join(DB_PATH, 'exam-usage.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DB_PATH)) {
@@ -187,7 +189,14 @@ function getAISettings(user) {
 }
 
 // Track daily usage for free tier — GLOBAL total + per-bot specials (resets at midnight UTC)
-const freeUsageTracker = new Map();
+// Persisted to disk so server restarts can't be used to reset abuse counters.
+const freeUsageTracker = new Map(Object.entries(loadDB(FREEUSAGE_FILE, {})));
+
+function _persistFreeUsage() {
+    const obj = {};
+    for (const [k, v] of freeUsageTracker) obj[k] = v;
+    saveDB(FREEUSAGE_FILE, obj);
+}
 
 function _getToday() {
     return new Date().toISOString().split('T')[0];
@@ -217,12 +226,16 @@ function incrementFreeTierUsage(userId, botType) {
     // Increment global total counter
     const totalKey = _getKey(userId, '_total');
     freeUsageTracker.set(totalKey, _getCount(totalKey) + 1);
-    
+
     // Clean up old entries
     for (const [k] of freeUsageTracker) {
         if (!k.startsWith(today)) freeUsageTracker.delete(k);
     }
-    
+
+    // Persist immediately — these are abuse-prevention counters; losing them on
+    // server restart lets a user reset their daily limit by triggering a redeploy.
+    _persistFreeUsage();
+
     return _getCount(totalKey);
 }
 
@@ -232,8 +245,10 @@ function isWithinGracePeriod(userId) {
     const user = getUser(userId);
     if (!user) return false;
     const ref = user.trialStart || user.createdAt;
-    if (!ref) return false;
-    return (Date.now() - new Date(ref).getTime()) < 3 * 24 * 60 * 60 * 1000;
+    if (typeof ref !== 'string' || ref.length === 0) return false;
+    const refMs = new Date(ref).getTime();
+    if (!Number.isFinite(refMs)) return false;
+    return (Date.now() - refMs) < 3 * 24 * 60 * 60 * 1000;
 }
 
 // Check if a user is on their final grace period day (day 3)
@@ -241,8 +256,10 @@ function isGracePeriodEnding(userId) {
     const user = getUser(userId);
     if (!user) return false;
     const ref = user.trialStart || user.createdAt;
-    if (!ref) return false;
-    const ageMs = Date.now() - new Date(ref).getTime();
+    if (typeof ref !== 'string' || ref.length === 0) return false;
+    const refMs = new Date(ref).getTime();
+    if (!Number.isFinite(refMs)) return false;
+    const ageMs = Date.now() - refMs;
     const twoDays = 2 * 24 * 60 * 60 * 1000;
     const threeDays = 3 * 24 * 60 * 60 * 1000;
     return ageMs >= twoDays && ageMs < threeDays;
@@ -1083,11 +1100,23 @@ function logPayment(data) {
  */
 function checkSubscriptionStatus(user) {
     if (!user) return null;
-    
+
     if (user.subscribed && user.expiresAt) {
-        if (new Date() > new Date(user.expiresAt)) {
+        // Compare as numeric timestamps so a Sydney-time `new Date()` can't drift
+        // 11 hours from a UTC-stored expiresAt and expire the sub a day early/late.
+        const expiresAtMs = new Date(user.expiresAt).getTime();
+        if (Number.isFinite(expiresAtMs) && Date.now() >= expiresAtMs) {
             user.subscribed = false;
             user.plan = null;
+            // Reset onboarding flags so a returning lapsed subscriber re-enters
+            // the welcome / day-1 / re-engagement sequence next time their
+            // trial-style window opens. Without this, paid users who let their
+            // sub lapse never receive any nudges again.
+            user.welcomeEmailSent = false;
+            user.day1RecapEmailSent = false;
+            user.trialEndingEmailSent = false;
+            user.trialExpiredEmailSent = false;
+            user.lastReengagementEmail = 0;
             upsertUser(user.userId, user);
         }
     }
@@ -1098,16 +1127,17 @@ function checkSubscriptionStatus(user) {
  * Auth middleware
  */
 function requireAuth(req, res, next) {
-    if (!req.session.userId) {
+    if (!req.session?.userId) {
         return res.status(401).json({ error: 'Not authenticated' });
     }
-    
+
     const user = getUser(req.session.userId);
     if (!user) {
-        req.session.destroy();
+        // Optional-chain destroy so a partially-initialised session never throws.
+        req.session?.destroy?.(() => {});
         return res.status(401).json({ error: 'User not found' });
     }
-    
+
     req.user = checkSubscriptionStatus(user);
     next();
 }
@@ -2336,11 +2366,7 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
         // Create or get Stripe customer with email locked to account email
         let customerId = user.stripeCustomerId;
         if (!customerId) {
-            const customer = await stripe.customers.create({
-                email: user.email.toLowerCase(),
-                metadata: { userId: user.userId }
-            });
-            customerId = customer.id;
+            customerId = await getOrCreateStripeCustomer(user);
             upsertUser(user.userId, { stripeCustomerId: customerId });
         }
         
@@ -2434,11 +2460,7 @@ app.post('/api/create-daypass-session', requireAuth, async (req, res) => {
 
         let customerId = user.stripeCustomerId;
         if (!customerId) {
-            const customer = await stripe.customers.create({
-                email: user.email.toLowerCase(),
-                metadata: { userId: user.userId }
-            });
-            customerId = customer.id;
+            customerId = await getOrCreateStripeCustomer(user);
             upsertUser(user.userId, { stripeCustomerId: customerId });
         }
 
@@ -2886,6 +2908,28 @@ app.get('/api/health', (req, res) => {
 // Computed purely from claimed count — deterministic, idempotent, no extra
 // state. Stripe checkout reads priceCents from getCurrentFoundingTier() so
 // price changes are automatic; no manual dashboard updates needed.
+// Find an existing Stripe customer for this user's email before creating one,
+// so a user clicking "checkout" twice (or having an orphaned customer record
+// from a deleted-and-recreated account) doesn't end up with duplicate Stripe
+// customers all charging cards on the same email.
+async function getOrCreateStripeCustomer(user) {
+    if (!stripe) throw new Error('Stripe not configured');
+    const email = user.email.toLowerCase();
+    try {
+        const existing = await stripe.customers.list({ email, limit: 1 });
+        if (existing && existing.data && existing.data.length > 0) {
+            return existing.data[0].id;
+        }
+    } catch (e) {
+        console.warn('[stripe] customer lookup failed, creating new:', e.message);
+    }
+    const customer = await stripe.customers.create({
+        email,
+        metadata: { userId: String(user.userId) }
+    });
+    return customer.id;
+}
+
 const FOUNDING_TIERS = [
     { cap: 50,   expandWhenLeftLEQ: 40,  priceCents: 1499, priceLabel: '$14.99' },
     { cap: 125,  expandWhenLeftLEQ: 60,  priceCents: 1799, priceLabel: '$17.99' },
@@ -5296,29 +5340,66 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
 // ==================== FULL EXAM MODE ENDPOINTS ====================
 
 // Exam usage tracker (weekly limits for free users)
-const examUsageTracker = new Map();
+// Persisted so server restarts can't be used to reset the 3-per-week cap.
+const examUsageTracker = new Map(Object.entries(loadDB(EXAMUSAGE_FILE, {})));
+
+function _persistExamUsage() {
+    const obj = {};
+    for (const [k, v] of examUsageTracker) obj[k] = v;
+    saveDB(EXAMUSAGE_FILE, obj);
+}
+
+// Proper ISO 8601 week: weeks start Monday, week 1 contains the first Thursday.
+function _getISOWeek(d) {
+    const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+    const dayNum = date.getUTCDay() || 7;
+    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    const weekNum = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+    return { year: date.getUTCFullYear(), week: weekNum };
+}
 
 function _getWeekKey(userId) {
-    const now = new Date();
-    const startOfYear = new Date(now.getFullYear(), 0, 1);
-    const weekNum = Math.ceil(((now - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
-    return `${now.getFullYear()}_W${weekNum}_${userId}`;
+    const { year, week } = _getISOWeek(new Date());
+    return `${year}_W${week}_${userId}`;
 }
 
 function getExamWeeklyCount(userId) {
     return examUsageTracker.get(_getWeekKey(userId)) || 0;
 }
 
-function incrementExamWeeklyCount(userId) {
+// Atomic check-and-reserve: returns null if reserved successfully, or the
+// current count if the limit was already hit. Single function call = no
+// async gap between read and write, so this is race-safe under Node's
+// single-threaded event loop.
+function tryReserveExamSlot(userId, maxPerWeek) {
     const key = _getWeekKey(userId);
-    const count = (examUsageTracker.get(key) || 0) + 1;
-    examUsageTracker.set(key, count);
-    // Clean old weeks
+    const current = examUsageTracker.get(key) || 0;
+    if (current >= maxPerWeek) return current;
+    examUsageTracker.set(key, current + 1);
+    // Clean stale week keys (anything not for the current week)
     const currentPrefix = key.substring(0, key.lastIndexOf('_'));
     for (const [k] of examUsageTracker) {
         const kPrefix = k.substring(0, k.lastIndexOf('_'));
         if (kPrefix !== currentPrefix) examUsageTracker.delete(k);
     }
+    _persistExamUsage();
+    return null;
+}
+
+function incrementExamWeeklyCount(userId) {
+    // Legacy wrapper kept for callers that bypass the limit (e.g. paid users
+    // we still want to count, if any). Equivalent to tryReserveExamSlot with
+    // an effectively infinite cap.
+    const key = _getWeekKey(userId);
+    const count = (examUsageTracker.get(key) || 0) + 1;
+    examUsageTracker.set(key, count);
+    const currentPrefix = key.substring(0, key.lastIndexOf('_'));
+    for (const [k] of examUsageTracker) {
+        const kPrefix = k.substring(0, k.lastIndexOf('_'));
+        if (kPrefix !== currentPrefix) examUsageTracker.delete(k);
+    }
+    _persistExamUsage();
     return count;
 }
 
@@ -5647,19 +5728,17 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
 
     const hasFull = hasFullAccess(user);
 
-    // Free tier: 3 exams per week (atomic check-and-increment)
+    // Free tier: 3 exams per week (atomic check-and-reserve)
     if (!hasFull) {
-        const weeklyCount = getExamWeeklyCount(req.session.userId);
-        if (weeklyCount >= 3) {
+        const overLimit = tryReserveExamSlot(req.session.userId, 3);
+        if (overLimit !== null) {
             return res.status(403).json({
                 error: 'Weekly exam limit reached',
                 examLimitReached: true,
-                weeklyCount,
+                weeklyCount: overLimit,
                 maxPerWeek: 3
             });
         }
-        // Reserve slot atomically before async generation
-        incrementExamWeeklyCount(req.session.userId);
     }
 
     const { subject, topics, duration, difficulty, quickPaper, questionCount } = req.body;
@@ -5701,10 +5780,12 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     // Generate a unique seed to ensure variety across exams
     const examSeed = `SEED-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
 
-    // Build previous questions list to prevent repeats (per session, per subject+topic)
+    // Build previous questions list to prevent repeats (per user, per subject+topic).
+    // Stored on the user object so a page refresh / new session doesn't reset history
+    // and let the AI re-emit questions the user already saw.
     const repeatKey = `exam_${subject}_${(topics || 'all').replace(/\s+/g, '_')}`;
-    if (!req.session.previousExamQuestions) req.session.previousExamQuestions = {};
-    const previousStems = req.session.previousExamQuestions[repeatKey] || [];
+    if (!user.previousExamQuestions) user.previousExamQuestions = {};
+    const previousStems = user.previousExamQuestions[repeatKey] || [];
     let previousQuestionsPrompt = '';
     if (previousStems.length > 0) {
         previousQuestionsPrompt = `\n\nPREVIOUSLY GENERATED QUESTIONS — DO NOT REPEAT ANY OF THESE (same subject+topic, this session):\n${previousStems.map((s, i) => `${i + 1}. ${s}`).join('\n')}\n\nYou MUST generate COMPLETELY DIFFERENT questions. Do not rephrase, reword, or restructure any of the above. Every question must be entirely new in concept, context, and stimulus material.\n`;
@@ -6631,10 +6712,11 @@ CRITICAL JSON RULES:
                 }
             }
             if (newStems.length > 0) {
-                if (!req.session.previousExamQuestions) req.session.previousExamQuestions = {};
-                const existing = req.session.previousExamQuestions[repeatKey] || [];
+                if (!user.previousExamQuestions) user.previousExamQuestions = {};
+                const existing = user.previousExamQuestions[repeatKey] || [];
                 // Keep max 80 stems per subject+topic to avoid bloating the prompt
-                req.session.previousExamQuestions[repeatKey] = [...existing, ...newStems].slice(-80);
+                user.previousExamQuestions[repeatKey] = [...existing, ...newStems].slice(-80);
+                scheduleSave();
             }
         } catch (stemErr) {
             console.error('Failed to save question stems:', stemErr.message);
@@ -7890,6 +7972,27 @@ app.delete('/api/exam/active', requireAuth, (req, res) => {
 // Every promotional email passes through `canSendPromoEmail()` and ends with
 // `getEmailFooter()`. This satisfies the AU Spam Act (sender identity + working
 // unsubscribe) and respects user opt-out without mucking with auth flows.
+
+// Escape user-provided strings before embedding them in email HTML. Stops a
+// hostile name like `<script>` from rendering as live HTML in clients that
+// support it, and keeps malformed names from breaking the layout.
+function escapeHtml(s) {
+    if (s === null || s === undefined) return '';
+    return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// Sanitize a user-controlled string for use in an email Subject header.
+// Drops control chars + CRLF (which would allow header injection) and trims.
+function safeSubjectField(s) {
+    if (s === null || s === undefined) return '';
+    return String(s).replace(/[\r\n\t<>]/g, '').trim().slice(0, 80);
+}
+
 function generateUnsubToken(userId) {
     return crypto.createHmac('sha256', config.sessionSecret).update('unsub:' + userId).digest('hex').slice(0, 24);
 }
@@ -7977,7 +8080,7 @@ async function sendUsageResetEmail(user) {
         subject: 'Your Study Decoder uses are back — pick up where you left off',
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
 <h2 style="color:#6366f1;">Your daily uses have reset ✅</h2>
-<p>Hi ${user.name || 'there'},</p>
+<p>Hi ${escapeHtml(user.name) || 'there'},</p>
 <p>Your free Study Decoder uses have reset for today. Come back and keep studying!</p>
 <div style="text-align:center;margin:30px 0;">
   <a href="${config.frontendUrl}/senior-bot.html" style="background-color:#6366f1;color:white;padding:12px 30px;text-decoration:none;border-radius:8px;display:inline-block;">Continue Studying →</a>
@@ -8004,7 +8107,7 @@ async function sendReengagementEmail(user) {
         subject: pick.subject,
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
 <h2 style="color:#6366f1;">${pick.subject}</h2>
-<p>Hi ${user.name || 'there'},</p>
+<p>Hi ${escapeHtml(user.name) || 'there'},</p>
 <p>${pick.body}</p>
 <div style="text-align:center;margin:30px 0;">
   <a href="${config.frontendUrl}/senior-bot.html" style="background-color:#6366f1;color:white;padding:12px 30px;text-decoration:none;border-radius:8px;display:inline-block;">Study Now →</a>
@@ -8024,7 +8127,7 @@ async function sendTrialEndingSoonEmail(user) {
         subject: '⏳ One day left on your free trial — lock in lifetime before it\'s gone',
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
 <h2 style="color:#6366f1;">Your unlimited trial ends tomorrow 🔥</h2>
-<p>Hi ${user.name || 'there'},</p>
+<p>Hi ${escapeHtml(user.name) || 'there'},</p>
 <p>Your 3-day unlimited trial on Study Decoder expires <strong>tomorrow</strong>. Here's what to squeeze in tonight:</p>
 <ul style="margin:12px 0;padding-left:20px;line-height:2.2;">
   <li>📝 Run a full practice exam for an upcoming assessment</li>
@@ -8050,7 +8153,7 @@ async function sendTrialExpiredEmail(user) {
         subject: 'Your trial ended — founding lifetime spots are still open',
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
 <h2 style="color:#6366f1;">Your 3-day trial has ended</h2>
-<p>Hi ${user.name || 'there'},</p>
+<p>Hi ${escapeHtml(user.name) || 'there'},</p>
 <p>Your unlimited trial on Study Decoder is over — but you haven't lost everything:</p>
 <div style="background:#f8f9fa;border-radius:10px;padding:16px;margin:16px 0;">
   <p style="margin:0 0 8px;font-weight:600;color:#333;">✅ What you still have (free, forever):</p>
@@ -8107,10 +8210,10 @@ async function sendWelcomeEmail(user) {
     await emailTransporter.sendMail({
         from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
         to: user.email,
-        subject: `Welcome to Study Decoder, ${user.name || 'there'} — your trial is unlimited`,
+        subject: `Welcome to Study Decoder, ${escapeHtml(user.name) || 'there'} � your trial is unlimited`,
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333;">
 <h2 style="color:#6366f1;">Welcome aboard 🎉</h2>
-<p>Hi ${user.name || 'there'},</p>
+<p>Hi ${escapeHtml(user.name) || 'there'},</p>
 <p>You've just unlocked <strong>3 days of unlimited access</strong> to every tool on Study Decoder. To make the most of it, here are 3 things worth trying tonight:</p>
 <ol style="line-height:2;padding-left:20px;">
   <li><strong>📝 Run a practice exam</strong> — pick a subject and let the AI generate a Band-6-style paper with marking criteria.</li>
@@ -8162,7 +8265,7 @@ async function sendDay1RecapEmail(user) {
         subject: '2 days left on your trial — here\'s what to try next',
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333;">
 <h2 style="color:#6366f1;">Your trial recap so far</h2>
-<p>Hi ${user.name || 'there'},</p>
+<p>Hi ${escapeHtml(user.name) || 'there'},</p>
 ${bodyHtml}
 <div style="text-align:center;margin:28px 0;">
   <a href="${config.frontendUrl}/index.html#tools" style="background-color:#6366f1;color:white;padding:12px 28px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;">Continue exploring →</a>
@@ -8185,7 +8288,7 @@ async function sendTierMilestoneAlert(user, tier, nextTier, spotsLeft) {
         subject: `Only ${spotsLeft} lifetime spot${spotsLeft === 1 ? '' : 's'} left at ${tier.priceLabel}`,
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333;">
 <h2 style="color:#dc2626;">⚠ Only ${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left at ${tier.priceLabel}</h2>
-<p>Hi ${user.name || 'there'},</p>
+<p>Hi ${escapeHtml(user.name) || 'there'},</p>
 <p>The current founding tier (lifetime access for <strong>${tier.priceLabel}</strong>) is almost gone. ${nextLine}</p>
 <div style="margin:24px 0;padding:18px 20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;color:#fff;text-align:center;">
   <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:0.85;margin-bottom:6px;">⭐ Founding Members Deal</div>
@@ -8226,7 +8329,7 @@ async function sendExamReminderEmail(user, exam) {
         subject: `Good luck — ${exam.subject} HSC exam today 🍀`,
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333;">
 <h2 style="color:#6366f1;">Today's the day — ${exam.subject} 📝</h2>
-<p>Hi ${user.name || 'there'},</p>
+<p>Hi ${escapeHtml(user.name) || 'there'},</p>
 <p>Your <strong>${exam.subject}</strong> HSC exam is today${timeStr}. You've put in the work — now trust the prep.</p>
 <div style="background:#f8f9fa;border-radius:10px;padding:16px;margin:18px 0;">
   <p style="margin:0 0 8px;font-weight:600;color:#333;">⚡ Last-minute checklist:</p>
@@ -8249,8 +8352,28 @@ ${getEmailFooter(user)}
 // Guard: only run each daily task once per calendar day
 let _lastCronDate = '';
 let _lastParentEmailWeek = '';
+let _cronRunning = false;
+
+// Wrap an email send so the idempotency flag is only set when delivery
+// actually succeeded. Previously we used `.catch(() => {})` which swallowed
+// errors silently and then set the flag anyway, meaning failed sends were
+// permanently marked "delivered" and never retried.
+async function tryEmail(label, fn, ...args) {
+    try {
+        await fn(...args);
+        return true;
+    } catch (e) {
+        console.error(`[email] ${label} failed:`, e && e.message ? e.message : e);
+        return false;
+    }
+}
 
 setInterval(async () => {
+    if (_cronRunning) {
+        console.warn('[cron] previous run still in progress, skipping this tick');
+        return;
+    }
+    _cronRunning = true;
     try {
         const todayStr = _getToday();
         const now = Date.now();
@@ -8263,8 +8386,9 @@ setInterval(async () => {
             _lastCronDate = todayStr;
             for (const user of users) {
                 if (user.notifyOnReset && user.email) {
-                    await sendUsageResetEmail(user).catch(() => {});
-                    user.notifyOnReset = false;
+                    if (await tryEmail('usage-reset', sendUsageResetEmail, user)) {
+                        user.notifyOnReset = false;
+                    }
                 }
             }
         }
@@ -8273,20 +8397,24 @@ setInterval(async () => {
         for (const user of users) {
             if (!user.email) continue;
             const ref = user.trialStart || user.createdAt;
-            if (!ref) continue;
+            if (typeof ref !== 'string' || ref.length === 0) continue;
             const refMs = new Date(ref).getTime();
+            if (!Number.isFinite(refMs)) continue; // malformed date — skip
             const ageMs = now - refMs;
+            if (ageMs < 0) continue; // clock skew / future signup — skip
 
             // Welcome email — ~2hrs after signup, only if not yet paid
             if (ageMs >= 2 * oneHourMs && ageMs < oneDayMs && !user.welcomeEmailSent && !hasFullAccess(user)) {
-                await sendWelcomeEmail(user).catch(() => {});
-                user.welcomeEmailSent = true;
+                if (await tryEmail('welcome', sendWelcomeEmail, user)) {
+                    user.welcomeEmailSent = true;
+                }
             }
 
             // Day-1 recap — between 22-30hrs old, only if not yet paid
             if (ageMs >= 22 * oneHourMs && ageMs < 30 * oneHourMs && !user.day1RecapEmailSent && !hasFullAccess(user)) {
-                await sendDay1RecapEmail(user).catch(() => {});
-                user.day1RecapEmailSent = true;
+                if (await tryEmail('day1-recap', sendDay1RecapEmail, user)) {
+                    user.day1RecapEmailSent = true;
+                }
             }
 
             // Trial-lifecycle emails only fire while user is still on free tier
@@ -8294,13 +8422,15 @@ setInterval(async () => {
 
             // Day 2: trial ending soon (send once, between 1-2 days old)
             if (ageMs >= oneDayMs && ageMs < 2 * oneDayMs && !user.trialEndingEmailSent) {
-                await sendTrialEndingSoonEmail(user).catch(() => {});
-                user.trialEndingEmailSent = true;
+                if (await tryEmail('trial-ending', sendTrialEndingSoonEmail, user)) {
+                    user.trialEndingEmailSent = true;
+                }
             }
             // Day 3+: trial expired (send once, after 3 days)
             if (ageMs >= 3 * oneDayMs && !user.trialExpiredEmailSent) {
-                await sendTrialExpiredEmail(user).catch(() => {});
-                user.trialExpiredEmailSent = true;
+                if (await tryEmail('trial-expired', sendTrialExpiredEmail, user)) {
+                    user.trialExpiredEmailSent = true;
+                }
             }
         }
 
@@ -8309,11 +8439,13 @@ setInterval(async () => {
             if (!user.email) continue;
             if (hasFullAccess(user)) continue;  // premium users don't need nudging
             const lastAct = user.lastActivity || (user.createdAt ? new Date(user.createdAt).getTime() : 0);
+            if (!Number.isFinite(lastAct)) continue;
             const daysSince = (now - lastAct) / 86400000;
             const daysSinceEmail = user.lastReengagementEmail ? (now - user.lastReengagementEmail) / 86400000 : 999;
             if (daysSince >= 5 && daysSinceEmail >= 7) {
-                await sendReengagementEmail(user).catch(() => {});
-                user.lastReengagementEmail = now;
+                if (await tryEmail('reengagement', sendReengagementEmail, user)) {
+                    user.lastReengagementEmail = now;
+                }
             }
         }
 
@@ -8332,8 +8464,9 @@ setInterval(async () => {
                     if (!user.email || hasFullAccess(user)) continue;
                     if (!user.tierAlertsSent) user.tierAlertsSent = {};
                     if (user.tierAlertsSent[tierKey]) continue;
-                    await sendTierMilestoneAlert(user, tier, nextTier, spotsLeft).catch(() => {});
-                    user.tierAlertsSent[tierKey] = true;
+                    if (await tryEmail('tier-milestone', sendTierMilestoneAlert, user, tier, nextTier, spotsLeft)) {
+                        user.tierAlertsSent[tierKey] = true;
+                    }
                 }
             }
         } catch (e) { console.error('Tier milestone alert error:', e.message); }
@@ -8359,8 +8492,9 @@ setInterval(async () => {
                             return sn === examNorm || sn.startsWith(examNorm) || examNorm.startsWith(sn);
                         });
                         if (!matched) continue;
-                        await sendExamReminderEmail(user, exam).catch(() => {});
-                        user.examRemindersSent[key] = true;
+                        if (await tryEmail('exam-reminder', sendExamReminderEmail, user, exam)) {
+                            user.examRemindersSent[key] = true;
+                        }
                     }
                 }
             }
@@ -8369,18 +8503,15 @@ setInterval(async () => {
         // ── 6) PARENT WEEKLY DIGEST — Sundays only, once per ISO week ──
         const weekKey = (() => {
             const d = new Date();
-            const dayNum = d.getDay(); // 0=Sun
-            if (dayNum !== 0) return null;
-            // ISO week identifier: year + week number
-            const startOfYear = new Date(d.getFullYear(), 0, 1);
-            const weekNum = Math.ceil(((d - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
-            return `${d.getFullYear()}-W${weekNum}`;
+            if (d.getUTCDay() !== 0) return null; // 0 = Sunday in UTC
+            const { year, week } = _getISOWeek(d);
+            return `${year}-W${week}`;
         })();
         if (weekKey && weekKey !== _lastParentEmailWeek) {
             _lastParentEmailWeek = weekKey;
             for (const user of users) {
                 if (user.parentEmail) {
-                    await sendParentSummaryEmail(user).catch(() => {});
+                    await tryEmail('parent-digest', sendParentSummaryEmail, user);
                 }
             }
         }
@@ -8388,6 +8519,8 @@ setInterval(async () => {
         scheduleSave();
     } catch (e) {
         console.error('Scheduled jobs error:', e.message);
+    } finally {
+        _cronRunning = false;
     }
 }, 60 * 60 * 1000); // every hour
 
