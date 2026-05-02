@@ -2272,9 +2272,9 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                         <div class="exam-setup-field">
                             <label class="exam-setup-label">Duration</label>
                             <div style="display:flex;gap:12px;margin-top:4px;">
-                                <button class="quick-dur-btn${quickDurationMinutes===5?' active':''}" onclick="setQuickDuration(5,this)">5 min<br><small style="opacity:0.6">5 MC questions</small></button>
-                                <button class="quick-dur-btn${quickDurationMinutes===10?' active':''}" onclick="setQuickDuration(10,this)">10 min<br><small style="opacity:0.6">10 MC questions</small></button>
-                                <button class="quick-dur-btn${quickDurationMinutes===15?' active':''}" onclick="setQuickDuration(15,this)">15 min<br><small style="opacity:0.6">15 MC questions</small></button>
+                                <button class="quick-dur-btn${quickDurationMinutes===5?' active':''}" onclick="setQuickDuration(5,this)">5 min<br><small style="opacity:0.6">3 MC + 1 short</small></button>
+                                <button class="quick-dur-btn${quickDurationMinutes===10?' active':''}" onclick="setQuickDuration(10,this)">10 min<br><small style="opacity:0.6">5 MC + 2 short</small></button>
+                                <button class="quick-dur-btn${quickDurationMinutes===15?' active':''}" onclick="setQuickDuration(15,this)">15 min<br><small style="opacity:0.6">6 MC + 3 short</small></button>
                             </div>
                         </div>
                         <div class="exam-setup-field">
@@ -3045,6 +3045,12 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         function saveCurrentAnswer() {
             const q = examQuestions[examCurrentIdx];
             if (!q) return;
+            // Capture widget output (drawings, diagrams, code, sql, tables, graphs, spreadsheets) — keyed by question number
+            if (window.ExamWidgets && q.inputType && window.ExamWidgets.SUPPORTED.includes(q.inputType === 'dfd' || q.inputType === 'flowchart' || q.inputType === 'class-diagram' ? 'diagram' : q.inputType)) {
+                const wv = window.ExamWidgets.getValue(q.number);
+                if (wv) examAnswers['widget_' + q.number] = wv;
+                else delete examAnswers['widget_' + q.number];
+            }
             if (q.type === 'mc') {
                 const selected = document.querySelector('input[name="mc-answer"]:checked');
                 if (selected) examAnswers[q.number] = selected.value;
@@ -3161,6 +3167,41 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
             html += `</div>`;
             content.innerHTML = html;
+
+            // Render input-type widget (drawing, diagram, code, etc.) AFTER textarea, if specified
+            // The textarea remains for any text explanation; the widget captures the structured part.
+            if (q.type !== 'mc' && q.inputType && window.ExamWidgets) {
+                const widgetType = q.inputType;
+                const supportedAlias = (widgetType === 'dfd' || widgetType === 'flowchart' || widgetType === 'class-diagram') ? 'diagram' : widgetType;
+                if (window.ExamWidgets.SUPPORTED.includes(supportedAlias)) {
+                    const card = content.querySelector('.exam-question-card');
+                    if (card) {
+                        const widgetHost = document.createElement('div');
+                        card.appendChild(widgetHost);
+                        const widgetOpts = q.widgetOptions || {};
+                        try {
+                            window.ExamWidgets.render(widgetType, widgetHost, q.number, widgetOpts);
+                            const saved = examAnswers['widget_' + q.number];
+                            if (saved) window.ExamWidgets.setValue(q.number, saved);
+                        } catch (e) { console.warn('Widget render error:', e); }
+                    }
+                }
+            }
+
+            // Mount calculator on subjects that involve numerical work (idempotent — only adds once)
+            try {
+                const sid = examSubjectId || '';
+                const calcSubjects = new Set([
+                    'physics', 'chemistry', 'biology', 'investigating-science',
+                    'engineering-studies', 'earth-environmental-science',
+                    'economics', 'business-studies', 'enterprise-computing',
+                    'software-engineering', 'industrial-technology', 'agriculture',
+                    'design-and-technology', 'health-and-movement-science',
+                    'community-and-family-studies', 'food-technology', 'textiles-and-design'
+                ]);
+                const needsCalc = sid.startsWith('mathematics') || calcSubjects.has(sid);
+                if (needsCalc && window.ExamWidgets) window.ExamWidgets.mountCalculator();
+            } catch(e) {}
 
             // Render KaTeX in question
             if (window.renderMathInElement) {
@@ -3504,6 +3545,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
         checkAuth();
     </script>
+    <script src="exam-widgets.js"></script>
     <script src="streak.js"></script>
     <script src="upsell.js"></script>
     <script src="pwa.js"></script>

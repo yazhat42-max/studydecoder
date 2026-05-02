@@ -6205,31 +6205,47 @@ TOTAL: EXACTLY 100 marks. You MUST include ALL three sections.`;
         categoryRules = `Follow standard HSC exam conventions for this subject. Use precise academic terminology. Include stimulus material where appropriate.\n- IMPORTANT: Only generate questions from the student's selected module/topic.`;
     }
 
-    // ===== QUICK PAPER OVERRIDE — MC-only short paper =====
-    // When quickPaper is true, override the standard allocation to be a single
-    // multiple-choice section with `questionCount` 1-mark questions. Used by
-    // practice.html "Quick Paper" mode (5/10/15 min sessions).
-    let qpQuestionCount = 0;
+    // ===== QUICK PAPER OVERRIDE — short mixed-format paper =====
+    // When quickPaper is true, override standard allocation to be a short paper
+    // with a MIX of MC + short-answer questions. Used by practice.html "Quick Paper" mode.
+    let qpMcCount = 0, qpShortMarks = [], qpTotalMarks = 0;
     if (quickPaper) {
-        qpQuestionCount = Math.max(3, Math.min(20, parseInt(questionCount) || 10));
-        totalMarks = qpQuestionCount;
-        structureGuide = `EXAM STRUCTURE (Quick Paper, ${qpQuestionCount} min, ${qpQuestionCount} marks):
-- Section I — Multiple Choice: ${qpQuestionCount} questions × 1 mark = ${qpQuestionCount} marks
-TOTAL: EXACTLY ${qpQuestionCount} marks. ONE section only. ALL questions are multiple choice with 4 options (A, B, C, D). NO short answer. NO extended response.`;
-        categoryRules = `QUICK PAPER MODE — MULTIPLE CHOICE ONLY:
-- Generate EXACTLY ${qpQuestionCount} multiple-choice questions worth 1 mark each.
-- Every question MUST have exactly 4 options labelled A, B, C, D.
-- Every question MUST have a "correctAnswer" field with a single letter (A/B/C/D).
-- Distractors must be plausible — based on common misconceptions, related concepts, or near-correct values.
-- Mix conceptual understanding, application, and analysis. Avoid pure recall only.
-- DO NOT include any short answer or extended response questions under any circumstances.`;
+        const qpMins = Math.max(3, Math.min(20, parseInt(questionCount) || 10));
+        // Variety table: more MC at low durations, mix of short-answer at higher
+        if (qpMins <= 5)        { qpMcCount = 3; qpShortMarks = [2]; }              // 5 min  → 3 MC + 1×2m  = 5 marks
+        else if (qpMins <= 10)  { qpMcCount = 5; qpShortMarks = [2, 3]; }           // 10 min → 5 MC + 2×short = 10 marks
+        else                    { qpMcCount = 6; qpShortMarks = [2, 3, 4]; }        // 15 min → 6 MC + 3×short = 15 marks
+        qpTotalMarks = qpMcCount + qpShortMarks.reduce((a, b) => a + b, 0);
+        totalMarks = qpTotalMarks;
+        const shortListStr = qpShortMarks.map((m, i) => `Q${qpMcCount + i + 1}: ${m} marks`).join(', ');
+        structureGuide = `EXAM STRUCTURE (Quick Paper, ${qpMins} min, ${qpTotalMarks} marks):
+- Section I — Multiple Choice: ${qpMcCount} questions × 1 mark = ${qpMcCount} marks
+- Section II — Short Answer: ${qpShortMarks.length} question${qpShortMarks.length > 1 ? 's' : ''} (${shortListStr}) = ${qpShortMarks.reduce((a, b) => a + b, 0)} marks
+TOTAL: EXACTLY ${qpTotalMarks} marks. NO extended response. Keep short-answer questions tightly scoped — students have only ~${qpMins} minutes total.`;
+        categoryRules = `QUICK PAPER MODE — MIXED FORMAT (variety is mandatory):
+- Generate EXACTLY ${qpMcCount} multiple-choice questions worth 1 mark each FIRST.
+- Then generate EXACTLY ${qpShortMarks.length} short-answer question${qpShortMarks.length > 1 ? 's with marks' : ' worth'} ${qpShortMarks.join(', ')}.
+- Every MC must have exactly 4 options (A, B, C, D) and a "correctAnswer" field with the letter.
+- Short-answer questions should be quick-to-answer: a calculation, a 2-3 sentence explanation, label one diagram, etc. Do NOT write essay-style prompts.
+- Distractors for MC must be plausible.
+- Mix conceptual understanding, application, and quick analysis.`;
     }
 
     // ===== DETERMINISTIC MARK ALLOCATION (like module splitting — bulletproof) =====
-    const allocation = quickPaper
-        ? { table: `MARK ALLOCATION TABLE (FOLLOW EXACTLY):\nSection I — Multiple Choice: ${qpQuestionCount} questions × 1 mark`,
-            sections: [{ name: 'Section I — Multiple Choice', marks: new Array(qpQuestionCount).fill(1) }] }
-        : computeExamAllocation(category, subject, durationHours, totalMarks, topics);
+    let allocation;
+    if (quickPaper) {
+        const sec1Marks = new Array(qpMcCount).fill(1);
+        allocation = {
+            table: `MARK ALLOCATION TABLE (FOLLOW EXACTLY):\nSection I — Multiple Choice: ${qpMcCount} questions × 1 mark each\nSection II — Short Answer: ${qpShortMarks.map((m, i) => `Q${qpMcCount + i + 1} = ${m} marks`).join(', ')}`,
+            sections: [
+                { name: 'Section I — Multiple Choice', marks: sec1Marks },
+                { name: 'Section II — Short Answer', marks: qpShortMarks }
+            ]
+        };
+        if (qpShortMarks.length === 0) allocation.sections.pop();
+    } else {
+        allocation = computeExamAllocation(category, subject, durationHours, totalMarks, topics);
+    }
     const allocationPrompt = allocation ? '\n\n' + allocation.table : '';
     const systemPrompt = `You are an EXPERT HSC exam paper writer who has written real NESA exam papers. Generate a COMPLETE exam paper as structured JSON.
 
@@ -6268,6 +6284,36 @@ ${categoryRules}
 
 UNICODE MATH FORMATTING (for all subjects): Use x², √, π, θ, ∫, Σ, ≤, ≥, ±, ×, ÷, ∞, ° — NEVER LaTeX.
 
+INPUT WIDGETS — ASSIGNING "inputType" TO QUESTIONS (very important — read carefully):
+StudyDecoder supports specialised input widgets that students use INSTEAD OF (or alongside) typing prose. Each non-MC question MAY have an "inputType" field with one of: "draw", "graph", "table", "spreadsheet", "code", "sql", "dfd", "flowchart", "class-diagram". If omitted or null, the student types in a normal textarea.
+
+WHEN to assign an inputType (be FAIR — neither ignore widgets nor overuse them):
+- Use widgets ONLY when the question genuinely benefits from one. Awarding marks for "draw a diagram of X" via a typed paragraph is silly — assign inputType="draw".
+- Conversely, assigning inputType="draw" to "Define homeostasis" is silly — leave it as text.
+- Across an entire exam, AIM for: ~25-40% of non-MC questions to use a widget, ~60-75% to remain text. NEVER assign widgets to MC questions.
+- Distribute widgets across the paper — don't cluster them all in Section II.
+- Each widget assignment must be JUSTIFIED by the question wording (e.g. "Sketch the graph of…", "Write a SQL query that…", "Draw a class diagram for…", "Construct a results table for…").
+
+PER-SUBJECT GUIDANCE for inputType:
+- MATHEMATICS (all 4 levels): inputType="graph" for "sketch the graph", "draw a graph showing"; inputType="draw" for geometry/diagram/vector/proof tree questions; otherwise text. Use widgets on roughly 30% of non-MC questions.
+- BIOLOGY: inputType="draw" for "label the diagram", "draw the structure of", "construct a Punnett square", "draw a pedigree chart"; inputType="table" for "construct a results table", "tabulate", "compare in a table". Roughly 30% of non-MC.
+- CHEMISTRY: inputType="draw" for "draw the structure", "show the mechanism", "draw the apparatus"; inputType="table" for equilibrium / titration data; inputType="graph" for rate or pH curves. Roughly 25%.
+- PHYSICS: inputType="draw" for "draw a free-body diagram", "draw a circuit diagram", "draw a ray diagram"; inputType="graph" for motion graphs; inputType="table" for results tables. Roughly 30%.
+- ENTERPRISE COMPUTING: inputType="sql" for "write a SQL query"; inputType="spreadsheet" for "design a spreadsheet" / "write a formula that"; inputType="dfd" for "draw a DFD" / "construct a data flow diagram"; inputType="table" for "complete the data dictionary"; inputType="draw" for UI prototyping. Aim for ~50% of non-MC questions to use a widget — Enterprise Computing is heavily practical.
+- SOFTWARE ENGINEERING: inputType="code" for "write a Python program / function / pseudocode algorithm" (set widgetOptions.language to "python" or "pseudocode"); inputType="sql" for SQL queries (provide widgetOptions.schema); inputType="class-diagram" for UML / class structure; inputType="flowchart" for "draw a flowchart"; inputType="table" for test cases / truth tables. Aim for ~50% of non-MC.
+- ENGINEERING STUDIES, INDUSTRIAL TECH, DESIGN & TECHNOLOGY, AGRICULTURE: inputType="draw" for sketches / diagrams / system layouts; inputType="table" for material specs / comparison tables. ~25%.
+- GEOGRAPHY, EARTH & ENV, INVESTIGATING SCIENCE: inputType="graph" for climate / data graphs; inputType="table" for stats; inputType="draw" for sketch maps / cross-sections. ~20%.
+- ENGLISH (all variants), HISTORY (all), LEGAL, ECONOMICS, BUSINESS, PDHPE, HEALTH AND MOVEMENT, CAFS, SOCIETY & CULTURE, STUDIES OF RELIGION, LANGUAGES, MUSIC, DRAMA, VISUAL ARTS: DO NOT assign inputType — these are essay/text only.
+
+WIDGET-SPECIFIC FIELDS (add when relevant):
+- For inputType="sql": include "widgetOptions": { "schema": [ { "name": "TableName", "columns": [ { "name": "col1", "type": "INT" }, ... ] } ] } so students see the schema.
+- For inputType="code": include "widgetOptions": { "language": "python" | "javascript" | "pseudocode", "starter": "optional starter code" }.
+- For inputType="spreadsheet": optionally include "widgetOptions": { "cells": { "A1": "Item", "B1": "Price" }, "rows": 8, "cols": 5 } to seed headers/data.
+- For inputType="table": optionally include "widgetOptions": { "headers": ["Variable", "Method"], "rows": 4 }.
+- For inputType="graph": optionally include "widgetOptions": { "xMin": -10, "xMax": 10, "yMin": -10, "yMax": 10 }.
+- For inputType="draw": no widgetOptions needed.
+- For inputType="dfd" / "flowchart" / "class-diagram": no widgetOptions needed.
+
 DIFFICULTY LEVEL: ${difficulty === 'easy' ? 'EASY — Foundation/Revision level. Use simpler language, more scaffolded questions, fewer multi-step problems. Short answer questions should have clear single-concept focus. Extended responses should be more guided with specific prompts. MC distractors should be more obviously wrong. Keep questions at the lower end of Bloom\'s taxonomy (recall, understand, apply).' : difficulty === 'hard' ? 'HARD — ELITE TRIAL-LEVEL DIFFICULTY. This must be SIGNIFICANTLY harder than a standard HSC exam. Requirements:\n  * MC: All 4 options must be highly plausible. Include "trick" answers that test precise understanding. At least 30% of MC should require multi-step reasoning or eliminating subtle misconceptions.\n  * Short answer: Every question must require synthesis of multiple concepts. Include unfamiliar contexts, novel stimulus data, and scenarios the student hasn\'t seen before. Never ask a straightforward recall question.\n  * Extended response: Use deliberately ambiguous or debatable propositions. Require students to evaluate competing perspectives with evidence. Demand sophisticated, Band-6-level analysis.\n  * Questions should mirror the hardest questions from top selective school trial papers (e.g. James Ruse, Sydney Grammar, North Sydney Boys).\n  * Include at LEAST one question per section that most students would find genuinely difficult.\n  * Use complex data tables, multi-variable experiments, contradictory sources, and real-world edge cases as stimulus.' : 'STANDARD — HSC exam difficulty. Follow the typical difficulty distribution of a real NESA exam: start easier and build to harder questions within each section. Match the rigour and complexity of actual past HSC papers.'}
 
 MARK TOTAL VERIFICATION — CRITICAL:
@@ -6303,6 +6349,7 @@ Return ONLY valid JSON (no markdown, no code fences) in this exact structure:
           "options": ["A. option", "B. option", "C. option", "D. option"],
           "correctAnswer": "B",
           "stimulus": "Optional stimulus material or null",
+                    "inputType": null,
                     "markingCriteria": "NESA-aligned marking criteria. For 5+ mark questions include clear Band 6 full-mark features, Band 4-5 partial features, and low-band/common error indicators. For 2-4 mark questions, map each mark point to explicit required evidence/idea. For MC: omit this field.",
                     "sampleAnswer": "For non-MC only: a concise Band 6 exemplar response aligned directly to the question, syllabus dot points, and marking criteria."
         }
@@ -6310,6 +6357,19 @@ Return ONLY valid JSON (no markdown, no code fences) in this exact structure:
     }
   ]
 }
+
+CRITICAL inputType / widgetOptions RULES (read carefully):
+- "inputType" MUST be one of these EXACT lowercase string values, OR null/omitted: "draw", "graph", "table", "spreadsheet", "code", "sql", "dfd", "flowchart", "class-diagram".
+- NEVER write a description, sentence, or explanation as the value of "inputType". "inputType": "Optional widget..." is INVALID. Use null or omit the field entirely if no widget applies.
+- For MC questions, ALWAYS omit "inputType" or set it null.
+- Only include "widgetOptions" when "inputType" is set AND the widget needs configuration. Schema:
+  * sql:        { "schema": [ { "name": "Customers", "columns": [ { "name": "id", "type": "INT" }, { "name": "email", "type": "VARCHAR(255)" } ] } ] }
+  * code:       { "language": "python", "starter": "def solve():\n    pass" }   (language is one of: python, javascript, pseudocode)
+  * spreadsheet:{ "cells": { "A1": "Item", "B1": "Price" }, "rows": 8, "cols": 5 }
+  * table:      { "headers": ["Variable", "Method"], "rows": 4 }
+  * graph:      { "xMin": -10, "xMax": 10, "yMin": -10, "yMax": 10 }
+  * draw / dfd / flowchart / class-diagram: omit widgetOptions entirely.
+- Distribute widgets per the per-subject targets above. NEVER assign a widget to every non-MC question. NEVER skip widgets entirely on a subject that supports them.
 
 CRITICAL JSON RULES:
 - "type": Use "mc" for multiple choice, "short" for short answer (2-6 marks), "extended" for extended response (7+ marks).
@@ -6542,6 +6602,25 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
     const allQuestions = [];
     const unansweredQuestions = []; // Track unanswered for instant 0-mark
     const mcResults = []; // MC questions marked locally (no AI roundtrip)
+    const widgetImages = []; // Drawing/graph images to attach as vision inputs: [{qNumber, dataUrl}]
+
+    // Helper: extract and serialise a widget answer for prompt + capture image data URLs
+    function processWidgetAnswer(qNum, raw) {
+        if (!raw || typeof raw !== 'string') return '';
+        // Drawing widget: pure data URL
+        if (raw.startsWith('data:image')) {
+            widgetImages.push({ qNumber: qNum, dataUrl: raw });
+            return '[Student submitted a drawing — see attached image]';
+        }
+        // Graph widget: text + appended dataURL after "Image:\n"
+        const imgMatch = raw.match(/\nImage:\n(data:image[^\s]+)/);
+        if (imgMatch) {
+            widgetImages.push({ qNumber: qNum, dataUrl: imgMatch[1] });
+            return raw.replace(/\nImage:\n.*/, '\n[Drawing attached as image]');
+        }
+        // Text-based widgets (table, code, sql, spreadsheet, diagram) — pass through
+        return raw;
+    }
 
     for (const section of exam.sections) {
         let sectionHeaderAdded = false;
@@ -6613,10 +6692,17 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
                 if (q.stimulus) questionsText += `Stimulus: ${q.stimulus}\n`;
                 if (q.markingCriteria) questionsText += `Marking criteria: ${q.markingCriteria}\n`;
                 questionsText += `Parts and student answers:\n${partAnswersText}`;
+                // Widget answer for multi-part question
+                const widgetRaw = answers['widget_' + q.number];
+                if (widgetRaw) {
+                    const processed = processWidgetAnswer(q.number, widgetRaw);
+                    if (processed) questionsText += `Student widget output (${q.inputType || 'widget'}):\n${processed}\n`;
+                }
             } else {
                 const studentAnswer = answers[q.number];
                 const studentWorking = answers['working_' + q.number];
-                const hasAnswer = studentAnswer && studentAnswer.toString().trim().length > 0;
+                const widgetRaw = answers['widget_' + q.number];
+                const hasAnswer = (studentAnswer && studentAnswer.toString().trim().length > 0) || (widgetRaw && widgetRaw.toString().trim().length > 0);
 
                 if (!hasAnswer) {
                     unansweredQuestions.push({ number: q.number, marks: q.marks, type: q.type });
@@ -6630,7 +6716,13 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
                 if (studentWorking && studentWorking.toString().trim().length > 0) {
                     questionsText += `Student's working: ${studentWorking}\n`;
                 }
-                questionsText += `Student's answer: ${studentAnswer}\n`;
+                if (studentAnswer && studentAnswer.toString().trim()) {
+                    questionsText += `Student's answer: ${studentAnswer}\n`;
+                }
+                if (widgetRaw) {
+                    const processed = processWidgetAnswer(q.number, widgetRaw);
+                    if (processed) questionsText += `Student widget output (${q.inputType || 'widget'}):\n${processed}\n`;
+                }
             }
         }
     }
@@ -6665,6 +6757,15 @@ MARKING RULES — STRICT HSC STANDARD:
 - Keep MC feedback to 1 sentence. Short answer feedback: 1-2 sentences. Extended response feedback: 2-3 sentences with band reference.
 - ONLY mark the ${answeredCount} questions given below. Unanswered questions are handled separately.
 - WORKING OUT: If a student provides working out, award marks for correct steps/method even if the final answer is wrong. This follows real HSC marking where process marks are awarded for demonstrated mathematical reasoning, correct formulas, and logical intermediate steps.
+- STRUCTURED WIDGET SUBMISSIONS: Some questions accept structured input (drawings, graphs, tables, code, SQL, spreadsheets, diagrams). When a "Student widget output" block is present:
+  * draw / graph (images attached): inspect the attached image. Award marks per the marking criteria — correct shapes, labels, axes, intercepts, structure. Be specific in feedback about what's right/wrong in the drawing.
+  * table: read the markdown table. Award marks for correct headers, correct values, correct units, and correct row count.
+  * code (Python/JS/pseudocode): check syntax, logic, correctness on edge cases, and adherence to the question. Award process marks for correct algorithmic structure even with minor syntax errors.
+  * sql: verify SELECT/JOIN/WHERE/GROUP BY clauses, aliasing, and that the query would actually return the requested data. Penalise wrong joins or missing clauses. Accept stylistic variants.
+  * spreadsheet: inspect cell values and formulas. Award marks for correct formula syntax (=SUM, =IF, =VLOOKUP), correct cell ranges, and correct intermediate values.
+  * diagram (DFD / flowchart / class diagram): the submission is a textual nodes+connections list. Verify correct node types (process, store, entity for DFDs; class boxes with attrs/methods for class diagrams; decision diamonds for flowcharts), connection direction, and labels. Partial marks for structurally-correct-but-incomplete diagrams.
+  * If a student submitted BOTH a typed answer AND a widget output, use BOTH for marking.
+- If the question SPECIFIED an inputType (e.g. inputType="sql") but the student only typed prose, award only what's earned by the prose — don't grade the missing structured submission separately.
 
 Return ONLY valid JSON (no markdown, no code fences):
 {
@@ -6731,11 +6832,26 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
             // Call AI to mark only the answered questions
             const isGpt5 = aiSettings.model.startsWith('gpt-5');
             const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+
+            // Build user content — text-only by default, multimodal if drawings/graphs were submitted
+            let userContent;
+            if (widgetImages.length > 0) {
+                // Multimodal: text + each image labelled with its question number
+                const parts = [{ type: 'text', text: `Mark the following ${subjectName} exam:\n${questionsText}\n\nThe student also submitted ${widgetImages.length} drawing/graph image${widgetImages.length > 1 ? 's' : ''}, attached below. Inspect each image carefully and incorporate it into the marking for that question.\n\nReturn ONLY valid JSON.` }];
+                widgetImages.forEach(img => {
+                    parts.push({ type: 'text', text: `[Image for Q${img.qNumber}]:` });
+                    parts.push({ type: 'image_url', image_url: { url: img.dataUrl, detail: 'low' } });
+                });
+                userContent = parts;
+            } else {
+                userContent = `Mark the following ${subjectName} exam:\n${questionsText}\n\nReturn ONLY valid JSON.`;
+            }
+
             const requestBody = {
                 model: aiSettings.model,
                 messages: [
                     { role: 'system', content: systemPrompt },
-                    { role: 'user', content: `Mark the following ${subjectName} exam:\n${questionsText}\n\nReturn ONLY valid JSON.` }
+                    { role: 'user', content: userContent }
                 ],
                 response_format: { type: 'json_object' },
                 [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
@@ -6771,11 +6887,13 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                 console.error('Failed to parse marking JSON (attempt 1):', parseErr.message, 'Raw:', reply.substring(0, 500));
                 // Retry once with stricter prompt + lower temp before giving up
                 try {
+                    // Retry is purely a JSON-format fix — don't re-send images (saves tokens; the first call already inspected them).
+                    const retryUserContent = `Mark the following ${subjectName} exam:\n${questionsText}\n\nReturn ONLY a single valid JSON object. No markdown, no commentary, no code fences. Start with { and end with }.`;
                     const retryBody = {
                         model: aiSettings.model,
                         messages: [
                             { role: 'system', content: systemPrompt },
-                            { role: 'user', content: `Mark the following ${subjectName} exam:\n${questionsText}\n\nReturn ONLY a single valid JSON object. No markdown, no commentary, no code fences. Start with { and end with }.` }
+                            { role: 'user', content: retryUserContent }
                         ],
                         response_format: { type: 'json_object' },
                         [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
