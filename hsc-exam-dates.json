@@ -1,0 +1,21 @@
+{
+  "_comment": "HSC exam reminder schedule. Each entry: { date: 'YYYY-MM-DD' (Sydney date), subject: 'Exact match against user.preferences.subjects', time: 'optional human-readable time string' }. Email fires once per (date+subject) pair, on the morning of that date, to users whose preferences.subjects array contains the subject string. Update annually with the official NESA timetable.",
+  "exams": [
+    { "date": "2026-10-13", "subject": "English Standard", "time": "9:30 AM" },
+    { "date": "2026-10-13", "subject": "English Advanced", "time": "9:30 AM" },
+    { "date": "2026-10-14", "subject": "English Standard", "time": "9:30 AM" },
+    { "date": "2026-10-14", "subject": "English Advanced", "time": "9:30 AM" },
+    { "date": "2026-10-19", "subject": "Mathematics Standard", "time": "9:30 AM" },
+    { "date": "2026-10-20", "subject": "Mathematics Advanced", "time": "9:30 AM" },
+    { "date": "2026-10-20", "subject": "Mathematics Extension 1", "time": "9:30 AM" },
+    { "date": "2026-10-22", "subject": "Modern History", "time": "9:30 AM" },
+    { "date": "2026-10-23", "subject": "Ancient History", "time": "9:30 AM" },
+    { "date": "2026-10-26", "subject": "Biology", "time": "9:30 AM" },
+    { "date": "2026-10-27", "subject": "Chemistry", "time": "9:30 AM" },
+    { "date": "2026-10-28", "subject": "Physics", "time": "9:30 AM" },
+    { "date": "2026-10-29", "subject": "Economics", "time": "9:30 AM" },
+    { "date": "2026-10-30", "subject": "Business Studies", "time": "9:30 AM" },
+    { "date": "2026-11-02", "subject": "Legal Studies", "time": "9:30 AM" },
+    { "date": "2026-11-03", "subject": "Mathematics Extension 2", "time": "9:30 AM" }
+  ]
+}

@@ -5615,6 +5615,10 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     const { subject, topics, duration, difficulty, quickPaper, questionCount } = req.body;
     if (!subject) return res.status(400).json({ error: 'Subject is required' });
 
+    // Track practice-exam usage for homepage badges + per-user activity
+    recordBotStat('practice');
+    recordUserBotUsage(req.session.userId, 'practice');
+
     const OPENAI_API_KEY = config.openaiApiKey;
     const aiSettings = getAISettings(user);
 
@@ -7831,6 +7835,65 @@ app.delete('/api/exam/active', requireAuth, (req, res) => {
 
 // ==================== NOTIFY/RE-ENGAGEMENT EMAIL HELPERS ====================
 
+// ── Suppression / unsubscribe / footer ──
+//
+// Every promotional email passes through `canSendPromoEmail()` and ends with
+// `getEmailFooter()`. This satisfies the AU Spam Act (sender identity + working
+// unsubscribe) and respects user opt-out without mucking with auth flows.
+function generateUnsubToken(userId) {
+    return crypto.createHmac('sha256', config.sessionSecret).update('unsub:' + userId).digest('hex').slice(0, 24);
+}
+
+function verifyUnsubToken(userId, token) {
+    if (!userId || !token) return false;
+    try {
+        const expected = generateUnsubToken(userId);
+        // Length-stable compare to avoid timing leaks
+        if (expected.length !== token.length) return false;
+        return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(token));
+    } catch (e) { return false; }
+}
+
+function canSendPromoEmail(user) {
+    if (!user || !user.email) return false;
+    if (user.unsubscribed) return false;
+    const role = getUserRole(user.email);
+    if (role === 'owner' || role === 'lifetime' || role === 'og_tester') return false;
+    if (user.plan === 'lifetime') return false;
+    return true;
+}
+
+function getEmailFooter(user) {
+    const token = generateUnsubToken(user.userId);
+    const unsubUrl = `${config.frontendUrl}/api/unsubscribe?u=${encodeURIComponent(user.userId)}&t=${token}`;
+    return `<hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
+<p style="color:#999;font-size:11px;line-height:1.7;text-align:center;">
+Study Decoder · AI-Powered HSC Exam Preparation · Sydney, NSW, Australia<br>
+You're receiving this because you signed up at <a href="${config.frontendUrl}" style="color:#999;">studydecoder.com.au</a>.<br>
+<a href="${unsubUrl}" style="color:#999;">Unsubscribe from promotional emails</a>
+</p>`;
+}
+
+/**
+ * GET /api/unsubscribe?u=<userId>&t=<token>
+ * Public, idempotent. Sets user.unsubscribed = true after verifying HMAC token.
+ */
+app.get('/api/unsubscribe', (req, res) => {
+    const userId = String(req.query.u || '');
+    const token = String(req.query.t || '');
+    const ok = verifyUnsubToken(userId, token);
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    if (!ok) {
+        return res.status(400).send('<!doctype html><html><head><title>Unsubscribe</title><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="font-family:Arial,sans-serif;max-width:540px;margin:60px auto;padding:24px;text-align:center;color:#333;"><h2>Invalid unsubscribe link</h2><p>This link is malformed or has expired. Please email support if you wish to opt out.</p></body></html>');
+    }
+    const user = getUser(userId);
+    if (user) {
+        user.unsubscribed = true;
+        scheduleSave();
+    }
+    return res.send('<!doctype html><html><head><title>Unsubscribed</title><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="font-family:Arial,sans-serif;max-width:540px;margin:60px auto;padding:24px;text-align:center;color:#333;"><h2>You\'ve been unsubscribed ✅</h2><p>You won\'t receive any more promotional emails from Study Decoder. Transactional emails (receipts, password resets, account verification) will still be sent when relevant.</p><p style="margin-top:24px;"><a href="' + config.frontendUrl + '" style="color:#6366f1;">Return to Study Decoder</a></p></body></html>');
+});
+
 /**
  * Build a "founding lifetime offer" promo block for transactional emails.
  * Uses live tier pricing + remaining spots so the email matches what the
@@ -7856,7 +7919,7 @@ function getLifetimePromoBlock() {
 }
 
 async function sendUsageResetEmail(user) {
-    if (!emailTransporter || !user.email) return;
+    if (!emailTransporter || !canSendPromoEmail(user)) return;
     const lifetimePromo = getLifetimePromoBlock();
     await emailTransporter.sendMail({
         from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
@@ -7871,14 +7934,13 @@ async function sendUsageResetEmail(user) {
 </div>
 ${lifetimePromo}
 <p style="color:#666;font-size:12px;text-align:center;">Prefer something smaller? <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">Premium $5/month</a> or <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">$1.99 Day Pass</a>.</p>
-<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
-<p style="color:#999;font-size:11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
+${getEmailFooter(user)}
 </div>`
     });
 }
 
 async function sendReengagementEmail(user) {
-    if (!emailTransporter || !user.email) return;
+    if (!emailTransporter || !canSendPromoEmail(user)) return;
     const msgs = [
         { subject: 'Your streak is at risk 🔥', body: 'You haven\'t studied in 5 days. Log back in to keep your streak alive.' },
         { subject: 'Don\'t let your hard work fade 📚', body: 'It\'s been a while since you last studied. Jump back in — your subjects are waiting.' },
@@ -7898,14 +7960,13 @@ async function sendReengagementEmail(user) {
   <a href="${config.frontendUrl}/senior-bot.html" style="background-color:#6366f1;color:white;padding:12px 30px;text-decoration:none;border-radius:8px;display:inline-block;">Study Now →</a>
 </div>
 ${lifetimePromo}
-<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
-<p style="color:#999;font-size:11px;">Study Decoder - You're receiving this because you signed up at studydecoder.com.au. <a href="${config.frontendUrl}/index.html" style="color:#999;">Manage preferences</a></p>
+${getEmailFooter(user)}
 </div>`
     });
 }
 
 async function sendTrialEndingSoonEmail(user) {
-    if (!emailTransporter || !user.email) return;
+    if (!emailTransporter || !canSendPromoEmail(user)) return;
     const lifetimePromo = getLifetimePromoBlock();
     await emailTransporter.sendMail({
         from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
@@ -7925,14 +7986,13 @@ async function sendTrialEndingSoonEmail(user) {
 </div>
 ${lifetimePromo}
 <p style="color:#666;font-size:12px;text-align:center;">Not ready? <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">Premium $5/month</a> or <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">$1.99 Day Pass</a> when you need it.</p>
-<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
-<p style="color:#999;font-size:11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
+${getEmailFooter(user)}
 </div>`
     });
 }
 
 async function sendTrialExpiredEmail(user) {
-    if (!emailTransporter || !user.email) return;
+    if (!emailTransporter || !canSendPromoEmail(user)) return;
     const lifetimePromo = getLifetimePromoBlock();
     await emailTransporter.sendMail({
         from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
@@ -7957,8 +8017,7 @@ ${lifetimePromo}
   <a href="${config.frontendUrl}/index.html#pricing" style="background-color:#f59e0b;color:white;padding:11px 22px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;font-size:14px;">Day Pass — $1.99 →</a>
 </div>
 <p style="color:#666;font-size:12px;text-align:center;">The Day Pass is perfect if you only need full access for an exam tomorrow.</p>
-<hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
-<p style="color:#999;font-size:11px;">Study Decoder - You're receiving this because you signed up at studydecoder.com.au.</p>
+${getEmailFooter(user)}
 </div>`
     });
 }
@@ -7991,6 +8050,152 @@ ${!isSubscribed ? `<p style="color:#666;font-size:13px;">Your student is on the 
 
 // ==================== SCHEDULED JOBS (hourly) ====================
 
+// ── Welcome email — sent ~2hrs after signup ──
+async function sendWelcomeEmail(user) {
+    if (!emailTransporter || !canSendPromoEmail(user)) return;
+    const studyUrl = `${config.frontendUrl}/index.html#tools`;
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: `Welcome to Study Decoder, ${user.name || 'there'} — your trial is unlimited`,
+        html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333;">
+<h2 style="color:#6366f1;">Welcome aboard 🎉</h2>
+<p>Hi ${user.name || 'there'},</p>
+<p>You've just unlocked <strong>3 days of unlimited access</strong> to every tool on Study Decoder. To make the most of it, here are 3 things worth trying tonight:</p>
+<ol style="line-height:2;padding-left:20px;">
+  <li><strong>📝 Run a practice exam</strong> — pick a subject and let the AI generate a Band-6-style paper with marking criteria.</li>
+  <li><strong>📖 Decode a syllabus dot point</strong> — paste any NESA dot point and get a clear, exam-ready breakdown.</li>
+  <li><strong>🤖 Ask the chat tutor</strong> — anything you're stuck on, the AI tutor will explain step-by-step.</li>
+</ol>
+<div style="text-align:center;margin:30px 0;">
+  <a href="${studyUrl}" style="background-color:#6366f1;color:white;padding:13px 32px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;font-size:1rem;">Start using your trial →</a>
+</div>
+<p style="color:#666;font-size:13px;">Tip: students who try at least 2 tools in their trial period are far more likely to remember the platform when assessment season hits.</p>
+${getEmailFooter(user)}
+</div>`
+    });
+}
+
+// ── Day-1 trial recap — personalised based on what they used (or didn't) ──
+async function sendDay1RecapEmail(user) {
+    if (!emailTransporter || !canSendPromoEmail(user)) return;
+    const usage = user.botUsage || {};
+    const usedBots = Object.keys(usage).filter(b => (usage[b] || 0) > 0);
+    const labelMap = {
+        'practice': 'practice exams',
+        'chat-tutor': 'tutor sessions',
+        'worksheet': 'worksheet decodes',
+        'notes-transcriber': 'notes transcribed',
+        'timetable': 'timetable plans',
+        'syllabus': 'syllabus decodes',
+        'learn-irl': 'IRL scenarios'
+    };
+    const allTools = ['practice', 'chat-tutor', 'worksheet', 'notes-transcriber', 'timetable', 'syllabus', 'learn-irl'];
+    const untriedTools = allTools.filter(t => !usedBots.includes(t)).slice(0, 3);
+
+    let bodyHtml;
+    if (usedBots.length === 0) {
+        bodyHtml = `<p>You haven't tried any tools yet — and your unlimited trial only lasts 2 more days. Don't let it go to waste.</p>
+<p>The single most useful first step is running a practice exam: it benchmarks where you are, in 5 minutes.</p>`;
+    } else {
+        const used = usedBots.map(b => `<li>\u2705 ${labelMap[b] || b}</li>`).join('');
+        const untried = untriedTools.length
+            ? `<p style="margin-top:18px;"><strong>Haven't tried yet:</strong></p><ul style="line-height:1.9;padding-left:20px;color:#555;">${untriedTools.map(b => `<li>${labelMap[b] || b}</li>`).join('')}</ul>`
+            : '';
+        bodyHtml = `<p>Nice work yesterday. Here's what you used:</p>
+<ul style="line-height:1.9;padding-left:20px;">${used}</ul>${untried}`;
+    }
+
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: '2 days left on your trial — here\'s what to try next',
+        html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333;">
+<h2 style="color:#6366f1;">Your trial recap so far</h2>
+<p>Hi ${user.name || 'there'},</p>
+${bodyHtml}
+<div style="text-align:center;margin:28px 0;">
+  <a href="${config.frontendUrl}/index.html#tools" style="background-color:#6366f1;color:white;padding:12px 28px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;">Continue exploring →</a>
+</div>
+${getEmailFooter(user)}
+</div>`
+    });
+}
+
+// ── Tier milestone alert — fires when current tier has ≤10 spots left ──
+async function sendTierMilestoneAlert(user, tier, nextTier, spotsLeft) {
+    if (!emailTransporter || !canSendPromoEmail(user)) return;
+    const url = `${config.frontendUrl}/index.html#pricing`;
+    const nextLine = nextTier
+        ? `Once these go, lifetime jumps to <strong>${nextTier.priceLabel}</strong>.`
+        : `Once these go, the founding offer closes and the price returns to standard.`;
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: `Only ${spotsLeft} lifetime spot${spotsLeft === 1 ? '' : 's'} left at ${tier.priceLabel}`,
+        html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333;">
+<h2 style="color:#dc2626;">⚠ Only ${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left at ${tier.priceLabel}</h2>
+<p>Hi ${user.name || 'there'},</p>
+<p>The current founding tier (lifetime access for <strong>${tier.priceLabel}</strong>) is almost gone. ${nextLine}</p>
+<div style="margin:24px 0;padding:18px 20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;color:#fff;text-align:center;">
+  <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:0.85;margin-bottom:6px;">⭐ Founding Members Deal</div>
+  <div style="font-size:22px;font-weight:800;margin-bottom:4px;">${tier.priceLabel} · Lifetime access</div>
+  <div style="font-size:13px;opacity:0.9;margin-bottom:14px;">One-time payment. Covers all of Year 11 &amp; 12.</div>
+  <a href="${url}" style="display:inline-block;background:#fff;color:#6366f1;padding:11px 24px;text-decoration:none;border-radius:8px;font-weight:700;font-size:14px;">Lock in my spot →</a>
+</div>
+<p style="color:#666;font-size:13px;text-align:center;">No subscription. No renewals. Pay once, use forever.</p>
+${getEmailFooter(user)}
+</div>`
+    });
+}
+
+// ── Exam-day reminder — sent on the morning of an HSC exam date ──
+const HSC_EXAM_DATES_FILE = path.join(__dirname, 'hsc-exam-dates.json');
+function loadHSCExamDates() {
+    try {
+        if (!fs.existsSync(HSC_EXAM_DATES_FILE)) return [];
+        const raw = JSON.parse(fs.readFileSync(HSC_EXAM_DATES_FILE, 'utf8'));
+        return Array.isArray(raw.exams) ? raw.exams : [];
+    } catch (e) {
+        console.error('hsc-exam-dates.json parse error:', e.message);
+        return [];
+    }
+}
+
+async function sendExamReminderEmail(user, exam) {
+    if (!emailTransporter || !user.email) return;
+    // Exam reminders are useful, low-frequency, and tied to user-declared subjects;
+    // we still respect explicit unsubscribe but skip the role suppression so paying
+    // customers also get them. Lifetime users opted into the platform — they want this.
+    if (user.unsubscribed) return;
+    const timeStr = exam.time ? ` at ${exam.time}` : '';
+    const studyUrl = `${config.frontendUrl}/senior-bot.html`;
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: `Good luck — ${exam.subject} HSC exam today 🍀`,
+        html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333;">
+<h2 style="color:#6366f1;">Today's the day — ${exam.subject} 📝</h2>
+<p>Hi ${user.name || 'there'},</p>
+<p>Your <strong>${exam.subject}</strong> HSC exam is today${timeStr}. You've put in the work — now trust the prep.</p>
+<div style="background:#f8f9fa;border-radius:10px;padding:16px;margin:18px 0;">
+  <p style="margin:0 0 8px;font-weight:600;color:#333;">⚡ Last-minute checklist:</p>
+  <ul style="margin:0;padding-left:20px;line-height:2;color:#555;">
+    <li>Eat properly — empty stomach kills focus</li>
+    <li>Bring 2 black pens, water, ID</li>
+    <li>Read the whole paper before you start writing</li>
+    <li>Plan extended responses for 3 minutes before you start</li>
+  </ul>
+</div>
+<p style="text-align:center;font-size:1rem;font-weight:600;color:#6366f1;margin:24px 0;">You've got this. 💪</p>
+<p style="color:#666;font-size:13px;text-align:center;">Need a 5-minute refresher before you head in? <a href="${studyUrl}" style="color:#6366f1;">Quick syllabus check →</a></p>
+${getEmailFooter(user)}
+</div>`
+    });
+}
+
+// ==================== SCHEDULED JOBS (hourly) ====================
+
 // Guard: only run each daily task once per calendar day
 let _lastCronDate = '';
 let _lastParentEmailWeek = '';
@@ -8000,6 +8205,8 @@ setInterval(async () => {
         const todayStr = _getToday();
         const now = Date.now();
         const users = Object.values(db.users);
+        const oneHourMs = 60 * 60 * 1000;
+        const oneDayMs = 24 * oneHourMs;
 
         // ── 1) NOTIFY ON RESET — send once per user per new day ──
         if (todayStr !== _lastCronDate) {
@@ -8012,15 +8219,29 @@ setInterval(async () => {
             }
         }
 
-        // ── 2) TRIAL LIFECYCLE EMAILS ──
+        // ── 2) ONBOARDING SEQUENCE (welcome + day-1 recap + trial lifecycle) ──
         for (const user of users) {
             if (!user.email) continue;
-            if (hasFullAccess(user)) continue;
             const ref = user.trialStart || user.createdAt;
             if (!ref) continue;
             const refMs = new Date(ref).getTime();
             const ageMs = now - refMs;
-            const oneDayMs = 24 * 60 * 60 * 1000;
+
+            // Welcome email — ~2hrs after signup, only if not yet paid
+            if (ageMs >= 2 * oneHourMs && ageMs < oneDayMs && !user.welcomeEmailSent && !hasFullAccess(user)) {
+                await sendWelcomeEmail(user).catch(() => {});
+                user.welcomeEmailSent = true;
+            }
+
+            // Day-1 recap — between 22-30hrs old, only if not yet paid
+            if (ageMs >= 22 * oneHourMs && ageMs < 30 * oneHourMs && !user.day1RecapEmailSent && !hasFullAccess(user)) {
+                await sendDay1RecapEmail(user).catch(() => {});
+                user.day1RecapEmailSent = true;
+            }
+
+            // Trial-lifecycle emails only fire while user is still on free tier
+            if (hasFullAccess(user)) continue;
+
             // Day 2: trial ending soon (send once, between 1-2 days old)
             if (ageMs >= oneDayMs && ageMs < 2 * oneDayMs && !user.trialEndingEmailSent) {
                 await sendTrialEndingSoonEmail(user).catch(() => {});
@@ -8046,7 +8267,56 @@ setInterval(async () => {
             }
         }
 
-        // ── 3) PARENT WEEKLY DIGEST — Sundays only, once per ISO week ──
+        // ── 4) FOUNDING-TIER MILESTONE ALERTS — only when ≤10 spots left in tier ──
+        // Once per (tier × user) lifetime, so a user gets at most one alert per tier.
+        // Skips if final tier (no further price rise to threaten with).
+        try {
+            const claimed = countLifetimeClaimed();
+            const tier = getCurrentFoundingTier(claimed);
+            const tierIdx = FOUNDING_TIERS.indexOf(tier);
+            const nextTier = tierIdx >= 0 && tierIdx < FOUNDING_TIERS.length - 1 ? FOUNDING_TIERS[tierIdx + 1] : null;
+            const spotsLeft = Math.max(0, tier.cap - claimed);
+            if (spotsLeft > 0 && spotsLeft <= 10 && nextTier) {
+                const tierKey = `t${tier.cap}`;
+                for (const user of users) {
+                    if (!user.email || hasFullAccess(user)) continue;
+                    if (!user.tierAlertsSent) user.tierAlertsSent = {};
+                    if (user.tierAlertsSent[tierKey]) continue;
+                    await sendTierMilestoneAlert(user, tier, nextTier, spotsLeft).catch(() => {});
+                    user.tierAlertsSent[tierKey] = true;
+                }
+            }
+        } catch (e) { console.error('Tier milestone alert error:', e.message); }
+
+        // ── 5) HSC EXAM-DAY REMINDERS ──
+        // Match users by user.preferences.subjects (set during onboarding).
+        // Sent at most once per (user × exam-date × subject) pair.
+        try {
+            const examsToday = loadHSCExamDates().filter(e => e.date === todayStr);
+            if (examsToday.length) {
+                for (const user of users) {
+                    if (!user.email) continue;
+                    const subs = (user.preferences && Array.isArray(user.preferences.subjects)) ? user.preferences.subjects : [];
+                    if (!subs.length) continue;
+                    if (!user.examRemindersSent) user.examRemindersSent = {};
+                    for (const exam of examsToday) {
+                        const key = `${exam.date}_${exam.subject}`;
+                        if (user.examRemindersSent[key]) continue;
+                        // Case-insensitive fuzzy subject match
+                        const examNorm = exam.subject.toLowerCase().trim();
+                        const matched = subs.some(s => {
+                            const sn = String(s).toLowerCase().trim();
+                            return sn === examNorm || sn.startsWith(examNorm) || examNorm.startsWith(sn);
+                        });
+                        if (!matched) continue;
+                        await sendExamReminderEmail(user, exam).catch(() => {});
+                        user.examRemindersSent[key] = true;
+                    }
+                }
+            }
+        } catch (e) { console.error('Exam reminder error:', e.message); }
+
+        // ── 6) PARENT WEEKLY DIGEST — Sundays only, once per ISO week ──
         const weekKey = (() => {
             const d = new Date();
             const dayNum = d.getDay(); // 0=Sun

@@ -2783,7 +2783,7 @@
             const { usage } = await res.json();
             for (const [bot, cfg] of Object.entries(BOT_SECTION_MAP)) {
                 const count = usage[bot];
-                if (!count || count < 5) continue;
+                if (!count || count < 1) continue;
                 const section = document.getElementById(cfg.sectionId);
                 if (!section) continue;
                 const textDiv = section.querySelector('.showcase-text');
