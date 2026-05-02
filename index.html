@@ -1706,6 +1706,13 @@
             // Paid / OG / owner → no banner
             if (banner) banner.style.display = 'none';
         }
+
+        // Re-apply live pricing now that the banner has been (re)written —
+        // the innerHTML assignments above contain hardcoded "??" / "$37.50"
+        // placeholders that need to be replaced with the actual tier values.
+        if (typeof window._applyLivePricing === 'function') {
+            window._applyLivePricing(window._sdLivePricing);
+        }
         
         // Hero streak widget — show logged-in state
         document.getElementById('heroStreakOut').style.display = 'none';
@@ -1886,6 +1893,10 @@
             banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="login.html">Sign up to claim →</a>';
             banner.onclick = null;
             banner.style.display = '';
+        }
+        // Re-apply live pricing — replace the hardcoded "??" / "$37.50" with actuals
+        if (typeof window._applyLivePricing === 'function') {
+            window._applyLivePricing(window._sdLivePricing);
         }
         // Hide day pass strip (replaced by top banner)
         var strip = document.getElementById('daypassQuickStrip');
@@ -2526,26 +2537,50 @@
         }
 
         // Fetch spots left + current lifetime tier price.
+        // Cached in localStorage so returning visitors see the right price on first
+        // paint (avoids the $37.50 → $75 flash for tier-2+ users). Cache lives 1h.
+        function _applyLivePricing(d) {
+            if (!d) return;
+            window._sdLivePricing = d;
+            if (d.spotsLeft !== undefined && d.spotsLeft !== null) {
+                document.querySelectorAll('#spotsLeft, #pricingSpotsLeft').forEach(function(n){
+                    n.textContent = d.spotsLeft;
+                });
+                if (d.spotsLeft <= 0) {
+                    var b = document.getElementById('saleBanner');
+                    if (b && /spotsLeft/.test(b.innerHTML)) b.style.display = 'none';
+                }
+            }
+            if (d.lifetimePriceLabel) {
+                var p1 = document.getElementById('pricingLifetimePrice');
+                var p2 = document.getElementById('upgradeModalLifetimePrice');
+                if (p1) p1.textContent = d.lifetimePriceLabel;
+                if (p2) p2.textContent = d.lifetimePriceLabel;
+                document.querySelectorAll('.sd-lifetime-price-inline').forEach(function(n){
+                    n.textContent = d.lifetimePriceLabel;
+                });
+            }
+        }
+        window._applyLivePricing = _applyLivePricing;
+
+        // Apply cached pricing immediately for instant first paint
+        try {
+            var cached = localStorage.getItem('sd_pricing_cache');
+            if (cached) {
+                var parsed = JSON.parse(cached);
+                if (parsed && Date.now() - (parsed._t || 0) < 60 * 60 * 1000) {
+                    _applyLivePricing(parsed);
+                }
+            }
+        } catch (e) { /* ignore corrupt cache */ }
+
         {
-            fetch('/api/spots-left').then(r => r.json()).then(d => {
-                var el = document.getElementById('spotsLeft');
-                var el2 = document.getElementById('pricingSpotsLeft');
-                if (d.spotsLeft !== undefined) {
-                    if (el) el.textContent = d.spotsLeft;
-                    if (el2) el2.textContent = d.spotsLeft;
-                    if (d.spotsLeft <= 0) {
-                        // No spots left: hide deal banner if it's the deal variant
-                        var b = document.getElementById('saleBanner');
-                        if (b && b.innerHTML.includes('spotsLeft')) b.style.display = 'none';
-                    }
-                }
-                if (d.lifetimePriceLabel) {
-                    var p1 = document.getElementById('pricingLifetimePrice');
-                    var p2 = document.getElementById('upgradeModalLifetimePrice');
-                    if (p1) p1.textContent = d.lifetimePriceLabel;
-                    if (p2) p2.textContent = d.lifetimePriceLabel;
-                    document.querySelectorAll('.sd-lifetime-price-inline').forEach(function(n){ n.textContent = d.lifetimePriceLabel; });
-                }
+            fetch('/api/spots-left').then(function(r){ return r.json(); }).then(function(d){
+                _applyLivePricing(d);
+                try {
+                    var toCache = Object.assign({}, d, { _t: Date.now() });
+                    localStorage.setItem('sd_pricing_cache', JSON.stringify(toCache));
+                } catch (e) { /* quota / private mode */ }
             }).catch(function(){});
         }
     })();
