@@ -1371,7 +1371,7 @@
             </div>
             <!-- Lifetime -->
             <div class="reveal stagger-3" style="flex:1;min-width:260px;max-width:300px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;">
-                <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap;">First 100 Users Only</div>
+                <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap;" id="pricingFoundingBadge">Founding Members Only</div>
                 <div style="font-size:0.8rem;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem;">Lifetime</div>
                 <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:2px;">
                     <span style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;">$37.50</span>
@@ -1502,7 +1502,7 @@
             <!-- LIFETIME HERO (full width) -->
             <div id="upgradeModalLifetimeWrap" style="position:relative;margin-bottom:10px;">
                 <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;font-weight:800;font-size:0.68rem;padding:3px 14px;border-radius:20px;letter-spacing:0.5px;z-index:1;">
-                    ⭐ FOUNDING OFFER — FIRST 100 USERS ONLY &nbsp;·&nbsp; <span id="upgradeModalSpotsLeft">?? spots</span> left
+                    ⭐ FOUNDING OFFER — LIMITED RELEASE &nbsp;·&nbsp; <span id="upgradeModalSpotsLeft">?? spots</span> left
                 </div>
                 <button id="upgradeYearlyBtn" onclick="createCheckout('lifetime')" style="width:100%;padding:28px 20px 22px;background:linear-gradient(135deg,#4f3dc4,#7c3aed);color:#fff;border:2px solid rgba(167,139,250,0.4);border-radius:16px;display:flex;flex-direction:column;align-items:center;cursor:pointer;font-family:inherit;box-shadow:0 6px 30px rgba(102,126,234,0.4);transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 40px rgba(102,126,234,0.55)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 6px 30px rgba(102,126,234,0.4)'">
                     <span style="font-size:0.78rem;opacity:0.7;letter-spacing:0.5px;text-transform:uppercase;">One-Time Payment &nbsp;&middot;&nbsp; Lifetime Access</span>
@@ -1687,7 +1687,7 @@
         } else if (user.subscribed && user.plan === 'day_pass') {
             // Already on day pass → upsell the lifetime deal
             if (banner) {
-                banner.innerHTML = '⭐ <strong>First 100 Users Deal</strong> — Upgrade to lifetime for just <strong>$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="showUpgradeModal(); return false;">See the deal →</a>';
+                banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong>$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="showUpgradeModal(); return false;">See the deal →</a>';
                 banner.onclick = function() { showUpgradeModal(); };
                 banner.style.display = '';
                 banner.style.background = '';

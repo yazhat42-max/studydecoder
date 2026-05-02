@@ -2848,17 +2848,38 @@ app.get('/api/health', (req, res) => {
 /**
  * GET /api/spots-left - Public endpoint for promo banner
  */
+// Tiered cap: each tier expands automatically once "spots left" drops to a
+// trigger level, so the deal feels permanently scarce. Computed purely from
+// the number of lifetime claims — deterministic, idempotent, no extra state.
+const FOUNDING_TIERS = [
+    { cap: 100, expandWhenLeftLEQ: 80 },
+    { cap: 200, expandWhenLeftLEQ: 75 },
+    { cap: 300, expandWhenLeftLEQ: 70 },
+    { cap: 400, expandWhenLeftLEQ: 65 },
+    { cap: 500, expandWhenLeftLEQ: 60 },
+    { cap: 600, expandWhenLeftLEQ: 55 },
+    { cap: 700 } // final tier — no further expansion
+];
+
+function getFoundingCap(claimed) {
+    for (let i = 0; i < FOUNDING_TIERS.length - 1; i++) {
+        const t = FOUNDING_TIERS[i];
+        // Stay on this tier while we haven't yet hit its expansion trigger.
+        if (claimed < t.cap - t.expandWhenLeftLEQ) return t.cap;
+    }
+    return FOUNDING_TIERS[FOUNDING_TIERS.length - 1].cap;
+}
+
 app.get('/api/spots-left', (req, res) => {
-    const TOTAL_SPOTS = 100;
-    // Only lifetime plans count toward the founding 100 spots (not monthly/annual/sprint/day_pass)
     let claimed = 0;
     for (const uid of Object.keys(db.users)) {
         const u = db.users[uid];
         if (u.subscribed === true && u.plan === 'lifetime') claimed++;
     }
-    const spotsLeft = Math.max(0, TOTAL_SPOTS - claimed);
+    const total = getFoundingCap(claimed);
+    const spotsLeft = Math.max(0, total - claimed);
     res.set('Cache-Control', 'public, max-age=60');
-    res.json({ total: TOTAL_SPOTS, claimed, spotsLeft });
+    res.json({ total, claimed, spotsLeft });
 });
 
 /**
