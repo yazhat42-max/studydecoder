@@ -661,6 +661,7 @@ app.use('/api/exam/generate', aiLimiter);
 app.use('/api/exam/mark', aiLimiter);
 app.use('/api/exam/sample-answer', aiLimiter);
 app.use('/api/chat/', aiLimiter);
+app.use('/api/junior-chat/', aiLimiter);
 
 // CORS
 const corsOptions = {
@@ -4308,15 +4309,8 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
 
 // ==================== OPENAI CHAT API ====================
 
-// Rate limiter for AI endpoints (more restrictive)
-const aiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: config.isDev ? 500 : 50, // 50 requests per 15 min in production
-    message: { error: 'Too many AI requests, please try again later.' }
-});
-
-app.use('/api/chat/*', aiLimiter);
-app.use('/api/junior-chat/*', aiLimiter);
+// Note: aiLimiter is defined earlier and already applied to /api/chat/,
+// /api/junior-chat/ and the exam endpoints. No need to re-declare here.
 
 // System prompts for each bot
 const BOT_PROMPTS = {
