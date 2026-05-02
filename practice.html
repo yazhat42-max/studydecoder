@@ -281,6 +281,9 @@
         /* ===== INTERACTIVE EXAM MODE STYLES ===== */
         .exam-view { display: none; height: 100vh; flex-direction: column; }
         .exam-view.active { display: flex; }
+        /* Hide the floating Upgrade FAB whenever the exam view is open — it overlaps exam controls and progress dots. */
+        .exam-view.active ~ .sd-upgrade-float,
+        body:has(.exam-view.active) .sd-upgrade-float { display: none !important; }
         .exam-header {
             background: #16202a; border-bottom: 1px solid #2f3336;
             padding: 12px 24px; display: flex; align-items: center;
@@ -1805,6 +1808,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     const upgradeBtn = document.createElement('a');
                     upgradeBtn.href = 'https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03';
                     upgradeBtn.target = '_blank';
+                    upgradeBtn.id = 'sdUpgradeFloat';
                     upgradeBtn.className = 'sd-upgrade-float';
                     upgradeBtn.innerHTML = '⚡ Upgrade';
                     upgradeBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9rem;z-index:9999;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.2s,box-shadow 0.2s;';
@@ -3364,11 +3368,11 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 </div>`;
             }
 
-            // Free tier gate message
-            if (!isPremium && pct < 80) {
-                html += `<div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:16px;margin-bottom:20px;text-align:center;">
-                    <strong style="color:#ef4444;">🔒 Score 80%+ to unlock a new exam</strong>
-                    <p style="color:#71767b;font-size:13px;margin:8px 0 0;">You can retry this exam by clearing your answers. Or <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="color:#4f8cff;font-weight:600;">upgrade to Premium</a> for unlimited exams.</p>
+            // Free tier hint — unlimited retries, weekly cap on new exams
+            if (!isPremium) {
+                html += `<div style="background:rgba(79,140,255,0.08);border:1px solid rgba(79,140,255,0.25);border-radius:12px;padding:14px 18px;margin-bottom:20px;text-align:center;">
+                    <strong style="color:#4f8cff;">🔄 Retry as many times as you want</strong>
+                    <p style="color:#71767b;font-size:13px;margin:6px 0 0;">Retries don’t count against your weekly limit — questions get reshuffled each time. Or <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="color:#4f8cff;font-weight:600;">upgrade to Premium</a> for unlimited new exams.</p>
                 </div>`;
             }
 
@@ -3522,6 +3526,25 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             examAnswers = {};
             examCurrentIdx = 0;
             examTimeExpired = false;
+
+            // Shuffle question order within each section to keep retries fresh.
+            // Renumber sequentially so saved answer keys stay aligned with displayed numbers.
+            try {
+                if (examData && Array.isArray(examData.sections)) {
+                    let n = 1;
+                    for (const section of examData.sections) {
+                        if (Array.isArray(section.questions) && section.questions.length > 1) {
+                            for (let i = section.questions.length - 1; i > 0; i--) {
+                                const j = Math.floor(Math.random() * (i + 1));
+                                [section.questions[i], section.questions[j]] = [section.questions[j], section.questions[i]];
+                            }
+                        }
+                        for (const q of (section.questions || [])) { q.number = n++; }
+                    }
+                    examQuestions = examData.sections.flatMap(s => s.questions || []);
+                }
+            } catch (e) { console.warn('Retry shuffle failed:', e); }
+
             const timerEl = document.getElementById('examTimer');
             timerEl.classList.remove('warning', 'critical');
             document.getElementById('examNav').style.display = 'flex';
