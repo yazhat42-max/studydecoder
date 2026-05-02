@@ -7831,8 +7831,33 @@ app.delete('/api/exam/active', requireAuth, (req, res) => {
 
 // ==================== NOTIFY/RE-ENGAGEMENT EMAIL HELPERS ====================
 
+/**
+ * Build a "founding lifetime offer" promo block for transactional emails.
+ * Uses live tier pricing + remaining spots so the email matches what the
+ * recipient actually sees on the site. Hidden once the final tier sells out.
+ */
+function getLifetimePromoBlock() {
+    try {
+        const claimed = countLifetimeClaimed();
+        const tier = getCurrentFoundingTier(claimed);
+        const spotsLeft = Math.max(0, tier.cap - claimed);
+        if (spotsLeft <= 0) return '';
+        const url = `${config.frontendUrl}/index.html#pricing`;
+        return `
+<div style="margin:24px 0;padding:18px 20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;color:#fff;">
+  <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:0.85;margin-bottom:6px;">\u2b50 Founding Members Deal</div>
+  <div style="font-size:18px;font-weight:700;margin-bottom:6px;">Lifetime access for ${tier.priceLabel}</div>
+  <div style="font-size:13px;opacity:0.9;margin-bottom:12px;line-height:1.5;">One-time payment. Use Study Decoder through all of Year 11 &amp; 12. Only <strong>${spotsLeft} spot${spotsLeft === 1 ? '' : 's'} left</strong> at this price.</div>
+  <a href="${url}" style="display:inline-block;background:#fff;color:#6366f1;padding:10px 20px;text-decoration:none;border-radius:8px;font-weight:700;font-size:14px;">Claim my spot \u2192</a>
+</div>`;
+    } catch (e) {
+        return '';
+    }
+}
+
 async function sendUsageResetEmail(user) {
     if (!emailTransporter || !user.email) return;
+    const lifetimePromo = getLifetimePromoBlock();
     await emailTransporter.sendMail({
         from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
         to: user.email,
@@ -7844,7 +7869,8 @@ async function sendUsageResetEmail(user) {
 <div style="text-align:center;margin:30px 0;">
   <a href="${config.frontendUrl}/senior-bot.html" style="background-color:#6366f1;color:white;padding:12px 30px;text-decoration:none;border-radius:8px;display:inline-block;">Continue Studying →</a>
 </div>
-<p style="color:#666;font-size:13px;">Want unlimited uses? <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">Upgrade for $5/month</a>.</p>
+${lifetimePromo}
+<p style="color:#666;font-size:12px;text-align:center;">Prefer something smaller? <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">Premium $5/month</a> or <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">$1.99 Day Pass</a>.</p>
 <hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
 <p style="color:#999;font-size:11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
 </div>`
@@ -7859,6 +7885,7 @@ async function sendReengagementEmail(user) {
         { subject: 'HSC waits for no one ⏰', body: 'You haven\'t used Study Decoder in 5 days. A quick 10-minute session can make all the difference.' }
     ];
     const pick = msgs[Math.floor(Math.random() * msgs.length)];
+    const lifetimePromo = hasFullAccess(user) ? '' : getLifetimePromoBlock();
     await emailTransporter.sendMail({
         from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
         to: user.email,
@@ -7870,6 +7897,7 @@ async function sendReengagementEmail(user) {
 <div style="text-align:center;margin:30px 0;">
   <a href="${config.frontendUrl}/senior-bot.html" style="background-color:#6366f1;color:white;padding:12px 30px;text-decoration:none;border-radius:8px;display:inline-block;">Study Now →</a>
 </div>
+${lifetimePromo}
 <hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
 <p style="color:#999;font-size:11px;">Study Decoder - You're receiving this because you signed up at studydecoder.com.au. <a href="${config.frontendUrl}/index.html" style="color:#999;">Manage preferences</a></p>
 </div>`
@@ -7878,10 +7906,11 @@ async function sendReengagementEmail(user) {
 
 async function sendTrialEndingSoonEmail(user) {
     if (!emailTransporter || !user.email) return;
+    const lifetimePromo = getLifetimePromoBlock();
     await emailTransporter.sendMail({
         from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
         to: user.email,
-        subject: '⏳ One day left on your free trial — here\'s what to use it on',
+        subject: '⏳ One day left on your free trial — lock in lifetime before it\'s gone',
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
 <h2 style="color:#6366f1;">Your unlimited trial ends tomorrow 🔥</h2>
 <p>Hi ${user.name || 'there'},</p>
@@ -7894,7 +7923,8 @@ async function sendTrialEndingSoonEmail(user) {
 <div style="text-align:center;margin:30px 0;">
   <a href="${config.frontendUrl}/index.html#tools" style="background-color:#6366f1;color:white;padding:13px 32px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;font-size:1rem;">Study Now →</a>
 </div>
-<p style="color:#666;font-size:13px;">Want to keep unlimited access after tomorrow? <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">Upgrade for $5/month</a> — or grab a <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">$1.99 Day Pass</a> when you need it.</p>
+${lifetimePromo}
+<p style="color:#666;font-size:12px;text-align:center;">Not ready? <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">Premium $5/month</a> or <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">$1.99 Day Pass</a> when you need it.</p>
 <hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
 <p style="color:#999;font-size:11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
 </div>`
@@ -7903,10 +7933,11 @@ async function sendTrialEndingSoonEmail(user) {
 
 async function sendTrialExpiredEmail(user) {
     if (!emailTransporter || !user.email) return;
+    const lifetimePromo = getLifetimePromoBlock();
     await emailTransporter.sendMail({
         from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
         to: user.email,
-        subject: 'Your trial ended — here\'s what you still have for free',
+        subject: 'Your trial ended — founding lifetime spots are still open',
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
 <h2 style="color:#6366f1;">Your 3-day trial has ended</h2>
 <p>Hi ${user.name || 'there'},</p>
@@ -7919,12 +7950,13 @@ async function sendTrialExpiredEmail(user) {
     <li>Your study history and streaks saved</li>
   </ul>
 </div>
-<p>To get back to unlimited:</p>
-<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0;text-align:center;">
-  <a href="${config.frontendUrl}/index.html#pricing" style="background-color:#6366f1;color:white;padding:12px 24px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;">Upgrade — $5/month →</a>
-  <a href="${config.frontendUrl}/index.html#pricing" style="background-color:#f59e0b;color:white;padding:12px 24px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;">Day Pass — $1.99 →</a>
+${lifetimePromo}
+<p style="color:#555;font-size:14px;text-align:center;margin-top:18px;">Not ready for lifetime?</p>
+<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:12px 0 24px;text-align:center;">
+  <a href="${config.frontendUrl}/index.html#pricing" style="background-color:#6366f1;color:white;padding:11px 22px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;font-size:14px;">Premium — $5/month →</a>
+  <a href="${config.frontendUrl}/index.html#pricing" style="background-color:#f59e0b;color:white;padding:11px 22px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:600;font-size:14px;">Day Pass — $1.99 →</a>
 </div>
-<p style="color:#666;font-size:13px;">The Day Pass is perfect if you have an exam coming up — full access for 24 hours with no subscription.</p>
+<p style="color:#666;font-size:12px;text-align:center;">The Day Pass is perfect if you only need full access for an exam tomorrow.</p>
 <hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
 <p style="color:#999;font-size:11px;">Study Decoder - You're receiving this because you signed up at studydecoder.com.au.</p>
 </div>`
@@ -7950,7 +7982,7 @@ async function sendParentSummaryEmail(user) {
   <tr><td style="padding:10px;border-bottom:1px solid #eee;">📅 Last Active</td><td style="padding:10px;border-bottom:1px solid #eee;font-weight:600;">${lastActivity}</td></tr>
   <tr><td style="padding:10px;">⚡ Account</td><td style="padding:10px;font-weight:600;">${isSubscribed ? 'Premium' : 'Free Tier'}</td></tr>
 </table>
-${!isSubscribed ? `<p style="color:#666;font-size:13px;">Your student is on the free tier (10 uses/day). <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">Upgrade to Premium for $5/month</a> for unlimited access.</p>` : ''}
+${!isSubscribed ? `<p style="color:#666;font-size:13px;">Your student is on the free tier (10 uses/day). Lifetime access is currently <strong>${(getCurrentFoundingTier(countLifetimeClaimed())).priceLabel}</strong> as part of the founding members offer — a one-time payment that covers all of Year 11 &amp; 12. <a href="${config.frontendUrl}/index.html#pricing" style="color:#6366f1;">View pricing</a>.</p>` : ''}
 <hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
 <p style="color:#999;font-size:11px;">You're receiving this because ${user.name || 'a student'} added your email as a parent contact on Study Decoder.</p>
 </div>`

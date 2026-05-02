@@ -1693,10 +1693,10 @@
                 banner.style.color = '';
             }
         } else if (!user.subscribed && user.role !== 'owner' && user.role !== 'og_tester' && user.role !== 'lifetime') {
-            // Free user (post-trial) → advertise day pass
+            // Free user (post-trial) → lead with the lifetime founding deal (scarcity + value)
             if (banner) {
-                banner.innerHTML = '⚡ <strong>Day Pass — $1.99</strong> · Full access for <strong>24 hours</strong>. No subscription. Perfect before an exam. <a href="#" onclick="buyDayPass(); return false;">Get it now →</a>';
-                banner.onclick = null;
+                banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="showUpgradeModal(); return false;">Lock it in →</a>';
+                banner.onclick = function() { showUpgradeModal(); };
                 banner.style.display = '';
                 banner.style.background = '';
                 banner.style.color = '';
@@ -1879,10 +1879,10 @@
         document.querySelectorAll('.course-link-unlocked').forEach(el => el.style.display = 'none');
         // Show streak promo for logged-out users
         document.getElementById('streakPromoCard').style.display = '';
-        // Top banner: advertise day pass for logged-out visitors
+        // Top banner: advertise founding lifetime deal for logged-out visitors
         var banner = document.getElementById('saleBanner');
         if (banner) {
-            banner.innerHTML = '⚡ <strong>Day Pass — $1.99</strong> · Full access for <strong>24 hours</strong>. No subscription needed. Perfect before an exam. <a href="#" onclick="buyDayPass(); return false;">Get it now →</a>';
+            banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="login.html">Sign up to claim →</a>';
             banner.onclick = null;
             banner.style.display = '';
         }
