@@ -2858,13 +2858,14 @@ app.get('/api/health', (req, res) => {
 // state. Stripe checkout reads priceCents from getCurrentFoundingTier() so
 // price changes are automatic; no manual dashboard updates needed.
 const FOUNDING_TIERS = [
-    { cap: 100, expandWhenLeftLEQ: 80, priceCents: 1499, priceLabel: '$14.99' },
-    { cap: 200, expandWhenLeftLEQ: 75, priceCents: 1999, priceLabel: '$19.99' },
-    { cap: 300, expandWhenLeftLEQ: 70, priceCents: 2499, priceLabel: '$24.99' },
-    { cap: 400, expandWhenLeftLEQ: 65, priceCents: 2999, priceLabel: '$29.99' },
-    { cap: 500, expandWhenLeftLEQ: 60, priceCents: 3250, priceLabel: '$32.50' },
-    { cap: 600, expandWhenLeftLEQ: 55, priceCents: 3499, priceLabel: '$34.99' },
-    { cap: 700, priceCents: 3750, priceLabel: '$37.50' } // final tier
+    { cap: 50,   expandWhenLeftLEQ: 40,  priceCents: 1499, priceLabel: '$14.99' },
+    { cap: 125,  expandWhenLeftLEQ: 60,  priceCents: 1799, priceLabel: '$17.99' },
+    { cap: 225,  expandWhenLeftLEQ: 75,  priceCents: 1999, priceLabel: '$19.99' },
+    { cap: 350,  expandWhenLeftLEQ: 90,  priceCents: 2299, priceLabel: '$22.99' },
+    { cap: 500,  expandWhenLeftLEQ: 100, priceCents: 2599, priceLabel: '$25.99' },
+    { cap: 650,  expandWhenLeftLEQ: 110, priceCents: 2899, priceLabel: '$28.99' },
+    { cap: 800,  expandWhenLeftLEQ: 120, priceCents: 3199, priceLabel: '$31.99' },
+    { cap: 1000, priceCents: 3750, priceLabel: '$37.50' } // final tier
 ];
 
 function getCurrentFoundingTier(claimed) {
