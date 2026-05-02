@@ -5585,7 +5585,7 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
         incrementExamWeeklyCount(req.session.userId);
     }
 
-    const { subject, topics, duration, difficulty } = req.body;
+    const { subject, topics, duration, difficulty, quickPaper, questionCount } = req.body;
     if (!subject) return res.status(400).json({ error: 'Subject is required' });
 
     const OPENAI_API_KEY = config.openaiApiKey;
@@ -6205,10 +6205,32 @@ TOTAL: EXACTLY 100 marks. You MUST include ALL three sections.`;
         categoryRules = `Follow standard HSC exam conventions for this subject. Use precise academic terminology. Include stimulus material where appropriate.\n- IMPORTANT: Only generate questions from the student's selected module/topic.`;
     }
 
-    // ===== DETERMINISTIC MARK ALLOCATION (like module splitting — bulletproof) =====
-    const allocation = computeExamAllocation(category, subject, durationHours, totalMarks, topics);
-    const allocationPrompt = allocation ? '\n\n' + allocation.table : '';
+    // ===== QUICK PAPER OVERRIDE — MC-only short paper =====
+    // When quickPaper is true, override the standard allocation to be a single
+    // multiple-choice section with `questionCount` 1-mark questions. Used by
+    // practice.html "Quick Paper" mode (5/10/15 min sessions).
+    let qpQuestionCount = 0;
+    if (quickPaper) {
+        qpQuestionCount = Math.max(3, Math.min(20, parseInt(questionCount) || 10));
+        totalMarks = qpQuestionCount;
+        structureGuide = `EXAM STRUCTURE (Quick Paper, ${qpQuestionCount} min, ${qpQuestionCount} marks):
+- Section I — Multiple Choice: ${qpQuestionCount} questions × 1 mark = ${qpQuestionCount} marks
+TOTAL: EXACTLY ${qpQuestionCount} marks. ONE section only. ALL questions are multiple choice with 4 options (A, B, C, D). NO short answer. NO extended response.`;
+        categoryRules = `QUICK PAPER MODE — MULTIPLE CHOICE ONLY:
+- Generate EXACTLY ${qpQuestionCount} multiple-choice questions worth 1 mark each.
+- Every question MUST have exactly 4 options labelled A, B, C, D.
+- Every question MUST have a "correctAnswer" field with a single letter (A/B/C/D).
+- Distractors must be plausible — based on common misconceptions, related concepts, or near-correct values.
+- Mix conceptual understanding, application, and analysis. Avoid pure recall only.
+- DO NOT include any short answer or extended response questions under any circumstances.`;
+    }
 
+    // ===== DETERMINISTIC MARK ALLOCATION (like module splitting — bulletproof) =====
+    const allocation = quickPaper
+        ? { table: `MARK ALLOCATION TABLE (FOLLOW EXACTLY):\nSection I — Multiple Choice: ${qpQuestionCount} questions × 1 mark`,
+            sections: [{ name: 'Section I — Multiple Choice', marks: new Array(qpQuestionCount).fill(1) }] }
+        : computeExamAllocation(category, subject, durationHours, totalMarks, topics);
+    const allocationPrompt = allocation ? '\n\n' + allocation.table : '';
     const systemPrompt = `You are an EXPERT HSC exam paper writer who has written real NESA exam papers. Generate a COMPLETE exam paper as structured JSON.
 
 UNIQUENESS SEED: ${examSeed}

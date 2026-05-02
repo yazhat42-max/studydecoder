@@ -2225,7 +2225,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         }
 
         // ===== QUICK PAPER MODE =====
-        let quickDurationMinutes = 20;
+        let quickDurationMinutes = 10;
 
         async function showQuickPaperSetup() {
             document.getElementById('examNav').style.display = 'none';
@@ -2258,7 +2258,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             const urlParams = new URLSearchParams(window.location.search);
             const preSubject = urlParams.get('subject') || '';
             const preDuration = urlParams.get('duration') || '20';
-            quickDurationMinutes = parseInt(preDuration) || 20;
+            quickDurationMinutes = parseInt(preDuration) || 10;
 
             document.getElementById('examContent').innerHTML = `
                 <div class="exam-setup">
@@ -2272,9 +2272,9 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                         <div class="exam-setup-field">
                             <label class="exam-setup-label">Duration</label>
                             <div style="display:flex;gap:12px;margin-top:4px;">
-                                <button class="quick-dur-btn${quickDurationMinutes===10?' active':''}" onclick="setQuickDuration(10,this)">10 min<br><small style="opacity:0.6">~3 questions</small></button>
-                                <button class="quick-dur-btn${quickDurationMinutes===20?' active':''}" onclick="setQuickDuration(20,this)">20 min<br><small style="opacity:0.6">~6 questions</small></button>
-                                <button class="quick-dur-btn${quickDurationMinutes===30?' active':''}" onclick="setQuickDuration(30,this)">30 min<br><small style="opacity:0.6">~9 questions</small></button>
+                                <button class="quick-dur-btn${quickDurationMinutes===5?' active':''}" onclick="setQuickDuration(5,this)">5 min<br><small style="opacity:0.6">5 MC questions</small></button>
+                                <button class="quick-dur-btn${quickDurationMinutes===10?' active':''}" onclick="setQuickDuration(10,this)">10 min<br><small style="opacity:0.6">10 MC questions</small></button>
+                                <button class="quick-dur-btn${quickDurationMinutes===15?' active':''}" onclick="setQuickDuration(15,this)">15 min<br><small style="opacity:0.6">15 MC questions</small></button>
                             </div>
                         </div>
                         <div class="exam-setup-field">
@@ -2331,7 +2331,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             const subjectName = subjectEl.options[subjectEl.selectedIndex].text;
             const selectedTopic = topicEl.value || 'All';
             const topics = selectedTopic === 'All' ? 'All Year 12 content' : selectedTopic;
-            const questionCount = Math.round(quickDurationMinutes / 10) * 3; // 3/6/9
+            const questionCount = quickDurationMinutes; // 1 min per MC question — 5/10/15
 
             genBtn.disabled = true;
             genBtn.textContent = 'Generating...';
@@ -2361,7 +2361,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ subject: subjectId, topics, duration: '1', difficulty: 'medium', questionCount })
+                    body: JSON.stringify({ subject: subjectId, topics, duration: '1', difficulty: 'medium', quickPaper: true, questionCount })
                 });
 
                 clearInterval(factInterval);
