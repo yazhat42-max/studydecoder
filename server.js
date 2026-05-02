@@ -437,8 +437,16 @@ function hasFullAccess(user) {
     if (user.dayPassExpiry && user.dayPassExpiry > Date.now()) {
         return true;
     }
-    // Regular users need subscription
-    return user.subscribed === true;
+    // Active subscription
+    if (user.subscribed === true) return true;
+    // Bonus-day grace period (referral rewards). Honoured AFTER subscription
+    // ends — so a paying user gets the days at the end of their billing cycle
+    // (or immediately if they were already free-tier when they earned them).
+    if (user.expiresAt) {
+        const exp = new Date(user.expiresAt).getTime();
+        if (!isNaN(exp) && exp > Date.now()) return true;
+    }
+    return false;
 }
 
 function hasDayPassActive(user) {
@@ -7864,8 +7872,9 @@ async function grantReferralBonus(referrerId) {
             html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
 <h2 style="color:#6366f1;">You earned 7 free days!</h2>
 <p>A friend you referred just upgraded to Study Decoder Premium. As a thank you, we've added <strong>7 days free</strong> to your account.</p>
-<p>Your new expiry: <strong>${referrer.expiresAt.split('T')[0]}</strong></p>
-<p>Keep sharing your referral link to earn more!</p>
+<p><strong>How it works:</strong> these 7 days extend your access <em>after</em> your current paid period ends. You won't be refunded, double-charged, or charged any earlier. If you ever cancel, the bonus days kick in as a free grace period.</p>
+<p>Bonus credit good through: <strong>${referrer.expiresAt.split('T')[0]}</strong></p>
+<p>Keep sharing your referral link to stack more days!</p>
 <hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
 <p style="color:#999;font-size:11px;">Study Decoder - AI-Powered HSC Exam Preparation</p>
 </div>`
