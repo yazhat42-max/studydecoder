@@ -1715,7 +1715,7 @@
             }
             if (banner) {
                 if (user.freeTier.gracePeriodEnding) {
-                    banner.innerHTML = '⏳ <strong>Your free trial ends tonight</strong> — don\'t lose unlimited access. <a href="#" onclick="showUpgradeModal(); return false;" style="color:#fff;font-weight:700;">Lock in lifetime <span class="sd-lifetime-price-inline">$37.50</span> →</a>';
+                    banner.innerHTML = '⏳ <strong>Your free trial ends tonight</strong> — don\'t lose unlimited access. <a href="#" onclick="createCheckout(\'lifetime\'); return false;" style="color:#fff;font-weight:700;">Lock in lifetime <span class="sd-lifetime-price-inline">$37.50</span> →</a>';
                     banner.style.background = 'linear-gradient(90deg,#ef4444,#dc2626)';
                 } else {
                     banner.innerHTML = '⏳ <strong>Free trial active</strong> — Unlimited access until <strong>' + (trialEndStr || '3 days after signup') + '</strong>. Try everything while it lasts. <a href="#tools" style="color:#fff;font-weight:600;">Explore tools →</a>';
@@ -1728,8 +1728,11 @@
         } else if (user.subscribed && user.plan === 'day_pass') {
             // Already on day pass → upsell the lifetime deal
             if (banner) {
-                banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="showUpgradeModal(); return false;">See the deal →</a>';
-                banner.onclick = function() { showUpgradeModal(); };
+                banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="createCheckout(\'lifetime\'); return false;">Lock it in →</a>';
+                banner.onclick = function(e) {
+                    if (e.target.tagName === 'A') return; // let the inline link handler run
+                    createCheckout('lifetime');
+                };
                 banner.style.display = '';
                 banner.style.background = '';
                 banner.style.color = '';
@@ -1737,8 +1740,11 @@
         } else if (!user.subscribed && user.role !== 'owner' && user.role !== 'og_tester' && user.role !== 'lifetime') {
             // Free user (post-trial) → lead with the lifetime founding deal (scarcity + value)
             if (banner) {
-                banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="showUpgradeModal(); return false;">Lock it in →</a>';
-                banner.onclick = function() { showUpgradeModal(); };
+                banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="createCheckout(\'lifetime\'); return false;">Lock it in →</a>';
+                banner.onclick = function(e) {
+                    if (e.target.tagName === 'A') return;
+                    createCheckout('lifetime');
+                };
                 banner.style.display = '';
                 banner.style.background = '';
                 banner.style.color = '';
@@ -1931,7 +1937,7 @@
         // Top banner: advertise founding lifetime deal for logged-out visitors
         var banner = document.getElementById('saleBanner');
         if (banner) {
-            banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="login.html">Sign up to claim →</a>';
+            banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="login.html?upgrade=1">Sign up to claim →</a>';
             banner.onclick = null;
             banner.style.display = '';
         }
