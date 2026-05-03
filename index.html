@@ -23,6 +23,17 @@
                 var b = document.getElementById('saleBanner');
                 if (b && /spotsLeft/.test(b.innerHTML)) b.style.display = 'none';
             }
+            // Hide monthly subscription option entirely while founding lifetime
+            // tier still has spots — too cheap a comparison ($5/mo vs $37.50
+            // lifetime) cannibalises lifetime conversions. Re-enable once the
+            // 1000 founding spots are gone.
+            var foundingActive = d.spotsLeft > 0;
+            var premium = document.getElementById('premiumCard');
+            var toggle = document.getElementById('pricingPeriodToggle');
+            var footnote = document.getElementById('upgradeMonthlyFootnote');
+            if (premium) premium.style.display = foundingActive ? 'none' : '';
+            if (toggle) toggle.style.display = foundingActive ? 'none' : 'inline-flex';
+            if (footnote) footnote.style.display = foundingActive ? 'none' : '';
         }
         if (d.lifetimePriceLabel) {
             var p1 = document.getElementById('pricingLifetimePrice');
@@ -1394,8 +1405,8 @@
                 </ul>
                 <a href="login.html" id="pricingFreeCta" style="display:block;text-align:center;padding:12px;border:1px solid var(--border);border-radius:12px;color:var(--text-sec);font-weight:600;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-sec)'">Get Started Free</a>
             </div>
-            <!-- Premium (Monthly / Yearly) -->
-            <div class="reveal stagger-2" style="flex:1;min-width:260px;max-width:300px;background:linear-gradient(160deg,#1a1235 0%,#16202a 100%);border:1px solid rgba(108,99,255,0.4);border-radius:20px;padding:2rem;position:relative;">
+            <!-- Premium (Monthly / Yearly) — hidden while the founding lifetime tier is open -->
+            <div id="premiumCard" class="reveal stagger-2" style="flex:1;min-width:260px;max-width:300px;background:linear-gradient(160deg,#1a1235 0%,#16202a 100%);border:1px solid rgba(108,99,255,0.4);border-radius:20px;padding:2rem;position:relative;">
                 <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap;">MOST POPULAR</div>
                 <div style="font-size:0.8rem;font-weight:700;color:rgba(108,99,255,0.8);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem;">Premium</div>
                 <div id="pricingMonthlyPrice" style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$5<span style="font-size:1rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
@@ -1552,8 +1563,8 @@
                     <span style="background:rgba(255,255,255,0.12);border-radius:8px;padding:5px 14px;font-size:0.8rem;font-weight:600;">Pay once. Use through all of Year 11 &amp; 12. ✓</span>
                 </button>
             </div>
-            <!-- MONTHLY FOOTNOTE -->
-            <p style="color:rgba(255,255,255,0.45);font-size:0.82rem;margin-bottom:12px;">
+            <!-- MONTHLY FOOTNOTE — hidden while founding lifetime tier is open -->
+            <p id="upgradeMonthlyFootnote" style="color:rgba(255,255,255,0.45);font-size:0.82rem;margin-bottom:12px;">
                 Not sure yet? <button onclick="createCheckout('monthly')" style="background:none;border:none;color:#a59fff;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">$5/month</button> — cancel anytime.
             </p>
             <!-- DAY PASS -->

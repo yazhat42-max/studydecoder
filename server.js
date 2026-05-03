@@ -2356,6 +2356,21 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
         if (!['monthly', 'yearly', 'lifetime'].includes(plan)) {
             return res.status(400).json({ error: 'Invalid plan' });
         }
+
+        // Block monthly/yearly subscriptions while founding lifetime tier is
+        // still open. Subscriptions cannibalise the founding offer (cheaper
+        // monthly anchor pulls users away from the higher-LTV one-time buy).
+        // Once all 1000 founding spots are claimed, both plans unlock.
+        if (plan === 'monthly' || plan === 'yearly') {
+            const claimed = countLifetimeClaimed();
+            if (claimed < 1000) {
+                const tier = getCurrentFoundingTier(claimed);
+                return res.status(409).json({
+                    error: `Subscription plans are unavailable while the founding lifetime offer is open. Choose Lifetime (${tier.priceLabel} one-time) or Day Pass.`,
+                    code: 'FOUNDING_TIER_ACTIVE'
+                });
+            }
+        }
         
         const user = req.user;
         
