@@ -1708,6 +1708,22 @@
     }
 
     function showLoggedInUI(user) {
+        // Junior students get their own homepage — redirect once and let the
+        // junior-bot page take over. Skip if a query string explicitly
+        // requested staying here (e.g. ?stay=1 or post-Stripe ?plan=…).
+        try {
+            var lvl = user && user.preferences && user.preferences.level;
+            var stay = new URLSearchParams(window.location.search).has('stay')
+                || new URLSearchParams(window.location.search).has('plan')
+                || new URLSearchParams(window.location.search).has('session_id')
+                || new URLSearchParams(window.location.search).has('cancelled')
+                || new URLSearchParams(window.location.search).has('upgrade');
+            if (lvl === 'junior' && !stay) {
+                window.location.replace('/junior-bot.html');
+                return;
+            }
+        } catch (e) { /* ignore */ }
+
         // Nav
         document.getElementById('navSignIn').style.display = 'none';
         document.getElementById('navUserMenu').style.display = 'flex';

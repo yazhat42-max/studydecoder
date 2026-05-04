@@ -624,31 +624,49 @@
         { id: 'society-culture', name: 'Society and Culture' },
     ];
 
+    // Junior subject set (Years 7-10). Used when the signed-in user has
+    // preferences.level === 'junior'. IDs match what the backend syllabus
+    // loader expects (mathematics-7-10, english-7-10, science-7-10).
+    const JUNIOR_SUBJECTS = [
+        { id: 'english-7-10', name: 'English (Years 7-10)' },
+        { id: 'mathematics-7-10', name: 'Mathematics (Years 7-10)' },
+        { id: 'science-7-10', name: 'Science (Years 7-10)' }
+    ];
+
     // ── INIT ──
     (function init() {
         const sel = document.getElementById('subjectSelect');
-        SUBJECTS.forEach(s => {
+        // Subjects are populated after we know the user's level (in checkAuth)
+        // so juniors don't briefly see HSC subjects. We populate with a
+        // placeholder loading option for now.
+        sel.innerHTML = '<option value="">Loading subjects…</option>';
+
+        newSession();
+        checkAuth();
+    })();
+
+    function populateSubjects(level) {
+        const sel = document.getElementById('subjectSelect');
+        const list = level === 'junior' ? JUNIOR_SUBJECTS : SUBJECTS;
+        sel.innerHTML = '<option value="">Choose a subject…</option>';
+        list.forEach(s => {
             const opt = document.createElement('option');
             opt.value = s.id;
             opt.textContent = s.name;
             sel.appendChild(opt);
         });
 
-        // Restore last subject from sessionStorage
+        // Restore last subject (only if it exists in this level's subject set)
         const lastSub = sessionStorage.getItem('sd_last_decoded_subject');
-        if (lastSub) sel.value = lastSub;
-        onSubjectChange();
+        if (lastSub && list.some(s => s.id === lastSub)) sel.value = lastSub;
 
-        // Check URL params for pre-loaded subject/topic
+        // Check URL params for pre-loaded subject
         const params = new URLSearchParams(location.search);
-        if (params.get('subject')) {
+        if (params.get('subject') && list.some(s => s.id === params.get('subject'))) {
             sel.value = params.get('subject');
-            onSubjectChange();
         }
-
-        newSession();
-        checkAuth();
-    })();
+        onSubjectChange();
+    }
 
     function onSubjectChange() {
         const sel = document.getElementById('subjectSelect');
@@ -664,6 +682,27 @@
             if (!res.ok) { window.location.href = '/login.html'; return; }
             const data = await res.json();
             if (!data.email) { window.location.href = '/login.html'; return; }
+
+            // Populate subject dropdown based on the user's level so juniors
+            // see Years 7-10 subjects instead of HSC ones.
+            const userLevel = data.preferences && data.preferences.level;
+            window._sdUserLevel = userLevel;
+            populateSubjects(userLevel);
+
+            // Re-render the welcome message now that we know the user's level
+            // (the static markup defaults to HSC).
+            try {
+                const welcome = document.getElementById('welcomeMsg');
+                if (welcome && welcome.parentNode) {
+                    welcome.parentNode.replaceChild(createWelcome(), welcome);
+                }
+            } catch (e) {}
+
+            // Junior students should head back to the junior tools page, not
+            // the HSC tools page.
+            const back = document.querySelector('.topbar-back');
+            if (back && userLevel === 'junior') back.setAttribute('href', 'junior-bot.html');
+
             if (data.freeTier?.gracePeriodEnding && window.Upsell) Upsell.checkGracePeriodEnding(data.freeTier);
             if (data.freeTier?.inGracePeriod) {
                 const badge = document.createElement('span');
@@ -697,14 +736,22 @@
         const div = document.createElement('div');
         div.className = 'welcome-msg';
         div.id = 'welcomeMsg';
+        const isJunior = window._sdUserLevel === 'junior';
+        const heading = isJunior ? 'Your AI Tutor (Years 7-10)' : 'Your HSC AI Tutor';
+        const intro = isJunior
+            ? 'Ask me anything about your subjects. I can explain concepts, help with homework, quiz you, or break down hard topics — just ask.'
+            : 'Ask me anything about your subjects. I can explain concepts, work through problems, quiz you, or coach you with Socratic questions — just ask.';
+        const band6Chip = isJunior
+            ? '<button class="starter-chip" onclick="sendStarter(\'Help me write a great answer for this topic\')">Strong answer tips ✍️</button>'
+            : '<button class="starter-chip" onclick="sendStarter(\'How do I structure a Band 6 response?\')">Band 6 structure ✍️</button>';
         div.innerHTML = `
             <div class="w-icon">🤖</div>
-            <h2>Your HSC AI Tutor</h2>
-            <p>Ask me anything about your subjects. I can explain concepts, work through problems, quiz you, or coach you with Socratic questions — just ask.</p>
+            <h2>${heading}</h2>
+            <p>${intro}</p>
             <div class="starter-chips">
                 <button class="starter-chip" onclick="sendStarter('Explain the key concepts I need to know')">Explain key concepts</button>
                 <button class="starter-chip" onclick="sendStarter('Quiz me on this topic')">Quiz me 🎯</button>
-                <button class="starter-chip" onclick="sendStarter('How do I structure a Band 6 response?')">Band 6 structure ✍️</button>
+                ${band6Chip}
                 <button class="starter-chip" onclick="sendStarter('What are the most common exam mistakes for this subject?')">Common mistakes ⚠️</button>
                 <button class="starter-chip" onclick="openStudyModal()">Start study session 📚</button>
             </div>

@@ -778,6 +778,7 @@
             } catch (e) {}
             
             // Verify session is established before redirecting
+            let subData = null;
             try {
                 const check = await fetch('/api/subscription', { credentials: 'include' });
                 if (!check.ok) {
@@ -789,10 +790,14 @@
                         setLoading(false);
                         return;
                     }
+                    try { subData = await retry.json(); } catch (e) {}
+                } else {
+                    try { subData = await check.json(); } catch (e) {}
                 }
             } catch (e) {}
             
-            // Redirect: admin for owner, saved redirect URL, or homepage
+            // Redirect: admin for owner, saved redirect URL, junior homepage
+            // for junior-level students, or the senior homepage by default.
             const params = new URLSearchParams(window.location.search);
             const redirectTo = params.get('redirect');
             // SECURITY: only allow same-origin paths. Reject protocol-relative
@@ -801,10 +806,13 @@
                 && redirectTo.startsWith('/')
                 && !redirectTo.startsWith('//')
                 && !redirectTo.startsWith('/\\');
+            const userLevel = subData && subData.preferences && subData.preferences.level;
             if (data.role === 'owner') {
                 window.location.replace('/admin.html');
             } else if (isSafeRedirect) {
                 window.location.replace(redirectTo);
+            } else if (userLevel === 'junior') {
+                window.location.replace('/junior-bot.html');
             } else {
                 window.location.replace('/index.html');
             }
