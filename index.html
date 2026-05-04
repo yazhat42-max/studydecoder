@@ -1190,6 +1190,41 @@
         </div>
     </section>
 
+    <!-- Demo: Worksheet Generator -->
+    <section class="showcase" id="worksheetGeneratorDemo">
+        <div class="showcase-inner">
+            <div class="showcase-text reveal-left">
+                <div class="showcase-label">Build Your Own</div>
+                <h2>Worksheet <span class="highlight">Generator</span></h2>
+                <p>Pick a subject and a topic. Get a print-ready PDF worksheet with mixed-format questions and a full answer key — perfect for revision, homework, or a quick test.</p>
+                <div class="showcase-pills">
+                    <span>5–25 Questions</span>
+                    <span>Mixed Formats</span>
+                    <span>PDF Export</span>
+                    <span>Full Answer Key</span>
+                </div>
+                <a href="#" onclick="openTool('worksheet-generator'); return false;" class="btn btn-primary btn-glow">Generate a Worksheet →</a>
+            </div>
+            <div class="showcase-demo reveal-right">
+                <div class="demo-window">
+                    <div class="demo-topbar">
+                        <div class="demo-dots"><span></span><span></span><span></span></div>
+                        <span class="demo-title">Worksheet Generator</span>
+                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                    </div>
+                    <div class="demo-content">
+                        <div class="demo-ws-output">
+                            <div class="demo-ws-q"><strong>Mathematics Advanced — Differentiation</strong> · 10 Q · 25 marks</div>
+                            <div class="demo-ws-q"><strong>Q1.</strong> Differentiate f(x) = 3x² − 5x + 2. <span style="float:right;color:#888;">[2 marks]</span></div>
+                            <div class="demo-ws-q"><strong>Q2.</strong> Find dy/dx if y = (2x + 1)⁴. <span style="float:right;color:#888;">[3 marks]</span></div>
+                            <div class="demo-ws-hint">📄 Auto-generates printable PDF + answer key</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Demo: Notes Transcriber -->
     <section class="showcase" id="notesDemo">
         <div class="showcase-inner">
@@ -2757,7 +2792,7 @@
     <script>
     // ── UTILITIES ──
     function botLabel(bt) {
-        const map = { practice:'Practice Questions', 'chat-tutor':'Chat Tutor', worksheet:'Worksheet Decoder', 'notes-transcriber':'Notes Transcriber', timetable:'Timetable', syllabus:'Syllabus Decoder', 'learn-irl':'Learn IRL' };
+        const map = { practice:'Practice Questions', 'chat-tutor':'Chat Tutor', worksheet:'Worksheet Decoder', 'worksheet-generator':'Worksheet Generator', 'notes-transcriber':'Notes Transcriber', timetable:'Timetable', syllabus:'Syllabus Decoder', 'learn-irl':'Learn IRL' };
         return map[bt] || bt;
     }
 
@@ -2770,6 +2805,7 @@
         practice:            { sectionId: 'practiceDemo',   usageLabel: 'practice exams generated' },
         'chat-tutor':        { sectionId: 'chatTutorDemo',  usageLabel: 'tutoring sessions' },
         worksheet:           { sectionId: 'worksheetDemo',  usageLabel: 'worksheets decoded' },
+        'worksheet-generator': { sectionId: 'worksheetGeneratorDemo', usageLabel: 'worksheets generated' },
         'notes-transcriber': { sectionId: 'notesDemo',      usageLabel: 'notes transcribed' },
         timetable:           { sectionId: 'timetableDemo',  usageLabel: 'timetables built' },
         syllabus:            { sectionId: 'syllabusDemo',   usageLabel: 'syllabuses decoded' },
