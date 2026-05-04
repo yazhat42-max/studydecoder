@@ -3470,6 +3470,24 @@ try {
     console.error('Error loading Junior subjects config:', e.message);
 }
 
+// Helper: detect if a subject ID belongs to the junior (Years 7-10) catalogue.
+// Used by the exam endpoints to switch prompts (no NESA / Band 6 / HSC wording),
+// to load junior syllabuses, and to skip exam-paper / marking-guideline lookups
+// (juniors don't have NESA past papers or marking guidelines).
+function isJuniorSubject(subjectId) {
+    if (!subjectId) return false;
+    return juniorSubjectsConfig.subjects.some(s => s.id === subjectId);
+}
+
+// Helper: resolve a subject ID to {name, isJunior} from either config.
+function resolveSubjectMeta(subjectId) {
+    const junior = juniorSubjectsConfig.subjects.find(s => s.id === subjectId);
+    if (junior) return { name: junior.name, isJunior: true, category: junior.category || '' };
+    const senior = subjectsConfig.subjects.find(s => s.id === subjectId);
+    if (senior) return { name: senior.name, isJunior: false, category: senior.category || '' };
+    return { name: subjectId, isJunior: false, category: '' };
+}
+
 // Load past papers configuration
 let pastPapersConfig = { papers: [], subjectMapping: {} };
 try {
@@ -5732,23 +5750,27 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
 
     // Build context with syllabus + past papers + marking guidelines
     let contextPrompt = '';
-    const subjectName = subjectsConfig.subjects.find(s => s.id === subject)?.name || subject;
+    const subjectMeta = resolveSubjectMeta(subject);
+    const subjectName = subjectMeta.name;
+    const isJunior = subjectMeta.isJunior;
 
     // Keep context lean for faster generation — only enough for style & accuracy
-    // Pass topics so we load module-specific syllabus content when available
-    const syllabusContent = getSyllabusContent(subject, false, topics);
+    // Pass topics so we load module-specific syllabus content when available.
+    // Junior subjects have no NESA past papers or marking guidelines, so we
+    // skip those lookups entirely and rely on the syllabus alone.
+    const syllabusContent = getSyllabusContent(subject, isJunior, topics);
     if (syllabusContent) {
         const truncated = syllabusContent.substring(0, 15000);
         contextPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS (key topics) ===\n${truncated}\n=== END SYLLABUS ===`;
     }
 
-    const examPapers = getExamPaperContent(subject);
+    const examPapers = isJunior ? null : getExamPaperContent(subject);
     if (examPapers) {
         const truncated = examPapers.substring(0, 10000);
         contextPrompt += `\n\n=== PAST EXAM PAPERS (style/format reference ONLY — DO NOT copy) ===\n${truncated}\n=== END ===`;
     }
 
-    const mgContent = getMarkingGuidelineContent(subject);
+    const mgContent = isJunior ? null : getMarkingGuidelineContent(subject);
     if (mgContent) {
         const truncatedMG = mgContent.substring(0, 8000);
         contextPrompt += `\n\n=== MARKING GUIDELINES (for mark allocation accuracy) ===\n${truncatedMG}\n=== END ===`;
@@ -6527,6 +6549,26 @@ CRITICAL JSON RULES:
 - If the structure says NO multiple choice, do NOT include an MC section.
 - Generate the COMPLETE exam — all questions, all sections. Do not truncate.${contextPrompt}`;
 
+    // For junior subjects, swap HSC/NESA/Band 6 wording for Year 7-10
+    // friendly equivalents so the model doesn't try to imitate HSC papers
+    // for a Year 8 student. The structural rules above (mark allocation,
+    // JSON schema, widgets) all still apply.
+    let finalSystemPrompt = systemPrompt;
+    if (isJunior) {
+        finalSystemPrompt = systemPrompt
+            .replace(/EXPERT HSC exam paper writer who has written real NESA exam papers/g, 'EXPERT Years 7-10 test paper writer who has built hundreds of NSW school assessments')
+            .replace(/HSC ([A-Z][a-zA-Z]+) Practice Examination/g, 'Years 7-10 $1 Practice Test')
+            .replace(/Year 12 content/g, 'Years 7-10 content for the chosen year')
+            .replace(/Year 11 content/g, 'Years 7-10 content for the chosen year')
+            .replace(/HSC marking|NESA marking|HSC exam|NESA exam|HSC papers|NESA papers|past HSC papers|real HSC|HSC-level|HSC paper/gi, 'NSW Years 7-10 assessment style')
+            .replace(/Band 6/g, 'A-grade')
+            .replace(/Band 4-5/g, 'B-grade')
+            .replace(/low-band/g, 'partial')
+            .replace(/James Ruse, Sydney Grammar, North Sydney Boys/g, 'top selective and academic high schools')
+            .replace(/NESA-aligned/g, 'syllabus-aligned')
+            .replace(/NESA-style/g, 'syllabus-aligned');
+    }
+
     try {
         const isGpt5 = aiSettings.model.startsWith('gpt-5');
         const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
@@ -6543,11 +6585,14 @@ CRITICAL JSON RULES:
                 ? ` CRITICAL: Your previous attempt produced ${lastError}. The mark total MUST be EXACTLY ${totalMarks}. Count every mark in every section before responding.`
                 : '';
 
+            const userPromptText = isJunior
+                ? `Generate a complete ${durationHours}-hour Years 7-10 practice test for ${subjectName}. Topics: ${topics || 'Years 7-10 content'}. REMINDER: ${topics && topics !== 'Years 7-10 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other topic. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Years 7-10 topics for this subject.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. Include syllabus-aligned markingCriteria and an A-grade sampleAnswer for every non-MC question. Use age-appropriate language and contexts for the chosen year level. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}`
+                : `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. Include NESA-aligned markingCriteria and Band 6 sampleAnswer for every non-MC question. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}`;
             const requestBody = {
                 model: aiSettings.model,
                 messages: [
-                    { role: 'system', content: systemPrompt },
-                    { role: 'user', content: `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. Include NESA-aligned markingCriteria and Band 6 sampleAnswer for every non-MC question. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}` }
+                    { role: 'system', content: finalSystemPrompt },
+                    { role: 'user', content: userPromptText }
                 ],
                 [tokenParam]: examTokenBudget
             };
@@ -6736,7 +6781,9 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
 
     const OPENAI_API_KEY = config.openaiApiKey;
     const aiSettings = getAISettings(user);
-    const subjectName = subjectsConfig.subjects.find(s => s.id === subject)?.name || subject;
+    const subjectMeta = resolveSubjectMeta(subject);
+    const subjectName = subjectMeta.name;
+    const isJunior = subjectMeta.isJunior;
 
     // Build the marking request with all questions and answers
     let questionsText = '';
@@ -6872,9 +6919,10 @@ app.post('/api/exam/mark', express.json(), async (req, res) => {
     const includeSampleAnswers = false; // Sample answers are now lazy-loaded via /api/exam/sample-answer
     const answeredCount = allQuestions.length - unansweredQuestions.length - mcResults.length;
 
-    // Load official marking guidelines for accurate marking
+    // Load official marking guidelines for accurate marking. Junior subjects
+    // have no NESA marking guidelines, so we skip this lookup entirely.
     let mgContext = '';
-    const mgContent = getMarkingGuidelineContent(subject);
+    const mgContent = isJunior ? null : getMarkingGuidelineContent(subject);
     if (mgContent) {
         // Use less MG context for faster marking — 20K is plenty for marking accuracy
         const truncatedMG = mgContent.substring(0, 20000);
@@ -6946,6 +6994,27 @@ CRITICAL LENGTH REQUIREMENTS — sample answers MUST match these minimums:
 
 A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL response a student would need to submit to earn maximum marks. For MC questions, the sampleAnswer should be JUST the correct letter (e.g. "B").` : 'Do NOT include sample answers — only provide feedback.'}`;
 
+    // For junior subjects, swap HSC/NESA/Band wording for Year 7-10 friendly
+    // equivalents so the marker doesn't grade a Year 8 with HSC band descriptors.
+    let finalMarkPrompt = systemPrompt;
+    if (isJunior) {
+        finalMarkPrompt = systemPrompt
+            .replace(/SENIOR HSC examiner for ([^ ]+(?: [^ ]+)*) with 20 years of NESA marking experience/g, 'experienced Years 7-10 teacher for $1 with deep knowledge of the NSW K-10 syllabus')
+            .replace(/the rigour and standards of the real HSC/g, 'fair, age-appropriate standards for the chosen year level')
+            .replace(/STRICT HSC STANDARD/g, 'AGE-APPROPRIATE FAIR STANDARD')
+            .replace(/Real HSC markers don't\./g, 'Be a fair but firm marker.')
+            .replace(/real HSC marking/g, 'standard NSW school marking')
+            .replace(/HOLISTIC marking/g, 'HOLISTIC marking')
+            .replace(/Band ([1-6])/g, (m, n) => {
+                const map = { '6': 'A', '5': 'B', '4': 'C', '3': 'D', '2': 'E', '1': 'E' };
+                return map[n] ? `${map[n]}-grade` : m;
+            })
+            .replace(/BAND DESCRIPTOR/g, 'GRADE LEVEL')
+            .replace(/what band the response falls into/g, 'what grade the response would receive')
+            .replace(/Band scale \(percentage-based\):[\s\S]*?Band 1: 0-49%/g,
+                'Grade scale (percentage-based):\n- A: 85-100%\n- B: 70-84%\n- C: 55-69%\n- D: 40-54%\n- E: 0-39%');
+    }
+
     try {
         let markingResult;
 
@@ -6965,7 +7034,9 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                 totalMarksAwarded: totalAwarded,
                 totalMarksPossible: totalPossible,
                 percentage: pct,
-                expectedBand: pct >= 90 ? 'Band 6' : pct >= 80 ? 'Band 5' : pct >= 70 ? 'Band 4' : pct >= 60 ? 'Band 3' : pct >= 50 ? 'Band 2' : 'Band 1',
+                expectedBand: isJunior
+                    ? (pct >= 85 ? 'A' : pct >= 70 ? 'B' : pct >= 55 ? 'C' : pct >= 40 ? 'D' : 'E')
+                    : (pct >= 90 ? 'Band 6' : pct >= 80 ? 'Band 5' : pct >= 70 ? 'Band 4' : pct >= 60 ? 'Band 3' : pct >= 50 ? 'Band 2' : 'Band 1'),
                 overallFeedback: unansweredQuestions.length === allQuestions.length
                     ? 'No answers were provided for any question. All questions received 0 marks.'
                     : `Multiple-choice questions marked automatically. ${pct}% scored across MC questions${unansweredQuestions.length > 0 ? ` — ${unansweredQuestions.length} question${unansweredQuestions.length > 1 ? 's were' : ' was'} left blank` : ''}.`
@@ -6992,7 +7063,7 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
             const requestBody = {
                 model: aiSettings.model,
                 messages: [
-                    { role: 'system', content: systemPrompt },
+                    { role: 'system', content: finalMarkPrompt },
                     { role: 'user', content: userContent }
                 ],
                 response_format: { type: 'json_object' },
@@ -7034,7 +7105,7 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                     const retryBody = {
                         model: aiSettings.model,
                         messages: [
-                            { role: 'system', content: systemPrompt },
+                            { role: 'system', content: finalMarkPrompt },
                             { role: 'user', content: retryUserContent }
                         ],
                         response_format: { type: 'json_object' },
@@ -7082,7 +7153,9 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                 markingResult.percentage = totalPossible > 0 ? Math.round((totalAwarded / totalPossible) * 10000) / 100 : 0;
                 // Recalculate band
                 const pct = markingResult.percentage;
-                markingResult.expectedBand = pct >= 90 ? 'Band 6' : pct >= 80 ? 'Band 5' : pct >= 70 ? 'Band 4' : pct >= 60 ? 'Band 3' : pct >= 50 ? 'Band 2' : 'Band 1';
+                markingResult.expectedBand = isJunior
+                    ? (pct >= 85 ? 'A' : pct >= 70 ? 'B' : pct >= 55 ? 'C' : pct >= 40 ? 'D' : 'E')
+                    : (pct >= 90 ? 'Band 6' : pct >= 80 ? 'Band 5' : pct >= 70 ? 'Band 4' : pct >= 60 ? 'Band 3' : pct >= 50 ? 'Band 2' : 'Band 1');
             }
         }
 
@@ -7156,7 +7229,9 @@ app.post('/api/exam/sample-answer', express.json(), async (req, res) => {
     const marks = Number(question.marks) || 0;
     if (marks <= 0) return res.status(400).json({ error: 'Invalid question marks' });
 
-    const subjectName = subjectsConfig.subjects.find(s => s.id === subject)?.name || subject || 'this subject';
+    const subjectMeta = resolveSubjectMeta(subject);
+    const subjectName = subjectMeta.name || 'this subject';
+    const isJunior = subjectMeta.isJunior;
 
     // Length guidance based on marks
     let lengthGuide;
@@ -7174,7 +7249,17 @@ app.post('/api/exam/sample-answer', express.json(), async (req, res) => {
 
     let systemPrompt;
     if (isMC) {
-        systemPrompt = `You are a senior HSC examiner for ${subjectName}. Return ONLY valid JSON: {"sampleAnswer": "<single letter A-D>"}`;
+        systemPrompt = isJunior
+            ? `You are an experienced Years 7-10 ${subjectName} teacher. Return ONLY valid JSON: {"sampleAnswer": "<single letter A-D>"}`
+            : `You are a senior HSC examiner for ${subjectName}. Return ONLY valid JSON: {"sampleAnswer": "<single letter A-D>"}`;
+    } else if (isJunior) {
+        systemPrompt = `You are an experienced Years 7-10 ${subjectName} teacher with deep knowledge of the NSW K-10 syllabus. Write an A-grade (full marks) sample answer for the question below.
+
+LENGTH REQUIREMENT: ${lengthGuide}. A short answer for a high-mark question is unacceptable.
+
+Use age-appropriate language and clear structure. Show the student exactly what a top response looks like for their year level.
+
+Return ONLY valid JSON: {"sampleAnswer": "<the full sample answer text>"}`;
     } else {
         systemPrompt = `You are a senior HSC examiner for ${subjectName} with 20 years of NESA marking experience. Write a Band 6 (full marks) sample answer for the question below.
 
@@ -7328,14 +7413,24 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     let subjectId = subject;
     if (!subjectId && messages.length > 0) {
         const lastMessage = messages[messages.length - 1].content.toLowerCase();
-        // Try to find subject in message
-        for (const s of subjectsConfig.subjects) {
+        // Try to find subject in message (junior first, then senior)
+        for (const s of (juniorSubjectsConfig?.subjects || [])) {
             if (lastMessage.includes(s.name.toLowerCase())) {
                 subjectId = s.id;
                 break;
             }
         }
+        if (!subjectId) {
+            for (const s of subjectsConfig.subjects) {
+                if (lastMessage.includes(s.name.toLowerCase())) {
+                    subjectId = s.id;
+                    break;
+                }
+            }
+        }
     }
+    const chatSubjectMeta = subjectId ? resolveSubjectMeta(subjectId) : null;
+    const chatIsJunior = !!chatSubjectMeta?.isJunior;
     
     // Inject syllabus content for syllabus and practice bots
     if (subjectId && (botType === 'syllabus' || botType === 'practice')) {
@@ -7343,9 +7438,9 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         const lastMsg = messages.length > 0 ? messages[messages.length - 1].content : '';
         const botTopicMatch = lastMsg.match(/Topic:\s*(.+?)(?:\n|$)/i);
         const botTopic = botTopicMatch ? botTopicMatch[1].trim() : null;
-        const syllabusContent = getSyllabusContent(subjectId, false, botTopic);
+        const syllabusContent = getSyllabusContent(subjectId, chatIsJunior, botTopic);
         if (syllabusContent) {
-            const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
+            const subjectName = chatSubjectMeta?.name || subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
             
             // Smart syllabus extraction: prioritize the requested topic section
             // All models (GPT-5-mini, GPT-4o, GPT-4o-mini) support 128k context
