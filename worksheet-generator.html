@@ -248,6 +248,48 @@
         let USER_LEVEL = 'senior';
         let lastWorksheet = null;
 
+        // Fallback subject lists (used if /api/subjects fails)
+        const FALLBACK_SUBJECTS_SENIOR = [
+            { id: 'agriculture', name: 'Agriculture', category: 'TAS' },
+            { id: 'ancient-history', name: 'Ancient History', category: 'HSIE' },
+            { id: 'biology', name: 'Biology', category: 'Science' },
+            { id: 'business-studies', name: 'Business Studies', category: 'HSIE' },
+            { id: 'chemistry', name: 'Chemistry', category: 'Science' },
+            { id: 'dance', name: 'Dance', category: 'Creative Arts' },
+            { id: 'design-technology', name: 'Design and Technology', category: 'TAS' },
+            { id: 'drama', name: 'Drama', category: 'Creative Arts' },
+            { id: 'earth-environmental-science', name: 'Earth and Environmental Science', category: 'Science' },
+            { id: 'economics', name: 'Economics', category: 'HSIE' },
+            { id: 'engineering-studies', name: 'Engineering Studies', category: 'TAS' },
+            { id: 'english-advanced', name: 'English Advanced', category: 'English' },
+            { id: 'english-eald', name: 'English EAL/D', category: 'English' },
+            { id: 'english-extension', name: 'English Extension', category: 'English' },
+            { id: 'english-standard', name: 'English Standard', category: 'English' },
+            { id: 'english-studies', name: 'English Studies', category: 'English' },
+            { id: 'food-technology', name: 'Food Technology', category: 'TAS' },
+            { id: 'geography', name: 'Geography', category: 'HSIE' },
+            { id: 'health-movement-science', name: 'Health and Movement Science', category: 'PDHPE' },
+            { id: 'investigating-science', name: 'Investigating Science', category: 'Science' },
+            { id: 'legal-studies', name: 'Legal Studies', category: 'HSIE' },
+            { id: 'mathematics-advanced', name: 'Mathematics Advanced', category: 'Mathematics' },
+            { id: 'mathematics-extension-1', name: 'Mathematics Extension 1', category: 'Mathematics' },
+            { id: 'mathematics-extension-2', name: 'Mathematics Extension 2', category: 'Mathematics' },
+            { id: 'mathematics-standard', name: 'Mathematics Standard', category: 'Mathematics' },
+            { id: 'modern-history', name: 'Modern History', category: 'HSIE' },
+            { id: 'music-1', name: 'Music 1', category: 'Creative Arts' },
+            { id: 'music-2', name: 'Music 2', category: 'Creative Arts' },
+            { id: 'physics', name: 'Physics', category: 'Science' },
+            { id: 'society-culture', name: 'Society and Culture', category: 'HSIE' },
+            { id: 'software-engineering', name: 'Software Engineering', category: 'TAS' },
+            { id: 'studies-of-religion', name: 'Studies of Religion', category: 'HSIE' },
+            { id: 'visual-arts', name: 'Visual Arts', category: 'Creative Arts' }
+        ];
+        const FALLBACK_SUBJECTS_JUNIOR = [
+            { id: 'english-7-10', name: 'English (Years 7-10)', category: 'English' },
+            { id: 'mathematics-7-10', name: 'Mathematics (Years 7-10)', category: 'Mathematics' },
+            { id: 'science-7-10', name: 'Science (Years 7-10)', category: 'Science' }
+        ];
+
         const SUBJECT_TOPICS_SENIOR = {
             'biology': ['Module 1: Cells as the Basis of Life','Module 2: Organisation of Living Things','Module 3: Biological Diversity','Module 4: Ecosystem Dynamics','Module 5: Heredity','Module 6: Genetic Change','Module 7: Infectious Disease','Module 8: Non-infectious Disease and Disorders'],
             'chemistry': ['Module 1: Properties and Structure of Matter','Module 2: Introduction to Quantitative Chemistry','Module 3: Reactive Chemistry','Module 4: Drivers of Reactions','Module 5: Equilibrium and Acid Reactions','Module 6: Acid/Base Reactions','Module 7: Organic Chemistry','Module 8: Applying Chemical Ideas'],
@@ -273,30 +315,41 @@
         };
 
         async function init() {
+            // Step 1: try to detect user's level from /api/subscription (non-blocking)
             try {
                 const r = await fetch(`${API_BASE}/api/subscription`, { credentials: 'include' });
-                if (!r.ok) {
+                if (r.ok) {
+                    const sub = await r.json();
+                    USER_LEVEL = sub?.preferences?.level || 'senior';
+                } else if (r.status === 401) {
                     window.location.href = 'login.html?next=' + encodeURIComponent(window.location.pathname);
                     return;
                 }
-                const sub = await r.json();
-                USER_LEVEL = sub?.preferences?.level || 'senior';
             } catch (e) {
-                window.location.href = 'login.html?next=' + encodeURIComponent(window.location.pathname);
-                return;
+                console.warn('[worksheet-gen] subscription check failed', e);
             }
 
+            // Step 2: load subjects (with hardcoded fallback if API fails)
             const endpoint = USER_LEVEL === 'junior' ? '/api/junior-subjects' : '/api/subjects';
             try {
                 const r = await fetch(`${API_BASE}${endpoint}`, { credentials: 'include' });
-                const data = await r.json();
-                SUBJECTS = data.subjects || [];
-                TOPICS_BY_SUBJECT = USER_LEVEL === 'junior' ? SUBJECT_TOPICS_JUNIOR : SUBJECT_TOPICS_SENIOR;
+                if (r.ok) {
+                    const data = await r.json();
+                    if (Array.isArray(data.subjects) && data.subjects.length > 0) {
+                        SUBJECTS = data.subjects;
+                    }
+                }
             } catch (e) {
-                showError('Could not load subjects. Refresh and try again.');
+                console.warn('[worksheet-gen] subjects fetch failed, using fallback', e);
             }
+            if (!SUBJECTS.length) {
+                SUBJECTS = USER_LEVEL === 'junior' ? FALLBACK_SUBJECTS_JUNIOR : FALLBACK_SUBJECTS_SENIOR;
+            }
+            TOPICS_BY_SUBJECT = USER_LEVEL === 'junior' ? SUBJECT_TOPICS_JUNIOR : SUBJECT_TOPICS_SENIOR;
 
             populateSubjects();
+            wireSubjectChange();
+
             document.getElementById('authLoading').classList.add('hidden');
             document.getElementById('appContainer').classList.remove('hidden');
         }
@@ -304,21 +357,42 @@
         function populateSubjects() {
             const sel = document.getElementById('subjectSelect');
             sel.innerHTML = '<option value="">Select a subject…</option>';
-            // group by category
             const byCat = {};
-            SUBJECTS.forEach(s => { (byCat[s.category] = byCat[s.category] || []).push(s); });
+            SUBJECTS.forEach(s => {
+                const cat = s.category || 'Other';
+                (byCat[cat] = byCat[cat] || []).push(s);
+            });
             Object.keys(byCat).sort().forEach(cat => {
-                const og = document.createElement('optgroup'); og.label = cat;
+                const og = document.createElement('optgroup');
+                og.label = cat;
                 byCat[cat].forEach(s => {
-                    const o = document.createElement('option'); o.value = s.id; o.textContent = s.name; og.appendChild(o);
+                    const o = document.createElement('option');
+                    o.value = s.id;
+                    o.textContent = s.name;
+                    og.appendChild(o);
                 });
                 sel.appendChild(og);
             });
-            sel.addEventListener('change', () => {
-                const topicSel = document.getElementById('topicSelect');
-                const topics = TOPICS_BY_SUBJECT[sel.value] || [];
-                topicSel.innerHTML = '<option value="">All topics (mixed)</option>' + topics.map(t => `<option value="${escapeAttr(t)}">${escapeHtml(t)}</option>`).join('');
-            });
+        }
+
+        function wireSubjectChange() {
+            const subjectSel = document.getElementById('subjectSelect');
+            const topicSel = document.getElementById('topicSelect');
+            const updateTopics = () => {
+                const id = subjectSel.value;
+                if (!id) {
+                    topicSel.innerHTML = '<option value="">Select a subject first</option>';
+                    return;
+                }
+                const topics = TOPICS_BY_SUBJECT[id] || [];
+                let html = '<option value="">All topics (mixed)</option>';
+                topics.forEach(t => {
+                    html += '<option value="' + escapeAttr(t) + '">' + escapeHtml(t) + '</option>';
+                });
+                topicSel.innerHTML = html;
+            };
+            subjectSel.addEventListener('change', updateTopics);
+            subjectSel.addEventListener('input', updateTopics);
         }
 
         function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
