@@ -832,12 +832,6 @@
         </div>
     </div>
 
-    <!-- Day Pass Quick Strip -->
-    <div id="daypassQuickStrip" style="display:none;background:linear-gradient(90deg,rgba(245,158,11,0.10),rgba(239,68,68,0.07),rgba(245,158,11,0.10));border-top:1px solid rgba(245,158,11,0.18);border-bottom:1px solid rgba(245,158,11,0.18);padding:11px 5%;text-align:center;cursor:pointer;" onclick="buyDayPass()">
-        <span style="font-size:0.88rem;color:rgba(255,255,255,0.72);">⚡ <strong style="color:#f59e0b;">Day Pass — $1.99</strong> · No subscription. No commitment. <strong style="color:#fff;">Full access for 24 hrs</strong> — perfect before an exam.</span>
-        <span style="margin-left:14px;font-size:0.82rem;font-weight:700;color:#f59e0b;text-decoration:underline;">Get it now →</span>
-    </div>
-
     <!-- Continue Where You Left Off -->
     <div class="continue-section active" id="continueSection">
         <div class="continue-inner">
@@ -1439,23 +1433,6 @@
                 <button onclick="showUpgradeModal()" style="display:block;width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(108,99,255,0.3);transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Get Lifetime Access →</button>
             </div>
         </div>
-        <!-- Day Pass Row -->
-        <div class="reveal" style="max-width:1000px;margin:1.5rem auto 0;padding:0 0.5rem;">
-            <div style="background:rgba(108,99,255,0.05);border:1px solid rgba(108,99,255,0.2);border-radius:16px;padding:1.25rem 1.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
-                <div>
-                    <div style="font-size:0.75rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Day Pass</div>
-                    <div style="font-size:1.4rem;font-weight:800;color:var(--text);display:inline-flex;align-items:baseline;gap:8px;">$1.99 <span style="font-size:0.85rem;font-weight:500;color:var(--text-muted);">one-time · No subscription. No commitment. Full access for 24 hrs — perfect before an exam.</span></div>
-                </div>
-                <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
-                    <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;margin:0;">
-                        <li style="font-size:0.85rem;color:var(--text-sec);display:flex;align-items:center;gap:6px;"><span style="color:#22c55e;">✓</span> Unlimited uses for 24 hours</li>
-                        <li style="font-size:0.85rem;color:var(--text-sec);display:flex;align-items:center;gap:6px;"><span style="color:#22c55e;">✓</span> All 6 AI tools unlocked</li>
-                        <li style="font-size:0.85rem;color:var(--text-sec);display:flex;align-items:center;gap:6px;"><span style="color:#22c55e;">✓</span> No recurring charge</li>
-                    </ul>
-                    <button id="dayPassPricingBtn" onclick="buyDayPass()" style="padding:12px 28px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:0 4px 16px rgba(108,99,255,0.3);transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Get Day Pass →</button>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- Level Selector Modal (fallback) -->
@@ -1567,8 +1544,6 @@
             <p id="upgradeMonthlyFootnote" style="color:rgba(255,255,255,0.45);font-size:0.82rem;margin-bottom:12px;">
                 Not sure yet? <button onclick="createCheckout('monthly')" style="background:none;border:none;color:#a59fff;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">$5/month</button> — cancel anytime.
             </p>
-            <!-- DAY PASS -->
-            <button onclick="buyDayPass()" style="display:block;width:100%;background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.25);border-radius:10px;color:#fbbf24;padding:10px 20px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:16px;">⚡ Just need today? Day Pass — $1.99</button>
             
             <div id="paymentPollingStatus" style="display: none; text-align: center; margin-bottom: 12px; padding: 12px; background: rgba(22,163,74,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px;">
                 <span style="font-size: 0.9rem; color: #22c55e;">⏳ Waiting for payment confirmation... This will activate automatically.</span>
@@ -1751,18 +1726,6 @@
                 banner.style.color = '#fff';
                 banner.style.borderBottom = 'none';
                 banner.style.display = '';
-            }
-        } else if (user.subscribed && user.plan === 'day_pass') {
-            // Already on day pass → upsell the lifetime deal
-            if (banner) {
-                banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="createCheckout(\'lifetime\'); return false;">Lock it in →</a>';
-                banner.onclick = function(e) {
-                    if (e.target.tagName === 'A') return; // let the inline link handler run
-                    createCheckout('lifetime');
-                };
-                banner.style.display = '';
-                banner.style.background = '';
-                banner.style.color = '';
             }
         } else if (!user.subscribed && user.role !== 'owner' && user.role !== 'og_tester' && user.role !== 'lifetime') {
             // Free user (post-trial) → lead with the lifetime founding deal (scarcity + value)
@@ -2154,30 +2117,6 @@
         }
     }
 
-    async function buyDayPass() {
-        const btn = document.getElementById('dayPassPricingBtn');
-        if (btn) { btn.disabled = true; btn.textContent = 'Loading...'; }
-        try {
-            const res = await fetch(API_BASE + '/api/create-daypass-session', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const data = await res.json();
-            if (data.url) {
-                window.location.href = data.url;
-            } else if (data.error === 'Not authenticated') {
-                window.location.href = 'login.html';
-            } else {
-                alert(data.error || 'Failed to start checkout. Please try again.');
-                if (btn) { btn.disabled = false; btn.textContent = 'Get Day Pass →'; }
-            }
-        } catch (e) {
-            alert('Error starting checkout. Please try again.');
-            if (btn) { btn.disabled = false; btn.textContent = 'Get Day Pass →'; }
-        }
-    }
-    
     function closeUpgradeModal(event) {
         if (!event || event.target === document.getElementById('upgradeModalOverlay')) {
             document.getElementById('upgradeModalOverlay').style.display = 'none';
@@ -2586,16 +2525,7 @@
             window._autoOpenUpgrade = true;
         }
 
-        if (params.has('daypass') && params.get('daypass') === 'success') {
-            window.history.replaceState({}, document.title, window.location.pathname);
-            checkAuthStatus();
-            // Show Day Pass success toast
-            const toast = document.createElement('div');
-            toast.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:14px 28px;border-radius:12px;font-size:0.95rem;font-weight:700;z-index:9999;box-shadow:0 8px 32px rgba(245,158,11,0.35);pointer-events:none;';
-            toast.textContent = '⚡ Day Pass activated! Enjoy 24 hours of unlimited access.';
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 5000);
-        } else if (params.has('plan') || params.has('session_id')) {
+        if (params.has('plan') || params.has('session_id')) {
             // Clean up URL params, then verify payment via polling endpoint
             window.history.replaceState({}, document.title, window.location.pathname);
             fetch(API_BASE + '/api/verify-payment', {

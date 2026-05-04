@@ -2459,43 +2459,13 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
 /**
 /**
  * POST /api/create-daypass-session
- * Create a Stripe Checkout session for a 24-hour Day Pass ($1.99 AUD)
+ * DEPRECATED — Day Pass has been retired in favour of the founding-tier
+ * lifetime offer. The endpoint is left in place so old clients receive a
+ * clear 410 Gone response instead of crashing. Existing dayPassExpiry
+ * timestamps continue to grant access until they naturally expire.
  */
-app.post('/api/create-daypass-session', requireAuth, async (req, res) => {
-    if (!stripe) return res.status(503).json({ error: 'Payment system not configured' });
-    const DAYPASS_PRICE_ID = process.env.STRIPE_DAYPASS_PRICE_ID;
-    if (!DAYPASS_PRICE_ID) return res.status(503).json({ error: 'Day Pass not configured' });
-
-    try {
-        const user = req.user;
-        // Don't let already-subscribed users buy a day pass (waste of money)
-        if (hasFullAccess(user) && !hasDayPassActive(user)) {
-            // they already have full access — just redirect them to the tool
-            return res.json({ alreadySubscribed: true });
-        }
-
-        let customerId = user.stripeCustomerId;
-        if (!customerId) {
-            customerId = await getOrCreateStripeCustomer(user);
-            upsertUser(user.userId, { stripeCustomerId: customerId });
-        }
-
-        const session = await stripe.checkout.sessions.create({
-            customer: customerId,
-            payment_method_types: ['card'],
-            mode: 'payment',
-            line_items: [{ price: DAYPASS_PRICE_ID, quantity: 1 }],
-            success_url: `${config.frontendUrl}/?daypass=success&session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${config.frontendUrl}/?cancelled=true`,
-            metadata: { userId: user.userId, plan: 'daypass' }
-        });
-
-        console.log(`💳 Day Pass session created for ${user.email}`);
-        res.json({ url: session.url });
-    } catch (error) {
-        console.error('Day Pass checkout error:', error);
-        res.status(500).json({ error: 'Failed to create Day Pass session' });
-    }
+app.post('/api/create-daypass-session', requireAuth, (req, res) => {
+    res.status(410).json({ error: 'Day Pass has been discontinued. Please use the lifetime founding-member deal instead.' });
 });
 
 /**
