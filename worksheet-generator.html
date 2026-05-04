@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>AI Worksheet Generator | Study Decoder</title>
+    <meta name="description" content="Generate a printable PDF worksheet with full answer key for any HSC or Years 7-10 subject and topic. AI-built, syllabus-aligned.">
+    <link rel="canonical" href="https://www.studydecoder.com.au/worksheet-generator.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Study Decoder">
+    <meta property="og:title" content="AI Worksheet Generator | Study Decoder">
+    <meta property="og:description" content="Generate a printable PDF worksheet with full answer key for any subject and topic.">
+    <meta property="og:url" content="https://www.studydecoder.com.au/worksheet-generator.html">
+    <meta property="og:image" content="https://www.studydecoder.com.au/logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f1419">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            height: 100%; width: 100%;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0f1419; color: #e7e9ea;
+        }
+        .app-container { display: flex; flex-direction: column; min-height: 100vh; width: 100%; overflow-x: hidden; }
+        .header {
+            background: #16202a; border-bottom: 1px solid #2f3336;
+            padding: 12px 24px; display: flex; align-items: center;
+            justify-content: space-between; flex-shrink: 0; position: sticky; top: 0; z-index: 50;
+        }
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        .back-btn {
+            color: #4f8cff; text-decoration: none; font-size: 14px; font-weight: 500;
+            padding: 8px 16px; border-radius: 8px; background: rgba(79, 140, 255, 0.1);
+            transition: all 0.2s;
+        }
+        .back-btn:hover { background: rgba(79, 140, 255, 0.2); }
+        .header-title { font-size: 20px; font-weight: 700; color: #e7e9ea; }
+        .header-subtitle { font-size: 12px; color: #71767b; margin-top: 2px; }
+        .main-content { flex: 1; padding: 32px 24px; }
+        .container { max-width: 980px; margin: 0 auto; }
+
+        .config-card {
+            background: #16202a; border: 1px solid #2f3336; border-radius: 16px;
+            padding: 28px; margin-bottom: 24px;
+        }
+        .config-card h2 { font-size: 22px; margin-bottom: 6px; color: #e7e9ea; }
+        .config-card .sub { color: #8899a6; font-size: 14px; margin-bottom: 20px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { font-size: 13px; font-weight: 500; color: #c8ccd0; }
+        .form-input, .form-select {
+            background: #0f1419; border: 1px solid #2f3336; border-radius: 8px;
+            padding: 12px 14px; color: #e7e9ea; font-size: 14px; font-family: inherit;
+        }
+        .form-input:focus, .form-select:focus { outline: none; border-color: #4f8cff; }
+        .submit-btn {
+            width: 100%; background: linear-gradient(135deg, #4f8cff, #6c63ff); color: #fff;
+            border: none; border-radius: 10px; padding: 14px 24px;
+            font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 18px;
+        }
+        .submit-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(79,140,255,0.3); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .loading { display: flex; align-items: center; gap: 10px; color: #71767b; padding: 20px 0; justify-content: center; }
+        .loading-dots { display: flex; gap: 4px; }
+        .loading-dots span {
+            width: 8px; height: 8px; background: #4f8cff; border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        .toolbar {
+            display: flex; gap: 10px; flex-wrap: wrap; padding: 14px 16px;
+            background: #16202a; border: 1px solid #2f3336; border-radius: 12px;
+            margin-bottom: 16px; align-items: center;
+        }
+        .toolbar-info { flex: 1; font-size: 13px; color: #8899a6; }
+        .tb-btn {
+            background: #1d3a5f; color: #e7e9ea; border: 1px solid rgba(79,140,255,0.3);
+            padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .tb-btn:hover { background: #25497a; }
+        .tb-btn.primary { background: #4f8cff; border-color: #4f8cff; }
+        .tb-btn.primary:hover { background: #3d7ae8; }
+        .tb-btn.ghost { background: transparent; }
+        .tb-toggle { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #c8ccd0; }
+        .tb-toggle input { accent-color: #4f8cff; }
+
+        /* Worksheet sheet — printable */
+        #worksheet {
+            background: #fff; color: #111; max-width: 880px; margin: 0 auto;
+            padding: 48px 56px; border-radius: 8px; line-height: 1.55;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+        #worksheet h1 { font-size: 24px; margin-bottom: 4px; color: #111; }
+        #worksheet .ws-meta { font-size: 13px; color: #555; margin-bottom: 6px; }
+        #worksheet .ws-instructions { font-size: 13px; color: #333; padding: 10px 14px;
+            background: #f5f6f8; border-left: 4px solid #4f8cff; border-radius: 4px;
+            margin: 14px 0 24px; }
+        #worksheet .ws-namebox { display: flex; gap: 24px; font-size: 13px; color: #444;
+            border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; padding: 10px 0;
+            margin-bottom: 24px; }
+        #worksheet .ws-namebox span { flex: 1; }
+        #worksheet .ws-q { margin-bottom: 22px; page-break-inside: avoid; }
+        #worksheet .ws-q-head { font-weight: 700; margin-bottom: 6px; font-size: 14px; }
+        #worksheet .ws-q-text { font-size: 14px; }
+        #worksheet .ws-options { margin: 8px 0 0 18px; font-size: 14px; }
+        #worksheet .ws-options li { margin-bottom: 4px; list-style: none; }
+        #worksheet .ws-answerline { border-bottom: 1px solid #ccc; height: 22px; margin: 6px 0; }
+        #worksheet .ws-answerbox { border: 1px solid #ccc; min-height: 90px; margin-top: 8px; border-radius: 4px; }
+
+        #answerKey {
+            background: #fff; color: #111; max-width: 880px; margin: 24px auto 0;
+            padding: 48px 56px; border-radius: 8px; line-height: 1.55;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+            page-break-before: always;
+        }
+        #answerKey h1 { font-size: 22px; margin-bottom: 16px; color: #111; }
+        #answerKey .ak-q { margin-bottom: 16px; page-break-inside: avoid; }
+        #answerKey .ak-q-head { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+        #answerKey .ak-answer { font-size: 14px; white-space: pre-wrap; }
+        #answerKey .ak-explain { font-size: 13px; color: #555; margin-top: 4px; padding-left: 12px;
+            border-left: 3px solid #4f8cff; }
+
+        @media print {
+            body { background: #fff; }
+            .header, .config-card, .toolbar, .auth-loading-overlay { display: none !important; }
+            .main-content { padding: 0; }
+            #worksheet, #answerKey { box-shadow: none; border-radius: 0; max-width: 100%; padding: 24px; }
+            #answerKey { page-break-before: always; }
+        }
+        @media (max-width: 720px) {
+            .form-grid { grid-template-columns: 1fr; }
+            #worksheet, #answerKey { padding: 28px 22px; }
+            .main-content { padding: 16px; }
+        }
+
+        .auth-loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #0f1419; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
+        }
+        .auth-spinner {
+            width: 50px; height: 50px; border: 4px solid #2f3336;
+            border-top-color: #4f8cff; border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .auth-text { margin-top: 16px; color: #71767b; font-size: 1rem; }
+        .hidden { display: none !important; }
+        .error-banner {
+            background: rgba(220,53,69,0.1); border: 1px solid rgba(220,53,69,0.4);
+            color: #ff8088; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="authLoading" class="auth-loading-overlay">
+        <div class="auth-spinner"></div>
+        <div class="auth-text">Loading...</div>
+    </div>
+
+    <div class="app-container hidden" id="appContainer">
+        <header class="header">
+            <div class="header-left">
+                <a href="index.html" class="back-btn">← Home</a>
+                <div>
+                    <div class="header-title">📝 Worksheet Generator</div>
+                    <div class="header-subtitle">Build a printable, syllabus-aligned worksheet with answer key</div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <div id="errorBanner" class="error-banner hidden"></div>
+
+                <section class="config-card" id="configCard">
+                    <h2>Generate a Worksheet</h2>
+                    <div class="sub">Pick a subject, a topic, and how many questions you want. We'll build a print-ready worksheet with a full answer key.</div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="subjectSelect">Subject</label>
+                            <select id="subjectSelect" class="form-select"><option value="">Loading subjects…</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="topicSelect">Topic / Module</label>
+                            <select id="topicSelect" class="form-select"><option value="">Select a subject first</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="countSelect">Number of Questions</label>
+                            <select id="countSelect" class="form-select">
+                                <option value="5">5 questions (~15 min)</option>
+                                <option value="10" selected>10 questions (~30 min)</option>
+                                <option value="15">15 questions (~45 min)</option>
+                                <option value="20">20 questions (~60 min)</option>
+                                <option value="25">25 questions (~75 min)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="difficultySelect">Difficulty</label>
+                            <select id="difficultySelect" class="form-select">
+                                <option value="easy">Easy — recall & basic application</option>
+                                <option value="standard" selected>Standard — typical assessment task</option>
+                                <option value="hard">Hard — extension / top-band</option>
+                            </select>
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label" for="customTopic">Custom topic (optional, overrides dropdown)</label>
+                            <input id="customTopic" class="form-input" type="text" placeholder="e.g. Quadratic equations, Module 6: Electromagnetism, World War I causes" />
+                        </div>
+                    </div>
+
+                    <button class="submit-btn" id="generateBtn">Generate Worksheet</button>
+                    <div id="loadingBox" class="loading hidden">
+                        <div class="loading-dots"><span></span><span></span><span></span></div>
+                        <span>Building your worksheet… this can take 20-40 seconds.</span>
+                    </div>
+                </section>
+
+                <div id="resultArea" class="hidden">
+                    <div class="toolbar">
+                        <div class="toolbar-info" id="toolbarInfo"></div>
+                        <label class="tb-toggle"><input type="checkbox" id="toggleAnswers" checked> Include answer key</label>
+                        <button class="tb-btn ghost" id="newBtn">↻ New worksheet</button>
+                        <button class="tb-btn" id="printBtn">🖨️ Print</button>
+                        <button class="tb-btn primary" id="pdfBtn">⬇ Download PDF</button>
+                    </div>
+                    <div id="worksheet"></div>
+                    <div id="answerKey"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+        let SUBJECTS = [];
+        let TOPICS_BY_SUBJECT = {};
+        let USER_LEVEL = 'senior';
+        let lastWorksheet = null;
+
+        const SUBJECT_TOPICS_SENIOR = {
+            'biology': ['Module 1: Cells as the Basis of Life','Module 2: Organisation of Living Things','Module 3: Biological Diversity','Module 4: Ecosystem Dynamics','Module 5: Heredity','Module 6: Genetic Change','Module 7: Infectious Disease','Module 8: Non-infectious Disease and Disorders'],
+            'chemistry': ['Module 1: Properties and Structure of Matter','Module 2: Introduction to Quantitative Chemistry','Module 3: Reactive Chemistry','Module 4: Drivers of Reactions','Module 5: Equilibrium and Acid Reactions','Module 6: Acid/Base Reactions','Module 7: Organic Chemistry','Module 8: Applying Chemical Ideas'],
+            'physics': ['Module 1: Kinematics','Module 2: Dynamics','Module 3: Waves and Thermodynamics','Module 4: Electricity and Magnetism','Module 5: Advanced Mechanics','Module 6: Electromagnetism','Module 7: The Nature of Light','Module 8: From the Universe to the Atom'],
+            'mathematics-advanced': ['Working with functions','Trigonometry','Differentiation','Exponential and logarithmic functions','Probability and data','Sequences and series','Calculus','Random variables','Financial mathematics'],
+            'mathematics-extension-1': ['Further functions','Polynomials','Further trigonometry','Permutations and combinations','Binomial theorem','Mathematical induction','Vectors','Inverse trig functions','Further calculus'],
+            'mathematics-extension-2': ['Proof','Vectors','Complex numbers','Further integration','Mechanics'],
+            'mathematics-standard': ['Formulas and equations','Linear relationships','Earning and managing money','Measurement','Trigonometry','Networks','Data analysis','Probability','Investment and loans','Annuities','Bivariate data'],
+            'english-advanced': ['Texts and human experiences','Textual conversations','Critical study of literature','Craft of writing'],
+            'english-standard': ['Texts and human experiences','Language, identity and culture','Close study of literature','Craft of writing'],
+            'english-extension': ['Texts, culture and value','Literary worlds'],
+            'modern-history': ['Power and Authority 1919-1946','National Studies','Peace and Conflict','Change in the Modern World'],
+            'ancient-history': ['Cities of Vesuvius','Ancient Societies','Personalities','Historical Periods'],
+            'business-studies': ['Operations','Marketing','Finance','Human resources'],
+            'economics': ['Markets','Labour markets','Financial markets','The global economy','Australia in the global economy','Economic policies'],
+            'legal-studies': ['Crime','Human rights','Family','Workplace','World order'],
+        };
+
+        const SUBJECT_TOPICS_JUNIOR = {
+            'english-7-10': ['Reading and Comprehension','Creative Writing','Persuasive Writing','Essay Writing','Poetry Analysis','Novel Study','Film Study','Grammar and Punctuation','Speaking and Listening','Visual Texts','Drama and Performance Texts'],
+            'mathematics-7-10': ['Integers and Whole Numbers','Fractions, Decimals and Percentages','Ratios and Rates','Algebra - Expressions','Algebra - Equations','Linear Relationships','Coordinate Geometry','Indices and Surds','Measurement - Length, Area and Volume','Geometry - Angles and Polygons','Statistics and Data Analysis','Probability','Trigonometry','Pythagoras Theorem','Quadratic Expressions and Equations','Financial Mathematics'],
+            'science-7-10': ['Cells and Living Things','Body Systems','Reproduction and Inheritance','Ecosystems and Food Webs','Classification of Living Things','Forces and Motion','Energy and Energy Transfers','Waves, Light and Sound','Electricity and Magnetism','Elements, Compounds and Mixtures','Chemical Reactions','Atoms and the Periodic Table','Acids and Bases','Earth Systems and Climate','Space and the Universe','Working Scientifically']
+        };
+
+        async function init() {
+            try {
+                const r = await fetch(`${API_BASE}/api/subscription`, { credentials: 'include' });
+                if (!r.ok) {
+                    window.location.href = 'login.html?next=' + encodeURIComponent(window.location.pathname);
+                    return;
+                }
+                const sub = await r.json();
+                USER_LEVEL = sub?.preferences?.level || 'senior';
+            } catch (e) {
+                window.location.href = 'login.html?next=' + encodeURIComponent(window.location.pathname);
+                return;
+            }
+
+            const endpoint = USER_LEVEL === 'junior' ? '/api/junior-subjects' : '/api/subjects';
+            try {
+                const r = await fetch(`${API_BASE}${endpoint}`, { credentials: 'include' });
+                const data = await r.json();
+                SUBJECTS = data.subjects || [];
+                TOPICS_BY_SUBJECT = USER_LEVEL === 'junior' ? SUBJECT_TOPICS_JUNIOR : SUBJECT_TOPICS_SENIOR;
+            } catch (e) {
+                showError('Could not load subjects. Refresh and try again.');
+            }
+
+            populateSubjects();
+            document.getElementById('authLoading').classList.add('hidden');
+            document.getElementById('appContainer').classList.remove('hidden');
+        }
+
+        function populateSubjects() {
+            const sel = document.getElementById('subjectSelect');
+            sel.innerHTML = '<option value="">Select a subject…</option>';
+            // group by category
+            const byCat = {};
+            SUBJECTS.forEach(s => { (byCat[s.category] = byCat[s.category] || []).push(s); });
+            Object.keys(byCat).sort().forEach(cat => {
+                const og = document.createElement('optgroup'); og.label = cat;
+                byCat[cat].forEach(s => {
+                    const o = document.createElement('option'); o.value = s.id; o.textContent = s.name; og.appendChild(o);
+                });
+                sel.appendChild(og);
+            });
+            sel.addEventListener('change', () => {
+                const topicSel = document.getElementById('topicSelect');
+                const topics = TOPICS_BY_SUBJECT[sel.value] || [];
+                topicSel.innerHTML = '<option value="">All topics (mixed)</option>' + topics.map(t => `<option value="${escapeAttr(t)}">${escapeHtml(t)}</option>`).join('');
+            });
+        }
+
+        function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+        function escapeAttr(s) { return String(s).replace(/"/g, '&quot;'); }
+
+        function showError(msg) {
+            const eb = document.getElementById('errorBanner');
+            eb.textContent = msg;
+            eb.classList.remove('hidden');
+            setTimeout(() => eb.classList.add('hidden'), 8000);
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', async () => {
+            const subject = document.getElementById('subjectSelect').value;
+            const topicDropdown = document.getElementById('topicSelect').value;
+            const customTopic = document.getElementById('customTopic').value.trim();
+            const topic = customTopic || topicDropdown || '';
+            const questionCount = parseInt(document.getElementById('countSelect').value, 10);
+            const difficulty = document.getElementById('difficultySelect').value;
+
+            if (!subject) { showError('Please select a subject.'); return; }
+
+            const btn = document.getElementById('generateBtn');
+            const loadingBox = document.getElementById('loadingBox');
+            btn.disabled = true; btn.textContent = 'Generating…';
+            loadingBox.classList.remove('hidden');
+            document.getElementById('errorBanner').classList.add('hidden');
+
+            try {
+                const r = await fetch(`${API_BASE}/api/worksheet/generate`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ subject, topic, questionCount, difficulty })
+                });
+                const data = await r.json();
+                if (!r.ok) {
+                    if (data.freeTierExhausted) {
+                        showError('You\'ve hit your free daily limit. Upgrade to Pro for unlimited worksheets.');
+                    } else {
+                        showError(data.error || 'Generation failed. Please retry.');
+                    }
+                    return;
+                }
+                lastWorksheet = data;
+                renderWorksheet(data);
+            } catch (e) {
+                showError('Network error. Please retry.');
+            } finally {
+                btn.disabled = false; btn.textContent = 'Generate Worksheet';
+                loadingBox.classList.add('hidden');
+            }
+        });
+
+        function renderWorksheet(data) {
+            const wsEl = document.getElementById('worksheet');
+            const akEl = document.getElementById('answerKey');
+            const dateStr = new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            let qHtml = '';
+            data.questions.forEach((q, i) => {
+                const num = q.number || (i + 1);
+                const marks = q.marks || 1;
+                const head = `Q${num}. <span style="float:right;color:#666;font-weight:500;">[${marks} mark${marks !== 1 ? 's' : ''}]</span>`;
+                let body = `<div class="ws-q-text">${escapeHtml(q.question || '')}</div>`;
+                if (q.type === 'mc' && Array.isArray(q.options)) {
+                    body += '<ul class="ws-options">' + q.options.map(o => `<li>○ ${escapeHtml(o)}</li>`).join('') + '</ul>';
+                } else if (q.type === 'extended' || marks >= 5) {
+                    body += '<div class="ws-answerbox"></div>';
+                } else {
+                    const lines = Math.max(2, Math.min(6, marks * 2));
+                    for (let j = 0; j < lines; j++) body += '<div class="ws-answerline"></div>';
+                }
+                qHtml += `<div class="ws-q"><div class="ws-q-head">${head}</div>${body}</div>`;
+            });
+
+            wsEl.innerHTML = `
+                <h1>${escapeHtml(data.title || (data.subjectName + ' Worksheet'))}</h1>
+                <div class="ws-meta">${escapeHtml(data.subjectName)} • ${escapeHtml(data.topic)} • Total: ${data.totalMarks} marks • ${escapeHtml(data.estimatedTime)}</div>
+                <div class="ws-instructions"><strong>Instructions:</strong> ${escapeHtml(data.instructions || '')}</div>
+                <div class="ws-namebox"><span><strong>Name:</strong> ____________________</span><span><strong>Date:</strong> ${dateStr}</span><span><strong>Mark:</strong> ____ / ${data.totalMarks}</span></div>
+                ${qHtml}
+            `;
+
+            let akHtml = '<h1>Answer Key</h1>';
+            data.questions.forEach((q, i) => {
+                const num = q.number || (i + 1);
+                akHtml += `<div class="ak-q"><div class="ak-q-head">Q${num} (${q.marks || 1} mark${(q.marks || 1) !== 1 ? 's' : ''}) — Answer:</div>`;
+                akHtml += `<div class="ak-answer">${escapeHtml(q.answer || '')}</div>`;
+                if (q.explanation) akHtml += `<div class="ak-explain">${escapeHtml(q.explanation)}</div>`;
+                akHtml += '</div>';
+            });
+            akEl.innerHTML = akHtml;
+
+            document.getElementById('toolbarInfo').innerHTML =
+                `<strong>${escapeHtml(data.subjectName)}</strong> — ${escapeHtml(data.topic)} • ${data.questions.length} questions • ${data.totalMarks} marks`;
+
+            document.getElementById('resultArea').classList.remove('hidden');
+            applyAnswerKeyVisibility();
+            window.scrollTo({ top: document.getElementById('resultArea').offsetTop - 20, behavior: 'smooth' });
+        }
+
+        function applyAnswerKeyVisibility() {
+            const show = document.getElementById('toggleAnswers').checked;
+            document.getElementById('answerKey').style.display = show ? 'block' : 'none';
+        }
+        document.getElementById('toggleAnswers').addEventListener('change', applyAnswerKeyVisibility);
+
+        document.getElementById('newBtn').addEventListener('click', () => {
+            document.getElementById('resultArea').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+        document.getElementById('pdfBtn').addEventListener('click', () => {
+            if (!lastWorksheet) return;
+            const includeAnswers = document.getElementById('toggleAnswers').checked;
+            const wrap = document.createElement('div');
+            wrap.appendChild(document.getElementById('worksheet').cloneNode(true));
+            if (includeAnswers) wrap.appendChild(document.getElementById('answerKey').cloneNode(true));
+            const filename = (lastWorksheet.title || 'worksheet').replace(/[^a-z0-9]+/gi, '_').toLowerCase() + '.pdf';
+            const opt = {
+                margin: [12, 12, 14, 12],
+                filename,
+                image: { type: 'jpeg', quality: 0.95 },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['css', 'legacy'] }
+            };
+            const btn = document.getElementById('pdfBtn');
+            const orig = btn.textContent; btn.textContent = 'Building PDF…'; btn.disabled = true;
+            html2pdf().set(opt).from(wrap).save().then(() => {
+                btn.textContent = orig; btn.disabled = false;
+            }).catch(() => {
+                btn.textContent = orig; btn.disabled = false;
+                showError('PDF export failed. Try the Print button instead.');
+            });
+        });
+
+        init();
+    </script>
+</body>
+</html>

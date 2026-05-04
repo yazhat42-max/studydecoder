@@ -7359,6 +7359,155 @@ app.get('/api/exam/limits', async (req, res) => {
     });
 });
 
+// ==================== WORKSHEET GENERATOR ====================
+// Generates a printable worksheet (questions + answer key) based on subject + topic
+app.post('/api/worksheet/generate', express.json(), async (req, res) => {
+    if (!req.session?.userId) {
+        return res.status(401).json({ error: 'Authentication required' });
+    }
+    const user = getUser(req.session.userId);
+    if (!user) return res.status(401).json({ error: 'User not found' });
+
+    const hasFull = hasFullAccess(user);
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'worksheet-generator');
+    if (!hasFull && !canUseFree) {
+        return res.status(403).json({
+            error: 'Daily worksheet limit reached',
+            freeTierExhausted: true,
+            botType: 'worksheet-generator'
+        });
+    }
+
+    const { subject, topic, questionCount, difficulty } = req.body || {};
+    if (!subject) return res.status(400).json({ error: 'Subject is required' });
+
+    const subjectMeta = resolveSubjectMeta(subject);
+    const subjectName = subjectMeta.name || subject;
+    const isJunior = !!subjectMeta.isJunior;
+
+    const count = Math.max(5, Math.min(25, parseInt(questionCount, 10) || 10));
+    const diff = ['easy', 'standard', 'hard'].includes(difficulty) ? difficulty : 'standard';
+    const topicLabel = (topic && String(topic).trim()) ? String(topic).trim() : 'All topics';
+
+    recordBotStat('worksheet-generator');
+    recordUserBotUsage(req.session.userId, 'worksheet-generator');
+
+    // Load syllabus context (topic-focused if given)
+    const syllabusFull = getSyllabusContent(subject, isJunior, topicLabel) || '';
+    const syllabusContext = syllabusFull.length > 60000
+        ? syllabusFull.substring(0, 60000)
+        : syllabusFull;
+
+    const aiSettings = getAISettings(user);
+    const isGpt5 = aiSettings.model.startsWith('gpt-5');
+    const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+
+    const levelLabel = isJunior ? 'NSW Years 7-10' : 'NSW HSC (Year 11-12)';
+    const gradeTarget = isJunior ? 'A-grade' : 'Band 6';
+    const difficultyGuide = diff === 'easy'
+        ? 'foundational recall and direct application — accessible to most students'
+        : diff === 'hard'
+        ? 'challenging extension/synthesis questions targeting top-band performance'
+        : 'mixed difficulty matching a typical school assessment task';
+
+    const systemPrompt = `You are an experienced ${levelLabel} ${subjectName} teacher creating a printable classroom worksheet.
+
+OUTPUT: Return ONLY valid JSON in this exact shape:
+{
+  "title": "<short worksheet title>",
+  "instructions": "<1-2 sentence student instructions>",
+  "totalMarks": <integer>,
+  "estimatedTime": "<e.g. '30 minutes'>",
+  "questions": [
+    {
+      "number": 1,
+      "type": "mc" | "short" | "extended",
+      "marks": <integer>,
+      "question": "<question text>",
+      "options": ["A) ...","B) ...","C) ...","D) ..."],   // only for mc, otherwise omit
+      "answer": "<full ${gradeTarget} answer or correct option letter for mc>",
+      "explanation": "<1-3 sentences explaining the answer / marking notes>"
+    }
+  ]
+}
+
+REQUIREMENTS:
+- Generate exactly ${count} questions covering "${topicLabel}" within ${subjectName}.
+- Use a mix of question types: roughly 30% multiple-choice (1 mark each), 50% short-answer (2-4 marks), 20% extended-response (5-8 marks). Adjust if topic is highly mathematical or highly written.
+- Difficulty profile: ${difficultyGuide}.
+- Ground every question in the syllabus content provided below. Do not invent content outside it.
+- Every question MUST have a complete worked answer in the "answer" field — written at ${gradeTarget} standard.
+- For mathematics, show working in the answer field using plain text (no LaTeX).
+- Use clear, age-appropriate language for ${levelLabel} students.
+- Number questions sequentially starting at 1.
+- Output ONLY the JSON object — no commentary, no markdown fences.
+
+=== ${subjectName.toUpperCase()} SYLLABUS REFERENCE ===
+${syllabusContext || '(No syllabus content available — rely on standard curriculum knowledge for this subject and topic.)'}
+=== END SYLLABUS ===`;
+
+    const userPrompt = `Generate a ${diff} difficulty worksheet on "${topicLabel}" for ${subjectName} (${levelLabel}). ${count} questions total. Include full answer key.`;
+
+    const requestBody = {
+        model: aiSettings.model,
+        messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+        ],
+        response_format: { type: 'json_object' },
+        [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
+    };
+    if (!isGpt5) requestBody.temperature = 0.6;
+
+    try {
+        const r = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
+            body: JSON.stringify(requestBody)
+        });
+        if (!r.ok) {
+            const err = await r.json().catch(() => ({}));
+            console.error('Worksheet generate OpenAI error:', err);
+            return res.status(500).json({ error: 'Could not generate worksheet right now. Please retry.' });
+        }
+        const data = await r.json();
+        let reply = data.choices?.[0]?.message?.content || '';
+        reply = reply.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
+        const js = reply.indexOf('{');
+        const je = reply.lastIndexOf('}');
+        if (js !== -1 && je > js) reply = reply.substring(js, je + 1);
+
+        let parsed;
+        try { parsed = JSON.parse(reply); }
+        catch (e) {
+            console.error('Worksheet parse error:', e.message, 'raw:', reply.substring(0, 400));
+            return res.status(500).json({ error: 'Worksheet generation failed (parse error). Please retry.' });
+        }
+
+        if (!parsed.questions || !Array.isArray(parsed.questions) || parsed.questions.length === 0) {
+            return res.status(500).json({ error: 'Worksheet generation returned no questions. Please retry.' });
+        }
+
+        // Compute totalMarks defensively
+        const total = parsed.questions.reduce((s, q) => s + (parseInt(q.marks, 10) || 0), 0);
+
+        return res.json({
+            title: parsed.title || `${subjectName} Worksheet — ${topicLabel}`,
+            instructions: parsed.instructions || 'Answer all questions. Show your working where appropriate.',
+            subjectName,
+            topic: topicLabel,
+            difficulty: diff,
+            isJunior,
+            totalMarks: parsed.totalMarks || total,
+            estimatedTime: parsed.estimatedTime || `${Math.max(15, count * 3)} minutes`,
+            questions: parsed.questions
+        });
+    } catch (err) {
+        console.error('Worksheet generate exception:', err);
+        return res.status(500).json({ error: 'Worksheet generation failed. Please retry.' });
+    }
+});
+
 // OpenAI Chat endpoint (secured - requires authentication, allows free tier with limits)
 app.post('/api/chat/:botType', express.json(), async (req, res) => {
     // Require authentication
