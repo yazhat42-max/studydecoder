@@ -685,6 +685,39 @@
             .demo-game-stats { flex-wrap:wrap; }
             .onboard-subjects-grid { grid-template-columns:1fr; }
         }
+
+        /* ============ FAQ Section ============ */
+        .faq-section { position: relative; padding: 6rem 5% 7rem; border-top: 1px solid var(--border); overflow: hidden; background: var(--bg); }
+        .faq-bg-glow { position: absolute; top: -120px; left: 50%; transform: translateX(-50%); width: 720px; height: 720px; background: radial-gradient(circle, rgba(108,99,255,0.18) 0%, rgba(139,92,246,0.08) 35%, transparent 70%); filter: blur(20px); pointer-events: none; z-index: 0; }
+        .faq-inner { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; }
+        .faq-header { text-align: center; margin-bottom: 3rem; }
+        .faq-eyebrow { display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary); background: rgba(108,99,255,0.10); border: 1px solid rgba(108,99,255,0.28); padding: 6px 14px; border-radius: 999px; margin-bottom: 1.1rem; }
+        .faq-title { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; margin: 0 0 0.8rem; color: var(--text); letter-spacing: -0.02em; line-height: 1.1; }
+        .faq-sub { color: var(--text-muted); font-size: 1rem; max-width: 520px; margin: 0 auto; line-height: 1.6; }
+        .faq-list { display: flex; flex-direction: column; gap: 14px; }
+        .faq-item { background: linear-gradient(180deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 100%); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease, background .25s ease; }
+        .faq-item:hover { border-color: rgba(108,99,255,0.45); transform: translateY(-1px); box-shadow: 0 10px 30px rgba(108,99,255,0.08); }
+        .faq-item[open] { border-color: rgba(108,99,255,0.55); background: linear-gradient(180deg, rgba(108,99,255,0.08) 0%, rgba(139,92,246,0.03) 100%); box-shadow: 0 14px 40px rgba(108,99,255,0.12); }
+        .faq-item summary { list-style: none; cursor: pointer; padding: 1.15rem 1.4rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; user-select: none; }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary::marker { display: none; content: ''; }
+        .faq-q { font-size: 1.02rem; font-weight: 600; color: var(--text); line-height: 1.4; }
+        .faq-icon { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; background: rgba(108,99,255,0.12); border: 1px solid rgba(108,99,255,0.3); position: relative; transition: transform .3s ease, background .25s ease; }
+        .faq-icon::before, .faq-icon::after { content: ""; position: absolute; top: 50%; left: 50%; width: 12px; height: 2px; background: var(--primary); border-radius: 2px; transform: translate(-50%, -50%); transition: transform .3s ease, opacity .25s ease; }
+        .faq-icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+        .faq-item[open] .faq-icon { background: rgba(108,99,255,0.25); transform: rotate(180deg); }
+        .faq-item[open] .faq-icon::after { opacity: 0; }
+        .faq-a { padding: 0 1.4rem 1.3rem; color: var(--text-sec); font-size: 0.96rem; line-height: 1.65; animation: faqFade .35s ease; }
+        @keyframes faqFade { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+        .faq-cta { text-align: center; margin-top: 2.4rem; color: var(--text-muted); font-size: 0.95rem; }
+        .faq-cta a { color: var(--primary); font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(108,99,255,0.4); padding-bottom: 1px; transition: color .2s ease, border-color .2s ease; }
+        .faq-cta a:hover { color: #8b5cf6; border-color: #8b5cf6; }
+        @media (max-width: 600px) {
+            .faq-section { padding: 4rem 5% 5rem; }
+            .faq-item summary { padding: 1rem 1.1rem; }
+            .faq-q { font-size: 0.95rem; }
+            .faq-a { padding: 0 1.1rem 1.1rem; font-size: 0.92rem; }
+        }
     </style>
     <script src="/ui-helpers.js" defer></script>
 </head>
