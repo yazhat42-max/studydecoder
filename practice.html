@@ -3474,13 +3474,20 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             try {
                 const origQ = examQuestions.find(q => q.number === questionNumber);
                 const answer = examAnswers[questionNumber] || '';
-                const res = await fetch(`${API_BASE}/api/ask`, {
+                const explainPrompt = `You are an HSC marker. Explain in plain language (2-3 short paragraphs) why the student received the mark they did, what they should have written to get full marks, and one specific improvement tip.\n\nQuestion (${origQ?.marks || '?'} marks): ${origQ?.question || ''}\n\nStudent answer: ${answer}`;
+                const res = await fetch(`${API_BASE}/api/chat/practice`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
-                    body: JSON.stringify({ subject: examSubjectId, message: `You are an HSC marker. Explain in plain language (2-3 short paragraphs) why the student received the mark they did, what they should have written to get full marks, and one specific improvement tip.\n\nQuestion (${origQ?.marks || '?'} marks): ${origQ?.question || ''}\n\nStudent answer: ${answer}`, mode: 'explain' })
+                    body: JSON.stringify({ subject: examSubjectId, messages: [{ role: 'user', content: explainPrompt }] })
                 });
                 const rdata = await res.json();
-                box.innerHTML = `<div style="font-size:0.85rem;color:#8b949e;line-height:1.65;background:rgba(79,140,255,0.06);border:1px solid rgba(79,140,255,0.15);border-radius:8px;padding:12px 14px;">${(rdata.reply || rdata.message || '').replace(/\n/g,'<br>')}</div>`;
-                box.style.display = 'block'; btn.textContent = '✕ Hide explanation';
+                const replyText = ((rdata && (rdata.reply || rdata.message)) || '').trim();
+                if (!replyText) {
+                    box.innerHTML = '<div style="font-size:0.82rem;color:#ef4444;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:10px 14px;">No explanation came back — try again in a moment.</div>';
+                    box.style.display = 'block'; btn.textContent = '💬 Why did I get this mark?';
+                } else {
+                    box.innerHTML = `<div style="font-size:0.85rem;color:#8b949e;line-height:1.65;background:rgba(79,140,255,0.06);border:1px solid rgba(79,140,255,0.15);border-radius:8px;padding:12px 14px;">${replyText.replace(/\n/g,'<br>')}</div>`;
+                    box.style.display = 'block'; btn.textContent = '✕ Hide explanation';
+                }
             } catch {
                 box.innerHTML = '<div style="font-size:0.82rem;color:#ef4444;padding:8px;">Could not load — try again.</div>';
                 box.style.display = 'block'; btn.textContent = '💬 Why did I get this mark?';
