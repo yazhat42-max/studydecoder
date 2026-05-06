@@ -2059,7 +2059,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         }
 
         function exitExam(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             if (examData && examQuestions.length > 0 && !examTimeExpired) {
                 if (!confirm('Are you sure you want to exit? Your exam progress will be lost.')) return;
             }
@@ -2071,9 +2071,12 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             examAnswers = {};
             examQuestions = [];
             const timerEl = document.getElementById('examTimer');
-            timerEl.classList.remove('warning', 'critical');
-            document.getElementById('examView').classList.remove('active');
+            if (timerEl) timerEl.classList.remove('warning', 'critical');
+            const examViewEl = document.getElementById('examView');
+            if (examViewEl) examViewEl.classList.remove('active');
             setExamPrintVisible(false);
+            // Send the user back to the homepage so they don't land on a blank screen
+            window.location.href = 'index.html';
         }
 
         function stopExamTimer() {
