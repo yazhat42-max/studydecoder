@@ -1716,8 +1716,8 @@ const contactLimiter = rateLimit({
     message: { success: false, error: 'Too many messages. Please try again later.' }
 });
 
-app.post('/api/contact', contactLimiter, (req, res) => {
-    const { name, email, subject, message } = req.body;
+app.post('/api/contact', contactLimiter, express.json({ limit: '25kb' }), (req, res) => {
+    const { name, email, subject, message } = req.body || {};
     if (!name || !email || !subject || !message) {
         return res.status(400).json({ success: false, error: 'All fields are required' });
     }
