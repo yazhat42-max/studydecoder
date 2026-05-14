@@ -734,6 +734,7 @@
             <!-- demo removed -->
             <li><a href="about.html">About</a></li>
             <li><a href="#pricing">Pricing</a></li>
+            <li><a href="teacher-pricing.html">For Teachers</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li id="navAdminLink" style="display: none;"><a href="admin.html" style="color: #f59e0b;">⚙️ Admin</a></li>
             <li id="navSignIn"><a href="login.html" class="btn btn-primary">Sign In</a></li>
@@ -1317,6 +1318,74 @@
         </div>
     </section>
 
+    <!-- Demo: Conversational Flashcards -->
+    <section class="showcase showcase-reverse" id="flashcardsDemo">
+        <div class="showcase-inner">
+            <div class="showcase-text reveal-left">
+                <div class="showcase-label">New — Spaced Repetition</div>
+                <h2>Conversational <span class="highlight">Flashcards</span></h2>
+                <p>Not flip cards. Each card is a short Socratic exchange — the AI asks, you explain in your own words, and it grades you and pushes a hint if you're close. An adaptive spaced-repetition engine schedules every review and builds a mastery map of your whole syllabus.</p>
+                <div class="showcase-pills">
+                    <span>Explain, Don't Memorise</span>
+                    <span>Adaptive SR Engine</span>
+                    <span>Syllabus Mastery Map</span>
+                    <span>AI-Built Decks</span>
+                </div>
+                <a href="flashcards.html" class="btn btn-primary btn-glow">Open Flashcards →</a>
+            </div>
+            <div class="showcase-demo reveal-right">
+                <div class="demo-window">
+                    <div class="demo-topbar">
+                        <div class="demo-dots"><span></span><span></span><span></span></div>
+                        <span class="demo-title">Flashcards — Biology</span>
+                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                    </div>
+                    <div class="demo-content">
+                        <div class="demo-ws-output">
+                            <div class="demo-ws-q"><strong>Card:</strong> Why does an enzyme stop working when the temperature rises too high?</div>
+                            <div class="demo-ws-q" style="color:#8899a6;"><em>Your answer:</em> The shape changes so it can't bind…</div>
+                            <div class="demo-ws-hint">✅ Partial — nudge: name what happens to the active site. Next review in 2 days.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo: Teacher Mode / Classroom -->
+    <section class="showcase" id="teacherDemo">
+        <div class="showcase-inner">
+            <div class="showcase-text reveal-left">
+                <div class="showcase-label">For Teachers</div>
+                <h2>Classroom <span class="highlight">Mode</span></h2>
+                <p>One teacher seat unlocks full Study Decoder access for every student in your class — free while they're linked. Create a class, share a join code, assign content, and watch a live progress dashboard with per-student mastery maps. Plus teacher-only AI tools: lesson plans, bulk worksheets and rubric marking.</p>
+                <div class="showcase-pills">
+                    <span>$19/mo · Unlimited Students</span>
+                    <span>Class Progress Dashboard</span>
+                    <span>Lesson Plan AI</span>
+                    <span>Rubric Marker</span>
+                </div>
+                <a href="teacher-pricing.html" id="teacherCtaLink" class="btn btn-primary btn-glow">For Teachers — see the plan →</a>
+            </div>
+            <div class="showcase-demo reveal-right">
+                <div class="demo-window">
+                    <div class="demo-topbar">
+                        <div class="demo-dots"><span></span><span></span><span></span></div>
+                        <span class="demo-title">Teacher Dashboard</span>
+                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                    </div>
+                    <div class="demo-content">
+                        <div class="demo-ws-output">
+                            <div class="demo-ws-q"><strong>Year 12 Chemistry</strong> · 26 students · join code <strong>K7M2QP</strong></div>
+                            <div class="demo-ws-q">Module 5: Equilibrium — class avg mastery <span style="color:#eab308;">61%</span></div>
+                            <div class="demo-ws-hint">🟢 18 solid · 🟡 6 building · 🔴 2 need support</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Demo: Notes Transcriber -->
     <section class="showcase" id="notesDemo">
         <div class="showcase-inner">
@@ -1687,6 +1756,7 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="#pricing">Pricing</a></li>
+            <li><a href="teacher-pricing.html">For Teachers</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
@@ -1832,7 +1902,16 @@
         document.getElementById('navSignIn').style.display = 'none';
         document.getElementById('navUserMenu').style.display = 'flex';
         document.getElementById('navUserName').textContent = user.name || user.email.split('@')[0];
-        
+
+        // Teacher accounts: swap the Classroom Mode tile CTA to their dashboard
+        if (user.role === 'teacher') {
+            var teacherCta = document.getElementById('teacherCtaLink');
+            if (teacherCta) {
+                teacherCta.href = 'teacher-dashboard.html';
+                teacherCta.textContent = 'Open Teacher Dashboard →';
+            }
+        }
+
         // Top banner: trial countdown takes priority; then day pass/deal for others
         var banner = document.getElementById('saleBanner');
         var strip = document.getElementById('daypassQuickStrip');

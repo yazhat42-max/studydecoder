@@ -51,7 +51,10 @@ const config = {
         secretKey: process.env.STRIPE_SECRET_KEY,
         webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
         monthlyPriceId: process.env.STRIPE_MONTHLY_PRICE_ID || 'price_monthly',
-        yearlyPriceId: process.env.STRIPE_YEARLY_PRICE_ID || 'price_yearly'
+        yearlyPriceId: process.env.STRIPE_YEARLY_PRICE_ID || 'price_yearly',
+        // Placeholder for a future real Stripe Price object for the teacher seat.
+        // Until that migration, checkout builds the teacher plan with inline price_data.
+        teacherPriceId: process.env.STRIPE_TEACHER_PRICE_ID || 'price_teacher'
     },
     bcryptRounds: 12
 };
@@ -98,6 +101,18 @@ const BOTSTATS_FILE = path.join(DB_PATH, 'botstats.json');
 const FREEUSAGE_FILE = path.join(DB_PATH, 'free-usage.json');
 const EXAMUSAGE_FILE = path.join(DB_PATH, 'exam-usage.json');
 
+// ── Classroom Mode (teacher) stores ──
+const CLASSES_FILE = path.join(DB_PATH, 'classes.json');
+const CLASS_MEMBERS_FILE = path.join(DB_PATH, 'class-members.json');
+const ASSIGNMENTS_FILE = path.join(DB_PATH, 'assignments.json');
+const ASSIGNMENT_SUBMISSIONS_FILE = path.join(DB_PATH, 'assignment-submissions.json');
+
+// ── Conversational Flashcards stores ──
+const DECKS_FILE = path.join(DB_PATH, 'decks.json');
+const CARDS_FILE = path.join(DB_PATH, 'cards.json');
+const CARD_REVIEWS_FILE = path.join(DB_PATH, 'card-reviews.json');
+const MASTERY_FILE = path.join(DB_PATH, 'mastery.json');
+
 // Ensure data directory exists
 if (!fs.existsSync(DB_PATH)) {
     fs.mkdirSync(DB_PATH, { recursive: true });
@@ -142,7 +157,8 @@ const FREE_TIER_CONFIG = {
     specialLimits: {
         'worksheet': 1,          // 1 worksheet decode per day
         'notes-transcriber': 1,  // 1 notes transcription per day
-        'learn-irl': 1           // 1 learn IRL session per day
+        'learn-irl': 1,          // 1 learn IRL session per day
+        'flashcards': 3          // 3 conversational flashcard reviews per day
     },
     enabled: true
 };
@@ -434,13 +450,46 @@ function getUserRole(email) {
         return 'lifetime';
     }
     // Check if user redeemed OG code
-    const ogRedemption = ogCodesState.redemptions.find(r => 
+    const ogRedemption = ogCodesState.redemptions.find(r =>
         r.email && r.email.toLowerCase() === email.toLowerCase()
     );
     if (ogRedemption) {
         return 'og_tester';
     }
+    // Teacher seat — a separate paid subscription. Distinct from `subscribed`
+    // so a single account can be both a paying student and a teacher.
+    const teacherUser = email ? getUserByEmail(email) : null;
+    if (teacherUser && hasActiveTeacherSeat(teacherUser)) {
+        return 'teacher';
+    }
     return 'user';
+}
+
+/**
+ * True when a user record holds an active (non-expired) teacher seat.
+ */
+function hasActiveTeacherSeat(user) {
+    if (!user || user.teacherSubscribed !== true) return false;
+    if (!user.teacherExpiresAt) return false;
+    const exp = new Date(user.teacherExpiresAt).getTime();
+    return Number.isFinite(exp) && exp > Date.now();
+}
+
+/**
+ * True when `userId` is a student linked to at least one non-archived class
+ * whose teacher currently holds an active teacher seat. This is the single
+ * switch that grants every linked student full access to Study Decoder.
+ */
+function isLinkedToActiveTeacher(userId) {
+    if (!userId || !Array.isArray(db.classMembers)) return false;
+    for (const m of db.classMembers) {
+        if (m.studentUserId !== userId || m.removedAt) continue;
+        const cls = db.classes[m.classId];
+        if (!cls || cls.archivedAt) continue;
+        const teacher = db.users[cls.teacherUserId];
+        if (teacher && hasActiveTeacherSeat(teacher)) return true;
+    }
+    return false;
 }
 
 function hasFullAccess(user) {
@@ -456,6 +505,8 @@ function hasFullAccess(user) {
     }
     // Active subscription
     if (user.subscribed === true) return true;
+    // Student linked to a class whose teacher holds an active teacher seat
+    if (isLinkedToActiveTeacher(user.userId)) return true;
     return false;
 }
 
@@ -468,8 +519,40 @@ const db = {
     users: loadDB(USERS_FILE, {}),
     payments: loadDB(PAYMENTS_FILE, []),
     reviews: loadDB(REVIEWS_FILE, {}),
-    botStats: loadDB(BOTSTATS_FILE, {})
+    botStats: loadDB(BOTSTATS_FILE, {}),
+    // ── Classroom Mode ──
+    classes: loadDB(CLASSES_FILE, {}),                       // keyed by classId
+    classMembers: loadDB(CLASS_MEMBERS_FILE, []),            // array of memberships
+    assignments: loadDB(ASSIGNMENTS_FILE, {}),               // keyed by assignmentId
+    assignmentSubmissions: loadDB(ASSIGNMENT_SUBMISSIONS_FILE, []), // array
+    // ── Conversational Flashcards ──
+    decks: loadDB(DECKS_FILE, {}),                           // keyed by deckId
+    cards: loadDB(CARDS_FILE, {}),                           // keyed by cardId
+    cardReviews: loadDB(CARD_REVIEWS_FILE, {}),              // keyed by `${userId}_${cardId}`
+    mastery: loadDB(MASTERY_FILE, {})                        // keyed by `${userId}::${dotPointRef}`
 };
+
+// SR engine — pure SM-2 helper, no I/O. See flashcard-sr.js.
+const SR = require('./flashcard-sr');
+
+/**
+ * Persist the classroom + flashcard stores. Debounced separately from
+ * scheduleSave() so the hot user-save path isn't slowed by extra writes.
+ */
+let classroomSaveTimeout = null;
+function scheduleClassroomSave() {
+    if (classroomSaveTimeout) clearTimeout(classroomSaveTimeout);
+    classroomSaveTimeout = setTimeout(() => {
+        saveDB(CLASSES_FILE, db.classes);
+        saveDB(CLASS_MEMBERS_FILE, db.classMembers);
+        saveDB(ASSIGNMENTS_FILE, db.assignments);
+        saveDB(ASSIGNMENT_SUBMISSIONS_FILE, db.assignmentSubmissions);
+        saveDB(DECKS_FILE, db.decks);
+        saveDB(CARDS_FILE, db.cards);
+        saveDB(CARD_REVIEWS_FILE, db.cardReviews);
+        saveDB(MASTERY_FILE, db.mastery);
+    }, 1000);
+}
 
 // ── SEED REVIEWS ──
 // Fixed-ID seeded reviews — stored as normal approved reviews, deletable from admin panel.
@@ -562,6 +645,14 @@ process.on('exit', () => {
     saveDB(PAYMENTS_FILE, db.payments);
     saveDB(REVIEWS_FILE, db.reviews);
     saveDB(BOTSTATS_FILE, db.botStats);
+    saveDB(CLASSES_FILE, db.classes);
+    saveDB(CLASS_MEMBERS_FILE, db.classMembers);
+    saveDB(ASSIGNMENTS_FILE, db.assignments);
+    saveDB(ASSIGNMENT_SUBMISSIONS_FILE, db.assignmentSubmissions);
+    saveDB(DECKS_FILE, db.decks);
+    saveDB(CARDS_FILE, db.cards);
+    saveDB(CARD_REVIEWS_FILE, db.cardReviews);
+    saveDB(MASTERY_FILE, db.mastery);
 });
 
 // ==================== MIDDLEWARE ====================
@@ -737,6 +828,9 @@ app.use((req, res, next) => {
         express.raw({ type: 'application/json' })(req, res, next);
     } else if (req.originalUrl === '/api/chat/worksheet' || req.originalUrl === '/api/chat/notes-transcriber') {
         express.json({ limit: '25mb' })(req, res, next);
+    } else if (req.originalUrl.startsWith('/api/teacher/ai/')) {
+        // Rubric marker / bulk worksheet builder accept pasted essays + rubrics
+        express.json({ limit: '200kb' })(req, res, next);
     } else {
         express.json({ limit: '10kb' })(req, res, next);
     }
@@ -1032,20 +1126,29 @@ function getUserByEmail(email) {
 function upsertUser(userId, data) {
     const existing = db.users[userId] || {};
     const email = data.email || existing.email;
-    const role = getUserRole(email);
-    
+
     db.users[userId] = {
+        // Preserve every existing field (streak, botUsage, chatHistory,
+        // dayPassExpiry, onboarding flags, …) — only the keys below are
+        // explicitly managed. Without this spread, calling upsertUser for an
+        // auth/billing change silently wiped unrelated user state.
+        ...existing,
         userId,
         email: email,
         name: data.name || existing.name || email?.split('@')[0],
         passwordHash: data.passwordHash || existing.passwordHash,
         provider: data.provider || existing.provider || 'email',
-        role: role,
+        role: existing.role || 'user',
         stripeCustomerId: data.stripeCustomerId || existing.stripeCustomerId,
         subscribed: data.subscribed !== undefined ? data.subscribed : (existing.subscribed || false),
         plan: data.plan !== undefined ? data.plan : existing.plan,
         subscribedAt: data.subscribedAt || existing.subscribedAt,
         expiresAt: data.expiresAt !== undefined ? data.expiresAt : existing.expiresAt,
+        // Teacher seat — a separate Stripe subscription, kept independent of
+        // the student-facing `subscribed` field.
+        teacherSubscribed: data.teacherSubscribed !== undefined ? data.teacherSubscribed : (existing.teacherSubscribed || false),
+        teacherExpiresAt: data.teacherExpiresAt !== undefined ? data.teacherExpiresAt : existing.teacherExpiresAt,
+        teacherSubscribedAt: data.teacherSubscribedAt || existing.teacherSubscribedAt,
         emailVerified: data.emailVerified !== undefined ? data.emailVerified : (existing.emailVerified || false),
         preferences: data.preferences || existing.preferences || {},
         createdAt: existing.createdAt || new Date().toISOString(),
@@ -1055,6 +1158,9 @@ function upsertUser(userId, data) {
         resetToken: data.resetToken !== undefined ? data.resetToken : existing.resetToken,
         resetExpiry: data.resetExpiry !== undefined ? data.resetExpiry : existing.resetExpiry
     };
+    // Recompute role *after* merging — getUserRole inspects the just-merged
+    // teacher fields (it reads the live db.users record by email).
+    db.users[userId].role = getUserRole(email);
     scheduleSave();
     return db.users[userId];
 }
@@ -1139,6 +1245,28 @@ function requireAuth(req, res, next) {
         return res.status(401).json({ error: 'User not found' });
     }
 
+    req.user = checkSubscriptionStatus(user);
+    // Cache the linked-teacher lookup once per request so handlers + repeated
+    // hasFullAccess() calls don't each re-walk class-members.json.
+    req.linkedTeacher = isLinkedToActiveTeacher(req.user.userId);
+    next();
+}
+
+/**
+ * Teacher-only middleware — modelled on requireOwner. Gates the classroom
+ * endpoints and the teacher-specific AI tools.
+ */
+function requireTeacher(req, res, next) {
+    if (!req.session?.userId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+    }
+    const user = getUser(req.session.userId);
+    if (!user) {
+        return res.status(401).json({ error: 'User not found' });
+    }
+    if (getUserRole(user.email) !== 'teacher') {
+        return res.status(403).json({ error: 'Teacher seat required', code: 'TEACHER_REQUIRED' });
+    }
     req.user = checkSubscriptionStatus(user);
     next();
 }
@@ -2148,6 +2276,9 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         preferences: user.preferences || {},
         dayPassActive: hasDayPassActive(user),
         dayPassExpiry: hasDayPassActive(user) ? user.dayPassExpiry : null,
+        teacherSubscribed: hasActiveTeacherSeat(user),
+        teacherExpiresAt: hasActiveTeacherSeat(user) ? user.teacherExpiresAt : null,
+        linkedToTeacher: !!req.linkedTeacher,
         streak: user.streak || null,
         freeTier: !hasFull ? {
             enabled: FREE_TIER_CONFIG.enabled,
@@ -2205,6 +2336,820 @@ app.post('/api/streak/sync', requireAuth, express.json(), (req, res) => {
         scheduleSave();
     }
     res.json({ ok: true, streak: user.streak });
+});
+
+/* ====================================================================== *
+ *  CLASSROOM MODE  +  CONVERSATIONAL FLASHCARDS                          *
+ *  (server-authoritative streak, teacher classes/assignments,            *
+ *   conversational decks, SM-2 review loop, mastery map, teacher AI)     *
+ * ====================================================================== */
+
+// ── shared helpers ──
+
+/**
+ * Server-authoritative streak day-rollover. Mirrors the old client logic in
+ * streak.js but runs in ONE place so two devices with divergent localStorage
+ * can't make the displayed streak flicker. The server streak only ever moves
+ * forward within normal use.
+ */
+function computeStreakTrack(prev) {
+    const today = _getToday();
+    const s = { count: 0, lastDate: '', shields: 0, shieldsEarned: 0, totalDays: 0, theme: 'default', milestonesShown: [] };
+    if (prev && typeof prev === 'object') {
+        s.count = Number(prev.count) || 0;
+        s.lastDate = prev.lastDate || '';
+        s.shields = Number(prev.shields) || 0;
+        s.shieldsEarned = Number(prev.shieldsEarned) || 0;
+        s.totalDays = Number(prev.totalDays) || 0;
+        s.theme = prev.theme || 'default';
+        s.milestonesShown = Array.isArray(prev.milestonesShown) ? prev.milestonesShown.slice() : [];
+    }
+    if (s.lastDate === today) {
+        return { streak: s, isNew: false, newMilestone: null, shieldEarned: false, shieldUsed: false };
+    }
+    const yday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+    const twoAgo = new Date(Date.now() - 2 * 864e5).toISOString().slice(0, 10);
+    let shieldUsed = false;
+    if (s.lastDate === yday) {
+        s.count += 1;
+    } else if (s.lastDate === twoAgo && s.shields > 0) {
+        s.shields -= 1; s.count += 1; shieldUsed = true;
+    } else {
+        s.count = 1;
+    }
+    s.lastDate = today;
+    s.totalDays += 1;
+    const newThreshold = Math.floor(s.count / 7);
+    let shieldEarned = false;
+    if (newThreshold > s.shieldsEarned) {
+        s.shields += (newThreshold - s.shieldsEarned);
+        s.shieldsEarned = newThreshold;
+        shieldEarned = true;
+    }
+    if (s.count >= 100) s.theme = 'platinum';
+    else if (s.count >= 60) s.theme = 'gold';
+    else if (s.count >= 30) s.theme = 'silver';
+    else if (s.count >= 7) s.theme = 'bronze';
+    else s.theme = 'default';
+    let newMilestone = null;
+    for (const m of [7, 30, 60, 100]) {
+        if (s.count === m && s.milestonesShown.indexOf(m) === -1) {
+            newMilestone = m;
+            s.milestonesShown.push(m);
+            break;
+        }
+    }
+    return { streak: s, isNew: true, newMilestone, shieldEarned, shieldUsed };
+}
+
+/**
+ * POST /api/streak/track
+ * Server-authoritative streak increment. The server's stored streak wins when
+ * present; the client's localStorage streak is only used to SEED a brand-new
+ * account that has never synced. This is the fix for the 1↔5 flicker bug.
+ */
+app.post('/api/streak/track', requireAuth, (req, res) => {
+    const user = req.user;
+    const clientStreak = req.body && req.body.streak;
+    let base;
+    if (user.streak && typeof user.streak.count === 'number') {
+        base = user.streak;                       // server is authoritative
+    } else if (clientStreak && typeof clientStreak.count === 'number') {
+        base = clientStreak;                      // first sync — seed from client
+    } else {
+        base = null;                              // fresh streak
+    }
+    const result = computeStreakTrack(base);
+    user.streak = result.streak;
+    scheduleSave();
+    res.json(result);
+});
+
+// crypto-strong join code — excludes ambiguous chars (0/O, 1/I/L)
+const JOIN_CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function generateJoinCode() {
+    for (let attempt = 0; attempt < 50; attempt++) {
+        const bytes = crypto.randomBytes(6);
+        let code = '';
+        for (let i = 0; i < 6; i++) code += JOIN_CODE_ALPHABET[bytes[i] % JOIN_CODE_ALPHABET.length];
+        const taken = Object.values(db.classes).some(c => c.joinCode === code);
+        if (!taken) return code;
+    }
+    // Astronomically unlikely fallback
+    return crypto.randomBytes(6).toString('hex').slice(0, 6).toUpperCase();
+}
+
+// Resolve a class the requesting teacher owns, or null.
+function getOwnedClass(req, classId) {
+    const cls = db.classes[classId];
+    if (!cls || cls.teacherUserId !== req.user.userId) return null;
+    return cls;
+}
+
+function classMemberCount(classId) {
+    return db.classMembers.filter(m => m.classId === classId && !m.removedAt).length;
+}
+
+const masteryKey = (userId, subject, dotPointRef) => `${userId}::${subject || ''}::${dotPointRef || ''}`;
+
+// Average mastery score for a student (0–1, or null if no data yet)
+function studentMasterySummary(userId) {
+    const recs = Object.values(db.mastery).filter(m => m.userId === userId);
+    if (recs.length === 0) return { average: null, dotPoints: 0, weak: 0, strong: 0 };
+    let sum = 0, weak = 0, strong = 0;
+    for (const r of recs) {
+        sum += r.score;
+        const band = SR.masteryBand(r.score);
+        if (band === 'weak') weak++;
+        else if (band === 'strong') strong++;
+    }
+    return { average: Math.round((sum / recs.length) * 1000) / 1000, dotPoints: recs.length, weak, strong };
+}
+
+// Shared OpenAI chat call. Returns the raw assistant text.
+async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMode }) {
+    const mdl = model || 'gpt-4o-mini';
+    const isGpt5 = mdl.startsWith('gpt-5');
+    const body = {
+        model: mdl,
+        messages,
+        [isGpt5 ? 'max_completion_tokens' : 'max_tokens']: maxTokens || 1000
+    };
+    if (!isGpt5 && typeof temperature === 'number') body.temperature = temperature;
+    if (jsonMode) body.response_format = { type: 'json_object' };
+    const r = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
+        body: JSON.stringify(body)
+    });
+    if (!r.ok) {
+        const err = await r.json().catch(() => ({}));
+        throw new Error('OpenAI error: ' + (err.error?.message || ('HTTP ' + r.status)));
+    }
+    const data = await r.json();
+    return data.choices?.[0]?.message?.content || '';
+}
+
+// Tolerant JSON extraction from an LLM reply.
+function parseJsonLoose(text) {
+    let t = String(text || '').replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
+    const s = t.indexOf('{');
+    const e = t.lastIndexOf('}');
+    if (s !== -1 && e > s) t = t.substring(s, e + 1);
+    return JSON.parse(t);
+}
+
+/* ----------------------------- TEACHER: CLASSES ----------------------------- */
+
+// POST /api/teacher/classes — create a class, returns a 6-char join code
+app.post('/api/teacher/classes', requireTeacher, (req, res) => {
+    const { name, subject, year } = req.body || {};
+    if (!name || !String(name).trim()) return res.status(400).json({ error: 'Class name is required' });
+    const classId = crypto.randomUUID();
+    const cls = {
+        classId,
+        teacherUserId: req.user.userId,
+        name: String(name).trim().slice(0, 120),
+        subject: subject ? String(subject).trim().slice(0, 80) : '',
+        year: year ? String(year).trim().slice(0, 20) : '',
+        joinCode: generateJoinCode(),
+        createdAt: new Date().toISOString(),
+        archivedAt: null
+    };
+    db.classes[classId] = cls;
+    scheduleClassroomSave();
+    res.json({ class: cls });
+});
+
+// GET /api/teacher/classes — list teacher's classes + member counts
+app.get('/api/teacher/classes', requireTeacher, (req, res) => {
+    const classes = Object.values(db.classes)
+        .filter(c => c.teacherUserId === req.user.userId)
+        .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
+        .map(c => ({ ...c, memberCount: classMemberCount(c.classId) }));
+    res.json({ classes });
+});
+
+// DELETE /api/teacher/classes/:id — archive a class (students lose access)
+app.delete('/api/teacher/classes/:id', requireTeacher, (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    cls.archivedAt = new Date().toISOString();
+    scheduleClassroomSave();
+    res.json({ success: true });
+});
+
+// POST /api/teacher/classes/:id/regenerate-code — issue a fresh join code
+app.post('/api/teacher/classes/:id/regenerate-code', requireTeacher, (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    cls.joinCode = generateJoinCode();
+    scheduleClassroomSave();
+    res.json({ joinCode: cls.joinCode });
+});
+
+// GET /api/teacher/classes/:id/students — roster + last-active + mastery summary
+app.get('/api/teacher/classes/:id/students', requireTeacher, (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    const students = db.classMembers
+        .filter(m => m.classId === cls.classId && !m.removedAt)
+        .map(m => {
+            const u = db.users[m.studentUserId];
+            return {
+                userId: m.studentUserId,
+                name: u ? u.name : 'Unknown',
+                email: u ? u.email : '',
+                joinedAt: m.joinedAt,
+                lastActive: u ? (u.lastActive || null) : null,
+                mastery: studentMasterySummary(m.studentUserId)
+            };
+        });
+    res.json({ class: cls, students });
+});
+
+// DELETE /api/teacher/classes/:id/students/:userId — remove a student
+app.delete('/api/teacher/classes/:id/students/:userId', requireTeacher, (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    const membership = db.classMembers.find(m => m.classId === cls.classId && m.studentUserId === req.params.userId && !m.removedAt);
+    if (!membership) return res.status(404).json({ error: 'Student not in class' });
+    membership.removedAt = new Date().toISOString();
+    scheduleClassroomSave();
+    res.json({ success: true });
+});
+
+// POST /api/teacher/classes/:id/assignments — assign a deck/practice/worksheet
+app.post('/api/teacher/classes/:id/assignments', requireTeacher, (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    const { type, refId, title, dueAt } = req.body || {};
+    if (!['practice', 'worksheet', 'deck'].includes(type)) {
+        return res.status(400).json({ error: 'type must be practice, worksheet or deck' });
+    }
+    if (!title || !String(title).trim()) return res.status(400).json({ error: 'title is required' });
+    const assignmentId = crypto.randomUUID();
+    const assignment = {
+        assignmentId,
+        classId: cls.classId,
+        type,
+        refId: refId ? String(refId) : null,
+        title: String(title).trim().slice(0, 160),
+        dueAt: dueAt || null,
+        createdAt: new Date().toISOString()
+    };
+    db.assignments[assignmentId] = assignment;
+    scheduleClassroomSave();
+    res.json({ assignment });
+});
+
+// GET /api/teacher/classes/:id/assignments — list + submission status
+app.get('/api/teacher/classes/:id/assignments', requireTeacher, (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    const memberCount = classMemberCount(cls.classId);
+    const assignments = Object.values(db.assignments)
+        .filter(a => a.classId === cls.classId)
+        .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
+        .map(a => {
+            const subs = db.assignmentSubmissions.filter(s => s.assignmentId === a.assignmentId);
+            const completed = subs.filter(s => s.status === 'completed').length;
+            return { ...a, submissions: { completed, total: memberCount } };
+        });
+    res.json({ assignments });
+});
+
+// GET /api/teacher/classes/:id/progress — aggregated mastery-map + usage
+app.get('/api/teacher/classes/:id/progress', requireTeacher, (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    const members = db.classMembers.filter(m => m.classId === cls.classId && !m.removedAt);
+    const students = members.map(m => {
+        const u = db.users[m.studentUserId];
+        // mastery keyed by subject -> module -> dotPointRef -> score
+        const masteryMap = {};
+        for (const rec of Object.values(db.mastery)) {
+            if (rec.userId !== m.studentUserId) continue;
+            const subj = rec.subject || 'General';
+            const mod = rec.module || 'General';
+            masteryMap[subj] = masteryMap[subj] || {};
+            masteryMap[subj][mod] = masteryMap[subj][mod] || {};
+            masteryMap[subj][mod][rec.dotPointRef] = rec.score;
+        }
+        return {
+            userId: m.studentUserId,
+            name: u ? u.name : 'Unknown',
+            lastActive: u ? (u.lastActive || null) : null,
+            usage: u ? (u.botUsage || {}) : {},
+            summary: studentMasterySummary(m.studentUserId),
+            masteryMap
+        };
+    });
+    res.json({ class: cls, students });
+});
+
+// POST /api/classes/join — student joins a class by code
+app.post('/api/classes/join', requireAuth, (req, res) => {
+    const code = String((req.body && req.body.joinCode) || '').trim().toUpperCase();
+    if (!code || code.length !== 6) return res.status(400).json({ error: 'Enter a valid 6-character join code' });
+    const cls = Object.values(db.classes).find(c => c.joinCode === code && !c.archivedAt);
+    if (!cls) return res.status(404).json({ error: 'No active class found for that code' });
+    if (cls.teacherUserId === req.user.userId) {
+        return res.status(400).json({ error: "You can't join your own class" });
+    }
+    let membership = db.classMembers.find(m => m.classId === cls.classId && m.studentUserId === req.user.userId);
+    if (membership && !membership.removedAt) {
+        return res.json({ success: true, class: { classId: cls.classId, name: cls.name, subject: cls.subject } , alreadyMember: true });
+    }
+    if (membership && membership.removedAt) {
+        membership.removedAt = null;
+        membership.joinedAt = new Date().toISOString();
+    } else {
+        db.classMembers.push({
+            classId: cls.classId,
+            studentUserId: req.user.userId,
+            joinedAt: new Date().toISOString(),
+            removedAt: null
+        });
+    }
+    scheduleClassroomSave();
+    res.json({ success: true, class: { classId: cls.classId, name: cls.name, subject: cls.subject } });
+});
+
+// GET /api/student/assignments — the student's pending assignments
+app.get('/api/student/assignments', requireAuth, (req, res) => {
+    const myClassIds = db.classMembers
+        .filter(m => m.studentUserId === req.user.userId && !m.removedAt)
+        .map(m => m.classId)
+        .filter(cid => db.classes[cid] && !db.classes[cid].archivedAt);
+    const assignments = Object.values(db.assignments)
+        .filter(a => myClassIds.includes(a.classId))
+        .map(a => {
+            const sub = db.assignmentSubmissions.find(s => s.assignmentId === a.assignmentId && s.studentUserId === req.user.userId);
+            const cls = db.classes[a.classId];
+            return {
+                ...a,
+                className: cls ? cls.name : '',
+                status: sub ? sub.status : 'pending',
+                score: sub ? sub.score : null
+            };
+        })
+        .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+    res.json({ assignments });
+});
+
+// POST /api/student/assignments/:assignmentId/submit — mark an assignment done
+app.post('/api/student/assignments/:assignmentId/submit', requireAuth, (req, res) => {
+    const assignment = db.assignments[req.params.assignmentId];
+    if (!assignment) return res.status(404).json({ error: 'Assignment not found' });
+    const isMember = db.classMembers.some(m =>
+        m.classId === assignment.classId && m.studentUserId === req.user.userId && !m.removedAt);
+    if (!isMember) return res.status(403).json({ error: 'Not in this class' });
+    const score = req.body && req.body.score != null ? Number(req.body.score) : null;
+    let sub = db.assignmentSubmissions.find(s => s.assignmentId === assignment.assignmentId && s.studentUserId === req.user.userId);
+    if (!sub) {
+        sub = { assignmentId: assignment.assignmentId, studentUserId: req.user.userId, status: 'completed', score, completedAt: new Date().toISOString() };
+        db.assignmentSubmissions.push(sub);
+    } else {
+        sub.status = 'completed';
+        sub.score = score;
+        sub.completedAt = new Date().toISOString();
+    }
+    scheduleClassroomSave();
+    res.json({ success: true, submission: sub });
+});
+
+/* ------------------------- TEACHER: AI TOOLS ------------------------- */
+
+// POST /api/teacher/ai/lesson-plan — 60-min lesson outline from dot points
+app.post('/api/teacher/ai/lesson-plan', requireTeacher, async (req, res) => {
+    if (!config.openaiApiKey) return res.status(503).json({ error: 'AI not configured' });
+    const { subject, module, dotPoints } = req.body || {};
+    if (!subject) return res.status(400).json({ error: 'Subject is required' });
+    const points = Array.isArray(dotPoints) ? dotPoints.filter(Boolean).slice(0, 12) : [];
+    recordBotStat('teacher-lessons');
+    recordUserBotUsage(req.user.userId, 'teacher-lessons');
+    const aiSettings = getAISettings(req.user);
+    const sys = `You are an experienced NSW HSC teacher writing a single 60-minute lesson plan. Return ONLY valid JSON:
+{
+  "title": "<lesson title>",
+  "duration": "60 minutes",
+  "learningGoals": ["<goal>", ...],
+  "outline": [ { "phase": "Starter|Explicit teaching|Guided practice|Independent practice|Plenary", "minutes": <int>, "detail": "<what teacher + students do>" } ],
+  "activities": ["<activity description>", ...],
+  "checkForUnderstanding": ["<question or check>", ...],
+  "resources": ["<resource>", ...]
+}
+The outline phases must sum to 60 minutes. Keep it practical and classroom-ready.`;
+    const usr = `Subject: ${subject}\nModule/Topic: ${module || 'Not specified'}\nSyllabus dot points to cover:\n${points.length ? points.map((p, i) => `${i + 1}. ${p}`).join('\n') : '(teacher did not specify — choose appropriate dot points for this module)'}`;
+    try {
+        const reply = await callOpenAIChat({
+            model: aiSettings.model, jsonMode: true, maxTokens: Math.min(aiSettings.maxTokens, 3500), temperature: 0.6,
+            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+        });
+        const plan = parseJsonLoose(reply);
+        res.json({ plan });
+    } catch (e) {
+        console.error('Lesson plan error:', e.message);
+        res.status(500).json({ error: 'Could not generate lesson plan. Please retry.' });
+    }
+});
+
+// POST /api/teacher/ai/bulk-worksheets — N topics in one go, returns a bundle
+app.post('/api/teacher/ai/bulk-worksheets', requireTeacher, async (req, res) => {
+    if (!config.openaiApiKey) return res.status(503).json({ error: 'AI not configured' });
+    const { subject, topics, questionsPerTopic, difficulty } = req.body || {};
+    if (!subject) return res.status(400).json({ error: 'Subject is required' });
+    const topicList = Array.isArray(topics) ? topics.map(t => String(t).trim()).filter(Boolean).slice(0, 8) : [];
+    if (topicList.length === 0) return res.status(400).json({ error: 'Provide at least one topic' });
+    const perTopic = Math.max(3, Math.min(15, parseInt(questionsPerTopic, 10) || 6));
+    const diff = ['easy', 'standard', 'hard'].includes(difficulty) ? difficulty : 'standard';
+    recordBotStat('teacher-worksheets');
+    recordUserBotUsage(req.user.userId, 'teacher-worksheets');
+    const aiSettings = getAISettings(req.user);
+    const subjectMeta = resolveSubjectMeta(subject);
+    const subjectName = subjectMeta.name || subject;
+    const markGuide = worksheetMarkGuide(subjectMeta.category);
+    const sys = `You are a NSW HSC ${subjectName} teacher building a bundle of short worksheets. Return ONLY valid JSON:
+{ "subject": "${subjectName}", "worksheets": [ { "topic": "<topic>", "totalMarks": <int>, "questions": [ { "number": <int>, "type": "mc|short|extended", "marks": <int>, "question": "<text>", "options": ["A) ..."], "answer": "<model answer>", "explanation": "<marking note>" } ] } ] }
+RULES:
+- One worksheet object per requested topic, ${perTopic} questions each.
+- Difficulty: ${diff}.
+- ${markGuide}
+- Every question needs a full model answer. Output ONLY the JSON.`;
+    const usr = `Subject: ${subjectName}\nDifficulty: ${diff}\nTopics (${perTopic} questions each):\n${topicList.map((t, i) => `${i + 1}. ${t}`).join('\n')}`;
+    try {
+        const reply = await callOpenAIChat({
+            model: aiSettings.model, jsonMode: true, maxTokens: Math.min(aiSettings.maxTokens, 16000), temperature: 0.6,
+            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+        });
+        const bundle = parseJsonLoose(reply);
+        if (!bundle.worksheets || !Array.isArray(bundle.worksheets)) {
+            return res.status(500).json({ error: 'Generation returned no worksheets. Please retry.' });
+        }
+        // Recompute marks/time defensively per worksheet
+        bundle.worksheets.forEach(ws => {
+            const total = (ws.questions || []).reduce((s, q) => s + (parseInt(q.marks, 10) || 0), 0);
+            ws.totalMarks = total;
+            ws.estimatedTime = `${Math.max(5, Math.round(total * MINUTES_PER_MARK))} minutes`;
+        });
+        res.json({ subject: subjectName, difficulty: diff, worksheets: bundle.worksheets });
+    } catch (e) {
+        console.error('Bulk worksheet error:', e.message);
+        res.status(500).json({ error: 'Could not build the worksheet bundle. Please retry.' });
+    }
+});
+
+// POST /api/teacher/ai/rubric-mark — mark a student response against a rubric
+app.post('/api/teacher/ai/rubric-mark', requireTeacher, async (req, res) => {
+    if (!config.openaiApiKey) return res.status(503).json({ error: 'AI not configured' });
+    const { subject, rubric, response, questionText } = req.body || {};
+    if (!rubric || !String(rubric).trim()) return res.status(400).json({ error: 'A marking rubric is required' });
+    if (!response || !String(response).trim()) return res.status(400).json({ error: 'A student response is required' });
+    recordBotStat('teacher-marker');
+    recordUserBotUsage(req.user.userId, 'teacher-marker');
+    const aiSettings = getAISettings(req.user);
+    const sys = `You are a rigorous, fair NSW HSC marker. Mark the student response strictly against the teacher's rubric. Return ONLY valid JSON:
+{
+  "awardedMarks": <number>,
+  "totalMarks": <number>,
+  "band": "<NESA band or grade if inferable, else ''>",
+  "criteria": [ { "criterion": "<from rubric>", "awarded": <number>, "outOf": <number>, "comment": "<why>" } ],
+  "strengths": ["<strength>", ...],
+  "improvements": ["<specific, actionable next step>", ...],
+  "overallComment": "<2-3 sentence holistic comment>"
+}
+Be specific and reference the rubric language. Do not inflate marks.`;
+    const usr = `Subject: ${subject || 'Not specified'}\n${questionText ? 'Question: ' + String(questionText).slice(0, 2000) + '\n' : ''}\n=== MARKING RUBRIC ===\n${String(rubric).slice(0, 6000)}\n\n=== STUDENT RESPONSE ===\n${String(response).slice(0, 12000)}`;
+    try {
+        const reply = await callOpenAIChat({
+            model: aiSettings.model, jsonMode: true, maxTokens: Math.min(aiSettings.maxTokens, 2500), temperature: 0.3,
+            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+        });
+        const marking = parseJsonLoose(reply);
+        res.json({ marking });
+    } catch (e) {
+        console.error('Rubric mark error:', e.message);
+        res.status(500).json({ error: 'Could not mark the response. Please retry.' });
+    }
+});
+
+/* ------------------------- FLASHCARDS: DECKS ------------------------- */
+
+function deckCardCount(deckId) {
+    return Object.values(db.cards).filter(c => c.deckId === deckId).length;
+}
+function publicDeckView(deck) {
+    return { ...deck, cardCount: deckCardCount(deck.deckId) };
+}
+
+// POST /api/decks — create a deck (optionally with manual cards)
+app.post('/api/decks', requireAuth, (req, res) => {
+    const { title, subject, module, dotPoints, isPublic, classId, cards } = req.body || {};
+    if (!title || !String(title).trim()) return res.status(400).json({ error: 'Deck title is required' });
+    const deckId = crypto.randomUUID();
+    const deck = {
+        deckId,
+        ownerUserId: req.user.userId,
+        subject: subject ? String(subject).trim().slice(0, 80) : '',
+        module: module ? String(module).trim().slice(0, 120) : '',
+        dotPoints: Array.isArray(dotPoints) ? dotPoints.map(d => String(d).slice(0, 300)).slice(0, 20) : [],
+        title: String(title).trim().slice(0, 140),
+        cardCount: 0,
+        isPublic: !!isPublic,
+        classId: classId || null,
+        createdAt: new Date().toISOString()
+    };
+    db.decks[deckId] = deck;
+    // Optional manual cards
+    if (Array.isArray(cards)) {
+        for (const c of cards.slice(0, 60)) {
+            if (!c || !c.prompt || !c.idealAnswer) continue;
+            const cardId = crypto.randomUUID();
+            db.cards[cardId] = {
+                cardId, deckId,
+                prompt: String(c.prompt).slice(0, 600),
+                idealAnswer: String(c.idealAnswer).slice(0, 1200),
+                hints: Array.isArray(c.hints) ? c.hints.map(h => String(h).slice(0, 300)).slice(0, 4) : [],
+                dotPointRef: c.dotPointRef ? String(c.dotPointRef).slice(0, 300) : (deck.module || deck.subject || 'General')
+            };
+        }
+    }
+    deck.cardCount = deckCardCount(deckId);
+    scheduleClassroomSave();
+    res.json({ deck: publicDeckView(deck) });
+});
+
+// GET /api/decks — the user's decks + public decks
+app.get('/api/decks', requireAuth, (req, res) => {
+    const decks = Object.values(db.decks)
+        .filter(d => d.ownerUserId === req.user.userId || d.isPublic)
+        .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
+        .map(d => ({ ...publicDeckView(d), owned: d.ownerUserId === req.user.userId }));
+    res.json({ decks });
+});
+
+// GET /api/decks/:id — a deck plus its cards (cards without idealAnswer leaking
+// is fine here — owner/reviewer needs them; this is a study tool not an exam)
+app.get('/api/decks/:id', requireAuth, (req, res) => {
+    const deck = db.decks[req.params.id];
+    if (!deck) return res.status(404).json({ error: 'Deck not found' });
+    if (deck.ownerUserId !== req.user.userId && !deck.isPublic) {
+        return res.status(403).json({ error: 'This deck is private' });
+    }
+    const cards = Object.values(db.cards).filter(c => c.deckId === deck.deckId);
+    res.json({ deck: publicDeckView(deck), cards });
+});
+
+// DELETE /api/decks/:id — delete a deck (and its cards)
+app.delete('/api/decks/:id', requireAuth, (req, res) => {
+    const deck = db.decks[req.params.id];
+    if (!deck) return res.status(404).json({ error: 'Deck not found' });
+    if (deck.ownerUserId !== req.user.userId) return res.status(403).json({ error: 'Not your deck' });
+    for (const c of Object.values(db.cards)) {
+        if (c.deckId === deck.deckId) {
+            delete db.cards[c.cardId];
+            delete db.cardReviews[`${req.user.userId}_${c.cardId}`];
+        }
+    }
+    delete db.decks[deck.deckId];
+    scheduleClassroomSave();
+    res.json({ success: true });
+});
+
+// POST /api/decks/:id/generate-cards — AI generates N conversational cards
+app.post('/api/decks/:id/generate-cards', requireAuth, async (req, res) => {
+    if (!config.openaiApiKey) return res.status(503).json({ error: 'AI not configured' });
+    const deck = db.decks[req.params.id];
+    if (!deck) return res.status(404).json({ error: 'Deck not found' });
+    if (deck.ownerUserId !== req.user.userId) return res.status(403).json({ error: 'Not your deck' });
+
+    const hasFull = hasFullAccess(req.user);
+    if (!hasFull && !tryUseFreeTier(req.user.userId, 'flashcards')) {
+        return res.status(403).json({ error: 'Daily flashcard limit reached', freeTierExhausted: true, botType: 'flashcards' });
+    }
+
+    const count = Math.max(3, Math.min(20, parseInt(req.body && req.body.count, 10) || 8));
+    const reqDotPoints = Array.isArray(req.body && req.body.dotPoints) ? req.body.dotPoints.filter(Boolean) : [];
+    const dotPoints = (reqDotPoints.length ? reqDotPoints : deck.dotPoints).slice(0, 12);
+    const subjectMeta = resolveSubjectMeta(deck.subject);
+    const subjectName = subjectMeta.name || deck.subject || 'this subject';
+    const syllabusContext = (getSyllabusContent(deck.subject, subjectMeta.isJunior, deck.module) || '').substring(0, 12000);
+
+    recordBotStat('flashcards');
+    recordUserBotUsage(req.user.userId, 'flashcards');
+
+    const sys = `You are building CONVERSATIONAL flashcards for a NSW ${subjectMeta.isJunior ? 'Years 7-10' : 'HSC'} ${subjectName} student. These are NOT front/back flip cards — each "prompt" is a leading Socratic question that makes the student EXPLAIN a concept, not just recognise a term.
+Return ONLY valid JSON:
+{ "cards": [ { "prompt": "<leading question, <=240 chars>", "idealAnswer": "<the full correct explanation a Band 6 student would give, <=600 chars>", "hints": ["<nudge 1>", "<nudge 2>"], "dotPointRef": "<the syllabus dot point this card targets>" } ] }
+RULES:
+- Generate exactly ${count} cards.
+- Each "prompt" must be a question that demands reasoning/explanation ("Why...", "How would you...", "Explain why...", "What would happen if...").
+- "dotPointRef" MUST be one of the dot points provided below (copy it verbatim).
+- 2 hints per card: the first a gentle nudge, the second more direct. Never give the answer away in a hint.
+- Ground everything in the syllabus content. Output ONLY the JSON.`;
+    const usr = `Subject: ${subjectName}\nModule: ${deck.module || 'General'}\nDot points:\n${dotPoints.length ? dotPoints.map((d, i) => `${i + 1}. ${d}`).join('\n') : '(none specified — pick suitable dot points for the module)'}\n\n=== SYLLABUS REFERENCE ===\n${syllabusContext || '(rely on standard curriculum knowledge)'}\n=== END ===`;
+
+    try {
+        const aiSettings = getAISettings(req.user);
+        const reply = await callOpenAIChat({
+            model: aiSettings.model, jsonMode: true, maxTokens: Math.min(aiSettings.maxTokens, 6000), temperature: 0.7,
+            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+        });
+        const parsed = parseJsonLoose(reply);
+        if (!parsed.cards || !Array.isArray(parsed.cards) || parsed.cards.length === 0) {
+            return res.status(500).json({ error: 'Card generation returned nothing. Please retry.' });
+        }
+        const created = [];
+        for (const c of parsed.cards.slice(0, count)) {
+            if (!c || !c.prompt || !c.idealAnswer) continue;
+            const cardId = crypto.randomUUID();
+            const card = {
+                cardId, deckId: deck.deckId,
+                prompt: String(c.prompt).slice(0, 600),
+                idealAnswer: String(c.idealAnswer).slice(0, 1200),
+                hints: Array.isArray(c.hints) ? c.hints.map(h => String(h).slice(0, 300)).slice(0, 4) : [],
+                dotPointRef: c.dotPointRef ? String(c.dotPointRef).slice(0, 300) : (deck.module || subjectName)
+            };
+            db.cards[cardId] = card;
+            created.push(card);
+        }
+        deck.cardCount = deckCardCount(deck.deckId);
+        scheduleClassroomSave();
+        res.json({ deck: publicDeckView(deck), cards: created });
+    } catch (e) {
+        console.error('Generate cards error:', e.message);
+        res.status(500).json({ error: 'Could not generate cards right now. Please retry.' });
+    }
+});
+
+// GET /api/decks/:id/review-queue — cards due now (new cards included), cap 20
+app.get('/api/decks/:id/review-queue', requireAuth, (req, res) => {
+    const deck = db.decks[req.params.id];
+    if (!deck) return res.status(404).json({ error: 'Deck not found' });
+    if (deck.ownerUserId !== req.user.userId && !deck.isPublic) {
+        return res.status(403).json({ error: 'This deck is private' });
+    }
+    const now = Date.now();
+    const cards = Object.values(db.cards).filter(c => c.deckId === deck.deckId);
+    const queue = [];
+    for (const card of cards) {
+        const review = db.cardReviews[`${req.user.userId}_${card.cardId}`];
+        const dueAt = review ? new Date(review.dueAt).getTime() : 0; // new card -> due now
+        if (dueAt <= now) {
+            // Never leak idealAnswer into the review queue — the student must
+            // explain first; grading happens server-side on submit.
+            queue.push({
+                cardId: card.cardId,
+                deckId: card.deckId,
+                prompt: card.prompt,
+                hints: card.hints || [],
+                dotPointRef: card.dotPointRef,
+                isNew: !review,
+                dueAt: review ? review.dueAt : null
+            });
+        }
+    }
+    queue.sort((a, b) => (a.dueAt || '').localeCompare(b.dueAt || ''));
+    res.json({ deck: publicDeckView(deck), queue: queue.slice(0, 20), totalDue: queue.length });
+});
+
+// POST /api/cards/:id/answer — submit a free-text answer, get AI grade + SR update
+app.post('/api/cards/:id/answer', requireAuth, async (req, res) => {
+    if (!config.openaiApiKey) return res.status(503).json({ error: 'AI not configured' });
+    const card = db.cards[req.params.id];
+    if (!card) return res.status(404).json({ error: 'Card not found' });
+    const deck = db.decks[card.deckId];
+    if (!deck) return res.status(404).json({ error: 'Deck not found' });
+    if (deck.ownerUserId !== req.user.userId && !deck.isPublic) {
+        return res.status(403).json({ error: 'This deck is private' });
+    }
+    const answer = String((req.body && req.body.answer) || '').trim();
+    if (!answer) return res.status(400).json({ error: 'Type an answer first' });
+    const usedHint = !!(req.body && req.body.usedHint);
+
+    const hasFull = hasFullAccess(req.user);
+    if (!hasFull && !tryUseFreeTier(req.user.userId, 'flashcards')) {
+        return res.status(403).json({ error: 'Daily flashcard limit reached', freeTierExhausted: true, botType: 'flashcards' });
+    }
+
+    recordBotStat('flashcards');
+    recordUserBotUsage(req.user.userId, 'flashcards');
+
+    // AI grading prompt — strict JSON, capped output.
+    const sys = `You are a Socratic tutor grading ONE student answer to a conversational flashcard. Compare the student's answer to the ideal answer and the syllabus dot point. Return ONLY valid JSON, no prose:
+{ "grade": "correct|partial|incorrect|off-track", "feedback": "<=40 words", "hint": "<=25 words, or null>", "exemplarAnswer": "<=60 words, or null>" }
+Grading guide:
+- "correct": the answer captures the key idea accurately.
+- "partial": on the right track but missing/imprecise — give a "hint", exemplarAnswer null.
+- "incorrect": wrong but engaging with the topic — give a "hint", exemplarAnswer null.
+- "off-track": not addressing the question — hint null, give a short "exemplarAnswer".
+For "correct", set hint and exemplarAnswer to null. Keep feedback encouraging and specific.`;
+    const usr = `Dot point: ${card.dotPointRef}\nQuestion: ${card.prompt}\nIdeal answer: ${card.idealAnswer}\nStudent answer: ${answer}`;
+
+    let graded;
+    try {
+        const reply = await callOpenAIChat({
+            model: 'gpt-4o-mini', jsonMode: true, maxTokens: 250, temperature: 0.3,
+            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+        });
+        graded = parseJsonLoose(reply);
+    } catch (e) {
+        console.error('Card grading error:', e.message);
+        return res.status(500).json({ error: 'Could not grade your answer right now. Please retry.' });
+    }
+    const validGrades = ['correct', 'partial', 'incorrect', 'off-track'];
+    if (!validGrades.includes(graded.grade)) graded.grade = 'partial';
+
+    // Map AI grade -> SM-2 quality -> next SR state.
+    const quality = SR.gradeToQuality(graded.grade, usedHint);
+    const reviewKey = `${req.user.userId}_${card.cardId}`;
+    const prior = db.cardReviews[reviewKey] || {};
+    const nextState = SR.schedule(prior, quality);
+    db.cardReviews[reviewKey] = {
+        userId: req.user.userId,
+        cardId: card.cardId,
+        deckId: deck.deckId,
+        ease: nextState.ease,
+        interval: nextState.interval,
+        reps: nextState.reps,
+        lapses: nextState.lapses,
+        dueAt: nextState.dueAt,
+        lastGrade: nextState.lastGrade,
+        lastReviewedAt: nextState.lastReviewedAt
+    };
+
+    // Roll the mastery EMA for the dot point this card targets.
+    const mKey = masteryKey(req.user.userId, deck.subject, card.dotPointRef);
+    const prevMastery = db.mastery[mKey];
+    const nextMastery = SR.applyMastery(prevMastery, quality);
+    db.mastery[mKey] = {
+        userId: req.user.userId,
+        subject: deck.subject || 'General',
+        module: deck.module || 'General',
+        dotPointRef: card.dotPointRef,
+        score: nextMastery.score,
+        strongStreak: nextMastery.strongStreak,
+        weakStreak: nextMastery.weakStreak,
+        lastUpdate: nextMastery.lastUpdate
+    };
+    scheduleClassroomSave();
+
+    res.json({
+        grade: graded.grade,
+        feedback: graded.feedback || '',
+        hint: graded.hint || null,
+        exemplarAnswer: graded.exemplarAnswer || null,
+        idealAnswer: graded.grade === 'correct' ? card.idealAnswer : null,
+        quality,
+        sr: { interval: nextState.interval, reps: nextState.reps, dueAt: nextState.dueAt },
+        mastery: { dotPointRef: card.dotPointRef, score: nextMastery.score, band: SR.masteryBand(nextMastery.score) }
+    });
+});
+
+/* ------------------------- MASTERY MAP ------------------------- */
+
+function buildMasteryMap(userId) {
+    // subject -> module -> [ { dotPointRef, score, band, strongStreak, weakStreak, lastUpdate } ]
+    const map = {};
+    for (const rec of Object.values(db.mastery)) {
+        if (rec.userId !== userId) continue;
+        const subj = rec.subject || 'General';
+        const mod = rec.module || 'General';
+        map[subj] = map[subj] || {};
+        map[subj][mod] = map[subj][mod] || [];
+        map[subj][mod].push({
+            dotPointRef: rec.dotPointRef,
+            score: rec.score,
+            band: SR.masteryBand(rec.score),
+            strongStreak: rec.strongStreak || 0,
+            weakStreak: rec.weakStreak || 0,
+            lastUpdate: rec.lastUpdate
+        });
+    }
+    return map;
+}
+
+// GET /api/mastery — the user's own mastery map
+app.get('/api/mastery', requireAuth, (req, res) => {
+    res.json({ mastery: buildMasteryMap(req.user.userId), summary: studentMasterySummary(req.user.userId) });
+});
+
+// GET /api/mastery/:studentUserId — teacher-only, gated by class membership
+app.get('/api/mastery/:studentUserId', requireTeacher, (req, res) => {
+    const studentId = req.params.studentUserId;
+    const myClassIds = Object.values(db.classes)
+        .filter(c => c.teacherUserId === req.user.userId)
+        .map(c => c.classId);
+    const isMyStudent = db.classMembers.some(m =>
+        myClassIds.includes(m.classId) && m.studentUserId === studentId && !m.removedAt);
+    if (!isMyStudent) return res.status(403).json({ error: 'That student is not in any of your classes' });
+    const student = db.users[studentId];
+    res.json({
+        student: student ? { userId: studentId, name: student.name, lastActive: student.lastActive || null } : { userId: studentId },
+        mastery: buildMasteryMap(studentId),
+        summary: studentMasterySummary(studentId)
+    });
 });
 
 /**
@@ -2353,7 +3298,7 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
     
     try {
         const { plan } = req.body;
-        if (!['monthly', 'yearly', 'lifetime'].includes(plan)) {
+        if (!['monthly', 'yearly', 'lifetime', 'teacher'].includes(plan)) {
             return res.status(400).json({ error: 'Invalid plan' });
         }
 
@@ -2373,9 +3318,15 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
         }
         
         const user = req.user;
-        
-        // Already subscribed check
-        if (user.subscribed && user.expiresAt && new Date(user.expiresAt) > new Date()) {
+
+        if (plan === 'teacher') {
+            // Teacher seat is a separate SKU — already-subscribed check looks at
+            // the teacher seat, not the student `subscribed` flag.
+            if (hasActiveTeacherSeat(user)) {
+                return res.status(400).json({ error: 'You already have an active teacher seat' });
+            }
+        } else if (user.subscribed && user.expiresAt && new Date(user.expiresAt) > new Date()) {
+            // Already subscribed check (student plans)
             return res.status(400).json({ error: 'Already subscribed' });
         }
         
@@ -2426,6 +3377,26 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
                         description: '12 months of unlimited access'
                     },
                     unit_amount: 5000 // $50.00 AUD
+                },
+                quantity: 1
+            }];
+        } else if (plan === 'teacher') {
+            // Teacher Seat — recurring subscription. $19/mo AUD. Grants every
+            // linked student full access while the seat is active. Different
+            // SKU from the founding lifetime offer, so no cannibalisation.
+            // When STRIPE_TEACHER_PRICE_ID points at a real Price object this
+            // can switch to `price:` — for now inline price_data matches the
+            // other plans.
+            sessionParams.mode = 'subscription';
+            sessionParams.line_items = [{
+                price_data: {
+                    currency: 'aud',
+                    product_data: {
+                        name: 'Study Decoder — Teacher Seat',
+                        description: 'Unlimited linked students — full access while in your class'
+                    },
+                    unit_amount: 1900, // $19.00 AUD
+                    recurring: { interval: 'month' }
                 },
                 quantity: 1
             }];
@@ -2734,14 +3705,54 @@ app.post('/api/stripe-webhook', async (req, res) => {
                     }
                     break;
                 }
-                
+
+                // ── Teacher Seat ──
+                // Separate SKU from the student plans — activates the teacher
+                // seat without touching the student `subscribed` field.
+                if (plan === 'teacher') {
+                    if (!userId && session.customer_details?.email) {
+                        const email = session.customer_details.email.toLowerCase();
+                        const matchedUser = Object.values(db.users).find(u => u.email && u.email.toLowerCase() === email);
+                        if (matchedUser) userId = matchedUser.userId;
+                    }
+                    if (userId) {
+                        const teacherExpiry = new Date();
+                        teacherExpiry.setMonth(teacherExpiry.getMonth() + 1);
+                        upsertUser(userId, {
+                            teacherSubscribed: true,
+                            teacherExpiresAt: teacherExpiry.toISOString(),
+                            teacherSubscribedAt: new Date().toISOString(),
+                            stripeCustomerId: session.customer
+                        });
+                        // Track which Stripe subscription is the teacher seat so
+                        // later subscription.updated/deleted events can be routed
+                        // to the teacher fields rather than the student ones.
+                        const tUser = getUser(userId);
+                        if (tUser) {
+                            tUser.role = 'teacher';
+                            tUser.stripeTeacherSubscriptionId = session.subscription || null;
+                            scheduleSave();
+                        }
+                        logPayment({
+                            userId,
+                            stripeEventId: event.id,
+                            eventType: event.type,
+                            amount: session.amount_total,
+                            currency: session.currency,
+                            status: 'teacher_seat_activated'
+                        });
+                        console.log(`🎓 Teacher seat activated for ${userId} until ${teacherExpiry.toISOString()}`);
+                    }
+                    break;
+                }
+
                 // If no userId in metadata (Payment Links), match by email
                 if (!userId && session.customer_details?.email) {
                     const email = session.customer_details.email.toLowerCase();
                     const matchedUser = Object.values(db.users).find(u => u.email && u.email.toLowerCase() === email);
                     if (matchedUser) userId = matchedUser.userId;
                 }
-                
+
                 if (userId) {
                     const expiration = new Date();
                     if (plan === 'lifetime') {
@@ -2778,10 +3789,16 @@ app.post('/api/stripe-webhook', async (req, res) => {
                 const subscription = event.data.object;
                 // Find user by Stripe customer ID
                 const user = Object.values(db.users).find(u => u.stripeCustomerId === subscription.customer);
-                
+
                 if (user && subscription.status === 'active') {
-                    const expiresAt = new Date(subscription.current_period_end * 1000).toISOString();
-                    upsertUser(user.userId, { expiresAt });
+                    const renewedAt = new Date(subscription.current_period_end * 1000).toISOString();
+                    // Route renewals to the teacher seat or the student plan
+                    // depending on which Stripe subscription this is.
+                    if (user.stripeTeacherSubscriptionId && user.stripeTeacherSubscriptionId === subscription.id) {
+                        upsertUser(user.userId, { teacherSubscribed: true, teacherExpiresAt: renewedAt });
+                    } else {
+                        upsertUser(user.userId, { expiresAt: renewedAt });
+                    }
                     logPayment({
                         userId: user.userId,
                         stripeEventId: event.id,
@@ -2791,25 +3808,39 @@ app.post('/api/stripe-webhook', async (req, res) => {
                 }
                 break;
             }
-            
+
             case 'customer.subscription.deleted': {
                 const subscription = event.data.object;
                 const user = Object.values(db.users).find(u => u.stripeCustomerId === subscription.customer);
-                
+
                 if (user) {
-                    upsertUser(user.userId, {
-                        subscribed: false,
-                        plan: null,
-                        expiresAt: null,
-                        cancelAtPeriodEnd: false
-                    });
+                    const isTeacherSub = user.stripeTeacherSubscriptionId && user.stripeTeacherSubscriptionId === subscription.id;
+                    if (isTeacherSub) {
+                        // Teacher seat cancelled. Linked students automatically
+                        // lose full access on their next request because
+                        // isLinkedToActiveTeacher() re-checks the seat each time.
+                        upsertUser(user.userId, { teacherSubscribed: false, teacherExpiresAt: null });
+                        const tUser = getUser(user.userId);
+                        if (tUser) {
+                            tUser.stripeTeacherSubscriptionId = null;
+                            scheduleSave();
+                        }
+                        console.log(`❌ Teacher seat cancelled for ${user.userId}`);
+                    } else {
+                        upsertUser(user.userId, {
+                            subscribed: false,
+                            plan: null,
+                            expiresAt: null,
+                            cancelAtPeriodEnd: false
+                        });
+                        console.log(`❌ Subscription cancelled for ${user.userId}`);
+                    }
                     logPayment({
                         userId: user.userId,
                         stripeEventId: event.id,
                         eventType: event.type,
-                        status: 'cancelled'
+                        status: isTeacherSub ? 'teacher_seat_cancelled' : 'cancelled'
                     });
-                    console.log(`❌ Subscription cancelled for ${user.userId}`);
                 }
                 break;
             }
@@ -7361,6 +8392,39 @@ app.get('/api/exam/limits', async (req, res) => {
 
 // ==================== WORKSHEET GENERATOR ====================
 // Generates a printable worksheet (questions + answer key) based on subject + topic
+// Worksheet pacing: ~1.2 minutes per mark (matches NESA-style practice pacing
+// and keeps the generator's estimated time honest vs. the real mark total).
+const MINUTES_PER_MARK = 1.2;
+// Average marks-per-question target — used to derive a sensible total-mark
+// goal from the chosen question count so a "30 min" worksheet doesn't come
+// back as a 100-mark paper.
+const MARKS_PER_QUESTION = 2.5;
+
+/**
+ * Per-subject-category mark-allocation rules for the worksheet generator.
+ * Mirrors the full exam bot so, e.g., Maths never gets a 9-mark question.
+ */
+function worksheetMarkGuide(category) {
+    const cat = (category || '').toLowerCase();
+    if (cat === 'mathematics') {
+        return 'MARK LIMITS (Mathematics): every question is worth 1-4 marks ONLY — NEVER a 5+ mark question. Split any multi-step task into parts (a),(b),(c), each part 1-4 marks. Use 1-mark multiple-choice plus 2-4 mark working questions.';
+    }
+    if (cat === 'science') {
+        return 'MARK LIMITS (Science): 1-mark multiple-choice plus short-answer questions of 2-8 marks. NEVER exceed 9 marks on any single question. Any question worth 5+ marks MUST have sub-parts (a),(b),(c), each 2-4 marks.';
+    }
+    if (cat === 'english') {
+        return 'MARK LIMITS (English): NO multiple-choice. Short-response questions 2-6 marks; at most ONE extended-response/essay worth up to 20 marks. No question between 7 and 14 marks.';
+    }
+    if (cat === 'hsie') {
+        return 'MARK LIMITS (HSIE): 1-mark multiple-choice, short-answer 2-8 marks (split into parts (a),(b) if 5+ marks), and at most ONE extended-response worth up to 20 marks.';
+    }
+    if (cat === 'creative arts') {
+        return 'MARK LIMITS (Creative Arts): NO multiple-choice. Short-response 2-8 marks; extended-response up to 15 marks each.';
+    }
+    // TAS, PDHPE, VET, languages and anything else
+    return 'MARK LIMITS: 1-mark multiple-choice, short-answer 2-6 marks, extended-response 6-10 marks MAXIMUM. NEVER exceed 12 marks on any single question — split larger tasks into parts (a),(b),(c).';
+}
+
 app.post('/api/worksheet/generate', express.json(), async (req, res) => {
     if (!req.session?.userId) {
         return res.status(401).json({ error: 'Authentication required' });
@@ -7388,6 +8452,11 @@ app.post('/api/worksheet/generate', express.json(), async (req, res) => {
     const count = Math.max(5, Math.min(25, parseInt(questionCount, 10) || 10));
     const diff = ['easy', 'standard', 'hard'].includes(difficulty) ? difficulty : 'standard';
     const topicLabel = (topic && String(topic).trim()) ? String(topic).trim() : 'All topics';
+
+    // Derive a target mark total from the question count so the worksheet's
+    // marks (and therefore its estimated time) match what the student picked.
+    const targetMarks = Math.round(count * MARKS_PER_QUESTION);
+    const markGuide = worksheetMarkGuide(subjectMeta.category);
 
     recordBotStat('worksheet-generator');
     recordUserBotUsage(req.session.userId, 'worksheet-generator');
@@ -7433,20 +8502,23 @@ OUTPUT: Return ONLY valid JSON in this exact shape:
 
 REQUIREMENTS:
 - Generate exactly ${count} questions covering "${topicLabel}" within ${subjectName}.
-- Use a mix of question types: roughly 30% multiple-choice (1 mark each), 50% short-answer (2-4 marks), 20% extended-response (5-8 marks). Adjust if topic is highly mathematical or highly written.
+- The worksheet MUST total approximately ${targetMarks} marks (stay within ±15% of ${targetMarks}). Do NOT exceed this — a worksheet of ${count} questions should be a ~${Math.round(targetMarks * MINUTES_PER_MARK)} minute task, not a full exam.
+- ${markGuide}
+- Use an appropriate mix of question types for this subject (multiple-choice only where the MARK LIMITS allow it, plus short-answer and a small number of extended-response questions).
 - Difficulty profile: ${difficultyGuide}.
 - Ground every question in the syllabus content provided below. Do not invent content outside it.
 - Every question MUST have a complete worked answer in the "answer" field — written at ${gradeTarget} standard.
 - For mathematics, show working in the answer field using plain text (no LaTeX).
 - Use clear, age-appropriate language for ${levelLabel} students.
 - Number questions sequentially starting at 1.
+- Set "totalMarks" to the exact sum of all question marks.
 - Output ONLY the JSON object — no commentary, no markdown fences.
 
 === ${subjectName.toUpperCase()} SYLLABUS REFERENCE ===
 ${syllabusContext || '(No syllabus content available — rely on standard curriculum knowledge for this subject and topic.)'}
 === END SYLLABUS ===`;
 
-    const userPrompt = `Generate a ${diff} difficulty worksheet on "${topicLabel}" for ${subjectName} (${levelLabel}). ${count} questions total. Include full answer key.`;
+    const userPrompt = `Generate a ${diff} difficulty worksheet on "${topicLabel}" for ${subjectName} (${levelLabel}). ${count} questions total, ~${targetMarks} marks overall. Include full answer key.`;
 
     const requestBody = {
         model: aiSettings.model,
@@ -7488,8 +8560,12 @@ ${syllabusContext || '(No syllabus content available — rely on standard curric
             return res.status(500).json({ error: 'Worksheet generation returned no questions. Please retry.' });
         }
 
-        // Compute totalMarks defensively
+        // Compute totalMarks from the actual questions — never trust the
+        // model's self-reported total. Estimated time is then derived from
+        // the real mark total so the two are always internally consistent
+        // (fixes "pick 30 min, get a 90-min paper").
         const total = parsed.questions.reduce((s, q) => s + (parseInt(q.marks, 10) || 0), 0);
+        const estMinutes = Math.max(10, Math.round(total * MINUTES_PER_MARK));
 
         return res.json({
             title: parsed.title || `${subjectName} Worksheet — ${topicLabel}`,
@@ -7498,8 +8574,10 @@ ${syllabusContext || '(No syllabus content available — rely on standard curric
             topic: topicLabel,
             difficulty: diff,
             isJunior,
-            totalMarks: parsed.totalMarks || total,
-            estimatedTime: parsed.estimatedTime || `${Math.max(15, count * 3)} minutes`,
+            totalMarks: total,
+            targetMarks,
+            estimatedTime: `${estMinutes} minutes`,
+            estimatedMinutes: estMinutes,
             questions: parsed.questions
         });
     } catch (err) {

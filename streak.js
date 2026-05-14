@@ -63,14 +63,13 @@
         },
 
         /**
-         * Call this every time a user completes a study action.
-         * Returns { s, isNew, newMilestone, shieldEarned, shieldUsed }
+         * Purely-local streak roll-over. Used as the offline fallback when the
+         * server can't be reached. NOT the source of truth — see track().
          */
-        track: function () {
+        _trackLocal: function () {
             var today  = this.today();
             var s      = this.load();
 
-            // Already studied today — just re-apply theme and return
             if (s.lastDate === today) {
                 this.applyTheme(s.theme);
                 return { s: s, isNew: false, newMilestone: null, shieldEarned: false, shieldUsed: false };
@@ -81,15 +80,12 @@
             var shieldUsed = false;
 
             if (s.lastDate === yday) {
-                // Consecutive day
                 s.count += 1;
             } else if (s.lastDate === twoAgo && s.shields > 0) {
-                // Missed one day but shield protects the streak
                 s.shields  -= 1;
                 s.count    += 1;
                 shieldUsed  = true;
             } else {
-                // Streak broken — reset
                 s.count = 1;
             }
 
@@ -97,7 +93,6 @@
             s.days[today] = 1;
             s.totalDays = (s.totalDays || 0) + 1;
 
-            // Award 1 shield per every 7 consecutive days crossed
             var newThreshold = Math.floor(s.count / 7);
             var shieldEarned = false;
             if (newThreshold > s.shieldsEarned) {
@@ -106,14 +101,12 @@
                 shieldEarned     = true;
             }
 
-            // Unlock theme by level
             if      (s.count >= 100) s.theme = 'platinum';
             else if (s.count >= 60)  s.theme = 'gold';
             else if (s.count >= 30)  s.theme = 'silver';
             else if (s.count >= 7)   s.theme = 'bronze';
             else                      s.theme = 'default';
 
-            // Check milestones (7, 30, 60, 100)
             var newMilestone = null;
             for (var i = 0; i < MILESTONES.length; i++) {
                 var m = MILESTONES[i];
@@ -126,8 +119,79 @@
 
             this.save(s);
             this.applyTheme(s.theme);
-            this.syncToServer(s);
             return { s: s, isNew: true, newMilestone: newMilestone, shieldEarned: shieldEarned, shieldUsed: shieldUsed };
+        },
+
+        /**
+         * Fold a server streak response back into local storage. The server
+         * owns count/lastDate/shields/theme/milestones; the local-only `days`
+         * heatmap is preserved (the server doesn't store it).
+         */
+        _applyServerResult: function (result) {
+            var local = this.load();
+            var srv = result.streak || {};
+            var merged = {
+                count:           typeof srv.count === 'number' ? srv.count : local.count,
+                lastDate:        srv.lastDate || local.lastDate,
+                shields:         typeof srv.shields === 'number' ? srv.shields : local.shields,
+                shieldsEarned:   typeof srv.shieldsEarned === 'number' ? srv.shieldsEarned : local.shieldsEarned,
+                totalDays:       typeof srv.totalDays === 'number' ? srv.totalDays : local.totalDays,
+                theme:           srv.theme || local.theme || 'default',
+                milestonesShown: Array.isArray(srv.milestonesShown) ? srv.milestonesShown : (local.milestonesShown || []),
+                days:            local.days || {}
+            };
+            if (result.isNew && merged.lastDate) merged.days[merged.lastDate] = 1;
+            this.save(merged);
+            this.applyTheme(merged.theme);
+            return { s: merged, isNew: !!result.isNew, newMilestone: result.newMilestone || null,
+                     shieldEarned: !!result.shieldEarned, shieldUsed: !!result.shieldUsed };
+        },
+
+        /**
+         * Call this every time a user completes a study action.
+         *
+         * Server-authoritative: the day-rollover is computed on the server so
+         * two devices / tabs with divergent localStorage can't make the streak
+         * flicker. Pass a callback to receive the result:
+         *     StreakManager.track(function (result) { sdHandleTracking(result); });
+         *
+         * If no callback is given it falls back to the legacy synchronous
+         * local-only behaviour (kept so older call sites don't break).
+         */
+        track: function (cb) {
+            var self = this;
+            if (typeof cb !== 'function') {
+                // Legacy path — synchronous local roll-over + fire-and-forget sync.
+                var r = self._trackLocal();
+                if (r.isNew) self.syncToServer(self.load());
+                return r;
+            }
+            var local = self.load();
+            var done = false;
+            var finish = function (result) {
+                if (done) return;
+                done = true;
+                try { cb(result); } catch (e) {}
+            };
+            try {
+                fetch(_API_BASE + '/api/streak/track', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ streak: local })
+                }).then(function (res) {
+                    if (!res.ok) throw new Error('streak track failed');
+                    return res.json();
+                }).then(function (result) {
+                    finish(self._applyServerResult(result));
+                }).catch(function () {
+                    // Offline / server error — fall back to local roll-over.
+                    var r = self._trackLocal();
+                    finish(r);
+                });
+            } catch (e) {
+                finish(self._trackLocal());
+            }
         },
 
         applyTheme: function (theme) {

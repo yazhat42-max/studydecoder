@@ -1599,8 +1599,9 @@ Output the complete decoded content for this topic. Do not ask any questions. Do
             try {
                 localStorage.setItem('sd_last_activity', JSON.stringify({ bot: 'syllabus', subject: subjectId || '', subject_name: subjectName || '', topic: topic || '', ts: Date.now() }));
                 if (window.StreakManager) {
-                    var result = window.StreakManager.track();
-                    if (window.sdHandleTracking) window.sdHandleTracking(result);
+                    window.StreakManager.track(function (result) {
+                        if (window.sdHandleTracking) window.sdHandleTracking(result);
+                    });
                 }
             } catch(e) {}
         }

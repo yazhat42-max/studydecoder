@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Bulk Worksheet Builder | Study Decoder</title>
+<meta name="description" content="Generate an HSC worksheet for every topic in one go, with answer keys and a Word download.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f1419">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif; background:#0f1419; color:#e7e9ea; }
+.app-container { display:flex; flex-direction:column; min-height:100vh; width:100%; overflow-x:hidden; }
+.header { background:#16202a; border-bottom:1px solid #2f3336; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+.header-left { display:flex; align-items:center; gap:16px; }
+.back-btn { color:#4f8cff; text-decoration:none; font-size:14px; font-weight:500; padding:8px 16px; border-radius:8px; background:rgba(79,140,255,0.1); }
+.header-title { font-size:20px; font-weight:700; }
+.header-subtitle { font-size:12px; color:#71767b; margin-top:2px; }
+.main-content { flex:1; padding:32px 24px; }
+.container { max-width:980px; margin:0 auto; }
+.card { background:#16202a; border:1px solid #2f3336; border-radius:16px; padding:24px; margin-bottom:20px; }
+.btn { background:linear-gradient(135deg,#4f8cff,#6c63ff); color:#fff; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; cursor:pointer; transition:transform .15s; }
+.btn:hover:not(:disabled) { transform:translateY(-1px); }
+.btn:disabled { opacity:0.5; cursor:not-allowed; }
+.btn-ghost { background:#1d3a5f; color:#e7e9ea; border:1px solid rgba(79,140,255,0.3); }
+.form-input,.form-select,textarea { background:#0f1419; border:1px solid #2f3336; border-radius:8px; padding:12px 14px; color:#e7e9ea; font-size:14px; font-family:inherit; width:100%; }
+.form-input:focus,.form-select:focus,textarea:focus { outline:none; border-color:#4f8cff; }
+.form-label { font-size:13px; font-weight:500; color:#c8ccd0; display:block; margin-bottom:6px; }
+.form-group { margin-bottom:16px; }
+.auth-loading-overlay { position:fixed; inset:0; background:#0f1419; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
+.auth-spinner { width:50px; height:50px; border:4px solid #2f3336; border-top-color:#4f8cff; border-radius:50%; animation:spin 1s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.hidden { display:none !important; }
+.error-banner { background:rgba(220,53,69,0.1); border:1px solid rgba(220,53,69,0.4); color:#ff8088; padding:12px 16px; border-radius:8px; margin-bottom:16px; }
+.loading { display:flex; align-items:center; gap:10px; color:#71767b; padding:20px 0; justify-content:center; }
+.loading-dots { display:flex; gap:4px; }
+.loading-dots span { width:8px; height:8px; background:#4f8cff; border-radius:50%; animation:bounce 1.4s infinite ease-in-out both; }
+.loading-dots span:nth-child(1){animation-delay:-0.32s;} .loading-dots span:nth-child(2){animation-delay:-0.16s;}
+@keyframes bounce { 0%,80%,100%{transform:scale(0);} 40%{transform:scale(1);} }
+@media (max-width:720px){ .main-content{padding:16px;} }
+/* page-specific */
+.chip-list { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.chip { background:#1d3a5f; border:1px solid rgba(79,140,255,0.3); border-radius:999px; padding:6px 12px; font-size:13px; display:flex; align-items:center; gap:8px; }
+.chip button { background:none; border:none; color:#9fb6d4; cursor:pointer; font-size:15px; line-height:1; padding:0; }
+.chip button:hover { color:#fff; }
+.row-inline { display:flex; gap:8px; }
+.row-inline .form-input { flex:1; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width:720px){ .grid-2 { grid-template-columns:1fr; } }
+.toolbar { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:18px; }
+.toolbar label { display:flex; align-items:center; gap:6px; font-size:13px; color:#c8ccd0; cursor:pointer; }
+.ws-title { font-size:22px; font-weight:700; margin-bottom:2px; }
+.ws-meta { font-size:13px; color:#71767b; margin-bottom:16px; }
+.q { margin-bottom:16px; line-height:1.55; }
+.q-head { font-weight:600; }
+.q-marks { color:#71767b; font-weight:500; font-size:13px; }
+.q-opts { list-style:none; padding-left:18px; margin-top:6px; }
+.q-opts li { margin-bottom:4px; }
+.answer-key { border-top:1px dashed #2f3336; margin-top:18px; padding-top:16px; }
+.answer-key h4 { font-size:13px; text-transform:uppercase; letter-spacing:0.5px; color:#4f8cff; margin-bottom:12px; }
+.ak-item { margin-bottom:12px; font-size:14px; line-height:1.5; }
+.ak-item .ak-ans { color:#7fd49b; }
+.ak-item .ak-exp { color:#9aa0a6; }
+.bundle-head { font-size:14px; color:#71767b; margin-bottom:16px; }
+@media print {
+  .header,.toolbar,#authLoading,.no-print { display:none !important; }
+  body,html,.app-container { background:#fff; color:#000; }
+  .card { background:#fff; border:1px solid #ccc; }
+  .ws-meta,.q-marks,.bundle-head { color:#333; }
+  .answer-key h4 { color:#000; }
+  .ak-item .ak-ans,.ak-item .ak-exp { color:#000; }
+  .ws-section { page-break-after:always; }
+}
+</style>
+</head>
+<body>
+<div id="authLoading" class="auth-loading-overlay"><div class="auth-spinner"></div><div style="margin-top:16px;color:#71767b;">Loading…</div></div>
+<div class="app-container hidden" id="appContainer">
+  <header class="header">
+    <div class="header-left">
+      <a href="teacher-dashboard.html" class="back-btn">← Dashboard</a>
+      <div><div class="header-title">Bulk Worksheet Builder</div><div class="header-subtitle">Generate a worksheet for every topic in one go.</div></div>
+    </div>
+  </header>
+  <main class="main-content"><div class="container" id="root"></div></main>
+</div>
+<script src="auth.js"></script>
+<script>
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let SYLLABUS = {};
+let topics = [];
+let bundle = null;
+const MAX_TOPICS = 8;
+
+async function init(){
+  try {
+    const res = await api('/api/subscription');
+    if(!res.ok){
+      if(res.status===401){ location.href='login.html?redirect='+encodeURIComponent(location.pathname); return; }
+      throw new Error('Could not verify your account.');
+    }
+    const data = await res.json();
+    if(data.role !== 'teacher'){ location.href='teacher-pricing.html'; return; }
+  } catch(e){
+    location.href='login.html?redirect='+encodeURIComponent(location.pathname); return;
+  }
+  try {
+    const sres = await api('/syllabus_modules.json');
+    if(sres.ok) SYLLABUS = await sres.json();
+  } catch(e){ SYLLABUS = {}; }
+  document.getElementById('authLoading').classList.add('hidden');
+  document.getElementById('appContainer').classList.remove('hidden');
+  renderForm();
+}
+
+function renderForm(){
+  const subjects = Object.keys(SYLLABUS).sort();
+  const root = document.getElementById('root');
+  root.innerHTML = `
+    <div class="card">
+      <div id="formError"></div>
+      <div class="form-group">
+        <label class="form-label" for="subject">Subject</label>
+        <select class="form-select" id="subject">
+          <option value="">Select a subject…</option>
+          ${subjects.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Topics <span style="color:#71767b;">(up to ${MAX_TOPICS})</span></label>
+        <div class="row-inline">
+          <input class="form-input" id="topicInput" placeholder="e.g. Trigonometric identities">
+          <button type="button" class="btn btn-ghost" id="topicAdd">Add</button>
+        </div>
+        <div class="chip-list" id="topicList"></div>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label" for="qpt">Questions per topic</label>
+          <select class="form-select" id="qpt">
+            ${[3,5,6,8,10,12,15].map(n=>`<option value="${n}" ${n===6?'selected':''}>${n}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="difficulty">Difficulty</label>
+          <select class="form-select" id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="standard" selected>Standard</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn" id="generateBtn">Build Worksheet Bundle</button>
+    </div>
+    <div id="output"></div>
+  `;
+  const topicInput = document.getElementById('topicInput');
+  topicInput.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); addTopic(); } });
+  document.getElementById('topicAdd').addEventListener('click', addTopic);
+  document.getElementById('generateBtn').addEventListener('click', generate);
+  renderTopics();
+}
+
+function addTopic(){
+  const inp = document.getElementById('topicInput');
+  const v = inp.value.trim();
+  if(!v) return;
+  if(topics.length >= MAX_TOPICS){ showError('You can add up to '+MAX_TOPICS+' topics.'); return; }
+  if(topics.some(t=>t.toLowerCase()===v.toLowerCase())){ inp.value=''; return; }
+  topics.push(v);
+  inp.value = '';
+  showError('');
+  renderTopics();
+}
+function renderTopics(){
+  const list = document.getElementById('topicList');
+  list.innerHTML = topics.map((t,i)=>`<span class="chip">${esc(t)}<button type="button" data-i="${i}">×</button></span>`).join('');
+  list.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ topics.splice(+b.dataset.i,1); renderTopics(); }));
+}
+
+function showError(msg){
+  const el = document.getElementById('formError');
+  if(el) el.innerHTML = msg ? `<div class="error-banner">${esc(msg)}</div>` : '';
+}
+
+async function generate(){
+  showError('');
+  const subject = document.getElementById('subject').value.trim();
+  const questionsPerTopic = parseInt(document.getElementById('qpt').value, 10);
+  const difficulty = document.getElementById('difficulty').value;
+  if(!subject){ showError('Please choose a subject.'); return; }
+  if(!topics.length){ showError('Add at least one topic.'); return; }
+
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  const output = document.getElementById('output');
+  output.innerHTML = `<div class="card"><div class="loading"><div class="loading-dots"><span></span><span></span><span></span></div><span>Building worksheets… this can take 30-60 seconds</span></div></div>`;
+
+  try {
+    const res = await api('/api/teacher/ai/bulk-worksheets',{method:'POST',body:JSON.stringify({subject, topics, questionsPerTopic, difficulty})});
+    if(!res.ok){
+      let msg = 'Something went wrong building the worksheets.';
+      try { const j = await res.json(); if(j && j.error) msg = j.error; } catch(e){}
+      throw new Error(msg);
+    }
+    bundle = await res.json();
+    renderBundle();
+  } catch(e){
+    output.innerHTML = '';
+    showError(e.message || 'Network error. Please try again.');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function qTypeLabel(t){
+  if(t==='mc') return 'Multiple choice';
+  if(t==='short') return 'Short answer';
+  if(t==='extended') return 'Extended response';
+  return t || '';
+}
+
+function renderBundle(){
+  const b = bundle || {};
+  const worksheets = b.worksheets || [];
+  const output = document.getElementById('output');
+  const sheetsHtml = worksheets.map((ws, wi)=>{
+    const qs = ws.questions || [];
+    const questionsHtml = qs.map(q=>{
+      let opts = '';
+      if(q.type==='mc' && q.options && q.options.length){
+        opts = `<ul class="q-opts">${q.options.map((o,oi)=>`<li>${String.fromCharCode(65+oi)}. ${esc(o)}</li>`).join('')}</ul>`;
+      }
+      return `<div class="q"><div class="q-head">Q${esc(q.number)}. ${esc(q.question)} <span class="q-marks">[${esc(q.marks)} ${q.marks==1?'mark':'marks'}]</span></div>${opts}</div>`;
+    }).join('');
+    const akHtml = qs.map(q=>`
+      <div class="ak-item">
+        <div class="q-head">Q${esc(q.number)}. <span class="ak-ans">${esc(q.answer)}</span></div>
+        ${q.explanation ? `<div class="ak-exp">${esc(q.explanation)}</div>` : ''}
+      </div>`).join('');
+    return `
+      <div class="card ws-section">
+        <div class="ws-title">${esc(ws.topic)}</div>
+        <div class="ws-meta">${esc(ws.totalMarks)} marks · ${esc(ws.estimatedTime)}</div>
+        ${questionsHtml || '<p style="color:#71767b;">No questions returned.</p>'}
+        <div class="answer-key" data-ak="${wi}">
+          <h4>Answer Key</h4>
+          ${akHtml || '<p style="color:#71767b;">No answers returned.</p>'}
+        </div>
+      </div>`;
+  }).join('');
+  output.innerHTML = `
+    <div class="toolbar">
+      <label><input type="checkbox" id="akToggle" checked> Include answer keys</label>
+      <button class="btn" onclick="window.print()">Print all</button>
+      <button class="btn btn-ghost" id="wordBtn">Download Word</button>
+      <button class="btn btn-ghost" id="resetBtn">New bundle</button>
+    </div>
+    <div class="card no-print">
+      <div class="bundle-head"><strong>${esc(b.subject||'')}</strong> · ${esc(b.difficulty||'')} · ${worksheets.length} worksheet${worksheets.length===1?'':'s'}</div>
+    </div>
+    ${sheetsHtml || '<div class="card">No worksheets returned.</div>'}
+  `;
+  const akToggle = document.getElementById('akToggle');
+  akToggle.addEventListener('change', applyAkVisibility);
+  document.getElementById('wordBtn').addEventListener('click', downloadWord);
+  document.getElementById('resetBtn').addEventListener('click', ()=>{ bundle=null; topics=[]; renderForm(); window.scrollTo(0,0); });
+  applyAkVisibility();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function applyAkVisibility(){
+  const show = document.getElementById('akToggle').checked;
+  document.querySelectorAll('[data-ak]').forEach(el=>{
+    el.classList.toggle('hidden', !show);
+  });
+}
+
+function downloadWord(){
+  const b = bundle || {};
+  const worksheets = b.worksheets || [];
+  const includeKeys = document.getElementById('akToggle').checked;
+  let body = `<h1>${esc(b.subject||'Worksheet Bundle')}</h1>`;
+  body += `<p style="color:#555;">Difficulty: ${esc(b.difficulty||'')}</p>`;
+  worksheets.forEach((ws, wi)=>{
+    if(wi>0) body += `<br style="page-break-before:always;mso-special-character:line-break;">`;
+    body += `<h2>${esc(ws.topic)}</h2>`;
+    body += `<p style="color:#555;">${esc(ws.totalMarks)} marks &middot; ${esc(ws.estimatedTime)}</p>`;
+    (ws.questions||[]).forEach(q=>{
+      body += `<p><b>Q${esc(q.number)}.</b> ${esc(q.question)} <b>[${esc(q.marks)} ${q.marks==1?'mark':'marks'}]</b></p>`;
+      if(q.type==='mc' && q.options && q.options.length){
+        q.options.forEach((o,oi)=>{
+          body += `<p style="margin-left:32px;">&#9675; ${String.fromCharCode(65+oi)}. ${esc(o)}</p>`;
+        });
+      }
+    });
+    if(includeKeys){
+      body += `<br style="page-break-before:always;mso-special-character:line-break;">`;
+      body += `<h2>Answer Key &mdash; ${esc(ws.topic)}</h2>`;
+      (ws.questions||[]).forEach(q=>{
+        body += `<p><b>Q${esc(q.number)}.</b> ${esc(q.answer)}</p>`;
+        if(q.explanation) body += `<p style="margin-left:32px;color:#555;">${esc(q.explanation)}</p>`;
+      });
+    }
+  });
+  const html = `<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${esc(b.subject||'Worksheet Bundle')}</title></head><body style="font-family:Calibri,sans-serif;font-size:11pt;color:#000;">${body}</body></html>`;
+  const blob = new Blob(['﻿', html], {type:'application/msword'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const fname = (b.subject||'worksheet-bundle').replace(/[^a-z0-9]+/gi,'-').replace(/^-+|-+$/g,'').toLowerCase() || 'worksheet-bundle';
+  a.href = url;
+  a.download = fname + '.doc';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+
+init();
+</script>
+</body>
+</html>
