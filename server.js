@@ -2777,22 +2777,32 @@ app.get('/api/student/assignments', requireAuth, (req, res) => {
     res.json({ assignments });
 });
 
-// POST /api/student/assignments/:assignmentId/submit — mark an assignment done
+// POST /api/student/assignments/:assignmentId/submit — toggle assignment status
+// Accepts { status?: 'completed'|'pending', score?: number }. Defaults to
+// 'completed' so the original "submit" semantics still work.
 app.post('/api/student/assignments/:assignmentId/submit', requireAuth, (req, res) => {
     const assignment = db.assignments[req.params.assignmentId];
     if (!assignment) return res.status(404).json({ error: 'Assignment not found' });
     const isMember = db.classMembers.some(m =>
         m.classId === assignment.classId && m.studentUserId === req.user.userId && !m.removedAt);
     if (!isMember) return res.status(403).json({ error: 'Not in this class' });
-    const score = req.body && req.body.score != null ? Number(req.body.score) : null;
+    const body = req.body || {};
+    const requested = body.status === 'pending' ? 'pending' : 'completed';
+    const score = body.score != null ? Number(body.score) : null;
     let sub = db.assignmentSubmissions.find(s => s.assignmentId === assignment.assignmentId && s.studentUserId === req.user.userId);
     if (!sub) {
-        sub = { assignmentId: assignment.assignmentId, studentUserId: req.user.userId, status: 'completed', score, completedAt: new Date().toISOString() };
+        sub = {
+            assignmentId: assignment.assignmentId,
+            studentUserId: req.user.userId,
+            status: requested,
+            score: requested === 'completed' ? score : null,
+            completedAt: requested === 'completed' ? new Date().toISOString() : null
+        };
         db.assignmentSubmissions.push(sub);
     } else {
-        sub.status = 'completed';
-        sub.score = score;
-        sub.completedAt = new Date().toISOString();
+        sub.status = requested;
+        sub.score = requested === 'completed' ? score : null;
+        sub.completedAt = requested === 'completed' ? new Date().toISOString() : null;
     }
     scheduleClassroomSave();
     res.json({ success: true, submission: sub });
