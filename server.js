@@ -476,6 +476,45 @@ function hasActiveTeacherSeat(user) {
 }
 
 /**
+ * Teacher seat SKUs. Three tiers — junior-only, senior-only, and combined.
+ * Pricing reflects content cost: HSC content (longer syllabuses, marking
+ * guidelines, past papers) is materially more expensive to serve than the
+ * junior K-10 stack.
+ */
+const TEACHER_PLANS = {
+    'teacher-junior': { tier: 'junior', amount: 1500, label: 'Junior (Years 7-10)' },
+    'teacher-senior': { tier: 'senior', amount: 2500, label: 'Senior (HSC)' },
+    'teacher-both':   { tier: 'both',   amount: 3500, label: 'Junior + Senior' },
+    // Legacy alias — pre-tier signups landed here at $35 with full access.
+    'teacher':        { tier: 'both',   amount: 3500, label: 'Junior + Senior' }
+};
+
+// Hard cap on total active students linked across all of a teacher's classes.
+// Kills the "drop the join code on TikTok" abuse vector. Multiple smaller
+// classes still fit comfortably under one seat.
+const TEACHER_STUDENT_CAP = 100;
+
+function teacherCanCreateLevel(tier, level) {
+    if (!tier) return false;
+    if (tier === 'both') return true;
+    return tier === level;
+}
+
+// Count of non-removed students across the teacher's non-archived classes.
+function activeStudentCount(teacherUserId) {
+    const myClassIds = new Set(
+        Object.values(db.classes)
+            .filter(c => c.teacherUserId === teacherUserId && !c.archivedAt)
+            .map(c => c.classId)
+    );
+    let n = 0;
+    for (const m of db.classMembers) {
+        if (!m.removedAt && myClassIds.has(m.classId)) n++;
+    }
+    return n;
+}
+
+/**
  * True when `userId` is a student linked to at least one non-archived class
  * whose teacher currently holds an active teacher seat. This is the single
  * switch that grants every linked student full access to Study Decoder.
@@ -1149,6 +1188,7 @@ function upsertUser(userId, data) {
         teacherSubscribed: data.teacherSubscribed !== undefined ? data.teacherSubscribed : (existing.teacherSubscribed || false),
         teacherExpiresAt: data.teacherExpiresAt !== undefined ? data.teacherExpiresAt : existing.teacherExpiresAt,
         teacherSubscribedAt: data.teacherSubscribedAt || existing.teacherSubscribedAt,
+        teacherTier: data.teacherTier !== undefined ? data.teacherTier : existing.teacherTier,
         emailVerified: data.emailVerified !== undefined ? data.emailVerified : (existing.emailVerified || false),
         preferences: data.preferences || existing.preferences || {},
         createdAt: existing.createdAt || new Date().toISOString(),
@@ -2278,6 +2318,7 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         dayPassExpiry: hasDayPassActive(user) ? user.dayPassExpiry : null,
         teacherSubscribed: hasActiveTeacherSeat(user),
         teacherExpiresAt: hasActiveTeacherSeat(user) ? user.teacherExpiresAt : null,
+        teacherTier: hasActiveTeacherSeat(user) ? (user.teacherTier || 'both') : null,
         linkedToTeacher: !!req.linkedTeacher,
         streak: user.streak || null,
         freeTier: !hasFull ? {
@@ -2503,8 +2544,17 @@ function parseJsonLoose(text) {
 
 // POST /api/teacher/classes — create a class, returns a 6-char join code
 app.post('/api/teacher/classes', requireTeacher, (req, res) => {
-    const { name, subject, year } = req.body || {};
+    const { name, subject, year, level } = req.body || {};
     if (!name || !String(name).trim()) return res.status(400).json({ error: 'Class name is required' });
+    const lvl = level === 'senior' || level === 'junior' ? level : null;
+    if (!lvl) return res.status(400).json({ error: 'level must be "junior" or "senior"' });
+    const tier = req.user.teacherTier || 'both';
+    if (!teacherCanCreateLevel(tier, lvl)) {
+        return res.status(403).json({
+            error: `Your ${tier} teacher seat doesn't cover ${lvl} classes`,
+            code: 'TIER_MISMATCH'
+        });
+    }
     const classId = crypto.randomUUID();
     const cls = {
         classId,
@@ -2512,6 +2562,7 @@ app.post('/api/teacher/classes', requireTeacher, (req, res) => {
         name: String(name).trim().slice(0, 120),
         subject: subject ? String(subject).trim().slice(0, 80) : '',
         year: year ? String(year).trim().slice(0, 20) : '',
+        level: lvl,
         joinCode: generateJoinCode(),
         createdAt: new Date().toISOString(),
         archivedAt: null
@@ -2527,7 +2578,12 @@ app.get('/api/teacher/classes', requireTeacher, (req, res) => {
         .filter(c => c.teacherUserId === req.user.userId)
         .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
         .map(c => ({ ...c, memberCount: classMemberCount(c.classId) }));
-    res.json({ classes });
+    res.json({
+        classes,
+        tier: req.user.teacherTier || 'both',
+        studentTotal: activeStudentCount(req.user.userId),
+        studentCap: TEACHER_STUDENT_CAP
+    });
 });
 
 // DELETE /api/teacher/classes/:id — archive a class (students lose access)
@@ -2659,7 +2715,15 @@ app.post('/api/classes/join', requireAuth, (req, res) => {
     }
     let membership = db.classMembers.find(m => m.classId === cls.classId && m.studentUserId === req.user.userId);
     if (membership && !membership.removedAt) {
-        return res.json({ success: true, class: { classId: cls.classId, name: cls.name, subject: cls.subject } , alreadyMember: true });
+        return res.json({ success: true, class: { classId: cls.classId, name: cls.name, subject: cls.subject, level: cls.level }, alreadyMember: true });
+    }
+    // Enforce the per-teacher hard cap on linked students. Rejoins of an
+    // already-counted student fall through this check (handled above).
+    if (activeStudentCount(cls.teacherUserId) >= TEACHER_STUDENT_CAP) {
+        return res.status(409).json({
+            error: `Your teacher's class is full (${TEACHER_STUDENT_CAP}-student cap reached). Ask them for a new class.`,
+            code: 'TEACHER_STUDENT_CAP_REACHED'
+        });
     }
     if (membership && membership.removedAt) {
         membership.removedAt = null;
@@ -2673,7 +2737,7 @@ app.post('/api/classes/join', requireAuth, (req, res) => {
         });
     }
     scheduleClassroomSave();
-    res.json({ success: true, class: { classId: cls.classId, name: cls.name, subject: cls.subject } });
+    res.json({ success: true, class: { classId: cls.classId, name: cls.name, subject: cls.subject, level: cls.level } });
 });
 
 // GET /api/student/assignments — the student's pending assignments
@@ -3298,7 +3362,8 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
     
     try {
         const { plan } = req.body;
-        if (!['monthly', 'yearly', 'lifetime', 'teacher'].includes(plan)) {
+        const isTeacherPlan = !!TEACHER_PLANS[plan];
+        if (!isTeacherPlan && !['monthly', 'yearly', 'lifetime'].includes(plan)) {
             return res.status(400).json({ error: 'Invalid plan' });
         }
 
@@ -3319,7 +3384,7 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
         
         const user = req.user;
 
-        if (plan === 'teacher') {
+        if (isTeacherPlan) {
             // Teacher seat is a separate SKU — already-subscribed check looks at
             // the teacher seat, not the student `subscribed` flag.
             if (hasActiveTeacherSeat(user)) {
@@ -3380,22 +3445,20 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
                 },
                 quantity: 1
             }];
-        } else if (plan === 'teacher') {
-            // Teacher Seat — recurring subscription. $19/mo AUD. Grants every
-            // linked student full access while the seat is active. Different
-            // SKU from the founding lifetime offer, so no cannibalisation.
-            // When STRIPE_TEACHER_PRICE_ID points at a real Price object this
-            // can switch to `price:` — for now inline price_data matches the
-            // other plans.
+        } else if (isTeacherPlan) {
+            // Teacher Seat — three tiered SKUs. The teacher's tier determines
+            // which class levels they can create; students get full access for
+            // any class they're linked to, up to TEACHER_STUDENT_CAP total.
+            const meta = TEACHER_PLANS[plan];
             sessionParams.mode = 'subscription';
             sessionParams.line_items = [{
                 price_data: {
                     currency: 'aud',
                     product_data: {
-                        name: 'Study Decoder — Teacher Seat',
-                        description: 'Unlimited linked students — full access while in your class'
+                        name: `Study Decoder — Teacher Seat (${meta.label})`,
+                        description: `Up to ${TEACHER_STUDENT_CAP} linked students get full access`
                     },
-                    unit_amount: 1900, // $19.00 AUD
+                    unit_amount: meta.amount,
                     recurring: { interval: 'month' }
                 },
                 quantity: 1
@@ -3709,19 +3772,21 @@ app.post('/api/stripe-webhook', async (req, res) => {
                 // ── Teacher Seat ──
                 // Separate SKU from the student plans — activates the teacher
                 // seat without touching the student `subscribed` field.
-                if (plan === 'teacher') {
+                if (TEACHER_PLANS[plan]) {
                     if (!userId && session.customer_details?.email) {
                         const email = session.customer_details.email.toLowerCase();
                         const matchedUser = Object.values(db.users).find(u => u.email && u.email.toLowerCase() === email);
                         if (matchedUser) userId = matchedUser.userId;
                     }
                     if (userId) {
+                        const tier = TEACHER_PLANS[plan].tier;
                         const teacherExpiry = new Date();
                         teacherExpiry.setMonth(teacherExpiry.getMonth() + 1);
                         upsertUser(userId, {
                             teacherSubscribed: true,
                             teacherExpiresAt: teacherExpiry.toISOString(),
                             teacherSubscribedAt: new Date().toISOString(),
+                            teacherTier: tier,
                             stripeCustomerId: session.customer
                         });
                         // Track which Stripe subscription is the teacher seat so
@@ -3741,7 +3806,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
                             currency: session.currency,
                             status: 'teacher_seat_activated'
                         });
-                        console.log(`🎓 Teacher seat activated for ${userId} until ${teacherExpiry.toISOString()}`);
+                        console.log(`🎓 Teacher seat activated for ${userId} (${TEACHER_PLANS[plan].tier}) until ${teacherExpiry.toISOString()}`);
                     }
                     break;
                 }
@@ -3819,7 +3884,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
                         // Teacher seat cancelled. Linked students automatically
                         // lose full access on their next request because
                         // isLinkedToActiveTeacher() re-checks the seat each time.
-                        upsertUser(user.userId, { teacherSubscribed: false, teacherExpiresAt: null });
+                        upsertUser(user.userId, { teacherSubscribed: false, teacherExpiresAt: null, teacherTier: null });
                         const tUser = getUser(user.userId);
                         if (tUser) {
                             tUser.stripeTeacherSubscriptionId = null;
