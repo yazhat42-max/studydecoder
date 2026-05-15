@@ -1627,6 +1627,233 @@
             }
             .sd-stage * { opacity: 1 !important; transform: none !important; }
         }
+
+        /* =====================================================
+           Comparison table — "vs ChatGPT / Atomi / ATAR Notes"
+           ===================================================== */
+        .sd-cmp {
+            padding: 5rem 5% 1rem;
+            position: relative;
+        }
+        .sd-cmp::before {
+            content: ''; position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 60% 40% at 50% 0%, rgba(108,99,255,0.10), transparent 60%);
+            pointer-events: none;
+        }
+        .sd-cmp-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+        .sd-cmp-head { text-align: center; margin-bottom: 2.4rem; }
+        .sd-cmp-eyebrow {
+            display: inline-block; padding: 5px 14px;
+            background: rgba(108,99,255,0.10);
+            border: 1px solid rgba(108,99,255,0.28);
+            border-radius: 999px;
+            font-size: .78rem; color: rgba(167,139,250,0.95);
+            text-transform: uppercase; letter-spacing: .08em;
+            margin-bottom: .9rem;
+        }
+        .sd-cmp-sub {
+            color: var(--text-sec, rgba(255,255,255,.78));
+            font-size: 1.02rem; margin-top: .6rem; max-width: 640px;
+            margin-left: auto; margin-right: auto; line-height: 1.55;
+        }
+
+        .sd-cmp-wrap {
+            position: relative;
+            border-radius: 22px;
+            background: linear-gradient(180deg, rgba(20,18,31,0.92), rgba(14,12,24,0.92));
+            border: 1px solid rgba(108,99,255,0.18);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(108,99,255,0.06), inset 0 0 60px rgba(108,99,255,0.04);
+            overflow: hidden;
+        }
+        .sd-cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .sd-cmp-scroll::-webkit-scrollbar { height: 6px; }
+        .sd-cmp-scroll::-webkit-scrollbar-thumb { background: rgba(108,99,255,0.4); border-radius: 3px; }
+
+        .sd-cmp table {
+            width: 100%;
+            min-width: 720px;
+            border-collapse: collapse;
+            color: var(--text, rgba(255,255,255,.92));
+            font-size: .92rem;
+        }
+        .sd-cmp thead th {
+            position: sticky; top: 0;
+            background: linear-gradient(180deg, rgba(30,26,50,0.98), rgba(20,18,31,0.98));
+            backdrop-filter: blur(8px);
+            padding: 1.1rem .9rem;
+            font-weight: 700;
+            font-size: .9rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(108,99,255,0.22);
+            color: rgba(255,255,255,0.78);
+            white-space: nowrap;
+        }
+        .sd-cmp thead th:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: rgba(255,255,255,0.55);
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+        .sd-cmp thead th.sd-cmp-us {
+            background: linear-gradient(180deg, rgba(108,99,255,0.25), rgba(108,99,255,0.12));
+            color: #fff;
+            position: relative;
+        }
+        .sd-cmp thead th.sd-cmp-us::after {
+            content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+            background: linear-gradient(90deg, transparent, #a78bfa, transparent);
+        }
+        .sd-cmp thead th .sd-cmp-logo {
+            display: block;
+            font-size: 1rem;
+            line-height: 1.15;
+            margin-bottom: 3px;
+        }
+        .sd-cmp thead th.sd-cmp-us .sd-cmp-logo {
+            font-size: 1.05rem;
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sd-cmp thead th .sd-cmp-tag {
+            display: block;
+            font-size: .7rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .sd-cmp tbody tr {
+            transition: background .2s;
+        }
+        .sd-cmp tbody tr:nth-child(odd) td { background: rgba(255,255,255,0.012); }
+        .sd-cmp tbody tr:hover td { background: rgba(108,99,255,0.05); }
+
+        .sd-cmp tbody td {
+            padding: .95rem .9rem;
+            border-bottom: 1px solid rgba(108,99,255,0.08);
+            text-align: center;
+            vertical-align: middle;
+            color: rgba(255,255,255,0.75);
+            font-size: .88rem;
+            line-height: 1.4;
+        }
+        .sd-cmp tbody td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: rgba(255,255,255,0.92);
+            font-size: .92rem;
+            min-width: 200px;
+        }
+        .sd-cmp tbody td:first-child small {
+            display: block;
+            font-weight: 400;
+            color: rgba(255,255,255,0.5);
+            font-size: .76rem;
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+        .sd-cmp tbody td.sd-cmp-us {
+            background: rgba(108,99,255,0.06);
+            color: rgba(255,255,255,0.95);
+            border-left: 1px solid rgba(167,139,250,0.18);
+            border-right: 1px solid rgba(167,139,250,0.18);
+            position: relative;
+        }
+        .sd-cmp tbody tr:hover td.sd-cmp-us { background: rgba(108,99,255,0.12); }
+        .sd-cmp tbody tr:last-child td { border-bottom: 0; }
+        .sd-cmp tbody tr:last-child td.sd-cmp-us { border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; }
+
+        .sd-cmp-yes, .sd-cmp-no, .sd-cmp-partial {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: .8rem;
+            line-height: 1;
+        }
+        .sd-cmp-yes {
+            background: rgba(34,197,94,0.14);
+            color: #4ade80;
+            border: 1px solid rgba(34,197,94,0.32);
+        }
+        .sd-cmp-us .sd-cmp-yes {
+            background: rgba(34,197,94,0.22);
+            color: #86efac;
+            border-color: rgba(34,197,94,0.5);
+            box-shadow: 0 0 12px rgba(34,197,94,0.25);
+        }
+        .sd-cmp-no {
+            background: rgba(239,68,68,0.10);
+            color: #fca5a5;
+            border: 1px solid rgba(239,68,68,0.25);
+        }
+        .sd-cmp-partial {
+            background: rgba(234,179,8,0.12);
+            color: #fde047;
+            border: 1px solid rgba(234,179,8,0.32);
+            font-size: 1.1rem;
+        }
+        .sd-cmp-cell-note {
+            display: block;
+            font-size: .72rem;
+            color: rgba(255,255,255,0.45);
+            margin-top: 4px;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+        .sd-cmp tbody td.sd-cmp-us .sd-cmp-cell-note {
+            color: rgba(167,139,250,0.85);
+        }
+
+        /* Price row — emphasis */
+        .sd-cmp-price td {
+            background: rgba(108,99,255,0.05) !important;
+            font-weight: 600;
+        }
+        .sd-cmp-price td.sd-cmp-us {
+            background: rgba(108,99,255,0.14) !important;
+        }
+        .sd-cmp-price td b { color: #fff; font-size: .95rem; }
+        .sd-cmp-price td small { display: block; font-weight: 500; }
+
+        .sd-cmp-foot {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 1.4rem; gap: 1rem; flex-wrap: wrap;
+            background: rgba(108,99,255,0.04);
+            border-top: 1px solid rgba(108,99,255,0.12);
+            font-size: .78rem;
+            color: rgba(255,255,255,0.5);
+        }
+        .sd-cmp-foot a { color: rgba(167,139,250,0.95); text-decoration: underline; }
+        .sd-cmp-foot a:hover { color: #fff; }
+
+        .sd-cmp-mobile-hint {
+            display: none;
+            text-align: center;
+            font-size: .72rem;
+            color: rgba(255,255,255,0.45);
+            padding: .6rem;
+            border-bottom: 1px solid rgba(108,99,255,0.08);
+        }
+
+        @media (max-width: 760px) {
+            .sd-cmp { padding: 3rem 4% 1rem; }
+            .sd-cmp-mobile-hint { display: block; }
+            .sd-cmp table { font-size: .82rem; min-width: 640px; }
+            .sd-cmp tbody td { padding: .7rem .55rem; }
+            .sd-cmp tbody td:first-child { min-width: 170px; font-size: .85rem; }
+            .sd-cmp-yes, .sd-cmp-no, .sd-cmp-partial { width: 22px; height: 22px; font-size: .7rem; }
+            .sd-cmp thead th { padding: .9rem .55rem; font-size: .82rem; }
+            .sd-cmp thead th .sd-cmp-logo { font-size: .9rem; }
+            .sd-cmp thead th .sd-cmp-tag { font-size: .62rem; }
+            .sd-cmp-cell-note { font-size: .65rem; }
+        }
     </style>
 
     <!-- GSAP + ScrollTrigger for the hero pinned scroll story -->
@@ -2466,6 +2693,129 @@
         <div style="max-width:640px;margin:0 auto;text-align:center;">
             <div id="socialProofWeeklyBadge" style="display:none;margin-bottom:0.8rem;"></div>
             <p id="socialProofCount" style="font-size:0.9rem;color:var(--text-muted);"></p>
+        </div>
+    </section>
+
+    <!-- Comparison Table — Why Study Decoder vs ChatGPT / Atomi / ATAR Notes -->
+    <section class="sd-cmp" id="comparison" aria-labelledby="sdCmpTitle">
+        <div class="sd-cmp-inner">
+            <div class="sd-cmp-head">
+                <span class="sd-cmp-eyebrow">How we compare</span>
+                <h2 id="sdCmpTitle" class="section-title reveal">Why <span class="highlight">Study Decoder</span> over a generic AI?</h2>
+                <p class="sd-cmp-sub reveal">Other tools do <em>one</em> of these things. We built every one of them around the NSW HSC syllabus — so you stop juggling four apps and a chatbot.</p>
+            </div>
+
+            <div class="sd-cmp-wrap reveal">
+                <div class="sd-cmp-mobile-hint">← swipe to compare →</div>
+                <div class="sd-cmp-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th class="sd-cmp-us">
+                                    <span class="sd-cmp-logo">Study Decoder</span>
+                                    <span class="sd-cmp-tag">HSC-specific AI</span>
+                                </th>
+                                <th>
+                                    <span class="sd-cmp-logo">ChatGPT</span>
+                                    <span class="sd-cmp-tag">Generic chatbot</span>
+                                </th>
+                                <th>
+                                    <span class="sd-cmp-logo">Atomi</span>
+                                    <span class="sd-cmp-tag">Video lessons</span>
+                                </th>
+                                <th>
+                                    <span class="sd-cmp-logo">ATAR Notes</span>
+                                    <span class="sd-cmp-tag">Notes &amp; tutors</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Built on the official NESA syllabus<small>Every dot point, every module, every band descriptor.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span><span class="sd-cmp-cell-note">Generic, not NSW</span></td>
+                                <td><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-yes">✓</span></td>
+                            </tr>
+                            <tr>
+                                <td>24/7 AI tutor that actually teaches<small>Socratic coaching, LaTeX maths, voice input.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-yes">✓</span><span class="sd-cmp-cell-note">No HSC context</span></td>
+                                <td><span class="sd-cmp-no">✗</span><span class="sd-cmp-cell-note">Pre-recorded videos</span></td>
+                                <td><span class="sd-cmp-no">✗</span><span class="sd-cmp-cell-note">Paid human tutors</span></td>
+                            </tr>
+                            <tr>
+                                <td>Full 3-hour timed exam simulator<small>MC + short answer + extended response, auto-marked.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-partial">~</span><span class="sd-cmp-cell-note">Topic quizzes only</span></td>
+                                <td><span class="sd-cmp-partial">~</span><span class="sd-cmp-cell-note">Past papers PDF</span></td>
+                            </tr>
+                            <tr>
+                                <td>AI marks your work to band level<small>Paste your answer, get a mark + specific feedback.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-partial">~</span><span class="sd-cmp-cell-note">Generic feedback</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Conversational flashcards + spaced repetition<small>Adaptive SR engine that schedules every review.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Photo &rarr; clean notes / worksheet decoder<small>Snap a handout, get structured notes &amp; hints.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-partial">~</span><span class="sd-cmp-cell-note">Image upload basic</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Personal mastery map<small>3D heatmap of every dot point you've practised.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-partial">~</span><span class="sd-cmp-cell-note">Progress bars only</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Real-world &ldquo;Learn IRL&rdquo; scenarios<small>Apply content in interactive survival games.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Classroom mode for teachers<small>Free seat for every linked student, live dashboard.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-yes">✓</span><span class="sd-cmp-cell-note">Separate school plan</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Built &amp; supported by HSC graduates in Sydney<small>Aussie-built, not a Silicon Valley import.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-yes">✓</span></td>
+                            </tr>
+                            <tr class="sd-cmp-price">
+                                <td>Entry price<small>What you'd pay to actually use it daily.</small></td>
+                                <td class="sd-cmp-us"><b>Free</b><small>or $5/mo · <b class="sd-lifetime-price-inline">$37.50</b> lifetime</small></td>
+                                <td><b>$20/mo</b><small>USD · GPT-4 access</small></td>
+                                <td><b>$15-25/mo</b><small>AUD · per subject tiers</small></td>
+                                <td><b>Free notes</b><small>Tutors $40-80/hr</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sd-cmp-foot">
+                    <span>Pricing as of <span id="sdCmpYear">2025</span>. Comparison based on each provider's public pricing &amp; features.</span>
+                    <a href="#pricing">See our pricing ↓</a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -4042,12 +4392,19 @@
         })();
       };
 
+      // Auto-stamp the comparison-table year
+      function initCmpYear() {
+        var y = document.getElementById('sdCmpYear');
+        if (y) y.textContent = new Date().getFullYear();
+      }
+
       // ---------- Boot ----------
       function boot() {
         initParticles();
         initHeroSphere();
         initTiles();
         initCannedDemos();
+        initCmpYear();
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
       else boot();
