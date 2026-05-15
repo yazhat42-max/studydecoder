@@ -3503,6 +3503,96 @@ app.post('/api/create-daypass-session', requireAuth, (req, res) => {
 });
 
 /**
+ * Teacher seat test promo codes.
+ *
+ * Configured via the TEACHER_TEST_PROMO_CODES env var as a comma-separated
+ * list. Each redemption grants the user a teacher 'both' (combined) seat
+ * for 30 days, identical to a paid Stripe checkout — useful for QA and
+ * partner demos without touching Stripe.
+ *
+ * In non-production environments only, a single default code
+ * (`SDTEST-COMBO-2025`) is accepted so a fresh dev environment works
+ * without extra setup. Production REQUIRES the env var to be set, or no
+ * codes will validate.
+ */
+const TEACHER_PROMO_CODES = (function () {
+    const fromEnv = (process.env.TEACHER_TEST_PROMO_CODES || '')
+        .split(',')
+        .map(s => s.trim().toUpperCase())
+        .filter(Boolean);
+    if (fromEnv.length) return fromEnv;
+    if (process.env.NODE_ENV !== 'production') return ['SDTEST-COMBO-2025'];
+    return [];
+})();
+if (TEACHER_PROMO_CODES.length) {
+    console.log(`🎟️  Teacher promo codes active (${TEACHER_PROMO_CODES.length}): ${TEACHER_PROMO_CODES.join(', ')}`);
+}
+
+/**
+ * POST /api/redeem-teacher-promo
+ * Redeem a server-side test promo code to activate a teacher Combined
+ * (Junior + Senior) seat for 30 days. Each (user, code) pair can only be
+ * redeemed once. The legitimate flow remains Stripe checkout — this exists
+ * for testing and demos.
+ */
+app.post('/api/redeem-teacher-promo', requireAuth, express.json(), (req, res) => {
+    const raw = (req.body && req.body.code) || '';
+    const code = String(raw).trim().toUpperCase();
+    if (!code) return res.status(400).json({ error: 'Enter a promo code.' });
+    if (!TEACHER_PROMO_CODES.length) {
+        return res.status(400).json({ error: 'No promo codes are currently active.' });
+    }
+    if (!TEACHER_PROMO_CODES.includes(code)) {
+        return res.status(400).json({ error: 'That promo code isn\'t valid.' });
+    }
+
+    const user = req.user;
+    const used = Array.isArray(user.usedTeacherPromos) ? user.usedTeacherPromos.slice() : [];
+    if (used.includes(code)) {
+        return res.status(400).json({ error: 'You\'ve already redeemed that code.' });
+    }
+
+    // If the user already has an active teacher seat, extend it by 30 days;
+    // otherwise start a fresh 30-day window from now.
+    const now = Date.now();
+    const currentExpiry = user.teacherExpiresAt ? new Date(user.teacherExpiresAt).getTime() : 0;
+    const base = currentExpiry > now ? currentExpiry : now;
+    const expiresAt = new Date(base + 30 * 86400000);
+
+    used.push(code);
+    upsertUser(user.userId, {
+        teacherSubscribed: true,
+        teacherExpiresAt: expiresAt.toISOString(),
+        teacherSubscribedAt: user.teacherSubscribedAt || new Date().toISOString(),
+        teacherTier: 'both'
+    });
+    // upsertUser uses a strict whitelist, so set the redemption-tracking
+    // field directly on the user object and promote role in the same pass.
+    const fresh = getUser(user.userId);
+    if (fresh) {
+        fresh.usedTeacherPromos = used;
+        if (fresh.role !== 'teacher') fresh.role = 'teacher';
+        scheduleSave();
+    }
+    logPayment({
+        userId: user.userId,
+        stripeEventId: null,
+        eventType: 'promo.redeemed',
+        amount: 0,
+        currency: 'aud',
+        status: `teacher_promo:${code}`
+    });
+    console.log(`🎟️  Teacher promo "${code}" redeemed by ${user.userId} → expires ${expiresAt.toISOString()}`);
+
+    res.json({
+        ok: true,
+        message: 'Teacher Combined seat activated for 30 days.',
+        tier: 'both',
+        expiresAt: expiresAt.toISOString()
+    });
+});
+
+/**
  * POST /api/verify-payment
  * Verify payment with Stripe and activate subscription
  */
