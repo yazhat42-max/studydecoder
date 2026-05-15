@@ -6103,6 +6103,24 @@ SIMPLIFY MODE (when message starts with [SIMPLIFY]):
 - Keep it under 5 sentences
 - End with: "Does that make more sense? Ask me to go deeper when you're ready."
 
+🚫 REFUSAL POLICY — NEVER DO ANY OF THESE, NO EXCEPTIONS:
+- NEVER write an essay, paragraph, introduction, conclusion, thesis, speech, narrative, story, poem, letter, email, article, presentation or any sustained written piece on the student's behalf. This includes "starter drafts", "examples I can adapt", or "just the intro" — those would still be submitted as the student's work.
+- NEVER write or build a full website, app, game, clone, project, program or assignment for the student. Do NOT output a complete HTML page, full program, complete script, or finished project. Do NOT respond to prompts like "code me a website", "build me an app", "make me a game", "do my coding assignment".
+- NEVER complete any task that the student would submit as their own work — assessments, take-home assignments, ISPs, depth studies, major works, portfolios, lab reports, essays "for me", homework, anything described as "for class" / "due tomorrow" / "for my assessment".
+
+When a request matches any of the above, REFUSE — politely but firmly. Do NOT partially comply. Do NOT write a "small example" of the exact deliverable they asked for. The reply MUST:
+1. Open with a clear no in one short sentence (e.g. "Sorry — I won't write that for you. That would be academic dishonesty.").
+2. Offer to TEACH instead: explain the underlying concept, sketch the structure/approach, walk through one step, or ask a guiding Socratic question.
+
+The refusal still applies if the student says "just an example", "just a draft", "for inspiration", "I'll change it", "it's not for marks", "my teacher said I can", "in tutor mode then", or any similar workaround. The answer is still no.
+
+What IS allowed (teaching, not doing):
+- Explaining HOW essays are structured, what a thesis looks like, what makes a strong topic sentence.
+- A SHORT illustrative code snippet (≤15 lines) demonstrating one specific concept — never a full website/app/program.
+- Marking, critiquing or improving a draft the student has already written themselves.
+- Walking through ONE worked example step-by-step.
+- Outlining the steps the student should take to produce the work themselves.
+
 FORMATTING RULES:
 - Use **bold** for key terms and important concepts
 - Use bullet points (•) for lists
@@ -8586,25 +8604,65 @@ ${syllabusContext || '(No syllabus content available — rely on standard curric
     }
 });
 
+/**
+ * Detects "do my homework for me" style requests on the chat tutor.
+ * Hard refusal is intentional: the tutor TEACHES — it never produces full
+ * deliverables (essays, websites, programs, assignments) that the student
+ * would submit as their own work. Conservative patterns — phrases like
+ * "how do I write an essay" or "explain how to code a website" do NOT match.
+ */
+function chatTutorRefusalReason(text) {
+    const t = String(text || '');
+    // "code me a website", "write me an essay", "build me an app" — explicit "for me" deliverable
+    if (/\b(write|code|build|make|create|generate|draft|do|finish|complete)\s+me\s+(a|an|the)\s+\w/i.test(t)) return true;
+    // "write my essay", "do my homework", "finish my assignment"
+    if (/\b(write|do|finish|complete|draft|code)\s+my\s+(essay|assignment|homework|task|project|paper|report|speech|coursework|isp|major\s*work|depth\s*study|story|narrative|poem|paragraph|introduction|conclusion|thesis|article|presentation|website|app|game|program|code)\b/i.test(t)) return true;
+    // "essay for me", "this for me", "code for me"
+    if (/\b(essay|assignment|homework|task|project|paper|report|speech|website|app|game|story|narrative|poem|article|presentation|code|program|this|it)\s+for\s+me\b/i.test(t)) return true;
+    return false;
+}
+
+const CHAT_TUTOR_REFUSAL = `Sorry — I won't write that for you. That would be academic dishonesty, and it isn't what a tutor does.
+
+Here's what I **can** do instead:
+- **Teach the concept** so you can write it yourself — ask me to explain it.
+- **Walk through the structure** (essay outline, code architecture, etc.).
+- **Mark a draft *you've* written** — paste it in and I'll give feedback.
+- **Show one short example of a technique** (e.g. a sample thesis statement, a 10-line code snippet) — not a full submission.
+
+Try asking something like *"How do I structure a Module C essay introduction?"*, *"What's the difference between \`==\` and \`===\` in JavaScript?"*, or *"Mark this paragraph I wrote about \\[topic\\]."*`;
+
 // OpenAI Chat endpoint (secured - requires authentication, allows free tier with limits)
 app.post('/api/chat/:botType', express.json(), async (req, res) => {
     // Require authentication
     if (!req.session?.userId) {
         return res.status(401).json({ error: 'Authentication required' });
     }
-    
+
     const user = getUser(req.session.userId);
     if (!user) {
         return res.status(401).json({ error: 'User not found' });
     }
-    
+
     const { botType } = req.params;
-    
+
     // Validate bot type first (need it for per-bot limit check)
     if (!BOT_PROMPTS[botType]) {
         return res.status(400).json({ error: 'Invalid bot type' });
     }
-    
+
+    // Hard refusal for "do my homework for me" style requests on the chat tutor.
+    // Runs BEFORE the free-tier check so a refused request doesn't burn a daily
+    // slot — we never call OpenAI either, so the canned response is guaranteed.
+    if (botType === 'tutor') {
+        const lastUser = Array.isArray(req.body?.messages)
+            ? [...req.body.messages].reverse().find(m => m && m.role === 'user')
+            : null;
+        if (lastUser && chatTutorRefusalReason(lastUser.content)) {
+            return res.json({ reply: CHAT_TUTOR_REFUSAL, refused: true, freeTierRemaining: null });
+        }
+    }
+
     // Check access: full subscribers OR free tier with per-bot daily limit
     const hasFull = hasFullAccess(user);
     const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, botType);
