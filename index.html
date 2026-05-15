@@ -1877,6 +1877,7 @@
             <li><a href="teacher-pricing.html">For Teachers</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li id="navAdminLink" style="display: none;"><a href="admin.html" style="color: #f59e0b;">⚙️ Admin</a></li>
+            <li id="navAssignments" style="display: none;"><a href="student-assignments.html">📋 Assignments</a></li>
             <li id="navJoinClass" style="display: none;"><a href="join-class.html">🎓 Join a Class</a></li>
             <li id="navSignIn"><a href="login.html" class="btn btn-primary">Sign In</a></li>
             <li id="navUserMenu" style="display: none;">
@@ -3158,9 +3159,12 @@
         document.getElementById('navSignIn').style.display = 'none';
         document.getElementById('navUserMenu').style.display = 'flex';
         document.getElementById('navUserName').textContent = user.name || user.email.split('@')[0];
-        // Show "Join a Class" for non-teachers (teachers create classes via their dashboard)
+        // Show "Join a Class" + "Assignments" for non-teachers
+        // (teachers create classes & assignments via their dashboard)
         var njc = document.getElementById('navJoinClass');
         if (njc) njc.style.display = (user.role === 'teacher') ? 'none' : 'list-item';
+        var nas = document.getElementById('navAssignments');
+        if (nas) nas.style.display = (user.role === 'teacher') ? 'none' : 'list-item';
 
         // Teacher accounts: swap the Classroom Mode tile CTA to their dashboard
         if (user.role === 'teacher') {
@@ -3382,6 +3386,8 @@
         document.getElementById('navAdminLink').style.display = 'none';
         var njc = document.getElementById('navJoinClass');
         if (njc) njc.style.display = 'none';
+        var nas = document.getElementById('navAssignments');
+        if (nas) nas.style.display = 'none';
         document.getElementById('heroLoggedIn').style.display = 'none';
         document.getElementById('heroButtons').style.display = 'flex';
         document.getElementById('heroSignInBtn').style.display = 'inline-block';
