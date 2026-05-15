@@ -2803,7 +2803,7 @@
                             </tr>
                             <tr class="sd-cmp-price">
                                 <td>Entry price<small>What you'd pay to actually use it daily.</small></td>
-                                <td class="sd-cmp-us"><b>Free</b><small>or $5/mo · <b class="sd-lifetime-price-inline">$37.50</b> lifetime</small></td>
+                                <td class="sd-cmp-us"><b>Free</b><small>or <b class="sd-lifetime-price-inline">$37.50</b> lifetime (founding)</small></td>
                                 <td><b>$20/mo</b><small>USD · GPT-4 access</small></td>
                                 <td><b>$15-25/mo</b><small>AUD · per subject tiers</small></td>
                                 <td><b>Free notes</b><small>Tutors $40-80/hr</small></td>
@@ -4210,23 +4210,26 @@
             if (chat) chat.classList.add('is-live');
             return startTyping();
           }
-          // Show the chat box after the user scrolls a little
+          // Show the chat box after the user scrolls a little.
+          // We scale the OUTER sphere wrapper (no CSS animation) instead of
+          // writing inline transforms to each of the 60 codes per scroll
+          // frame — the per-code loop was fighting the keyframe rotation
+          // on .sd-hero2-sphere-inner and causing visible page jitter.
+          var sphereOuter = document.getElementById('sdHero2Sphere');
+          if (sphereOuter) {
+            sphereOuter.style.transformOrigin = '50% 50%';
+            sphereOuter.style.willChange = 'transform, opacity';
+          }
           ScrollTrigger.create({
             trigger: pin,
             start: 'top top',
             end: '+=400',
-            scrub: 0.6,
+            scrub: true,
             onUpdate: function (self) {
               var p = self.progress;
-              // Codes converge inward
-              var nodes = sphere.querySelectorAll('.sd-hero2-code');
-              for (var i = 0; i < nodes.length; i++) {
-                var n = nodes[i];
-                var x = +n.dataset.x * (1 - p * 0.95);
-                var y = +n.dataset.y * (1 - p * 0.95);
-                var z = +n.dataset.z * (1 - p * 0.95);
-                n.style.transform = 'translate3d(' + x + 'px,' + y + 'px,' + z + 'px)';
-                n.style.opacity = (1 - p * 0.9).toFixed(2);
+              if (sphereOuter) {
+                sphereOuter.style.transform = 'scale(' + (1 - p * 0.7).toFixed(3) + ')';
+                sphereOuter.style.opacity = (1 - p * 0.85).toFixed(3);
               }
               if (p > 0.5 && !chat.classList.contains('is-live')) {
                 chat.classList.add('is-live');
