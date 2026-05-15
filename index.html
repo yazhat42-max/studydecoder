@@ -3146,6 +3146,12 @@
                 window.location.replace('/junior-bot.html');
                 return;
             }
+            // Teachers land on their dashboard, not the consumer homepage.
+            // Same ?stay= escape hatch — adding ?stay=1 keeps you on the home page.
+            if (user.role === 'teacher' && !stay) {
+                window.location.replace('/teacher-dashboard.html');
+                return;
+            }
         } catch (e) { /* ignore */ }
 
         // Nav

@@ -83,8 +83,10 @@ th { color:#8899a6; font-size:12px; text-transform:uppercase; letter-spacing:0.5
 .tile-weak { background:rgba(239,68,68,.2); border:1px solid #ef4444; }
 .heat-subject { font-size:15px; font-weight:700; margin:18px 0 10px; }
 .assign-list { list-style:none; }
-.assign-list li { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; background:#0f1419; border:1px solid #2f3336; border-radius:10px; margin-bottom:10px; }
-.assign-meta { font-size:12px; color:#8899a6; margin-top:3px; }
+.assign-list li { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:12px 14px; background:#0f1419; border:1px solid #2f3336; border-radius:10px; margin-bottom:10px; }
+.assign-meta { font-size:12px; color:#8899a6; margin-top:6px; }
+.assign-instr { font-size:13px; color:#d4d9de; margin-top:6px; line-height:1.45; padding:8px 10px; background:rgba(79,140,255,0.06); border:1px solid rgba(79,140,255,0.18); border-radius:6px; white-space:pre-wrap; word-break:break-word; }
+.assign-instr.muted { background:transparent; border:0; padding:0; color:#71767b; }
 </style>
 </head>
 <body>
@@ -395,18 +397,22 @@ function loadAssignments(){
         <div>
           <label class="form-label">Type *</label>
           <select class="form-select" id="asgType">
-            <option value="practice">Practice</option>
+            <option value="practice">Practice questions</option>
             <option value="worksheet">Worksheet</option>
-            <option value="deck">Deck</option>
+            <option value="deck">Flashcard deck</option>
           </select>
         </div>
         <div><label class="form-label">Title *</label><input class="form-input" id="asgTitle" placeholder="Module B essay practice"></div>
       </div>
-      <div class="form-row">
-        <div><label class="form-label">Reference ID</label><input class="form-input" id="asgRef" placeholder="optional"></div>
-        <div><label class="form-label">Due date</label><input class="form-input" id="asgDue" type="date"></div>
+      <div>
+        <label class="form-label">Instructions for students</label>
+        <textarea class="form-input" id="asgRef" rows="3" placeholder="What should they do? e.g. 'Complete the 8-mark question on Frankenstein in Module B Practice — submit your answer for AI marking.' Paste a link to a saved worksheet or deck if you have one."></textarea>
       </div>
-      <button class="btn" id="asgCreate">Create assignment</button>
+      <div class="form-row" style="margin-top:14px;">
+        <div><label class="form-label">Due date</label><input class="form-input" id="asgDue" type="date"></div>
+        <div></div>
+      </div>
+      <button class="btn" id="asgCreate" style="margin-top:14px;">Create assignment</button>
     </div>
     <div id="asgListSlot"><div class="card muted">Loading assignments…</div></div>`;
 
@@ -432,15 +438,41 @@ function renderAssignmentList(assignments){
   const items = assignments.map(a => {
     const sub = a.submissions || { completed:0, total:0 };
     const due = a.dueAt ? 'Due ' + esc(fmtDate(a.dueAt)) : 'No due date';
+    const instr = a.refId ? `<div class="assign-instr">${escMultiline(a.refId)}</div>` : '<div class="assign-instr muted" style="font-style:italic;">No instructions added.</div>';
     return `<li>
-      <div>
+      <div style="flex:1; min-width:0;">
         <div><span class="badge">${esc(a.type||'')}</span> &nbsp;<strong>${esc(a.title)}</strong></div>
+        ${instr}
         <div class="assign-meta">${due}</div>
       </div>
-      <div class="muted">${sub.completed} / ${sub.total} completed</div>
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0;">
+        <div class="muted">${sub.completed} / ${sub.total} completed</div>
+        <button class="btn-danger asg-del" data-id="${esc(a.assignmentId)}" data-title="${esc(a.title)}" style="font-size:12px; padding:6px 12px; border-radius:8px; cursor:pointer;">Delete</button>
+      </div>
     </li>`;
   }).join('');
   slot.innerHTML = `<div class="card"><div class="section-title" style="margin-bottom:14px;">Assignments</div><ul class="assign-list">${items}</ul></div>`;
+  slot.querySelectorAll('.asg-del').forEach(btn => btn.addEventListener('click', () => deleteAssignment(btn.dataset.id, btn.dataset.title)));
+}
+
+function escMultiline(s){
+  return esc(s).replace(/\n/g, '<br>');
+}
+
+function deleteAssignment(assignmentId, title){
+  if (!confirm('Delete assignment "' + title + '"? Students will no longer see it.')) return;
+  api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/assignments/' + encodeURIComponent(assignmentId), {
+    method: 'DELETE'
+  })
+    .then(async r => {
+      if (!r.ok){
+        const d = await r.json().catch(()=>({}));
+        alert(d.error || 'Could not delete assignment.');
+        return;
+      }
+      refreshAssignmentList();
+    })
+    .catch(() => alert('Network error.'));
 }
 
 function createAssignment(){
