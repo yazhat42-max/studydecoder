@@ -2649,7 +2649,9 @@ app.post('/api/teacher/classes/:id/assignments', requireTeacher, (req, res) => {
         assignmentId,
         classId: cls.classId,
         type,
-        refId: refId ? String(refId) : null,
+        // refId is now used as freeform instructions for students; was previously
+        // a structural reference ID. Capped to keep the textarea from being abused.
+        refId: refId ? String(refId).slice(0, 1000) : null,
         title: String(title).trim().slice(0, 160),
         dueAt: dueAt || null,
         createdAt: new Date().toISOString()
@@ -2673,6 +2675,19 @@ app.get('/api/teacher/classes/:id/assignments', requireTeacher, (req, res) => {
             return { ...a, submissions: { completed, total: memberCount } };
         });
     res.json({ assignments });
+});
+
+// DELETE /api/teacher/classes/:id/assignments/:assignmentId — remove an assignment
+app.delete('/api/teacher/classes/:id/assignments/:assignmentId', requireTeacher, (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    const a = db.assignments[req.params.assignmentId];
+    if (!a || a.classId !== cls.classId) return res.status(404).json({ error: 'Assignment not found' });
+    delete db.assignments[req.params.assignmentId];
+    // Drop any orphaned submissions so completion counts stay accurate.
+    db.assignmentSubmissions = db.assignmentSubmissions.filter(s => s.assignmentId !== req.params.assignmentId);
+    scheduleClassroomSave();
+    res.json({ success: true });
 });
 
 // GET /api/teacher/classes/:id/progress — aggregated mastery-map + usage
