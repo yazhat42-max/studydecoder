@@ -1401,8 +1401,9 @@ The AI will transform them into polished, professional-looking notes with proper
             try {
                 localStorage.setItem('sd_last_activity', JSON.stringify({ bot: 'notes', subject: '', subject_name: '', topic: '', ts: Date.now() }));
                 if (window.StreakManager) {
-                    var result = window.StreakManager.track();
-                    if (window.sdHandleTracking) window.sdHandleTracking(result);
+                    window.StreakManager.track(function (result) {
+                        if (window.sdHandleTracking) window.sdHandleTracking(result);
+                    });
                 }
             } catch(e) {}
         }

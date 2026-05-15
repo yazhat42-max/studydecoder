@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Review | Study Decoder</title>
+<meta name="description" content="Work through your conversational flashcards — explain your thinking and get coached by the AI.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f1419">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif; background:#0f1419; color:#e7e9ea; }
+.app-container { display:flex; flex-direction:column; min-height:100vh; width:100%; overflow-x:hidden; }
+.header { background:#16202a; border-bottom:1px solid #2f3336; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+.header-left { display:flex; align-items:center; gap:16px; }
+.back-btn { color:#4f8cff; text-decoration:none; font-size:14px; font-weight:500; padding:8px 16px; border-radius:8px; background:rgba(79,140,255,0.1); }
+.header-title { font-size:20px; font-weight:700; }
+.header-subtitle { font-size:12px; color:#71767b; margin-top:2px; }
+.main-content { flex:1; padding:32px 24px; }
+.container { max-width:980px; margin:0 auto; }
+.card { background:#16202a; border:1px solid #2f3336; border-radius:16px; padding:24px; margin-bottom:20px; }
+.btn { background:linear-gradient(135deg,#4f8cff,#6c63ff); color:#fff; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; cursor:pointer; transition:transform .15s; }
+.btn:hover:not(:disabled) { transform:translateY(-1px); }
+.btn:disabled { opacity:0.5; cursor:not-allowed; }
+.btn-ghost { background:#1d3a5f; color:#e7e9ea; border:1px solid rgba(79,140,255,0.3); }
+.btn-danger { background:rgba(220,53,69,0.15); color:#ff8088; border:1px solid rgba(220,53,69,0.4); }
+.form-input,.form-select,textarea { background:#0f1419; border:1px solid #2f3336; border-radius:8px; padding:12px 14px; color:#e7e9ea; font-size:14px; font-family:inherit; width:100%; }
+.form-input:focus,.form-select:focus,textarea:focus { outline:none; border-color:#4f8cff; }
+.form-label { font-size:13px; font-weight:500; color:#c8ccd0; display:block; margin-bottom:6px; }
+.form-group { margin-bottom:16px; }
+.auth-loading-overlay { position:fixed; inset:0; background:#0f1419; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
+.auth-spinner { width:50px; height:50px; border:4px solid #2f3336; border-top-color:#4f8cff; border-radius:50%; animation:spin 1s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.hidden { display:none !important; }
+.error-banner { background:rgba(220,53,69,0.1); border:1px solid rgba(220,53,69,0.4); color:#ff8088; padding:12px 16px; border-radius:8px; margin-bottom:16px; }
+.loading { display:flex; align-items:center; gap:10px; color:#71767b; padding:20px 0; justify-content:center; }
+.loading-dots { display:flex; gap:4px; }
+.loading-dots span { width:8px; height:8px; background:#4f8cff; border-radius:50%; animation:bounce 1.4s infinite ease-in-out both; }
+.loading-dots span:nth-child(1){animation-delay:-0.32s;} .loading-dots span:nth-child(2){animation-delay:-0.16s;}
+@keyframes bounce { 0%,80%,100%{transform:scale(0);} 40%{transform:scale(1);} }
+@media (max-width:720px){ .main-content{padding:16px;} }
+/* page-specific */
+.review-wrap { max-width:620px; margin:0 auto; }
+.progress-row { font-size:13px; color:#71767b; margin-bottom:8px; display:flex; justify-content:space-between; }
+.progress-track { height:6px; background:#2f3336; border-radius:999px; overflow:hidden; margin-bottom:20px; }
+.progress-fill { height:100%; background:linear-gradient(135deg,#4f8cff,#6c63ff); border-radius:999px; transition:width .3s; }
+.dotref { font-size:12px; color:#71767b; margin-bottom:8px; }
+.new-tag { display:inline-block; font-size:11px; font-weight:600; padding:2px 8px; border-radius:999px; background:rgba(79,140,255,0.15); color:#4f8cff; margin-left:6px; }
+.question { font-size:18px; line-height:1.55; font-weight:600; margin-bottom:18px; }
+.answer-area { min-height:130px; resize:vertical; }
+.action-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+.action-row .btn { flex:1; min-width:140px; }
+.hint-box { background:rgba(79,140,255,0.08); border:1px solid rgba(79,140,255,0.25); border-radius:10px; padding:12px 14px; margin-top:12px; font-size:14px; color:#cfe0ff; line-height:1.5; }
+.grade-pill { display:inline-block; font-size:13px; font-weight:700; padding:5px 14px; border-radius:999px; margin-bottom:12px; text-transform:capitalize; }
+.feedback { font-size:15px; line-height:1.6; color:#e7e9ea; }
+.result-block { margin-top:14px; padding-top:14px; border-top:1px solid #2f3336; }
+.result-label { font-size:12px; font-weight:700; color:#71767b; text-transform:uppercase; letter-spacing:.03em; margin-bottom:6px; }
+.result-text { font-size:14px; line-height:1.6; color:#c8ccd0; }
+.mastery-note { font-size:13px; color:#71767b; margin-top:12px; }
+.completion-grades { display:flex; gap:10px; flex-wrap:wrap; margin:16px 0; }
+.grade-stat { flex:1; min-width:110px; background:#0f1419; border:1px solid #2f3336; border-radius:10px; padding:14px; text-align:center; }
+.grade-stat .num { font-size:24px; font-weight:700; }
+.grade-stat .lbl { font-size:12px; color:#71767b; margin-top:2px; text-transform:capitalize; }
+.link-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+.muted { color:#71767b; font-size:13px; }
+</style>
+</head>
+<body>
+<div id="authLoading" class="auth-loading-overlay"><div class="auth-spinner"></div><div style="margin-top:16px;color:#71767b;">Loading…</div></div>
+<div class="app-container hidden" id="appContainer">
+  <header class="header">
+    <div class="header-left">
+      <a href="flashcards.html" class="back-btn">← Decks</a>
+      <div><div class="header-title">Review</div><div class="header-subtitle" id="subTitle">Loading deck…</div></div>
+    </div>
+  </header>
+  <main class="main-content"><div class="container" id="root"></div></main>
+</div>
+<script src="auth.js"></script>
+<script>
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+const root = document.getElementById('root');
+const DECK_ID = new URLSearchParams(location.search).get('deck');
+const MAX_RETRIES = 2;
+const BANDS = {
+  correct:  { bg:'rgba(34,197,94,0.22)',  border:'#22c55e', text:'#4ade80' },
+  partial:  { bg:'rgba(234,179,8,0.18)',  border:'#eab308', text:'#facc15' },
+  incorrect:{ bg:'rgba(239,68,68,0.18)',  border:'#ef4444', text:'#f87171' },
+  'off-track':{ bg:'rgba(239,68,68,0.18)',border:'#ef4444', text:'#f87171' }
+};
+
+let DECK = null;
+let QUEUE = [];
+let idx = 0;
+let hintsShown = 0;     // hints revealed for current card
+let usedHint = false;   // whether a hint was used on current card
+let retries = 0;        // retries used on current card
+let result = null;      // last answer result for current card
+let busy = false;
+const gradeTally = { correct:0, partial:0, incorrect:0, 'off-track':0 };
+
+function pillStyle(grade){
+  const b = BANDS[grade] || BANDS['off-track'];
+  return `background:${b.bg};border:1px solid ${b.border};color:${b.text};`;
+}
+
+function freeTierBanner(){
+  return '<div class="error-banner">You\'ve used your 3 free flashcard reviews today. Upgrade to Premium for unlimited reviews. <a href="index.html" style="color:#ff8088;text-decoration:underline;">See plans</a></div>';
+}
+
+function renderEmpty(){
+  root.innerHTML = `
+    <div class="card review-wrap" style="text-align:center;">
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px;">All caught up!</div>
+      <div class="muted" style="margin-bottom:18px;">No cards are due in this deck right now. Spaced repetition will bring them back when it's time.</div>
+      <div class="link-row" style="justify-content:center;">
+        <a class="btn" href="flashcards.html">Back to decks</a>
+        <a class="btn btn-ghost" href="mastery-map.html">View mastery map</a>
+      </div>
+    </div>`;
+}
+
+function renderError(msg){
+  root.innerHTML = `<div class="review-wrap"><div class="error-banner">${esc(msg)}</div>
+    <a class="btn btn-ghost" href="flashcards.html">← Back to decks</a></div>`;
+}
+
+function renderCard(){
+  const card = QUEUE[idx];
+  const total = QUEUE.length;
+  const pct = Math.round((idx/total)*100);
+  const hintsAvail = (card.hints || []).length;
+  const canHint = hintsShown < Math.min(hintsAvail, 3);
+
+  let resultHtml = '';
+  if (result){
+    const r = result;
+    let extra = '';
+    if (r.hint) extra += `<div class="hint-box"><strong>Hint:</strong> ${esc(r.hint)}</div>`;
+    if (r.exemplarAnswer) extra += `<div class="result-block"><div class="result-label">Exemplar answer</div><div class="result-text">${esc(r.exemplarAnswer)}</div></div>`;
+    if (r.idealAnswer) extra += `<div class="result-block"><div class="result-label">The full answer</div><div class="result-text">${esc(r.idealAnswer)}</div></div>`;
+    let masteryNote = '';
+    if (r.mastery) masteryNote = `<div class="mastery-note">Mastery for ${esc(r.mastery.dotPointRef||'this dot point')}: ${Math.round((r.mastery.score||0)*100)}%</div>`;
+    const canRetry = (r.grade === 'partial' || r.grade === 'incorrect') && retries < MAX_RETRIES;
+    resultHtml = `
+      <div class="result-block">
+        <span class="grade-pill" style="${pillStyle(r.grade)}">${esc(r.grade)}</span>
+        <div class="feedback">${esc(r.feedback)}</div>
+        ${extra}
+        ${masteryNote}
+        <div class="action-row">
+          ${canRetry ? '<button class="btn btn-ghost" id="retryBtn">Try again</button>' : ''}
+          <button class="btn" id="nextBtn">${idx+1 < total ? 'Next card →' : 'Finish review'}</button>
+        </div>
+      </div>`;
+  }
+
+  root.innerHTML = `
+    <div class="review-wrap">
+      <div id="errSlot"></div>
+      <div class="progress-row"><span>Card ${idx+1} of ${total}</span><span>${DECK ? esc(DECK.title) : ''}</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="card">
+        <div class="dotref">${esc(card.dotPointRef||'')}${card.isNew ? '<span class="new-tag">New</span>' : ''}</div>
+        <div class="question">${esc(card.prompt)}</div>
+        <textarea class="answer-area" id="answerBox" placeholder="Type your answer — explain your thinking…" ${result ? 'readonly' : ''}>${esc(currentDraft)}</textarea>
+        <div id="hintSlot">${renderHintBox(card)}</div>
+        ${result ? '' : `<div class="action-row">
+          ${canHint ? '<button class="btn btn-ghost" id="hintBtn">Show a hint</button>' : ''}
+          <button class="btn" id="submitBtn">Submit answer</button>
+        </div>`}
+        ${resultHtml}
+      </div>
+    </div>`;
+
+  const box = document.getElementById('answerBox');
+  if (box && !result){
+    box.addEventListener('input', () => { currentDraft = box.value; });
+    box.focus();
+  }
+  const hintBtn = document.getElementById('hintBtn');
+  if (hintBtn) hintBtn.onclick = () => { hintsShown++; usedHint = true; renderCard(); };
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn) submitBtn.onclick = submitAnswer;
+  const retryBtn = document.getElementById('retryBtn');
+  if (retryBtn) retryBtn.onclick = () => { retries++; result = null; renderCard(); };
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) nextBtn.onclick = nextCard;
+}
+
+let currentDraft = '';
+
+function renderHintBox(card){
+  const hints = card.hints || [];
+  const shown = hints.slice(0, hintsShown);
+  if (!shown.length) return '';
+  return shown.map((h,i)=>`<div class="hint-box"><strong>Hint ${i+1}:</strong> ${esc(h)}</div>`).join('');
+}
+
+function submitAnswer(){
+  if (busy) return;
+  const card = QUEUE[idx];
+  const box = document.getElementById('answerBox');
+  const answer = (box ? box.value : '').trim();
+  const errSlot = document.getElementById('errSlot');
+  errSlot.innerHTML = '';
+  if (!answer){ errSlot.innerHTML = '<div class="error-banner">Type an answer before submitting.</div>'; return; }
+  busy = true;
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Grading…'; }
+  errSlot.innerHTML = `<div class="loading"><span>Grading your answer…</span><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+
+  api('/api/cards/'+encodeURIComponent(card.cardId)+'/answer', {
+    method:'POST', body: JSON.stringify({ answer, usedHint })
+  })
+    .then(r => r.json().then(d => ({ ok:r.ok, status:r.status, d })))
+    .then(({ ok, status, d }) => {
+      busy = false;
+      if (status === 403 && d && d.freeTierExhausted){
+        errSlot.innerHTML = freeTierBanner();
+        if (submitBtn){ submitBtn.disabled = false; submitBtn.textContent = 'Submit answer'; }
+        return;
+      }
+      if (!ok || !d.grade) throw new Error((d && d.error) || 'Could not grade your answer.');
+      result = d;
+      if (gradeTally[d.grade] != null) gradeTally[d.grade]++;
+      renderCard();
+    })
+    .catch(err => {
+      busy = false;
+      errSlot.innerHTML = '<div class="error-banner">'+esc(err.message||'Something went wrong.')+'</div>';
+      if (submitBtn){ submitBtn.disabled = false; submitBtn.textContent = 'Submit answer'; }
+    });
+}
+
+function nextCard(){
+  idx++;
+  hintsShown = 0; usedHint = false; retries = 0; result = null; currentDraft = '';
+  if (idx >= QUEUE.length){ renderCompletion(); return; }
+  renderCard();
+}
+
+function renderCompletion(){
+  const reviewed = QUEUE.length;
+  root.innerHTML = `
+    <div class="card review-wrap" style="text-align:center;">
+      <div style="font-size:20px;font-weight:700;margin-bottom:6px;">Review complete</div>
+      <div class="muted">You worked through ${reviewed} card${reviewed===1?'':'s'} in ${DECK ? esc(DECK.title) : 'this deck'}.</div>
+      <div class="completion-grades">
+        <div class="grade-stat"><div class="num" style="color:${BANDS.correct.text}">${gradeTally.correct}</div><div class="lbl">correct</div></div>
+        <div class="grade-stat"><div class="num" style="color:${BANDS.partial.text}">${gradeTally.partial}</div><div class="lbl">partial</div></div>
+        <div class="grade-stat"><div class="num" style="color:${BANDS.incorrect.text}">${gradeTally.incorrect}</div><div class="lbl">incorrect</div></div>
+        <div class="grade-stat"><div class="num" style="color:${BANDS['off-track'].text}">${gradeTally['off-track']}</div><div class="lbl">off-track</div></div>
+      </div>
+      <div class="link-row" style="justify-content:center;">
+        <a class="btn" href="flashcard-review.html?deck=${encodeURIComponent(DECK_ID)}">Review again</a>
+        <a class="btn btn-ghost" href="mastery-map.html">Mastery map</a>
+        <a class="btn btn-ghost" href="flashcards.html">All decks</a>
+      </div>
+    </div>`;
+}
+
+(function init(){
+  if (!DECK_ID){
+    api('/api/subscription').then(r => {
+      if (!r.ok || r.status === 401){ location.href = 'login.html?redirect='+encodeURIComponent(location.pathname); return; }
+      document.getElementById('authLoading').classList.add('hidden');
+      document.getElementById('appContainer').classList.remove('hidden');
+      renderError('No deck specified. Open a deck from the flashcards page.');
+    }).catch(() => { location.href = 'login.html?redirect='+encodeURIComponent(location.pathname); });
+    return;
+  }
+  api('/api/subscription')
+    .then(r => {
+      if (!r.ok || r.status === 401){ location.href = 'login.html?redirect='+encodeURIComponent(location.pathname); return null; }
+      return api('/api/decks/'+encodeURIComponent(DECK_ID)+'/review-queue');
+    })
+    .then(r => {
+      if (r === null) return null;
+      return r.json().then(d => ({ ok:r.ok, d }));
+    })
+    .then(res => {
+      if (res === null) return;
+      document.getElementById('authLoading').classList.add('hidden');
+      document.getElementById('appContainer').classList.remove('hidden');
+      if (!res.ok) throw new Error((res.d && res.d.error) || 'Could not load the review queue.');
+      DECK = res.d.deck || null;
+      QUEUE = res.d.queue || [];
+      document.getElementById('subTitle').textContent = DECK ? DECK.title : 'Review';
+      if (!QUEUE.length){ renderEmpty(); return; }
+      renderCard();
+    })
+    .catch(err => {
+      document.getElementById('authLoading').classList.add('hidden');
+      document.getElementById('appContainer').classList.remove('hidden');
+      renderError(err.message || 'Something went wrong loading this deck.');
+    });
+})();
+</script>
+</body>
+</html>

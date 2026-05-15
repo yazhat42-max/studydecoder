@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Rubric Marker | Study Decoder</title>
+<meta name="description" content="Mark a student response against your own rubric with AI-assisted criteria feedback.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f1419">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif; background:#0f1419; color:#e7e9ea; }
+.app-container { display:flex; flex-direction:column; min-height:100vh; width:100%; overflow-x:hidden; }
+.header { background:#16202a; border-bottom:1px solid #2f3336; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+.header-left { display:flex; align-items:center; gap:16px; }
+.back-btn { color:#4f8cff; text-decoration:none; font-size:14px; font-weight:500; padding:8px 16px; border-radius:8px; background:rgba(79,140,255,0.1); }
+.header-title { font-size:20px; font-weight:700; }
+.header-subtitle { font-size:12px; color:#71767b; margin-top:2px; }
+.main-content { flex:1; padding:32px 24px; }
+.container { max-width:980px; margin:0 auto; }
+.card { background:#16202a; border:1px solid #2f3336; border-radius:16px; padding:24px; margin-bottom:20px; }
+.btn { background:linear-gradient(135deg,#4f8cff,#6c63ff); color:#fff; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; cursor:pointer; transition:transform .15s; }
+.btn:hover:not(:disabled) { transform:translateY(-1px); }
+.btn:disabled { opacity:0.5; cursor:not-allowed; }
+.btn-ghost { background:#1d3a5f; color:#e7e9ea; border:1px solid rgba(79,140,255,0.3); }
+.form-input,.form-select,textarea { background:#0f1419; border:1px solid #2f3336; border-radius:8px; padding:12px 14px; color:#e7e9ea; font-size:14px; font-family:inherit; width:100%; }
+.form-input:focus,.form-select:focus,textarea:focus { outline:none; border-color:#4f8cff; }
+.form-label { font-size:13px; font-weight:500; color:#c8ccd0; display:block; margin-bottom:6px; }
+.form-group { margin-bottom:16px; }
+.auth-loading-overlay { position:fixed; inset:0; background:#0f1419; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
+.auth-spinner { width:50px; height:50px; border:4px solid #2f3336; border-top-color:#4f8cff; border-radius:50%; animation:spin 1s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.hidden { display:none !important; }
+.error-banner { background:rgba(220,53,69,0.1); border:1px solid rgba(220,53,69,0.4); color:#ff8088; padding:12px 16px; border-radius:8px; margin-bottom:16px; }
+.loading { display:flex; align-items:center; gap:10px; color:#71767b; padding:20px 0; justify-content:center; }
+.loading-dots { display:flex; gap:4px; }
+.loading-dots span { width:8px; height:8px; background:#4f8cff; border-radius:50%; animation:bounce 1.4s infinite ease-in-out both; }
+.loading-dots span:nth-child(1){animation-delay:-0.32s;} .loading-dots span:nth-child(2){animation-delay:-0.16s;}
+@keyframes bounce { 0%,80%,100%{transform:scale(0);} 40%{transform:scale(1);} }
+@media (max-width:720px){ .main-content{padding:16px;} }
+/* page-specific */
+.toolbar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
+.score-box { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px; }
+.score-num { font-size:42px; font-weight:800; color:#4f8cff; line-height:1; }
+.score-total { font-size:20px; color:#71767b; font-weight:600; }
+.score-band { background:#1d3a5f; border:1px solid rgba(79,140,255,0.3); border-radius:999px; padding:6px 14px; font-size:14px; font-weight:600; }
+.section { margin-bottom:22px; }
+.section h3 { font-size:15px; font-weight:700; color:#4f8cff; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px; }
+.crit-table { width:100%; border-collapse:collapse; }
+.crit-table th,.crit-table td { text-align:left; padding:10px 12px; border-bottom:1px solid #2f3336; font-size:14px; vertical-align:top; }
+.crit-table th { color:#c8ccd0; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; }
+.crit-table td.crit-name { font-weight:600; }
+.crit-table td.crit-score { white-space:nowrap; color:#4f8cff; font-weight:600; }
+.feedback-list { list-style:none; padding:0; }
+.feedback-list li { padding:10px 14px; border-radius:8px; margin-bottom:8px; font-size:14px; line-height:1.5; }
+.feedback-list.strengths li { background:rgba(40,167,69,0.1); border:1px solid rgba(40,167,69,0.35); color:#9fe0b0; }
+.feedback-list.improvements li { background:rgba(255,165,0,0.1); border:1px solid rgba(255,165,0,0.35); color:#ffce8a; }
+.overall-quote { border-left:3px solid #4f8cff; background:#0f1419; padding:14px 18px; border-radius:0 8px 8px 0; font-size:15px; line-height:1.6; color:#c8ccd0; font-style:italic; }
+@media print {
+  .header,.toolbar,#authLoading { display:none !important; }
+  body,html,.app-container { background:#fff; color:#000; }
+  .card { background:#fff; border:1px solid #ccc; }
+  .section h3 { color:#000; }
+  .score-num { color:#000; }
+  .score-total { color:#333; }
+  .crit-table td.crit-score { color:#000; }
+  .overall-quote { background:#f4f4f4; color:#000; }
+  .feedback-list.strengths li,.feedback-list.improvements li { color:#000; }
+}
+</style>
+</head>
+<body>
+<div id="authLoading" class="auth-loading-overlay"><div class="auth-spinner"></div><div style="margin-top:16px;color:#71767b;">Loading…</div></div>
+<div class="app-container hidden" id="appContainer">
+  <header class="header">
+    <div class="header-left">
+      <a href="teacher-dashboard.html" class="back-btn">← Dashboard</a>
+      <div><div class="header-title">Rubric Marker</div><div class="header-subtitle">Mark a student response against your own rubric.</div></div>
+    </div>
+  </header>
+  <main class="main-content"><div class="container" id="root"></div></main>
+</div>
+<script src="auth.js"></script>
+<script>
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let SYLLABUS = {};
+
+async function init(){
+  try {
+    const res = await api('/api/subscription');
+    if(!res.ok){
+      if(res.status===401){ location.href='login.html?redirect='+encodeURIComponent(location.pathname); return; }
+      throw new Error('Could not verify your account.');
+    }
+    const data = await res.json();
+    if(data.role !== 'teacher'){ location.href='teacher-pricing.html'; return; }
+  } catch(e){
+    location.href='login.html?redirect='+encodeURIComponent(location.pathname); return;
+  }
+  try {
+    const sres = await api('/syllabus_modules.json');
+    if(sres.ok) SYLLABUS = await sres.json();
+  } catch(e){ SYLLABUS = {}; }
+  document.getElementById('authLoading').classList.add('hidden');
+  document.getElementById('appContainer').classList.remove('hidden');
+  renderForm();
+}
+
+function renderForm(){
+  const subjects = Object.keys(SYLLABUS).sort();
+  const root = document.getElementById('root');
+  root.innerHTML = `
+    <div class="card">
+      <div id="formError"></div>
+      <div class="form-group">
+        <label class="form-label" for="subject">Subject <span style="color:#71767b;">(optional)</span></label>
+        <select class="form-select" id="subject">
+          <option value="">Select a subject…</option>
+          ${subjects.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="questionText">Question / task <span style="color:#71767b;">(optional)</span></label>
+        <textarea id="questionText" rows="3" placeholder="Paste the question the student was answering…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="rubric">Marking rubric <span style="color:#71767b;">(required)</span></label>
+        <textarea id="rubric" rows="7" placeholder="Paste your rubric / marking criteria here…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="response">Student response <span style="color:#71767b;">(required)</span></label>
+        <textarea id="response" rows="10" placeholder="Paste the student's response here…"></textarea>
+      </div>
+      <button class="btn" id="markBtn">Mark Response</button>
+    </div>
+    <div id="output"></div>
+  `;
+  document.getElementById('markBtn').addEventListener('click', mark);
+}
+
+function showError(msg){
+  const el = document.getElementById('formError');
+  if(el) el.innerHTML = msg ? `<div class="error-banner">${esc(msg)}</div>` : '';
+}
+
+async function mark(){
+  showError('');
+  const subject = document.getElementById('subject').value.trim();
+  const questionText = document.getElementById('questionText').value.trim();
+  const rubric = document.getElementById('rubric').value.trim();
+  const response = document.getElementById('response').value.trim();
+  if(!rubric){ showError('Please paste your marking rubric.'); return; }
+  if(!response){ showError('Please paste the student response.'); return; }
+
+  const btn = document.getElementById('markBtn');
+  btn.disabled = true;
+  const output = document.getElementById('output');
+  output.innerHTML = `<div class="card"><div class="loading"><div class="loading-dots"><span></span><span></span><span></span></div><span>Marking… 10-20 seconds</span></div></div>`;
+
+  try {
+    const res = await api('/api/teacher/ai/rubric-mark',{method:'POST',body:JSON.stringify({subject, questionText, rubric, response})});
+    if(!res.ok){
+      let msg = 'Something went wrong marking the response.';
+      try { const j = await res.json(); if(j && j.error) msg = j.error; } catch(e){}
+      throw new Error(msg);
+    }
+    const data = await res.json();
+    renderMarking(data.marking || {});
+  } catch(e){
+    output.innerHTML = '';
+    showError(e.message || 'Network error. Please try again.');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderMarking(m){
+  const list = (arr, cls)=> (arr&&arr.length)
+    ? `<ul class="feedback-list ${cls}">${arr.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`
+    : `<p style="color:#71767b;">None provided.</p>`;
+  const criteria = (m.criteria&&m.criteria.length)
+    ? `<table class="crit-table"><thead><tr><th>Criterion</th><th>Mark</th><th>Comment</th></tr></thead><tbody>${
+        m.criteria.map(c=>`<tr><td class="crit-name">${esc(c.criterion)}</td><td class="crit-score">${esc(c.awarded)} / ${esc(c.outOf)}</td><td>${esc(c.comment)}</td></tr>`).join('')
+      }</tbody></table>`
+    : `<p style="color:#71767b;">None provided.</p>`;
+  document.getElementById('output').innerHTML = `
+    <div class="toolbar">
+      <button class="btn" onclick="window.print()">Print</button>
+      <button class="btn btn-ghost" id="resetBtn">Mark another</button>
+    </div>
+    <div class="card">
+      <div class="score-box">
+        <span class="score-num">${esc(m.awardedMarks)}</span>
+        <span class="score-total">/ ${esc(m.totalMarks)}</span>
+        ${m.band ? `<span class="score-band">${esc(m.band)}</span>` : ''}
+      </div>
+      <div class="section" style="margin-top:18px;"><h3>Criteria Breakdown</h3>${criteria}</div>
+      <div class="section"><h3>Strengths</h3>${list(m.strengths,'strengths')}</div>
+      <div class="section"><h3>Improvements</h3>${list(m.improvements,'improvements')}</div>
+      <div class="section"><h3>Overall Comment</h3>${
+        m.overallComment ? `<div class="overall-quote">${esc(m.overallComment)}</div>` : `<p style="color:#71767b;">None provided.</p>`
+      }</div>
+    </div>
+  `;
+  document.getElementById('resetBtn').addEventListener('click', ()=>{ renderForm(); window.scrollTo(0,0); });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+init();
+</script>
+</body>
+</html>

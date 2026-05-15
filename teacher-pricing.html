@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>For Teachers | Study Decoder</title>
+<meta name="description" content="One teacher seat gives your whole HSC class full access to Study Decoder. $19/month, unlimited linked students, cancel anytime.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f1419">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif; background:#0f1419; color:#e7e9ea; }
+.app-container { display:flex; flex-direction:column; min-height:100vh; width:100%; overflow-x:hidden; }
+.header { background:#16202a; border-bottom:1px solid #2f3336; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+.header-left { display:flex; align-items:center; gap:16px; }
+.back-btn { color:#4f8cff; text-decoration:none; font-size:14px; font-weight:500; padding:8px 16px; border-radius:8px; background:rgba(79,140,255,0.1); }
+.header-title { font-size:20px; font-weight:700; }
+.header-subtitle { font-size:12px; color:#71767b; margin-top:2px; }
+.main-content { flex:1; padding:32px 24px; }
+.container { max-width:980px; margin:0 auto; }
+.card { background:#16202a; border:1px solid #2f3336; border-radius:16px; padding:24px; margin-bottom:20px; }
+.btn { background:linear-gradient(135deg,#4f8cff,#6c63ff); color:#fff; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; cursor:pointer; transition:transform .15s; }
+.btn:hover:not(:disabled) { transform:translateY(-1px); }
+.btn:disabled { opacity:0.5; cursor:not-allowed; }
+.btn-ghost { background:#1d3a5f; color:#e7e9ea; border:1px solid rgba(79,140,255,0.3); }
+.btn-danger { background:rgba(220,53,69,0.15); color:#ff8088; border:1px solid rgba(220,53,69,0.4); }
+.form-input,.form-select,textarea { background:#0f1419; border:1px solid #2f3336; border-radius:8px; padding:12px 14px; color:#e7e9ea; font-size:14px; font-family:inherit; width:100%; }
+.form-input:focus,.form-select:focus,textarea:focus { outline:none; border-color:#4f8cff; }
+.form-label { font-size:13px; font-weight:500; color:#c8ccd0; display:block; margin-bottom:6px; }
+.auth-loading-overlay { position:fixed; inset:0; background:#0f1419; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
+.auth-spinner { width:50px; height:50px; border:4px solid #2f3336; border-top-color:#4f8cff; border-radius:50%; animation:spin 1s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.hidden { display:none !important; }
+.error-banner { background:rgba(220,53,69,0.1); border:1px solid rgba(220,53,69,0.4); color:#ff8088; padding:12px 16px; border-radius:8px; margin-bottom:16px; }
+.stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; }
+.stat-box { background:#0f1419; border:1px solid #2f3336; border-radius:12px; padding:16px; }
+.stat-box .num { font-size:26px; font-weight:800; color:#4f8cff; }
+.stat-box .lbl { font-size:12px; color:#8899a6; margin-top:2px; }
+table { width:100%; border-collapse:collapse; }
+th,td { text-align:left; padding:10px 12px; border-bottom:1px solid #2f3336; font-size:14px; }
+th { color:#8899a6; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; }
+@media (max-width:720px){ .main-content{padding:16px;} table{font-size:13px;} th,td{padding:8px 6px;} }
+
+.hero { text-align:center; padding:24px 8px 8px; }
+.hero h1 { font-size:34px; line-height:1.2; font-weight:800; margin-bottom:14px; }
+.hero h1 .grad { background:linear-gradient(135deg,#4f8cff,#6c63ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.hero p { font-size:16px; color:#a9b3bd; max-width:620px; margin:0 auto; }
+.pricing-card { text-align:center; border:1px solid rgba(79,140,255,0.35); }
+.price-tag { font-size:42px; font-weight:800; }
+.price-tag .per { font-size:16px; color:#8899a6; font-weight:600; }
+.price-sub { color:#8899a6; font-size:13px; margin-top:2px; }
+.feature-list { list-style:none; text-align:left; max-width:420px; margin:20px auto; }
+.feature-list li { padding:8px 0; font-size:15px; color:#d4d9de; border-bottom:1px solid #222b35; }
+.feature-list li:last-child { border-bottom:none; }
+.cta-row { margin-top:18px; }
+.cta-row .btn { font-size:16px; padding:14px 28px; }
+.testimonial { background:#16202a; border-left:4px solid #4f8cff; border-radius:10px; padding:20px 24px; }
+.testimonial blockquote { font-size:16px; line-height:1.55; color:#dfe3e7; font-style:italic; }
+.testimonial .who { margin-top:12px; font-size:13px; color:#8899a6; font-style:normal; }
+.faq details { background:#0f1419; border:1px solid #2f3336; border-radius:10px; padding:12px 16px; margin-bottom:10px; }
+.faq summary { cursor:pointer; font-weight:600; font-size:15px; color:#e7e9ea; }
+.faq details[open] summary { color:#4f8cff; }
+.faq p { margin-top:10px; color:#a9b3bd; font-size:14px; line-height:1.55; }
+.section-title { font-size:18px; font-weight:700; margin-bottom:14px; }
+.link-inline { color:#4f8cff; text-decoration:none; font-weight:600; }
+.success-note { background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.4); color:#7ee2a8; padding:12px 16px; border-radius:8px; margin-bottom:16px; }
+</style>
+</head>
+<body>
+<div id="authLoading" class="auth-loading-overlay"><div class="auth-spinner"></div><div style="margin-top:16px;color:#71767b;">Loading…</div></div>
+<div class="app-container hidden" id="appContainer">
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="back-btn">← Home</a>
+      <div><div class="header-title">For Teachers</div><div class="header-subtitle">One seat. Your whole class gets full access.</div></div>
+    </div>
+  </header>
+  <main class="main-content"><div class="container" id="root"></div></main>
+</div>
+<script src="auth.js"></script>
+<script>
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let isTeacher = false;
+
+function render(){
+  const root = document.getElementById('root');
+  const ctaHtml = isTeacher
+    ? '<a href="teacher-dashboard.html" class="btn" style="display:inline-block;text-decoration:none;">Go to Teacher Dashboard →</a>'
+    : '<button class="btn" id="buyBtn" onclick="startCheckout()">Get the Teacher Seat →</button>';
+
+  root.innerHTML = `
+    <div id="msgSlot"></div>
+
+    <section class="hero">
+      <h1>Give your whole class <span class="grad">Study Decoder</span> — for the price of one seat.</h1>
+      <p>For <strong>$19/month</strong> you get one teacher seat that unlocks full Study Decoder access for every student you link. Unlimited linked students, and they pay nothing while they're in your class.</p>
+    </section>
+
+    <div class="card pricing-card">
+      <div class="price-tag">$19<span class="per">/month AUD</span></div>
+      <div class="price-sub">Billed monthly. Cancel anytime.</div>
+      <ul class="feature-list">
+        <li>✓ Unlimited linked students</li>
+        <li>✓ Every student gets full Study Decoder access free</li>
+        <li>✓ Class progress dashboard + mastery maps</li>
+        <li>✓ Teacher-only AI tools: lesson plans, bulk worksheets, rubric marking</li>
+        <li>✓ Cancel anytime</li>
+      </ul>
+      <div class="cta-row">${ctaHtml}</div>
+    </div>
+
+    <div class="card testimonial">
+      <blockquote>“I run two Year 12 English Advanced classes and used to chase 50-odd kids across half a dozen apps. Now I create one class, drop the join code on the board, and everyone's in. The mastery map shows me exactly which dot points the cohort is shaky on before I've even marked a single essay — it's changed how I plan my lessons.”</blockquote>
+      <div class="who">— Megan T., HSC English teacher, Western Sydney</div>
+    </div>
+
+    <div class="card faq">
+      <div class="section-title">Frequently asked questions</div>
+      <details>
+        <summary>How do students join?</summary>
+        <p>When you create a class you get a 6-character join code. Share it with your students — they sign up (or log in), enter the code on the Join a Class page, and they're linked to you instantly.</p>
+      </details>
+      <details>
+        <summary>Do students pay anything?</summary>
+        <p>No. Students get full Study Decoder access completely free for as long as they're linked to your active class. There's nothing for them to buy.</p>
+      </details>
+      <details>
+        <summary>What happens if I cancel?</summary>
+        <p>Your teacher seat stops at the end of the billing period and your linked students revert to the free tier. Their progress and mastery data is kept — nothing is deleted.</p>
+      </details>
+      <details>
+        <summary>Can I be a student too?</summary>
+        <p>Yes. The teacher seat is billed separately from a personal Study Decoder subscription, so you can have both if you also want full access for your own study.</p>
+      </details>
+    </div>
+  `;
+}
+
+function startCheckout(){
+  const btn = document.getElementById('buyBtn');
+  const msg = document.getElementById('msgSlot');
+  msg.innerHTML = '';
+  if (btn){ btn.disabled = true; btn.textContent = 'Opening checkout…'; }
+  api('/api/create-checkout-session', { method:'POST', body: JSON.stringify({ plan:'teacher' }) })
+    .then(async r => {
+      const d = await r.json().catch(()=>({}));
+      if (!r.ok){
+        const err = d.error || 'Could not start checkout';
+        if (err === 'Not authenticated' || r.status === 401){
+          window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname);
+          return;
+        }
+        if (/already/i.test(err)){
+          msg.innerHTML = '<div class="success-note">You already have an active teacher seat. <a class="link-inline" href="teacher-dashboard.html">Go to your dashboard →</a></div>';
+        } else {
+          msg.innerHTML = '<div class="error-banner">' + esc(err) + '</div>';
+        }
+        if (btn){ btn.disabled = false; btn.textContent = 'Get the Teacher Seat →'; }
+        return;
+      }
+      if (d.url){
+        window.open(d.url, '_blank');
+        if (btn){ btn.disabled = false; btn.textContent = 'Get the Teacher Seat →'; }
+      } else {
+        msg.innerHTML = '<div class="error-banner">Checkout session could not be created. Please try again.</div>';
+        if (btn){ btn.disabled = false; btn.textContent = 'Get the Teacher Seat →'; }
+      }
+    })
+    .catch(() => {
+      msg.innerHTML = '<div class="error-banner">Network error. Please try again.</div>';
+      if (btn){ btn.disabled = false; btn.textContent = 'Get the Teacher Seat →'; }
+    });
+}
+
+(function init(){
+  // Landing page — works logged out. Just detect whether they're already a teacher.
+  api('/api/subscription')
+    .then(async r => {
+      if (r.ok){
+        const d = await r.json().catch(()=>({}));
+        isTeacher = d.role === 'teacher';
+      }
+    })
+    .catch(()=>{})
+    .finally(() => {
+      render();
+      document.getElementById('authLoading').classList.add('hidden');
+      document.getElementById('appContainer').classList.remove('hidden');
+    });
+})();
+</script>
+</body>
+</html>

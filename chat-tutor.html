@@ -1054,8 +1054,9 @@
 
             // Track streak
             if (window.StreakManager) {
-                const result = window.StreakManager.track();
-                if (window.sdHandleTracking) window.sdHandleTracking(result);
+                window.StreakManager.track(function (result) {
+                    if (window.sdHandleTracking) window.sdHandleTracking(result);
+                });
             }
             if (window.pwaMarkFirstToolUse) window.pwaMarkFirstToolUse();
 

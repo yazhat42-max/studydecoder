@@ -196,11 +196,11 @@
                         <div class="form-group">
                             <label class="form-label" for="countSelect">Number of Questions</label>
                             <select id="countSelect" class="form-select">
-                                <option value="5">5 questions (~15 min)</option>
-                                <option value="10" selected>10 questions (~30 min)</option>
-                                <option value="15">15 questions (~45 min)</option>
-                                <option value="20">20 questions (~60 min)</option>
-                                <option value="25">25 questions (~75 min)</option>
+                                <option value="5">5 questions &middot; ~13 marks &middot; ~15 min</option>
+                                <option value="10" selected>10 questions &middot; ~25 marks &middot; ~30 min</option>
+                                <option value="15">15 questions &middot; ~38 marks &middot; ~45 min</option>
+                                <option value="20">20 questions &middot; ~50 marks &middot; ~60 min</option>
+                                <option value="25">25 questions &middot; ~63 marks &middot; ~75 min</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -230,6 +230,7 @@
                         <label class="tb-toggle"><input type="checkbox" id="toggleAnswers" checked> Include answer key</label>
                         <button class="tb-btn ghost" id="newBtn">↻ New worksheet</button>
                         <button class="tb-btn" id="printBtn">🖨️ Print</button>
+                        <button class="tb-btn" id="wordBtn">📄 Download Word</button>
                         <button class="tb-btn primary" id="pdfBtn">⬇ Download PDF</button>
                     </div>
                     <div id="worksheet"></div>
@@ -574,6 +575,77 @@
                 btn.textContent = orig; btn.disabled = false;
                 showError('PDF export failed. Try the Print button instead.');
             });
+        });
+
+        // ── Word (.doc) export ──
+        // Builds a clean, Word-compatible HTML document from the worksheet data
+        // (not a clone of the styled preview). Uses only simple block elements
+        // and tables so Word lays it out predictably with no broken formatting.
+        function buildWordHtml(data, includeAnswers) {
+            const dateStr = new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+            const P = 'font-family:Calibri,Arial,sans-serif;font-size:11pt;';
+            let q = '';
+            data.questions.forEach((qq, i) => {
+                const num = qq.number || (i + 1);
+                const marks = qq.marks || 1;
+                q += `<p style="${P}margin:14pt 0 4pt;"><b>Q${num}.</b> ${escapeHtml(qq.question || '')} <b>[${marks} mark${marks !== 1 ? 's' : ''}]</b></p>`;
+                if (qq.type === 'mc' && Array.isArray(qq.options)) {
+                    qq.options.forEach(o => {
+                        q += `<p style="${P}margin:2pt 0 2pt 28pt;">&#9675;&nbsp; ${escapeHtml(o)}</p>`;
+                    });
+                } else if (qq.type === 'extended' || marks >= 5) {
+                    q += `<table style="width:100%;border-collapse:collapse;margin:4pt 0;"><tr><td style="border:1px solid #888;height:130pt;">&nbsp;</td></tr></table>`;
+                } else {
+                    const lines = Math.max(2, Math.min(6, marks * 2));
+                    for (let j = 0; j < lines; j++) {
+                        q += `<p style="${P}margin:0 0 10pt;border-bottom:1px solid #999;">&nbsp;</p>`;
+                    }
+                }
+            });
+
+            let ak = '';
+            if (includeAnswers) {
+                ak = `<br style="page-break-before:always;mso-special-character:line-break;">`;
+                ak += `<h1 style="font-family:Calibri,Arial,sans-serif;font-size:16pt;">Answer Key</h1>`;
+                data.questions.forEach((qq, i) => {
+                    const num = qq.number || (i + 1);
+                    const marks = qq.marks || 1;
+                    ak += `<p style="${P}margin:12pt 0 2pt;"><b>Q${num} (${marks} mark${marks !== 1 ? 's' : ''}) — Answer:</b></p>`;
+                    ak += `<p style="${P}margin:0 0 2pt;white-space:pre-wrap;">${escapeHtml(qq.answer || '')}</p>`;
+                    if (qq.explanation) {
+                        ak += `<p style="${P}margin:0 0 2pt 14pt;color:#555;font-style:italic;">${escapeHtml(qq.explanation)}</p>`;
+                    }
+                });
+            }
+
+            const head = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">'
+                + '<head><meta charset="utf-8"><title>' + escapeHtml(data.title || 'Worksheet') + '</title>'
+                + '<style>@page{size:A4;margin:2cm;} body{font-family:Calibri,Arial,sans-serif;}</style></head><body>';
+            const titleBlock = `<h1 style="font-family:Calibri,Arial,sans-serif;font-size:18pt;margin:0 0 2pt;">${escapeHtml(data.title || (data.subjectName + ' Worksheet'))}</h1>`
+                + `<p style="${P}color:#444;margin:0 0 8pt;">${escapeHtml(data.subjectName || '')} &bull; ${escapeHtml(data.topic || '')} &bull; Total: ${data.totalMarks} marks &bull; ${escapeHtml(data.estimatedTime || '')}</p>`
+                + `<p style="${P}background:#f0f2f5;padding:6pt 8pt;margin:0 0 10pt;"><b>Instructions:</b> ${escapeHtml(data.instructions || '')}</p>`
+                + `<table style="width:100%;border-collapse:collapse;margin:0 0 12pt;${P}"><tr>`
+                + `<td style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:6pt 0;"><b>Name:</b> ____________________</td>`
+                + `<td style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:6pt 0;"><b>Date:</b> ${dateStr}</td>`
+                + `<td style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:6pt 0;"><b>Mark:</b> ____ / ${data.totalMarks}</td>`
+                + `</tr></table>`;
+            return head + titleBlock + q + ak + '</body></html>';
+        }
+
+        document.getElementById('wordBtn').addEventListener('click', () => {
+            if (!lastWorksheet) return;
+            const includeAnswers = document.getElementById('toggleAnswers').checked;
+            const html = buildWordHtml(lastWorksheet, includeAnswers);
+            // BOM + application/msword so Word opens it natively and keeps formatting.
+            const blob = new Blob(['﻿', html], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (lastWorksheet.title || 'worksheet').replace(/[^a-z0-9]+/gi, '_').toLowerCase() + '.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
         });
 
         init();

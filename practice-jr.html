@@ -3487,8 +3487,9 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
             try {
                 localStorage.setItem('sd_last_activity', JSON.stringify({ bot: botName, subject: subjectId || '', subject_name: subjectName || '', topic: topic || '', ts: Date.now() }));
                 if (window.StreakManager) {
-                    var result = window.StreakManager.track();
-                    if (window.sdHandleTracking) window.sdHandleTracking(result);
+                    window.StreakManager.track(function (result) {
+                        if (window.sdHandleTracking) window.sdHandleTracking(result);
+                    });
                 }
             } catch(e) {}
         }

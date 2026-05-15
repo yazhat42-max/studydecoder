@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Teacher Dashboard | Study Decoder</title>
+<meta name="description" content="Manage your Study Decoder classes, rosters, assignments and class mastery progress.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f1419">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif; background:#0f1419; color:#e7e9ea; }
+.app-container { display:flex; flex-direction:column; min-height:100vh; width:100%; overflow-x:hidden; }
+.header { background:#16202a; border-bottom:1px solid #2f3336; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+.header-left { display:flex; align-items:center; gap:16px; }
+.back-btn { color:#4f8cff; text-decoration:none; font-size:14px; font-weight:500; padding:8px 16px; border-radius:8px; background:rgba(79,140,255,0.1); }
+.header-title { font-size:20px; font-weight:700; }
+.header-subtitle { font-size:12px; color:#71767b; margin-top:2px; }
+.main-content { flex:1; padding:32px 24px; }
+.container { max-width:980px; margin:0 auto; }
+.card { background:#16202a; border:1px solid #2f3336; border-radius:16px; padding:24px; margin-bottom:20px; }
+.btn { background:linear-gradient(135deg,#4f8cff,#6c63ff); color:#fff; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; cursor:pointer; transition:transform .15s; }
+.btn:hover:not(:disabled) { transform:translateY(-1px); }
+.btn:disabled { opacity:0.5; cursor:not-allowed; }
+.btn-ghost { background:#1d3a5f; color:#e7e9ea; border:1px solid rgba(79,140,255,0.3); }
+.btn-danger { background:rgba(220,53,69,0.15); color:#ff8088; border:1px solid rgba(220,53,69,0.4); }
+.form-input,.form-select,textarea { background:#0f1419; border:1px solid #2f3336; border-radius:8px; padding:12px 14px; color:#e7e9ea; font-size:14px; font-family:inherit; width:100%; }
+.form-input:focus,.form-select:focus,textarea:focus { outline:none; border-color:#4f8cff; }
+.form-label { font-size:13px; font-weight:500; color:#c8ccd0; display:block; margin-bottom:6px; }
+.auth-loading-overlay { position:fixed; inset:0; background:#0f1419; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
+.auth-spinner { width:50px; height:50px; border:4px solid #2f3336; border-top-color:#4f8cff; border-radius:50%; animation:spin 1s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.hidden { display:none !important; }
+.error-banner { background:rgba(220,53,69,0.1); border:1px solid rgba(220,53,69,0.4); color:#ff8088; padding:12px 16px; border-radius:8px; margin-bottom:16px; }
+.stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; }
+.stat-box { background:#0f1419; border:1px solid #2f3336; border-radius:12px; padding:16px; }
+.stat-box .num { font-size:26px; font-weight:800; color:#4f8cff; }
+.stat-box .lbl { font-size:12px; color:#8899a6; margin-top:2px; }
+table { width:100%; border-collapse:collapse; }
+th,td { text-align:left; padding:10px 12px; border-bottom:1px solid #2f3336; font-size:14px; }
+th { color:#8899a6; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; }
+@media (max-width:720px){ .main-content{padding:16px;} table{font-size:13px;} th,td{padding:8px 6px;} }
+
+.row-between { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.section-title { font-size:18px; font-weight:700; }
+.muted { color:#71767b; font-size:14px; }
+.link-inline { color:#4f8cff; text-decoration:none; font-weight:600; cursor:pointer; background:none; border:none; padding:0; font-size:14px; font-family:inherit; }
+.class-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+.class-card { background:#0f1419; border:1px solid #2f3336; border-radius:14px; padding:18px; display:flex; flex-direction:column; gap:10px; }
+.class-card h3 { font-size:17px; font-weight:700; }
+.class-card .sub { font-size:12px; color:#8899a6; }
+.join-code-box { display:flex; align-items:center; gap:8px; }
+.join-code { font-family:'Courier New',monospace; font-size:20px; font-weight:800; letter-spacing:3px; color:#9ec3ff; background:#16202a; border:1px solid #2f3336; border-radius:8px; padding:6px 12px; }
+.copy-btn { font-size:12px; padding:6px 10px; border-radius:7px; background:#1d3a5f; color:#e7e9ea; border:1px solid rgba(79,140,255,0.3); cursor:pointer; }
+.copy-btn:hover { background:#234a78; }
+.card-actions { display:flex; gap:8px; margin-top:auto; padding-top:6px; }
+.card-actions .btn, .card-actions .btn-danger { padding:8px 14px; font-size:13px; border-radius:8px; }
+.btn-danger { cursor:pointer; font-weight:600; }
+.empty-state { text-align:center; padding:36px 16px; color:#8899a6; }
+.empty-state h3 { color:#e7e9ea; font-size:18px; margin-bottom:8px; }
+.form-row { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+.form-row > div { flex:1; min-width:160px; }
+.tabs { display:flex; gap:6px; margin-bottom:18px; border-bottom:1px solid #2f3336; }
+.tab { padding:10px 16px; font-size:14px; font-weight:600; color:#8899a6; cursor:pointer; border:none; background:none; border-bottom:2px solid transparent; font-family:inherit; }
+.tab.active { color:#4f8cff; border-bottom-color:#4f8cff; }
+.dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+.dot-green { background:#22c55e; } .dot-yellow { background:#eab308; } .dot-red { background:#ef4444; }
+.badge { display:inline-block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; padding:3px 8px; border-radius:6px; background:#1d3a5f; color:#9ec3ff; }
+.bar { background:#0f1419; border:1px solid #2f3336; border-radius:6px; height:12px; overflow:hidden; min-width:90px; }
+.bar > span { display:block; height:100%; background:linear-gradient(90deg,#4f8cff,#6c63ff); }
+.progress-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid #2f3336; flex-wrap:wrap; }
+.progress-row .pname { font-weight:600; min-width:140px; }
+.progress-row .pname button { color:#4f8cff; }
+.heat-module { margin-bottom:16px; }
+.heat-module h4 { font-size:13px; color:#c8ccd0; margin-bottom:8px; }
+.heat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:8px; }
+.tile { border-radius:8px; padding:8px 10px; font-size:11px; line-height:1.35; }
+.tile .ref { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.tile .pct { font-weight:800; font-size:13px; }
+.tile-strong { background:rgba(34,197,94,.25); border:1px solid #22c55e; }
+.tile-medium { background:rgba(234,179,8,.2); border:1px solid #eab308; }
+.tile-weak { background:rgba(239,68,68,.2); border:1px solid #ef4444; }
+.heat-subject { font-size:15px; font-weight:700; margin:18px 0 10px; }
+.assign-list { list-style:none; }
+.assign-list li { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; background:#0f1419; border:1px solid #2f3336; border-radius:10px; margin-bottom:10px; }
+.assign-meta { font-size:12px; color:#8899a6; margin-top:3px; }
+</style>
+</head>
+<body>
+<div id="authLoading" class="auth-loading-overlay"><div class="auth-spinner"></div><div style="margin-top:16px;color:#71767b;">Loading…</div></div>
+<div class="app-container hidden" id="appContainer">
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="back-btn">← Home</a>
+      <div><div class="header-title">Teacher Dashboard</div><div class="header-subtitle">Your classes, rosters and progress.</div></div>
+    </div>
+  </header>
+  <main class="main-content"><div class="container" id="root"></div></main>
+</div>
+<script src="auth.js"></script>
+<script>
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+const root = document.getElementById('root');
+let state = { view:'list', classId:null, className:'', tab:'roster', studentView:null };
+
+function fmtDate(s){
+  if (!s) return '—';
+  const d = new Date(s);
+  if (isNaN(d)) return '—';
+  return d.toLocaleDateString('en-AU', { day:'numeric', month:'short', year:'numeric' });
+}
+function pct(n){ return Math.round((Number(n)||0) * 100) + '%'; }
+function masteryDot(avg){
+  if (avg == null) return '';
+  if (avg >= 0.75) return '<span class="dot dot-green"></span>';
+  if (avg >= 0.45) return '<span class="dot dot-yellow"></span>';
+  return '<span class="dot dot-red"></span>';
+}
+function bandClass(band){
+  if (band === 'strong') return 'tile-strong';
+  if (band === 'weak') return 'tile-weak';
+  return 'tile-medium';
+}
+function bandFromScore(score){
+  if (score >= 0.75) return 'strong';
+  if (score >= 0.45) return 'medium';
+  return 'weak';
+}
+
+/* ===================== VIEW A: CLASS LIST ===================== */
+function showList(){
+  state = { view:'list', classId:null, className:'', tab:'roster', studentView:null };
+  root.innerHTML = `
+    <div class="card">
+      <div class="row-between" style="margin-bottom:16px;">
+        <div class="section-title">Your classes</div>
+        <button class="btn" id="newClassToggle">+ Create Class</button>
+      </div>
+      <div id="newClassForm" class="hidden">
+        <div id="createErr"></div>
+        <div class="form-row">
+          <div><label class="form-label">Class name *</label><input class="form-input" id="ncName" placeholder="Year 12 English Advanced"></div>
+          <div><label class="form-label">Subject</label><input class="form-input" id="ncSubject" placeholder="English Advanced"></div>
+          <div><label class="form-label">Year</label><input class="form-input" id="ncYear" placeholder="2026"></div>
+        </div>
+        <button class="btn" id="ncCreate">Create class</button>
+      </div>
+    </div>
+    <div id="classListSlot"><div class="card muted">Loading classes…</div></div>`;
+
+  document.getElementById('newClassToggle').addEventListener('click', () => {
+    document.getElementById('newClassForm').classList.toggle('hidden');
+  });
+  document.getElementById('ncCreate').addEventListener('click', createClass);
+  loadClasses();
+}
+
+function loadClasses(){
+  api('/api/teacher/classes')
+    .then(r => r.ok ? r.json() : Promise.reject(r))
+    .then(d => renderClassList(d.classes || []))
+    .catch(() => {
+      document.getElementById('classListSlot').innerHTML = '<div class="error-banner">Could not load your classes. Please refresh.</div>';
+    });
+}
+
+function renderClassList(classes){
+  const active = classes.filter(c => !c.archivedAt);
+  const slot = document.getElementById('classListSlot');
+  if (!active.length){
+    slot.innerHTML = `
+      <div class="card empty-state">
+        <h3>No classes yet</h3>
+        <p>Create your first class, then share the join code with your students so they get full Study Decoder access.</p>
+      </div>`;
+    return;
+  }
+  const cards = active.map(c => {
+    const meta = [c.subject, c.year].filter(Boolean).join(' · ') || 'No subject set';
+    return `
+      <div class="class-card">
+        <div>
+          <h3>${esc(c.name)}</h3>
+          <div class="sub">${esc(meta)}</div>
+        </div>
+        <div class="join-code-box">
+          <span class="join-code">${esc(c.joinCode)}</span>
+          <button class="copy-btn" data-code="${esc(c.joinCode)}">Copy</button>
+        </div>
+        <div class="sub">${c.memberCount || 0} student${(c.memberCount===1)?'':'s'}</div>
+        <div class="card-actions">
+          <button class="btn" data-open="${esc(c.classId)}" data-name="${esc(c.name)}">Open</button>
+          <button class="btn-danger" data-archive="${esc(c.classId)}" data-aname="${esc(c.name)}">Archive</button>
+        </div>
+      </div>`;
+  }).join('');
+  slot.innerHTML = `<div class="class-grid">${cards}</div>`;
+
+  slot.querySelectorAll('[data-code]').forEach(b => b.addEventListener('click', () => {
+    navigator.clipboard && navigator.clipboard.writeText(b.dataset.code);
+    const t = b.textContent; b.textContent = 'Copied!';
+    setTimeout(() => { b.textContent = t; }, 1400);
+  }));
+  slot.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => {
+    openClass(b.dataset.open, b.dataset.name);
+  }));
+  slot.querySelectorAll('[data-archive]').forEach(b => b.addEventListener('click', () => {
+    if (!confirm('Archive "' + b.dataset.aname + '"? Students in this class will lose their full access.')) return;
+    api('/api/teacher/classes/' + encodeURIComponent(b.dataset.archive), { method:'DELETE' })
+      .then(r => r.ok ? loadClasses() : alert('Could not archive that class.'))
+      .catch(() => alert('Network error.'));
+  }));
+}
+
+function createClass(){
+  const name = document.getElementById('ncName').value.trim();
+  const subject = document.getElementById('ncSubject').value.trim();
+  const year = document.getElementById('ncYear').value.trim();
+  const errSlot = document.getElementById('createErr');
+  errSlot.innerHTML = '';
+  if (!name){ errSlot.innerHTML = '<div class="error-banner">Class name is required.</div>'; return; }
+  const btn = document.getElementById('ncCreate');
+  btn.disabled = true; btn.textContent = 'Creating…';
+  api('/api/teacher/classes', { method:'POST', body: JSON.stringify({ name, subject, year }) })
+    .then(async r => {
+      const d = await r.json().catch(()=>({}));
+      btn.disabled = false; btn.textContent = 'Create class';
+      if (!r.ok){ errSlot.innerHTML = '<div class="error-banner">' + esc(d.error || 'Could not create class.') + '</div>'; return; }
+      document.getElementById('ncName').value = '';
+      document.getElementById('ncSubject').value = '';
+      document.getElementById('ncYear').value = '';
+      document.getElementById('newClassForm').classList.add('hidden');
+      loadClasses();
+    })
+    .catch(() => {
+      btn.disabled = false; btn.textContent = 'Create class';
+      errSlot.innerHTML = '<div class="error-banner">Network error. Please try again.</div>';
+    });
+}
+
+/* ===================== VIEW B: CLASS DRILL-DOWN ===================== */
+function openClass(classId, className){
+  state = { view:'class', classId, className, tab:'roster', studentView:null };
+  renderClassShell();
+}
+
+function renderClassShell(){
+  root.innerHTML = `
+    <div class="card">
+      <div class="row-between">
+        <div>
+          <button class="link-inline" id="backToClasses">← Back to classes</button>
+          <div class="section-title" style="margin-top:6px;">${esc(state.className)}</div>
+        </div>
+        <button class="btn-ghost btn" id="regenBtn">Regenerate code</button>
+      </div>
+      <div id="regenMsg" style="margin-top:10px;"></div>
+    </div>
+    <div class="tabs">
+      <button class="tab ${state.tab==='roster'?'active':''}" data-tab="roster">Roster</button>
+      <button class="tab ${state.tab==='assignments'?'active':''}" data-tab="assignments">Assignments</button>
+      <button class="tab ${state.tab==='progress'?'active':''}" data-tab="progress">Progress</button>
+    </div>
+    <div id="tabSlot"><div class="card muted">Loading…</div></div>`;
+
+  document.getElementById('backToClasses').addEventListener('click', showList);
+  document.getElementById('regenBtn').addEventListener('click', regenerateCode);
+  root.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    state.tab = t.dataset.tab; state.studentView = null; renderClassShell();
+  }));
+
+  if (state.studentView){ renderStudentMastery(); return; }
+  if (state.tab === 'roster') loadRoster();
+  else if (state.tab === 'assignments') loadAssignments();
+  else loadProgress();
+}
+
+function regenerateCode(){
+  if (!confirm('Generate a new join code? The old code will stop working immediately.')) return;
+  const btn = document.getElementById('regenBtn');
+  btn.disabled = true;
+  api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/regenerate-code', { method:'POST' })
+    .then(async r => {
+      const d = await r.json().catch(()=>({}));
+      btn.disabled = false;
+      if (!r.ok){ document.getElementById('regenMsg').innerHTML = '<div class="error-banner">Could not regenerate code.</div>'; return; }
+      document.getElementById('regenMsg').innerHTML = 'New join code: <span class="join-code">' + esc(d.joinCode) + '</span>';
+    })
+    .catch(() => {
+      btn.disabled = false;
+      document.getElementById('regenMsg').innerHTML = '<div class="error-banner">Network error.</div>';
+    });
+}
+
+/* ----- ROSTER ----- */
+function loadRoster(){
+  api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/students')
+    .then(r => r.ok ? r.json() : Promise.reject(r))
+    .then(d => renderRoster(d.students || []))
+    .catch(() => {
+      document.getElementById('tabSlot').innerHTML = '<div class="error-banner">Could not load the roster.</div>';
+    });
+}
+
+function renderRoster(students){
+  const slot = document.getElementById('tabSlot');
+  if (!students.length){
+    slot.innerHTML = '<div class="card empty-state"><h3>No students yet</h3><p>Share this class\'s join code so students can link their accounts.</p></div>';
+    return;
+  }
+  const rows = students.map(s => {
+    const avg = s.mastery ? s.mastery.average : null;
+    const avgCell = avg == null ? '—' : masteryDot(avg) + pct(avg);
+    return `<tr>
+      <td><button class="link-inline" data-student="${esc(s.userId)}" data-sname="${esc(s.name)}">${esc(s.name)}</button></td>
+      <td>${esc(s.email)}</td>
+      <td>${esc(fmtDate(s.joinedAt))}</td>
+      <td>${esc(fmtDate(s.lastActive))}</td>
+      <td>${avgCell}</td>
+      <td><button class="btn-danger" data-remove="${esc(s.userId)}" data-rname="${esc(s.name)}" style="padding:6px 12px;font-size:12px;border-radius:7px;">Remove</button></td>
+    </tr>`;
+  }).join('');
+  slot.innerHTML = `
+    <div class="card">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Last active</th><th>Avg mastery</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+
+  slot.querySelectorAll('[data-student]').forEach(b => b.addEventListener('click', () => {
+    state.studentView = { userId: b.dataset.student, name: b.dataset.sname };
+    renderClassShell();
+  }));
+  slot.querySelectorAll('[data-remove]').forEach(b => b.addEventListener('click', () => {
+    if (!confirm('Remove ' + b.dataset.rname + ' from this class? They will lose their full access.')) return;
+    api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/students/' + encodeURIComponent(b.dataset.remove), { method:'DELETE' })
+      .then(r => r.ok ? loadRoster() : alert('Could not remove that student.'))
+      .catch(() => alert('Network error.'));
+  }));
+}
+
+/* ----- ASSIGNMENTS ----- */
+function loadAssignments(){
+  const slot = document.getElementById('tabSlot');
+  slot.innerHTML = `
+    <div class="card">
+      <div class="section-title" style="margin-bottom:14px;">New assignment</div>
+      <div id="asgErr"></div>
+      <div class="form-row">
+        <div>
+          <label class="form-label">Type *</label>
+          <select class="form-select" id="asgType">
+            <option value="practice">Practice</option>
+            <option value="worksheet">Worksheet</option>
+            <option value="deck">Deck</option>
+          </select>
+        </div>
+        <div><label class="form-label">Title *</label><input class="form-input" id="asgTitle" placeholder="Module B essay practice"></div>
+      </div>
+      <div class="form-row">
+        <div><label class="form-label">Reference ID</label><input class="form-input" id="asgRef" placeholder="optional"></div>
+        <div><label class="form-label">Due date</label><input class="form-input" id="asgDue" type="date"></div>
+      </div>
+      <button class="btn" id="asgCreate">Create assignment</button>
+    </div>
+    <div id="asgListSlot"><div class="card muted">Loading assignments…</div></div>`;
+
+  document.getElementById('asgCreate').addEventListener('click', createAssignment);
+  refreshAssignmentList();
+}
+
+function refreshAssignmentList(){
+  api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/assignments')
+    .then(r => r.ok ? r.json() : Promise.reject(r))
+    .then(d => renderAssignmentList(d.assignments || []))
+    .catch(() => {
+      document.getElementById('asgListSlot').innerHTML = '<div class="error-banner">Could not load assignments.</div>';
+    });
+}
+
+function renderAssignmentList(assignments){
+  const slot = document.getElementById('asgListSlot');
+  if (!assignments.length){
+    slot.innerHTML = '<div class="card muted">No assignments yet for this class.</div>';
+    return;
+  }
+  const items = assignments.map(a => {
+    const sub = a.submissions || { completed:0, total:0 };
+    const due = a.dueAt ? 'Due ' + esc(fmtDate(a.dueAt)) : 'No due date';
+    return `<li>
+      <div>
+        <div><span class="badge">${esc(a.type||'')}</span> &nbsp;<strong>${esc(a.title)}</strong></div>
+        <div class="assign-meta">${due}</div>
+      </div>
+      <div class="muted">${sub.completed} / ${sub.total} completed</div>
+    </li>`;
+  }).join('');
+  slot.innerHTML = `<div class="card"><div class="section-title" style="margin-bottom:14px;">Assignments</div><ul class="assign-list">${items}</ul></div>`;
+}
+
+function createAssignment(){
+  const type = document.getElementById('asgType').value;
+  const title = document.getElementById('asgTitle').value.trim();
+  const refId = document.getElementById('asgRef').value.trim();
+  const dueAt = document.getElementById('asgDue').value;
+  const errSlot = document.getElementById('asgErr');
+  errSlot.innerHTML = '';
+  if (!title){ errSlot.innerHTML = '<div class="error-banner">Title is required.</div>'; return; }
+  const btn = document.getElementById('asgCreate');
+  btn.disabled = true; btn.textContent = 'Creating…';
+  api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/assignments', {
+    method:'POST', body: JSON.stringify({ type, refId: refId || null, title, dueAt: dueAt || null })
+  })
+    .then(async r => {
+      const d = await r.json().catch(()=>({}));
+      btn.disabled = false; btn.textContent = 'Create assignment';
+      if (!r.ok){ errSlot.innerHTML = '<div class="error-banner">' + esc(d.error || 'Could not create assignment.') + '</div>'; return; }
+      document.getElementById('asgTitle').value = '';
+      document.getElementById('asgRef').value = '';
+      document.getElementById('asgDue').value = '';
+      refreshAssignmentList();
+    })
+    .catch(() => {
+      btn.disabled = false; btn.textContent = 'Create assignment';
+      errSlot.innerHTML = '<div class="error-banner">Network error. Please try again.</div>';
+    });
+}
+
+/* ----- PROGRESS ----- */
+let progressCache = [];
+function loadProgress(){
+  api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/progress')
+    .then(r => r.ok ? r.json() : Promise.reject(r))
+    .then(d => { progressCache = d.students || []; renderProgress(progressCache); })
+    .catch(() => {
+      document.getElementById('tabSlot').innerHTML = '<div class="error-banner">Could not load class progress.</div>';
+    });
+}
+
+function renderProgress(students){
+  const slot = document.getElementById('tabSlot');
+  if (!students.length){
+    slot.innerHTML = '<div class="card empty-state"><h3>No progress yet</h3><p>Once students join and start studying, their mastery will show here.</p></div>';
+    return;
+  }
+  const withAvg = students.filter(s => s.summary && s.summary.average != null);
+  const classAvg = withAvg.length ? withAvg.reduce((a,s) => a + s.summary.average, 0) / withAvg.length : null;
+  const totalWeak = students.reduce((a,s) => a + ((s.summary && s.summary.weak) || 0), 0);
+  const totalStrong = students.reduce((a,s) => a + ((s.summary && s.summary.strong) || 0), 0);
+
+  const rows = students.map(s => {
+    const avg = s.summary ? s.summary.average : null;
+    const weak = (s.summary && s.summary.weak) || 0;
+    const strong = (s.summary && s.summary.strong) || 0;
+    const barW = avg == null ? 0 : Math.round(avg * 100);
+    return `<div class="progress-row">
+      <div class="pname"><button class="link-inline" data-pstudent="${esc(s.userId)}" data-pname="${esc(s.name)}">${esc(s.name)}</button></div>
+      <div class="bar"><span style="width:${barW}%"></span></div>
+      <div class="muted" style="min-width:48px;">${avg == null ? '—' : pct(avg)}</div>
+      <div class="muted"><span class="dot dot-red"></span>${weak} weak &nbsp; <span class="dot dot-green"></span>${strong} strong</div>
+    </div>`;
+  }).join('');
+
+  slot.innerHTML = `
+    <div class="card">
+      <div class="section-title" style="margin-bottom:14px;">Class overview</div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="num">${students.length}</div><div class="lbl">Students</div></div>
+        <div class="stat-box"><div class="num">${classAvg == null ? '—' : pct(classAvg)}</div><div class="lbl">Avg class mastery</div></div>
+        <div class="stat-box"><div class="num">${totalWeak}</div><div class="lbl">Weak dot points</div></div>
+        <div class="stat-box"><div class="num">${totalStrong}</div><div class="lbl">Strong dot points</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-bottom:8px;">Per-student progress</div>
+      ${rows}
+    </div>`;
+
+  slot.querySelectorAll('[data-pstudent]').forEach(b => b.addEventListener('click', () => {
+    state.studentView = { userId: b.dataset.pstudent, name: b.dataset.pname };
+    renderClassShell();
+  }));
+}
+
+/* ----- PER-STUDENT MASTERY HEATMAP ----- */
+function renderStudentMastery(){
+  const slot = document.getElementById('tabSlot');
+  slot.innerHTML = '<div class="card muted">Loading mastery map…</div>';
+  api('/api/mastery/' + encodeURIComponent(state.studentView.userId))
+    .then(r => r.ok ? r.json() : Promise.reject(r))
+    .then(d => drawHeatmap(d))
+    .catch(() => {
+      slot.innerHTML = `
+        <div class="card">
+          <button class="link-inline" id="backFromStudent">← Back to ${esc(state.tab)}</button>
+          <div class="error-banner" style="margin-top:12px;">Could not load this student's mastery map.</div>
+        </div>`;
+      const b = document.getElementById('backFromStudent');
+      if (b) b.addEventListener('click', () => { state.studentView = null; renderClassShell(); });
+    });
+}
+
+function drawHeatmap(d){
+  const slot = document.getElementById('tabSlot');
+  const student = d.student || state.studentView;
+  const mastery = d.mastery || {};
+  const summary = d.summary || {};
+  let body = '';
+  const subjects = Object.keys(mastery);
+  if (!subjects.length){
+    body = '<div class="card muted">No mastery data recorded for this student yet.</div>';
+  } else {
+    body = subjects.map(subj => {
+      const modules = mastery[subj] || {};
+      const modBlocks = Object.keys(modules).map(mod => {
+        let entries = modules[mod];
+        // entries may be an array of {dotPointRef,score,band} OR an object map dotPointRef->score
+        if (!Array.isArray(entries)){
+          entries = Object.keys(entries).map(ref => ({ dotPointRef: ref, score: entries[ref] }));
+        }
+        const tiles = entries.map(e => {
+          const score = Number(e.score) || 0;
+          const band = e.band || bandFromScore(score);
+          return `<div class="tile ${bandClass(band)}" title="${esc(e.dotPointRef)} — ${pct(score)}">
+            <span class="ref">${esc(e.dotPointRef)}</span>
+            <span class="pct">${pct(score)}</span>
+          </div>`;
+        }).join('');
+        return `<div class="heat-module"><h4>${esc(mod)}</h4><div class="heat-grid">${tiles}</div></div>`;
+      }).join('');
+      return `<div class="heat-subject">${esc(subj)}</div>${modBlocks}`;
+    }).join('');
+  }
+
+  slot.innerHTML = `
+    <div class="card">
+      <div class="row-between" style="margin-bottom:6px;">
+        <div>
+          <button class="link-inline" id="backFromStudent">← Back to ${esc(state.tab)}</button>
+          <div class="section-title" style="margin-top:6px;">${esc(student.name || 'Student')} — mastery map</div>
+        </div>
+      </div>
+      <div class="muted">Last active ${esc(fmtDate(student.lastActive))}</div>
+      <div class="stat-grid" style="margin-top:14px;">
+        <div class="stat-box"><div class="num">${summary.average == null ? '—' : pct(summary.average)}</div><div class="lbl">Avg mastery</div></div>
+        <div class="stat-box"><div class="num">${summary.dotPoints || 0}</div><div class="lbl">Dot points tracked</div></div>
+        <div class="stat-box"><div class="num">${summary.weak || 0}</div><div class="lbl">Weak</div></div>
+        <div class="stat-box"><div class="num">${summary.strong || 0}</div><div class="lbl">Strong</div></div>
+      </div>
+    </div>
+    <div class="card">${body}</div>`;
+
+  document.getElementById('backFromStudent').addEventListener('click', () => {
+    state.studentView = null; renderClassShell();
+  });
+}
+
+/* ===================== INIT ===================== */
+(function init(){
+  api('/api/subscription')
+    .then(r => {
+      if (!r.ok || r.status === 401){
+        window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname);
+        return null;
+      }
+      return r.json();
+    })
+    .then(d => {
+      if (!d) return;
+      if (d.role !== 'teacher'){
+        window.location.href = 'teacher-pricing.html';
+        return;
+      }
+      showList();
+      document.getElementById('authLoading').classList.add('hidden');
+      document.getElementById('appContainer').classList.remove('hidden');
+    })
+    .catch(() => {
+      window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname);
+    });
+})();
+</script>
+</body>
+</html>
