@@ -719,6 +719,1146 @@
             .faq-a { padding: 0 1.1rem 1.1rem; font-size: 0.92rem; }
         }
     </style>
+
+    <!-- ============================================================
+         SD HOMEPAGE ANIMATION SYSTEM v1
+         Foundation styles for the redesigned hero + 13 tool tile
+         animations + particles + mastery map. All new styles are
+         scoped under .sd-anim-* / .sd-tile-* / .sd-hero2 classes
+         so they sit cleanly on top of the existing stylesheet.
+         ============================================================ -->
+    <style>
+        /* ---- Globals & particles canvas ---- */
+        .sd-particles {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; opacity: 0.45;
+        }
+        @media (prefers-reduced-motion: reduce) { .sd-particles { display: none; } }
+
+        /* Shared tile stage primitives — applied inside each .showcase-demo */
+        .sd-stage {
+            position: relative;
+            width: 100%; max-width: 560px; margin: 0 auto;
+            aspect-ratio: 4/3;
+            border-radius: 24px;
+            background: linear-gradient(160deg, rgba(108,99,255,0.08), rgba(167,139,250,0.04) 60%, rgba(0,0,0,0.18));
+            border: 1px solid rgba(108,99,255,0.18);
+            box-shadow: 0 24px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(108,99,255,0.08), inset 0 0 60px rgba(108,99,255,0.04);
+            overflow: hidden;
+            perspective: 1200px;
+            transform-style: preserve-3d;
+            transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s;
+            cursor: pointer;
+        }
+        .sd-stage::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(108,99,255,0.12), transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(167,139,250,0.10), transparent 45%),
+                linear-gradient(0deg, transparent 0%, transparent 95%, rgba(255,255,255,0.04) 96%, transparent 100%);
+            background-size: 100% 100%, 100% 100%, 100% 22px;
+            pointer-events: none; z-index: 0;
+        }
+        .sd-stage::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.05), transparent 35%);
+            pointer-events: none; z-index: 5; mix-blend-mode: screen;
+            transition: opacity .3s;
+        }
+        .sd-stage:hover { transform: translateY(-4px); box-shadow: 0 32px 100px rgba(0,0,0,0.55), 0 0 0 1px rgba(108,99,255,0.18); }
+
+        /* Universal "try it" canned demo bar that drops in below the stage */
+        .sd-trydemo {
+            margin-top: 14px;
+            background: var(--bg-elevated, #14121f);
+            border: 1px solid var(--border, rgba(108,99,255,0.18));
+            border-radius: 14px;
+            padding: 10px 12px;
+            display: flex; align-items: center; gap: 10px;
+            max-width: 560px; margin-left: auto; margin-right: auto;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .sd-trydemo-input {
+            flex: 1; background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border, rgba(108,99,255,0.18));
+            border-radius: 10px; padding: 9px 13px;
+            font-size: 0.85rem; color: var(--text-sec, rgba(255,255,255,0.85));
+            font-family: inherit; min-width: 0;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .sd-trydemo-input::after { content: '▎'; animation: sdBlink 1s steps(1) infinite; margin-left: 2px; opacity: .7; }
+        @keyframes sdBlink { 50% { opacity: 0; } }
+        .sd-trydemo-send {
+            background: linear-gradient(135deg, #6c63ff, #a78bfa); color: #fff;
+            border: none; border-radius: 10px; padding: 9px 16px;
+            font-size: 0.83rem; font-weight: 700; cursor: pointer; font-family: inherit;
+            white-space: nowrap; transition: transform .15s, box-shadow .15s;
+            box-shadow: 0 4px 14px rgba(108,99,255,0.35);
+        }
+        .sd-trydemo-send:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(108,99,255,0.5); }
+        .sd-trydemo-send:active { transform: translateY(0); }
+        .sd-trydemo-result {
+            display: none; margin-top: 10px; max-width: 560px; margin-left: auto; margin-right: auto;
+            background: rgba(108,99,255,0.06); border: 1px solid rgba(108,99,255,0.22);
+            border-radius: 14px; padding: 13px 16px; color: var(--text-sec, rgba(255,255,255,0.88));
+            font-size: 0.88rem; line-height: 1.6; min-height: 40px;
+            box-shadow: inset 0 0 30px rgba(108,99,255,0.04);
+        }
+        .sd-trydemo-result.is-open { display: block; }
+        .sd-trydemo-result .sd-caret { display: inline-block; width: 8px; height: 1.05em; vertical-align: text-bottom; background: var(--primary, #6c63ff); animation: sdBlink 1s steps(1) infinite; margin-left: 2px; }
+
+        /* Ambient floating syllabus codes used inside several stages */
+        .sd-codes { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+        .sd-code {
+            position: absolute; font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem; color: rgba(167,139,250,0.5);
+            white-space: nowrap; opacity: 0; transform: translateZ(0);
+        }
+        .sd-stage.in-view .sd-code { animation: sdCodeDrift 12s linear infinite; }
+
+        @keyframes sdCodeDrift {
+            0% { opacity: 0; transform: translate(var(--cx,0), 100%); }
+            10% { opacity: .8; }
+            90% { opacity: .8; }
+            100% { opacity: 0; transform: translate(var(--cx,0), -20%); }
+        }
+
+        /* =====================================================
+           HERO 2.0 — pinned scroll story
+           ===================================================== */
+        .sd-hero2 {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            background: radial-gradient(ellipse at top, rgba(108,99,255,0.18), transparent 60%), #0a0814;
+        }
+        .sd-hero2-pin {
+            position: relative; height: 100vh; width: 100%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .sd-hero2-sphere {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            transform-style: preserve-3d;
+            perspective: 1200px;
+        }
+        .sd-hero2-sphere-inner {
+            position: relative; width: 1px; height: 1px;
+            transform-style: preserve-3d;
+            animation: sdSphereSpin 60s linear infinite;
+        }
+        @keyframes sdSphereSpin { to { transform: rotateY(360deg); } }
+        .sd-hero2-code {
+            position: absolute; left: 50%; top: 50%;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: rgba(167,139,250,0.85);
+            white-space: nowrap;
+            transform-style: preserve-3d;
+            text-shadow: 0 0 12px rgba(108,99,255,0.6);
+            pointer-events: none;
+            will-change: transform;
+            transition: transform 1.2s cubic-bezier(.2,.7,.2,1), opacity .8s;
+        }
+        .sd-hero2-content {
+            position: relative; z-index: 5; text-align: center;
+            max-width: 720px; padding: 0 1.2rem;
+        }
+        .sd-hero2-badge {
+            display: inline-block; padding: 6px 14px;
+            background: rgba(108,99,255,0.12); border: 1px solid rgba(108,99,255,0.3);
+            border-radius: 999px; font-size: 0.78rem; color: rgba(255,255,255,0.9);
+            margin-bottom: 1.2rem; backdrop-filter: blur(8px);
+            opacity: 0; transform: translateY(10px);
+            animation: sdH2In .9s .15s cubic-bezier(.2,.7,.2,1) forwards;
+        }
+        .sd-hero2-title {
+            font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+            line-height: 1.08; font-weight: 800; letter-spacing: -.02em;
+            color: #fff;
+            opacity: 0; transform: translateY(20px);
+            animation: sdH2In 1s .3s cubic-bezier(.2,.7,.2,1) forwards;
+        }
+        .sd-hero2-title em {
+            background: linear-gradient(135deg, #a78bfa, #f472b6); -webkit-background-clip: text;
+            background-clip: text; -webkit-text-fill-color: transparent;
+            font-style: normal;
+        }
+        .sd-hero2-sub {
+            font-size: clamp(1rem, 1.4vw, 1.18rem);
+            color: rgba(255,255,255,0.78); margin: 1.1rem auto 1.8rem;
+            max-width: 560px; line-height: 1.55;
+            opacity: 0; animation: sdH2In .9s .55s cubic-bezier(.2,.7,.2,1) forwards;
+        }
+        .sd-hero2-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+            opacity: 0; animation: sdH2In .9s .75s cubic-bezier(.2,.7,.2,1) forwards; }
+        @keyframes sdH2In { to { opacity: 1; transform: none; } }
+
+        /* The pre-typed chat that materialises out of the sphere */
+        .sd-hero2-chatbox {
+            margin: 2rem auto 0; max-width: 520px;
+            background: rgba(20,18,31,0.82); backdrop-filter: blur(14px);
+            border: 1px solid rgba(108,99,255,0.28);
+            border-radius: 18px; overflow: hidden;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(167,139,250,0.08);
+            opacity: 0; transform: translateY(24px) scale(.96);
+            transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+        }
+        .sd-hero2-chatbox.is-live { opacity: 1; transform: none; }
+        .sd-hero2-chatbox .h2c-bar { padding: 14px 18px; display: flex; gap: 10px; align-items: center;
+            background: rgba(108,99,255,0.12); border-bottom: 1px solid rgba(108,99,255,0.16); }
+        .sd-hero2-chatbox .h2c-bar .avatar { width: 32px; height: 32px; border-radius: 9px;
+            background: linear-gradient(135deg,#6c63ff,#a78bfa); display: grid; place-items: center; font-size: 1rem; }
+        .sd-hero2-chatbox .h2c-bar .meta { text-align: left; line-height: 1.2; }
+        .sd-hero2-chatbox .h2c-bar .meta b { color: #fff; font-size: .92rem; }
+        .sd-hero2-chatbox .h2c-bar .meta span { color: #22c55e; font-size: .72rem;
+            display: flex; align-items: center; gap: 5px; }
+        .sd-hero2-chatbox .h2c-bar .meta span::before { content: ''; width:6px; height:6px; border-radius:50%; background:#22c55e; display:inline-block; }
+        .sd-hero2-chatbox .h2c-body { padding: 18px; min-height: 120px; display: flex; flex-direction: column; gap: 12px; }
+        .sd-hero2-chatbox .h2c-user {
+            align-self: flex-end; background: var(--primary, #6c63ff); color: #fff;
+            border-radius: 14px 14px 4px 14px; padding: 9px 14px; font-size: .9rem;
+            max-width: 86%; line-height: 1.4;
+        }
+        .sd-hero2-chatbox .h2c-ai {
+            display: flex; gap: 9px; align-items: flex-start;
+        }
+        .sd-hero2-chatbox .h2c-ai .av { width: 26px; height: 26px; border-radius: 7px;
+            background: linear-gradient(135deg,#6c63ff,#a78bfa); display: grid; place-items: center; font-size: .75rem; flex-shrink: 0; }
+        .sd-hero2-chatbox .h2c-ai .bubble {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(108,99,255,0.18);
+            border-radius: 4px 14px 14px 14px; padding: 10px 14px; font-size: .88rem;
+            color: rgba(255,255,255,0.85); line-height: 1.55; max-width: 88%;
+        }
+        .sd-hero2-chatbox .h2c-input {
+            border-top: 1px solid rgba(108,99,255,0.16); padding: 11px 14px;
+            display: flex; gap: 10px; align-items: center; background: rgba(0,0,0,0.18);
+        }
+        .sd-hero2-chatbox .h2c-input .typed {
+            flex: 1; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(108,99,255,0.18); border-radius: 10px;
+            padding: 9px 13px; font-size: .85rem; color: rgba(255,255,255,0.9);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .sd-hero2-chatbox .h2c-input .typed.is-typing::after {
+            content: '▎'; animation: sdBlink 1s steps(1) infinite; margin-left: 2px;
+        }
+        .sd-hero2-chatbox .h2c-input .send {
+            background: linear-gradient(135deg,#6c63ff,#a78bfa); color: #fff;
+            border: none; border-radius: 10px; padding: 9px 16px;
+            font-size: .85rem; font-weight: 700; cursor: pointer; font-family: inherit;
+            white-space: nowrap; box-shadow: 0 6px 18px rgba(108,99,255,0.4);
+            transition: transform .15s;
+        }
+        .sd-hero2-chatbox .h2c-input .send:hover { transform: translateY(-1px); }
+        .sd-hero2-chatbox .h2c-input .send.is-pulse { animation: sdSendPulse 1.6s ease-in-out infinite; }
+        @keyframes sdSendPulse { 0%,100% { box-shadow: 0 6px 18px rgba(108,99,255,0.4);} 50% { box-shadow: 0 6px 26px rgba(167,139,250,0.85);} }
+
+        /* =====================================================
+           TILE: 1 — AI Chat Tutor (laptop opens, chat bubble pops)
+           ===================================================== */
+        .sd-tile-chat .laptop {
+            position: absolute; left: 50%; top: 58%; transform: translate(-50%, -50%) rotateX(20deg);
+            width: 75%; max-width: 380px; height: 56%;
+            transform-style: preserve-3d;
+            transform-origin: 50% 100%;
+            transition: transform 1.1s cubic-bezier(.2,.7,.2,1);
+        }
+        .sd-tile-chat.in-view .laptop { transform: translate(-50%, -50%) rotateX(-2deg); }
+        .sd-tile-chat .laptop-screen {
+            position: absolute; inset: 0 0 14% 0;
+            background: linear-gradient(180deg, #1a1730, #0c0a18);
+            border: 2px solid #444; border-bottom: 0;
+            border-radius: 10px 10px 0 0; overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(108,99,255,0.18);
+        }
+        .sd-tile-chat .laptop-base {
+            position: absolute; left: -6%; right: -6%; bottom: 0; height: 14%;
+            background: linear-gradient(180deg, #2a2a35, #15151c);
+            border-radius: 0 0 14px 14px;
+            box-shadow: 0 14px 30px rgba(0,0,0,0.45);
+        }
+        .sd-tile-chat .laptop-base::after {
+            content: ''; position: absolute; left: 38%; right: 38%; top: 18%; height: 4px;
+            background: #0a0a12; border-radius: 4px;
+        }
+        .sd-tile-chat .scr-q {
+            position: absolute; left: 10%; right: 10%; top: 14%;
+            font-size: .65rem; color: rgba(255,255,255,0.85);
+            font-family: 'JetBrains Mono', monospace; line-height: 1.5;
+            opacity: 0; max-width: 100%;
+        }
+        .sd-tile-chat.in-view .scr-q { animation: sdTypeIn 1.2s .6s ease-out forwards; }
+        .sd-tile-chat .scr-bubble {
+            position: absolute; left: 10%; right: 18%; bottom: 22%;
+            background: linear-gradient(135deg, #6c63ff, #a78bfa); color: #fff;
+            font-size: .62rem; padding: 7px 10px; border-radius: 10px 10px 10px 2px;
+            opacity: 0; transform: translateY(10px) scale(.9); transform-origin: 0 100%;
+        }
+        .sd-tile-chat.in-view .scr-bubble { animation: sdPopUp .6s 2s cubic-bezier(.34,1.56,.64,1) forwards; }
+        @keyframes sdTypeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes sdPopUp { to { opacity: 1; transform: none; } }
+
+        /* =====================================================
+           TILE: 2 — Exam Simulation (booklet flips, timer counts)
+           ===================================================== */
+        .sd-tile-exam .booklet {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotateX(30deg) rotateY(-5deg);
+            width: 70%; max-width: 360px; aspect-ratio: 3/4;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        .sd-tile-exam .b-cover, .sd-tile-exam .b-page {
+            position: absolute; inset: 0;
+            background: linear-gradient(160deg, #f6f3ee, #d8d2c5);
+            border-radius: 4px 8px 8px 4px;
+            box-shadow: 0 14px 30px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(0,0,0,0.06);
+            transform-origin: left center;
+            backface-visibility: hidden;
+        }
+        .sd-tile-exam .b-cover {
+            background: linear-gradient(160deg, #2a4365, #1a365d);
+            color: #fff; padding: 16% 12%;
+            display: flex; flex-direction: column; gap: 8px;
+            transition: transform 1.3s cubic-bezier(.2,.7,.2,1);
+            z-index: 4;
+        }
+        .sd-tile-exam.in-view .b-cover { transform: rotateY(-150deg); }
+        .sd-tile-exam .b-cover h3 { font-size: .85rem; margin: 0; }
+        .sd-tile-exam .b-cover span { font-size: .65rem; opacity: .75; }
+        .sd-tile-exam .b-page { padding: 12%; display: flex; flex-direction: column; gap: 9px; z-index: 1; }
+        .sd-tile-exam .b-page .timer {
+            align-self: flex-end; font-family: 'JetBrains Mono', monospace;
+            font-size: .85rem; color: #c0392b; font-weight: 700;
+        }
+        .sd-tile-exam .b-page .q { font-size: .7rem; color: #1a202c; line-height: 1.4; }
+        .sd-tile-exam .b-page .opts { display: flex; flex-direction: column; gap: 5px; margin-top: 4px; }
+        .sd-tile-exam .b-page .opt { font-size: .62rem; color: #2d3748; padding: 4px 8px;
+            border: 1px solid #d8d2c5; border-radius: 6px; transition: all .25s; cursor: pointer; }
+        .sd-tile-exam .b-page .opt.correct { background: #c6f6d5; border-color: #48bb78; color: #22543d; font-weight: 700; }
+
+        /* =====================================================
+           TILE: 3 — Quick Paper (sheets lift, ink rains down)
+           ===================================================== */
+        .sd-tile-qp .stack { position: absolute; left: 50%; top: 56%; transform: translate(-50%, -50%);
+            width: 60%; max-width: 320px; aspect-ratio: 3/4; transform-style: preserve-3d; }
+        .sd-tile-qp .sheet {
+            position: absolute; inset: 0;
+            background: linear-gradient(160deg, #fff, #f0eee8);
+            border-radius: 6px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+            padding: 12% 10%;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .sd-tile-qp .sheet:nth-child(1) { transform: translate(-8px, 6px) rotate(-3deg); z-index: 1; }
+        .sd-tile-qp .sheet:nth-child(2) { transform: translate(0, 0) rotate(0deg); z-index: 2; }
+        .sd-tile-qp .sheet:nth-child(3) { transform: translate(8px, -10px) rotate(3deg); z-index: 3;
+            transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+        .sd-tile-qp.in-view .sheet:nth-child(3) { transform: translate(8px, -56%) rotate(8deg); }
+        .sd-tile-qp .sheet .qline { height: 5px; background: rgba(0,0,0,0.12); border-radius: 3px; opacity: 0; }
+        .sd-tile-qp.in-view .sheet:nth-child(3) .qline {
+            animation: sdInkDrop .6s ease-out forwards;
+        }
+        .sd-tile-qp.in-view .sheet:nth-child(3) .qline:nth-child(1) { animation-delay: 1.3s; background: rgba(108,99,255,0.6); }
+        .sd-tile-qp.in-view .sheet:nth-child(3) .qline:nth-child(2) { animation-delay: 1.5s; width: 85%; }
+        .sd-tile-qp.in-view .sheet:nth-child(3) .qline:nth-child(3) { animation-delay: 1.7s; width: 70%; }
+        .sd-tile-qp.in-view .sheet:nth-child(3) .qline:nth-child(4) { animation-delay: 1.9s; width: 90%; }
+        .sd-tile-qp.in-view .sheet:nth-child(3) .qline:nth-child(5) { animation-delay: 2.1s; width: 60%; }
+        @keyframes sdInkDrop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+        .sd-tile-qp .ink { position: absolute; width: 5px; height: 5px; border-radius: 50%;
+            background: rgba(108,99,255,0.7); opacity: 0; }
+        .sd-tile-qp.in-view .ink { animation: sdInkFall 1.4s ease-in forwards; }
+        .sd-tile-qp .ink:nth-child(1) { left: 30%; --d: .2s; }
+        .sd-tile-qp .ink:nth-child(2) { left: 55%; --d: .5s; }
+        .sd-tile-qp .ink:nth-child(3) { left: 70%; --d: .8s; }
+        .sd-tile-qp.in-view .ink { animation-delay: var(--d, 0s); }
+        @keyframes sdInkFall { 0% { opacity: 0; transform: translateY(-100px); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(60px); } }
+
+        /* =====================================================
+           TILE: 4 — Self Marking (red pen ticks)
+           ===================================================== */
+        .sd-tile-mark .paper {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%) rotate(-2deg);
+            width: 72%; max-width: 380px; aspect-ratio: 5/4;
+            background: linear-gradient(160deg, #fff, #f6f4ec);
+            border-radius: 6px;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.4);
+            padding: 7%;
+            display: flex; flex-direction: column; gap: 9px;
+        }
+        .sd-tile-mark .paper .line {
+            display: flex; align-items: center; gap: 8px;
+            position: relative;
+        }
+        .sd-tile-mark .paper .line .text {
+            flex: 1; height: 6px; background: rgba(0,0,0,0.12); border-radius: 3px;
+        }
+        .sd-tile-mark .paper .line .underline {
+            position: absolute; left: 0; top: 100%; height: 2px;
+            background: #e53e3e; border-radius: 2px; width: 0;
+        }
+        .sd-tile-mark.in-view .line:nth-child(1) .underline { animation: sdUnderline .6s 1.2s forwards; width: 0; }
+        .sd-tile-mark.in-view .line:nth-child(3) .underline { animation: sdUnderline .8s 1.8s forwards; width: 0; }
+        @keyframes sdUnderline { to { width: 65%; } }
+        .sd-tile-mark .paper .tick {
+            color: #38a169; font-size: 1.1rem; font-weight: 800; opacity: 0; transform: scale(.3);
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .sd-tile-mark.in-view .tick:nth-of-type(1) { animation: sdTickPop .4s 1.6s cubic-bezier(.34,1.56,.64,1) forwards; }
+        .sd-tile-mark.in-view .tick:nth-of-type(2) { animation: sdTickPop .4s 2.2s cubic-bezier(.34,1.56,.64,1) forwards; }
+        .sd-tile-mark.in-view .tick:nth-of-type(3) { animation: sdTickPop .4s 2.8s cubic-bezier(.34,1.56,.64,1) forwards; }
+        @keyframes sdTickPop { to { opacity: 1; transform: scale(1); } }
+        .sd-tile-mark .stamp {
+            position: absolute; right: 8%; bottom: 10%;
+            border: 3px solid #c0392b; color: #c0392b; font-weight: 800;
+            padding: 8px 18px; border-radius: 8px; transform: rotate(-12deg) scale(0); opacity: 0;
+            font-family: 'JetBrains Mono', monospace; font-size: .85rem;
+            text-shadow: 0 0 6px rgba(192,57,43,.3);
+        }
+        .sd-tile-mark.in-view .stamp { animation: sdStamp .55s 3.4s cubic-bezier(.34,1.56,.64,1) forwards; }
+        @keyframes sdStamp { to { opacity: 1; transform: rotate(-12deg) scale(1); } }
+
+        .sd-tile-mark .pen {
+            position: absolute; width: 80px; height: 8px;
+            background: linear-gradient(90deg, #e53e3e 0%, #e53e3e 65%, #c0392b 65%, #c0392b 78%, #2d3748 78%, #2d3748 100%);
+            border-radius: 4px;
+            transform-origin: 100% 50%;
+            top: 38%; left: 25%;
+            transition: all 1.5s cubic-bezier(.2,.7,.2,1);
+            opacity: 0;
+            transform: rotate(-25deg);
+            z-index: 8;
+            box-shadow: 0 4px 8px rgba(0,0,0,.3);
+        }
+        .sd-tile-mark .pen::after { content:''; position:absolute; right: -6px; top: -2px; width: 0; height: 0;
+            border-left: 8px solid #e53e3e; border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+        .sd-tile-mark.in-view .pen { opacity: 1; animation: sdPenMove 4s 1s ease-in-out forwards; }
+        @keyframes sdPenMove {
+            0%   { top: 30%; left: 18%; transform: rotate(-25deg); }
+            25%  { top: 38%; left: 60%; transform: rotate(-15deg); }
+            50%  { top: 52%; left: 22%; transform: rotate(-25deg); }
+            75%  { top: 60%; left: 55%; transform: rotate(-15deg); }
+            100% { top: 35%; left: 80%; transform: rotate(-20deg); opacity: 0; }
+        }
+
+        /* =====================================================
+           TILE: 5 — Syllabus Decoder (wall → shatter → 3 cards fan)
+           ===================================================== */
+        .sd-tile-syl .wall {
+            position: absolute; inset: 12% 10%;
+            background:
+                repeating-linear-gradient(0deg, transparent 0, transparent 9px, rgba(255,255,255,0.08) 9px, rgba(255,255,255,0.08) 10px),
+                linear-gradient(180deg, rgba(108,99,255,0.08), rgba(167,139,250,0.04));
+            border: 1px solid rgba(108,99,255,0.2);
+            border-radius: 10px;
+            transition: transform 1s cubic-bezier(.2,.7,.2,1), opacity 1s;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .55rem; color: rgba(255,255,255,0.4);
+            padding: 6%;
+            overflow: hidden;
+            line-height: 1.6;
+        }
+        .sd-tile-syl.in-view .wall { opacity: 0; transform: scale(2.2); }
+        .sd-tile-syl .fan {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; pointer-events: none;
+        }
+        .sd-tile-syl .fan-card {
+            width: 26%; max-width: 130px; aspect-ratio: 3/4;
+            background: linear-gradient(160deg, #1c1a30, #0e0c1a);
+            border: 1px solid rgba(108,99,255,0.35);
+            border-radius: 10px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 0 1px rgba(167,139,250,0.08);
+            padding: 8%;
+            color: rgba(255,255,255,0.85);
+            font-size: .62rem;
+            line-height: 1.4;
+            opacity: 0;
+            display: flex; flex-direction: column; gap: 5px;
+        }
+        .sd-tile-syl .fan-card b { color: #a78bfa; font-size: .58rem; text-transform: uppercase; letter-spacing: .04em; }
+        .sd-tile-syl .fan-card:nth-child(1) { transform: translateY(20px) rotate(-12deg); }
+        .sd-tile-syl .fan-card:nth-child(2) { transform: translateY(20px) rotate(0deg); }
+        .sd-tile-syl .fan-card:nth-child(3) { transform: translateY(20px) rotate(12deg); }
+        .sd-tile-syl.in-view .fan-card { animation: sdFanIn .7s cubic-bezier(.34,1.56,.64,1) forwards; }
+        .sd-tile-syl.in-view .fan-card:nth-child(1) { animation-delay: 1.2s; }
+        .sd-tile-syl.in-view .fan-card:nth-child(2) { animation-delay: 1.4s; }
+        .sd-tile-syl.in-view .fan-card:nth-child(3) { animation-delay: 1.6s; }
+        @keyframes sdFanIn { to { opacity: 1; transform: translateY(0) rotate(var(--r,0deg)); } }
+        .sd-tile-syl.in-view .fan-card:nth-child(1) { --r: -10deg; }
+        .sd-tile-syl.in-view .fan-card:nth-child(3) { --r: 10deg; }
+
+        /* =====================================================
+           TILE: 6 — Learn IRL (door opens, scenario cards fan out)
+           ===================================================== */
+        .sd-tile-irl .room {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at center, rgba(255,220,150,0.0) 0%, rgba(0,0,0,0.4) 70%);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .sd-tile-irl .frame {
+            position: relative;
+            width: 38%; max-width: 200px; aspect-ratio: 1/2;
+            background: linear-gradient(180deg, #6b4226, #3d2516);
+            border-radius: 4px 4px 0 0;
+            padding: 6px;
+            box-shadow: 0 18px 40px rgba(0,0,0,.6);
+        }
+        .sd-tile-irl .door {
+            position: absolute; inset: 6px 6px 0 6px;
+            background: linear-gradient(180deg, #4a2f1c, #2a1a0e);
+            border-radius: 4px 4px 0 0;
+            transform-origin: 0 50%;
+            transition: transform 1.5s cubic-bezier(.2,.7,.2,1);
+            box-shadow: inset -4px 0 8px rgba(0,0,0,.4);
+        }
+        .sd-tile-irl .door::after {
+            content: ''; position: absolute; right: 12%; top: 50%;
+            width: 8px; height: 8px; border-radius: 50%; background: #d4a373;
+            box-shadow: 0 0 0 2px rgba(0,0,0,.3);
+        }
+        .sd-tile-irl.in-view .door { transform: perspective(700px) rotateY(-110deg); }
+        .sd-tile-irl .glow {
+            position: absolute; inset: 6px 6px 0 6px;
+            background: radial-gradient(ellipse at 30% 50%, rgba(255,220,150,0.85), rgba(255,200,120,0.4) 40%, transparent 70%);
+            opacity: 0; border-radius: 4px 4px 0 0;
+        }
+        .sd-tile-irl.in-view .glow { animation: sdGlowOn .8s 1s forwards; }
+        @keyframes sdGlowOn { to { opacity: 1; } }
+        .sd-tile-irl .scenarios {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+            display: flex; gap: 8px; pointer-events: none; width: 88%; max-width: 460px;
+            justify-content: center;
+        }
+        .sd-tile-irl .scen {
+            width: 28%; max-width: 130px; aspect-ratio: 3/4;
+            background: linear-gradient(160deg, #1c1a30, #0e0c1a);
+            border: 1px solid rgba(167,139,250,0.3);
+            border-radius: 10px;
+            padding: 10%;
+            color: rgba(255,255,255,0.85);
+            font-size: .68rem;
+            line-height: 1.4;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 24px rgba(255,200,120,0.15);
+            opacity: 0;
+            display: flex; flex-direction: column; gap: 4px; align-items: center; text-align: center;
+        }
+        .sd-tile-irl .scen .ico { font-size: 1.6rem; }
+        .sd-tile-irl .scen b { color: #a78bfa; font-size: .6rem; }
+        .sd-tile-irl.in-view .scen:nth-child(1) { animation: sdScenIn .6s 1.6s cubic-bezier(.34,1.56,.64,1) forwards; --r: -10deg; --x: -18px; }
+        .sd-tile-irl.in-view .scen:nth-child(2) { animation: sdScenIn .6s 1.8s cubic-bezier(.34,1.56,.64,1) forwards; --r: 0deg; --x: 0; }
+        .sd-tile-irl.in-view .scen:nth-child(3) { animation: sdScenIn .6s 2s cubic-bezier(.34,1.56,.64,1) forwards; --r: 10deg; --x: 18px; }
+        @keyframes sdScenIn { to { opacity: 1; transform: translate(var(--x,0), 0) rotate(var(--r,0deg)); } }
+        .sd-tile-irl .scen { transform: translate(0, 30px) scale(.5); }
+
+        /* =====================================================
+           TILE: 7 — Worksheet Decoder (phone snaps, text flies out)
+           ===================================================== */
+        .sd-tile-wd .phone {
+            position: absolute; left: 24%; top: 50%; transform: translate(-50%,-50%) rotateY(-15deg) rotateZ(-6deg);
+            width: 30%; max-width: 140px; aspect-ratio: 9/19;
+            background: linear-gradient(160deg, #2d2d3a, #15151c);
+            border-radius: 18px;
+            box-shadow: 0 18px 40px rgba(0,0,0,.5), 0 0 0 2px #444;
+            padding: 6px;
+            transform-style: preserve-3d;
+        }
+        .sd-tile-wd .phone-screen {
+            position: absolute; inset: 6px;
+            background: linear-gradient(180deg, #0a0a14, #14131f);
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .sd-tile-wd .phone-screen .viewfinder {
+            width: 80%; height: 80%; border: 2px solid rgba(108,99,255,0.6);
+            border-radius: 8px; position: relative;
+            background: rgba(108,99,255,0.04);
+        }
+        .sd-tile-wd .phone-screen .viewfinder::before, .sd-tile-wd .phone-screen .viewfinder::after {
+            content: ''; position: absolute; width: 12px; height: 12px;
+            border: 2px solid #a78bfa; border-radius: 1px;
+        }
+        .sd-tile-wd .phone-screen .viewfinder::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+        .sd-tile-wd .phone-screen .viewfinder::after { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+        .sd-tile-wd .flash {
+            position: absolute; inset: 0; background: #fff; border-radius: 14px;
+            opacity: 0;
+        }
+        .sd-tile-wd.in-view .flash { animation: sdFlash .35s 1.3s forwards; }
+        @keyframes sdFlash { 0% { opacity: 0; } 30% { opacity: .95; } 100% { opacity: 0; } }
+        .sd-tile-wd .notes {
+            position: absolute; right: 5%; top: 12%; bottom: 12%; width: 46%;
+            background: linear-gradient(160deg, #fff, #f0eee8);
+            border-radius: 8px; padding: 6%;
+            box-shadow: 0 14px 30px rgba(0,0,0,.45);
+            display: flex; flex-direction: column; gap: 6px;
+            opacity: 0; transform: translateX(30px) scale(.92);
+            transition: opacity .8s 1.7s, transform .8s 1.7s cubic-bezier(.2,.7,.2,1);
+        }
+        .sd-tile-wd.in-view .notes { opacity: 1; transform: none; }
+        .sd-tile-wd .notes .nline { height: 4px; background: rgba(0,0,0,0.12); border-radius: 2px; opacity: 0; }
+        .sd-tile-wd.in-view .notes .nline:nth-child(1) { animation: sdLine .25s 2.3s forwards; width: 70%; }
+        .sd-tile-wd.in-view .notes .nline:nth-child(2) { animation: sdLine .25s 2.5s forwards; width: 90%; }
+        .sd-tile-wd.in-view .notes .nline:nth-child(3) { animation: sdLine .25s 2.7s forwards; width: 60%; }
+        .sd-tile-wd.in-view .notes .nline:nth-child(4) { animation: sdLine .25s 2.9s forwards; width: 80%; background: rgba(108,99,255,0.5); }
+        .sd-tile-wd.in-view .notes .nline:nth-child(5) { animation: sdLine .25s 3.1s forwards; width: 55%; }
+        @keyframes sdLine { to { opacity: 1; } }
+
+        /* =====================================================
+           TILE: 8 — Worksheet Generator (pen draws)
+           ===================================================== */
+        .sd-tile-wg .pad {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+            width: 72%; max-width: 380px; aspect-ratio: 5/4;
+            background: linear-gradient(160deg, #fff, #f0eee8);
+            border-radius: 6px;
+            box-shadow: 0 18px 40px rgba(0,0,0,.4);
+            padding: 7%;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .sd-tile-wg .pad h4 { margin: 0; color: #2d3748; font-size: .8rem;
+            position: relative; overflow: hidden; }
+        .sd-tile-wg .pad h4 span {
+            display: inline-block;
+            background: linear-gradient(90deg, #2d3748 50%, transparent 50%);
+            background-size: 220% 100%; background-position: 100% 0;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .sd-tile-wg.in-view .pad h4 span { animation: sdReveal 1.2s 1s forwards; }
+        @keyframes sdReveal { to { background-position: 0 0; } }
+        .sd-tile-wg .pad .question {
+            font-size: .7rem; color: #2d3748; padding: 8px 12px;
+            border: 1px dashed #cbd5e0; border-radius: 6px;
+            opacity: 0;
+            animation: sdQuestionIn .5s ease-out forwards;
+        }
+        .sd-tile-wg.in-view .question:nth-of-type(1) { animation-delay: 1.6s; }
+        .sd-tile-wg.in-view .question:nth-of-type(2) { animation-delay: 2.1s; }
+        .sd-tile-wg.in-view .question:nth-of-type(3) { animation-delay: 2.6s; }
+        @keyframes sdQuestionIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+        .sd-tile-wg .chip {
+            position: absolute; top: 8px; right: 8px;
+            background: linear-gradient(135deg, #6c63ff, #a78bfa);
+            color: #fff; font-size: .55rem; font-weight: 700;
+            padding: 3px 7px; border-radius: 999px;
+            opacity: 0; transform: translateX(40px);
+            animation: sdChipIn .5s 3.2s cubic-bezier(.34,1.56,.64,1) forwards;
+        }
+        .sd-tile-wg.in-view .chip { animation: sdChipIn .5s 3.2s cubic-bezier(.34,1.56,.64,1) forwards; }
+        @keyframes sdChipIn { to { opacity: 1; transform: none; } }
+
+        /* =====================================================
+           TILE: 9 — Conversational Flashcards (deck flips)
+           ===================================================== */
+        .sd-tile-fc .deck { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+            width: 45%; max-width: 220px; aspect-ratio: 5/7;
+            transform-style: preserve-3d; perspective: 800px;
+        }
+        .sd-tile-fc .card {
+            position: absolute; inset: 0;
+            border-radius: 14px;
+            box-shadow: 0 18px 40px rgba(0,0,0,.5);
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+            display: flex; align-items: center; justify-content: center;
+            padding: 12%; text-align: center;
+        }
+        .sd-tile-fc .card-back {
+            background: linear-gradient(160deg, #1c1a30, #0e0c1a);
+            border: 1px solid rgba(108,99,255,0.3);
+            color: #fff; font-size: .85rem; font-weight: 700;
+        }
+        .sd-tile-fc .card-front {
+            background: linear-gradient(160deg, #6c63ff, #a78bfa);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; font-size: .75rem; line-height: 1.45;
+            transform: rotateY(180deg);
+            font-weight: 600;
+        }
+        .sd-tile-fc .flipper {
+            position: relative; width: 100%; height: 100%;
+            transform-style: preserve-3d;
+            animation: sdFlipper 6s ease-in-out infinite;
+        }
+        .sd-tile-fc:not(.in-view) .flipper { animation-play-state: paused; }
+        @keyframes sdFlipper {
+            0%, 20% { transform: rotateY(0deg) translateY(0); }
+            45%, 55% { transform: rotateY(180deg) translateY(-8px); }
+            80%, 100% { transform: rotateY(360deg) translateY(0); }
+        }
+        .sd-tile-fc .deck-shadow {
+            position: absolute; inset: 0;
+            background: linear-gradient(160deg, #1c1a30, #0e0c1a);
+            border-radius: 14px;
+            box-shadow: 0 18px 40px rgba(0,0,0,.5);
+            transform: translate(8px, 8px) rotate(3deg);
+            z-index: -1;
+            opacity: .7;
+        }
+        .sd-tile-fc .deck-shadow2 { transform: translate(16px, 14px) rotate(5deg); opacity: .4; }
+
+        /* =====================================================
+           TILE: 10 — Classroom Mode (seats fill in)
+           ===================================================== */
+        .sd-tile-cls .board {
+            position: absolute; left: 8%; right: 8%; top: 7%;
+            height: 30%;
+            background: linear-gradient(160deg, #1f3924, #11241a);
+            border: 4px solid #6b4226;
+            border-radius: 4px;
+            box-shadow: 0 8px 18px rgba(0,0,0,.4), inset 0 0 30px rgba(0,0,0,.3);
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,0.85);
+            font-family: 'Caveat', cursive, 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+        }
+        .sd-tile-cls .board .code {
+            font-family: 'Caveat', cursive;
+            color: #fff; opacity: 0;
+            font-size: 1.4rem;
+        }
+        .sd-tile-cls.in-view .board .code { animation: sdBoardWrite 1.5s 1s forwards; }
+        @keyframes sdBoardWrite { from { opacity: 0; transform: translateX(-12px) rotate(-2deg); } to { opacity: 1; transform: none; } }
+        .sd-tile-cls .seats {
+            position: absolute; left: 8%; right: 8%; top: 44%; bottom: 8%;
+            display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr);
+            gap: 5%;
+        }
+        .sd-tile-cls .seat {
+            background: rgba(108,99,255,0.06);
+            border: 1px solid rgba(108,99,255,0.18);
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: .8rem;
+            opacity: 0;
+            transition: all .3s;
+        }
+        .sd-tile-cls.in-view .seat { animation: sdSeatFill .35s cubic-bezier(.34,1.56,.64,1) forwards; }
+        .sd-tile-cls.in-view .seat:nth-child(1)  { animation-delay: 1.1s; }
+        .sd-tile-cls.in-view .seat:nth-child(2)  { animation-delay: 1.18s; }
+        .sd-tile-cls.in-view .seat:nth-child(3)  { animation-delay: 1.26s; }
+        .sd-tile-cls.in-view .seat:nth-child(4)  { animation-delay: 1.34s; }
+        .sd-tile-cls.in-view .seat:nth-child(5)  { animation-delay: 1.42s; }
+        .sd-tile-cls.in-view .seat:nth-child(6)  { animation-delay: 1.50s; }
+        .sd-tile-cls.in-view .seat:nth-child(7)  { animation-delay: 1.58s; }
+        .sd-tile-cls.in-view .seat:nth-child(8)  { animation-delay: 1.66s; }
+        .sd-tile-cls.in-view .seat:nth-child(9)  { animation-delay: 1.74s; }
+        .sd-tile-cls.in-view .seat:nth-child(10) { animation-delay: 1.82s; }
+        .sd-tile-cls.in-view .seat:nth-child(n+11) { animation-delay: 1.9s; }
+        @keyframes sdSeatFill {
+            from { opacity: 0; transform: scale(.6); background: rgba(108,99,255,0.06); }
+            to { opacity: 1; transform: scale(1); background: rgba(108,99,255,0.18); }
+        }
+        .sd-tile-cls .counter {
+            position: absolute; right: 14%; top: 38%;
+            font-family: 'JetBrains Mono', monospace; font-size: .8rem;
+            color: #a78bfa; font-weight: 700;
+        }
+
+        /* =====================================================
+           TILE: 11 — Notes Transcriber (uncrumple → typed)
+           ===================================================== */
+        .sd-tile-nt .crumple {
+            position: absolute; left: 8%; top: 50%; transform: translateY(-50%);
+            width: 38%; aspect-ratio: 5/6;
+            background: linear-gradient(160deg, #fff, #d8d2c5);
+            border-radius: 4px;
+            box-shadow: 0 14px 30px rgba(0,0,0,.4);
+            padding: 8%;
+            font-family: 'Caveat', cursive;
+            color: #2d3748;
+            font-size: .75rem;
+            line-height: 1.45;
+            transform-origin: center;
+            transform: rotate(-3deg) scale(.85);
+            filter: brightness(.9);
+            transition: transform 1s 1s cubic-bezier(.2,.7,.2,1), filter 1s 1s;
+        }
+        .sd-tile-cls .seats { content: ''; } /* keep blank */
+        .sd-tile-nt.in-view .crumple { transform: rotate(-2deg) scale(1); filter: brightness(1); }
+        .sd-tile-nt .digital {
+            position: absolute; right: 8%; top: 50%; transform: translateY(-50%);
+            width: 38%; aspect-ratio: 5/6;
+            background: linear-gradient(160deg, #14131f, #0a0a14);
+            border: 1px solid rgba(108,99,255,0.3);
+            border-radius: 8px;
+            box-shadow: 0 14px 30px rgba(0,0,0,.4);
+            padding: 8%;
+            font-family: 'JetBrains Mono', monospace;
+            color: rgba(255,255,255,.85);
+            font-size: .6rem;
+            line-height: 1.55;
+            display: flex; flex-direction: column; gap: 5px;
+        }
+        .sd-tile-nt .digital .dline {
+            height: 4px; background: rgba(108,99,255,0.4); border-radius: 2px; opacity: 0;
+        }
+        .sd-tile-nt.in-view .digital .dline:nth-child(1) { animation: sdLine .3s 2s forwards; width: 80%; }
+        .sd-tile-nt.in-view .digital .dline:nth-child(2) { animation: sdLine .3s 2.3s forwards; width: 95%; }
+        .sd-tile-nt.in-view .digital .dline:nth-child(3) { animation: sdLine .3s 2.6s forwards; width: 70%; }
+        .sd-tile-nt.in-view .digital .dline:nth-child(4) { animation: sdLine .3s 2.9s forwards; width: 88%; }
+        .sd-tile-nt.in-view .digital .dline:nth-child(5) { animation: sdLine .3s 3.2s forwards; width: 60%; }
+        .sd-tile-nt .arrow {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+            color: #a78bfa; font-size: 1.4rem; opacity: 0;
+        }
+        .sd-tile-nt.in-view .arrow { animation: sdArrowIn .5s 1.7s forwards; }
+        @keyframes sdArrowIn { from { opacity: 0; transform: translate(-70%, -50%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+
+        /* =====================================================
+           TILE: 12 — Practice Questions (target rings)
+           ===================================================== */
+        .sd-tile-pq .target {
+            position: absolute; left: 50%; top: 55%; transform: translate(-50%, -50%);
+            width: 60%; max-width: 280px; aspect-ratio: 1;
+        }
+        .sd-tile-pq .ring {
+            position: absolute; inset: 0;
+            border-radius: 50%;
+            border: 4px solid rgba(108,99,255,0.4);
+            opacity: .65;
+        }
+        .sd-tile-pq .ring:nth-child(1) { inset: 0%; border-color: rgba(108,99,255,0.25); }
+        .sd-tile-pq .ring:nth-child(2) { inset: 15%; border-color: rgba(167,139,250,0.35); }
+        .sd-tile-pq .ring:nth-child(3) { inset: 30%; border-color: rgba(167,139,250,0.55); }
+        .sd-tile-pq .ring:nth-child(4) { inset: 45%; background: radial-gradient(circle, #6c63ff, #4f46e5); border: 0; }
+        .sd-tile-pq .hit {
+            position: absolute; width: 18px; height: 18px; border-radius: 50%;
+            background: radial-gradient(circle, #fbbf24, #b45309);
+            border: 2px solid #fff;
+            transform: translate(-50%, -50%) scale(0);
+            box-shadow: 0 0 12px rgba(251,191,36,.6);
+            opacity: 0;
+        }
+        .sd-tile-pq.in-view .hit { animation: sdHit .4s cubic-bezier(.34,1.56,.64,1) forwards; }
+        .sd-tile-pq.in-view .hit:nth-child(1) { animation-delay: 1.3s; }
+        .sd-tile-pq.in-view .hit:nth-child(2) { animation-delay: 1.7s; }
+        .sd-tile-pq.in-view .hit:nth-child(3) { animation-delay: 2.1s; }
+        .sd-tile-pq.in-view .hit:nth-child(4) { animation-delay: 2.5s; }
+        @keyframes sdHit { to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
+        .sd-tile-pq .score {
+            position: absolute; top: 10%; right: 14%;
+            font-family: 'JetBrains Mono', monospace; font-size: .85rem;
+            color: #a78bfa; font-weight: 700;
+        }
+
+        /* =====================================================
+           TILE: 13 — Timetable Generator (blocks snap into grid)
+           ===================================================== */
+        .sd-tile-tt .grid {
+            position: absolute; inset: 12% 8% 8% 8%;
+            display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: 16px repeat(6, 1fr); gap: 4px;
+        }
+        .sd-tile-tt .day {
+            font-size: .55rem; color: rgba(255,255,255,.55); text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .sd-tile-tt .blk {
+            border-radius: 4px;
+            background: rgba(108,99,255,0.08);
+            border: 1px solid rgba(108,99,255,0.18);
+            font-size: .5rem; color: rgba(255,255,255,.7);
+            display: flex; align-items: center; justify-content: center;
+            padding: 2px;
+            opacity: 0;
+            transform: translateY(-12px);
+        }
+        .sd-tile-tt.in-view .blk { animation: sdBlockIn .35s cubic-bezier(.34,1.56,.64,1) forwards; }
+        .sd-tile-tt .blk.s1 { background: linear-gradient(135deg, rgba(108,99,255,0.45), rgba(108,99,255,0.25)); color: #fff; }
+        .sd-tile-tt .blk.s2 { background: linear-gradient(135deg, rgba(167,139,250,0.45), rgba(167,139,250,0.25)); color: #fff; }
+        .sd-tile-tt .blk.s3 { background: linear-gradient(135deg, rgba(244,114,182,0.45), rgba(244,114,182,0.25)); color: #fff; }
+        .sd-tile-tt .blk.s4 { background: linear-gradient(135deg, rgba(56,189,248,0.45), rgba(56,189,248,0.25)); color: #fff; }
+        @keyframes sdBlockIn { to { opacity: 1; transform: translateY(0); } }
+        .sd-tile-tt .nowline {
+            position: absolute; left: 8%; right: 8%; top: 60%;
+            height: 2px; background: #e53e3e; opacity: 0;
+            box-shadow: 0 0 8px rgba(229,62,62,.7);
+        }
+        .sd-tile-tt.in-view .nowline { animation: sdNowLine 4s 3s linear infinite; }
+        @keyframes sdNowLine { 0%,100% { opacity: 0; top: 55%; } 50% { opacity: .9; top: 78%; } }
+
+        /* =====================================================
+           TILE: BONUS — 3D Mastery Map
+           ===================================================== */
+        .sd-tile-mm .mm-plane {
+            position: absolute; left: 50%; top: 56%; transform: translate(-50%, -50%) rotateX(55deg) rotateZ(-12deg);
+            width: 80%; aspect-ratio: 1;
+            display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(6, 1fr); gap: 5px;
+            transform-style: preserve-3d;
+        }
+        .sd-tile-mm .cell {
+            background: rgba(108,99,255,0.18);
+            border: 1px solid rgba(108,99,255,0.35);
+            border-radius: 3px;
+            box-shadow: 0 0 0 1px rgba(167,139,250,0.05);
+            transform-style: preserve-3d;
+            transform: translateZ(0);
+            transition: transform .5s cubic-bezier(.2,.7,.2,1), background .3s;
+        }
+        .sd-tile-mm.in-view .cell {
+            animation: sdMMRise 1.4s cubic-bezier(.2,.7,.2,1) forwards;
+        }
+        .sd-tile-mm.in-view .cell.h1 { --h: 8px;  background: rgba(244,114,182,.45); }
+        .sd-tile-mm.in-view .cell.h2 { --h: 18px; background: rgba(244,114,182,.6); }
+        .sd-tile-mm.in-view .cell.h3 { --h: 32px; background: rgba(167,139,250,.7); }
+        .sd-tile-mm.in-view .cell.h4 { --h: 50px; background: rgba(108,99,255,.85); }
+        .sd-tile-mm.in-view .cell.h5 { --h: 70px; background: rgba(56,189,248,.85); box-shadow: 0 0 18px rgba(56,189,248,.5); }
+        @keyframes sdMMRise {
+            from { transform: translateZ(0); }
+            to { transform: translateZ(var(--h,0px)); }
+        }
+
+        /* =====================================================
+           Mobile simplification — drop the heavy effects
+           ===================================================== */
+        @media (max-width: 720px) {
+            .sd-stage { aspect-ratio: 4/3; max-width: 100%; }
+            .sd-particles { display: none; }
+            .sd-hero2-sphere-inner { animation-duration: 90s; }
+            .sd-hero2-code { font-size: .72rem; }
+            .sd-tile-cls .seats { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); }
+            .sd-tile-mm .mm-plane { width: 92%; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .sd-stage, .sd-stage *, .sd-hero2-sphere-inner, .sd-hero2-code {
+                animation: none !important; transition: none !important;
+            }
+            .sd-stage * { opacity: 1 !important; transform: none !important; }
+        }
+
+        /* =====================================================
+           Comparison table — "vs ChatGPT / Atomi / ATAR Notes"
+           ===================================================== */
+        .sd-cmp {
+            padding: 5rem 5% 1rem;
+            position: relative;
+        }
+        .sd-cmp::before {
+            content: ''; position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 60% 40% at 50% 0%, rgba(108,99,255,0.10), transparent 60%);
+            pointer-events: none;
+        }
+        .sd-cmp-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+        .sd-cmp-head { text-align: center; margin-bottom: 2.4rem; }
+        .sd-cmp-eyebrow {
+            display: inline-block; padding: 5px 14px;
+            background: rgba(108,99,255,0.10);
+            border: 1px solid rgba(108,99,255,0.28);
+            border-radius: 999px;
+            font-size: .78rem; color: rgba(167,139,250,0.95);
+            text-transform: uppercase; letter-spacing: .08em;
+            margin-bottom: .9rem;
+        }
+        .sd-cmp-sub {
+            color: var(--text-sec, rgba(255,255,255,.78));
+            font-size: 1.02rem; margin-top: .6rem; max-width: 640px;
+            margin-left: auto; margin-right: auto; line-height: 1.55;
+        }
+
+        .sd-cmp-wrap {
+            position: relative;
+            border-radius: 22px;
+            background: linear-gradient(180deg, rgba(20,18,31,0.92), rgba(14,12,24,0.92));
+            border: 1px solid rgba(108,99,255,0.18);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(108,99,255,0.06), inset 0 0 60px rgba(108,99,255,0.04);
+            overflow: hidden;
+        }
+        .sd-cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .sd-cmp-scroll::-webkit-scrollbar { height: 6px; }
+        .sd-cmp-scroll::-webkit-scrollbar-thumb { background: rgba(108,99,255,0.4); border-radius: 3px; }
+
+        .sd-cmp table {
+            width: 100%;
+            min-width: 720px;
+            border-collapse: collapse;
+            color: var(--text, rgba(255,255,255,.92));
+            font-size: .92rem;
+        }
+        .sd-cmp thead th {
+            position: sticky; top: 0;
+            background: linear-gradient(180deg, rgba(30,26,50,0.98), rgba(20,18,31,0.98));
+            backdrop-filter: blur(8px);
+            padding: 1.1rem .9rem;
+            font-weight: 700;
+            font-size: .9rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(108,99,255,0.22);
+            color: rgba(255,255,255,0.78);
+            white-space: nowrap;
+        }
+        .sd-cmp thead th:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: rgba(255,255,255,0.55);
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+        .sd-cmp thead th.sd-cmp-us {
+            background: linear-gradient(180deg, rgba(108,99,255,0.25), rgba(108,99,255,0.12));
+            color: #fff;
+            position: relative;
+        }
+        .sd-cmp thead th.sd-cmp-us::after {
+            content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+            background: linear-gradient(90deg, transparent, #a78bfa, transparent);
+        }
+        .sd-cmp thead th .sd-cmp-logo {
+            display: block;
+            font-size: 1rem;
+            line-height: 1.15;
+            margin-bottom: 3px;
+        }
+        .sd-cmp thead th.sd-cmp-us .sd-cmp-logo {
+            font-size: 1.05rem;
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sd-cmp thead th .sd-cmp-tag {
+            display: block;
+            font-size: .7rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .sd-cmp tbody tr {
+            transition: background .2s;
+        }
+        .sd-cmp tbody tr:nth-child(odd) td { background: rgba(255,255,255,0.012); }
+        .sd-cmp tbody tr:hover td { background: rgba(108,99,255,0.05); }
+
+        .sd-cmp tbody td {
+            padding: .95rem .9rem;
+            border-bottom: 1px solid rgba(108,99,255,0.08);
+            text-align: center;
+            vertical-align: middle;
+            color: rgba(255,255,255,0.75);
+            font-size: .88rem;
+            line-height: 1.4;
+        }
+        .sd-cmp tbody td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: rgba(255,255,255,0.92);
+            font-size: .92rem;
+            min-width: 200px;
+        }
+        .sd-cmp tbody td:first-child small {
+            display: block;
+            font-weight: 400;
+            color: rgba(255,255,255,0.5);
+            font-size: .76rem;
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+        .sd-cmp tbody td.sd-cmp-us {
+            background: rgba(108,99,255,0.06);
+            color: rgba(255,255,255,0.95);
+            border-left: 1px solid rgba(167,139,250,0.18);
+            border-right: 1px solid rgba(167,139,250,0.18);
+            position: relative;
+        }
+        .sd-cmp tbody tr:hover td.sd-cmp-us { background: rgba(108,99,255,0.12); }
+        .sd-cmp tbody tr:last-child td { border-bottom: 0; }
+        .sd-cmp tbody tr:last-child td.sd-cmp-us { border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; }
+
+        .sd-cmp-yes, .sd-cmp-no, .sd-cmp-partial {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: .8rem;
+            line-height: 1;
+        }
+        .sd-cmp-yes {
+            background: rgba(34,197,94,0.14);
+            color: #4ade80;
+            border: 1px solid rgba(34,197,94,0.32);
+        }
+        .sd-cmp-us .sd-cmp-yes {
+            background: rgba(34,197,94,0.22);
+            color: #86efac;
+            border-color: rgba(34,197,94,0.5);
+            box-shadow: 0 0 12px rgba(34,197,94,0.25);
+        }
+        .sd-cmp-no {
+            background: rgba(239,68,68,0.10);
+            color: #fca5a5;
+            border: 1px solid rgba(239,68,68,0.25);
+        }
+        .sd-cmp-partial {
+            background: rgba(234,179,8,0.12);
+            color: #fde047;
+            border: 1px solid rgba(234,179,8,0.32);
+            font-size: 1.1rem;
+        }
+        .sd-cmp-cell-note {
+            display: block;
+            font-size: .72rem;
+            color: rgba(255,255,255,0.45);
+            margin-top: 4px;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+        .sd-cmp tbody td.sd-cmp-us .sd-cmp-cell-note {
+            color: rgba(167,139,250,0.85);
+        }
+
+        /* Price row — emphasis */
+        .sd-cmp-price td {
+            background: rgba(108,99,255,0.05) !important;
+            font-weight: 600;
+        }
+        .sd-cmp-price td.sd-cmp-us {
+            background: rgba(108,99,255,0.14) !important;
+        }
+        .sd-cmp-price td b { color: #fff; font-size: .95rem; }
+        .sd-cmp-price td small { display: block; font-weight: 500; }
+
+        .sd-cmp-foot {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 1.4rem; gap: 1rem; flex-wrap: wrap;
+            background: rgba(108,99,255,0.04);
+            border-top: 1px solid rgba(108,99,255,0.12);
+            font-size: .78rem;
+            color: rgba(255,255,255,0.5);
+        }
+        .sd-cmp-foot a { color: rgba(167,139,250,0.95); text-decoration: underline; }
+        .sd-cmp-foot a:hover { color: #fff; }
+
+        .sd-cmp-mobile-hint {
+            display: none;
+            text-align: center;
+            font-size: .72rem;
+            color: rgba(255,255,255,0.45);
+            padding: .6rem;
+            border-bottom: 1px solid rgba(108,99,255,0.08);
+        }
+
+        @media (max-width: 760px) {
+            .sd-cmp { padding: 3rem 4% 1rem; }
+            .sd-cmp-mobile-hint { display: block; }
+            .sd-cmp table { font-size: .82rem; min-width: 640px; }
+            .sd-cmp tbody td { padding: .7rem .55rem; }
+            .sd-cmp tbody td:first-child { min-width: 170px; font-size: .85rem; }
+            .sd-cmp-yes, .sd-cmp-no, .sd-cmp-partial { width: 22px; height: 22px; font-size: .7rem; }
+            .sd-cmp thead th { padding: .9rem .55rem; font-size: .82rem; }
+            .sd-cmp thead th .sd-cmp-logo { font-size: .9rem; }
+            .sd-cmp thead th .sd-cmp-tag { font-size: .62rem; }
+            .sd-cmp-cell-note { font-size: .65rem; }
+        }
+    </style>
+
+    <!-- GSAP + ScrollTrigger for the hero pinned scroll story -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
     <script src="/ui-helpers.js" defer></script>
 </head>
 <body>
@@ -750,114 +1890,79 @@
     <!-- Sale Banner (content set dynamically based on user plan) -->
     <div class="sale-banner" id="saleBanner" style="display: none;"></div>
 
-    <!-- Hero Section -->
-    <section class="hero" id="heroSection">
-        <div class="hero-grid-bg"></div>
-        <div class="hero-glow"></div>
-        <div class="hero-inner">
-            <div class="hero-split">
+    <!-- Global ambient particles canvas (used behind tiles too) -->
+    <canvas class="sd-particles" id="sdParticles" aria-hidden="true"></canvas>
 
-                <!-- TOP HALF: Motto -->
-                <div class="hero-motto">
-                    <div class="hero-badge">🤖 AI Tutor · Official NESA Syllabuses · Built for HSC</div>
-                    <div class="motto-stack">
-                        <span class="motto-line motto-line-1">make study</span>
-                        <span class="motto-line motto-line-2">actually <span class="motto-fun">fun</span></span>
-                        <span class="motto-line motto-line-3">again.</span>
-                    </div>
-                    <p class="hero-sub">Your personal AI tutor, full exam simulator, syllabus decoder, and more — 7 tools built specifically for the NSW HSC.</p>
-                    <div class="hero-buttons" id="heroButtons">
-                        <a href="login.html" class="btn btn-primary btn-glow" id="heroSignInBtn">Join Free →</a>
-                        <a href="#tools" class="btn btn-ghost">Explore Tools ↓</a>
-                    </div>
-                    <div class="hero-buttons" id="heroLoggedIn" style="display:none;">
-                        <a href="#tools" class="btn btn-primary btn-glow">Keep Studying →</a>
-                        <a href="#tools" class="btn btn-ghost">All Tools ↓</a>
-                    </div>
-                    <p class="hero-trust" id="heroTrustLine">🇦🇺 Official NESA syllabuses &nbsp;·&nbsp; Free to start &nbsp;·&nbsp; No card required</p>
-                    <div id="heroSignupsLine" style="display:none;margin-top:1rem;"></div>
+    <!-- Hero 2.0 — pinned scroll story -->
+    <section class="sd-hero2" id="heroSection">
+        <div class="sd-hero2-pin" id="sdHero2Pin">
+            <!-- Floating sphere of syllabus codes -->
+            <div class="sd-hero2-sphere" id="sdHero2Sphere" aria-hidden="true">
+                <div class="sd-hero2-sphere-inner" id="sdSphereInner"></div>
+            </div>
+
+            <!-- Centered content -->
+            <div class="sd-hero2-content">
+                <div class="sd-hero2-badge">🤖 AI Tutor · NESA Syllabuses · Built for HSC</div>
+                <h1 class="sd-hero2-title">make study<br/><em>actually fun</em> again.</h1>
+                <p class="sd-hero2-sub">Your personal AI tutor, full exam simulator, syllabus decoder, and 11 more tools — built for the NSW HSC.</p>
+                <div class="sd-hero2-actions" id="heroButtons">
+                    <a href="login.html" class="btn btn-primary btn-glow" id="heroSignInBtn">Join Free →</a>
+                    <a href="#tools" class="btn btn-ghost">Explore 13 Tools ↓</a>
                 </div>
 
-                <!-- BOTTOM HALF: Streak Widget -->
-                <div class="hero-streak-widget">
-
-                    <!-- State: logged out (default) -->
-                    <div class="hero-streak-out" id="heroStreakOut">
-                        <!-- Full Chat Demo Widget -->
-                        <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:20px;overflow:hidden;width:100%;max-width:520px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,0.4),0 0 0 1px rgba(108,99,255,0.12);">
-                            <!-- Topbar -->
-                            <div style="background:rgba(108,99,255,0.14);border-bottom:1px solid var(--border);padding:13px 20px;display:flex;align-items:center;gap:10px;">
-                                <div style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#6c63ff,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🤖</div>
-                                <div style="text-align:left;">
-                                    <div style="font-weight:700;color:var(--text);font-size:0.92rem;line-height:1.2;">Chat Tutor</div>
-                                    <div style="font-size:0.72rem;color:#22c55e;display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span>Online · HSC AI</div>
-                                </div>
-                                <div style="margin-left:auto;font-size:0.75rem;color:var(--text-muted);background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;padding:3px 9px;">Demo</div>
-                            </div>
-                            <!-- Chat body -->
-                            <div style="padding:18px 16px;display:flex;flex-direction:column;gap:12px;min-height:240px;">
-                                <!-- AI greeting -->
-                                <div style="display:flex;align-items:flex-start;gap:10px;">
-                                    <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#6c63ff,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;">🤖</div>
-                                    <div style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:4px 14px 14px 14px;padding:11px 14px;max-width:88%;line-height:1.55;color:var(--text-sec);font-size:0.88rem;">
-                                        Hey! 👋 I'm your HSC AI tutor. I know every subject on the curriculum. What do you want to understand today?
-                                    </div>
-                                </div>
-                                <!-- Suggested questions (shown by default) -->
-                                <div id="heroDemoQuestions" style="display:flex;flex-direction:column;gap:7px;padding-left:38px;">
-                                    <button onclick="heroDemoAsk(0)" class="_hd-q" style="text-align:left;background:rgba(108,99,255,0.07);border:1px solid rgba(108,99,255,0.22);border-radius:10px;padding:10px 14px;color:var(--text-sec);font-size:0.85rem;cursor:pointer;font-family:inherit;transition:all .15s;line-height:1.35;" onmouseover="this.style.borderColor='var(--primary)';this.style.background='rgba(108,99,255,0.14)'" onmouseout="this.style.borderColor='rgba(108,99,255,0.22)';this.style.background='rgba(108,99,255,0.07)'">💬 What is enzyme inhibition?</button>
-                                    <button onclick="heroDemoAsk(1)" class="_hd-q" style="text-align:left;background:rgba(108,99,255,0.07);border:1px solid rgba(108,99,255,0.22);border-radius:10px;padding:10px 14px;color:var(--text-sec);font-size:0.85rem;cursor:pointer;font-family:inherit;transition:all .15s;line-height:1.35;" onmouseover="this.style.borderColor='var(--primary)';this.style.background='rgba(108,99,255,0.14)'" onmouseout="this.style.borderColor='rgba(108,99,255,0.22)';this.style.background='rgba(108,99,255,0.07)'">💬 Explain Newton's second law</button>
-                                    <button onclick="heroDemoAsk(2)" class="_hd-q" style="text-align:left;background:rgba(108,99,255,0.07);border:1px solid rgba(108,99,255,0.22);border-radius:10px;padding:10px 14px;color:var(--text-sec);font-size:0.85rem;cursor:pointer;font-family:inherit;transition:all .15s;line-height:1.35;" onmouseover="this.style.borderColor='var(--primary)';this.style.background='rgba(108,99,255,0.14)'" onmouseout="this.style.borderColor='rgba(108,99,255,0.22)';this.style.background='rgba(108,99,255,0.07)'">💬 What caused WW1?</button>
-                                </div>
-                                <!-- Exchange (shown after click) -->
-                                <div id="heroDemoChat" style="display:none;flex-direction:column;gap:12px;">
-                                    <!-- User bubble -->
-                                    <div style="align-self:flex-end;background:var(--primary);color:#fff;border-radius:14px 14px 3px 14px;padding:10px 14px;max-width:80%;line-height:1.4;font-size:0.88rem;" id="heroDemoQ"></div>
-                                    <!-- AI response -->
-                                    <div style="display:flex;align-items:flex-start;gap:10px;">
-                                        <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#6c63ff,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;">🤖</div>
-                                        <div id="heroDemoA" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:4px 14px 14px 14px;padding:11px 14px;max-width:88%;line-height:1.6;color:var(--text-sec);font-size:0.88rem;"></div>
-                                    </div>
-                                    <button onclick="heroDemoReset()" style="align-self:center;background:none;border:none;color:var(--text-muted);font-size:0.78rem;cursor:pointer;font-family:inherit;text-decoration:underline;padding:4px 0;margin-top:-4px;">← Ask another</button>
-                                </div>
-                            </div>
-                            <!-- Input bar (cosmetic) -->
-                            <div style="border-top:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.12);">
-                                <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-size:0.83rem;color:var(--text-muted);">Ask anything about your HSC subjects...</div>
-                                <a href="login.html" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-size:0.83rem;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;transition:all .2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Start free →</a>
-                            </div>
+                <!-- Materializing chat demo -->
+                <div class="sd-hero2-chatbox" id="sdHero2Chat" aria-label="Chat tutor demo">
+                    <div class="h2c-bar">
+                        <div class="avatar">🤖</div>
+                        <div class="meta"><b>Chat Tutor</b><span>Online · HSC AI</span></div>
+                    </div>
+                    <div class="h2c-body" id="sdHero2Body">
+                        <div class="h2c-ai">
+                            <div class="av">🤖</div>
+                            <div class="bubble">Hey 👋 I'm your HSC AI tutor. Ask me anything — pick the question below to see what I can do.</div>
                         </div>
                     </div>
-
-                    <!-- State: logged in with streak -->
-                    <div class="hero-streak-in" id="heroStreakIn" style="display:none;">
-                        <div class="hs-count-block">
-                            <span class="hs-big-fire">🔥</span>
-                            <div>
-                                <div class="hs-big-count" id="heroStreakCount">0</div>
-                                <div class="hs-count-label">day streak</div>
-                            </div>
-                        </div>
-                        <div style="display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;">
-                            <div id="heroLevelBadge" style="display:none;"></div>
-                            <div id="heroShieldBadge" style="display:none;"></div>
-                        </div>
-                        <p class="hs-streak-msg" id="heroStreakMsg">You're on a roll. Come back tomorrow to keep it going.</p>
-                        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-                            <a href="#tools" class="btn btn-primary btn-glow">Continue Studying →</a>
-                            <a href="profile.html" style="display:inline-block;padding:0.85rem 1.8rem;border-radius:50px;border:2px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-weight:600;font-size:0.9rem;text-decoration:none;transition:all .25s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='rgba(255,255,255,0.7)'">View Profile →</a>
-                        </div>
+                    <div class="h2c-input">
+                        <div class="typed" id="sdHero2Typed"></div>
+                        <button class="send" id="sdHero2Send" onclick="sdHero2Submit()">Send →</button>
                     </div>
-
                 </div>
-
             </div>
         </div>
-        <div class="hero-scroll">
+        <div class="hero-scroll" style="position:relative;text-align:center;padding:2rem 0;color:rgba(255,255,255,0.4);font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;">
             <span>Scroll to explore</span>
-            <div class="scroll-line"></div>
+            <div class="scroll-line" style="width:1px;height:40px;background:linear-gradient(180deg,rgba(167,139,250,.6),transparent);margin:8px auto 0;"></div>
         </div>
+
+        <!-- Logged-in state (kept for streak system; hidden by default) -->
+        <div id="heroLoggedIn" style="display:none; max-width:520px; margin:1rem auto 2rem; padding:1.5rem; text-align:center;">
+            <a href="#tools" class="btn btn-primary btn-glow">Keep Studying →</a>
+            <a href="#tools" class="btn btn-ghost" style="margin-left:10px;">All Tools ↓</a>
+        </div>
+        <div id="heroStreakOut" style="display:none;"></div>
+        <div id="heroStreakIn" style="display:none;">
+            <div class="hs-count-block">
+                <span class="hs-big-fire">🔥</span>
+                <div>
+                    <div class="hs-big-count" id="heroStreakCount">0</div>
+                    <div class="hs-count-label">day streak</div>
+                </div>
+            </div>
+            <div style="display:none;">
+                <div id="heroLevelBadge"></div>
+                <div id="heroShieldBadge"></div>
+            </div>
+            <p class="hs-streak-msg" id="heroStreakMsg"></p>
+        </div>
+        <p class="hero-trust" id="heroTrustLine" style="display:none;"></p>
+        <div id="heroSignupsLine" style="display:none;"></div>
+
+        <!-- legacy hidden bits to keep references safe -->
+        <div id="heroDemoQuestions" style="display:none;"></div>
+        <div id="heroDemoChat" style="display:none;"><div id="heroDemoQ"></div><div id="heroDemoA"></div></div>
     </section>
+
 
     <!-- Subject Ticker -->
     <div class="ticker">
@@ -985,35 +2090,21 @@
     <section class="showcase showcase-reverse" id="chatTutorDemo">
         <div class="showcase-inner">
             <div class="showcase-demo reveal-left">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">AI Chat Tutor — Biology</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
-                    </div>
-                    <div class="demo-content" style="padding:8px 0;display:flex;flex-direction:column;gap:10px;">
-                        <div style="display:flex;gap:8px;">
-                            <div style="background:#1a1f2e;border:1px solid rgba(139,92,246,0.3);border-radius:6px;padding:4px 10px;font-size:0.75rem;color:#8b5cf6;font-weight:600;">🧬 Biology · Tutor Mode</div>
+                <div class="sd-stage sd-tile-chat" data-tile="chat">
+                    <div class="sd-codes" aria-hidden="true"></div>
+                    <div class="laptop">
+                        <div class="laptop-screen">
+                            <div class="scr-q">&gt; Explain enzyme inhibition</div>
+                            <div class="scr-bubble">Two types: competitive vs non-competitive. Want a quick quiz on this?</div>
                         </div>
-                        <div style="display:flex;justify-content:flex-end;">
-                            <div style="background:rgba(108,99,255,0.18);border:1px solid rgba(108,99,255,0.25);border-radius:12px 12px 3px 12px;padding:8px 11px;max-width:82%;font-size:0.8rem;color:#e7e9ea;line-height:1.4;">Explain enzyme inhibition — I have a test tomorrow</div>
-                        </div>
-                        <div style="display:flex;gap:8px;align-items:flex-start;">
-                            <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#6C63FF,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;">🤖</div>
-                            <div style="background:#16202a;border:1px solid #2f3336;border-radius:3px 12px 12px 12px;padding:9px 11px;font-size:0.78rem;color:#a1a1aa;line-height:1.55;">
-                                <strong style="color:#e7e9ea;">Two types the HSC tests:</strong><br>
-                                <span style="color:#8b5cf6;">▸ Competitive</span> — inhibitor mimics substrate, fights for the active site. Can be overcome by adding more substrate.<br>
-                                <span style="color:#4f8cff;">▸ Non-competitive</span> — binds allosteric site, changes enzyme shape. Adding substrate won't help.<br>
-                                <span style="font-size:0.72rem;color:#71767b;display:block;margin-top:6px;">💡 Want a quick quiz on this before your test?</span>
-                            </div>
-                        </div>
-                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                            <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:6px;padding:4px 10px;font-size:0.72rem;color:#22c55e;">📚 Study Mode</div>
-                            <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:6px;padding:4px 10px;font-size:0.72rem;color:#f59e0b;">📌 Pin this</div>
-                            <div style="background:rgba(79,140,255,0.08);border:1px solid rgba(79,140,255,0.2);border-radius:6px;padding:4px 10px;font-size:0.72rem;color:#4f8cff;">🎙️ Voice input</div>
-                        </div>
+                        <div class="laptop-base"></div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Explain enzyme inhibition — I have a test tomorrow</div>
+                    <button class="sd-trydemo-send" data-canned="chat">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-chat"></div>
             </div>
             <div class="showcase-text reveal-right">
                 <div class="showcase-label">⭐ New Flagship</div>
@@ -1048,30 +2139,29 @@
                 <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" onclick="return goExamMode(event)">Try Exam Mode →</a>
             </div>
             <div class="showcase-demo reveal-right">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Study Decoder — Practice Exam</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
-                    </div>
-                    <div class="demo-content">
-                        <div class="demo-exam-header">
-                            <span class="demo-subject">Modern History</span>
-                            <span class="demo-timer">⏱ 42:15</span>
-                        </div>
-                        <div class="demo-question">
-                            <div class="demo-q-label">Question 22 <span>(9 marks)</span></div>
-                            <div class="demo-q-text" id="demoQuestionText"><span class="demo-cursor"></span></div>
-                        </div>
-                        <div class="demo-marking" id="demoMarking" style="opacity: 0;">
-                            <div class="demo-mark-header">
-                                <span class="demo-mark-badge">✓ Band 6</span>
-                                <span class="demo-mark-score">8/9</span>
+                <div class="sd-stage sd-tile-exam" data-tile="exam">
+                    <div class="booklet">
+                        <div class="b-page">
+                            <div class="timer">⏱ 02:58:42</div>
+                            <div class="q"><b>Q1.</b> Assess the impact of the Treaty of Versailles on European stability between 1919 and 1939.</div>
+                            <div class="opts">
+                                <div class="opt">A · It created lasting peace</div>
+                                <div class="opt correct">B · It sowed the seeds of WW2 ✓</div>
+                                <div class="opt">C · It was largely ignored</div>
                             </div>
-                            <div class="demo-mark-feedback" id="demoFeedback"></div>
+                        </div>
+                        <div class="b-cover">
+                            <h3>HSC PRACTICE EXAM</h3>
+                            <span>Modern History · Paper I</span>
+                            <span style="margin-top:auto;font-size:.55rem;opacity:.6;">Time allowed: 3 hours</span>
                         </div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Start a 3-hour Modern History exam</div>
+                    <button class="sd-trydemo-send" data-canned="exam">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-exam"></div>
             </div>
         </div>
     </section>
@@ -1080,28 +2170,26 @@
     <section class="showcase showcase-reverse" id="quickPaperDemo">
         <div class="showcase-inner">
             <div class="showcase-demo reveal-left">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Study Decoder — Quick Paper</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
-                    </div>
-                    <div class="demo-content">
-                        <div style="text-align:center;padding:10px 0 8px;">
-                            <div style="font-size:1.05rem;font-weight:700;color:#e7e9ea;margin-bottom:10px;">⚡ Choose Your Time</div>
-                            <div style="display:flex;gap:10px;justify-content:center;margin-bottom:14px;">
-                                <div style="background:#1a1f2e;border:1px solid #2f3336;border-radius:8px;padding:8px 14px;font-size:0.82rem;color:#71767b;">10 min<br><span style="color:#4f8cff;font-size:0.75rem;">~3 qs</span></div>
-                                <div style="background:linear-gradient(135deg,#1a2340,#1a1a2e);border:1.5px solid #4f8cff;border-radius:8px;padding:8px 14px;font-size:0.82rem;color:#4f8cff;font-weight:700;">20 min<br><span style="font-size:0.75rem;">~6 qs</span></div>
-                                <div style="background:#1a1f2e;border:1px solid #2f3336;border-radius:8px;padding:8px 14px;font-size:0.82rem;color:#71767b;">30 min<br><span style="color:#4f8cff;font-size:0.75rem;">~9 qs</span></div>
-                            </div>
-                            <div style="background:#16202a;border:1px solid #2f3336;border-radius:10px;padding:12px 14px;text-align:left;">
-                                <div style="font-size:0.75rem;color:#4f8cff;font-weight:600;margin-bottom:6px;">Q3 of 6 · Chemistry</div>
-                                <div style="font-size:0.88rem;color:#e7e9ea;line-height:1.5;margin-bottom:8px;">Explain why transition metals can form multiple oxidation states.</div>
-                                <div style="background:#111118;border:1px solid #2f3336;border-radius:6px;padding:8px;font-size:0.8rem;color:#71767b;font-style:italic;">Type your answer here...</div>
-                            </div>
+                <div class="sd-stage sd-tile-qp" data-tile="qp">
+                    <div class="ink"></div><div class="ink"></div><div class="ink"></div>
+                    <div class="stack">
+                        <div class="sheet"></div>
+                        <div class="sheet"></div>
+                        <div class="sheet">
+                            <div style="font-size:.6rem;color:#666;margin-bottom:4px;font-family:'JetBrains Mono',monospace;">CHEMISTRY · 20 MIN · 6 Q</div>
+                            <div class="qline"></div>
+                            <div class="qline"></div>
+                            <div class="qline"></div>
+                            <div class="qline"></div>
+                            <div class="qline"></div>
                         </div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Quick 20-min Chemistry paper, please</div>
+                    <button class="sd-trydemo-send" data-canned="qp">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-qp"></div>
             </div>
             <div class="showcase-text reveal-right">
                 <div class="showcase-label">New Mode</div>
@@ -1122,30 +2210,34 @@
     <section class="showcase showcase-reverse" id="markingDemo">
         <div class="showcase-inner">
             <div class="showcase-demo reveal-left">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Get Feedback</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                <div class="sd-stage sd-tile-mark" data-tile="mark">
+                    <div class="paper">
+                        <div class="line"><span class="text"></span><span class="underline"></span></div>
+                        <div class="line"><span class="text" style="width:80%;background:rgba(0,0,0,0.1);"></span></div>
+                        <div class="line"><span class="text"></span><span class="underline"></span></div>
+                        <div class="line"><span class="text" style="width:65%;background:rgba(0,0,0,0.1);"></span></div>
+                        <div class="line"><span class="text" style="width:90%;background:rgba(0,0,0,0.1);"></span></div>
+                        <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+                            <span class="tick">✓</span>
+                            <span class="text" style="flex:1;height:6px;background:rgba(0,0,0,0.1);border-radius:3px;"></span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span class="tick">✓</span>
+                            <span class="text" style="flex:1;height:6px;background:rgba(0,0,0,0.1);border-radius:3px;"></span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span class="tick">✓</span>
+                            <span class="text" style="flex:1;height:6px;background:rgba(0,0,0,0.1);border-radius:3px;"></span>
+                        </div>
+                        <div class="stamp">12/15<br><span style="font-size:.55rem;display:block;">BAND 5</span></div>
                     </div>
-                    <div class="demo-content">
-                        <div style="margin-bottom:10px;">
-                            <div style="font-size:0.75rem;color:#71767b;margin-bottom:4px;">Question</div>
-                            <div style="background:#16202a;border:1px solid #2f3336;border-radius:8px;padding:10px 12px;font-size:0.83rem;color:#a1a1aa;">"Discuss the significance of the Meiji Restoration on Japan's modernisation."</div>
-                        </div>
-                        <div style="margin-bottom:10px;">
-                            <div style="font-size:0.75rem;color:#71767b;margin-bottom:4px;">Your Answer</div>
-                            <div style="background:#16202a;border:1px solid #2f3336;border-radius:8px;padding:10px 12px;font-size:0.83rem;color:#a1a1aa;">The Meiji Restoration (1868) transformed Japan from a feudal society into...</div>
-                        </div>
-                        <div style="background:#0f1f3a;border:1px solid #4f8cff55;border-radius:8px;padding:10px 12px;">
-                            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-                                <span style="font-size:0.78rem;color:#4f8cff;font-weight:700;">HSC Feedback</span>
-                                <span style="font-size:0.88rem;color:#22c55e;font-weight:700;">Band 5 · 7/8</span>
-                            </div>
-                            <div style="font-size:0.8rem;color:#a1a1aa;line-height:1.5;">Strong analysis of economic reforms. To reach Band 6, add specific examples like the Iwakura Mission...</div>
-                        </div>
-                    </div>
+                    <div class="pen"></div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Mark my Modern History paragraph on the Meiji Restoration</div>
+                    <button class="sd-trydemo-send" data-canned="mark">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-mark"></div>
             </div>
             <div class="showcase-text reveal-right">
                 <div class="showcase-label">Mark Your Own Work</div>
@@ -1166,27 +2258,27 @@
     <section class="showcase showcase-reverse" id="syllabusDemo">
         <div class="showcase-inner">
             <div class="showcase-demo reveal-left">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Syllabus Decoder</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                <div class="sd-stage sd-tile-syl" data-tile="syl">
+                    <div class="wall">
+                        analyse impact innovation operations<br>
+                        define examine evaluate justify<br>
+                        explain compare contrast assess<br>
+                        H4.1 outline H4.2 describe H5.1<br>
+                        analyse impact innovation operations<br>
+                        H6.3 evaluate H7.2 synthesise<br>
+                        define examine evaluate justify<br>
                     </div>
-                    <div class="demo-content">
-                        <div class="demo-syllabus-input">
-                            <div class="demo-label-sm">Syllabus Point</div>
-                            <div class="demo-raw-text">"Analyse the impact of innovation on business operations"</div>
-                        </div>
-                        <div class="demo-arrow">↓ Decoded</div>
-                        <div class="demo-decoded" id="syllabusDecoded">
-                            <div class="demo-decoded-item" style="animation-delay: 0.15s;">✓ Define innovation in a business context</div>
-                            <div class="demo-decoded-item" style="animation-delay: 0.3s;">✓ Types: product, process, marketing, organisational</div>
-                            <div class="demo-decoded-item" style="animation-delay: 0.45s;">✓ Impact on operations: efficiency, cost, quality</div>
-                            <div class="demo-decoded-item" style="animation-delay: 0.6s;">✓ Case studies: Apple, Tesla, local businesses</div>
-                            <div class="demo-decoded-item" style="animation-delay: 0.75s;">✓ Link to competitive advantage &amp; profitability</div>
-                        </div>
+                    <div class="fan">
+                        <div class="fan-card"><b>What it means</b>Plain-English breakdown of the dot point.</div>
+                        <div class="fan-card"><b>What's tested</b>How this appears in HSC short-answer & extended response.</div>
+                        <div class="fan-card"><b>Sample Q</b>Practice question with marking criteria preview.</div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Decode "Analyse the impact of innovation on operations"</div>
+                    <button class="sd-trydemo-send" data-canned="syl">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-syl"></div>
             </div>
             <div class="showcase-text reveal-right">
                 <div class="showcase-label">Decode Anything</div>
@@ -1218,27 +2310,24 @@
                 <a href="#" onclick="openTool('learn-irl'); return false;" class="btn btn-primary btn-glow">Play Now →</a>
             </div>
             <div class="showcase-demo reveal-right">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Learn IRL — Biology</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                <div class="sd-stage sd-tile-irl" data-tile="irl">
+                    <div class="room">
+                        <div class="frame">
+                            <div class="glow"></div>
+                            <div class="door"></div>
+                        </div>
                     </div>
-                    <div class="demo-content">
-                        <div class="demo-game-stats">
-                            <div class="demo-stat"><span class="demo-stat-icon">💰</span><div class="demo-stat-bar"><div class="demo-stat-fill" style="width:65%;"></div></div></div>
-                            <div class="demo-stat"><span class="demo-stat-icon">⏱</span><div class="demo-stat-bar"><div class="demo-stat-fill" style="width:80%;"></div></div></div>
-                            <div class="demo-stat"><span class="demo-stat-icon">⚠️</span><div class="demo-stat-bar"><div class="demo-stat-fill demo-risk" style="width:35%;"></div></div></div>
-                            <div class="demo-stat"><span class="demo-stat-icon">⚡</span><div class="demo-stat-bar"><div class="demo-stat-fill" style="width:50%;"></div></div></div>
-                        </div>
-                        <div class="demo-game-narrative">You're a lab technician investigating a contamination outbreak. A water sample shows unusual bacterial growth patterns...</div>
-                        <div class="demo-game-choices">
-                            <div class="demo-choice">Run a gram stain to identify bacteria type</div>
-                            <div class="demo-choice">Check the pH levels of the water source</div>
-                            <div class="demo-choice">Skip testing and report contamination directly</div>
-                        </div>
+                    <div class="scenarios">
+                        <div class="scen"><div class="ico">☕</div><b>Math</b>Buying coffee, calculating change & tip.</div>
+                        <div class="scen"><div class="ico">🥫</div><b>Chem</b>Reading a food label, decoding additives.</div>
+                        <div class="scen"><div class="ico">💬</div><b>English</b>Convincing a friend with a real-life argument.</div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Drop me into a Biology lab survival scenario</div>
+                    <button class="sd-trydemo-send" data-canned="irl">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-irl"></div>
             </div>
         </div>
     </section>
@@ -1247,26 +2336,27 @@
     <section class="showcase showcase-reverse" id="worksheetDemo">
         <div class="showcase-inner">
             <div class="showcase-demo reveal-left">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Worksheet Decoder</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                <div class="sd-stage sd-tile-wd" data-tile="wd">
+                    <div class="phone">
+                        <div class="phone-screen">
+                            <div class="viewfinder"></div>
+                            <div class="flash"></div>
+                        </div>
                     </div>
-                    <div class="demo-content">
-                        <div class="demo-upload-area">
-                            <div class="demo-upload-icon">📷</div>
-                            <div class="demo-upload-text">worksheet_biology_ch3.jpg</div>
-                        </div>
-                        <div class="demo-arrow">↓ Decoded</div>
-                        <div class="demo-ws-output">
-                            <div class="demo-ws-q"><strong>Q1.</strong> Describe the role of enzymes in cellular respiration.</div>
-                            <div class="demo-ws-hint">💡 Focus on substrate specificity and activation energy</div>
-                            <div class="demo-ws-q"><strong>Q2.</strong> Compare aerobic and anaerobic respiration.</div>
-                            <div class="demo-ws-hint">💡 Use a table format: location, ATP yield, byproducts</div>
-                        </div>
+                    <div class="notes">
+                        <div style="font-size:.55rem;color:#555;margin-bottom:4px;font-family:'JetBrains Mono',monospace;">CH3 · BIOLOGY</div>
+                        <div class="nline"></div>
+                        <div class="nline"></div>
+                        <div class="nline"></div>
+                        <div class="nline"></div>
+                        <div class="nline"></div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Snap and decode my Bio worksheet</div>
+                    <button class="sd-trydemo-send" data-canned="wd">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-wd"></div>
             </div>
             <div class="showcase-text reveal-right">
                 <div class="showcase-label">Photo-to-Notes</div>
@@ -1299,21 +2389,20 @@
                 <a href="#" onclick="openTool('worksheet-generator'); return false;" class="btn btn-primary btn-glow">Generate a Worksheet →</a>
             </div>
             <div class="showcase-demo reveal-right">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Worksheet Generator</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
-                    </div>
-                    <div class="demo-content">
-                        <div class="demo-ws-output">
-                            <div class="demo-ws-q"><strong>Mathematics Advanced — Differentiation</strong> · 10 Q · 25 marks</div>
-                            <div class="demo-ws-q"><strong>Q1.</strong> Differentiate f(x) = 3x² − 5x + 2. <span style="float:right;color:#888;">[2 marks]</span></div>
-                            <div class="demo-ws-q"><strong>Q2.</strong> Find dy/dx if y = (2x + 1)⁴. <span style="float:right;color:#888;">[3 marks]</span></div>
-                            <div class="demo-ws-hint">📄 Auto-generates printable PDF + answer key</div>
-                        </div>
+                <div class="sd-stage sd-tile-wg" data-tile="wg">
+                    <div class="pad">
+                        <h4><span>Maths Advanced — Differentiation · 10 Q · 25 marks</span></h4>
+                        <div class="chip">PDF Ready</div>
+                        <div class="question"><b>Q1.</b> Differentiate f(x) = 3x² − 5x + 2. &nbsp;<span style="float:right;color:#888;">[2]</span></div>
+                        <div class="question"><b>Q2.</b> Find dy/dx if y = (2x + 1)⁴. &nbsp;<span style="float:right;color:#888;">[3]</span></div>
+                        <div class="question"><b>Q3.</b> Sketch f(x) = x³ − 6x and find stationary points. &nbsp;<span style="float:right;color:#888;">[5]</span></div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Build a 10-question Differentiation worksheet</div>
+                    <button class="sd-trydemo-send" data-canned="wg">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-wg"></div>
             </div>
         </div>
     </section>
@@ -1334,20 +2423,21 @@
                 <a href="flashcards.html" class="btn btn-primary btn-glow">Open Flashcards →</a>
             </div>
             <div class="showcase-demo reveal-right">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Flashcards — Biology</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
-                    </div>
-                    <div class="demo-content">
-                        <div class="demo-ws-output">
-                            <div class="demo-ws-q"><strong>Card:</strong> Why does an enzyme stop working when the temperature rises too high?</div>
-                            <div class="demo-ws-q" style="color:#8899a6;"><em>Your answer:</em> The shape changes so it can't bind…</div>
-                            <div class="demo-ws-hint">✅ Partial — nudge: name what happens to the active site. Next review in 2 days.</div>
+                <div class="sd-stage sd-tile-fc" data-tile="fc">
+                    <div class="deck">
+                        <div class="deck-shadow deck-shadow2"></div>
+                        <div class="deck-shadow"></div>
+                        <div class="flipper">
+                            <div class="card card-back">Enzyme inhibition?</div>
+                            <div class="card card-front">Two types: competitive (active site) & non-competitive (allosteric).</div>
                         </div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Quiz me on Biology Module 5</div>
+                    <button class="sd-trydemo-send" data-canned="fc">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-fc"></div>
             </div>
         </div>
     </section>
@@ -1368,20 +2458,22 @@
                 <a href="teacher-pricing.html" id="teacherCtaLink" class="btn btn-primary btn-glow">For Teachers — see the plan →</a>
             </div>
             <div class="showcase-demo reveal-right">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Teacher Dashboard</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
-                    </div>
-                    <div class="demo-content">
-                        <div class="demo-ws-output">
-                            <div class="demo-ws-q"><strong>Year 12 Chemistry</strong> · 26 students · join code <strong>K7M2QP</strong></div>
-                            <div class="demo-ws-q">Module 5: Equilibrium — class avg mastery <span style="color:#eab308;">61%</span></div>
-                            <div class="demo-ws-hint">🟢 18 solid · 🟡 6 building · 🔴 2 need support</div>
-                        </div>
+                <div class="sd-stage sd-tile-cls" data-tile="cls">
+                    <div class="board"><span class="code">Y12 CHEM · K7M2QP</span></div>
+                    <div class="counter">25 / 100</div>
+                    <div class="seats">
+                        <div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div>
+                        <div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div>
+                        <div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div>
+                        <div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div>
+                        <div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Open the Year 12 Chemistry classroom</div>
+                    <button class="sd-trydemo-send" data-canned="cls">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-cls"></div>
             </div>
         </div>
     </section>
@@ -1401,28 +2493,28 @@
                 <a href="#" onclick="openTool('notes-transcriber'); return false;" class="btn btn-primary btn-glow">Transcribe Notes →</a>
             </div>
             <div class="showcase-demo reveal-right">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Notes Transcriber</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                <div class="sd-stage sd-tile-nt" data-tile="nt">
+                    <div class="crumple">
+                        mitosis → cell div<br>
+                        prophase metaphase<br>
+                        anaphase telophse<br>
+                        cytokinesis = ☆<br>
                     </div>
-                    <div class="demo-content">
-                        <div class="demo-label-sm">Your Handwriting</div>
-                        <div class="demo-handwriting">
-                            <span>mitosis → cell division...</span>
-                            <span>prophase, metaphase, anaphase, telophse</span>
-                            <span>cytokinesis = cytoplasm splits</span>
-                        </div>
-                        <div class="demo-arrow">↓ Transcribed</div>
-                        <div class="demo-label-sm">Clean Digital Notes</div>
-                        <div class="demo-typed-notes">
-                            <p><strong>Mitosis — Cell Division</strong></p>
-                            <p>Stages: Prophase → Metaphase → Anaphase → Telophase</p>
-                            <p>Cytokinesis: cytoplasm divides to form two daughter cells</p>
-                        </div>
+                    <div class="arrow">→</div>
+                    <div class="digital">
+                        <div style="font-size:.55rem;color:#a78bfa;margin-bottom:5px;">MITOSIS · BIO</div>
+                        <div class="dline"></div>
+                        <div class="dline"></div>
+                        <div class="dline"></div>
+                        <div class="dline"></div>
+                        <div class="dline"></div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Transcribe my Bio handwritten notes</div>
+                    <button class="sd-trydemo-send" data-canned="nt">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-nt"></div>
             </div>
         </div>
     </section>
@@ -1431,31 +2523,24 @@
     <section class="showcase showcase-reverse" id="practiceDemo">
         <div class="showcase-inner">
             <div class="showcase-demo reveal-left">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Practice Questions</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
-                    </div>
-                    <div class="demo-content">
-                        <div class="demo-pq-subject">
-                            <span class="demo-subject">Chemistry</span>
-                            <span style="font-size:0.78rem;color:var(--text-muted);">Module 5 — Equilibrium</span>
-                        </div>
-                        <div class="demo-question" style="margin-top:0.8rem;">
-                            <div class="demo-q-label">Question 1 <span>(4 marks)</span></div>
-                            <div class="demo-q-text" style="min-height:auto;">Explain how Le Chatelier’s principle applies when pressure is increased in the Haber process.</div>
-                        </div>
-                        <div class="demo-question" style="margin-top:0.6rem; opacity:0.7;">
-                            <div class="demo-q-label">Question 2 <span>(6 marks)</span></div>
-                            <div class="demo-q-text" style="min-height:auto;">Evaluate how temperature and concentration changes affect equilibrium yield in an industrial context.</div>
-                        </div>
-                        <div class="demo-question" style="margin-top:0.6rem; opacity:0.45;">
-                            <div class="demo-q-label">Question 3 <span>(3 marks)</span></div>
-                            <div class="demo-q-text" style="min-height:auto; overflow:hidden; max-height:1.5em;">Define dynamic equilibrium and outline the conditions required...</div>
-                        </div>
+                <div class="sd-stage sd-tile-pq" data-tile="pq">
+                    <div class="score">12/16</div>
+                    <div class="target">
+                        <div class="ring"></div>
+                        <div class="ring"></div>
+                        <div class="ring"></div>
+                        <div class="ring"></div>
+                        <div class="hit" style="left:50%; top:50%;"></div>
+                        <div class="hit" style="left:62%; top:48%;"></div>
+                        <div class="hit" style="left:42%; top:55%;"></div>
+                        <div class="hit" style="left:55%; top:38%;"></div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Give me 4 short-answer Chemistry questions</div>
+                    <button class="sd-trydemo-send" data-canned="pq">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-pq"></div>
             </div>
             <div class="showcase-text reveal-right">
                 <div class="showcase-label">Quick Practice</div>
@@ -1487,41 +2572,82 @@
                 <a href="#" onclick="openTool('timetable'); return false;" class="btn btn-primary btn-glow">Build Your Timetable →</a>
             </div>
             <div class="showcase-demo reveal-right">
-                <div class="demo-window">
-                    <div class="demo-topbar">
-                        <div class="demo-dots"><span></span><span></span><span></span></div>
-                        <span class="demo-title">Timetable Generator</span>
-                        <span class="demo-disclaimer">Demo Only — Not Real Output</span>
+                <div class="sd-stage sd-tile-tt" data-tile="tt">
+                    <div class="grid">
+                        <div class="day">Mon</div><div class="day">Tue</div><div class="day">Wed</div><div class="day">Thu</div><div class="day">Fri</div>
+                        <div class="blk s1" style="animation-delay:1.0s;">Math</div>
+                        <div class="blk s2" style="animation-delay:1.1s;">Bio</div>
+                        <div class="blk s3" style="animation-delay:1.2s;">Eng</div>
+                        <div class="blk s4" style="animation-delay:1.3s;">Hist</div>
+                        <div class="blk s1" style="animation-delay:1.4s;">Math</div>
+                        <div class="blk s2" style="animation-delay:1.5s;">Bio</div>
+                        <div class="blk s1" style="animation-delay:1.6s;">Math</div>
+                        <div class="blk s4" style="animation-delay:1.7s;">Hist</div>
+                        <div class="blk s3" style="animation-delay:1.8s;">Eng</div>
+                        <div class="blk s2" style="animation-delay:1.9s;">Bio</div>
+                        <div class="blk s3" style="animation-delay:2.0s;">Eng</div>
+                        <div class="blk s4" style="animation-delay:2.1s;">Hist</div>
+                        <div class="blk s1" style="animation-delay:2.2s;">Math</div>
+                        <div class="blk s2" style="animation-delay:2.3s;">Bio</div>
+                        <div class="blk s1" style="animation-delay:2.4s;">Rev</div>
+                        <div class="blk s4" style="animation-delay:2.5s;">Hist</div>
+                        <div class="blk s3" style="animation-delay:2.6s;">Eng</div>
+                        <div class="blk s1" style="animation-delay:2.7s;">Math</div>
+                        <div class="blk s2" style="animation-delay:2.8s;">Bio</div>
+                        <div class="blk s4" style="animation-delay:2.9s;">Hist</div>
+                        <div class="blk s2" style="animation-delay:3.0s;">Bio</div>
+                        <div class="blk s1" style="animation-delay:3.1s;">Math</div>
+                        <div class="blk s3" style="animation-delay:3.2s;">Eng</div>
+                        <div class="blk s4" style="animation-delay:3.3s;">Hist</div>
+                        <div class="blk s1" style="animation-delay:3.4s;">Rev</div>
+                        <div class="blk s3" style="animation-delay:3.5s;">Eng</div>
+                        <div class="blk s2" style="animation-delay:3.6s;">Bio</div>
+                        <div class="blk s4" style="animation-delay:3.7s;">Hist</div>
+                        <div class="blk s1" style="animation-delay:3.8s;">Math</div>
+                        <div class="blk s3" style="animation-delay:3.9s;">Free</div>
                     </div>
-                    <div class="demo-content">
-                        <div class="demo-timetable">
-                            <div class="demo-tt-header">
-                                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span>
-                            </div>
-                            <div class="demo-tt-row">
-                                <div class="demo-tt-block" style="background:rgba(108,99,255,0.15);">Maths</div>
-                                <div class="demo-tt-block" style="background:rgba(39,201,63,0.12);">Bio</div>
-                                <div class="demo-tt-block" style="background:rgba(255,101,132,0.12);">English</div>
-                                <div class="demo-tt-block" style="background:rgba(245,158,11,0.12);">History</div>
-                                <div class="demo-tt-block" style="background:rgba(108,99,255,0.15);">Maths</div>
-                            </div>
-                            <div class="demo-tt-row">
-                                <div class="demo-tt-block" style="background:rgba(39,201,63,0.12);">Bio</div>
-                                <div class="demo-tt-block" style="background:rgba(108,99,255,0.15);">Maths</div>
-                                <div class="demo-tt-block" style="background:rgba(245,158,11,0.12);">History</div>
-                                <div class="demo-tt-block" style="background:rgba(255,101,132,0.12);">English</div>
-                                <div class="demo-tt-block demo-tt-free">Free</div>
-                            </div>
-                            <div class="demo-tt-row">
-                                <div class="demo-tt-block" style="background:rgba(255,101,132,0.12);">English</div>
-                                <div class="demo-tt-block" style="background:rgba(245,158,11,0.12);">History</div>
-                                <div class="demo-tt-block" style="background:rgba(108,99,255,0.15);">Maths</div>
-                                <div class="demo-tt-block" style="background:rgba(39,201,63,0.12);">Bio</div>
-                                <div class="demo-tt-block" style="background:rgba(108,99,255,0.15);">Revision</div>
-                            </div>
-                        </div>
+                    <div class="nowline"></div>
+                </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Build a 4-subject Year 12 weekly timetable</div>
+                    <button class="sd-trydemo-send" data-canned="tt">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-tt"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo: Mastery Map (3D) -->
+    <section class="showcase showcase-reverse" id="masteryMapDemo">
+        <div class="showcase-inner">
+            <div class="showcase-demo reveal-left">
+                <div class="sd-stage sd-tile-mm" data-tile="mm">
+                    <div class="mm-plane">
+                        <div class="cell h1"></div><div class="cell h2"></div><div class="cell h2"></div><div class="cell h3"></div><div class="cell h2"></div><div class="cell h1"></div>
+                        <div class="cell h2"></div><div class="cell h3"></div><div class="cell h3"></div><div class="cell h4"></div><div class="cell h3"></div><div class="cell h2"></div>
+                        <div class="cell h2"></div><div class="cell h3"></div><div class="cell h4"></div><div class="cell h5"></div><div class="cell h4"></div><div class="cell h3"></div>
+                        <div class="cell h3"></div><div class="cell h4"></div><div class="cell h5"></div><div class="cell h5"></div><div class="cell h4"></div><div class="cell h3"></div>
+                        <div class="cell h2"></div><div class="cell h3"></div><div class="cell h4"></div><div class="cell h4"></div><div class="cell h3"></div><div class="cell h2"></div>
+                        <div class="cell h1"></div><div class="cell h2"></div><div class="cell h3"></div><div class="cell h3"></div><div class="cell h2"></div><div class="cell h1"></div>
                     </div>
                 </div>
+                <div class="sd-trydemo">
+                    <div class="sd-trydemo-input">Show me my Module 5 mastery heatmap</div>
+                    <button class="sd-trydemo-send" data-canned="mm">Send →</button>
+                </div>
+                <div class="sd-trydemo-result" id="sdResult-mm"></div>
+            </div>
+            <div class="showcase-text reveal-right">
+                <div class="showcase-label">Visualise Your Progress</div>
+                <h2>Mastery <span class="highlight">Map</span></h2>
+                <p>Every dot point you've revised, plotted as a 3D heatmap. The peaks show what's solid, the dips show what's missing — so you stop revising the wrong things.</p>
+                <div class="showcase-pills">
+                    <span>Per-Subject Heatmap</span>
+                    <span>Auto-Built From Reviews</span>
+                    <span>Drill Into Any Cell</span>
+                    <span>Identifies Gaps</span>
+                </div>
+                <a href="mastery-map.html" class="btn btn-primary btn-glow">Open Your Map →</a>
             </div>
         </div>
     </section>
@@ -1567,6 +2693,129 @@
         <div style="max-width:640px;margin:0 auto;text-align:center;">
             <div id="socialProofWeeklyBadge" style="display:none;margin-bottom:0.8rem;"></div>
             <p id="socialProofCount" style="font-size:0.9rem;color:var(--text-muted);"></p>
+        </div>
+    </section>
+
+    <!-- Comparison Table — Why Study Decoder vs ChatGPT / Atomi / ATAR Notes -->
+    <section class="sd-cmp" id="comparison" aria-labelledby="sdCmpTitle">
+        <div class="sd-cmp-inner">
+            <div class="sd-cmp-head">
+                <span class="sd-cmp-eyebrow">How we compare</span>
+                <h2 id="sdCmpTitle" class="section-title reveal">Why <span class="highlight">Study Decoder</span> over a generic AI?</h2>
+                <p class="sd-cmp-sub reveal">Other tools do <em>one</em> of these things. We built every one of them around the NSW HSC syllabus — so you stop juggling four apps and a chatbot.</p>
+            </div>
+
+            <div class="sd-cmp-wrap reveal">
+                <div class="sd-cmp-mobile-hint">← swipe to compare →</div>
+                <div class="sd-cmp-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th class="sd-cmp-us">
+                                    <span class="sd-cmp-logo">Study Decoder</span>
+                                    <span class="sd-cmp-tag">HSC-specific AI</span>
+                                </th>
+                                <th>
+                                    <span class="sd-cmp-logo">ChatGPT</span>
+                                    <span class="sd-cmp-tag">Generic chatbot</span>
+                                </th>
+                                <th>
+                                    <span class="sd-cmp-logo">Atomi</span>
+                                    <span class="sd-cmp-tag">Video lessons</span>
+                                </th>
+                                <th>
+                                    <span class="sd-cmp-logo">ATAR Notes</span>
+                                    <span class="sd-cmp-tag">Notes &amp; tutors</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Built on the official NESA syllabus<small>Every dot point, every module, every band descriptor.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span><span class="sd-cmp-cell-note">Generic, not NSW</span></td>
+                                <td><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-yes">✓</span></td>
+                            </tr>
+                            <tr>
+                                <td>24/7 AI tutor that actually teaches<small>Socratic coaching, LaTeX maths, voice input.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-yes">✓</span><span class="sd-cmp-cell-note">No HSC context</span></td>
+                                <td><span class="sd-cmp-no">✗</span><span class="sd-cmp-cell-note">Pre-recorded videos</span></td>
+                                <td><span class="sd-cmp-no">✗</span><span class="sd-cmp-cell-note">Paid human tutors</span></td>
+                            </tr>
+                            <tr>
+                                <td>Full 3-hour timed exam simulator<small>MC + short answer + extended response, auto-marked.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-partial">~</span><span class="sd-cmp-cell-note">Topic quizzes only</span></td>
+                                <td><span class="sd-cmp-partial">~</span><span class="sd-cmp-cell-note">Past papers PDF</span></td>
+                            </tr>
+                            <tr>
+                                <td>AI marks your work to band level<small>Paste your answer, get a mark + specific feedback.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-partial">~</span><span class="sd-cmp-cell-note">Generic feedback</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Conversational flashcards + spaced repetition<small>Adaptive SR engine that schedules every review.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Photo &rarr; clean notes / worksheet decoder<small>Snap a handout, get structured notes &amp; hints.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-partial">~</span><span class="sd-cmp-cell-note">Image upload basic</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Personal mastery map<small>3D heatmap of every dot point you've practised.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-partial">~</span><span class="sd-cmp-cell-note">Progress bars only</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Real-world &ldquo;Learn IRL&rdquo; scenarios<small>Apply content in interactive survival games.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Classroom mode for teachers<small>Free seat for every linked student, live dashboard.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-yes">✓</span><span class="sd-cmp-cell-note">Separate school plan</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Built &amp; supported by HSC graduates in Sydney<small>Aussie-built, not a Silicon Valley import.</small></td>
+                                <td class="sd-cmp-us"><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-no">✗</span></td>
+                                <td><span class="sd-cmp-yes">✓</span></td>
+                                <td><span class="sd-cmp-yes">✓</span></td>
+                            </tr>
+                            <tr class="sd-cmp-price">
+                                <td>Entry price<small>What you'd pay to actually use it daily.</small></td>
+                                <td class="sd-cmp-us"><b>Free</b><small>or $5/mo · <b class="sd-lifetime-price-inline">$37.50</b> lifetime</small></td>
+                                <td><b>$20/mo</b><small>USD · GPT-4 access</small></td>
+                                <td><b>$15-25/mo</b><small>AUD · per subject tiers</small></td>
+                                <td><b>Free notes</b><small>Tutors $40-80/hr</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sd-cmp-foot">
+                    <span>Pricing as of <span id="sdCmpYear">2025</span>. Comparison based on each provider's public pricing &amp; features.</span>
+                    <a href="#pricing">See our pricing ↓</a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -2874,6 +4123,294 @@
     if (syllDecoded) syllDemoObs.observe(syllDecoded);
 
     </script>
+    <!-- ============================================================
+         SD HOMEPAGE ANIMATION SYSTEM v1 — runtime
+         ============================================================ -->
+    <script>
+    (function () {
+      'use strict';
+      var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var MOBILE = window.matchMedia('(max-width: 720px)').matches;
+
+      // ---------- Particles canvas (background ambient codes) ----------
+      function initParticles() {
+        var c = document.getElementById('sdParticles');
+        if (!c || REDUCED) return;
+        var ctx = c.getContext('2d');
+        var W, H, DPR = Math.min(window.devicePixelRatio || 1, 2);
+        var CODES = ['H1.1','H2.3','H4.2','H5.1','H6.3','M5','M6','M7','M8','define','analyse','evaluate','justify','contrast','outline','synthesise'];
+        var nodes = [];
+        function size() {
+          W = c.clientWidth; H = c.clientHeight;
+          c.width = W * DPR; c.height = H * DPR; ctx.scale(DPR, DPR);
+        }
+        function rebuild() {
+          nodes = [];
+          var n = MOBILE ? 12 : 32;
+          for (var i = 0; i < n; i++) nodes.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            vy: 0.15 + Math.random() * 0.45,
+            txt: CODES[(Math.random() * CODES.length) | 0],
+            a: 0.10 + Math.random() * 0.18,
+            sz: 11 + Math.random() * 4
+          });
+        }
+        function draw() {
+          ctx.clearRect(0, 0, W, H);
+          ctx.font = '500 12px JetBrains Mono, monospace';
+          for (var i = 0; i < nodes.length; i++) {
+            var p = nodes[i];
+            ctx.fillStyle = 'rgba(167,139,250,' + p.a + ')';
+            ctx.font = '500 ' + p.sz + 'px JetBrains Mono, monospace';
+            ctx.fillText(p.txt, p.x, p.y);
+            p.y -= p.vy;
+            if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; p.txt = CODES[(Math.random() * CODES.length) | 0]; }
+          }
+          raf = requestAnimationFrame(draw);
+        }
+        var raf;
+        size(); rebuild(); draw();
+        window.addEventListener('resize', function () { cancelAnimationFrame(raf); size(); rebuild(); draw(); });
+      }
+
+      // ---------- Hero pinned scroll story ----------
+      function initHeroSphere() {
+        var sphere = document.getElementById('sdSphereInner');
+        if (!sphere) return;
+        var CODES = ['H1.1','H2.3','H4.2','H5.1','H6.3','M5','M6','M7','M8',
+                     'define','analyse','evaluate','justify','synthesise','contrast',
+                     'enzyme','mitosis','democracy','derivative','equilibrium',
+                     'Le Chatelier','Treaty','Romeo','π','dy/dx','ΔH','pH','Macbeth'];
+        var R = MOBILE ? 180 : 280;
+        var N = MOBILE ? 30 : 60;
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < N; i++) {
+          var lat = Math.acos(2 * Math.random() - 1);
+          var lon = 2 * Math.PI * Math.random();
+          var x = R * Math.sin(lat) * Math.cos(lon);
+          var y = R * Math.sin(lat) * Math.sin(lon);
+          var z = R * Math.cos(lat);
+          var d = document.createElement('div');
+          d.className = 'sd-hero2-code';
+          d.textContent = CODES[(Math.random() * CODES.length) | 0];
+          d.style.transform = 'translate3d(' + x + 'px,' + y + 'px,' + z + 'px)';
+          d.dataset.x = x; d.dataset.y = y; d.dataset.z = z;
+          frag.appendChild(d);
+        }
+        sphere.appendChild(frag);
+
+        // GSAP scroll story — converge codes into chat as user scrolls
+        function gsapReady() {
+          if (!window.gsap || !window.ScrollTrigger) return setTimeout(gsapReady, 50);
+          gsap.registerPlugin(ScrollTrigger);
+          var pin = document.getElementById('sdHero2Pin');
+          var chat = document.getElementById('sdHero2Chat');
+          if (!pin || !chat || REDUCED) {
+            if (chat) chat.classList.add('is-live');
+            return startTyping();
+          }
+          // Show the chat box after the user scrolls a little
+          ScrollTrigger.create({
+            trigger: pin,
+            start: 'top top',
+            end: '+=400',
+            scrub: 0.6,
+            onUpdate: function (self) {
+              var p = self.progress;
+              // Codes converge inward
+              var nodes = sphere.querySelectorAll('.sd-hero2-code');
+              for (var i = 0; i < nodes.length; i++) {
+                var n = nodes[i];
+                var x = +n.dataset.x * (1 - p * 0.95);
+                var y = +n.dataset.y * (1 - p * 0.95);
+                var z = +n.dataset.z * (1 - p * 0.95);
+                n.style.transform = 'translate3d(' + x + 'px,' + y + 'px,' + z + 'px)';
+                n.style.opacity = (1 - p * 0.9).toFixed(2);
+              }
+              if (p > 0.5 && !chat.classList.contains('is-live')) {
+                chat.classList.add('is-live');
+                startTyping();
+              }
+            }
+          });
+          // also reveal chat on its own when entering viewport (failsafe)
+          ScrollTrigger.create({
+            trigger: chat, start: 'top 80%',
+            onEnter: function () { chat.classList.add('is-live'); startTyping(); }
+          });
+        }
+
+        var typedStarted = false;
+        function startTyping() {
+          if (typedStarted) return; typedStarted = true;
+          var typed = document.getElementById('sdHero2Typed');
+          var send = document.getElementById('sdHero2Send');
+          if (!typed) return;
+          var msg = "Explain enzyme inhibition — I have a test tomorrow";
+          typed.classList.add('is-typing');
+          var i = 0;
+          (function tick() {
+            typed.textContent = msg.slice(0, i++);
+            if (i <= msg.length) setTimeout(tick, 38);
+            else {
+              typed.classList.remove('is-typing');
+              send.classList.add('is-pulse');
+            }
+          })();
+        }
+        gsapReady();
+      }
+
+      // ---------- In-view observer for tile animations ----------
+      function initTiles() {
+        var stages = document.querySelectorAll('.sd-stage');
+        if (!('IntersectionObserver' in window)) {
+          stages.forEach(function (s) { s.classList.add('in-view'); });
+          return;
+        }
+        var io = new IntersectionObserver(function (ents) {
+          ents.forEach(function (e) {
+            if (e.isIntersecting) e.target.classList.add('in-view');
+            // keep it on once triggered to avoid replays on scroll up
+          });
+        }, { threshold: 0.25 });
+        stages.forEach(function (s) {
+          io.observe(s);
+          // ambient code drift seed
+          var holder = s.querySelector('.sd-codes');
+          if (holder) seedAmbientCodes(holder);
+          // cursor-tracked spotlight
+          s.addEventListener('mousemove', function (e) {
+            var r = s.getBoundingClientRect();
+            s.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+            s.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+          });
+        });
+      }
+      function seedAmbientCodes(holder) {
+        var CODES = ['H1.1','M5','define','analyse','M6','dy/dx','pH','π'];
+        for (var i = 0; i < 6; i++) {
+          var d = document.createElement('div');
+          d.className = 'sd-code';
+          d.textContent = CODES[(Math.random() * CODES.length) | 0];
+          d.style.left = (Math.random() * 80 + 10) + '%';
+          d.style.setProperty('--cx', (Math.random() * 30 - 15) + 'px');
+          d.style.animationDelay = (Math.random() * 12) + 's';
+          holder.appendChild(d);
+        }
+      }
+
+      // ---------- Canned demo handlers ----------
+      var CANNED = {
+        chat: "Two types: <b>Competitive</b> — inhibitor mimics the substrate and fights for the active site (overcome by adding more substrate). <b>Non-competitive</b> — binds the allosteric site, changing the enzyme's shape so the substrate can't fit. <i>Demo only — sign up to actually chat.</i>",
+        exam: "✓ Loading 3-hour Modern History Paper I… 25 multiple choice + 3 extended response. Auto-marked at the end with band feedback per question. <i>Demo only — sign up to start your exam.</i>",
+        qp: "Generated 6 short-answer Chemistry questions on Module 5 Equilibrium · 20 min · auto-marked. Q1 of 6: <i>Define dynamic equilibrium and outline the conditions required.</i>",
+        mark: "<b>Band 5 · 12/15.</b> Strong opening on the Iwakura Mission. To reach Band 6 you'd need (a) a specific date for the abolition of the han system, (b) a counter-argument addressing peasant rebellions. <i>Demo only.</i>",
+        syl: "<b>Innovation in business operations</b> means: define innovation → list 4 types (product, process, marketing, organisational) → impact on efficiency, cost, quality → 2-3 case studies (Apple, Tesla) → link to competitive advantage. <i>Demo only.</i>",
+        irl: "🧪 You're a lab tech investigating contamination. Sample shows unusual bacterial growth. Stats: ⏱ 80% · 💰 65% · ⚡ 50%. <b>Choose:</b> Run gram stain · Check pH · Skip & report. <i>Demo only — sign up to play.</i>",
+        wd: "📷 Snap detected. Decoded 8 questions from your worksheet. Q1: <i>Describe the role of enzymes in cellular respiration.</i> 💡 Hint: focus on substrate specificity & activation energy. <i>Demo only.</i>",
+        wg: "📄 Generated: <b>Maths Advanced — Differentiation</b> · 10 questions · 25 marks · printable PDF + answer key ready. Q1 of 10: Differentiate f(x) = 3x² − 5x + 2.",
+        fc: "Card 1 of 12 — <b>Enzyme inhibition?</b> Type your answer; AI will grade and schedule the next review with spaced repetition. <i>Demo only.</i>",
+        cls: "Year 12 Chemistry · 25/100 students linked · class avg mastery 61% · 🟢 18 solid · 🟡 5 building · 🔴 2 need support. Join code: <b>K7M2QP</b>.",
+        nt: "✓ Transcribed 4 lines of handwriting. <b>Mitosis — Cell Division.</b> Stages: Prophase → Metaphase → Anaphase → Telophase. Cytokinesis: cytoplasm divides into 2 daughter cells. (Spelling fixed: telophse → telophase.)",
+        pq: "Generated 4 Chemistry short-answer questions on Module 5. Q1 (4 marks): Explain how Le Chatelier's principle applies when pressure is increased in the Haber process.",
+        tt: "📅 Built a 4-subject weekly plan. Math weighted highest (3 sessions) · Bio (2) · Eng (2) · Hist (2) · 1 free block · Sun = revision. Adapts as your exam dates approach.",
+        mm: "🗺️ Module 5 Equilibrium heatmap loaded. 14/22 dot points solid (peaks). 5 building (mid). 3 weak (dips): Le Chatelier's principle, K_c calculations, buffer systems. Click a dip to drill in."
+      };
+
+      function typeOut(el, html, done) {
+        // Strip HTML for typing speed, but render at the end
+        var temp = document.createElement('div');
+        temp.innerHTML = html;
+        var plain = temp.textContent || '';
+        el.classList.add('is-open');
+        el.innerHTML = '<span class="sd-typed-out"></span><span class="sd-caret"></span>';
+        var span = el.querySelector('.sd-typed-out');
+        var i = 0;
+        (function tick() {
+          span.textContent = plain.slice(0, i++);
+          if (i <= plain.length) setTimeout(tick, 14);
+          else {
+            // swap to formatted
+            el.innerHTML = html + ' <span class="sd-caret"></span>';
+            if (done) done();
+          }
+        })();
+      }
+
+      function initCannedDemos() {
+        document.querySelectorAll('.sd-trydemo-send').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var key = btn.getAttribute('data-canned');
+            var out = document.getElementById('sdResult-' + key);
+            if (!out || !CANNED[key]) return;
+            btn.disabled = true;
+            btn.textContent = 'Sending…';
+            setTimeout(function () {
+              btn.disabled = false;
+              btn.textContent = 'Send →';
+              typeOut(out, CANNED[key]);
+              out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 320);
+          });
+        });
+      }
+
+      // Hero send button (the chatbox inside the hero)
+      window.sdHero2Submit = function () {
+        var body = document.getElementById('sdHero2Body');
+        var typed = document.getElementById('sdHero2Typed');
+        var send = document.getElementById('sdHero2Send');
+        if (!body || !typed) return;
+        var msg = typed.textContent || "Explain enzyme inhibition — I have a test tomorrow";
+        // Avoid duplicate sends
+        if (body.querySelector('.h2c-user-sent')) return;
+        var u = document.createElement('div');
+        u.className = 'h2c-user h2c-user-sent';
+        u.textContent = msg;
+        body.appendChild(u);
+        typed.textContent = '';
+        send.classList.remove('is-pulse');
+        // Type the AI response
+        var ai = document.createElement('div');
+        ai.className = 'h2c-ai';
+        ai.innerHTML = '<div class="av">🤖</div><div class="bubble"><span class="sd-typed-out"></span><span class="sd-caret"></span></div>';
+        body.appendChild(ai);
+        var span = ai.querySelector('.sd-typed-out');
+        var html = CANNED.chat;
+        var temp = document.createElement('div'); temp.innerHTML = html;
+        var plain = temp.textContent || '';
+        var i = 0;
+        (function tick() {
+          span.textContent = plain.slice(0, i++);
+          body.scrollTop = body.scrollHeight;
+          if (i <= plain.length) setTimeout(tick, 14);
+          else {
+            ai.querySelector('.bubble').innerHTML = html + ' <a href="login.html" style="color:#a78bfa;text-decoration:underline;font-weight:700;">Sign up to chat for real →</a>';
+          }
+        })();
+      };
+
+      // Auto-stamp the comparison-table year
+      function initCmpYear() {
+        var y = document.getElementById('sdCmpYear');
+        if (y) y.textContent = new Date().getFullYear();
+      }
+
+      // ---------- Boot ----------
+      function boot() {
+        initParticles();
+        initHeroSphere();
+        initTiles();
+        initCannedDemos();
+        initCmpYear();
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+      else boot();
+    })();
+    </script>
+
     <script src="streak.js"></script>
     <script src="upsell.js"></script>
     <script src="pwa.js"></script>
