@@ -106,6 +106,10 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;'
 
 const root = document.getElementById('root');
 let state = { view:'list', classId:null, className:'', tab:'roster', studentView:null };
+// Teacher's seat tier + usage — refreshed from /api/teacher/classes on every load.
+let teacherTier = 'both';
+let studentTotal = 0;
+let studentCap = 100;
 
 function fmtDate(s){
   if (!s) return '—';
@@ -137,13 +141,17 @@ function showList(){
   root.innerHTML = `
     <div class="card">
       <div class="row-between" style="margin-bottom:16px;">
-        <div class="section-title">Your classes</div>
+        <div>
+          <div class="section-title">Your classes</div>
+          <div class="sub" id="seatInfo" style="margin-top:2px;"></div>
+        </div>
         <button class="btn" id="newClassToggle">+ Create Class</button>
       </div>
       <div id="newClassForm" class="hidden">
         <div id="createErr"></div>
         <div class="form-row">
           <div><label class="form-label">Class name *</label><input class="form-input" id="ncName" placeholder="Year 12 English Advanced"></div>
+          <div><label class="form-label">Level *</label><select class="form-select" id="ncLevel"></select></div>
           <div><label class="form-label">Subject</label><input class="form-input" id="ncSubject" placeholder="English Advanced"></div>
           <div><label class="form-label">Year</label><input class="form-input" id="ncYear" placeholder="2026"></div>
         </div>
@@ -162,10 +170,38 @@ function showList(){
 function loadClasses(){
   api('/api/teacher/classes')
     .then(r => r.ok ? r.json() : Promise.reject(r))
-    .then(d => renderClassList(d.classes || []))
+    .then(d => {
+      teacherTier  = d.tier || 'both';
+      studentTotal = d.studentTotal || 0;
+      studentCap   = d.studentCap || 100;
+      updateSeatInfo();
+      populateLevelSelect();
+      renderClassList(d.classes || []);
+    })
     .catch(() => {
       document.getElementById('classListSlot').innerHTML = '<div class="error-banner">Could not load your classes. Please refresh.</div>';
     });
+}
+
+function updateSeatInfo(){
+  const el = document.getElementById('seatInfo');
+  if (!el) return;
+  const tierLabel = teacherTier === 'junior' ? 'Junior seat'
+                  : teacherTier === 'senior' ? 'Senior seat'
+                  : 'Combined seat (Junior + Senior)';
+  const pct = Math.min(100, Math.round((studentTotal / studentCap) * 100));
+  const colour = pct >= 90 ? '#ef4444' : pct >= 70 ? '#eab308' : '#22c55e';
+  el.innerHTML = `${tierLabel} &middot; <span style="color:${colour};font-weight:600;">${studentTotal} / ${studentCap}</span> students linked`;
+}
+
+function populateLevelSelect(){
+  const sel = document.getElementById('ncLevel');
+  if (!sel) return;
+  const opts = [];
+  if (teacherTier === 'junior' || teacherTier === 'both') opts.push('<option value="junior">Junior (Years 7-10)</option>');
+  if (teacherTier === 'senior' || teacherTier === 'both') opts.push('<option value="senior">Senior (HSC, Year 11-12)</option>');
+  sel.innerHTML = opts.join('');
+  sel.disabled = opts.length < 2;
 }
 
 function renderClassList(classes){
@@ -180,7 +216,9 @@ function renderClassList(classes){
     return;
   }
   const cards = active.map(c => {
-    const meta = [c.subject, c.year].filter(Boolean).join(' · ') || 'No subject set';
+    const levelLabel = c.level === 'junior' ? 'Junior' : c.level === 'senior' ? 'Senior' : '';
+    const metaParts = [levelLabel, c.subject, c.year].filter(Boolean);
+    const meta = metaParts.length ? metaParts.join(' · ') : 'No subject set';
     return `
       <div class="class-card">
         <div>
@@ -218,14 +256,16 @@ function renderClassList(classes){
 
 function createClass(){
   const name = document.getElementById('ncName').value.trim();
+  const level = document.getElementById('ncLevel').value;
   const subject = document.getElementById('ncSubject').value.trim();
   const year = document.getElementById('ncYear').value.trim();
   const errSlot = document.getElementById('createErr');
   errSlot.innerHTML = '';
   if (!name){ errSlot.innerHTML = '<div class="error-banner">Class name is required.</div>'; return; }
+  if (!level){ errSlot.innerHTML = '<div class="error-banner">Pick a class level.</div>'; return; }
   const btn = document.getElementById('ncCreate');
   btn.disabled = true; btn.textContent = 'Creating…';
-  api('/api/teacher/classes', { method:'POST', body: JSON.stringify({ name, subject, year }) })
+  api('/api/teacher/classes', { method:'POST', body: JSON.stringify({ name, subject, year, level }) })
     .then(async r => {
       const d = await r.json().catch(()=>({}));
       btn.disabled = false; btn.textContent = 'Create class';

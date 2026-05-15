@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>For Teachers | Study Decoder</title>
-<meta name="description" content="One teacher seat gives your whole HSC class full access to Study Decoder. $19/month, unlimited linked students, cancel anytime.">
+<meta name="description" content="One teacher seat gives your whole class full access to Study Decoder. From $15/month — junior, senior or combined. Up to 100 linked students. Cancel anytime.">
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f1419">
@@ -46,18 +46,20 @@ th { color:#8899a6; font-size:12px; text-transform:uppercase; letter-spacing:0.5
 .hero h1 { font-size:34px; line-height:1.2; font-weight:800; margin-bottom:14px; }
 .hero h1 .grad { background:linear-gradient(135deg,#4f8cff,#6c63ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
 .hero p { font-size:16px; color:#a9b3bd; max-width:620px; margin:0 auto; }
-.pricing-card { text-align:center; border:1px solid rgba(79,140,255,0.35); }
-.price-tag { font-size:42px; font-weight:800; }
-.price-tag .per { font-size:16px; color:#8899a6; font-weight:600; }
-.price-sub { color:#8899a6; font-size:13px; margin-top:2px; }
-.feature-list { list-style:none; text-align:left; max-width:420px; margin:20px auto; }
-.feature-list li { padding:8px 0; font-size:15px; color:#d4d9de; border-bottom:1px solid #222b35; }
-.feature-list li:last-child { border-bottom:none; }
-.cta-row { margin-top:18px; }
-.cta-row .btn { font-size:16px; padding:14px 28px; }
-.testimonial { background:#16202a; border-left:4px solid #4f8cff; border-radius:10px; padding:20px 24px; }
-.testimonial blockquote { font-size:16px; line-height:1.55; color:#dfe3e7; font-style:italic; }
-.testimonial .who { margin-top:12px; font-size:13px; color:#8899a6; font-style:normal; }
+.plan-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:20px; }
+@media (max-width:760px){ .plan-grid { grid-template-columns:1fr; } }
+.plan-card { background:#16202a; border:1px solid #2f3336; border-radius:16px; padding:22px; display:flex; flex-direction:column; text-align:center; position:relative; }
+.plan-card.featured { border-color:rgba(79,140,255,0.55); box-shadow:0 0 24px rgba(79,140,255,0.08); }
+.plan-tag { position:absolute; top:-10px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#4f8cff,#6c63ff); color:#fff; font-size:11px; font-weight:700; letter-spacing:0.5px; padding:3px 12px; border-radius:50px; text-transform:uppercase; }
+.plan-name { font-size:14px; font-weight:700; color:#8899a6; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.plan-price { font-size:36px; font-weight:800; }
+.plan-price .per { font-size:14px; color:#8899a6; font-weight:600; }
+.plan-sub { color:#8899a6; font-size:12px; margin-top:2px; min-height:32px; }
+.feature-list { list-style:none; text-align:left; margin:16px 0; }
+.feature-list li { padding:6px 0; font-size:13px; color:#d4d9de; }
+.feature-list li.muted { color:#71767b; }
+.plan-cta { margin-top:auto; padding-top:14px; }
+.plan-cta .btn { width:100%; }
 .faq details { background:#0f1419; border:1px solid #2f3336; border-radius:10px; padding:12px 16px; margin-bottom:10px; }
 .faq summary { cursor:pointer; font-weight:600; font-size:15px; color:#e7e9ea; }
 .faq details[open] summary { color:#4f8cff; }
@@ -86,47 +88,96 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;'
 
 let isTeacher = false;
 
+const PLANS = [
+  {
+    id: 'teacher-junior',
+    name: 'Junior',
+    price: '$15',
+    sub: 'Years 7-10 classes',
+    features: [
+      '✓ Junior (Y7-10) classes only',
+      '✓ Up to 100 linked students',
+      '✓ Class progress + mastery maps',
+      '✓ Teacher AI tools',
+      '<span style="color:#71767b;">✗ Senior (HSC) classes</span>'
+    ]
+  },
+  {
+    id: 'teacher-senior',
+    name: 'Senior',
+    price: '$25',
+    sub: 'Year 11-12 HSC classes',
+    features: [
+      '✓ Senior (HSC) classes only',
+      '✓ Up to 100 linked students',
+      '✓ Class progress + mastery maps',
+      '✓ Teacher AI tools',
+      '<span style="color:#71767b;">✗ Junior (Y7-10) classes</span>'
+    ]
+  },
+  {
+    id: 'teacher-both',
+    name: 'Combined',
+    price: '$35',
+    sub: 'Junior + Senior classes',
+    featured: true,
+    features: [
+      '✓ <strong>Junior AND Senior</strong> classes',
+      '✓ Up to 100 linked students total',
+      '✓ Class progress + mastery maps',
+      '✓ Teacher AI tools',
+      '✓ Best for mixed-level teachers'
+    ]
+  }
+];
+
+function planCardHtml(p){
+  const featured = p.featured ? ' featured' : '';
+  const tag = p.featured ? '<div class="plan-tag">Most popular</div>' : '';
+  const features = p.features.map(f => '<li>' + f + '</li>').join('');
+  const cta = isTeacher
+    ? '<a href="teacher-dashboard.html" class="btn" style="display:inline-block;text-decoration:none;">Open Dashboard →</a>'
+    : `<button class="btn" data-plan="${p.id}" onclick="startCheckout('${p.id}', this)">Choose ${p.name} →</button>`;
+  return `
+    <div class="plan-card${featured}">
+      ${tag}
+      <div class="plan-name">${p.name}</div>
+      <div class="plan-price">${p.price}<span class="per">/month</span></div>
+      <div class="plan-sub">${p.sub}</div>
+      <ul class="feature-list">${features}</ul>
+      <div class="plan-cta">${cta}</div>
+    </div>`;
+}
+
 function render(){
   const root = document.getElementById('root');
-  const ctaHtml = isTeacher
-    ? '<a href="teacher-dashboard.html" class="btn" style="display:inline-block;text-decoration:none;">Go to Teacher Dashboard →</a>'
-    : '<button class="btn" id="buyBtn" onclick="startCheckout()">Get the Teacher Seat →</button>';
-
   root.innerHTML = `
     <div id="msgSlot"></div>
 
     <section class="hero">
       <h1>Give your whole class <span class="grad">Study Decoder</span> — for the price of one seat.</h1>
-      <p>For <strong>$19/month</strong> you get one teacher seat that unlocks full Study Decoder access for every student you link. Unlimited linked students, and they pay nothing while they're in your class.</p>
+      <p>One teacher seat unlocks full Study Decoder access for every student you link, up to <strong>100 students</strong> across all your classes. Pick the tier that matches what you teach.</p>
     </section>
 
-    <div class="card pricing-card">
-      <div class="price-tag">$19<span class="per">/month AUD</span></div>
-      <div class="price-sub">Billed monthly. Cancel anytime.</div>
-      <ul class="feature-list">
-        <li>✓ Unlimited linked students</li>
-        <li>✓ Every student gets full Study Decoder access free</li>
-        <li>✓ Class progress dashboard + mastery maps</li>
-        <li>✓ Teacher-only AI tools: lesson plans, bulk worksheets, rubric marking</li>
-        <li>✓ Cancel anytime</li>
-      </ul>
-      <div class="cta-row">${ctaHtml}</div>
-    </div>
-
-    <div class="card testimonial">
-      <blockquote>“I run two Year 12 English Advanced classes and used to chase 50-odd kids across half a dozen apps. Now I create one class, drop the join code on the board, and everyone's in. The mastery map shows me exactly which dot points the cohort is shaky on before I've even marked a single essay — it's changed how I plan my lessons.”</blockquote>
-      <div class="who">— Megan T., HSC English teacher, Western Sydney</div>
-    </div>
+    <div class="plan-grid">${PLANS.map(planCardHtml).join('')}</div>
 
     <div class="card faq">
       <div class="section-title">Frequently asked questions</div>
       <details>
+        <summary>Which tier do I pick?</summary>
+        <p>Pick the one that matches the year levels you teach. The <strong>Junior</strong> tier lets you create classes for Years 7-10. The <strong>Senior</strong> tier covers HSC (Year 11-12). The <strong>Combined</strong> tier lets you run both — pick this if you teach a mix of levels.</p>
+      </details>
+      <details>
         <summary>How do students join?</summary>
-        <p>When you create a class you get a 6-character join code. Share it with your students — they sign up (or log in), enter the code on the Join a Class page, and they're linked to you instantly.</p>
+        <p>Each class you create gets its own 6-character join code. Share it with your students — they sign up (or log in), enter the code on the Join a Class page, and they're linked instantly.</p>
       </details>
       <details>
         <summary>Do students pay anything?</summary>
-        <p>No. Students get full Study Decoder access completely free for as long as they're linked to your active class. There's nothing for them to buy.</p>
+        <p>No. Students get full Study Decoder access free for as long as they're linked to your active class.</p>
+      </details>
+      <details>
+        <summary>Is there a student limit?</summary>
+        <p>Yes — each seat supports up to <strong>100 linked students total</strong>, across as many classes as you want. If you need more capacity than that, contact us about the school plan.</p>
       </details>
       <details>
         <summary>What happens if I cancel?</summary>
@@ -134,18 +185,19 @@ function render(){
       </details>
       <details>
         <summary>Can I be a student too?</summary>
-        <p>Yes. The teacher seat is billed separately from a personal Study Decoder subscription, so you can have both if you also want full access for your own study.</p>
+        <p>Yes. The teacher seat is billed separately from a personal Study Decoder subscription, so you can have both.</p>
       </details>
     </div>
   `;
 }
 
-function startCheckout(){
-  const btn = document.getElementById('buyBtn');
+function startCheckout(plan, btn){
   const msg = document.getElementById('msgSlot');
   msg.innerHTML = '';
+  const orig = btn ? btn.textContent : null;
   if (btn){ btn.disabled = true; btn.textContent = 'Opening checkout…'; }
-  api('/api/create-checkout-session', { method:'POST', body: JSON.stringify({ plan:'teacher' }) })
+  const restore = () => { if (btn){ btn.disabled = false; btn.textContent = orig; } };
+  api('/api/create-checkout-session', { method:'POST', body: JSON.stringify({ plan }) })
     .then(async r => {
       const d = await r.json().catch(()=>({}));
       if (!r.ok){
@@ -159,20 +211,20 @@ function startCheckout(){
         } else {
           msg.innerHTML = '<div class="error-banner">' + esc(err) + '</div>';
         }
-        if (btn){ btn.disabled = false; btn.textContent = 'Get the Teacher Seat →'; }
+        restore();
         return;
       }
       if (d.url){
         window.open(d.url, '_blank');
-        if (btn){ btn.disabled = false; btn.textContent = 'Get the Teacher Seat →'; }
+        restore();
       } else {
         msg.innerHTML = '<div class="error-banner">Checkout session could not be created. Please try again.</div>';
-        if (btn){ btn.disabled = false; btn.textContent = 'Get the Teacher Seat →'; }
+        restore();
       }
     })
     .catch(() => {
       msg.innerHTML = '<div class="error-banner">Network error. Please try again.</div>';
-      if (btn){ btn.disabled = false; btn.textContent = 'Get the Teacher Seat →'; }
+      restore();
     });
 }
 
