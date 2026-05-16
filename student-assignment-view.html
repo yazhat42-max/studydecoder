@@ -52,10 +52,27 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
 .q-marks { color:#8899a6; font-size:13px; font-weight:500; margin-left:6px; }
 .q-opts { padding:6px 0 12px 4px; color:#a9b3bd; font-size:14px; line-height:1.85; }
 .q-opts > div { padding:4px 0; }
+.q-opts label { display:flex; align-items:flex-start; gap:8px; padding:6px 8px; border-radius:6px; cursor:pointer; transition:background .15s; }
+.q-opts label:hover { background:rgba(79,140,255,0.06); }
+.q-opts label input[type=radio] { margin-top:4px; accent-color:#4f8cff; }
+.q-opts label input[type=radio]:disabled { opacity:.6; }
+.q-textarea { width:100%; background:#0f1419; border:1px solid #2f3336; border-radius:8px; padding:12px 14px; color:#e7e9ea; font-size:14px; font-family:inherit; line-height:1.55; min-height:80px; resize:vertical; }
+.q-textarea:focus { outline:none; border-color:#4f8cff; }
+.q-textarea[disabled] { background:rgba(15,20,25,0.6); color:#a9b3bd; cursor:default; }
 .show-answer { color:#4f8cff; cursor:pointer; font-size:13px; font-weight:600; background:none; border:none; padding:6px 0; font-family:inherit; }
 .show-answer:hover { text-decoration:underline; }
 .answer-block { margin-top:8px; padding:10px 14px; background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.22); border-radius:8px; color:#d4d9de; font-size:14px; line-height:1.55; }
 .answer-block .lbl { font-weight:700; color:#86efac; display:block; margin-bottom:4px; font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+.mark-row { display:flex; align-items:center; gap:10px; margin-top:10px; padding:8px 12px; border-radius:8px; font-size:13px; font-weight:600; }
+.mark-good { background:rgba(34,197,94,0.10); color:#86efac; border:1px solid rgba(34,197,94,0.3); }
+.mark-mid { background:rgba(245,158,11,0.10); color:#fcd34d; border:1px solid rgba(245,158,11,0.3); }
+.mark-low { background:rgba(220,53,69,0.10); color:#ff8088; border:1px solid rgba(220,53,69,0.3); }
+.mark-bar { flex-shrink:0; min-width:60px; text-align:center; padding:4px 8px; border-radius:6px; background:rgba(255,255,255,0.06); font-weight:800; }
+.mark-fb { flex:1; line-height:1.45; font-weight:500; }
+.score-banner { background:linear-gradient(135deg,rgba(108,99,255,0.18),rgba(167,139,250,0.10)); border:1px solid rgba(108,99,255,0.35); border-radius:14px; padding:18px 22px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+.score-banner .num { font-size:34px; font-weight:900; color:#a78bfa; line-height:1; }
+.score-banner .lbl { font-size:13px; color:rgba(255,255,255,0.65); margin-top:4px; }
+.score-banner .band { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:6px 16px; border-radius:999px; font-size:14px; font-weight:700; color:#fff; }
 
 .deck-card { background:#0f1419; border:1px solid #2f3336; border-radius:12px; padding:18px; margin-bottom:14px; cursor:pointer; transition:border-color .15s; }
 .deck-card:hover { border-color:rgba(79,140,255,0.45); }
@@ -112,9 +129,34 @@ function render(data){
     currentState = data;
     const a = data.assignment;
     const status = data.status || 'pending';
+    const isCompleted = status === 'completed';
+    const hasMarking = isCompleted && Array.isArray(data.perQuestion);
     document.getElementById('hSubtitle').textContent = (data.className || 'Your class') + (data.classSubject ? ' · ' + data.classSubject : '');
 
+    // Build per-question answer lookup for re-rendering the completed view.
+    const answerLookup = {};
+    if (Array.isArray(data.answers)) {
+        data.answers.forEach(ans => { answerLookup[ans.qIdx] = ans.value || ''; });
+    }
+    const markLookup = {};
+    if (Array.isArray(data.perQuestion)) {
+        data.perQuestion.forEach(r => { markLookup[r.qIdx] = r; });
+    }
+
+    function markRow(i, q) {
+        const r = markLookup[i];
+        if (!r) return '';
+        const total = parseInt(r.marksTotal, 10) || 0;
+        const got = parseInt(r.marksAwarded, 10) || 0;
+        const cls = total === 0 ? 'mark-mid' : (got === total ? 'mark-good' : (got / total >= 0.5 ? 'mark-mid' : 'mark-low'));
+        return `<div class="mark-row ${cls}">
+            <div class="mark-bar">${got} / ${total}</div>
+            <div class="mark-fb">${esc(r.feedback || '')}</div>
+        </div>`;
+    }
+
     let body = '';
+    let scoreBanner = '';
     if (!a.content){
         body = '<div class="error-banner">Your teacher hasn\'t generated content for this assignment yet, or the generation failed. Ask them to delete and re-create it.</div>';
     } else if (a.type === 'deck' && Array.isArray(a.content.cards)){
@@ -128,16 +170,37 @@ function render(data){
             ).join('') +
             '</div>';
     } else if (Array.isArray(a.content.questions)){
+        if (hasMarking && data.totalPossible != null) {
+            scoreBanner = `<div class="score-banner">
+                <div>
+                    <div class="num">${esc(data.totalAwarded)} / ${esc(data.totalPossible)}</div>
+                    <div class="lbl">${esc(data.score || 0)}% &middot; AI-marked</div>
+                </div>
+                <div class="band">${esc(data.band || '')}</div>
+            </div>`;
+        }
         body = '<div class="card"><ol class="q-list">' + a.content.questions.map((q, i) => {
-            const opts = Array.isArray(q.options) && q.options.length
-                ? '<div class="q-opts">' + q.options.map(o => '<div>' + esc(o) + '</div>').join('') + '</div>'
-                : '';
             const marks = q.marks ? `<span class="q-marks">[${esc(q.marks)} marks]</span>` : '';
+            const isMc = q.type === 'mc' && Array.isArray(q.options) && q.options.length;
+            const currentValue = answerLookup[i] || '';
+            let inputHtml = '';
+            if (isMc) {
+                const letters = ['A','B','C','D','E','F'];
+                inputHtml = '<div class="q-opts">' + q.options.map((o, j) => {
+                    const letter = letters[j] || String(j+1);
+                    const checked = currentValue && currentValue.toUpperCase().startsWith(letter) ? 'checked' : '';
+                    const disabled = isCompleted ? 'disabled' : '';
+                    return `<label><input type="radio" name="q${i}" value="${esc(letter)}" ${checked} ${disabled}><span>${esc(o)}</span></label>`;
+                }).join('') + '</div>';
+            } else {
+                inputHtml = `<textarea class="q-textarea" data-q-idx="${i}" ${isCompleted ? 'disabled' : ''} placeholder="Write your answer here…">${esc(currentValue)}</textarea>`;
+            }
             return `<li class="q-item" data-q-idx="${i}">
                 <div class="q-num">Question ${i+1}</div>
                 <div class="q-text"><strong>${esc(q.question || '')}</strong>${marks}</div>
-                ${opts}
-                <button class="show-answer" data-show="${i}">Show model answer ↓</button>
+                ${inputHtml}
+                ${markRow(i, q)}
+                <button class="show-answer" data-show="${i}" style="margin-top:10px;">Show model answer ↓</button>
                 <div class="answer-block" id="ans-${i}" style="display:none;">
                     <span class="lbl">Model answer</span>
                     ${escMultiline(q.answer || '')}
@@ -150,10 +213,19 @@ function render(data){
     }
 
     const typeClass = (a.type || '').toLowerCase();
-    const isDone = status === 'completed';
-    const actionBtn = isDone
-        ? `<button class="btn btn-ghost" id="markBtn" data-target="pending">Mark as not done</button>`
-        : `<button class="btn" id="markBtn" data-target="completed">Mark as done ✓</button>`;
+    const isDeck = a.type === 'deck';
+    let actionBtns = '';
+    if (a.content) {
+        if (isDeck) {
+            actionBtns = isCompleted
+                ? `<button class="btn btn-ghost" id="markBtn" data-target="pending">Mark as not done</button>`
+                : `<button class="btn" id="markBtn" data-target="completed">Mark as done ✓</button>`;
+        } else if (isCompleted) {
+            actionBtns = `<button class="btn btn-ghost" id="retryBtn">Resubmit answers</button>`;
+        } else {
+            actionBtns = `<button class="btn" id="submitBtn">Submit answers for marking →</button>`;
+        }
+    }
 
     document.getElementById('root').innerHTML = `
         <div class="card">
@@ -163,14 +235,15 @@ function render(data){
                     <h1>${esc(a.title)}</h1>
                     <div class="meta">${data.className ? esc(data.className) : 'Your class'}${data.classSubject ? ' · ' + esc(data.classSubject) : ''}${a.dueAt ? ' · Due ' + esc(fmtDate(a.dueAt)) : ''}${a.spec && a.spec.difficulty ? ' · ' + esc(a.spec.difficulty.charAt(0).toUpperCase() + a.spec.difficulty.slice(1)) : ''}</div>
                 </div>
-                <span class="status-pill ${isDone ? 'status-completed' : 'status-pending'}">${isDone ? '✓ Completed' : 'Pending'}</span>
+                <span class="status-pill ${isCompleted ? 'status-completed' : 'status-pending'}">${isCompleted ? '✓ Completed' : 'Pending'}</span>
             </div>
             ${(a.instructions || a.refId) ? `<div class="instructions"><strong>Teacher's instructions:</strong><br>${escMultiline(a.instructions || a.refId)}</div>` : ''}
         </div>
+        ${scoreBanner}
         ${body}
         <div class="footer-actions">
             <a class="btn btn-ghost btn-sm" href="student-assignments.html">← Back</a>
-            ${actionBtn}
+            ${actionBtns}
         </div>`;
 
     // Wire flashcard flips
@@ -186,11 +259,65 @@ function render(data){
             b.textContent = isOpen ? 'Show model answer ↓' : 'Hide model answer ↑';
         });
     });
-    // Wire mark-as-done
+    // Wire mark-as-done (deck only)
     const markBtn = document.getElementById('markBtn');
     if (markBtn){
         markBtn.addEventListener('click', () => toggleDone(markBtn.dataset.target, markBtn));
     }
+    // Wire submit (practice/worksheet)
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) submitBtn.addEventListener('click', () => submitAnswers(submitBtn));
+    // Wire resubmit
+    const retryBtn = document.getElementById('retryBtn');
+    if (retryBtn) retryBtn.addEventListener('click', () => {
+        // Re-render in input mode by clearing the local submission view
+        data.status = 'pending';
+        data.perQuestion = null;
+        render(data);
+    });
+}
+
+function gatherAnswers(){
+    const root = document.getElementById('root');
+    const answers = [];
+    root.querySelectorAll('.q-textarea').forEach(t => {
+        answers.push({ qIdx: parseInt(t.dataset.qIdx, 10), value: t.value || '' });
+    });
+    // For MC, find selected radio per q-item
+    root.querySelectorAll('.q-item').forEach(item => {
+        const idx = parseInt(item.dataset.qIdx, 10);
+        if (answers.some(a => a.qIdx === idx)) return;
+        const picked = item.querySelector('input[type=radio]:checked');
+        answers.push({ qIdx: idx, value: picked ? picked.value : '' });
+    });
+    return answers.sort((a,b) => a.qIdx - b.qIdx);
+}
+
+function submitAnswers(btn){
+    const answers = gatherAnswers();
+    if (!answers.some(a => a.value && a.value.trim())) {
+        if (!confirm('You haven\'t answered any questions. Submit anyway (score will be 0)?')) return;
+    }
+    btn.disabled = true;
+    const orig = btn.textContent;
+    btn.textContent = 'Marking (10-20s)…';
+    api('/api/student/assignments/' + encodeURIComponent(assignmentId) + '/answers', {
+        method: 'POST',
+        body: JSON.stringify({ answers })
+    })
+        .then(async r => {
+            if (!r.ok){
+                const d = await r.json().catch(()=>({}));
+                alert(d.error || 'Could not submit your answers.');
+                btn.disabled = false; btn.textContent = orig;
+                return;
+            }
+            loadAssignment();
+        })
+        .catch(() => {
+            alert('Network error. Please try again.');
+            btn.disabled = false; btn.textContent = orig;
+        });
 }
 
 function toggleDone(target, btn){
