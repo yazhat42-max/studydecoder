@@ -2795,7 +2795,12 @@ app.get('/api/teacher/classes/:id/assignments/:assignmentId', requireTeacher, (r
     if (!cls) return res.status(404).json({ error: 'Class not found' });
     const a = db.assignments[req.params.assignmentId];
     if (!a || a.classId !== cls.classId) return res.status(404).json({ error: 'Assignment not found' });
-    const subs = db.assignmentSubmissions.filter(s => s.assignmentId === a.assignmentId);
+    const subs = db.assignmentSubmissions
+        .filter(s => s.assignmentId === a.assignmentId)
+        .map(s => {
+            const u = db.users[s.studentUserId];
+            return { ...s, studentName: u ? u.name : 'Unknown', studentEmail: u ? u.email : '' };
+        });
     res.json({ assignment: a, submissions: subs });
 });
 
@@ -2814,6 +2819,11 @@ app.get('/api/student/assignments/:assignmentId', requireAuth, (req, res) => {
         classSubject: cls ? cls.subject : '',
         status: sub ? sub.status : 'pending',
         score: sub ? sub.score : null,
+        totalAwarded: sub ? sub.totalAwarded : null,
+        totalPossible: sub ? sub.totalPossible : null,
+        band: sub ? sub.band : null,
+        answers: sub ? sub.answers : null,
+        perQuestion: sub ? sub.perQuestion : null,
         completedAt: sub ? sub.completedAt : null
     });
 });
@@ -2947,6 +2957,140 @@ app.post('/api/student/assignments/:assignmentId/submit', requireAuth, (req, res
     }
     scheduleClassroomSave();
     res.json({ success: true, submission: sub });
+});
+
+// POST /api/student/assignments/:assignmentId/answers — submit answers for AI marking
+// Body: { answers: [ { qIdx: <int>, value: "<student answer>" }, ... ] }
+// Returns the full marked submission (perQuestion scores + overall feedback).
+app.post('/api/student/assignments/:assignmentId/answers', requireAuth, express.json(), async (req, res) => {
+    const assignment = db.assignments[req.params.assignmentId];
+    if (!assignment) return res.status(404).json({ error: 'Assignment not found' });
+    const isMember = db.classMembers.some(m =>
+        m.classId === assignment.classId && m.studentUserId === req.user.userId && !m.removedAt);
+    if (!isMember) return res.status(403).json({ error: 'Not in this class' });
+    if (assignment.type === 'deck') {
+        return res.status(400).json({ error: 'Flashcard decks are self-marked — use /submit with { status:"completed" }.' });
+    }
+    if (!assignment.content || !Array.isArray(assignment.content.questions)) {
+        return res.status(400).json({ error: 'This assignment has no question content to mark.' });
+    }
+    if (!config.openaiApiKey) return res.status(503).json({ error: 'AI not configured' });
+
+    const questions = assignment.content.questions;
+    const submitted = Array.isArray(req.body && req.body.answers) ? req.body.answers : [];
+    // Normalise: { qIdx: number, value: string } per question, fill blanks for any missing.
+    const answersByIdx = {};
+    for (const a of submitted) {
+        const i = parseInt(a && a.qIdx, 10);
+        if (!isNaN(i) && i >= 0 && i < questions.length) {
+            answersByIdx[i] = String((a.value == null ? '' : a.value)).slice(0, 4000);
+        }
+    }
+    const answers = questions.map((q, i) => ({ qIdx: i, value: answersByIdx[i] || '' }));
+
+    // Mark MC questions deterministically; collect non-MC for AI marking.
+    function normaliseMc(s) {
+        return String(s || '').trim().toUpperCase().replace(/^[\s(]*([A-D])[\s).:-].*$/i, '$1');
+    }
+    const perQuestion = [];
+    const needsAI = [];
+    let totalPossible = 0;
+    questions.forEach((q, i) => {
+        const marks = parseInt(q.marks, 10) || 0;
+        totalPossible += marks;
+        const studentAns = answers[i].value;
+        if (q.type === 'mc' && Array.isArray(q.options) && q.options.length) {
+            const correct = normaliseMc(q.answer);
+            const picked = normaliseMc(studentAns);
+            const awarded = (correct && picked && correct === picked) ? marks : 0;
+            perQuestion.push({
+                qIdx: i,
+                marksAwarded: awarded,
+                marksTotal: marks,
+                feedback: awarded === marks
+                    ? 'Correct.'
+                    : (picked ? `You picked ${picked}; correct answer is ${correct}.` : 'No answer provided.')
+            });
+        } else if (!studentAns.trim()) {
+            perQuestion.push({
+                qIdx: i,
+                marksAwarded: 0,
+                marksTotal: marks,
+                feedback: 'No answer provided — 0 marks awarded.'
+            });
+        } else {
+            needsAI.push({ qIdx: i, question: q.question, marks, modelAnswer: q.answer, explanation: q.explanation, studentAnswer: studentAns });
+        }
+    });
+
+    // AI marking pass for non-MC, answered questions.
+    if (needsAI.length) {
+        const subjectMeta = resolveSubjectMeta(assignment.spec && assignment.spec.subject);
+        const subjectName = subjectMeta.name || (assignment.spec && assignment.spec.subject) || 'this subject';
+        const audience = subjectMeta.isJunior ? 'Years 7-10' : 'HSC';
+        const aiSettings = getAISettings(req.user);
+        const sys = `You are a NSW ${audience} ${subjectName} marker. For each item you are given a question, the marks available, a model answer, a marking note (optional) and the student's answer. Award marks fairly out of the available total and write 1-2 sentences of specific feedback referencing what the student did well + what to improve. Return ONLY valid JSON:
+{ "results": [ { "qIdx": <int>, "marksAwarded": <int>, "feedback": "<text>" } ] }
+RULES:
+- marksAwarded is an integer between 0 and the marks total.
+- Be specific (cite content, not generic praise).
+- Do NOT add fields beyond marksAwarded, qIdx, feedback.`;
+        const usr = needsAI.map(item => (
+            `--- Q${item.qIdx + 1} (${item.marks} marks)\nQUESTION: ${item.question}\nMODEL ANSWER: ${item.modelAnswer || ''}\n${item.explanation ? 'MARKING NOTE: ' + item.explanation + '\n' : ''}STUDENT ANSWER: ${item.studentAnswer}`
+        )).join('\n\n');
+        try {
+            const reply = await callOpenAIChat({
+                model: aiSettings.model, jsonMode: true,
+                maxTokens: Math.min(aiSettings.maxTokens, 3000), temperature: 0.2,
+                messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+            });
+            const parsed = parseJsonLoose(reply);
+            const byIdx = {};
+            (parsed && Array.isArray(parsed.results) ? parsed.results : []).forEach(r => {
+                if (typeof r.qIdx === 'number') byIdx[r.qIdx] = r;
+            });
+            needsAI.forEach(item => {
+                const r = byIdx[item.qIdx] || {};
+                const awarded = Math.max(0, Math.min(item.marks, parseInt(r.marksAwarded, 10) || 0));
+                perQuestion.push({
+                    qIdx: item.qIdx,
+                    marksAwarded: awarded,
+                    marksTotal: item.marks,
+                    feedback: r.feedback ? String(r.feedback).slice(0, 600) : 'Marked.'
+                });
+            });
+        } catch (e) {
+            console.error('Assignment marking failed:', e);
+            return res.status(502).json({ error: 'AI marking failed: ' + (e.message || 'unknown error') + '. Try again in a moment.' });
+        }
+    }
+
+    perQuestion.sort((a, b) => a.qIdx - b.qIdx);
+    const totalAwarded = perQuestion.reduce((s, r) => s + (r.marksAwarded || 0), 0);
+    const percentage = totalPossible > 0 ? Math.round((totalAwarded / totalPossible) * 10000) / 100 : 0;
+    const isJunior = (resolveSubjectMeta(assignment.spec && assignment.spec.subject) || {}).isJunior;
+    const band = isJunior
+        ? (percentage >= 85 ? 'A' : percentage >= 70 ? 'B' : percentage >= 55 ? 'C' : percentage >= 40 ? 'D' : 'E')
+        : (percentage >= 90 ? 'Band 6' : percentage >= 80 ? 'Band 5' : percentage >= 70 ? 'Band 4' : percentage >= 60 ? 'Band 3' : percentage >= 50 ? 'Band 2' : 'Band 1');
+
+    let sub = db.assignmentSubmissions.find(s => s.assignmentId === assignment.assignmentId && s.studentUserId === req.user.userId);
+    const submission = {
+        assignmentId: assignment.assignmentId,
+        studentUserId: req.user.userId,
+        status: 'completed',
+        score: percentage,
+        totalAwarded,
+        totalPossible,
+        answers,
+        perQuestion,
+        band,
+        completedAt: new Date().toISOString()
+    };
+    if (sub) Object.assign(sub, submission);
+    else db.assignmentSubmissions.push(submission);
+    scheduleClassroomSave();
+
+    res.json({ submission });
 });
 
 /* ------------------------- TEACHER: AI TOOLS ------------------------- */
