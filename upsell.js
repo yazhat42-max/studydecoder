@@ -203,11 +203,38 @@ window.Upsell = (function () {
         document.body.prepend(banner);
     }
 
+    // Cached user role + classroom flag so we don't refetch /api/subscription
+    // every time the upsell pops. Populated by auth.js after its check; if
+    // it hasn't fired yet we fall back to the sd_user_cache localStorage
+    // entry that auth.js writes on every load.
+    let cachedUser = null;
+    function setCachedUser(u) { cachedUser = u || null; }
+    function getCurrentUser() {
+        if (cachedUser) return cachedUser;
+        try {
+            const raw = localStorage.getItem('sd_user_cache');
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && parsed.email) return parsed;
+            }
+        } catch (e) { /* ignore */ }
+        return null;
+    }
+
     /**
      * Show a full upgrade modal — works on any page (tool pages don't have #upgradeModalOverlay).
      * Falls back to window.showUpgradeModal() if available (index.html).
+     * Teachers are routed to the teacher seat pricing page instead of the
+     * consumer student tier modal.
      */
     function showPageUpgradeModal() {
+        // Teacher accounts: don't show the student $5/mo modal — route to
+        // teacher-pricing.html where the actual classroom plans live.
+        const u = getCurrentUser();
+        if (u && u.role === 'teacher') {
+            window.location.href = '/teacher-pricing.html';
+            return;
+        }
         // On index.html, use the built-in modal
         if (typeof window.showUpgradeModal === 'function' && document.getElementById('upgradeModalOverlay')) {
             window.showUpgradeModal();
@@ -342,5 +369,5 @@ window.Upsell = (function () {
         overlay.style.display = 'flex';
     }
 
-    return { get, renderModal, notifyOnReset, checkReminder, checkGracePeriodEnding, showPageUpgradeModal };
+    return { get, renderModal, notifyOnReset, checkReminder, checkGracePeriodEnding, showPageUpgradeModal, setCachedUser };
 })();
