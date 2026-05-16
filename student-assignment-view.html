@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Assignment | Study Decoder</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f1419">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif; background:#0f1419; color:#e7e9ea; }
+.app-container { display:flex; flex-direction:column; min-height:100vh; width:100%; overflow-x:hidden; }
+.header { background:#16202a; border-bottom:1px solid #2f3336; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+.header-left { display:flex; align-items:center; gap:16px; }
+.back-btn { color:#4f8cff; text-decoration:none; font-size:14px; font-weight:500; padding:8px 16px; border-radius:8px; background:rgba(79,140,255,0.1); }
+.header-title { font-size:20px; font-weight:700; }
+.header-subtitle { font-size:12px; color:#71767b; margin-top:2px; }
+.main-content { flex:1; padding:32px 24px; }
+.container { max-width:820px; margin:0 auto; }
+.card { background:#16202a; border:1px solid #2f3336; border-radius:16px; padding:24px; margin-bottom:20px; }
+.btn { background:linear-gradient(135deg,#4f8cff,#6c63ff); color:#fff; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; cursor:pointer; transition:transform .15s; font-family:inherit; }
+.btn:hover:not(:disabled) { transform:translateY(-1px); }
+.btn:disabled { opacity:0.5; cursor:not-allowed; }
+.btn-ghost { background:rgba(79,140,255,0.08); color:#e7e9ea; border:1px solid rgba(79,140,255,0.3); }
+.btn-sm { padding:8px 16px; font-size:13px; border-radius:8px; }
+.auth-loading-overlay { position:fixed; inset:0; background:#0f1419; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
+.auth-spinner { width:50px; height:50px; border:4px solid #2f3336; border-top-color:#4f8cff; border-radius:50%; animation:spin 1s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.hidden { display:none !important; }
+.error-banner { background:rgba(220,53,69,0.1); border:1px solid rgba(220,53,69,0.4); color:#ff8088; padding:12px 16px; border-radius:8px; margin-bottom:16px; }
+
+.head-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+.title-block h1 { font-size:24px; line-height:1.25; font-weight:800; margin-bottom:6px; }
+.title-block .meta { font-size:13px; color:#a9b3bd; line-height:1.5; }
+.badge { display:inline-block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; padding:3px 10px; border-radius:6px; background:#1d3a5f; color:#9ec3ff; margin-right:6px; }
+.badge.practice { background:rgba(139,92,246,0.18); color:#c4b5fd; }
+.badge.worksheet { background:rgba(245,158,11,0.18); color:#fcd34d; }
+.badge.deck { background:rgba(34,197,94,0.16); color:#86efac; }
+.status-pill { display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:700; padding:5px 12px; border-radius:999px; }
+.status-pending { background:rgba(245,158,11,0.12); color:#fcd34d; border:1px solid rgba(245,158,11,0.3); }
+.status-completed { background:rgba(34,197,94,0.16); color:#86efac; border:1px solid rgba(34,197,94,0.4); }
+
+.instructions { font-size:14px; color:#d4d9de; line-height:1.55; padding:12px 14px; background:rgba(79,140,255,0.06); border:1px solid rgba(79,140,255,0.18); border-radius:8px; white-space:pre-wrap; word-break:break-word; }
+
+.q-list { list-style:none; }
+.q-item { padding:18px 0; border-bottom:1px solid #2f3336; }
+.q-item:last-child { border-bottom:0; }
+.q-num { font-size:13px; font-weight:700; color:#4f8cff; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+.q-text { font-size:15px; color:#e7e9ea; line-height:1.6; margin-bottom:10px; }
+.q-marks { color:#8899a6; font-size:13px; font-weight:500; margin-left:6px; }
+.q-opts { padding:6px 0 12px 4px; color:#a9b3bd; font-size:14px; line-height:1.85; }
+.q-opts > div { padding:4px 0; }
+.show-answer { color:#4f8cff; cursor:pointer; font-size:13px; font-weight:600; background:none; border:none; padding:6px 0; font-family:inherit; }
+.show-answer:hover { text-decoration:underline; }
+.answer-block { margin-top:8px; padding:10px 14px; background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.22); border-radius:8px; color:#d4d9de; font-size:14px; line-height:1.55; }
+.answer-block .lbl { font-weight:700; color:#86efac; display:block; margin-bottom:4px; font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+
+.deck-card { background:#0f1419; border:1px solid #2f3336; border-radius:12px; padding:18px; margin-bottom:14px; cursor:pointer; transition:border-color .15s; }
+.deck-card:hover { border-color:rgba(79,140,255,0.45); }
+.deck-card .front { font-size:15px; font-weight:700; color:#e7e9ea; margin-bottom:6px; }
+.deck-card .back { font-size:14px; color:#a9b3bd; line-height:1.55; display:none; padding-top:8px; border-top:1px solid #2f3336; margin-top:8px; }
+.deck-card.show .back { display:block; }
+.deck-card .flip-hint { color:#71767b; font-size:12px; font-style:italic; }
+.deck-card.show .flip-hint { display:none; }
+
+.footer-actions { display:flex; gap:12px; justify-content:flex-end; padding-top:20px; border-top:1px solid #2f3336; margin-top:20px; flex-wrap:wrap; }
+
+@media (max-width:600px) {
+    .main-content { padding:18px 14px; }
+    .title-block h1 { font-size:20px; }
+    .header { padding:10px 14px; }
+    .header-title { font-size:16px; }
+    .footer-actions { justify-content:stretch; }
+    .footer-actions .btn { flex:1; }
+}
+</style>
+</head>
+<body>
+<div id="authLoading" class="auth-loading-overlay"><div class="auth-spinner"></div><div style="margin-top:16px;color:#71767b;">Loading…</div></div>
+<div class="app-container hidden" id="appContainer">
+  <header class="header">
+    <div class="header-left">
+      <a href="student-assignments.html" class="back-btn">← All assignments</a>
+      <div><div class="header-title">Assignment</div><div class="header-subtitle" id="hSubtitle">Loading…</div></div>
+    </div>
+  </header>
+  <main class="main-content">
+    <div class="container" id="root"></div>
+  </main>
+</div>
+<script src="auth.js"></script>
+<script>
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escMultiline(s){ return esc(s).replace(/\n/g, '<br>'); }
+function fmtDate(s){
+    if (!s) return '';
+    const d = new Date(s);
+    if (isNaN(d)) return '';
+    return d.toLocaleDateString('en-AU', { day:'numeric', month:'short', year:'numeric' });
+}
+
+const params = new URLSearchParams(location.search);
+const assignmentId = params.get('id');
+
+let currentState = null;
+
+function render(data){
+    currentState = data;
+    const a = data.assignment;
+    const status = data.status || 'pending';
+    document.getElementById('hSubtitle').textContent = (data.className || 'Your class') + (data.classSubject ? ' · ' + data.classSubject : '');
+
+    let body = '';
+    if (!a.content){
+        body = '<div class="error-banner">Your teacher hasn\'t generated content for this assignment yet, or the generation failed. Ask them to delete and re-create it.</div>';
+    } else if (a.type === 'deck' && Array.isArray(a.content.cards)){
+        body = '<div class="card"><div class="section-title" style="font-weight:700;font-size:15px;margin-bottom:14px;">Flashcards — tap to reveal each answer</div>' +
+            a.content.cards.map((c, i) =>
+                `<div class="deck-card" data-card-idx="${i}">
+                    <div class="front">${i+1}. ${esc(c.front || '')}</div>
+                    <div class="flip-hint">Tap to reveal answer</div>
+                    <div class="back">${escMultiline(c.back || '')}</div>
+                </div>`
+            ).join('') +
+            '</div>';
+    } else if (Array.isArray(a.content.questions)){
+        body = '<div class="card"><ol class="q-list">' + a.content.questions.map((q, i) => {
+            const opts = Array.isArray(q.options) && q.options.length
+                ? '<div class="q-opts">' + q.options.map(o => '<div>' + esc(o) + '</div>').join('') + '</div>'
+                : '';
+            const marks = q.marks ? `<span class="q-marks">[${esc(q.marks)} marks]</span>` : '';
+            return `<li class="q-item" data-q-idx="${i}">
+                <div class="q-num">Question ${i+1}</div>
+                <div class="q-text"><strong>${esc(q.question || '')}</strong>${marks}</div>
+                ${opts}
+                <button class="show-answer" data-show="${i}">Show model answer ↓</button>
+                <div class="answer-block" id="ans-${i}" style="display:none;">
+                    <span class="lbl">Model answer</span>
+                    ${escMultiline(q.answer || '')}
+                    ${q.explanation ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(34,197,94,0.22);"><span class="lbl">Marking note</span>${escMultiline(q.explanation)}</div>` : ''}
+                </div>
+            </li>`;
+        }).join('') + '</ol></div>';
+    } else {
+        body = '<div class="error-banner">Assignment content is in an unknown format.</div>';
+    }
+
+    const typeClass = (a.type || '').toLowerCase();
+    const isDone = status === 'completed';
+    const actionBtn = isDone
+        ? `<button class="btn btn-ghost" id="markBtn" data-target="pending">Mark as not done</button>`
+        : `<button class="btn" id="markBtn" data-target="completed">Mark as done ✓</button>`;
+
+    document.getElementById('root').innerHTML = `
+        <div class="card">
+            <div class="head-row">
+                <div class="title-block">
+                    <div style="margin-bottom:8px;"><span class="badge ${typeClass}">${esc(a.type || '')}</span></div>
+                    <h1>${esc(a.title)}</h1>
+                    <div class="meta">${data.className ? esc(data.className) : 'Your class'}${data.classSubject ? ' · ' + esc(data.classSubject) : ''}${a.dueAt ? ' · Due ' + esc(fmtDate(a.dueAt)) : ''}${a.spec && a.spec.difficulty ? ' · ' + esc(a.spec.difficulty.charAt(0).toUpperCase() + a.spec.difficulty.slice(1)) : ''}</div>
+                </div>
+                <span class="status-pill ${isDone ? 'status-completed' : 'status-pending'}">${isDone ? '✓ Completed' : 'Pending'}</span>
+            </div>
+            ${(a.instructions || a.refId) ? `<div class="instructions"><strong>Teacher's instructions:</strong><br>${escMultiline(a.instructions || a.refId)}</div>` : ''}
+        </div>
+        ${body}
+        <div class="footer-actions">
+            <a class="btn btn-ghost btn-sm" href="student-assignments.html">← Back</a>
+            ${actionBtn}
+        </div>`;
+
+    // Wire flashcard flips
+    document.querySelectorAll('.deck-card').forEach(c => {
+        c.addEventListener('click', () => c.classList.toggle('show'));
+    });
+    // Wire show-answer toggles
+    document.querySelectorAll('.show-answer').forEach(b => {
+        b.addEventListener('click', () => {
+            const block = document.getElementById('ans-' + b.dataset.show);
+            const isOpen = block.style.display === 'block';
+            block.style.display = isOpen ? 'none' : 'block';
+            b.textContent = isOpen ? 'Show model answer ↓' : 'Hide model answer ↑';
+        });
+    });
+    // Wire mark-as-done
+    const markBtn = document.getElementById('markBtn');
+    if (markBtn){
+        markBtn.addEventListener('click', () => toggleDone(markBtn.dataset.target, markBtn));
+    }
+}
+
+function toggleDone(target, btn){
+    btn.disabled = true;
+    const orig = btn.textContent;
+    btn.textContent = target === 'completed' ? 'Saving…' : 'Updating…';
+    api('/api/student/assignments/' + encodeURIComponent(assignmentId) + '/submit', {
+        method: 'POST',
+        body: JSON.stringify({ status: target })
+    })
+        .then(async r => {
+            if (!r.ok){
+                const d = await r.json().catch(()=>({}));
+                alert(d.error || 'Could not update assignment.');
+                btn.disabled = false; btn.textContent = orig;
+                return;
+            }
+            loadAssignment();
+        })
+        .catch(() => {
+            alert('Network error. Please try again.');
+            btn.disabled = false; btn.textContent = orig;
+        });
+}
+
+function loadAssignment(){
+    if (!assignmentId){
+        document.getElementById('root').innerHTML = '<div class="error-banner">No assignment specified.</div>';
+        document.getElementById('authLoading').classList.add('hidden');
+        document.getElementById('appContainer').classList.remove('hidden');
+        return;
+    }
+    api('/api/student/assignments/' + encodeURIComponent(assignmentId))
+        .then(async r => {
+            if (!r.ok){
+                if (r.status === 401){
+                    window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname + location.search);
+                    return;
+                }
+                const d = await r.json().catch(()=>({}));
+                document.getElementById('root').innerHTML = '<div class="error-banner">' + esc(d.error || 'Could not load this assignment.') + '</div>';
+                return;
+            }
+            return r.json();
+        })
+        .then(d => { if (d) render(d); })
+        .catch(() => {
+            document.getElementById('root').innerHTML = '<div class="error-banner">Network error. Please refresh.</div>';
+        })
+        .finally(() => {
+            document.getElementById('authLoading').classList.add('hidden');
+            document.getElementById('appContainer').classList.remove('hidden');
+        });
+}
+
+(function init(){
+    api('/api/subscription')
+        .then(r => {
+            if (!r.ok || r.status === 401){
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname + location.search);
+                return null;
+            }
+            return r.json();
+        })
+        .then(d => {
+            if (!d) return;
+            if (d.role === 'teacher'){
+                window.location.replace('/teacher-dashboard.html');
+                return;
+            }
+            loadAssignment();
+        })
+        .catch(() => {
+            window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname + location.search);
+        });
+})();
+</script>
+</body>
+</html>
