@@ -3160,11 +3160,13 @@
         document.getElementById('navUserMenu').style.display = 'flex';
         document.getElementById('navUserName').textContent = user.name || user.email.split('@')[0];
         // Show "Join a Class" + "Assignments" for non-teachers
-        // (teachers create classes & assignments via their dashboard)
+        // (teachers create classes & assignments via their dashboard).
+        // Assignments link only shows if the student is actually linked to
+        // a teacher's class — otherwise it's an empty page, not useful.
         var njc = document.getElementById('navJoinClass');
         if (njc) njc.style.display = (user.role === 'teacher') ? 'none' : 'list-item';
         var nas = document.getElementById('navAssignments');
-        if (nas) nas.style.display = (user.role === 'teacher') ? 'none' : 'list-item';
+        if (nas) nas.style.display = (user.role !== 'teacher' && user.linkedToTeacher) ? 'list-item' : 'none';
 
         // Teacher accounts: swap the Classroom Mode tile CTA to their dashboard
         if (user.role === 'teacher') {
@@ -3549,6 +3551,13 @@
 
     // ========== UPGRADE MODAL FOR FREE USERS ==========
     function showUpgradeModal() {
+        // Teachers shouldn't see the student-tier upgrade modal — route them
+        // to the teacher seat pricing page where the actual classroom plans
+        // live ($15 / $25 / $35 — not the $5/mo monthly student tier).
+        if (currentUser && currentUser.role === 'teacher') {
+            window.location.href = 'teacher-pricing.html';
+            return;
+        }
         const modal = document.getElementById('upgradeModalOverlay');
         modal.style.display = 'flex';
         modal.classList.remove('hidden');

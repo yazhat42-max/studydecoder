@@ -14,6 +14,8 @@ const StudyDecoderAuth = {
             const cached = {
                 email: user.email,
                 name: user.name,
+                role: user.role,
+                linkedToTeacher: !!user.linkedToTeacher,
                 preferences: user.preferences || {},
                 freeAcknowledged: user.freeAcknowledged || false,
                 cachedAt: Date.now()
@@ -84,6 +86,12 @@ const StudyDecoderAuth = {
 
             // Cache user data to localStorage for surviving server restarts
             this.cacheUserData(user);
+
+            // Share user state with the upsell module so it can route teachers
+            // to the teacher seat pricing instead of the student $5/mo modal.
+            if (window.SDUpsell && typeof window.SDUpsell.setCachedUser === 'function') {
+                window.SDUpsell.setCachedUser(user);
+            }
             
             // Check subscription if required
             // Allow through if subscribed OR if free tier acknowledged OR if onboarded
