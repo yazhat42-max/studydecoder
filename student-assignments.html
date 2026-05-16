@@ -120,13 +120,9 @@ function daysUntil(s){
     return Math.ceil(ms / 86400000);
 }
 
-// Maps assignment type → suggested tool shortcut(s) so students can jump
-// straight to the tool they'll do the work in.
-const TOOL_SHORTCUTS = {
-    practice:  [{ label: 'Open Practice Tool →', href: 'practice.html' }],
-    worksheet: [{ label: 'Open Worksheet Decoder →', href: 'worksheet-decoder.html' }],
-    deck:      [{ label: 'Open Flashcards →', href: 'flashcards.html' }]
-};
+// Each assignment now has AI-generated content stored on the server, so the
+// student opens it on a dedicated view page rather than being deep-linked
+// out to a generic tool.
 
 function renderList(assignments){
     const slot = document.getElementById('listSlot');
@@ -160,29 +156,31 @@ function renderList(assignments){
         const statusClass = a.status === 'completed' ? 'status-completed' : (isOverdue ? 'status-overdue' : 'status-pending');
         const statusText  = a.status === 'completed' ? '✓ Completed' : (isOverdue ? 'Overdue' : 'Pending');
         const typeClass = (a.type || '').toLowerCase();
-        const instr = a.refId
-            ? `<div class="assign-instr">${escMultiline(a.refId)}</div>`
-            : '';
-        const shortcuts = (TOOL_SHORTCUTS[a.type] || []).map(s =>
-            `<a class="tool-shortcut" href="${esc(s.href)}">${esc(s.label)}</a>`
-        ).join('');
-        const action = a.status === 'completed'
-            ? `<button class="btn btn-sm btn-ghost" data-action="reopen" data-id="${esc(a.assignmentId)}">Mark as not done</button>`
-            : `<button class="btn btn-sm" data-action="complete" data-id="${esc(a.assignmentId)}">Mark as done →</button>`;
+        const instr = a.instructions
+            ? `<div class="assign-instr">${escMultiline(a.instructions)}</div>`
+            : (a.refId
+                ? `<div class="assign-instr">${escMultiline(a.refId)}</div>`
+                : '');
+        const spec = a.spec || {};
+        const specBits = [
+            spec.module || '',
+            spec.difficulty ? spec.difficulty.charAt(0).toUpperCase() + spec.difficulty.slice(1) : '',
+            spec.count ? spec.count + (a.type === 'deck' ? ' cards' : ' questions') : ''
+        ].filter(Boolean).map(esc).join(' · ');
+        const action = `<a class="btn btn-sm" href="student-assignment-view.html?id=${encodeURIComponent(a.assignmentId)}">${a.status === 'completed' ? 'Review →' : 'Open →'}</a>`;
         return `
             <div class="assign-card ${cls}" data-id="${esc(a.assignmentId)}">
                 <div class="assign-head">
                     <div style="flex:1; min-width:200px;">
                         <span class="badge ${typeClass}">${esc(a.type || '')}</span>
                         <span class="assign-title" style="display:inline; margin-left:6px;">${esc(a.title)}</span>
-                        <div class="assign-class">${esc(a.className || 'Your class')}</div>
+                        <div class="assign-class">${esc(a.className || 'Your class')}${specBits ? ' · ' + specBits : ''}</div>
                     </div>
                     <span class="status-pill ${statusClass}">${statusText}</span>
                 </div>
                 ${instr}
                 <div class="assign-meta">📅 ${dueLabel}</div>
                 <div class="assign-actions">
-                    ${shortcuts}
                     ${action}
                 </div>
             </div>`;

@@ -2635,29 +2635,141 @@ app.delete('/api/teacher/classes/:id/students/:userId', requireTeacher, (req, re
     res.json({ success: true });
 });
 
-// POST /api/teacher/classes/:id/assignments — assign a deck/practice/worksheet
-app.post('/api/teacher/classes/:id/assignments', requireTeacher, (req, res) => {
+/**
+ * Generate the actual content (questions / worksheet / flashcards) for an
+ * assignment using OpenAI. Returns a content object whose shape depends on
+ * the assignment type:
+ *
+ *   practice  → { questions: [ { number, type:'mc|short|extended', marks, question, options?, answer, explanation } ] }
+ *   worksheet → { questions: [ ... same shape ... ], totalMarks }
+ *   deck      → { cards: [ { front, back } ] }
+ *
+ * Mirrors the prompt patterns used by /api/teacher/ai/bulk-worksheets and
+ * /api/decks/:id/generate-cards so the output quality matches what teachers
+ * already get from those tools.
+ */
+async function generateAssignmentContent(type, spec, teacherUser) {
+    if (!config.openaiApiKey) throw new Error('AI not configured');
+    const aiSettings = getAISettings(teacherUser);
+    const subject = spec.subject || 'General';
+    const subjectMeta = resolveSubjectMeta(subject);
+    const subjectName = subjectMeta.name || subject;
+    const module = spec.module ? String(spec.module).trim().slice(0, 200) : '';
+    const count = Math.max(1, Math.min(25, parseInt(spec.count, 10) || (type === 'deck' ? 10 : 6)));
+    const diff = ['easy', 'standard', 'hard'].includes(spec.difficulty) ? spec.difficulty : 'standard';
+    const audience = subjectMeta.isJunior ? 'Years 7-10' : 'HSC';
+
+    if (type === 'practice' || type === 'worksheet') {
+        const markGuide = worksheetMarkGuide(subjectMeta.category);
+        const sys = `You are a NSW ${audience} ${subjectName} teacher building ${type === 'practice' ? 'a focused practice set' : 'a single printable worksheet'} on the topic below. Return ONLY valid JSON:
+{ "questions": [ { "number": <int>, "type": "mc|short|extended", "marks": <int>, "question": "<text>", "options": ["A) ..."]?, "answer": "<model answer>", "explanation": "<marking note>" } ] }
+RULES:
+- Exactly ${count} questions.
+- Difficulty: ${diff}.
+- Mix question types where natural; for MC include 4 options and the correct one as "answer".
+- ${markGuide}
+- Output ONLY the JSON, no preamble.`;
+        const usr = `Subject: ${subjectName}\nTopic / module: ${module || 'Teacher-set assignment'}\nDifficulty: ${diff}\nQuestions: ${count}`;
+        const reply = await callOpenAIChat({
+            model: aiSettings.model, jsonMode: true,
+            maxTokens: Math.min(aiSettings.maxTokens, 6000), temperature: 0.6,
+            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+        });
+        const parsed = parseJsonLoose(reply);
+        if (!parsed || !Array.isArray(parsed.questions) || !parsed.questions.length) {
+            throw new Error('Generation returned no questions. Please retry.');
+        }
+        const total = parsed.questions.reduce((s, q) => s + (parseInt(q.marks, 10) || 0), 0);
+        return { questions: parsed.questions, totalMarks: total };
+    }
+
+    if (type === 'deck') {
+        const sys = `You are building NSW ${audience} ${subjectName} study flashcards. Return ONLY valid JSON:
+{ "cards": [ { "front": "<term, prompt, or short question>", "back": "<concise but complete answer>" } ] }
+RULES:
+- Exactly ${count} cards.
+- Difficulty: ${diff}.
+- Cover the topic thoroughly: definitions, key processes, formulas, dates, names where relevant.
+- Keep fronts short and answer-able; backs 1-3 sentences max.
+- Output ONLY the JSON.`;
+        const usr = `Subject: ${subjectName}\nTopic / module: ${module || 'Teacher-set deck'}\nDifficulty: ${diff}\nCards: ${count}`;
+        const reply = await callOpenAIChat({
+            model: aiSettings.model, jsonMode: true,
+            maxTokens: Math.min(aiSettings.maxTokens, 4000), temperature: 0.5,
+            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+        });
+        const parsed = parseJsonLoose(reply);
+        if (!parsed || !Array.isArray(parsed.cards) || !parsed.cards.length) {
+            throw new Error('Generation returned no cards. Please retry.');
+        }
+        return { cards: parsed.cards.slice(0, count) };
+    }
+
+    throw new Error('Unknown assignment type: ' + type);
+}
+
+// POST /api/teacher/classes/:id/assignments — generate + assign a deck/practice/worksheet
+// Now generates the actual content via OpenAI at create-time so every student
+// in the class sees the same questions.
+app.post('/api/teacher/classes/:id/assignments', requireTeacher, async (req, res) => {
     const cls = getOwnedClass(req, req.params.id);
     if (!cls) return res.status(404).json({ error: 'Class not found' });
-    const { type, refId, title, dueAt } = req.body || {};
+    const { type, title, dueAt, module, count, difficulty, instructions } = req.body || {};
     if (!['practice', 'worksheet', 'deck'].includes(type)) {
         return res.status(400).json({ error: 'type must be practice, worksheet or deck' });
     }
     if (!title || !String(title).trim()) return res.status(400).json({ error: 'title is required' });
+    // Class-level subject is the default if no override is sent — keeps the
+    // teacher form short. We never accept an out-of-class subject here:
+    // the teacher's class binds the assignment to one subject.
+    const subject = cls.subject || (req.body.subject ? String(req.body.subject).trim() : '');
+    if (!subject) {
+        return res.status(400).json({ error: 'This class has no subject set. Edit the class first.' });
+    }
+
+    const spec = {
+        subject,
+        module: module ? String(module).trim().slice(0, 200) : '',
+        count: Math.max(1, Math.min(25, parseInt(count, 10) || (type === 'deck' ? 10 : 6))),
+        difficulty: ['easy', 'standard', 'hard'].includes(difficulty) ? difficulty : 'standard'
+    };
+
+    let content = null;
+    let generationStatus = 'pending';
+    let generationError = null;
+    try {
+        content = await generateAssignmentContent(type, spec, req.user);
+        generationStatus = 'ready';
+        recordUserBotUsage(req.user.userId, 'teacher-assignments');
+    } catch (e) {
+        generationStatus = 'failed';
+        generationError = e.message || 'Generation failed';
+        console.error(`Assignment generation failed for teacher ${req.user.userId}:`, e);
+    }
+
     const assignmentId = crypto.randomUUID();
     const assignment = {
         assignmentId,
         classId: cls.classId,
         type,
-        // refId is now used as freeform instructions for students; was previously
-        // a structural reference ID. Capped to keep the textarea from being abused.
-        refId: refId ? String(refId).slice(0, 1000) : null,
         title: String(title).trim().slice(0, 160),
+        instructions: instructions ? String(instructions).slice(0, 1000) : null,
+        spec,
+        content,
+        generationStatus,
+        generationError,
         dueAt: dueAt || null,
         createdAt: new Date().toISOString()
     };
     db.assignments[assignmentId] = assignment;
     scheduleClassroomSave();
+
+    if (generationStatus === 'failed') {
+        return res.status(502).json({
+            error: 'Could not generate the assignment content right now: ' + generationError + '. The empty assignment was saved — delete it and try again.',
+            assignment
+        });
+    }
     res.json({ assignment });
 });
 
@@ -2675,6 +2787,35 @@ app.get('/api/teacher/classes/:id/assignments', requireTeacher, (req, res) => {
             return { ...a, submissions: { completed, total: memberCount } };
         });
     res.json({ assignments });
+});
+
+// GET /api/teacher/classes/:id/assignments/:assignmentId — full content + submissions
+app.get('/api/teacher/classes/:id/assignments/:assignmentId', requireTeacher, (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    const a = db.assignments[req.params.assignmentId];
+    if (!a || a.classId !== cls.classId) return res.status(404).json({ error: 'Assignment not found' });
+    const subs = db.assignmentSubmissions.filter(s => s.assignmentId === a.assignmentId);
+    res.json({ assignment: a, submissions: subs });
+});
+
+// GET /api/student/assignments/:assignmentId — single assignment with content for a student
+app.get('/api/student/assignments/:assignmentId', requireAuth, (req, res) => {
+    const a = db.assignments[req.params.assignmentId];
+    if (!a) return res.status(404).json({ error: 'Assignment not found' });
+    const isMember = db.classMembers.some(m =>
+        m.classId === a.classId && m.studentUserId === req.user.userId && !m.removedAt);
+    if (!isMember) return res.status(403).json({ error: 'Not in this class' });
+    const cls = db.classes[a.classId];
+    const sub = db.assignmentSubmissions.find(s => s.assignmentId === a.assignmentId && s.studentUserId === req.user.userId);
+    res.json({
+        assignment: a,
+        className: cls ? cls.name : '',
+        classSubject: cls ? cls.subject : '',
+        status: sub ? sub.status : 'pending',
+        score: sub ? sub.score : null,
+        completedAt: sub ? sub.completedAt : null
+    });
 });
 
 // DELETE /api/teacher/classes/:id/assignments/:assignmentId — remove an assignment

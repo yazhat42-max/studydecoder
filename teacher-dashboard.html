@@ -87,6 +87,18 @@ th { color:#8899a6; font-size:12px; text-transform:uppercase; letter-spacing:0.5
 .assign-meta { font-size:12px; color:#8899a6; margin-top:6px; }
 .assign-instr { font-size:13px; color:#d4d9de; margin-top:6px; line-height:1.45; padding:8px 10px; background:rgba(79,140,255,0.06); border:1px solid rgba(79,140,255,0.18); border-radius:6px; white-space:pre-wrap; word-break:break-word; }
 .assign-instr.muted { background:transparent; border:0; padding:0; color:#71767b; }
+.assign-content-list { padding-left:18px; }
+.assign-content-list li { padding:14px 0; border-bottom:1px solid #2f3336; }
+.assign-content-list li:last-child { border-bottom:0; }
+.ac-q { color:#e7e9ea; line-height:1.55; margin-bottom:8px; }
+.ac-marks { color:#8899a6; font-size:13px; font-weight:500; margin-left:6px; }
+.ac-opts { padding:6px 0 8px 4px; color:#a9b3bd; font-size:14px; line-height:1.7; }
+.ac-answer { margin-top:6px; }
+.ac-answer summary { cursor:pointer; color:#4f8cff; font-size:13px; font-weight:600; padding:4px 0; }
+.ac-answer > div { padding:8px 12px; margin-top:6px; background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.22); border-radius:6px; color:#d4d9de; font-size:14px; line-height:1.55; }
+.ac-explain { background:rgba(245,158,11,0.06) !important; border-color:rgba(245,158,11,0.22) !important; margin-top:6px; }
+.ac-front { font-weight:700; color:#e7e9ea; margin-bottom:4px; }
+.ac-back { color:#a9b3bd; font-size:14px; line-height:1.5; }
 </style>
 </head>
 <body>
@@ -233,7 +245,7 @@ function renderClassList(classes){
         </div>
         <div class="sub">${c.memberCount || 0} student${(c.memberCount===1)?'':'s'}</div>
         <div class="card-actions">
-          <button class="btn" data-open="${esc(c.classId)}" data-name="${esc(c.name)}">Open</button>
+          <button class="btn" data-open="${esc(c.classId)}" data-name="${esc(c.name)}" data-subject="${esc(c.subject || '')}">Open</button>
           <button class="btn-danger" data-archive="${esc(c.classId)}" data-aname="${esc(c.name)}">Archive</button>
         </div>
       </div>`;
@@ -246,7 +258,7 @@ function renderClassList(classes){
     setTimeout(() => { b.textContent = t; }, 1400);
   }));
   slot.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => {
-    openClass(b.dataset.open, b.dataset.name);
+    openClass(b.dataset.open, b.dataset.name, b.dataset.subject);
   }));
   slot.querySelectorAll('[data-archive]').forEach(b => b.addEventListener('click', () => {
     if (!confirm('Archive "' + b.dataset.aname + '"? Students in this class will lose their full access.')) return;
@@ -285,8 +297,8 @@ function createClass(){
 }
 
 /* ===================== VIEW B: CLASS DRILL-DOWN ===================== */
-function openClass(classId, className){
-  state = { view:'class', classId, className, tab:'roster', studentView:null };
+function openClass(classId, className, classSubject){
+  state = { view:'class', classId, className, classSubject: classSubject || '', tab:'roster', studentView:null };
   renderClassShell();
 }
 
@@ -389,10 +401,12 @@ function renderRoster(students){
 /* ----- ASSIGNMENTS ----- */
 function loadAssignments(){
   const slot = document.getElementById('tabSlot');
+  const subj = state.classSubject ? esc(state.classSubject) : 'this class\'s subject';
   slot.innerHTML = `
     <div class="card">
       <div class="section-title" style="margin-bottom:14px;">New assignment</div>
       <div id="asgErr"></div>
+      <p class="muted" style="margin-bottom:14px;font-size:13px;">AI will generate the actual questions / worksheet / flashcards for <strong>${subj}</strong> when you create this assignment. Your students will see the same content when they open it.</p>
       <div class="form-row">
         <div>
           <label class="form-label">Type *</label>
@@ -402,19 +416,50 @@ function loadAssignments(){
             <option value="deck">Flashcard deck</option>
           </select>
         </div>
-        <div><label class="form-label">Title *</label><input class="form-input" id="asgTitle" placeholder="Module B essay practice"></div>
-      </div>
-      <div>
-        <label class="form-label">Instructions for students</label>
-        <textarea class="form-input" id="asgRef" rows="3" placeholder="What should they do? e.g. 'Complete the 8-mark question on Frankenstein in Module B Practice — submit your answer for AI marking.' Paste a link to a saved worksheet or deck if you have one."></textarea>
+        <div><label class="form-label">Title *</label><input class="form-input" id="asgTitle" placeholder="Module B Frankenstein essay practice"></div>
       </div>
       <div class="form-row" style="margin-top:14px;">
-        <div><label class="form-label">Due date</label><input class="form-input" id="asgDue" type="date"></div>
-        <div></div>
+        <div>
+          <label class="form-label">Topic / module</label>
+          <input class="form-input" id="asgModule" placeholder="e.g. Module B Critical Study — Frankenstein">
+        </div>
+        <div>
+          <label class="form-label">Difficulty</label>
+          <select class="form-select" id="asgDifficulty">
+            <option value="easy">Easy</option>
+            <option value="standard" selected>Standard</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
       </div>
-      <button class="btn" id="asgCreate" style="margin-top:14px;">Create assignment</button>
+      <div class="form-row" style="margin-top:14px;">
+        <div>
+          <label class="form-label" id="asgCountLabel">Number of questions</label>
+          <input class="form-input" id="asgCount" type="number" min="1" max="25" value="6">
+        </div>
+        <div>
+          <label class="form-label">Due date</label>
+          <input class="form-input" id="asgDue" type="date">
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <label class="form-label">Extra instructions for students (optional)</label>
+        <textarea class="form-input" id="asgInstructions" rows="2" placeholder="e.g. 'Write your essay response in your exercise book and bring it to class.'"></textarea>
+      </div>
+      <button class="btn" id="asgCreate" style="margin-top:14px;">Generate &amp; assign</button>
     </div>
     <div id="asgListSlot"><div class="card muted">Loading assignments…</div></div>`;
+
+  // Keep the count label sensible (Cards vs Questions) when the type changes
+  const typeSel = document.getElementById('asgType');
+  const countLbl = document.getElementById('asgCountLabel');
+  const countInp = document.getElementById('asgCount');
+  function syncCountLabel() {
+    if (typeSel.value === 'deck') { countLbl.textContent = 'Number of cards'; countInp.value = countInp.value || '10'; }
+    else { countLbl.textContent = 'Number of questions'; countInp.value = countInp.value || '6'; }
+  }
+  typeSel.addEventListener('change', syncCountLabel);
+  syncCountLabel();
 
   document.getElementById('asgCreate').addEventListener('click', createAssignment);
   refreshAssignmentList();
@@ -438,21 +483,89 @@ function renderAssignmentList(assignments){
   const items = assignments.map(a => {
     const sub = a.submissions || { completed:0, total:0 };
     const due = a.dueAt ? 'Due ' + esc(fmtDate(a.dueAt)) : 'No due date';
-    const instr = a.refId ? `<div class="assign-instr">${escMultiline(a.refId)}</div>` : '<div class="assign-instr muted" style="font-style:italic;">No instructions added.</div>';
+    const spec = a.spec || {};
+    const specBits = [
+      spec.module ? esc(spec.module) : '',
+      spec.difficulty ? esc(spec.difficulty.charAt(0).toUpperCase() + spec.difficulty.slice(1)) : '',
+      spec.count ? esc(spec.count) + (a.type === 'deck' ? ' cards' : ' questions') : ''
+    ].filter(Boolean).join(' · ');
+    const specRow = specBits ? `<div class="assign-meta" style="margin-top:4px;">📋 ${specBits}</div>` : '';
+    // Backward-compat: assignments created before the AI-generation refactor
+    // used `refId` for free-text instructions and don't have spec/content.
+    const instructionsText = a.instructions || a.refId || '';
+    const instr = instructionsText
+      ? `<div class="assign-instr">${escMultiline(instructionsText)}</div>`
+      : '';
+    let statusBadge = '';
+    if (a.generationStatus === 'failed') {
+      statusBadge = `<div class="assign-instr" style="background:rgba(220,53,69,0.08);border-color:rgba(220,53,69,0.3);color:#ff8088;">⚠️ Content generation failed${a.generationError ? ': ' + esc(a.generationError) : ''}. Delete and try again.</div>`;
+    } else if (a.generationStatus === 'pending') {
+      statusBadge = `<div class="assign-instr" style="background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.3);color:#fcd34d;">⏳ Content not yet generated.</div>`;
+    }
     return `<li>
       <div style="flex:1; min-width:0;">
         <div><span class="badge">${esc(a.type||'')}</span> &nbsp;<strong>${esc(a.title)}</strong></div>
+        ${specRow}
         ${instr}
+        ${statusBadge}
         <div class="assign-meta">${due}</div>
       </div>
       <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0;">
         <div class="muted">${sub.completed} / ${sub.total} completed</div>
+        <button class="btn-ghost asg-view" data-id="${esc(a.assignmentId)}" style="font-size:12px; padding:6px 12px; border-radius:8px; cursor:pointer;">View content</button>
         <button class="btn-danger asg-del" data-id="${esc(a.assignmentId)}" data-title="${esc(a.title)}" style="font-size:12px; padding:6px 12px; border-radius:8px; cursor:pointer;">Delete</button>
       </div>
     </li>`;
   }).join('');
-  slot.innerHTML = `<div class="card"><div class="section-title" style="margin-bottom:14px;">Assignments</div><ul class="assign-list">${items}</ul></div>`;
+  slot.innerHTML = `<div class="card"><div class="section-title" style="margin-bottom:14px;">Assignments</div><ul class="assign-list">${items}</ul></div>` +
+    '<div id="asgViewSlot"></div>';
   slot.querySelectorAll('.asg-del').forEach(btn => btn.addEventListener('click', () => deleteAssignment(btn.dataset.id, btn.dataset.title)));
+  slot.querySelectorAll('.asg-view').forEach(btn => btn.addEventListener('click', () => viewAssignmentContent(btn.dataset.id)));
+}
+
+function viewAssignmentContent(assignmentId){
+  const slot = document.getElementById('asgViewSlot');
+  slot.innerHTML = '<div class="card muted">Loading…</div>';
+  api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/assignments/' + encodeURIComponent(assignmentId))
+    .then(r => r.ok ? r.json() : Promise.reject(r))
+    .then(d => renderAssignmentContent(d.assignment))
+    .catch(() => { slot.innerHTML = '<div class="error-banner">Could not load assignment content.</div>'; });
+}
+
+function renderAssignmentContent(a){
+  const slot = document.getElementById('asgViewSlot');
+  if (!a || !a.content){
+    slot.innerHTML = '<div class="card muted">No content saved for this assignment.</div>';
+    return;
+  }
+  let body = '';
+  if (a.type === 'deck' && Array.isArray(a.content.cards)){
+    body = '<ol class="assign-content-list">' + a.content.cards.map((c, i) =>
+      `<li><div class="ac-front">${esc(c.front || '')}</div><div class="ac-back">${esc(c.back || '')}</div></li>`
+    ).join('') + '</ol>';
+  } else if (Array.isArray(a.content.questions)){
+    body = '<ol class="assign-content-list">' + a.content.questions.map((q, i) => {
+      const opts = Array.isArray(q.options) && q.options.length
+        ? '<div class="ac-opts">' + q.options.map(o => '<div>' + esc(o) + '</div>').join('') + '</div>'
+        : '';
+      const marks = q.marks ? `<span class="ac-marks">[${esc(q.marks)} marks]</span>` : '';
+      return `<li>
+        <div class="ac-q"><strong>${esc(q.question || '')}</strong> ${marks}</div>
+        ${opts}
+        <details class="ac-answer"><summary>Show model answer</summary><div>${escMultiline(q.answer || '')}</div>${q.explanation ? `<div class="ac-explain"><em>Marking note:</em> ${escMultiline(q.explanation)}</div>` : ''}</details>
+      </li>`;
+    }).join('') + '</ol>';
+  } else {
+    body = '<div class="muted">Content is in an unknown format.</div>';
+  }
+  slot.innerHTML = `<div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <div class="section-title" style="margin:0;">${esc(a.title)} — content preview</div>
+      <button class="btn-ghost" id="asgViewClose" style="font-size:12px;padding:6px 12px;border-radius:8px;cursor:pointer;">Close</button>
+    </div>
+    ${body}
+  </div>`;
+  document.getElementById('asgViewClose').addEventListener('click', () => { slot.innerHTML = ''; });
 }
 
 function escMultiline(s){
@@ -478,27 +591,33 @@ function deleteAssignment(assignmentId, title){
 function createAssignment(){
   const type = document.getElementById('asgType').value;
   const title = document.getElementById('asgTitle').value.trim();
-  const refId = document.getElementById('asgRef').value.trim();
+  const module = document.getElementById('asgModule').value.trim();
+  const difficulty = document.getElementById('asgDifficulty').value;
+  const count = parseInt(document.getElementById('asgCount').value, 10) || 6;
+  const instructions = document.getElementById('asgInstructions').value.trim();
   const dueAt = document.getElementById('asgDue').value;
   const errSlot = document.getElementById('asgErr');
   errSlot.innerHTML = '';
   if (!title){ errSlot.innerHTML = '<div class="error-banner">Title is required.</div>'; return; }
+  if (!module){ errSlot.innerHTML = '<div class="error-banner">A topic or module is required so the AI knows what to generate.</div>'; return; }
   const btn = document.getElementById('asgCreate');
-  btn.disabled = true; btn.textContent = 'Creating…';
+  btn.disabled = true; btn.textContent = 'Generating content (10-20s)…';
   api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/assignments', {
-    method:'POST', body: JSON.stringify({ type, refId: refId || null, title, dueAt: dueAt || null })
+    method:'POST',
+    body: JSON.stringify({ type, title, module, difficulty, count, instructions: instructions || null, dueAt: dueAt || null })
   })
     .then(async r => {
       const d = await r.json().catch(()=>({}));
-      btn.disabled = false; btn.textContent = 'Create assignment';
+      btn.disabled = false; btn.textContent = 'Generate & assign';
       if (!r.ok){ errSlot.innerHTML = '<div class="error-banner">' + esc(d.error || 'Could not create assignment.') + '</div>'; return; }
       document.getElementById('asgTitle').value = '';
-      document.getElementById('asgRef').value = '';
+      document.getElementById('asgModule').value = '';
+      document.getElementById('asgInstructions').value = '';
       document.getElementById('asgDue').value = '';
       refreshAssignmentList();
     })
     .catch(() => {
-      btn.disabled = false; btn.textContent = 'Create assignment';
+      btn.disabled = false; btn.textContent = 'Generate & assign';
       errSlot.innerHTML = '<div class="error-banner">Network error. Please try again.</div>';
     });
 }
