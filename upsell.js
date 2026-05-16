@@ -369,5 +369,121 @@ window.Upsell = (function () {
         overlay.style.display = 'flex';
     }
 
-    return { get, renderModal, notifyOnReset, checkReminder, checkGracePeriodEnding, showPageUpgradeModal, setCachedUser };
+    /**
+     * Show a subject-locked modal when an AI endpoint returns 402 with
+     * code SUBJECT_LOCKED. `data` is the parsed JSON body from that response.
+     * Fetches /api/classroom-pricing on first call to compute the discount.
+     */
+    function showSubjectLockedModal(data) {
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
+        const subjectName = (data && (data.requestedSubjectName || data.subject)) || 'this subject';
+        const enrolled = (data && Array.isArray(data.enrolledSubjects)) ? data.enrolledSubjects : [];
+        const enrolledLine = enrolled.length
+            ? 'Your class only covers <strong>' + enrolled.map(escAttr).join(', ') + '</strong>.'
+            : 'Your class hasn\'t set a subject yet — ask your teacher to set one.';
+
+        let overlay = document.getElementById('sdSubjectLockedOverlay');
+        if (overlay) overlay.remove();
+        overlay = document.createElement('div');
+        overlay.id = 'sdSubjectLockedOverlay';
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px;';
+        overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+        overlay.innerHTML = `
+            <div style="background:#1a1a26;border:1px solid rgba(167,139,250,0.35);border-radius:20px;padding:30px 28px 22px;max-width:480px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.7);">
+                <div style="font-size:2.4rem;margin-bottom:12px;">🔒</div>
+                <h2 style="color:#a78bfa;font-size:1.3rem;font-weight:800;margin-bottom:6px;">Locked: ${escAttr(subjectName)}</h2>
+                <p style="color:rgba(255,255,255,0.65);font-size:0.92rem;line-height:1.55;margin-bottom:18px;">${enrolledLine}<br/>Unlock every subject across Study Decoder with the classroom discount.</p>
+
+                <div id="sdSLPricing" style="margin-bottom:14px;color:rgba(255,255,255,0.5);font-size:0.85rem;">Loading discounted pricing…</div>
+
+                <button id="sdSLUnlockBtn" disabled style="display:block;width:100%;padding:16px 20px;background:linear-gradient(135deg,#4f3dc4,#7c3aed);color:#fff;border:2px solid rgba(167,139,250,0.4);border-radius:14px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:10px;font-family:inherit;box-shadow:0 6px 24px rgba(102,126,234,0.4);opacity:0.5;">Unlock Every Subject →</button>
+
+                <p style="color:rgba(255,255,255,0.4);font-size:0.78rem;margin-bottom:10px;">Or stick with <strong>${enrolled.length ? enrolled.map(escAttr).join(' / ') : 'your class subject'}</strong> for free as long as your teacher's seat is active.</p>
+
+                <button id="sdSLCloseBtn" style="width:100%;padding:10px;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-weight:600;cursor:pointer;font-family:inherit;font-size:0.85rem;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        document.getElementById('sdSLCloseBtn').onclick = () => overlay.remove();
+
+        fetch(API_BASE + '/api/classroom-pricing')
+            .then(r => r.json())
+            .then(p => {
+                const priceEl = document.getElementById('sdSLPricing');
+                const btn = document.getElementById('sdSLUnlockBtn');
+                if (!priceEl || !btn) return;
+                const showLifetime = p.foundingActive;
+                const plan = showLifetime ? 'classroom-lifetime' : 'classroom-monthly';
+                if (showLifetime) {
+                    priceEl.innerHTML = '<div style="font-size:0.72rem;color:#fbbf24;letter-spacing:0.5px;text-transform:uppercase;font-weight:700;margin-bottom:6px;">⚡ FOUNDING CLASSROOM DEAL — 20% OFF</div>'
+                        + '<div style="font-size:2.4rem;font-weight:900;color:#fff;line-height:1;">' + escAttr(p.lifetimePriceLabel) + '</div>'
+                        + '<div style="font-size:0.85rem;color:rgba(255,255,255,0.45);text-decoration:line-through;margin-top:4px;">' + escAttr(p.standardLifetimePriceLabel) + ' regular</div>'
+                        + '<div style="font-size:0.8rem;color:rgba(255,255,255,0.55);margin-top:6px;">One-time payment · lifetime access · every subject</div>';
+                    btn.textContent = 'Unlock Lifetime — ' + p.lifetimePriceLabel + ' →';
+                } else {
+                    priceEl.innerHTML = '<div style="font-size:2.4rem;font-weight:900;color:#fff;line-height:1;">' + escAttr(p.monthlyPriceLabel) + '<span style="font-size:1rem;font-weight:600;color:rgba(255,255,255,0.5);"> / month</span></div>'
+                        + '<div style="font-size:0.85rem;color:rgba(255,255,255,0.45);text-decoration:line-through;margin-top:4px;">' + escAttr(p.standardMonthlyPriceLabel) + '/mo regular</div>'
+                        + '<div style="font-size:0.8rem;color:rgba(255,255,255,0.55);margin-top:6px;">Cancel anytime · every subject unlocked</div>';
+                    btn.textContent = 'Unlock — ' + p.monthlyPriceLabel + '/mo →';
+                }
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.onclick = () => startCheckout(plan, btn);
+            })
+            .catch(() => {
+                const priceEl = document.getElementById('sdSLPricing');
+                if (priceEl) priceEl.textContent = 'Pricing temporarily unavailable.';
+            });
+    }
+
+    function startCheckout(plan, btn) {
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
+        const orig = btn.textContent;
+        btn.disabled = true; btn.textContent = 'Opening checkout…';
+        fetch(API_BASE + '/api/create-checkout-session', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ plan })
+        })
+            .then(async r => {
+                const d = await r.json().catch(() => ({}));
+                if (!r.ok) {
+                    alert(d.error || 'Could not start checkout.');
+                    btn.disabled = false; btn.textContent = orig;
+                    return;
+                }
+                if (d.url) window.location.href = d.url;
+                else { btn.disabled = false; btn.textContent = orig; }
+            })
+            .catch(() => {
+                alert('Network error. Please try again.');
+                btn.disabled = false; btn.textContent = orig;
+            });
+    }
+
+    function escAttr(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    /**
+     * One-line helper that tool pages can call after any fetch():
+     *
+     *   const r = await fetch('/api/exam/generate', ...);
+     *   if (await SDUpsell.handleApiError(r)) return;  // modal shown, abort
+     *
+     * Returns true (and shows the appropriate modal) if the response is a
+     * known upsell-flavoured error (SUBJECT_LOCKED, freeTierExhausted).
+     * Returns false otherwise so the caller can fall through to its own
+     * error handling.
+     */
+    async function handleApiError(response) {
+        if (!response || response.ok) return false;
+        let data = null;
+        try { data = await response.clone().json(); } catch (e) { return false; }
+        if (!data) return false;
+        if (data.code === 'SUBJECT_LOCKED') { showSubjectLockedModal(data); return true; }
+        if (data.freeTierExhausted) { showPageUpgradeModal(); return true; }
+        return false;
+    }
+
+    return { get, renderModal, notifyOnReset, checkReminder, checkGracePeriodEnding, showPageUpgradeModal, showSubjectLockedModal, handleApiError, setCachedUser };
 })();

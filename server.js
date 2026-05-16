@@ -553,6 +553,61 @@ function hasDayPassActive(user) {
     return !!(user && user.dayPassExpiry && user.dayPassExpiry > Date.now());
 }
 
+/**
+ * Set of subjects a student has access to via active class memberships.
+ * Includes only memberships in non-archived classes whose teacher currently
+ * holds an active teacher seat.
+ */
+function getEnrolledSubjects(userId) {
+    const subjects = new Set();
+    if (!userId || !Array.isArray(db.classMembers)) return subjects;
+    for (const m of db.classMembers) {
+        if (m.studentUserId !== userId || m.removedAt) continue;
+        const cls = db.classes[m.classId];
+        if (!cls || cls.archivedAt) continue;
+        const teacher = db.users[cls.teacherUserId];
+        if (!teacher || !hasActiveTeacherSeat(teacher)) continue;
+        if (cls.subject) subjects.add(cls.subject);
+    }
+    return subjects;
+}
+
+/**
+ * Subject gate for AI generation endpoints.
+ *
+ * - Paid / teacher / owner / OG accounts: returns null (no gate).
+ * - Free-tier accounts (no subscription, no class link): returns null —
+ *   existing free-tier limits apply elsewhere; we don't subject-lock free
+ *   tier because they don't get "full access via class" in the first place.
+ * - Class-linked-only students: locked unless the requested subject matches
+ *   one of their enrolled class subjects.
+ *
+ * Endpoints that take a subject parameter should call this BEFORE any free-
+ * tier checks. If it returns a non-null object, return res.status(402).json(that).
+ */
+function checkSubjectGate(user, subject) {
+    if (!user) return null;
+    const role = getUserRole(user.email);
+    if (role === 'owner' || role === 'lifetime' || role === 'og_tester') return null;
+    if (hasDayPassActive(user)) return null;
+    if (user.subscribed === true) return null;
+    if (hasActiveTeacherSeat(user)) return null;
+    if (!isLinkedToActiveTeacher(user.userId)) return null;
+    // Class-linked-only access: subject must match one of their enrolled classes.
+    const enrolled = getEnrolledSubjects(user.userId);
+    const requestedName = subject ? (resolveSubjectMeta(subject).name || subject) : '';
+    if (subject && (enrolled.has(subject) || enrolled.has(requestedName))) return null;
+    return {
+        error: enrolled.size
+            ? `Your class only covers ${Array.from(enrolled).join(', ')}. Upgrade to unlock all subjects across Study Decoder.`
+            : 'Your class hasn\'t set a subject yet. Ask your teacher to set one, or upgrade to unlock all subjects.',
+        code: 'SUBJECT_LOCKED',
+        subject: subject || null,
+        requestedSubjectName: requestedName,
+        enrolledSubjects: Array.from(enrolled)
+    };
+}
+
 // In-memory database with persistence
 const db = {
     users: loadDB(USERS_FILE, {}),
@@ -1099,7 +1154,7 @@ async function autoSyncStripeSubscription(userId, email) {
                     // Plan mismatch — recalculate expiration from Stripe
                     const sessionDate = new Date(completedSession.created * 1000);
                     const correctedExp = new Date(sessionDate);
-                    if (plan === 'lifetime') correctedExp.setFullYear(correctedExp.getFullYear() + 100);
+                    if (plan === 'lifetime' || plan === 'classroom-lifetime') correctedExp.setFullYear(correctedExp.getFullYear() + 100);
                     else if (plan === 'yearly') correctedExp.setFullYear(correctedExp.getFullYear() + 1);
                     else correctedExp.setMonth(correctedExp.getMonth() + 1);
                     upsertUser(userId, { plan, expiresAt: correctedExp.toISOString() });
@@ -1112,7 +1167,7 @@ async function autoSyncStripeSubscription(userId, email) {
             // Calculate new expiration from session creation
             const sessionDate = new Date(completedSession.created * 1000);
             const expiration = new Date(sessionDate);
-            if (plan === 'lifetime') {
+            if (plan === 'lifetime' || plan === 'classroom-lifetime') {
                 expiration.setFullYear(expiration.getFullYear() + 100);
             } else if (plan === 'yearly') {
                 expiration.setFullYear(expiration.getFullYear() + 1);
@@ -3298,6 +3353,10 @@ app.post('/api/decks/:id/generate-cards', requireAuth, async (req, res) => {
     if (!deck) return res.status(404).json({ error: 'Deck not found' });
     if (deck.ownerUserId !== req.user.userId) return res.status(403).json({ error: 'Not your deck' });
 
+    // Subject lock for class-linked-only students. Deck subject sets the gate.
+    const subjectLock = checkSubjectGate(req.user, deck.subject);
+    if (subjectLock) return res.status(402).json(subjectLock);
+
     const hasFull = hasFullAccess(req.user);
     if (!hasFull && !tryUseFreeTier(req.user.userId, 'flashcards')) {
         return res.status(403).json({ error: 'Daily flashcard limit reached', freeTierExhausted: true, botType: 'flashcards' });
@@ -3673,7 +3732,8 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
     try {
         const { plan } = req.body;
         const isTeacherPlan = !!TEACHER_PLANS[plan];
-        if (!isTeacherPlan && !['monthly', 'yearly', 'lifetime'].includes(plan)) {
+        const isClassroomPlan = CLASSROOM_PLANS.has(plan);
+        if (!isTeacherPlan && !isClassroomPlan && !['monthly', 'yearly', 'lifetime'].includes(plan)) {
             return res.status(400).json({ error: 'Invalid plan' });
         }
 
@@ -3691,8 +3751,30 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
                 });
             }
         }
-        
+
         const user = req.user;
+
+        // Classroom plans require the user to be a student currently linked to
+        // an active teacher's class. Locks the discount to the right audience.
+        if (isClassroomPlan) {
+            if (!isLinkedToActiveTeacher(user.userId)) {
+                return res.status(403).json({
+                    error: 'Classroom pricing is only available to students linked to a teacher\'s class. Join a class first or pick a standard plan.',
+                    code: 'NOT_LINKED_TO_TEACHER'
+                });
+            }
+            // Mirror the founding-tier monthly block: classroom monthly only
+            // unlocks once founding lifetime sells out.
+            if (plan === 'classroom-monthly') {
+                const cp = getClassroomPricing();
+                if (cp.foundingActive) {
+                    return res.status(409).json({
+                        error: `The classroom $3/mo plan unlocks once the founding lifetime deal sells out. Right now your classroom lifetime price is ${cp.lifetimePriceLabel} (20% off ${cp.standardLifetimePriceLabel}).`,
+                        code: 'FOUNDING_TIER_ACTIVE'
+                    });
+                }
+            }
+        }
 
         if (isTeacherPlan) {
             // Teacher seat is a separate SKU — already-subscribed check looks at
@@ -3701,7 +3783,7 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
                 return res.status(400).json({ error: 'You already have an active teacher seat' });
             }
         } else if (user.subscribed && user.expiresAt && new Date(user.expiresAt) > new Date()) {
-            // Already subscribed check (student plans)
+            // Already subscribed check (student plans + classroom plans)
             return res.status(400).json({ error: 'Already subscribed' });
         }
         
@@ -3769,6 +3851,38 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
                         description: `Up to ${TEACHER_STUDENT_CAP} linked students get full access`
                     },
                     unit_amount: meta.amount,
+                    recurring: { interval: 'month' }
+                },
+                quantity: 1
+            }];
+        } else if (plan === 'classroom-lifetime') {
+            // Classroom-only discount on the founding lifetime offer (20% off
+            // the active tier). Same lifetime grant once paid; gated to
+            // class-linked students at the top of this handler.
+            const cp = getClassroomPricing();
+            sessionParams.mode = 'payment';
+            sessionParams.line_items = [{
+                price_data: {
+                    currency: 'aud',
+                    product_data: {
+                        name: 'Study Decoder Premium — Lifetime (Classroom discount)',
+                        description: `Unlocks every subject forever — 20% off the founding tier (${cp.standardLifetimePriceLabel}).`
+                    },
+                    unit_amount: cp.lifetimePriceCents
+                },
+                quantity: 1
+            }];
+        } else if (plan === 'classroom-monthly') {
+            // Classroom-only $3/mo plan — unlocks after founding sells out.
+            sessionParams.mode = 'subscription';
+            sessionParams.line_items = [{
+                price_data: {
+                    currency: 'aud',
+                    product_data: {
+                        name: 'Study Decoder Premium — Monthly (Classroom discount)',
+                        description: 'Unlocks every subject — discounted for class-linked students.'
+                    },
+                    unit_amount: CLASSROOM_MONTHLY_PRICE_CENTS,
                     recurring: { interval: 'month' }
                 },
                 quantity: 1
@@ -4130,14 +4244,15 @@ app.post('/api/stripe-webhook', async (req, res) => {
 
                 if (userId) {
                     const expiration = new Date();
-                    if (plan === 'lifetime') {
+                    if (plan === 'lifetime' || plan === 'classroom-lifetime') {
                         expiration.setFullYear(expiration.getFullYear() + 100);
                     } else if (plan === 'yearly') {
                         expiration.setFullYear(expiration.getFullYear() + 1);
                     } else {
+                        // monthly + classroom-monthly
                         expiration.setMonth(expiration.getMonth() + 1);
                     }
-                    
+
                     upsertUser(userId, {
                         subscribed: true,
                         plan: plan,
@@ -4346,6 +4461,41 @@ function getFoundingCap(claimed) {
     return getCurrentFoundingTier(claimed).cap;
 }
 
+/**
+ * Classroom upgrade pricing — discount for students linked to a teacher's
+ * class who want to unlock subjects beyond their class's subject.
+ *
+ * - While founding lifetime spots remain: 20% off the active founding tier.
+ *   ($14.99 → $11.99 …  $37.50 → $30.00)
+ * - After founding sells out: $3/mo (vs the standard $5/mo monthly tier).
+ *
+ * Returns { lifetimePriceCents, lifetimePriceLabel, monthlyPriceCents,
+ * monthlyPriceLabel, foundingActive }.
+ */
+const CLASSROOM_LIFETIME_DISCOUNT = 0.20;
+const CLASSROOM_MONTHLY_PRICE_CENTS = 300; // $3.00 AUD
+function getClassroomPricing() {
+    const claimed = countLifetimeClaimed();
+    const tier = getCurrentFoundingTier(claimed);
+    const foundingActive = claimed < 1000;
+    const lifeCents = Math.round(tier.priceCents * (1 - CLASSROOM_LIFETIME_DISCOUNT));
+    const lifeLabel = '$' + (lifeCents / 100).toFixed(2);
+    return {
+        foundingActive,
+        lifetimePriceCents: lifeCents,
+        lifetimePriceLabel: lifeLabel,
+        // Anchor against the regular tier so the discount is visible to the UI.
+        standardLifetimePriceCents: tier.priceCents,
+        standardLifetimePriceLabel: tier.priceLabel,
+        monthlyPriceCents: CLASSROOM_MONTHLY_PRICE_CENTS,
+        monthlyPriceLabel: '$3.00',
+        standardMonthlyPriceCents: 500,
+        standardMonthlyPriceLabel: '$5.00'
+    };
+}
+
+const CLASSROOM_PLANS = new Set(['classroom-lifetime', 'classroom-monthly']);
+
 function countLifetimeClaimed() {
     let claimed = 0;
     for (const uid of Object.keys(db.users)) {
@@ -4367,6 +4517,16 @@ app.get('/api/spots-left', (req, res) => {
         lifetimePriceCents: tier.priceCents,
         lifetimePriceLabel: tier.priceLabel
     });
+});
+
+/**
+ * GET /api/classroom-pricing — public pricing for the classroom discount
+ * tier (20% off lifetime while founding spots remain, $3/mo afterwards).
+ */
+app.get('/api/classroom-pricing', (req, res) => {
+    const pricing = getClassroomPricing();
+    res.set('Cache-Control', 'public, max-age=60');
+    res.json(pricing);
 });
 
 /**
@@ -7149,6 +7309,14 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
 
     const hasFull = hasFullAccess(user);
 
+    const { subject, topics, duration, difficulty, quickPaper, questionCount } = req.body;
+    if (!subject) return res.status(400).json({ error: 'Subject is required' });
+
+    // Subject lock: class-linked-only students can only generate for their
+    // enrolled class subjects. Paid users + free tier bypass this gate.
+    const subjectLock = checkSubjectGate(user, subject);
+    if (subjectLock) return res.status(402).json(subjectLock);
+
     // Free tier: 3 exams per week (atomic check-and-reserve)
     if (!hasFull) {
         const overLimit = tryReserveExamSlot(req.session.userId, 3);
@@ -7161,9 +7329,6 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
             });
         }
     }
-
-    const { subject, topics, duration, difficulty, quickPaper, questionCount } = req.body;
-    if (!subject) return res.status(400).json({ error: 'Subject is required' });
 
     // Track practice-exam usage for homepage badges + per-user activity
     recordBotStat('practice');
@@ -8825,6 +8990,13 @@ app.post('/api/worksheet/generate', express.json(), async (req, res) => {
     const user = getUser(req.session.userId);
     if (!user) return res.status(401).json({ error: 'User not found' });
 
+    const { subject, topic, questionCount, difficulty } = req.body || {};
+    if (!subject) return res.status(400).json({ error: 'Subject is required' });
+
+    // Subject lock for class-linked-only students.
+    const subjectLock = checkSubjectGate(user, subject);
+    if (subjectLock) return res.status(402).json(subjectLock);
+
     const hasFull = hasFullAccess(user);
     const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'worksheet-generator');
     if (!hasFull && !canUseFree) {
@@ -8834,9 +9006,6 @@ app.post('/api/worksheet/generate', express.json(), async (req, res) => {
             botType: 'worksheet-generator'
         });
     }
-
-    const { subject, topic, questionCount, difficulty } = req.body || {};
-    if (!subject) return res.status(400).json({ error: 'Subject is required' });
 
     const subjectMeta = resolveSubjectMeta(subject);
     const subjectName = subjectMeta.name || subject;
@@ -9057,10 +9226,18 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     recordUserBotUsage(req.session.userId, botType);
 
     const { messages, subject, detailLevel } = req.body;
-    
+
     // Validate messages
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
         return res.status(400).json({ error: 'Messages are required' });
+    }
+
+    // Subject lock for class-linked-only students — only fires when the
+    // request actually carries a subject (generic chat without a subject
+    // is unrestricted so the tutor remains useful for cross-cutting Qs).
+    if (subject) {
+        const subjectLock = checkSubjectGate(user, subject);
+        if (subjectLock) return res.status(402).json(subjectLock);
     }
     
     // OpenAI API key (secured on server)

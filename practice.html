@@ -2375,6 +2375,11 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 clearInterval(factInterval);
 
                 if (!res.ok) {
+                    // Subject lock for class-linked students → dedicated unlock modal
+                    if (window.SDUpsell && await window.SDUpsell.handleApiError(res)) {
+                        document.getElementById('examContent').innerHTML = `<div style="text-align:center;padding:40px 20px;color:#71767b;"><button class="exam-nav-btn" onclick="showQuickPaperSetup()">← Back</button></div>`;
+                        return;
+                    }
                     const err = await res.json().catch(() => ({}));
                     if (err.examLimitReached) {
                         document.getElementById('examContent').innerHTML = `
@@ -2782,6 +2787,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 });
 
                 if (!res.ok) {
+                    if (window.SDUpsell && await window.SDUpsell.handleApiError(res)) return;
                     const err = await res.json().catch(() => ({}));
                     if (err.examLimitReached) {
                         document.getElementById('examContent').innerHTML = `
@@ -2906,6 +2912,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 clearInterval(examFactInterval);
 
                 if (!res.ok) {
+                    if (window.SDUpsell && await window.SDUpsell.handleApiError(res)) return;
                     const err = await res.json().catch(() => ({}));
                     if (err.examLimitReached) {
                         document.getElementById('examContent').innerHTML = `
