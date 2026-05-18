@@ -3115,8 +3115,46 @@ app.get('/api/student/assignments/:assignmentId', requireAuth, (req, res) => {
         band: sub ? sub.band : null,
         answers: sub ? sub.answers : null,
         perQuestion: sub ? sub.perQuestion : null,
-        completedAt: sub ? sub.completedAt : null
+        completedAt: sub ? sub.completedAt : null,
+        draft: sub && sub.status === 'draft' ? { answers: sub.answers, savedAt: sub.draftSavedAt } : null
     });
+});
+
+// POST /api/student/assignments/:assignmentId/draft — save partial answers
+// without marking. Lets students close an exam tab and come back where they
+// left off. Replaced by the real submission when /answers is called.
+app.post('/api/student/assignments/:assignmentId/draft', requireAuth, express.json(), (req, res) => {
+    const a = db.assignments[req.params.assignmentId];
+    if (!a) return res.status(404).json({ error: 'Assignment not found' });
+    const isMember = db.classMembers.some(m =>
+        m.classId === a.classId && m.studentUserId === req.user.userId && !m.removedAt);
+    if (!isMember) return res.status(403).json({ error: 'Not in this class' });
+    // Don't allow drafts on already-completed assignments — re-attempts go
+    // through /answers which writes a fresh submission.
+    let sub = db.assignmentSubmissions.find(s => s.assignmentId === a.assignmentId && s.studentUserId === req.user.userId);
+    if (sub && sub.status === 'completed') {
+        return res.status(409).json({ error: 'This assignment is already submitted. Use Resubmit if you want to change your answers.' });
+    }
+    const submitted = Array.isArray(req.body && req.body.answers) ? req.body.answers : [];
+    const answers = submitted
+        .filter(a => a && typeof a.qIdx === 'number')
+        .map(a => ({ qIdx: a.qIdx, value: String(a.value == null ? '' : a.value).slice(0, 4000) }));
+    if (sub) {
+        sub.status = 'draft';
+        sub.answers = answers;
+        sub.draftSavedAt = new Date().toISOString();
+    } else {
+        sub = {
+            assignmentId: a.assignmentId,
+            studentUserId: req.user.userId,
+            status: 'draft',
+            answers,
+            draftSavedAt: new Date().toISOString()
+        };
+        db.assignmentSubmissions.push(sub);
+    }
+    scheduleClassroomSave();
+    res.json({ success: true, savedAt: sub.draftSavedAt });
 });
 
 // DELETE /api/teacher/classes/:id/assignments/:assignmentId — remove an assignment
