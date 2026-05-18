@@ -38,6 +38,18 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
 .badge.practice { background:rgba(139,92,246,0.18); color:#c4b5fd; }
 .badge.worksheet { background:rgba(245,158,11,0.18); color:#fcd34d; }
 .badge.deck { background:rgba(34,197,94,0.16); color:#86efac; }
+.badge.exam { background:rgba(239,68,68,0.18); color:#fca5a5; }
+.exam-timer { position:sticky; top:60px; z-index:40; background:linear-gradient(135deg,#1a1a26,#16202a); border:1px solid rgba(239,68,68,0.3); border-radius:14px; padding:14px 18px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; box-shadow:0 8px 24px rgba(0,0,0,0.4); }
+.exam-timer .clock { font-family:'JetBrains Mono', ui-monospace, monospace; font-size:22px; font-weight:800; color:#fca5a5; letter-spacing:1px; }
+.exam-timer .clock.warn { color:#fcd34d; animation:examPulse 1s ease-in-out infinite; }
+.exam-timer .clock.urgent { color:#ff6b6b; animation:examPulse .5s ease-in-out infinite; }
+@keyframes examPulse { 50% { opacity:.5; } }
+.exam-timer .meta { font-size:12px; color:#a9b3bd; }
+.exam-section { background:#16202a; border:1px solid #2f3336; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
+.exam-section-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; padding-bottom:10px; border-bottom:1px solid #2f3336; margin-bottom:12px; }
+.exam-section-title { font-size:15px; font-weight:800; color:#e7e9ea; }
+.exam-section-marks { font-size:12px; color:#8899a6; font-weight:600; }
+.exam-section-instr { font-size:13px; color:#a9b3bd; line-height:1.5; margin-bottom:14px; font-style:italic; }
 .status-pill { display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:700; padding:5px 12px; border-radius:999px; }
 .status-pending { background:rgba(245,158,11,0.12); color:#fcd34d; border:1px solid rgba(245,158,11,0.3); }
 .status-completed { background:rgba(34,197,94,0.16); color:#86efac; border:1px solid rgba(34,197,94,0.4); }
@@ -157,6 +169,7 @@ function render(data){
 
     let body = '';
     let scoreBanner = '';
+    let timerBlock = '';
     if (!a.content){
         body = '<div class="error-banner">Your teacher hasn\'t generated content for this assignment yet, or the generation failed. Ask them to delete and re-create it.</div>';
     } else if (a.type === 'deck' && Array.isArray(a.content.cards)){
@@ -169,6 +182,69 @@ function render(data){
                 </div>`
             ).join('') +
             '</div>';
+    } else if (a.type === 'exam' && Array.isArray(a.content.sections)){
+        // Sectioned exam view with a sticky countdown timer at the top.
+        if (hasMarking && data.totalPossible != null) {
+            scoreBanner = `<div class="score-banner">
+                <div>
+                    <div class="num">${esc(data.totalAwarded)} / ${esc(data.totalPossible)}</div>
+                    <div class="lbl">${esc(data.score || 0)}% &middot; AI-marked exam</div>
+                </div>
+                <div class="band">${esc(data.band || '')}</div>
+            </div>`;
+        }
+        if (!isCompleted) {
+            const mins = a.content.duration || 60;
+            timerBlock = `<div class="exam-timer" id="examTimer" data-minutes="${mins}">
+                <div>
+                    <div class="meta">⏱ Time remaining</div>
+                    <div class="clock" id="examClock">${mins}:00</div>
+                </div>
+                <div class="meta" style="text-align:right;">${esc(a.content.questions ? a.content.questions.length : 0)} questions &middot; ${esc(a.content.totalMarks || '?')} marks total</div>
+            </div>`;
+        }
+        let qCounter = 0;
+        body = a.content.sections.map(sec => {
+            const secMarks = (sec.questions || []).reduce((s, q) => s + (parseInt(q.marks, 10) || 0), 0);
+            const items = (sec.questions || []).map(q => {
+                const i = qCounter++;
+                const marks = q.marks ? `<span class="q-marks">[${esc(q.marks)} marks]</span>` : '';
+                const isMc = q.type === 'mc' && Array.isArray(q.options) && q.options.length;
+                const currentValue = answerLookup[i] || '';
+                let inputHtml = '';
+                if (isMc) {
+                    const letters = ['A','B','C','D','E','F'];
+                    inputHtml = '<div class="q-opts">' + q.options.map((o, j) => {
+                        const letter = letters[j] || String(j+1);
+                        const checked = currentValue && currentValue.toUpperCase().startsWith(letter) ? 'checked' : '';
+                        const disabled = isCompleted ? 'disabled' : '';
+                        return `<label><input type="radio" name="q${i}" value="${esc(letter)}" ${checked} ${disabled}><span>${esc(o)}</span></label>`;
+                    }).join('') + '</div>';
+                } else {
+                    inputHtml = `<textarea class="q-textarea" data-q-idx="${i}" ${isCompleted ? 'disabled' : ''} placeholder="Write your answer here…">${esc(currentValue)}</textarea>`;
+                }
+                return `<li class="q-item" data-q-idx="${i}">
+                    <div class="q-num">Question ${i+1}</div>
+                    <div class="q-text"><strong>${esc(q.question || '')}</strong>${marks}</div>
+                    ${inputHtml}
+                    ${markRow(i, q)}
+                    ${isCompleted ? `<button class="show-answer" data-show="${i}" style="margin-top:10px;">Show model answer ↓</button>
+                        <div class="answer-block" id="ans-${i}" style="display:none;">
+                            <span class="lbl">Model answer</span>
+                            ${escMultiline(q.answer || '')}
+                            ${q.explanation ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(34,197,94,0.22);"><span class="lbl">Marking note</span>${escMultiline(q.explanation)}</div>` : ''}
+                        </div>` : ''}
+                </li>`;
+            }).join('');
+            return `<div class="exam-section">
+                <div class="exam-section-head">
+                    <div class="exam-section-title">${esc(sec.title || 'Section')}</div>
+                    <div class="exam-section-marks">${secMarks} marks</div>
+                </div>
+                ${sec.instructions ? `<div class="exam-section-instr">${esc(sec.instructions)}</div>` : ''}
+                <ol class="q-list">${items}</ol>
+            </div>`;
+        }).join('');
     } else if (Array.isArray(a.content.questions)){
         if (hasMarking && data.totalPossible != null) {
             scoreBanner = `<div class="score-banner">
@@ -214,6 +290,7 @@ function render(data){
 
     const typeClass = (a.type || '').toLowerCase();
     const isDeck = a.type === 'deck';
+    const isExam = a.type === 'exam';
     let actionBtns = '';
     if (a.content) {
         if (isDeck) {
@@ -221,9 +298,10 @@ function render(data){
                 ? `<button class="btn btn-ghost" id="markBtn" data-target="pending">Mark as not done</button>`
                 : `<button class="btn" id="markBtn" data-target="completed">Mark as done ✓</button>`;
         } else if (isCompleted) {
-            actionBtns = `<button class="btn btn-ghost" id="retryBtn">Resubmit answers</button>`;
+            actionBtns = `<button class="btn btn-ghost" id="retryBtn">Re-attempt exam</button>`;
         } else {
-            actionBtns = `<button class="btn" id="submitBtn">Submit answers for marking →</button>`;
+            const label = isExam ? 'Submit exam for marking →' : 'Submit answers for marking →';
+            actionBtns = `<button class="btn" id="submitBtn">${label}</button>`;
         }
     }
 
@@ -239,6 +317,7 @@ function render(data){
             </div>
             ${(a.instructions || a.refId) ? `<div class="instructions"><strong>Teacher's instructions:</strong><br>${escMultiline(a.instructions || a.refId)}</div>` : ''}
         </div>
+        ${timerBlock}
         ${scoreBanner}
         ${body}
         <div class="footer-actions">
@@ -275,6 +354,54 @@ function render(data){
         data.perQuestion = null;
         render(data);
     });
+    // Exam timer
+    startExamTimer();
+}
+
+// Single ticking interval so re-renders don't pile up multiple timers.
+let _examTimerInterval = null;
+let _examTimerExpiresAt = 0;
+function startExamTimer(){
+    const el = document.getElementById('examTimer');
+    if (!el) {
+        if (_examTimerInterval) { clearInterval(_examTimerInterval); _examTimerInterval = null; }
+        return;
+    }
+    const minutes = parseInt(el.dataset.minutes, 10) || 60;
+    // Persist the deadline so refreshing the page doesn't reset the timer.
+    const storeKey = 'sd_exam_deadline_' + assignmentId;
+    const stored = parseInt(sessionStorage.getItem(storeKey) || '0', 10);
+    if (stored && stored > Date.now()) {
+        _examTimerExpiresAt = stored;
+    } else {
+        _examTimerExpiresAt = Date.now() + minutes * 60 * 1000;
+        sessionStorage.setItem(storeKey, String(_examTimerExpiresAt));
+    }
+    if (_examTimerInterval) clearInterval(_examTimerInterval);
+    function tick(){
+        const remaining = Math.max(0, _examTimerExpiresAt - Date.now());
+        const totalSec = Math.round(remaining / 1000);
+        const mm = Math.floor(totalSec / 60);
+        const ss = totalSec % 60;
+        const clock = document.getElementById('examClock');
+        if (!clock) { clearInterval(_examTimerInterval); _examTimerInterval = null; return; }
+        clock.textContent = mm + ':' + String(ss).padStart(2, '0');
+        clock.classList.toggle('warn', totalSec <= 600 && totalSec > 60);
+        clock.classList.toggle('urgent', totalSec <= 60);
+        if (totalSec <= 0) {
+            clearInterval(_examTimerInterval);
+            _examTimerInterval = null;
+            sessionStorage.removeItem(storeKey);
+            // Auto-submit when time runs out.
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn && !submitBtn.disabled) {
+                alert('Time\'s up — submitting your exam now.');
+                submitAnswers(submitBtn);
+            }
+        }
+    }
+    tick();
+    _examTimerInterval = setInterval(tick, 1000);
 }
 
 function gatherAnswers(){
@@ -312,6 +439,10 @@ function submitAnswers(btn){
                 btn.disabled = false; btn.textContent = orig;
                 return;
             }
+            // Exam submitted — clear the persisted timer deadline so a
+            // re-attempt starts a fresh clock.
+            try { sessionStorage.removeItem('sd_exam_deadline_' + assignmentId); } catch (e) {}
+            if (_examTimerInterval) { clearInterval(_examTimerInterval); _examTimerInterval = null; }
             loadAssignment();
         })
         .catch(() => {

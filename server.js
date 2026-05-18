@@ -2784,6 +2784,63 @@ RULES:
         return { questions: check.parsed.questions, totalMarks: total };
     }
 
+    if (type === 'exam') {
+        // Full timed exam = 3 sections (MC / Short Answer / Extended Response).
+        // Section sizing scales with the teacher-requested question count.
+        const markGuide = worksheetMarkGuide(subjectMeta.category);
+        const mcCount = Math.max(2, Math.round(count * 0.35));
+        const shortCount = Math.max(2, Math.round(count * 0.45));
+        const extCount = Math.max(1, count - mcCount - shortCount);
+        // Suggested duration: 1.5 min per MC, 4 min per short, 12 min per extended.
+        const suggestedMinutes = Math.max(20, mcCount * 1.5 + shortCount * 4 + extCount * 12);
+        const sys = `You are a NSW ${audience} ${subjectName} teacher writing a single timed exam. Return ONLY valid JSON:
+{
+  "duration": <minutes:int>,
+  "sections": [
+    { "title": "Section I — Multiple Choice", "instructions": "<text>", "questions": [ { "number": <int>, "type":"mc", "marks":1, "question":"<text>", "options":["A) ...","B) ...","C) ...","D) ..."], "answer":"<letter>", "explanation":"<marking note>" } ] },
+    { "title": "Section II — Short Answer", "instructions": "<text>", "questions": [ { "number": <int>, "type":"short", "marks":<int>, "question":"<text>", "answer":"<model answer>", "explanation":"<marking note>" } ] },
+    { "title": "Section III — Extended Response", "instructions": "<text>", "questions": [ { "number": <int>, "type":"extended", "marks":<int>, "question":"<text>", "answer":"<model answer>", "explanation":"<marking note>" } ] }
+  ]
+}
+RULES:
+- Section I: exactly ${mcCount} 1-mark MCQs (A-D, single correct).
+- Section II: exactly ${shortCount} short-answer questions, 2-6 marks each.
+- Section III: exactly ${extCount} extended-response question(s), 7-15 marks each.
+- ${markGuide}
+- Every "question" string ≥ 25 characters of real exam-quality text — no placeholders, no "???".
+- duration ≈ ${suggestedMinutes} minutes.
+- Output ONLY the JSON.`;
+        const usr = `Subject: ${subjectName}\nTopic / module: ${module || 'Teacher-set exam'}\nDifficulty: ${diff}\nTotal questions: ${count}`;
+        const reply = await callOpenAIChat({
+            model: aiSettings.model, jsonMode: true,
+            maxTokens: Math.min(aiSettings.maxTokens, 8000), temperature: 0.5,
+            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+        });
+        const parsed = parseJsonLoose(reply);
+        if (!parsed || !Array.isArray(parsed.sections) || !parsed.sections.length) {
+            throw new Error('Exam generation returned no sections.');
+        }
+        // Flatten + renumber so the marking endpoint can stay shared with practice.
+        let n = 1;
+        const flatQuestions = [];
+        const sections = parsed.sections.map(sec => {
+            const qs = (Array.isArray(sec.questions) ? sec.questions : []).map(q => {
+                const renumbered = { ...q, number: n++ };
+                flatQuestions.push(renumbered);
+                return renumbered;
+            });
+            return { title: String(sec.title || ''), instructions: String(sec.instructions || ''), questions: qs };
+        });
+        const totalMarks = flatQuestions.reduce((s, q) => s + (parseInt(q.marks, 10) || 0), 0);
+        return {
+            sections,
+            // questions[] is the flat shape the AI-marking endpoint reads.
+            questions: flatQuestions,
+            duration: Math.max(10, Math.min(240, parseInt(parsed.duration, 10) || suggestedMinutes)),
+            totalMarks
+        };
+    }
+
     if (type === 'deck') {
         const sys = `You are building NSW ${audience} ${subjectName} study flashcards. Return ONLY valid JSON:
 { "cards": [ { "front": "<term, prompt, or short question>", "back": "<concise but complete answer>" } ] }
@@ -2816,8 +2873,8 @@ app.post('/api/teacher/classes/:id/assignments', requireTeacher, async (req, res
     const cls = getOwnedClass(req, req.params.id);
     if (!cls) return res.status(404).json({ error: 'Class not found' });
     const { type, title, dueAt, module, count, difficulty, instructions } = req.body || {};
-    if (!['practice', 'worksheet', 'deck'].includes(type)) {
-        return res.status(400).json({ error: 'type must be practice, worksheet or deck' });
+    if (!['practice', 'worksheet', 'deck', 'exam'].includes(type)) {
+        return res.status(400).json({ error: 'type must be practice, worksheet, deck or exam' });
     }
     if (!title || !String(title).trim()) return res.status(400).json({ error: 'title is required' });
     // Class-level subject is the default if no override is sent — keeps the

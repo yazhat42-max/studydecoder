@@ -427,6 +427,7 @@ function loadAssignments(){
           <select class="form-select" id="asgType">
             <option value="practice">Practice questions</option>
             <option value="worksheet">Worksheet</option>
+            <option value="exam">Full timed exam</option>
             <option value="deck">Flashcard deck</option>
           </select>
         </div>
@@ -470,6 +471,7 @@ function loadAssignments(){
   const countInp = document.getElementById('asgCount');
   function syncCountLabel() {
     if (typeSel.value === 'deck') { countLbl.textContent = 'Number of cards'; countInp.value = countInp.value || '10'; }
+    else if (typeSel.value === 'exam') { countLbl.textContent = 'Total questions across sections'; if (!countInp.value || parseInt(countInp.value,10) < 8) countInp.value = '12'; }
     else { countLbl.textContent = 'Number of questions'; countInp.value = countInp.value || '6'; }
   }
   typeSel.addEventListener('change', syncCountLabel);
@@ -552,23 +554,37 @@ function renderAssignmentContent(a, submissions){
     slot.innerHTML = '<div class="card muted">No content saved for this assignment.</div>';
     return;
   }
+  function renderQ(q) {
+    const opts = Array.isArray(q.options) && q.options.length
+      ? '<div class="ac-opts">' + q.options.map(o => '<div>' + esc(o) + '</div>').join('') + '</div>'
+      : '';
+    const marks = q.marks ? `<span class="ac-marks">[${esc(q.marks)} marks]</span>` : '';
+    return `<li>
+      <div class="ac-q"><strong>${esc(q.question || '')}</strong> ${marks}</div>
+      ${opts}
+      <details class="ac-answer"><summary>Show model answer</summary><div>${escMultiline(q.answer || '')}</div>${q.explanation ? `<div class="ac-explain"><em>Marking note:</em> ${escMultiline(q.explanation)}</div>` : ''}</details>
+    </li>`;
+  }
   let body = '';
   if (a.type === 'deck' && Array.isArray(a.content.cards)){
     body = '<ol class="assign-content-list">' + a.content.cards.map((c, i) =>
       `<li><div class="ac-front">${esc(c.front || '')}</div><div class="ac-back">${esc(c.back || '')}</div></li>`
     ).join('') + '</ol>';
+  } else if (a.type === 'exam' && Array.isArray(a.content.sections)){
+    body = (a.content.duration ? `<div class="muted" style="margin-bottom:14px;">⏱ ${esc(a.content.duration)} minutes &middot; ${esc(a.content.totalMarks || '?')} marks total</div>` : '') +
+      a.content.sections.map(sec => {
+        const secMarks = (sec.questions || []).reduce((s, q) => s + (parseInt(q.marks, 10) || 0), 0);
+        return `<div style="margin-bottom:18px;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2f3336;margin-bottom:10px;">
+            <strong style="color:#e7e9ea;">${esc(sec.title || 'Section')}</strong>
+            <span class="muted" style="font-size:12px;">${secMarks} marks</span>
+          </div>
+          ${sec.instructions ? `<div class="muted" style="font-size:13px;font-style:italic;margin-bottom:10px;">${esc(sec.instructions)}</div>` : ''}
+          <ol class="assign-content-list">${(sec.questions || []).map(renderQ).join('')}</ol>
+        </div>`;
+      }).join('');
   } else if (Array.isArray(a.content.questions)){
-    body = '<ol class="assign-content-list">' + a.content.questions.map((q, i) => {
-      const opts = Array.isArray(q.options) && q.options.length
-        ? '<div class="ac-opts">' + q.options.map(o => '<div>' + esc(o) + '</div>').join('') + '</div>'
-        : '';
-      const marks = q.marks ? `<span class="ac-marks">[${esc(q.marks)} marks]</span>` : '';
-      return `<li>
-        <div class="ac-q"><strong>${esc(q.question || '')}</strong> ${marks}</div>
-        ${opts}
-        <details class="ac-answer"><summary>Show model answer</summary><div>${escMultiline(q.answer || '')}</div>${q.explanation ? `<div class="ac-explain"><em>Marking note:</em> ${escMultiline(q.explanation)}</div>` : ''}</details>
-      </li>`;
-    }).join('') + '</ol>';
+    body = '<ol class="assign-content-list">' + a.content.questions.map(renderQ).join('') + '</ol>';
   } else {
     body = '<div class="muted">Content is in an unknown format.</div>';
   }
