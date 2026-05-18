@@ -1344,9 +1344,123 @@ STRICT RULES — you MUST follow these without exception:
             } else {
                 messageDiv.className = 'message';
                 messageDiv.appendChild(buildResponseCards(content));
+                // Teachers get a "Post to class" affordance under each AI
+                // response so they can drop a decoded syllabus point straight
+                // into a class feed without context-switching.
+                if (window._sdUserRole === 'teacher') {
+                    const postBar = document.createElement('div');
+                    postBar.style.cssText = 'display:flex;justify-content:flex-end;margin-top:8px;padding:0 4px;';
+                    postBar.innerHTML = '<button type="button" class="sd-post-to-class" style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.35);color:#86efac;font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px;cursor:pointer;font-family:inherit;">📌 Post to class →</button>';
+                    postBar.querySelector('button').addEventListener('click', () => openPostToClassModal(content));
+                    messageDiv.appendChild(postBar);
+                }
             }
             outputContent.appendChild(messageDiv);
             outputPanel.scrollTop = outputPanel.scrollHeight;
+        }
+
+        // ---------- Post to class modal (teacher-only) ----------
+        function openPostToClassModal(rawContent) {
+            // Pull the current subject + topic from the dropdowns so we can
+            // pre-fill the post title with useful context.
+            const subjSel = document.getElementById('subject');
+            const topicSel = document.getElementById('topic');
+            const subjectName = subjSel && subjSel.options[subjSel.selectedIndex] ? subjSel.options[subjSel.selectedIndex].text : '';
+            const topicName = topicSel && topicSel.value ? topicSel.value : '';
+            const titleSuggestion = (subjectName || 'Syllabus') + (topicName ? ' — ' + topicName : '') + ' decoded';
+
+            let overlay = document.getElementById('sdPostOverlay');
+            if (overlay) overlay.remove();
+            overlay = document.createElement('div');
+            overlay.id = 'sdPostOverlay';
+            overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+            overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+            overlay.innerHTML = `
+                <div style="background:#16202a;border:1px solid #2f3336;border-radius:18px;max-width:640px;width:100%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,0.6);">
+                    <div style="padding:18px 22px;border-bottom:1px solid #2f3336;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                        <div>
+                            <div style="font-size:17px;font-weight:700;color:#e7e9ea;">📌 Post to a class</div>
+                            <div style="font-size:12px;color:#71767b;">Visible to every linked student. Read-only — no submission needed.</div>
+                        </div>
+                        <button id="sdPostClose" style="background:rgba(255,255,255,0.04);border:1px solid #2f3336;color:#e7e9ea;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;">Cancel</button>
+                    </div>
+                    <div style="padding:18px 22px;overflow:auto;flex:1;">
+                        <div id="sdPostMsg"></div>
+                        <label style="display:block;font-size:13px;font-weight:600;color:#c8ccd0;margin-bottom:6px;">Class</label>
+                        <select id="sdPostClass" style="width:100%;background:#0f1419;border:1px solid #2f3336;border-radius:8px;padding:11px 14px;color:#e7e9ea;font-size:14px;font-family:inherit;margin-bottom:14px;">
+                            <option value="">Loading your classes…</option>
+                        </select>
+                        <label style="display:block;font-size:13px;font-weight:600;color:#c8ccd0;margin-bottom:6px;">Title</label>
+                        <input id="sdPostTitle" style="width:100%;background:#0f1419;border:1px solid #2f3336;border-radius:8px;padding:11px 14px;color:#e7e9ea;font-size:14px;font-family:inherit;margin-bottom:14px;" />
+                        <label style="display:block;font-size:13px;font-weight:600;color:#c8ccd0;margin-bottom:6px;">Body (Markdown line breaks preserved)</label>
+                        <textarea id="sdPostBody" rows="12" style="width:100%;background:#0f1419;border:1px solid #2f3336;border-radius:8px;padding:11px 14px;color:#e7e9ea;font-size:14px;font-family:inherit;line-height:1.55;resize:vertical;"></textarea>
+                    </div>
+                    <div style="padding:14px 22px;border-top:1px solid #2f3336;display:flex;justify-content:flex-end;">
+                        <button id="sdPostSubmit" disabled style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:0;border-radius:10px;padding:10px 22px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;opacity:.6;">Post to class</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            document.getElementById('sdPostClose').onclick = () => overlay.remove();
+
+            // Strip the structured-card formatting that buildResponseCards adds —
+            // post body should be plain text (newline-separated) for the
+            // student-side viewer which preserves whitespace.
+            document.getElementById('sdPostTitle').value = titleSuggestion;
+            document.getElementById('sdPostBody').value = String(rawContent || '').replace(/\*\*(.*?)\*\*/g, '$1');
+
+            // Hydrate the class picker.
+            fetch(`${API_BASE}/api/teacher/classes`, { credentials: 'include' })
+                .then(r => r.ok ? r.json() : Promise.reject(r))
+                .then(d => {
+                    const sel = document.getElementById('sdPostClass');
+                    const classes = (d.classes || []).filter(c => !c.archivedAt);
+                    if (!classes.length) {
+                        sel.innerHTML = '<option value="">No classes — create one first.</option>';
+                        document.getElementById('sdPostMsg').innerHTML = '<div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.35);color:#fcd34d;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:13px;">You need at least one active class to post. <a href="teacher-dashboard.html" style="color:#fcd34d;text-decoration:underline;">Open the dashboard →</a></div>';
+                        return;
+                    }
+                    sel.innerHTML = '<option value="">Pick a class…</option>' + classes.map(c => `<option value="${c.classId}">${c.name}${c.subject ? ' (' + c.subject + ')' : ''}</option>`).join('');
+                    const btn = document.getElementById('sdPostSubmit');
+                    sel.addEventListener('change', () => {
+                        const ready = sel.value && document.getElementById('sdPostTitle').value.trim() && document.getElementById('sdPostBody').value.trim();
+                        btn.disabled = !ready; btn.style.opacity = ready ? '1' : '.6';
+                    });
+                })
+                .catch(() => {
+                    document.getElementById('sdPostClass').innerHTML = '<option value="">Could not load classes.</option>';
+                });
+
+            document.getElementById('sdPostSubmit').addEventListener('click', () => {
+                const classId = document.getElementById('sdPostClass').value;
+                const title = document.getElementById('sdPostTitle').value.trim();
+                const body = document.getElementById('sdPostBody').value.trim();
+                if (!classId || !title || !body) return;
+                const btn = document.getElementById('sdPostSubmit');
+                const msg = document.getElementById('sdPostMsg');
+                btn.disabled = true; btn.textContent = 'Posting…'; msg.innerHTML = '';
+                fetch(`${API_BASE}/api/teacher/classes/${encodeURIComponent(classId)}/posts`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ kind: 'syllabus', title, body, module: topicName || null })
+                })
+                    .then(async r => {
+                        const d = await r.json().catch(() => ({}));
+                        if (!r.ok) {
+                            msg.innerHTML = '<div style="background:rgba(220,53,69,0.1);border:1px solid rgba(220,53,69,0.35);color:#ff8088;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:13px;">' + (d.error || 'Could not post.') + '</div>';
+                            btn.disabled = false; btn.textContent = 'Post to class';
+                            return;
+                        }
+                        msg.innerHTML = '<div style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.35);color:#86efac;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:13px;">✓ Posted. Students will see it in their assignments feed.</div>';
+                        btn.textContent = 'Posted ✓';
+                        setTimeout(() => overlay.remove(), 1600);
+                    })
+                    .catch(() => {
+                        msg.innerHTML = '<div style="background:rgba(220,53,69,0.1);border:1px solid rgba(220,53,69,0.35);color:#ff8088;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:13px;">Network error. Please try again.</div>';
+                        btn.disabled = false; btn.textContent = 'Post to class';
+                    });
+            });
         }
         
         function showLoading() {
@@ -1559,7 +1673,11 @@ Output the complete decoded content for this topic. Do not ask any questions. Do
                 }
                 
                 const data = await res.json();
-                
+
+                // Stash role globally so addMessage() can show the teacher
+                // "Post to class" affordance on every AI response.
+                window._sdUserRole = data.role || null;
+
                 // Check if has access (owner, lifetime, og_tester, subscribed, or free tier acknowledged)
                 const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged || data.preferences?.onboarded;
                 if (!hasAccess) {
