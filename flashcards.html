@@ -83,6 +83,7 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
   <main class="main-content"><div class="container" id="root"></div></main>
 </div>
 <script src="auth.js"></script>
+<script src="upsell.js"></script>
 <script>
 const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
 function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
@@ -175,7 +176,12 @@ function renderForm(){
   `;
   const subjSel = document.getElementById('fSubject');
   const modSel = document.getElementById('fModule');
+  // Pre-emptively mark non-enrolled subjects as locked for class-linked-only students.
+  if (window.SDUpsell && window.SDUpsell.decorateSubjectSelect) {
+    window.SDUpsell.decorateSubjectSelect(subjSel);
+  }
   subjSel.onchange = () => {
+    if (window.SDUpsell && window.SDUpsell.onSubjectChange && window.SDUpsell.onSubjectChange(subjSel)) return;
     const mods = SYLLABUS[subjSel.value] || [];
     modSel.innerHTML = mods.length
       ? '<option value="">— Select a module —</option>' + mods.map(m=>`<option value="${esc(m)}">${esc(m)}</option>`).join('')
@@ -224,8 +230,19 @@ function submitDeck(){
       if (aiGen){
         status.innerHTML = `<div class="loading"><span>Generating conversational cards… 15-30 seconds</span><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
         return api('/api/decks/'+encodeURIComponent(deckId)+'/generate-cards', { method:'POST', body: JSON.stringify({ count, dotPoints }) })
-          .then(r => r.json().then(gd => ({ status:r.status, gd })))
-          .then(({ status:st, gd }) => {
+          .then(async r => {
+            // SUBJECT_LOCKED for class-linked-only students → discounted unlock modal.
+            if (!r.ok && window.SDUpsell && await window.SDUpsell.handleApiError(r)) {
+              status.innerHTML = '<div class="muted">Your deck was created — you can add cards later, or unlock all subjects to AI-generate them.</div>';
+              finishCreate(false);
+              return null;
+            }
+            const gd = await r.json();
+            return { status: r.status, gd };
+          })
+          .then(result => {
+            if (!result) return;
+            const { status:st, gd } = result;
             if (st === 403 && gd && gd.freeTierExhausted){
               status.innerHTML = freeTierBanner() + '<div class="muted">Your deck was created — you can add cards later or upgrade for AI generation.</div>';
               finishCreate(false);

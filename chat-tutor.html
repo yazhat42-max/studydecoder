@@ -656,6 +656,12 @@
             sel.appendChild(opt);
         });
 
+        // Pre-emptively mark subjects locked for class-linked-only students
+        // (paid users / teachers / free tier are unaffected).
+        if (window.SDUpsell && window.SDUpsell.decorateSubjectSelect) {
+            window.SDUpsell.decorateSubjectSelect(sel);
+        }
+
         // Restore last subject (only if it exists in this level's subject set)
         const lastSub = sessionStorage.getItem('sd_last_decoded_subject');
         if (lastSub && list.some(s => s.id === lastSub)) sel.value = lastSub;
@@ -670,6 +676,9 @@
 
     function onSubjectChange() {
         const sel = document.getElementById('subjectSelect');
+        // If the user picked a locked subject, the upsell helper reverts the
+        // selection and shows the unlock modal — bail before propagating.
+        if (window.SDUpsell && window.SDUpsell.onSubjectChange && window.SDUpsell.onSubjectChange(sel)) return;
         const name = sel.options[sel.selectedIndex]?.text || '';
         const span = document.getElementById('topbarSubject');
         span.textContent = name && sel.value ? ' · ' + name : '';
@@ -1008,6 +1017,13 @@
             });
 
             if (!res.ok) {
+                // Subject lock for class-linked students → dedicated unlock modal.
+                if (window.SDUpsell && await window.SDUpsell.handleApiError(res)) {
+                    loadingEl.remove();
+                    isLoading = false;
+                    document.getElementById('sendBtn').disabled = false;
+                    return;
+                }
                 const err = await res.json().catch(() => ({}));
                 loadingEl.remove();
                 if (err.freeTierExhausted) {

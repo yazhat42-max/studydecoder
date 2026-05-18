@@ -663,6 +663,7 @@
                 });
 
                 if (!response.ok) {
+                    if (window.SDUpsell && await window.SDUpsell.handleApiError(response)) { hideLoading(); return; }
                     const errData = await response.json().catch(() => ({}));
                     if (errData.freeTierExhausted) {
                         hideLoading();
