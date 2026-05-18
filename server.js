@@ -4142,6 +4142,44 @@ app.post('/api/subscribe', requireAuth, (req, res) => {
 /**
  * POST /api/cancel
  */
+/**
+ * POST /api/teacher/cancel - Cancel the teacher seat at end of billing period.
+ * Separate from /api/cancel which only targets the student `subscribed` flag;
+ * teacher seats are tracked under teacherSubscribed + stripeTeacherSubscriptionId.
+ */
+app.post('/api/teacher/cancel', requireTeacher, async (req, res) => {
+    try {
+        const user = req.user;
+        if (!user.teacherSubscribed) {
+            return res.status(400).json({ error: 'No active teacher seat to cancel' });
+        }
+        if (stripe && user.stripeTeacherSubscriptionId) {
+            await stripe.subscriptions.update(user.stripeTeacherSubscriptionId, {
+                cancel_at_period_end: true
+            });
+            // Reuse cancelAtPeriodEnd as a single flag; the renewal-router in the
+            // webhook distinguishes student vs teacher subs via the customer +
+            // subscription IDs, so this flag is purely a UI affordance.
+            user.cancelAtPeriodEnd = true;
+            upsertUser(user.userId, user);
+            return res.json({
+                success: true,
+                message: 'Your teacher seat will end on ' + (user.teacherExpiresAt ? new Date(user.teacherExpiresAt).toLocaleDateString('en-AU', { day:'numeric', month:'short', year:'numeric' }) : 'the close of the current billing period') + '. Your linked students will revert to the free tier then.'
+            });
+        }
+        // No Stripe connection (manual activation / promo) — revoke immediately.
+        upsertUser(user.userId, {
+            teacherSubscribed: false,
+            teacherExpiresAt: null,
+            teacherTier: null
+        });
+        res.json({ success: true, message: 'Teacher seat cancelled.' });
+    } catch (e) {
+        console.error('Teacher cancel error:', e);
+        res.status(500).json({ error: 'Failed to cancel teacher seat' });
+    }
+});
+
 app.post('/api/cancel', requireAuth, async (req, res) => {
     try {
         const user = req.user;
