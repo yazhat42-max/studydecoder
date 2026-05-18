@@ -465,25 +465,71 @@ window.Upsell = (function () {
     function escAttr(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
     /**
-     * One-line helper that tool pages can call after any fetch():
+     * Helpers for subject-lock UI on tool pages.
      *
-     *   const r = await fetch('/api/exam/generate', ...);
-     *   if (await SDUpsell.handleApiError(r)) return;  // modal shown, abort
+     * isSubjectLocked(subjectId, subjectName?) → true if the current user is
+     *   a class-linked-only student and the subject isn't in their enrolled
+     *   class subjects. Returns false for paid users / free-tier / teachers.
      *
-     * Returns true (and shows the appropriate modal) if the response is a
-     * known upsell-flavoured error (SUBJECT_LOCKED, freeTierExhausted).
-     * Returns false otherwise so the caller can fall through to its own
-     * error handling.
+     * decorateSubjectSelect(selectEl, getName?) → walks a <select>'s options,
+     *   prefixes locked ones with 🔒 and remembers the lock state so
+     *   onSubjectChange() can intercept selection.
+     *
+     * onSubjectChange(selectEl) → if the picked option is locked, reverts the
+     *   selection and pops the unlock modal. Returns true if the change was
+     *   intercepted, false otherwise — tool pages should `if (onSubjectChange(s)) return;`
+     *   inside their own change handlers.
      */
-    async function handleApiError(response) {
-        if (!response || response.ok) return false;
-        let data = null;
-        try { data = await response.clone().json(); } catch (e) { return false; }
-        if (!data) return false;
-        if (data.code === 'SUBJECT_LOCKED') { showSubjectLockedModal(data); return true; }
-        if (data.freeTierExhausted) { showPageUpgradeModal(); return true; }
-        return false;
+    function getEnrolledSubjects() {
+        const u = getCurrentUser();
+        if (!u || !Array.isArray(u.enrolledSubjects)) return null;
+        // Empty array means "no restriction" (paid user); a non-empty array means
+        // "only these subjects are unlocked". Null = unknown (not yet hydrated).
+        return u.enrolledSubjects;
+    }
+    function isSubjectLocked(subjectId, subjectName) {
+        const enrolled = getEnrolledSubjects();
+        if (!enrolled || !enrolled.length) return false; // unknown or unrestricted
+        if (enrolled.includes(subjectId)) return false;
+        if (subjectName && enrolled.includes(subjectName)) return false;
+        return true;
+    }
+    function decorateSubjectSelect(selectEl, getName) {
+        if (!selectEl) return;
+        const enrolled = getEnrolledSubjects();
+        if (!enrolled || !enrolled.length) return; // nothing to lock
+        for (let i = 0; i < selectEl.options.length; i++) {
+            const opt = selectEl.options[i];
+            const id = opt.value;
+            const name = (typeof getName === 'function') ? getName(opt) : opt.textContent;
+            if (!id) continue;
+            if (isSubjectLocked(id, name)) {
+                opt.dataset.sdLocked = '1';
+                if (!opt.dataset.sdLockedOriginal) {
+                    opt.dataset.sdLockedOriginal = opt.textContent;
+                    opt.textContent = '🔒 ' + opt.textContent;
+                }
+            }
+        }
+    }
+    function onSubjectChange(selectEl) {
+        if (!selectEl) return false;
+        const opt = selectEl.options[selectEl.selectedIndex];
+        if (!opt || opt.dataset.sdLocked !== '1') return false;
+        const original = opt.dataset.sdLockedOriginal || opt.textContent.replace(/^🔒 /, '');
+        showSubjectLockedModal({
+            subject: opt.value,
+            requestedSubjectName: original,
+            enrolledSubjects: getEnrolledSubjects() || []
+        });
+        // Revert to the first non-locked option (or to a blank if there isn't one).
+        let fallbackIdx = -1;
+        for (let i = 0; i < selectEl.options.length; i++) {
+            if (selectEl.options[i].dataset.sdLocked !== '1') { fallbackIdx = i; break; }
+        }
+        selectEl.selectedIndex = fallbackIdx >= 0 ? fallbackIdx : -1;
+        return true;
     }
 
-    return { get, renderModal, notifyOnReset, checkReminder, checkGracePeriodEnding, showPageUpgradeModal, showSubjectLockedModal, handleApiError, setCachedUser };
+    return { get, renderModal, notifyOnReset, checkReminder, checkGracePeriodEnding, showPageUpgradeModal, showSubjectLockedModal, handleApiError, setCachedUser, isSubjectLocked, decorateSubjectSelect, onSubjectChange };
 })();

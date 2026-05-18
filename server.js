@@ -2375,6 +2375,12 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         teacherExpiresAt: hasActiveTeacherSeat(user) ? user.teacherExpiresAt : null,
         teacherTier: hasActiveTeacherSeat(user) ? (user.teacherTier || 'both') : null,
         linkedToTeacher: !!req.linkedTeacher,
+        // Subjects the student has full access to via class memberships.
+        // Used by tool UIs to pre-emptively lock other subject pickers.
+        // Empty array for paid/teacher/owner users (they get everything anyway).
+        enrolledSubjects: req.linkedTeacher && !user.subscribed && !hasActiveTeacherSeat(user) && role !== 'owner' && role !== 'lifetime' && role !== 'og_tester' && !hasDayPassActive(user)
+            ? Array.from(getEnrolledSubjects(user.userId))
+            : [],
         streak: user.streak || null,
         freeTier: !hasFull ? {
             enabled: FREE_TIER_CONFIG.enabled,
@@ -2723,19 +2729,59 @@ RULES:
 - Difficulty: ${diff}.
 - Mix question types where natural; for MC include 4 options and the correct one as "answer".
 - ${markGuide}
+- MARK ALLOCATION MUST MATCH QUESTION COMPLEXITY. Calibrate strictly:
+    * 1 mark  = single-step recall, definition, or MCQ.
+    * 2-3 marks = a calculation with 2-3 working steps, or a short explanation (1-2 sentences).
+    * 4-6 marks = multi-step working, comparison, "outline / describe" with 3-5 points.
+    * 7+ marks = ONLY for genuine extended-response prompts ("evaluate / discuss / analyse with reference to ...") that require sustained writing and multiple linked ideas.
+   NEVER award 7+ marks to a question whose model answer is shorter than 80 words.
+- Every "question" string MUST be at least 25 characters of real question text — no placeholders, no "TBD", no "???", no empty strings, no markdown emphasis tricks.
+- Every "answer" string MUST be a real model answer, not a stub. Aim for ${diff === 'easy' ? '1-2 sentences' : (diff === 'hard' ? '4-8 sentences' : '2-4 sentences')} for non-MC.
 - Output ONLY the JSON, no preamble.`;
         const usr = `Subject: ${subjectName}\nTopic / module: ${module || 'Teacher-set assignment'}\nDifficulty: ${diff}\nQuestions: ${count}`;
-        const reply = await callOpenAIChat({
-            model: aiSettings.model, jsonMode: true,
-            maxTokens: Math.min(aiSettings.maxTokens, 6000), temperature: 0.6,
-            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
-        });
-        const parsed = parseJsonLoose(reply);
-        if (!parsed || !Array.isArray(parsed.questions) || !parsed.questions.length) {
-            throw new Error('Generation returned no questions. Please retry.');
+        // Generate, then validate. One retry on quality failure.
+        async function attempt() {
+            const reply = await callOpenAIChat({
+                model: aiSettings.model, jsonMode: true,
+                maxTokens: Math.min(aiSettings.maxTokens, 6000), temperature: 0.6,
+                messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+            });
+            return parseJsonLoose(reply);
         }
-        const total = parsed.questions.reduce((s, q) => s + (parseInt(q.marks, 10) || 0), 0);
-        return { questions: parsed.questions, totalMarks: total };
+        function validateAndNormalise(parsed) {
+            if (!parsed || !Array.isArray(parsed.questions) || !parsed.questions.length) {
+                return { ok: false, reason: 'no questions' };
+            }
+            // Per-question quality + mark sanity check.
+            const bad = [];
+            parsed.questions = parsed.questions.map((q, i) => {
+                const cleanQ = String(q.question || '').trim();
+                const cleanA = String(q.answer || '').trim();
+                let marks = parseInt(q.marks, 10);
+                if (!isFinite(marks) || marks < 1) marks = 1;
+                // Cap marks if the answer is too short to justify the allocation.
+                const answerWords = cleanA.split(/\s+/).filter(Boolean).length;
+                if (marks >= 7 && answerWords < 80) marks = Math.min(marks, 6);
+                if (marks >= 4 && answerWords < 30) marks = Math.min(marks, 3);
+                if (marks >= 2 && answerWords < 8 && q.type !== 'mc') marks = Math.min(marks, 2);
+                if (marks > 20) marks = 20;
+                if (!cleanQ || cleanQ.length < 15 || /^[\s?.!]+$/.test(cleanQ)) bad.push(i + 1);
+                if (!cleanA) bad.push(i + 1);
+                return { ...q, question: cleanQ, answer: cleanA, marks, number: i + 1 };
+            });
+            if (bad.length) return { ok: false, reason: 'questions ' + Array.from(new Set(bad)).join(',') + ' have placeholder / missing text', parsed };
+            return { ok: true, parsed };
+        }
+        let parsed = await attempt();
+        let check = validateAndNormalise(parsed);
+        if (!check.ok) {
+            console.warn(`Assignment generation: regenerating, reason="${check.reason}"`);
+            parsed = await attempt();
+            check = validateAndNormalise(parsed);
+            if (!check.ok) throw new Error('Generation produced low-quality questions twice in a row: ' + check.reason);
+        }
+        const total = check.parsed.questions.reduce((s, q) => s + (parseInt(q.marks, 10) || 0), 0);
+        return { questions: check.parsed.questions, totalMarks: total };
     }
 
     if (type === 'deck') {
@@ -4633,8 +4679,70 @@ app.get('/api/admin/users', requireOwner, (req, res) => {
         plan: u.plan,
         createdAt: u.createdAt
     }));
-    
+
     res.json({ users });
+});
+
+/**
+ * GET /api/admin/subscribers - Detailed list of currently-paying users.
+ * Returns one row per active subscriber with subscription dates so admin
+ * can debug subscription-state glitches without scrolling the full table.
+ * "Active" here = anyone hasFullAccess() returns true for AND who paid for
+ * a real plan (excludes owner/og_tester role-grants and class-linked
+ * students — those have no payment date).
+ */
+app.get('/api/admin/subscribers', requireOwner, (req, res) => {
+    const now = Date.now();
+    const subscribers = Object.values(db.users)
+        .map(u => {
+            const role = getUserRole(u.email);
+            // Walk the payments log for this user (matches by userId).
+            const userPayments = (db.payments || []).filter(p => p.userId === u.userId);
+            const lastPayment = userPayments
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+            // Teacher seats are tracked separately; surface their dates too.
+            const isStudentPaid = u.subscribed === true && (!u.expiresAt || new Date(u.expiresAt).getTime() > now);
+            const isTeacherPaid = u.teacherSubscribed === true && (!u.teacherExpiresAt || new Date(u.teacherExpiresAt).getTime() > now);
+            const isDayPass = u.dayPassExpiry && u.dayPassExpiry > now;
+            if (!isStudentPaid && !isTeacherPaid && !isDayPass && role !== 'owner' && role !== 'lifetime' && role !== 'og_tester') return null;
+            return {
+                userId: u.userId,
+                email: u.email,
+                name: u.name || '',
+                role,
+                provider: u.provider || 'email',
+                // Student plan
+                plan: u.plan || null,
+                subscribed: !!u.subscribed,
+                subscribedAt: u.subscribedAt || null,
+                expiresAt: u.expiresAt || null,
+                cancelAtPeriodEnd: !!u.cancelAtPeriodEnd,
+                // Teacher seat
+                teacherSubscribed: !!u.teacherSubscribed,
+                teacherTier: u.teacherTier || null,
+                teacherSubscribedAt: u.teacherSubscribedAt || null,
+                teacherExpiresAt: u.teacherExpiresAt || null,
+                // Day pass
+                dayPassActive: !!isDayPass,
+                dayPassExpiry: u.dayPassExpiry || null,
+                // Bookkeeping
+                createdAt: u.createdAt || null,
+                stripeCustomerId: u.stripeCustomerId || null,
+                lastPaymentAt: lastPayment ? lastPayment.createdAt : null,
+                lastPaymentStatus: lastPayment ? (lastPayment.status || lastPayment.eventType) : null,
+                lastPaymentAmountCents: lastPayment ? lastPayment.amount : null,
+                paymentCount: userPayments.length
+            };
+        })
+        .filter(Boolean)
+        .sort((a, b) => {
+            // Most recently subscribed first
+            const ad = a.subscribedAt || a.teacherSubscribedAt || a.createdAt || '';
+            const bd = b.subscribedAt || b.teacherSubscribedAt || b.createdAt || '';
+            return bd.localeCompare(ad);
+        });
+
+    res.json({ subscribers, count: subscribers.length });
 });
 
 /**

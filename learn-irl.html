@@ -2760,6 +2760,7 @@
 
         // Populate module dropdown when subject changes
         subjectInput.addEventListener('change', () => {
+            if (window.SDUpsell && window.SDUpsell.onSubjectChange && window.SDUpsell.onSubjectChange(subjectInput)) return;
             topicInput.innerHTML = '<option value="">Select a module...</option>';
             const topics = subjectTopics[subjectInput.value];
             if (topics) {
@@ -2831,6 +2832,10 @@
                 });
                 subjectInput.appendChild(group);
             });
+            // Pre-emptive lock decoration for class-linked-only students.
+            if (window.SDUpsell && window.SDUpsell.decorateSubjectSelect) {
+                window.SDUpsell.decorateSubjectSelect(subjectInput);
+            }
         }
 
         // Mode card click → show active view
@@ -3027,6 +3032,10 @@
                 });
 
                 if (!res.ok) {
+                    if (window.SDUpsell && await window.SDUpsell.handleApiError(res)) {
+                        if (currentMode === 'game') hideGameLoading();
+                        return;
+                    }
                     const err = await res.json().catch(() => ({}));
                     if (err.freeTierExhausted) {
                         if (currentMode === 'game') {
@@ -3537,6 +3546,11 @@
                         credentials: 'include',
                         body: JSON.stringify({ messages: hintMessages, subject: subjectInput ? subjectInput.value : null })
                     });
+                    if (!res.ok && window.SDUpsell && await window.SDUpsell.handleApiError(res)) {
+                        isLoading = false;
+                        updateLifelineUI();
+                        return;
+                    }
                     if (res.ok) {
                         const data = await res.json();
                         let hintText = data.reply || data.content || 'No hint available.';

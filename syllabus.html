@@ -821,7 +821,14 @@ STRICT RULES — you MUST follow these without exception:
                     credentials: 'include',
                     body: JSON.stringify({ messages, subject: subjectId, detailLevel: detail })
                 });
-                if (!response.ok) throw new Error('Request failed');
+                if (!response.ok) {
+                    // Subject lock / free-tier exhausted → branded modal.
+                    if (window.SDUpsell && await window.SDUpsell.handleApiError(response)) {
+                        answerDiv.innerHTML = '';
+                        return;
+                    }
+                    throw new Error('Request failed');
+                }
                 const data = await response.json();
                 const reply = data.reply || '';
                 // Check if the AI gave a refusal — style it differently
@@ -1014,9 +1021,17 @@ STRICT RULES — you MUST follow these without exception:
                 subjectSelect.appendChild(group);
             });
         }
-        
+
+        // Pre-emptive subject lock for class-linked-only students.
+        if (window.SDUpsell && window.SDUpsell.decorateSubjectSelect) {
+            window.SDUpsell.decorateSubjectSelect(subjectSelect);
+        }
+
         // Update year and topics when subject changes
         subjectSelect.addEventListener('change', () => {
+            // If the picked subject is locked, the upsell helper reverts the
+            // selection and pops the unlock modal — bail before propagating.
+            if (window.SDUpsell && window.SDUpsell.onSubjectChange && window.SDUpsell.onSubjectChange(subjectSelect)) return;
             const subjectId = subjectSelect.value;
             yearSelect.innerHTML = '';
             topicSelect.innerHTML = '';
