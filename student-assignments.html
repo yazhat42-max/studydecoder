@@ -59,6 +59,8 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
 .badge.practice { background:rgba(139,92,246,0.18); color:#c4b5fd; }
 .badge.worksheet { background:rgba(245,158,11,0.18); color:#fcd34d; }
 .badge.deck { background:rgba(34,197,94,0.16); color:#86efac; }
+.badge.exam { background:rgba(239,68,68,0.18); color:#fca5a5; }
+.badge.scenario { background:rgba(56,189,248,0.18); color:#7dd3fc; }
 .status-pill { display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px; }
 .status-pending { background:rgba(245,158,11,0.12); color:#fcd34d; border:1px solid rgba(245,158,11,0.3); }
 .status-completed { background:rgba(34,197,94,0.16); color:#86efac; border:1px solid rgba(34,197,94,0.4); }
@@ -94,6 +96,7 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
         <p>Tasks your teacher has set for your class. Open the relevant tool, do the work, then mark as done.</p>
       </div>
       <div id="errSlot"></div>
+      <div id="postsSlot"></div>
       <div id="listSlot"><div class="card muted">Loading assignments…</div></div>
     </div>
   </main>
@@ -245,6 +248,38 @@ function loadAssignments(){
         .catch(() => {
             document.getElementById('listSlot').innerHTML = '<div class="error-banner">Could not load your assignments. Please refresh.</div>';
         });
+    loadPosts();
+}
+
+function loadPosts(){
+    api('/api/student/posts')
+        .then(r => r.ok ? r.json() : { posts: [] })
+        .then(d => renderPosts(d.posts || []))
+        .catch(() => {});
+}
+
+function renderPosts(posts){
+    const slot = document.getElementById('postsSlot');
+    if (!slot) return;
+    if (!posts.length){ slot.innerHTML = ''; return; }
+    const KIND_LABEL = { syllabus: '📖 Syllabus', note: '📝 Note', announcement: '📣 Announcement' };
+    slot.innerHTML = `<div class="card" style="margin-bottom:18px;">
+        <div class="section-title" style="font-weight:700;font-size:15px;margin-bottom:12px;">📌 Class posts (${posts.length})</div>
+        ${posts.map(p => `
+            <details class="assign-card" style="margin-bottom:10px;">
+                <summary style="cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                    <div>
+                        <span class="badge">${esc(KIND_LABEL[p.kind] || p.kind || 'Post')}</span>
+                        <strong style="color:#e7e9ea;margin-left:6px;">${esc(p.title)}</strong>
+                        <div class="assign-class">${esc(p.className || 'Your class')}${p.module ? ' · ' + esc(p.module) : ''} · ${esc(new Date(p.createdAt).toLocaleDateString('en-AU',{day:'numeric',month:'short'}))}</div>
+                    </div>
+                    <span style="color:#71767b;font-size:12px;">▼</span>
+                </summary>
+                <div style="margin-top:14px;padding-top:14px;border-top:1px solid #2f3336;color:#d4d9de;font-size:14px;line-height:1.65;white-space:pre-wrap;">${escMultiline(p.body || '')}</div>
+                ${p.source ? `<div style="margin-top:10px;font-size:13px;"><a href="${esc(p.source)}" target="_blank" rel="noopener" style="color:#4f8cff;text-decoration:none;">🔗 Source ↗</a></div>` : ''}
+            </details>
+        `).join('')}
+    </div>`;
 }
 
 (function init(){

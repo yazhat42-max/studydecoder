@@ -106,6 +106,7 @@ const CLASSES_FILE = path.join(DB_PATH, 'classes.json');
 const CLASS_MEMBERS_FILE = path.join(DB_PATH, 'class-members.json');
 const ASSIGNMENTS_FILE = path.join(DB_PATH, 'assignments.json');
 const ASSIGNMENT_SUBMISSIONS_FILE = path.join(DB_PATH, 'assignment-submissions.json');
+const CLASS_POSTS_FILE = path.join(DB_PATH, 'class-posts.json');
 
 // ── Conversational Flashcards stores ──
 const DECKS_FILE = path.join(DB_PATH, 'decks.json');
@@ -619,6 +620,7 @@ const db = {
     classMembers: loadDB(CLASS_MEMBERS_FILE, []),            // array of memberships
     assignments: loadDB(ASSIGNMENTS_FILE, {}),               // keyed by assignmentId
     assignmentSubmissions: loadDB(ASSIGNMENT_SUBMISSIONS_FILE, []), // array
+    classPosts: loadDB(CLASS_POSTS_FILE, {}),                // keyed by postId
     // ── Conversational Flashcards ──
     decks: loadDB(DECKS_FILE, {}),                           // keyed by deckId
     cards: loadDB(CARDS_FILE, {}),                           // keyed by cardId
@@ -641,6 +643,7 @@ function scheduleClassroomSave() {
         saveDB(CLASS_MEMBERS_FILE, db.classMembers);
         saveDB(ASSIGNMENTS_FILE, db.assignments);
         saveDB(ASSIGNMENT_SUBMISSIONS_FILE, db.assignmentSubmissions);
+        saveDB(CLASS_POSTS_FILE, db.classPosts);
         saveDB(DECKS_FILE, db.decks);
         saveDB(CARDS_FILE, db.cards);
         saveDB(CARD_REVIEWS_FILE, db.cardReviews);
@@ -743,6 +746,7 @@ process.on('exit', () => {
     saveDB(CLASS_MEMBERS_FILE, db.classMembers);
     saveDB(ASSIGNMENTS_FILE, db.assignments);
     saveDB(ASSIGNMENT_SUBMISSIONS_FILE, db.assignmentSubmissions);
+    saveDB(CLASS_POSTS_FILE, db.classPosts);
     saveDB(DECKS_FILE, db.decks);
     saveDB(CARDS_FILE, db.cards);
     saveDB(CARD_REVIEWS_FILE, db.cardReviews);
@@ -2863,6 +2867,69 @@ RULES:
         return { cards: parsed.cards.slice(0, count) };
     }
 
+    if (type === 'scenario') {
+        // Learn-IRL style: a short branching scenario where the student makes
+        // 4-6 decisions, each grounded in the subject's content. Stored as a
+        // single linear turn-by-turn flow (no branching) to keep the student
+        // view simple and AI marking deterministic.
+        const turns = Math.max(3, Math.min(8, parseInt(spec.count, 10) || 5));
+        const sys = `You are a NSW ${audience} ${subjectName} teacher designing a real-world Learn-IRL scenario where the student applies what they've learned. Return ONLY valid JSON:
+{
+  "setup": "<2-3 paragraph scene-setter that establishes a believable situation requiring ${subjectName} knowledge>",
+  "role": "<who the student plays in the scenario>",
+  "turns": [
+    {
+      "prompt": "<the situation at this decision point, 1-3 sentences>",
+      "options": [
+        { "label": "<choice text>", "isCorrect": <true|false>, "feedback": "<1-2 sentence explainer linking the outcome back to ${subjectName} content>" }
+      ]
+    }
+  ]
+}
+RULES:
+- Setup must be a real, plausible everyday scenario (not a generic quiz).
+- Exactly ${turns} turns; each turn has EXACTLY 3 options.
+- For each turn, exactly ONE option has isCorrect:true. Feedback on the others must explain WHY they're wrong using a specific syllabus concept.
+- The scenario should test the topic / module: ${module || 'general ' + subjectName}.
+- Difficulty: ${diff}.
+- Prompts must be ≥30 characters of real text — no placeholders / "???".
+- Output ONLY the JSON.`;
+        const usr = `Subject: ${subjectName}\nTopic / module: ${module || 'Teacher-set scenario'}\nDifficulty: ${diff}\nTurns: ${turns}`;
+        const reply = await callOpenAIChat({
+            model: aiSettings.model, jsonMode: true,
+            maxTokens: Math.min(aiSettings.maxTokens, 5000), temperature: 0.7,
+            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+        });
+        const parsed = parseJsonLoose(reply);
+        if (!parsed || !Array.isArray(parsed.turns) || !parsed.turns.length) {
+            throw new Error('Scenario generation returned no turns.');
+        }
+        // Normalise: ensure each turn has exactly 3 options + at least one correct.
+        const normalisedTurns = parsed.turns.slice(0, turns).map((t, i) => {
+            const opts = (Array.isArray(t.options) ? t.options : []).slice(0, 4);
+            if (!opts.some(o => o && o.isCorrect)) {
+                // If the AI forgot, mark the first option correct so the
+                // scenario is still playable / markable.
+                if (opts[0]) opts[0].isCorrect = true;
+            }
+            return {
+                turn: i + 1,
+                prompt: String(t.prompt || '').slice(0, 800),
+                options: opts.map(o => ({
+                    label: String(o && o.label || '').slice(0, 240),
+                    isCorrect: !!(o && o.isCorrect),
+                    feedback: String(o && o.feedback || '').slice(0, 400)
+                }))
+            };
+        });
+        return {
+            setup: String(parsed.setup || '').slice(0, 2000),
+            role: String(parsed.role || '').slice(0, 200),
+            turns: normalisedTurns,
+            totalMarks: normalisedTurns.length // 1 per correct choice
+        };
+    }
+
     throw new Error('Unknown assignment type: ' + type);
 }
 
@@ -2873,8 +2940,8 @@ app.post('/api/teacher/classes/:id/assignments', requireTeacher, async (req, res
     const cls = getOwnedClass(req, req.params.id);
     if (!cls) return res.status(404).json({ error: 'Class not found' });
     const { type, title, dueAt, module, count, difficulty, instructions } = req.body || {};
-    if (!['practice', 'worksheet', 'deck', 'exam'].includes(type)) {
-        return res.status(400).json({ error: 'type must be practice, worksheet, deck or exam' });
+    if (!['practice', 'worksheet', 'deck', 'exam', 'scenario'].includes(type)) {
+        return res.status(400).json({ error: 'type must be practice, worksheet, deck, exam or scenario' });
     }
     if (!title || !String(title).trim()) return res.status(400).json({ error: 'title is required' });
     // Class-level subject is the default if no override is sent — keeps the
@@ -2929,6 +2996,72 @@ app.post('/api/teacher/classes/:id/assignments', requireTeacher, async (req, res
         });
     }
     res.json({ assignment });
+});
+
+// ─────────────── CLASS POSTS (read-only resources for students) ───────────────
+// Lightweight content the teacher posts to a class — typically a decoded
+// syllabus point, a summary, or class announcements. No completion tracking,
+// no submissions, just a readable resource the student sees in their feed.
+
+// POST /api/teacher/classes/:id/posts — create a post in this class
+app.post('/api/teacher/classes/:id/posts', requireTeacher, express.json({ limit: '64kb' }), (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    const { title, body, kind, module, source } = req.body || {};
+    if (!title || !String(title).trim()) return res.status(400).json({ error: 'title is required' });
+    if (!body || !String(body).trim()) return res.status(400).json({ error: 'body is required' });
+    const postId = crypto.randomUUID();
+    const post = {
+        postId,
+        classId: cls.classId,
+        teacherUserId: req.user.userId,
+        kind: ['syllabus', 'note', 'announcement'].includes(kind) ? kind : 'note',
+        title: String(title).trim().slice(0, 160),
+        body: String(body).slice(0, 12000),
+        module: module ? String(module).trim().slice(0, 200) : '',
+        source: source ? String(source).slice(0, 500) : '',
+        createdAt: new Date().toISOString()
+    };
+    db.classPosts[postId] = post;
+    scheduleClassroomSave();
+    res.json({ post });
+});
+
+// GET /api/teacher/classes/:id/posts — list posts in this class
+app.get('/api/teacher/classes/:id/posts', requireTeacher, (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    const posts = Object.values(db.classPosts)
+        .filter(p => p.classId === cls.classId)
+        .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+    res.json({ posts });
+});
+
+// DELETE /api/teacher/classes/:id/posts/:postId
+app.delete('/api/teacher/classes/:id/posts/:postId', requireTeacher, (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    const p = db.classPosts[req.params.postId];
+    if (!p || p.classId !== cls.classId) return res.status(404).json({ error: 'Post not found' });
+    delete db.classPosts[req.params.postId];
+    scheduleClassroomSave();
+    res.json({ success: true });
+});
+
+// GET /api/student/posts — all posts across the student's classes
+app.get('/api/student/posts', requireAuth, (req, res) => {
+    const myClassIds = db.classMembers
+        .filter(m => m.studentUserId === req.user.userId && !m.removedAt)
+        .map(m => m.classId)
+        .filter(cid => db.classes[cid] && !db.classes[cid].archivedAt);
+    const posts = Object.values(db.classPosts)
+        .filter(p => myClassIds.includes(p.classId))
+        .map(p => {
+            const cls = db.classes[p.classId];
+            return { ...p, className: cls ? cls.name : '', classSubject: cls ? cls.subject : '' };
+        })
+        .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+    res.json({ posts });
 });
 
 // GET /api/teacher/classes/:id/assignments — list + submission status
@@ -3129,6 +3262,53 @@ app.post('/api/student/assignments/:assignmentId/answers', requireAuth, express.
     if (assignment.type === 'deck') {
         return res.status(400).json({ error: 'Flashcard decks are self-marked — use /submit with { status:"completed" }.' });
     }
+
+    // Scenario assignments are deterministically marked from the
+    // isCorrect flag on each chosen option — no AI call.
+    if (assignment.type === 'scenario') {
+        if (!assignment.content || !Array.isArray(assignment.content.turns)) {
+            return res.status(400).json({ error: 'This scenario has no turns to mark.' });
+        }
+        const turns = assignment.content.turns;
+        const choices = Array.isArray(req.body && req.body.answers) ? req.body.answers : [];
+        const byIdx = {};
+        choices.forEach(c => { if (c && typeof c.qIdx === 'number') byIdx[c.qIdx] = parseInt(c.value, 10); });
+        const perQuestion = [];
+        let totalAwarded = 0;
+        turns.forEach((t, i) => {
+            const optIdx = byIdx[i];
+            const chosen = (optIdx >= 0 && optIdx < t.options.length) ? t.options[optIdx] : null;
+            const awarded = chosen && chosen.isCorrect ? 1 : 0;
+            totalAwarded += awarded;
+            perQuestion.push({
+                qIdx: i,
+                marksAwarded: awarded,
+                marksTotal: 1,
+                feedback: chosen ? chosen.feedback : 'No choice made for this turn.'
+            });
+        });
+        const totalPossible = turns.length;
+        const percentage = totalPossible > 0 ? Math.round((totalAwarded / totalPossible) * 10000) / 100 : 0;
+        const answers = turns.map((t, i) => ({ qIdx: i, value: byIdx[i] != null ? String(byIdx[i]) : '' }));
+        const submission = {
+            assignmentId: assignment.assignmentId,
+            studentUserId: req.user.userId,
+            status: 'completed',
+            score: percentage,
+            totalAwarded,
+            totalPossible,
+            answers,
+            perQuestion,
+            band: percentage >= 80 ? 'Excellent' : percentage >= 60 ? 'Good' : percentage >= 40 ? 'Developing' : 'Needs review',
+            completedAt: new Date().toISOString()
+        };
+        let sub = db.assignmentSubmissions.find(s => s.assignmentId === assignment.assignmentId && s.studentUserId === req.user.userId);
+        if (sub) Object.assign(sub, submission);
+        else db.assignmentSubmissions.push(submission);
+        scheduleClassroomSave();
+        return res.json({ submission });
+    }
+
     if (!assignment.content || !Array.isArray(assignment.content.questions)) {
         return res.status(400).json({ error: 'This assignment has no question content to mark.' });
     }
