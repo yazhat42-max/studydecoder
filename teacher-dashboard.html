@@ -331,6 +331,7 @@ function renderClassShell(){
     <div class="tabs">
       <button class="tab ${state.tab==='roster'?'active':''}" data-tab="roster">Roster</button>
       <button class="tab ${state.tab==='assignments'?'active':''}" data-tab="assignments">Assignments</button>
+      <button class="tab ${state.tab==='posts'?'active':''}" data-tab="posts">Class posts</button>
       <button class="tab ${state.tab==='progress'?'active':''}" data-tab="progress">Progress</button>
     </div>
     <div id="tabSlot"><div class="card muted">Loading…</div></div>`;
@@ -344,6 +345,7 @@ function renderClassShell(){
   if (state.studentView){ renderStudentMastery(); return; }
   if (state.tab === 'roster') loadRoster();
   else if (state.tab === 'assignments') loadAssignments();
+  else if (state.tab === 'posts') loadPosts();
   else loadProgress();
 }
 
@@ -429,6 +431,7 @@ function loadAssignments(){
             <option value="worksheet">Worksheet</option>
             <option value="exam">Full timed exam</option>
             <option value="deck">Flashcard deck</option>
+            <option value="scenario">Learn-IRL scenario</option>
           </select>
         </div>
         <div><label class="form-label">Title *</label><input class="form-input" id="asgTitle" placeholder="Module B Frankenstein essay practice"></div>
@@ -472,6 +475,7 @@ function loadAssignments(){
   function syncCountLabel() {
     if (typeSel.value === 'deck') { countLbl.textContent = 'Number of cards'; countInp.value = countInp.value || '10'; }
     else if (typeSel.value === 'exam') { countLbl.textContent = 'Total questions across sections'; if (!countInp.value || parseInt(countInp.value,10) < 8) countInp.value = '12'; }
+    else if (typeSel.value === 'scenario') { countLbl.textContent = 'Number of decision turns'; if (!countInp.value || parseInt(countInp.value,10) < 3) countInp.value = '5'; }
     else { countLbl.textContent = 'Number of questions'; countInp.value = countInp.value || '6'; }
   }
   typeSel.addEventListener('change', syncCountLabel);
@@ -570,6 +574,21 @@ function renderAssignmentContent(a, submissions){
     body = '<ol class="assign-content-list">' + a.content.cards.map((c, i) =>
       `<li><div class="ac-front">${esc(c.front || '')}</div><div class="ac-back">${esc(c.back || '')}</div></li>`
     ).join('') + '</ol>';
+  } else if (a.type === 'scenario' && Array.isArray(a.content.turns)){
+    body = `<div class="muted" style="margin-bottom:14px;">🎮 ${a.content.turns.length} decision turns &middot; Role: <strong style="color:#e7e9ea;">${esc(a.content.role || 'student')}</strong></div>` +
+      `<div style="background:#0f1419;border:1px solid #2f3336;border-radius:10px;padding:14px;margin-bottom:14px;font-size:14px;line-height:1.55;color:#d4d9de;white-space:pre-wrap;">${esc(a.content.setup || '')}</div>` +
+      a.content.turns.map((t, i) =>
+        `<div style="margin-bottom:14px;padding:14px;background:#0f1419;border:1px solid #2f3336;border-radius:10px;">
+          <div style="font-size:12px;color:#4f8cff;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px;">Turn ${i+1}</div>
+          <div style="color:#e7e9ea;line-height:1.5;margin-bottom:10px;">${esc(t.prompt || '')}</div>
+          ${(t.options || []).map(o =>
+            `<div style="padding:8px 12px;margin-bottom:6px;background:${o.isCorrect ? 'rgba(34,197,94,0.06)' : 'rgba(220,53,69,0.04)'};border:1px solid ${o.isCorrect ? 'rgba(34,197,94,0.25)' : 'rgba(220,53,69,0.18)'};border-radius:6px;font-size:13px;">
+              <div style="color:#e7e9ea;font-weight:600;">${o.isCorrect ? '✓ ' : '✗ '}${esc(o.label || '')}</div>
+              ${o.feedback ? `<div style="color:#a9b3bd;font-size:12px;margin-top:4px;font-style:italic;">${esc(o.feedback)}</div>` : ''}
+            </div>`
+          ).join('')}
+        </div>`
+      ).join('');
   } else if (a.type === 'exam' && Array.isArray(a.content.sections)){
     body = (a.content.duration ? `<div class="muted" style="margin-bottom:14px;">⏱ ${esc(a.content.duration)} minutes &middot; ${esc(a.content.totalMarks || '?')} marks total</div>` : '') +
       a.content.sections.map(sec => {
@@ -689,6 +708,102 @@ function createAssignment(){
       btn.disabled = false; btn.textContent = 'Generate & assign';
       errSlot.innerHTML = '<div class="error-banner">Network error. Please try again.</div>';
     });
+}
+
+/* ----- CLASS POSTS ----- */
+function loadPosts(){
+  const slot = document.getElementById('tabSlot');
+  slot.innerHTML = `
+    <div class="card">
+      <div class="section-title" style="margin-bottom:14px;">New class post</div>
+      <div id="postErr"></div>
+      <p class="muted" style="margin-bottom:14px;font-size:13px;">Post a syllabus breakdown, an announcement, or notes for the class. Visible to every linked student in <strong>${esc(state.className || 'this class')}</strong> — read-only, no submission.</p>
+      <div class="form-row">
+        <div>
+          <label class="form-label">Kind</label>
+          <select class="form-select" id="postKind">
+            <option value="syllabus">Syllabus breakdown</option>
+            <option value="note">Class note</option>
+            <option value="announcement">Announcement</option>
+          </select>
+        </div>
+        <div><label class="form-label">Title *</label><input class="form-input" id="postTitle" placeholder="Module B Critical Study — Frankenstein decoded"></div>
+      </div>
+      <div style="margin-top:14px;">
+        <label class="form-label">Body *</label>
+        <textarea class="form-input" id="postBody" rows="8" placeholder="Paste the syllabus breakdown / explanation / announcement here. Markdown-style line breaks are preserved."></textarea>
+      </div>
+      <div class="form-row" style="margin-top:14px;">
+        <div><label class="form-label">Module / topic (optional)</label><input class="form-input" id="postModule" placeholder="e.g. Module B"></div>
+        <div><label class="form-label">Source URL (optional)</label><input class="form-input" id="postSource" placeholder="e.g. https://… (linked at the bottom of the post)"></div>
+      </div>
+      <button class="btn" id="postCreate" style="margin-top:14px;">Post to class</button>
+    </div>
+    <div id="postListSlot"><div class="card muted">Loading posts…</div></div>`;
+  document.getElementById('postCreate').addEventListener('click', createPost);
+  refreshPostList();
+}
+
+function refreshPostList(){
+  api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/posts')
+    .then(r => r.ok ? r.json() : Promise.reject(r))
+    .then(d => renderPostList(d.posts || []))
+    .catch(() => { document.getElementById('postListSlot').innerHTML = '<div class="error-banner">Could not load posts.</div>'; });
+}
+
+function renderPostList(posts){
+  const slot = document.getElementById('postListSlot');
+  if (!posts.length){ slot.innerHTML = '<div class="card muted">No posts yet for this class.</div>'; return; }
+  const KIND_LABEL = { syllabus: '📖 Syllabus', note: '📝 Note', announcement: '📣 Announcement' };
+  slot.innerHTML = `<div class="card"><div class="section-title" style="margin-bottom:14px;">Posts</div><ul class="assign-list">` + posts.map(p => `
+    <li>
+      <div style="flex:1;min-width:0;">
+        <div><span class="badge">${esc(KIND_LABEL[p.kind] || p.kind || 'Post')}</span> &nbsp;<strong>${esc(p.title)}</strong></div>
+        <div class="assign-instr" style="white-space:pre-wrap;">${escMultiline(p.body || '')}</div>
+        ${p.source ? `<div class="assign-meta">🔗 <a href="${esc(p.source)}" target="_blank" rel="noopener" style="color:#4f8cff;">${esc(p.source)}</a></div>` : ''}
+        <div class="assign-meta">Posted ${esc(fmtDate(p.createdAt))}${p.module ? ' · ' + esc(p.module) : ''}</div>
+      </div>
+      <div style="flex-shrink:0;">
+        <button class="btn-danger post-del" data-id="${esc(p.postId)}" data-title="${esc(p.title)}" style="font-size:12px;padding:6px 12px;border-radius:8px;cursor:pointer;">Delete</button>
+      </div>
+    </li>
+  `).join('') + '</ul></div>';
+  slot.querySelectorAll('.post-del').forEach(btn => btn.addEventListener('click', () => deletePost(btn.dataset.id, btn.dataset.title)));
+}
+
+function createPost(){
+  const kind = document.getElementById('postKind').value;
+  const title = document.getElementById('postTitle').value.trim();
+  const body = document.getElementById('postBody').value.trim();
+  const module = document.getElementById('postModule').value.trim();
+  const source = document.getElementById('postSource').value.trim();
+  const errSlot = document.getElementById('postErr');
+  errSlot.innerHTML = '';
+  if (!title || !body){ errSlot.innerHTML = '<div class="error-banner">Title and body are required.</div>'; return; }
+  const btn = document.getElementById('postCreate');
+  btn.disabled = true; btn.textContent = 'Posting…';
+  api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/posts', {
+    method: 'POST',
+    body: JSON.stringify({ kind, title, body, module: module || null, source: source || null })
+  })
+    .then(async r => {
+      const d = await r.json().catch(()=>({}));
+      btn.disabled = false; btn.textContent = 'Post to class';
+      if (!r.ok){ errSlot.innerHTML = '<div class="error-banner">' + esc(d.error || 'Could not post.') + '</div>'; return; }
+      document.getElementById('postTitle').value = '';
+      document.getElementById('postBody').value = '';
+      document.getElementById('postModule').value = '';
+      document.getElementById('postSource').value = '';
+      refreshPostList();
+    })
+    .catch(() => { btn.disabled = false; btn.textContent = 'Post to class'; errSlot.innerHTML = '<div class="error-banner">Network error. Please try again.</div>'; });
+}
+
+function deletePost(postId, title){
+  if (!confirm('Delete post "' + title + '"? Students will no longer see it.')) return;
+  api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/posts/' + encodeURIComponent(postId), { method: 'DELETE' })
+    .then(async r => { if (!r.ok){ const d = await r.json().catch(()=>({})); alert(d.error || 'Could not delete.'); return; } refreshPostList(); })
+    .catch(() => alert('Network error.'));
 }
 
 /* ----- PROGRESS ----- */
