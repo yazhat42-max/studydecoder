@@ -4514,7 +4514,17 @@ app.post('/api/teacher/cancel', requireTeacher, async (req, res) => {
 app.post('/api/cancel', requireAuth, async (req, res) => {
     try {
         const user = req.user;
-        
+
+        // Class-linked-only users have nothing to cancel here — their access
+        // comes from a teacher's seat. Return a clear, non-error message so
+        // the UI can route them to the right place (the upgrade modal or
+        // their teacher) instead of showing a generic "couldn't cancel".
+        if (!user.subscribed && req.linkedTeacher) {
+            return res.status(400).json({
+                error: 'You have free access via your teacher\'s class — there\'s nothing for you to cancel here.',
+                code: 'CLASS_LINKED_NO_SUB'
+            });
+        }
         if (!user.subscribed) {
             return res.status(400).json({ error: 'No active subscription to cancel' });
         }
@@ -4525,7 +4535,7 @@ app.post('/api/cancel', requireAuth, async (req, res) => {
                 customer: user.stripeCustomerId,
                 status: 'active'
             });
-            
+
             if (subscriptions.data.length > 0) {
                 for (const sub of subscriptions.data) {
                     await stripe.subscriptions.update(sub.id, {

@@ -3295,13 +3295,17 @@
             document.getElementById('heroStreakOut').style.display = 'none';
             document.getElementById('heroStreakIn').style.display = 'none';
         }
-        // Show manage subscription button for subscribers (not owner)
-        if (user.subscribed && user.role !== 'owner' && user.role !== 'lifetime' && user.role !== 'og_tester') {
+        // Show manage subscription button for subscribers (not owner).
+        // Excludes class-linked-only users — they have no payment to manage,
+        // their access comes via their teacher's seat.
+        var isClassLinkedOnly = user.linkedToTeacher && !user.plan && !user.dayPassActive;
+        if (user.subscribed && !isClassLinkedOnly && user.role !== 'owner' && user.role !== 'lifetime' && user.role !== 'og_tester') {
             document.getElementById('manageSubNavBtn').style.display = 'inline-block';
             document.getElementById('upgradeNavBtn').style.display = 'none';
             window.currentUser = user;
-        } else if (!user.subscribed && user.role !== 'owner' && user.role !== 'lifetime' && user.role !== 'og_tester') {
-            // Show upgrade button for free users
+        } else if ((!user.subscribed || isClassLinkedOnly) && user.role !== 'owner' && user.role !== 'lifetime' && user.role !== 'og_tester') {
+            // Free users + class-linked-only users see the upgrade prompt
+            // (class-linked users upgrade to unlock other subjects).
             document.getElementById('manageSubNavBtn').style.display = 'none';
             document.getElementById('upgradeNavBtn').style.display = 'inline-block';
             window.currentUser = user;
@@ -3457,16 +3461,38 @@
         
         // Populate subscription info
         if (currentUser) {
-            document.getElementById('subPlan').textContent = 
+            // Detect class-linked-only access: no real paid plan, no day pass,
+            // but linked to a teacher's class. Surface that explicitly instead
+            // of the misleading "Monthly ($5/month)" fallback.
+            var classLinkedOnly = currentUser.linkedToTeacher && !currentUser.plan && !currentUser.dayPassActive;
+            document.getElementById('subPlan').textContent =
+                classLinkedOnly ? 'Free access via your teacher\'s class' :
                 currentUser.plan === 'lifetime' ? 'Lifetime ($37.50 one-time)' :
-                currentUser.plan === 'yearly' ? 'Monthly ($5/month)' :
+                currentUser.plan === 'yearly' ? 'Yearly ($50/year)' :
+                currentUser.plan === 'monthly' ? 'Monthly ($5/month)' :
+                currentUser.plan === 'classroom-lifetime' ? 'Classroom Lifetime (discounted)' :
+                currentUser.plan === 'classroom-monthly' ? 'Classroom Monthly ($3/month)' :
                 currentUser.plan === 'granted' ? 'Granted (Free)' :
-                'Monthly ($5/month)';
-            
-            if (currentUser.plan === 'lifetime' || currentUser.plan === 'granted') {
+                'Active';
+
+            if (classLinkedOnly) {
+                // Teacher class is the access source — nothing for the student
+                // to manage here. Replace the cancel CTA with an upgrade hint.
+                document.getElementById('subStatus').textContent = 'Active (via teacher)';
+                document.getElementById('subStatus').style.color = '#a78bfa';
+                var expEl = document.getElementById('subExpires');
+                if (expEl) expEl.textContent = 'While your teacher\'s seat is active';
+                var btnL = document.getElementById('cancelSubBtn');
+                btnL.style.display = 'none';
+                var hint = document.getElementById('subCancelHint');
+                if (hint) {
+                    hint.style.display = 'block';
+                    hint.textContent = 'You\'re only restricted to your class\'s subject. To unlock every subject, upgrade your account.';
+                }
+            } else if (currentUser.plan === 'lifetime' || currentUser.plan === 'classroom-lifetime' || currentUser.plan === 'granted') {
                 document.getElementById('subStatus').textContent = 'Active';
                 document.getElementById('subStatus').style.color = '#10b981';
-                document.getElementById('subExpires').textContent = currentUser.plan === 'lifetime' ? 'Never' : document.getElementById('subExpires').textContent;
+                document.getElementById('subExpires').textContent = (currentUser.plan === 'lifetime' || currentUser.plan === 'classroom-lifetime') ? 'Never' : document.getElementById('subExpires').textContent;
                 const btn = document.getElementById('cancelSubBtn');
                 btn.style.display = 'none';
                 document.getElementById('subCancelHint').style.display = 'none';
@@ -3524,26 +3550,38 @@
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' }
             });
-            
-            const data = await res.json();
-            
-            if (data.success) {
+            const data = await res.json().catch(() => ({}));
+
+            if (res.ok && data.success) {
                 btn.textContent = '✓ Cancelled';
                 btn.style.background = '#64748b';
                 btn.disabled = true;
                 if (currentUser) currentUser.cancelAtPeriodEnd = true;
                 document.getElementById('subStatus').textContent = 'Cancelled (access until period ends)';
                 document.getElementById('subStatus').style.color = '#f59e0b';
-                
+
                 setTimeout(() => {
                     closeSubModal();
                     alert('Your subscription has been cancelled. You will retain access until the end of your current billing period.');
                 }, 500);
-            } else {
-                throw new Error(data.error || 'Failed to cancel');
+                return;
             }
+
+            // Specific handling for class-linked-only users who somehow reached
+            // this button — surface the server's real message instead of the
+            // generic "try again or contact support".
+            if (data && data.code === 'CLASS_LINKED_NO_SUB') {
+                alert(data.error || 'You have free access via your teacher\'s class — nothing to cancel here.');
+                closeSubModal();
+                return;
+            }
+            // Otherwise: bubble up the server's actual error message so the
+            // user knows what's wrong (e.g. "No active subscription to cancel").
+            alert(data && data.error ? data.error : 'Could not cancel right now. Please try again or contact support.');
+            btn.textContent = 'Cancel Subscription';
+            btn.disabled = false;
         } catch (e) {
-            alert('Error cancelling subscription. Please try again or contact support.');
+            alert('Network error cancelling subscription. Please try again or contact support.');
             btn.textContent = 'Cancel Subscription';
             btn.disabled = false;
         }
