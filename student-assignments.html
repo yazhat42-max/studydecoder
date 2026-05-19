@@ -61,6 +61,20 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
 .badge.deck { background:rgba(34,197,94,0.16); color:#86efac; }
 .badge.exam { background:rgba(239,68,68,0.18); color:#fca5a5; }
 .badge.scenario { background:rgba(56,189,248,0.18); color:#7dd3fc; }
+
+/* Syllabus post → section cards */
+.syllabus-cards { display:flex; flex-direction:column; gap:12px; margin-top:14px; }
+.syllabus-card { background:#0f1419; border:1px solid #2f3336; border-left:4px solid var(--card-color, #4f8cff); border-radius:10px; padding:14px 18px; }
+.syllabus-card-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.syllabus-card-icon { font-size:18px; line-height:1; flex-shrink:0; }
+.syllabus-card-title { font-weight:700; color:#e7e9ea; font-size:15px; }
+.syllabus-card-body { color:#d4d9de; font-size:14px; line-height:1.65; }
+.syllabus-card-body p { margin:0 0 8px; }
+.syllabus-card-body p:last-child { margin-bottom:0; }
+.syllabus-card-body ul, .syllabus-card-body ol { padding-left:20px; margin:4px 0 8px; }
+.syllabus-card-body li { margin:3px 0; }
+.syllabus-card-body strong { color:#fff; }
+.syllabus-card-body em { color:#c4b5fd; }
 .status-pill { display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px; }
 .status-pending { background:rgba(245,158,11,0.12); color:#fcd34d; border:1px solid rgba(245,158,11,0.3); }
 .status-completed { background:rgba(34,197,94,0.16); color:#86efac; border:1px solid rgba(34,197,94,0.4); }
@@ -107,6 +121,75 @@ const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:30
 function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function escMultiline(s){ return esc(s).replace(/\n/g, '<br>'); }
+
+// ── Syllabus card renderer ──
+// Parses an AI-decoded body into emoji-headed sections (📌 Overview,
+// 🧠 Key Concepts, etc.) and renders each as a coloured card. Mirrors the
+// consumer Syllabus Decoder card layout so a post the teacher decoded
+// looks the same on the student side. Falls back to plain text if no
+// emoji headers are present.
+const SD_CARD_COLORS = {
+    '📌':'#a78bfa', '🧠':'#f472b6', '📖':'#4f8cff', '✍️':'#fbbf24',
+    '💡':'#facc15', '🎯':'#22c55e', '📊':'#38bdf8', '🔑':'#f59e0b',
+    '⚡':'#fbbf24', '✅':'#22c55e', '🔥':'#ef4444', '⭐':'#fde047'
+};
+const SD_SECTION_RE = /^(📌|🧠|📖|✍️|💡|🎯|📊|🔑|⚡|✅|🔥|⭐)/u;
+function renderSyllabusCards(text) {
+    if (!text) return '';
+    const lines = String(text).split('\n');
+    const sections = [];
+    let current = null;
+    for (const line of lines) {
+        const m = line.match(SD_SECTION_RE);
+        if (m) {
+            if (current) sections.push(current);
+            const title = line.slice(m[1].length).trim().replace(/\*\*/g, '').replace(/:$/, '').trim();
+            current = { icon: m[1], title: title || 'Section', body: [] };
+        } else {
+            if (!current) current = { icon: '📋', title: 'Decoded', body: [] };
+            current.body.push(line);
+        }
+    }
+    if (current) sections.push(current);
+    if (!sections.length || (sections.length === 1 && sections[0].icon === '📋')) {
+        // No emoji headers → just render the original plain-text view.
+        return null;
+    }
+    function inline(s) {
+        return esc(s).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>');
+    }
+    function fmtBody(bodyLines) {
+        let html = ''; let listBuf = []; let listType = null;
+        const flush = () => { if (listBuf.length) { html += `<${listType}>${listBuf.join('')}</${listType}>`; listBuf = []; listType = null; } };
+        for (const raw of bodyLines) {
+            const t = raw.trim();
+            if (!t) { flush(); continue; }
+            const bullet = t.match(/^[•\-\*]\s+(.+)$/);
+            const num = t.match(/^(\d+)[.)]\s+(.+)$/);
+            if (bullet) {
+                if (listType === 'ol') flush();
+                listType = 'ul'; listBuf.push(`<li>${inline(bullet[1])}</li>`);
+            } else if (num) {
+                if (listType === 'ul') flush();
+                listType = 'ol'; listBuf.push(`<li>${inline(num[2])}</li>`);
+            } else {
+                flush(); html += `<p>${inline(t)}</p>`;
+            }
+        }
+        flush();
+        return html;
+    }
+    return '<div class="syllabus-cards">' + sections.map(sec => {
+        const color = SD_CARD_COLORS[sec.icon] || '#4f8cff';
+        return `<div class="syllabus-card" style="--card-color:${color};">
+            <div class="syllabus-card-header">
+                <div class="syllabus-card-icon">${sec.icon}</div>
+                <div class="syllabus-card-title">${esc(sec.title)}</div>
+            </div>
+            <div class="syllabus-card-body">${fmtBody(sec.body) || '<p style="color:#71767b;font-style:italic;">No content.</p>'}</div>
+        </div>`;
+    }).join('') + '</div>';
+}
 
 function fmtDate(s){
     if (!s) return '';
@@ -265,7 +348,12 @@ function renderPosts(posts){
     const KIND_LABEL = { syllabus: '📖 Syllabus', note: '📝 Note', announcement: '📣 Announcement' };
     slot.innerHTML = `<div class="card" style="margin-bottom:18px;">
         <div class="section-title" style="font-weight:700;font-size:15px;margin-bottom:12px;">📌 Class posts (${posts.length})</div>
-        ${posts.map(p => `
+        ${posts.map(p => {
+            // Syllabus posts render as decoded section cards when the body
+            // has emoji-headed sections; otherwise fall back to plain text.
+            const cards = p.kind === 'syllabus' ? renderSyllabusCards(p.body || '') : null;
+            const bodyHtml = cards || `<div style="margin-top:14px;padding-top:14px;border-top:1px solid #2f3336;color:#d4d9de;font-size:14px;line-height:1.65;white-space:pre-wrap;">${escMultiline(p.body || '')}</div>`;
+            return `
             <details class="assign-card" style="margin-bottom:10px;">
                 <summary style="cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
                     <div>
@@ -275,10 +363,10 @@ function renderPosts(posts){
                     </div>
                     <span style="color:#71767b;font-size:12px;">▼</span>
                 </summary>
-                <div style="margin-top:14px;padding-top:14px;border-top:1px solid #2f3336;color:#d4d9de;font-size:14px;line-height:1.65;white-space:pre-wrap;">${escMultiline(p.body || '')}</div>
+                ${bodyHtml}
                 ${p.source ? `<div style="margin-top:10px;font-size:13px;"><a href="${esc(p.source)}" target="_blank" rel="noopener" style="color:#4f8cff;text-decoration:none;">🔗 Source ↗</a></div>` : ''}
-            </details>
-        `).join('')}
+            </details>`;
+        }).join('')}
     </div>`;
 }
 

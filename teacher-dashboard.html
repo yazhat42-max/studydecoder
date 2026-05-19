@@ -99,6 +99,19 @@ th { color:#8899a6; font-size:12px; text-transform:uppercase; letter-spacing:0.5
 .ac-explain { background:rgba(245,158,11,0.06) !important; border-color:rgba(245,158,11,0.22) !important; margin-top:6px; }
 .ac-front { font-weight:700; color:#e7e9ea; margin-bottom:4px; }
 .ac-back { color:#a9b3bd; font-size:14px; line-height:1.5; }
+/* Syllabus post → section cards (mirrors student-assignments.html) */
+.syllabus-cards { display:flex; flex-direction:column; gap:10px; margin-top:10px; }
+.syllabus-card { background:#0f1419; border:1px solid #2f3336; border-left:4px solid var(--card-color, #4f8cff); border-radius:10px; padding:12px 16px; }
+.syllabus-card-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.syllabus-card-icon { font-size:18px; line-height:1; flex-shrink:0; }
+.syllabus-card-title { font-weight:700; color:#e7e9ea; font-size:14px; }
+.syllabus-card-body { color:#d4d9de; font-size:13px; line-height:1.6; }
+.syllabus-card-body p { margin:0 0 6px; }
+.syllabus-card-body p:last-child { margin-bottom:0; }
+.syllabus-card-body ul, .syllabus-card-body ol { padding-left:18px; margin:4px 0 6px; }
+.syllabus-card-body li { margin:2px 0; }
+.syllabus-card-body strong { color:#fff; }
+.syllabus-card-body em { color:#c4b5fd; }
 /* Account dropdown */
 #acctMenu button:hover { background:rgba(255,255,255,0.04); }
 #acctMenu button:active { background:rgba(255,255,255,0.08); }
@@ -152,19 +165,69 @@ function loadSyllabusModules() {
     .catch(() => ({}))
     .then(d => { SYLLABUS_MODULES = d || {}; return SYLLABUS_MODULES; });
 }
-// Look up modules for a class subject — case-insensitive partial match on
-// the JSON keys (since classes store free-text subject names like "Maths
-// Advanced" but the JSON keys vary).
+// Common short-name → canonical JSON key aliases for module lookup. Classes
+// created before the dropdown was required may have free-text subjects like
+// "maths" or "bio" which don't match the syllabus_modules.json keys
+// directly ("Mathematics", "Biology"). Mapping here so the module dropdown
+// still populates instead of silently falling back to free-text.
+const SUBJECT_ALIASES = {
+  'maths': 'Mathematics', 'math': 'Mathematics',
+  'maths advanced': 'Mathematics', 'mathematics advanced': 'Mathematics',
+  'maths standard': 'Mathematics', 'mathematics standard': 'Mathematics',
+  'maths extension 1': 'Mathematics', 'maths extension 2': 'Mathematics',
+  'mathematics extension 1': 'Mathematics', 'mathematics extension 2': 'Mathematics',
+  'bio': 'Biology',
+  'chem': 'Chemistry',
+  'phys': 'Physics',
+  'eng': 'English', 'english': 'English',
+  'english advanced': 'English', 'english standard': 'English', 'english extension': 'English', 'english eal/d': 'English',
+  'history': 'modern-history-stage-6-syllabus-2017',
+  'mod hist': 'modern-history-stage-6-syllabus-2017', 'modern history': 'modern-history-stage-6-syllabus-2017',
+  'ancient hist': 'ancient-history-stage-6-syllabus-2017', 'ancient history': 'ancient-history-stage-6-syllabus-2017',
+  'biz': 'business-studies-stage-6-syllabus-2010', 'business': 'business-studies-stage-6-syllabus-2010', 'business studies': 'business-studies-stage-6-syllabus-2010'
+};
+// Generic fallback so subjects with empty module lists in the JSON (e.g.
+// "Mathematics": []) still surface a usable dropdown instead of a bare
+// text input.
+const GENERIC_MODULE_FALLBACK = ['Module 1', 'Module 2', 'Module 3', 'Module 4', 'Module 5', 'Module 6', 'Module 7', 'Module 8'];
+// Curated hard-coded modules for high-traffic subjects with empty JSON lists.
+const CURATED_MODULES = {
+  'Mathematics Advanced': ['Module 1: Functions', 'Module 2: Trigonometric Functions', 'Module 3: Calculus', 'Module 4: Statistical Analysis'],
+  'Mathematics Standard': ['Module 1: Algebra', 'Module 2: Measurement', 'Module 3: Financial Mathematics', 'Module 4: Statistical Analysis', 'Module 5: Networks'],
+  'Mathematics Extension 1': ['Module 1: Proof', 'Module 2: Vectors', 'Module 3: Trigonometric Functions', 'Module 4: Calculus', 'Module 5: Statistical Analysis'],
+  'Mathematics Extension 2': ['Module 1: Proof', 'Module 2: Complex Numbers', 'Module 3: Calculus', 'Module 4: Vectors', 'Module 5: Mechanics'],
+  'Mathematics (Years 7-10)': GENERIC_MODULE_FALLBACK,
+  'English (Years 7-10)': GENERIC_MODULE_FALLBACK,
+  'Science (Years 7-10)': GENERIC_MODULE_FALLBACK
+};
 function modulesForSubject(subject) {
-  if (!subject || !SYLLABUS_MODULES) return [];
-  if (Array.isArray(SYLLABUS_MODULES[subject])) return SYLLABUS_MODULES[subject];
+  if (!subject) return [];
+  // 0) Curated overrides for subjects with empty JSON entries.
+  if (CURATED_MODULES[subject]) return CURATED_MODULES[subject];
+  if (SYLLABUS_MODULES && Array.isArray(SYLLABUS_MODULES[subject]) && SYLLABUS_MODULES[subject].length) {
+    return SYLLABUS_MODULES[subject];
+  }
   const lc = subject.toLowerCase().trim();
-  const keys = Object.keys(SYLLABUS_MODULES);
-  // Exact ci, then "starts-with", then includes — most specific first.
-  let match = keys.find(k => k.toLowerCase() === lc)
-            || keys.find(k => k.toLowerCase().startsWith(lc) || lc.startsWith(k.toLowerCase()))
-            || keys.find(k => k.toLowerCase().includes(lc) || lc.includes(k.toLowerCase()));
-  return match && Array.isArray(SYLLABUS_MODULES[match]) ? SYLLABUS_MODULES[match] : [];
+  // 1) Explicit alias map → curated → JSON.
+  const aliasKey = SUBJECT_ALIASES[lc];
+  if (aliasKey) {
+    if (CURATED_MODULES[aliasKey]) return CURATED_MODULES[aliasKey];
+    if (SYLLABUS_MODULES && Array.isArray(SYLLABUS_MODULES[aliasKey]) && SYLLABUS_MODULES[aliasKey].length) {
+      return SYLLABUS_MODULES[aliasKey];
+    }
+  }
+  // 2) Case-insensitive: exact → starts-with → contains.
+  if (SYLLABUS_MODULES) {
+    const keys = Object.keys(SYLLABUS_MODULES);
+    let match = keys.find(k => k.toLowerCase() === lc)
+              || keys.find(k => k.toLowerCase().startsWith(lc) || lc.startsWith(k.toLowerCase()))
+              || keys.find(k => k.toLowerCase().includes(lc) || lc.includes(k.toLowerCase()));
+    if (match && Array.isArray(SYLLABUS_MODULES[match]) && SYLLABUS_MODULES[match].length) {
+      return SYLLABUS_MODULES[match];
+    }
+  }
+  // 3) Last resort: generic Module 1-8 so teachers always get a dropdown.
+  return GENERIC_MODULE_FALLBACK;
 }
 
 function fmtDate(s){
@@ -906,6 +969,61 @@ function escMultiline(s){
   return esc(s).replace(/\n/g, '<br>');
 }
 
+// Parse an AI-decoded syllabus body (emoji-headed sections) into stacked
+// cards. Returns null if there are no recognised emoji headers so the
+// caller can fall back to plain text. Mirrors the renderSyllabusCards
+// function in student-assignments.html — kept in sync deliberately.
+const SD_TEACHER_CARD_COLORS = {
+  '📌':'#a78bfa', '🧠':'#f472b6', '📖':'#4f8cff', '✍️':'#fbbf24',
+  '💡':'#facc15', '🎯':'#22c55e', '📊':'#38bdf8', '🔑':'#f59e0b',
+  '⚡':'#fbbf24', '✅':'#22c55e', '🔥':'#ef4444', '⭐':'#fde047'
+};
+const SD_TEACHER_SECTION_RE = /^(📌|🧠|📖|✍️|💡|🎯|📊|🔑|⚡|✅|🔥|⭐)/u;
+function renderSyllabusCardsTeacher(text){
+  if (!text) return null;
+  const lines = String(text).split('\n');
+  const sections = []; let current = null;
+  for (const line of lines){
+    const m = line.match(SD_TEACHER_SECTION_RE);
+    if (m){
+      if (current) sections.push(current);
+      const title = line.slice(m[1].length).trim().replace(/\*\*/g, '').replace(/:$/, '').trim();
+      current = { icon: m[1], title: title || 'Section', body: [] };
+    } else {
+      if (!current) current = { icon: '📋', title: 'Decoded', body: [] };
+      current.body.push(line);
+    }
+  }
+  if (current) sections.push(current);
+  if (!sections.length || (sections.length === 1 && sections[0].icon === '📋')) return null;
+  const inline = s => esc(s).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>');
+  function fmtBody(bodyLines){
+    let html = ''; let listBuf = []; let listType = null;
+    const flush = () => { if (listBuf.length){ html += `<${listType}>${listBuf.join('')}</${listType}>`; listBuf = []; listType = null; } };
+    for (const raw of bodyLines){
+      const t = raw.trim();
+      if (!t){ flush(); continue; }
+      const bullet = t.match(/^[•\-\*]\s+(.+)$/);
+      const num = t.match(/^(\d+)[.)]\s+(.+)$/);
+      if (bullet){ if (listType === 'ol') flush(); listType = 'ul'; listBuf.push(`<li>${inline(bullet[1])}</li>`); }
+      else if (num){ if (listType === 'ul') flush(); listType = 'ol'; listBuf.push(`<li>${inline(num[2])}</li>`); }
+      else { flush(); html += `<p>${inline(t)}</p>`; }
+    }
+    flush();
+    return html;
+  }
+  return '<div class="syllabus-cards">' + sections.map(sec => {
+    const color = SD_TEACHER_CARD_COLORS[sec.icon] || '#4f8cff';
+    return `<div class="syllabus-card" style="--card-color:${color};">
+      <div class="syllabus-card-header">
+        <div class="syllabus-card-icon">${sec.icon}</div>
+        <div class="syllabus-card-title">${esc(sec.title)}</div>
+      </div>
+      <div class="syllabus-card-body">${fmtBody(sec.body) || '<p style="color:#71767b;font-style:italic;">No content.</p>'}</div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
 function deleteAssignment(assignmentId, title){
   if (!confirm('Delete assignment "' + title + '"? Students will no longer see it.')) return;
   api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/assignments/' + encodeURIComponent(assignmentId), {
@@ -1107,11 +1225,15 @@ function renderPostList(posts){
   const slot = document.getElementById('postListSlot');
   if (!posts.length){ slot.innerHTML = '<div class="card muted">No posts yet for this class.</div>'; return; }
   const KIND_LABEL = { syllabus: '📖 Syllabus', note: '📝 Note', announcement: '📣 Announcement' };
-  slot.innerHTML = `<div class="card"><div class="section-title" style="margin-bottom:14px;">Posts</div><ul class="assign-list">` + posts.map(p => `
+  slot.innerHTML = `<div class="card"><div class="section-title" style="margin-bottom:14px;">Posts</div><ul class="assign-list">` + posts.map(p => {
+    // Render syllabus posts as decoded cards (same look as the student view).
+    const cards = p.kind === 'syllabus' ? renderSyllabusCardsTeacher(p.body || '') : null;
+    const bodyHtml = cards || `<div class="assign-instr" style="white-space:pre-wrap;">${escMultiline(p.body || '')}</div>`;
+    return `
     <li>
       <div style="flex:1;min-width:0;">
         <div><span class="badge">${esc(KIND_LABEL[p.kind] || p.kind || 'Post')}</span> &nbsp;<strong>${esc(p.title)}</strong></div>
-        <div class="assign-instr" style="white-space:pre-wrap;">${escMultiline(p.body || '')}</div>
+        ${bodyHtml}
         ${p.source ? `<div class="assign-meta">🔗 <a href="${esc(p.source)}" target="_blank" rel="noopener" style="color:#4f8cff;">${esc(p.source)}</a></div>` : ''}
         <div class="assign-meta">Posted ${esc(fmtDate(p.createdAt))}${p.module ? ' · ' + esc(p.module) : ''}</div>
       </div>
