@@ -2774,6 +2774,12 @@
         });
 
         // Auth check on page load
+        // Junior subjects — matches the backend's Years 7-10 syllabus IDs.
+        const JUNIOR_SUBJECTS = [
+            { id: 'english-7-10', name: 'English (Years 7-10)', category: 'Years 7-10' },
+            { id: 'mathematics-7-10', name: 'Mathematics (Years 7-10)', category: 'Years 7-10' },
+            { id: 'science-7-10', name: 'Science (Years 7-10)', category: 'Years 7-10' }
+        ];
         async function checkAuth() {
             try {
                 const res = await fetch(API_BASE + '/api/subscription', { credentials: 'include' });
@@ -2782,6 +2788,8 @@
                     const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged || data.preferences?.onboarded;
                     if (hasAccess) {
                         userDisplay.textContent = data.name || data.email || '';
+                        // Swap subject list to junior if user level says so.
+                        window._sdUserLevel = data.preferences && data.preferences.level;
                         populateSubjects();
                         modeLanding.classList.add('active');
                         
@@ -2815,8 +2823,10 @@
         }
 
         function populateSubjects() {
+            const isJunior = window._sdUserLevel === 'junior';
+            const list = isJunior ? JUNIOR_SUBJECTS : subjects;
             const byCategory = {};
-            subjects.forEach(s => {
+            list.forEach(s => {
                 if (!byCategory[s.category]) byCategory[s.category] = [];
                 byCategory[s.category].push(s);
             });

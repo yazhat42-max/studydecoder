@@ -41,7 +41,7 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
 .card.type-deck      { border-top:3px solid #22c55e; }
 .card.type-scenario  { border-top:3px solid #38bdf8; }
 .resume-banner { background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.3); color:#7dd3fc; padding:10px 14px; border-radius:10px; margin-bottom:14px; font-size:13px; line-height:1.5; }
-.draft-status { position:fixed; bottom:14px; right:14px; background:rgba(108,99,255,0.92); color:#fff; padding:8px 14px; border-radius:999px; font-size:12px; font-weight:700; opacity:0; transform:translateY(10px); transition:opacity .25s, transform .25s; pointer-events:none; box-shadow:0 6px 20px rgba(0,0,0,.4); z-index:90; }
+.draft-status { position:fixed; top:78px; right:14px; background:rgba(108,99,255,0.92); color:#fff; padding:8px 14px; border-radius:999px; font-size:12px; font-weight:700; opacity:0; transform:translateY(-10px); transition:opacity .25s, transform .25s; pointer-events:none; box-shadow:0 6px 20px rgba(0,0,0,.4); z-index:90; }
 .draft-status.show { opacity:1; transform:none; }
 .draft-status.saving { background:rgba(168,85,247,0.92); }
 .draft-status.saved { background:rgba(34,197,94,0.92); }
@@ -636,13 +636,20 @@ function startExamTimer(){
         clock.textContent = mm + ':' + String(ss).padStart(2, '0');
         clock.classList.toggle('warn', totalSec <= 600 && totalSec > 60);
         clock.classList.toggle('urgent', totalSec <= 60);
+        // Update the "Time remaining" label once the clock hits zero so it
+        // doesn't keep saying remaining when there's none left.
+        const timerLabel = document.querySelector('#examTimer .meta');
+        if (timerLabel) timerLabel.textContent = totalSec <= 0 ? '⏱ Time\'s up' : '⏱ Time remaining';
         if (totalSec <= 0) {
             clearInterval(_examTimerInterval);
             _examTimerInterval = null;
             sessionStorage.removeItem(storeKey);
-            // Auto-submit when time runs out.
+            // Auto-submit when time runs out. Force a final draft save first
+            // so anything typed in the last 20s window (before the autosave
+            // interval fired) is captured in the submission payload.
             const submitBtn = document.getElementById('submitBtn');
             if (submitBtn && !submitBtn.disabled) {
+                _draftDirty = false; // skip the redundant draft save call
                 alert('Time\'s up — submitting your exam now.');
                 submitAnswers(submitBtn);
             }
