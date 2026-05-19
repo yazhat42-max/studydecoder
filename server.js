@@ -2697,6 +2697,28 @@ app.post('/api/teacher/classes/:id/regenerate-code', requireTeacher, (req, res) 
     res.json({ joinCode: cls.joinCode });
 });
 
+// PATCH /api/teacher/classes/:id — update editable fields on a class.
+// Currently scoped to name + subject + year; level is fixed at creation
+// because it gates assignment scope and Stripe seat tier.
+app.patch('/api/teacher/classes/:id', requireTeacher, express.json(), (req, res) => {
+    const cls = getOwnedClass(req, req.params.id);
+    if (!cls) return res.status(404).json({ error: 'Class not found' });
+    const body = req.body || {};
+    if (typeof body.name === 'string') {
+        const trimmed = body.name.trim();
+        if (!trimmed) return res.status(400).json({ error: 'Class name cannot be blank' });
+        cls.name = trimmed.slice(0, 120);
+    }
+    if (typeof body.subject === 'string') {
+        cls.subject = body.subject.trim().slice(0, 80);
+    }
+    if (typeof body.year === 'string') {
+        cls.year = body.year.trim().slice(0, 20);
+    }
+    scheduleClassroomSave();
+    res.json({ class: cls });
+});
+
 // GET /api/teacher/classes/:id/students — roster + last-active + mastery summary
 app.get('/api/teacher/classes/:id/students', requireTeacher, (req, res) => {
     const cls = getOwnedClass(req, req.params.id);

@@ -208,10 +208,13 @@ function showList(){
         <div class="form-row">
           <div><label class="form-label">Class name *</label><input class="form-input" id="ncName" placeholder="Year 12 English Advanced"></div>
           <div><label class="form-label">Level *</label><select class="form-select" id="ncLevel"></select></div>
-          <div><label class="form-label">Subject</label><input class="form-input" id="ncSubject" placeholder="English Advanced"></div>
+        </div>
+        <div class="form-row" style="margin-top:14px;">
+          <div><label class="form-label">Subject *</label><select class="form-select" id="ncSubject"><option value="">— Pick the class level first —</option></select></div>
           <div><label class="form-label">Year</label><input class="form-input" id="ncYear" placeholder="2026"></div>
         </div>
-        <button class="btn" id="ncCreate">Create class</button>
+        <p class="muted" style="margin-top:8px;font-size:12px;">The subject locks what your linked students can use for free. Pick the one this class teaches.</p>
+        <button class="btn" id="ncCreate" style="margin-top:14px;">Create class</button>
       </div>
     </div>
     <div id="classListSlot"><div class="card muted">Loading classes…</div></div>`;
@@ -258,6 +261,71 @@ function populateLevelSelect(){
   if (teacherTier === 'senior' || teacherTier === 'both') opts.push('<option value="senior">Senior (HSC, Year 11-12)</option>');
   sel.innerHTML = opts.join('');
   sel.disabled = opts.length < 2;
+  // Cascade: when the level changes, repopulate the subject dropdown.
+  sel.addEventListener('change', populateSubjectSelectForLevel);
+  populateSubjectSelectForLevel();
+}
+
+// Senior + junior subject lists used by the class-create form. Storing the
+// display NAME (not the slug) on the class so the inline banner reads
+// naturally; the loose-match gate (server.js subjectMatchesEnrolled) handles
+// the ID-vs-name comparison against tool requests.
+const JUNIOR_SUBJECT_NAMES = [
+  'English (Years 7-10)',
+  'Mathematics (Years 7-10)',
+  'Science (Years 7-10)'
+];
+const SENIOR_SUBJECT_NAMES_BY_CATEGORY = {
+  'English':       ['English Standard', 'English Advanced', 'English Extension', 'English EAL/D', 'English Studies'],
+  'Mathematics':   ['Mathematics Standard', 'Mathematics Advanced', 'Mathematics Extension 1', 'Mathematics Extension 2', 'Mathematics Life Skills'],
+  'Science':       ['Biology', 'Chemistry', 'Physics', 'Earth and Environmental Science', 'Investigating Science', 'Science Extension'],
+  'HSIE':          ['Ancient History', 'Modern History', 'History Extension', 'Geography', 'Business Studies', 'Economics', 'Legal Studies', 'Society and Culture', 'Studies of Religion I', 'Studies of Religion II', 'Aboriginal Studies'],
+  'Creative Arts': ['Visual Arts', 'Music 1', 'Music 2', 'Music Extension', 'Drama', 'Dance', 'Photography, Video and Digital Imaging', 'Visual Design'],
+  'TAS':           ['Agriculture', 'Design and Technology', 'Engineering Studies', 'Food Technology', 'Industrial Technology - Automotive', 'Industrial Technology - Electronics', 'Industrial Technology - Graphics', 'Industrial Technology - Metal and Engineering', 'Industrial Technology - Multimedia', 'Industrial Technology - Timber and Furniture', 'Software Engineering', 'Textiles and Design', 'Enterprise Computing'],
+  'PDHPE':         ['Personal Development, Health and Physical Education', 'Health and Movement Science'],
+  'VET':           ['Construction', 'Hospitality', 'Retail Services'],
+  'Languages':     ['French Beginners', 'French Continuers', 'French Extension', 'Japanese Beginners', 'Japanese Continuers', 'Chinese Beginners', 'Chinese Continuers']
+};
+
+function populateSubjectSelectForLevel() {
+  const levelSel = document.getElementById('ncLevel');
+  const sel = document.getElementById('ncSubject');
+  if (!levelSel || !sel) return;
+  const level = levelSel.value;
+  if (level === 'junior') {
+    sel.innerHTML = '<option value="">Pick a subject…</option>' +
+      JUNIOR_SUBJECT_NAMES.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+  } else if (level === 'senior') {
+    let html = '<option value="">Pick a subject…</option>';
+    Object.keys(SENIOR_SUBJECT_NAMES_BY_CATEGORY).forEach(cat => {
+      html += `<optgroup label="${esc(cat)}">`;
+      SENIOR_SUBJECT_NAMES_BY_CATEGORY[cat].forEach(n => {
+        html += `<option value="${esc(n)}">${esc(n)}</option>`;
+      });
+      html += '</optgroup>';
+    });
+    html += '<optgroup label="Other"><option value="__custom__">⚙️ Type my own</option></optgroup>';
+    sel.innerHTML = html;
+  } else {
+    sel.innerHTML = '<option value="">— Pick the class level first —</option>';
+  }
+  sel.addEventListener('change', () => {
+    let cust = document.getElementById('ncSubjectCustom');
+    if (sel.value === '__custom__') {
+      if (!cust) {
+        cust = document.createElement('input');
+        cust.id = 'ncSubjectCustom';
+        cust.className = 'form-input';
+        cust.style.marginTop = '8px';
+        cust.placeholder = 'Type the subject name';
+        sel.parentNode.appendChild(cust);
+      }
+      cust.style.display = 'block';
+    } else if (cust) {
+      cust.style.display = 'none';
+      cust.value = '';
+    }
+  });
 }
 
 function renderClassList(classes){
@@ -271,15 +339,37 @@ function renderClassList(classes){
       </div>`;
     return;
   }
+  // Surface a single big banner at the top of the list if ANY active class
+  // doesn't have a subject set — those classes can't gate student access
+  // properly until the teacher picks one.
+  const subjectless = active.filter(c => !c.subject);
+  let prompt = '';
+  if (subjectless.length) {
+    const list = subjectless.map(c => `<li style="margin-top:4px;"><strong>${esc(c.name)}</strong> — <button class="link-inline cls-set-subject" data-id="${esc(c.classId)}" data-level="${esc(c.level || 'senior')}">Set subject →</button></li>`).join('');
+    prompt = `<div class="card" style="background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.4);margin-bottom:14px;">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="font-size:1.4rem;">⚠️</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;color:#fcd34d;margin-bottom:4px;">${subjectless.length} class${subjectless.length===1?'':'es'} ${subjectless.length===1?'has':'have'} no subject set</div>
+          <div class="muted" style="font-size:13px;margin-bottom:8px;">Students linked here won't get any free subject access until you pick one. Pick the subject this class teaches:</div>
+          <ul style="list-style:disc;padding-left:18px;color:#d4d9de;font-size:13px;">${list}</ul>
+        </div>
+      </div>
+    </div>`;
+  }
   const cards = active.map(c => {
     const levelLabel = c.level === 'junior' ? 'Junior' : c.level === 'senior' ? 'Senior' : '';
     const metaParts = [levelLabel, c.subject, c.year].filter(Boolean);
-    const meta = metaParts.length ? metaParts.join(' · ') : 'No subject set';
+    const meta = metaParts.length ? metaParts.join(' · ') : '';
+    const subjectChip = c.subject
+      ? `<span style="display:inline-block;background:rgba(108,99,255,0.18);color:#c4b5fd;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;margin-top:6px;">🎯 ${esc(c.subject)}</span>`
+      : `<span style="display:inline-block;background:rgba(245,158,11,0.18);color:#fcd34d;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;margin-top:6px;">⚠️ No subject set</span>`;
     return `
       <div class="class-card">
         <div>
           <h3>${esc(c.name)}</h3>
-          <div class="sub">${esc(meta)}</div>
+          ${meta ? `<div class="sub">${esc(meta)}</div>` : ''}
+          ${subjectChip}
         </div>
         <div class="join-code-box">
           <span class="join-code">${esc(c.joinCode)}</span>
@@ -292,7 +382,12 @@ function renderClassList(classes){
         </div>
       </div>`;
   }).join('');
-  slot.innerHTML = `<div class="class-grid">${cards}</div>`;
+  slot.innerHTML = prompt + `<div class="class-grid">${cards}</div>`;
+
+  // Wire the "Set subject" links in the prompt banner.
+  slot.querySelectorAll('.cls-set-subject').forEach(btn => {
+    btn.addEventListener('click', () => openSetSubjectModal(btn.dataset.id, btn.dataset.level || 'senior'));
+  });
 
   slot.querySelectorAll('[data-code]').forEach(b => b.addEventListener('click', () => {
     navigator.clipboard && navigator.clipboard.writeText(b.dataset.code);
@@ -313,12 +408,19 @@ function renderClassList(classes){
 function createClass(){
   const name = document.getElementById('ncName').value.trim();
   const level = document.getElementById('ncLevel').value;
-  const subject = document.getElementById('ncSubject').value.trim();
+  const subjSel = document.getElementById('ncSubject');
+  let subject = subjSel ? subjSel.value : '';
+  if (subject === '__custom__') {
+    const cust = document.getElementById('ncSubjectCustom');
+    subject = cust ? cust.value.trim() : '';
+  }
+  subject = (subject || '').trim();
   const year = document.getElementById('ncYear').value.trim();
   const errSlot = document.getElementById('createErr');
   errSlot.innerHTML = '';
   if (!name){ errSlot.innerHTML = '<div class="error-banner">Class name is required.</div>'; return; }
   if (!level){ errSlot.innerHTML = '<div class="error-banner">Pick a class level.</div>'; return; }
+  if (!subject){ errSlot.innerHTML = '<div class="error-banner">Pick a subject — students need it for the free-access lock.</div>'; return; }
   const btn = document.getElementById('ncCreate');
   btn.disabled = true; btn.textContent = 'Creating…';
   api('/api/teacher/classes', { method:'POST', body: JSON.stringify({ name, subject, year, level }) })
@@ -327,7 +429,9 @@ function createClass(){
       btn.disabled = false; btn.textContent = 'Create class';
       if (!r.ok){ errSlot.innerHTML = '<div class="error-banner">' + esc(d.error || 'Could not create class.') + '</div>'; return; }
       document.getElementById('ncName').value = '';
-      document.getElementById('ncSubject').value = '';
+      if (subjSel) subjSel.value = '';
+      const cust = document.getElementById('ncSubjectCustom');
+      if (cust) { cust.value = ''; cust.style.display = 'none'; }
       document.getElementById('ncYear').value = '';
       document.getElementById('newClassForm').classList.add('hidden');
       loadClasses();
@@ -336,6 +440,82 @@ function createClass(){
       btn.disabled = false; btn.textContent = 'Create class';
       errSlot.innerHTML = '<div class="error-banner">Network error. Please try again.</div>';
     });
+}
+
+// Modal to set / change the subject on an existing class. Re-uses the same
+// junior vs senior dropdown logic as the create form, with a free-text
+// escape hatch under "Other" for senior-level classes.
+function openSetSubjectModal(classId, level) {
+  let overlay = document.getElementById('sdSetSubjectOverlay');
+  if (overlay) overlay.remove();
+  overlay = document.createElement('div');
+  overlay.id = 'sdSetSubjectOverlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+
+  let subjectHtml = '<option value="">Pick a subject…</option>';
+  if (level === 'junior') {
+    subjectHtml += JUNIOR_SUBJECT_NAMES.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+  } else {
+    Object.keys(SENIOR_SUBJECT_NAMES_BY_CATEGORY).forEach(cat => {
+      subjectHtml += `<optgroup label="${esc(cat)}">`;
+      SENIOR_SUBJECT_NAMES_BY_CATEGORY[cat].forEach(n => {
+        subjectHtml += `<option value="${esc(n)}">${esc(n)}</option>`;
+      });
+      subjectHtml += '</optgroup>';
+    });
+    subjectHtml += '<optgroup label="Other"><option value="__custom__">⚙️ Type my own</option></optgroup>';
+  }
+
+  overlay.innerHTML = `
+    <div style="background:#16202a;border:1px solid #2f3336;border-radius:18px;max-width:480px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,0.6);">
+      <div style="padding:18px 22px;border-bottom:1px solid #2f3336;">
+        <div style="font-size:17px;font-weight:700;color:#e7e9ea;">🎯 Set class subject</div>
+        <div style="font-size:12px;color:#71767b;margin-top:2px;">Students linked here get free access to this subject only.</div>
+      </div>
+      <div style="padding:18px 22px;">
+        <div id="setSubjErr"></div>
+        <label style="display:block;font-size:13px;font-weight:600;color:#c8ccd0;margin-bottom:6px;">Subject</label>
+        <select id="setSubjSelect" class="form-select">${subjectHtml}</select>
+        <input id="setSubjCustom" class="form-input" placeholder="Type the subject name" style="display:none;margin-top:8px;">
+      </div>
+      <div style="padding:14px 22px;border-top:1px solid #2f3336;display:flex;justify-content:flex-end;gap:10px;">
+        <button id="setSubjCancel" class="btn-ghost" style="border:1px solid #2f3336;background:rgba(255,255,255,0.04);color:#e7e9ea;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;">Cancel</button>
+        <button id="setSubjSave" class="btn" style="border-radius:8px;padding:8px 18px;font-size:13px;">Save</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  const sel = document.getElementById('setSubjSelect');
+  const cust = document.getElementById('setSubjCustom');
+  sel.addEventListener('change', () => {
+    if (sel.value === '__custom__') { cust.style.display = 'block'; cust.focus(); }
+    else { cust.style.display = 'none'; cust.value = ''; }
+  });
+  document.getElementById('setSubjCancel').addEventListener('click', () => overlay.remove());
+  document.getElementById('setSubjSave').addEventListener('click', () => {
+    let subject = sel.value === '__custom__' ? cust.value.trim() : sel.value;
+    const err = document.getElementById('setSubjErr');
+    err.innerHTML = '';
+    if (!subject) { err.innerHTML = '<div class="error-banner">Pick a subject first.</div>'; return; }
+    const btn = document.getElementById('setSubjSave');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    api('/api/teacher/classes/' + encodeURIComponent(classId), {
+      method: 'PATCH',
+      body: JSON.stringify({ subject })
+    })
+      .then(async r => {
+        const d = await r.json().catch(() => ({}));
+        btn.disabled = false; btn.textContent = 'Save';
+        if (!r.ok) { err.innerHTML = '<div class="error-banner">' + esc(d.error || 'Could not save.') + '</div>'; return; }
+        overlay.remove();
+        loadClasses();
+      })
+      .catch(() => {
+        btn.disabled = false; btn.textContent = 'Save';
+        err.innerHTML = '<div class="error-banner">Network error. Please try again.</div>';
+      });
+  });
 }
 
 /* ===================== VIEW B: CLASS DRILL-DOWN ===================== */
