@@ -142,6 +142,30 @@ let state = { view:'list', classId:null, className:'', tab:'roster', studentView
 let teacherTier = 'both';
 let studentTotal = 0;
 let studentCap = 100;
+// Syllabus module data — loaded once from /syllabus_modules.json, keyed by
+// the same names the consumer syllabus tool uses (case- and shape-matched).
+let SYLLABUS_MODULES = null;
+function loadSyllabusModules() {
+  if (SYLLABUS_MODULES !== null) return Promise.resolve(SYLLABUS_MODULES);
+  return fetch('/syllabus_modules.json')
+    .then(r => r.ok ? r.json() : {})
+    .catch(() => ({}))
+    .then(d => { SYLLABUS_MODULES = d || {}; return SYLLABUS_MODULES; });
+}
+// Look up modules for a class subject — case-insensitive partial match on
+// the JSON keys (since classes store free-text subject names like "Maths
+// Advanced" but the JSON keys vary).
+function modulesForSubject(subject) {
+  if (!subject || !SYLLABUS_MODULES) return [];
+  if (Array.isArray(SYLLABUS_MODULES[subject])) return SYLLABUS_MODULES[subject];
+  const lc = subject.toLowerCase().trim();
+  const keys = Object.keys(SYLLABUS_MODULES);
+  // Exact ci, then "starts-with", then includes — most specific first.
+  let match = keys.find(k => k.toLowerCase() === lc)
+            || keys.find(k => k.toLowerCase().startsWith(lc) || lc.startsWith(k.toLowerCase()))
+            || keys.find(k => k.toLowerCase().includes(lc) || lc.includes(k.toLowerCase()));
+  return match && Array.isArray(SYLLABUS_MODULES[match]) ? SYLLABUS_MODULES[match] : [];
+}
 
 function fmtDate(s){
   if (!s) return '—';
@@ -321,6 +345,15 @@ function openClass(classId, className, classSubject){
 }
 
 function renderClassShell(){
+  const subjectBanner = state.classSubject
+    ? `<div style="margin-top:10px;padding:10px 14px;background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.28);border-radius:10px;font-size:13px;color:#c4b5fd;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="font-weight:700;">🎯 Class subject:</span>
+        <span style="background:rgba(255,255,255,0.08);padding:3px 10px;border-radius:6px;color:#fff;font-weight:700;">${esc(state.classSubject)}</span>
+        <span style="color:#a9b3bd;">Students in this class get free access to <strong style="color:#e7e9ea;">${esc(state.classSubject)}</strong> only — other subjects are locked unless they upgrade.</span>
+      </div>`
+    : `<div style="margin-top:10px;padding:10px 14px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.32);border-radius:10px;font-size:13px;color:#fcd34d;">
+        ⚠️ This class has no subject set. Students linked here won't get any free subject access. Edit the class to set one.
+      </div>`;
   root.innerHTML = `
     <div class="card">
       <div class="row-between">
@@ -330,6 +363,7 @@ function renderClassShell(){
         </div>
         <button class="btn-ghost btn" id="regenBtn">Regenerate code</button>
       </div>
+      ${subjectBanner}
       <div id="regenMsg" style="margin-top:10px;"></div>
     </div>
     <div class="tabs">
@@ -421,12 +455,12 @@ function renderRoster(students){
 /* ----- ASSIGNMENTS ----- */
 function loadAssignments(){
   const slot = document.getElementById('tabSlot');
-  const subj = state.classSubject ? esc(state.classSubject) : 'this class\'s subject';
+  const subj = state.classSubject ? esc(state.classSubject) : '';
   slot.innerHTML = `
     <div class="card">
       <div class="section-title" style="margin-bottom:14px;">New assignment</div>
       <div id="asgErr"></div>
-      <p class="muted" style="margin-bottom:14px;font-size:13px;">AI will generate the actual questions / worksheet / flashcards for <strong>${subj}</strong> when you create this assignment. Your students will see the same content when they open it.</p>
+      <p class="muted" style="margin-bottom:14px;font-size:13px;">AI generates the actual content for ${subj ? '<strong>' + subj + '</strong>' : 'this class\'s subject'} when you create the assignment. Every student in the class sees the same questions / worksheet / cards.</p>
       <div class="form-row">
         <div>
           <label class="form-label">Type *</label>
@@ -442,9 +476,15 @@ function loadAssignments(){
       </div>
       <div class="form-row" style="margin-top:14px;">
         <div>
-          <label class="form-label">Topic / module</label>
-          <input class="form-input" id="asgModule" placeholder="e.g. Module B Critical Study — Frankenstein">
+          <label class="form-label">Subject (class)</label>
+          <input class="form-input" id="asgSubject" value="${subj || ''}" readonly style="cursor:not-allowed;opacity:.85;">
         </div>
+        <div>
+          <label class="form-label">Module / topic</label>
+          <div id="asgModuleSlot"><select class="form-select" id="asgModule" disabled><option>Loading modules…</option></select></div>
+        </div>
+      </div>
+      <div class="form-row" style="margin-top:14px;">
         <div>
           <label class="form-label">Difficulty</label>
           <select class="form-select" id="asgDifficulty">
@@ -453,16 +493,17 @@ function loadAssignments(){
             <option value="hard">Hard</option>
           </select>
         </div>
-      </div>
-      <div class="form-row" style="margin-top:14px;">
         <div>
           <label class="form-label" id="asgCountLabel">Number of questions</label>
           <input class="form-input" id="asgCount" type="number" min="1" max="25" value="6">
         </div>
+      </div>
+      <div class="form-row" style="margin-top:14px;">
         <div>
           <label class="form-label">Due date</label>
           <input class="form-input" id="asgDue" type="date">
         </div>
+        <div></div>
       </div>
       <div style="margin-top:14px;">
         <label class="form-label">Extra instructions for students (optional)</label>
@@ -471,6 +512,27 @@ function loadAssignments(){
       <button class="btn" id="asgCreate" style="margin-top:14px;">Generate &amp; assign</button>
     </div>
     <div id="asgListSlot"><div class="card muted">Loading assignments…</div></div>`;
+  // Load modules for this class's subject and populate the dropdown.
+  loadSyllabusModules().then(() => {
+    const mods = modulesForSubject(state.classSubject);
+    const slot = document.getElementById('asgModuleSlot');
+    if (mods.length) {
+      slot.innerHTML = '<select class="form-select" id="asgModule"><option value="">Pick a module…</option>'
+        + mods.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join('')
+        + '<option value="__custom__">⚙️ Other — type my own</option></select>'
+        + '<input type="text" class="form-input" id="asgModuleCustom" placeholder="Type a topic" style="display:none;margin-top:8px;">';
+      const sel = document.getElementById('asgModule');
+      const custom = document.getElementById('asgModuleCustom');
+      sel.addEventListener('change', () => {
+        custom.style.display = sel.value === '__custom__' ? 'block' : 'none';
+        if (sel.value !== '__custom__') custom.value = '';
+      });
+    } else {
+      // No modules listed for this subject — fall back to free-text so the
+      // teacher isn't stuck.
+      slot.innerHTML = '<input type="text" class="form-input" id="asgModule" placeholder="e.g. Module 5 — Equilibrium">';
+    }
+  });
 
   // Keep the count label sensible (Cards vs Questions) when the type changes
   const typeSel = document.getElementById('asgType');
@@ -683,7 +745,21 @@ function deleteAssignment(assignmentId, title){
 function createAssignment(){
   const type = document.getElementById('asgType').value;
   const title = document.getElementById('asgTitle').value.trim();
-  const module = document.getElementById('asgModule').value.trim();
+  // Module is either a <select> (dropdown for subjects that have modules
+  // listed) or a plain <input>. When the dropdown's "Other" option is
+  // picked, read from the adjacent custom text input instead.
+  const modSel = document.getElementById('asgModule');
+  let module = '';
+  if (modSel && modSel.tagName === 'SELECT') {
+    if (modSel.value === '__custom__') {
+      const cust = document.getElementById('asgModuleCustom');
+      module = cust ? cust.value.trim() : '';
+    } else {
+      module = modSel.value;
+    }
+  } else if (modSel) {
+    module = modSel.value.trim();
+  }
   const difficulty = document.getElementById('asgDifficulty').value;
   const count = parseInt(document.getElementById('asgCount').value, 10) || 6;
   const instructions = document.getElementById('asgInstructions').value.trim();
@@ -691,7 +767,7 @@ function createAssignment(){
   const errSlot = document.getElementById('asgErr');
   errSlot.innerHTML = '';
   if (!title){ errSlot.innerHTML = '<div class="error-banner">Title is required.</div>'; return; }
-  if (!module){ errSlot.innerHTML = '<div class="error-banner">A topic or module is required so the AI knows what to generate.</div>'; return; }
+  if (!module){ errSlot.innerHTML = '<div class="error-banner">Pick a module so the AI knows what to generate.</div>'; return; }
   const btn = document.getElementById('asgCreate');
   btn.disabled = true; btn.textContent = 'Generating content (10-20s)…';
   api('/api/teacher/classes/' + encodeURIComponent(state.classId) + '/assignments', {
@@ -733,19 +809,111 @@ function loadPosts(){
         </div>
         <div><label class="form-label">Title *</label><input class="form-input" id="postTitle" placeholder="Module B Critical Study — Frankenstein decoded"></div>
       </div>
+      <!-- Syllabus-only block: subject (locked to class) + module dropdown
+           + "Decode with AI" button that pre-fills the body. -->
+      <div id="postSyllabusBlock" class="form-row" style="margin-top:14px;">
+        <div>
+          <label class="form-label">Subject (class)</label>
+          <input class="form-input" id="postSubject" value="${state.classSubject ? esc(state.classSubject) : ''}" readonly style="cursor:not-allowed;opacity:.85;">
+        </div>
+        <div>
+          <label class="form-label">Module</label>
+          <div id="postModuleSlot"><select class="form-select" id="postModule" disabled><option>Loading modules…</option></select></div>
+        </div>
+      </div>
+      <div id="postDecodeRow" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <button class="btn-ghost btn" id="postDecodeBtn" type="button" style="padding:8px 14px;font-size:13px;border-radius:8px;">🪄 Decode this with AI &amp; fill body</button>
+        <span id="postDecodeStatus" class="muted" style="font-size:12px;"></span>
+      </div>
       <div style="margin-top:14px;">
         <label class="form-label">Body *</label>
-        <textarea class="form-input" id="postBody" rows="8" placeholder="Paste the syllabus breakdown / explanation / announcement here. Markdown-style line breaks are preserved."></textarea>
+        <textarea class="form-input" id="postBody" rows="10" placeholder="Either click 'Decode with AI' above, or paste your own content. Line breaks are preserved when students view it."></textarea>
       </div>
       <div class="form-row" style="margin-top:14px;">
-        <div><label class="form-label">Module / topic (optional)</label><input class="form-input" id="postModule" placeholder="e.g. Module B"></div>
         <div><label class="form-label">Source URL (optional)</label><input class="form-input" id="postSource" placeholder="e.g. https://… (linked at the bottom of the post)"></div>
+        <div></div>
       </div>
       <button class="btn" id="postCreate" style="margin-top:14px;">Post to class</button>
     </div>
     <div id="postListSlot"><div class="card muted">Loading posts…</div></div>`;
+
+  // Toggle the syllabus-only fields based on the kind selector.
+  const kindSel = document.getElementById('postKind');
+  function syncKind() {
+    const isSyllabus = kindSel.value === 'syllabus';
+    document.getElementById('postSyllabusBlock').style.display = isSyllabus ? 'flex' : 'none';
+    document.getElementById('postDecodeRow').style.display = isSyllabus ? 'flex' : 'none';
+  }
+  kindSel.addEventListener('change', syncKind);
+  syncKind();
+
+  // Hydrate the module dropdown from /syllabus_modules.json keyed off the
+  // class subject. Falls back to a free text input if no modules are listed.
+  loadSyllabusModules().then(() => {
+    const mods = modulesForSubject(state.classSubject);
+    const slot = document.getElementById('postModuleSlot');
+    if (mods.length) {
+      slot.innerHTML = '<select class="form-select" id="postModule"><option value="">Pick a module…</option>'
+        + mods.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join('')
+        + '<option value="__custom__">⚙️ Other — type my own</option></select>'
+        + '<input type="text" class="form-input" id="postModuleCustom" placeholder="Type a topic" style="display:none;margin-top:8px;">';
+      const sel = document.getElementById('postModule');
+      const custom = document.getElementById('postModuleCustom');
+      sel.addEventListener('change', () => {
+        custom.style.display = sel.value === '__custom__' ? 'block' : 'none';
+        if (sel.value !== '__custom__') custom.value = '';
+      });
+    } else {
+      slot.innerHTML = '<input type="text" class="form-input" id="postModule" placeholder="e.g. Module 5 — Equilibrium">';
+    }
+  });
+
+  document.getElementById('postDecodeBtn').addEventListener('click', decodeForPost);
   document.getElementById('postCreate').addEventListener('click', createPost);
   refreshPostList();
+}
+
+// Calls the existing syllabus chat endpoint with the class subject + chosen
+// module so the teacher gets the same breakdown they'd see in the consumer
+// Syllabus Decoder — fills it straight into the post body.
+function decodeForPost() {
+  const subject = state.classSubject;
+  const modSel = document.getElementById('postModule');
+  let module = '';
+  if (modSel && modSel.tagName === 'SELECT') {
+    module = modSel.value === '__custom__' ? (document.getElementById('postModuleCustom')||{}).value || '' : modSel.value;
+  } else if (modSel) {
+    module = modSel.value;
+  }
+  const status = document.getElementById('postDecodeStatus');
+  const btn = document.getElementById('postDecodeBtn');
+  if (!subject) { status.innerHTML = '<span style="color:#ff8088;">Class has no subject set.</span>'; return; }
+  if (!module || !module.trim()) { status.innerHTML = '<span style="color:#fcd34d;">Pick a module first.</span>'; return; }
+  status.textContent = 'Decoding (10-20s)…';
+  btn.disabled = true;
+  const messages = [{
+    role: 'user',
+    content: `Give me a clear breakdown of the ${subject} module "${module}" for my students. Cover: what the syllabus actually says, key concepts/skills they need to know, and how this appears in exams. Plain English, dot points where useful.`
+  }];
+  api('/api/chat/syllabus', { method: 'POST', body: JSON.stringify({ messages, subject, detailLevel: 3 }) })
+    .then(async r => {
+      btn.disabled = false;
+      if (!r.ok) {
+        const d = await r.json().catch(()=>({}));
+        status.innerHTML = '<span style="color:#ff8088;">' + esc(d.error || 'Could not decode. Try again.') + '</span>';
+        return;
+      }
+      const d = await r.json();
+      const reply = (d.reply || '').replace(/\*\*(.*?)\*\*/g, '$1');
+      document.getElementById('postBody').value = reply;
+      const titleEl = document.getElementById('postTitle');
+      if (!titleEl.value.trim()) titleEl.value = subject + ' — ' + module + ' decoded';
+      status.innerHTML = '<span style="color:#86efac;">✓ Decoded. Edit the body below before posting.</span>';
+    })
+    .catch(() => {
+      btn.disabled = false;
+      status.innerHTML = '<span style="color:#ff8088;">Network error. Try again.</span>';
+    });
 }
 
 function refreshPostList(){
@@ -779,7 +947,15 @@ function createPost(){
   const kind = document.getElementById('postKind').value;
   const title = document.getElementById('postTitle').value.trim();
   const body = document.getElementById('postBody').value.trim();
-  const module = document.getElementById('postModule').value.trim();
+  // Module can be a <select> (with optional custom override) or a plain input.
+  const modSel = document.getElementById('postModule');
+  let module = '';
+  if (modSel && modSel.tagName === 'SELECT') {
+    module = modSel.value === '__custom__' ? (document.getElementById('postModuleCustom')||{}).value || '' : modSel.value;
+  } else if (modSel) {
+    module = modSel.value;
+  }
+  module = (module || '').trim();
   const source = document.getElementById('postSource').value.trim();
   const errSlot = document.getElementById('postErr');
   errSlot.innerHTML = '';
@@ -796,7 +972,12 @@ function createPost(){
       if (!r.ok){ errSlot.innerHTML = '<div class="error-banner">' + esc(d.error || 'Could not post.') + '</div>'; return; }
       document.getElementById('postTitle').value = '';
       document.getElementById('postBody').value = '';
-      document.getElementById('postModule').value = '';
+      if (modSel) {
+        if (modSel.tagName === 'SELECT') modSel.value = '';
+        else modSel.value = '';
+        const cust = document.getElementById('postModuleCustom');
+        if (cust) { cust.value = ''; cust.style.display = 'none'; }
+      }
       document.getElementById('postSource').value = '';
       refreshPostList();
     })
@@ -951,11 +1132,18 @@ function wireAccountMenu(user){
   const cancelling = user.cancelAtPeriodEnd;
   document.getElementById('acctMenuPlan').innerHTML = 'Teacher seat: <strong>' + esc(tierLabel) + '</strong>' + (exp ? ' · ' + (cancelling ? 'ends ' : 'renews ') + esc(exp) : '');
 
+  function closeMenu() { menu.style.display = 'none'; }
+  function openMenu() { menu.style.display = 'block'; }
   btn.addEventListener('click', e => {
     e.stopPropagation();
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    menu.style.display === 'block' ? closeMenu() : openMenu();
   });
-  document.addEventListener('click', () => { menu.style.display = 'none'; });
+  // Touch + click + escape close handlers — touch needed for iOS where
+  // outside-tap doesn't always synthesize a click.
+  document.addEventListener('click', closeMenu);
+  document.addEventListener('touchstart', e => { if (!menu.contains(e.target) && e.target !== btn) closeMenu(); }, { passive: true });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  menu.addEventListener('click', e => e.stopPropagation());
 
   document.getElementById('acctSignout').addEventListener('click', () => {
     if (!confirm('Sign out of Study Decoder?')) return;

@@ -355,12 +355,24 @@ function loadDecks(){
     api('/api/subscription'),
     fetch(API_BASE+'/syllabus_modules.json').then(r => r.ok ? r.json() : {}).catch(() => ({}))
   ])
-  .then(([sub, syll]) => {
+  .then(async ([sub, syll]) => {
     if (!sub.ok || sub.status === 401){
       window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname);
       return null;
     }
     SYLLABUS = syll || {};
+    // Junior users: replace the HSC subject list with the three junior
+    // subjects so they don't pick HSC subjects they can't study.
+    try {
+      const data = await sub.json();
+      if (data && data.preferences && data.preferences.level === 'junior') {
+        SYLLABUS = {
+          'English (Years 7-10)': [],
+          'Mathematics (Years 7-10)': [],
+          'Science (Years 7-10)': []
+        };
+      }
+    } catch (e) { /* keep HSC fallback */ }
     return loadDecks();
   })
   .then(done => {

@@ -595,9 +595,14 @@ function checkSubjectGate(user, subject) {
     if (hasActiveTeacherSeat(user)) return null;
     if (!isLinkedToActiveTeacher(user.userId)) return null;
     // Class-linked-only access: subject must match one of their enrolled classes.
+    // Match is loose because class.subject is free-text typed by the teacher
+    // (e.g. "maths") but tools pass canonical IDs / names (e.g.
+    // "mathematics-advanced" / "Mathematics Advanced"). We compare
+    // case-insensitively with a substring fallback so "maths" still grants
+    // access to every Mathematics * tool subject.
     const enrolled = getEnrolledSubjects(user.userId);
     const requestedName = subject ? (resolveSubjectMeta(subject).name || subject) : '';
-    if (subject && (enrolled.has(subject) || enrolled.has(requestedName))) return null;
+    if (subject && subjectMatchesEnrolled(enrolled, subject, requestedName)) return null;
     return {
         error: enrolled.size
             ? `Your class only covers ${Array.from(enrolled).join(', ')}. Upgrade to unlock all subjects across Study Decoder.`
@@ -607,6 +612,24 @@ function checkSubjectGate(user, subject) {
         requestedSubjectName: requestedName,
         enrolledSubjects: Array.from(enrolled)
     };
+}
+
+function subjectMatchesEnrolled(enrolled, subjectId, subjectName) {
+    if (!subjectId && !subjectName) return false;
+    const idLc = String(subjectId || '').toLowerCase().trim();
+    const nameLc = String(subjectName || '').toLowerCase().trim();
+    for (const e of enrolled) {
+        const eLc = String(e || '').toLowerCase().trim();
+        if (!eLc) continue;
+        if (eLc === idLc || eLc === nameLc) return true;
+        // Substring match — guard against very short class subjects ("a", "1")
+        // generating false positives.
+        if (eLc.length >= 4) {
+            if (idLc && (idLc.includes(eLc) || eLc.includes(idLc))) return true;
+            if (nameLc && (nameLc.includes(eLc) || eLc.includes(nameLc))) return true;
+        }
+    }
+    return false;
 }
 
 // In-memory database with persistence
@@ -851,6 +874,11 @@ app.use('/api/exam/mark', aiLimiter);
 app.use('/api/exam/sample-answer', aiLimiter);
 app.use('/api/chat/', aiLimiter);
 app.use('/api/junior-chat/', aiLimiter);
+// Assignment marking + draft-saves: also rate-limit. The marking endpoint
+// calls OpenAI; the draft endpoint doesn't, but caps DB write spam.
+app.use('/api/student/assignments/', aiLimiter);
+// Teacher assignment generation likewise calls OpenAI — limit per IP.
+app.use('/api/teacher/classes/', aiLimiter);
 
 // CORS
 const corsOptions = {
@@ -3135,7 +3163,13 @@ app.post('/api/student/assignments/:assignmentId/draft', requireAuth, express.js
     if (sub && sub.status === 'completed') {
         return res.status(409).json({ error: 'This assignment is already submitted. Use Resubmit if you want to change your answers.' });
     }
-    const submitted = Array.isArray(req.body && req.body.answers) ? req.body.answers : [];
+    let submitted = Array.isArray(req.body && req.body.answers) ? req.body.answers : [];
+    // Defensive cap on answer count so a single draft save can't bloat the
+    // submissions store. Real exams top out at ~25 questions; 100 is a
+    // generous ceiling.
+    if (submitted.length > 100) {
+        return res.status(400).json({ error: 'Too many answers in one save.' });
+    }
     const answers = submitted
         .filter(a => a && typeof a.qIdx === 'number')
         .map(a => ({ qIdx: a.qIdx, value: String(a.value == null ? '' : a.value).slice(0, 4000) }));
