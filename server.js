@@ -10981,6 +10981,13 @@ app.use(express.static(path.join(__dirname), {
     dotfiles: 'deny'
 }));
 
+// Blog hub: serve blog/index.html for the clean /blog and /blog/ URLs
+// (express.static has index:false, so a bare directory request would
+// otherwise fall through to the catch-all and wrongly serve the homepage).
+app.get(['/blog', '/blog/'], (req, res) => {
+    res.sendFile(path.join(__dirname, 'blog', 'index.html'));
+});
+
 // Serve index.html for SPA-like behavior (only for non-API routes)
 app.get('*', (req, res, next) => {
     // Don't serve HTML for API routes
