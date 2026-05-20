@@ -228,6 +228,7 @@ window.Upsell = (function () {
      * consumer student tier modal.
      */
     function showPageUpgradeModal() {
+        if (window.sdTrack) window.sdTrack('paywall_hit', { kind: 'free_tier' });
         // Teacher accounts: don't show the student $5/mo modal — route to
         // teacher-pricing.html where the actual classroom plans live.
         const u = getCurrentUser();
@@ -375,6 +376,7 @@ window.Upsell = (function () {
      * Fetches /api/classroom-pricing on first call to compute the discount.
      */
     function showSubjectLockedModal(data) {
+        if (window.sdTrack) window.sdTrack('paywall_hit', { kind: 'subject_locked' });
         const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
         const subjectName = (data && (data.requestedSubjectName || data.subject)) || 'this subject';
         const enrolled = (data && Array.isArray(data.enrolledSubjects)) ? data.enrolledSubjects : [];
@@ -437,6 +439,7 @@ window.Upsell = (function () {
     }
 
     function startCheckout(plan, btn) {
+        if (window.sdTrack) window.sdTrack('checkout_start', { plan: plan });
         const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
         const orig = btn.textContent;
         btn.disabled = true; btn.textContent = 'Opening checkout…';

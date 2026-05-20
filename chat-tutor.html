@@ -1052,6 +1052,9 @@
             const reply = data.reply || data.content || '';
             loadingEl.remove();
 
+            // Funnel: first real AI output this session = the activation "aha".
+            try { if (window.sdTrack && !sessionStorage.getItem('sd_aha')) { sdTrack('ai_output_first', { tool: 'chat-tutor' }); sessionStorage.setItem('sd_aha', '1'); } } catch (e) {}
+
             conversationHistory.push({ role: 'assistant', content: reply });
             lastAssistantText = reply;
 

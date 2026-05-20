@@ -489,6 +489,7 @@
             } else {
                 document.querySelectorAll('.auth-tab')[1].classList.add('active');
                 document.getElementById('signupForm').classList.add('active');
+                if (window.sdTrack) sdTrack('signup_tab_open');
             }
         }
         
@@ -558,6 +559,7 @@
                     }
                     return;
                 }
+                if (window.sdTrack) sdTrack('login_success');
                 showSuccess('Signed in! Redirecting...');
                 await redirectAfterLogin(data);
             } catch (err) {
@@ -578,6 +580,7 @@
             
             setLoading(true);
             hideAlerts();
+            if (window.sdTrack) sdTrack('signup_submit');
             try {
                 const res = await fetch('/api/auth/register', {
                     method: 'POST',
@@ -588,7 +591,7 @@
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Registration failed');
                 if (data.requiresVerification) {
-                    showSuccess('Account created! Check your email to verify your account before signing in.');
+                    showVerifyScreen(email, data.emailSent !== false);
                     return;
                 }
                 showTrialWelcome(name);
@@ -611,7 +614,14 @@
                     return;
                 }
             } catch (e) {}
-            
+
+            // New users arriving from "Start Free" land on the Create Account
+            // form directly — no extra click to find the signup tab.
+            const sp = new URLSearchParams(window.location.search);
+            if (sp.get('signup') === '1' || sp.get('mode') === 'signup') {
+                switchTab('signup');
+            }
+
             // Initialize Google Sign-In (optional — works if not blocked)
             initializeGoogleSignIn();
         });
@@ -695,6 +705,7 @@
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Authentication failed');
+                if (window.sdTrack) sdTrack('login_success');
                 showSuccess('Signed in! Redirecting...');
                 await redirectAfterLogin(data);
             } catch (err) {
@@ -717,6 +728,7 @@
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Authentication failed');
+                if (window.sdTrack) sdTrack('login_success');
                 showSuccess('Signed in! Redirecting...');
                 await redirectAfterLogin(data);
             } catch (err) {
@@ -826,7 +838,87 @@
             document.getElementById('trialEndDate').textContent = dateStr;
             document.getElementById('trialWelcomeOverlay').style.display = 'flex';
         }
+
+        // ==================== Email verification screen ====================
+        let _verifyPoll = null;
+        let _verifyResendCooldown = 0;
+        function showVerifyScreen(email, emailSent) {
+            document.getElementById('verifyEmailAddr').textContent = email;
+            const warn = document.getElementById('verifySendWarn');
+            warn.style.display = emailSent ? 'none' : 'block';
+            document.getElementById('verifyOverlay').style.display = 'flex';
+            if (window.sdTrack) sdTrack('verify_required');
+            // Auto-advance: poll the server; the moment they click the link in
+            // their inbox (another tab), continue without a manual return trip.
+            if (_verifyPoll) clearInterval(_verifyPoll);
+            _verifyPoll = setInterval(async function () {
+                try {
+                    const r = await fetch('/api/auth/verification-status?email=' + encodeURIComponent(email), { credentials: 'include' });
+                    const d = await r.json().catch(() => ({}));
+                    if (d && d.verified) {
+                        clearInterval(_verifyPoll); _verifyPoll = null;
+                        if (window.sdTrack) sdTrack('verify_complete');
+                        document.getElementById('verifyStatus').textContent = '✓ Verified! Signing you in…';
+                        // Sign them in with the password they just set so they
+                        // land straight in the trial — no second login.
+                        const pw = document.getElementById('registerPassword').value;
+                        try {
+                            const lr = await fetch('/api/auth/login', {
+                                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                                credentials: 'include', body: JSON.stringify({ email: email, password: pw })
+                            });
+                            if (lr.ok) { window.location.href = '/index.html#tools'; return; }
+                        } catch (e) {}
+                        // Fallback: send them to sign in.
+                        window.location.href = '/login.html';
+                    }
+                } catch (e) {}
+            }, 3500);
+        }
+        async function resendVerification() {
+            if (_verifyResendCooldown > 0) return;
+            const email = document.getElementById('verifyEmailAddr').textContent;
+            const btn = document.getElementById('verifyResendBtn');
+            btn.disabled = true;
+            if (window.sdTrack) sdTrack('verify_resend');
+            try {
+                await fetch('/api/auth/resend-verification', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                document.getElementById('verifyStatus').textContent = 'Sent again — check your inbox + spam.';
+                document.getElementById('verifySendWarn').style.display = 'none';
+            } catch (e) {
+                document.getElementById('verifyStatus').textContent = 'Could not resend. Try again in a moment.';
+            }
+            _verifyResendCooldown = 45;
+            (function tick() {
+                if (_verifyResendCooldown <= 0) { btn.disabled = false; btn.textContent = 'Resend email'; return; }
+                btn.textContent = 'Resend in ' + _verifyResendCooldown + 's';
+                _verifyResendCooldown--; setTimeout(tick, 1000);
+            })();
+        }
     </script>
+
+    <!-- Email verification screen (shown after email signup; gate kept, friction killed) -->
+    <div id="verifyOverlay" style="display:none;position:fixed;inset:0;background:#08080d;z-index:99999;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:#111118;border:1px solid rgba(255,255,255,0.08);border-radius:24px;padding:38px 34px;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.6);position:relative;overflow:hidden;">
+            <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(108,99,255,0.6),transparent);"></div>
+            <div style="font-size:2.8rem;margin-bottom:10px;">&#x1F4E7;</div>
+            <h1 style="font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:8px;">Check your email to start</h1>
+            <p style="color:rgba(255,255,255,0.6);font-size:0.95rem;margin-bottom:6px;">We sent a verification link to</p>
+            <p style="color:#a59fff;font-weight:700;font-size:1rem;margin-bottom:16px;"><span id="verifyEmailAddr"></span></p>
+            <div id="verifySendWarn" style="display:none;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.35);color:#fcd34d;border-radius:10px;padding:10px 14px;font-size:0.85rem;margin-bottom:14px;">We had trouble sending it just now — tap resend below.</div>
+            <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;margin-bottom:18px;">Click the link and this page will continue automatically. Can't find it? Check your spam folder.</p>
+            <div style="display:flex;gap:10px;justify-content:center;margin-bottom:14px;flex-wrap:wrap;">
+                <a href="https://mail.google.com" target="_blank" rel="noopener" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;padding:10px 16px;border-radius:10px;font-size:0.85rem;font-weight:600;">Open Gmail</a>
+                <a href="https://outlook.live.com/mail" target="_blank" rel="noopener" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;padding:10px 16px;border-radius:10px;font-size:0.85rem;font-weight:600;">Open Outlook</a>
+            </div>
+            <button id="verifyResendBtn" onclick="resendVerification()" style="background:#6C63FF;color:#fff;border:none;border-radius:50px;padding:12px 26px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px;">Resend email</button>
+            <p id="verifyStatus" style="font-size:0.82rem;color:#10b981;min-height:1.1em;margin-bottom:8px;"></p>
+            <button onclick="switchTab('signin');document.getElementById('verifyOverlay').style.display='none';if(_verifyPoll){clearInterval(_verifyPoll);_verifyPoll=null;}" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:0.82rem;cursor:pointer;text-decoration:underline;font-family:inherit;">Wrong email? Go back</button>
+        </div>
+    </div>
 
     <!-- Trial Welcome Overlay (shown immediately after registration) -->
     <div id="trialWelcomeOverlay" style="display:none;position:fixed;inset:0;background:#08080d;z-index:99999;align-items:center;justify-content:center;padding:20px;">
