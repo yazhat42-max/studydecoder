@@ -1935,7 +1935,7 @@
             <li><a href="contact.html">Contact</a></li>
             <li id="navAdminLink" style="display: none;"><a href="admin.html" style="color: #f59e0b;">⚙️ Admin</a></li>
             <li id="navAssignments" style="display: none;"><a href="student-assignments.html">📋 Assignments</a></li>
-            <li id="navJoinClass" style="display: none;"><a href="join-class.html">🎓 Join a Class</a></li>
+            <li id="navJoinClass"><a href="join-class.html">🎓 Join a Class</a></li>
             <li id="navSignIn"><a href="login.html" class="btn btn-primary">Sign In</a></li>
             <li id="navUserMenu" style="display: none;">
                 <span id="navUserName" style="color: var(--primary); font-weight: 600; margin-right: 12px;"></span>
@@ -3472,7 +3472,7 @@
         document.getElementById('navUserMenu').style.display = 'none';
         document.getElementById('navAdminLink').style.display = 'none';
         var njc = document.getElementById('navJoinClass');
-        if (njc) njc.style.display = 'none';
+        if (njc) njc.style.display = 'list-item';  // logged-out: show so a student with a class code can act on it (→ signup → join)
         var nas = document.getElementById('navAssignments');
         if (nas) nas.style.display = 'none';
         document.getElementById('heroLoggedIn').style.display = 'none';
