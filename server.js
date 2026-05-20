@@ -1066,6 +1066,26 @@ function recordPageView(ip) {
 // Flush to disk on process exit
 process.on('beforeExit', () => saveDB(ANALYTICS_FILE, _analyticsDB));
 
+// ── Funnel events (self-hosted, no third party) ──
+// Stored per-day keyed by a whitelisted event name so we can see exactly
+// where users drop in the activation funnel (the thing we were blind to).
+const FUNNEL_FILE = path.join(DB_PATH, 'funnel.json');
+const _funnelDB = loadDB(FUNNEL_FILE, {}); // { "2026-05-20": { signup_submit: N, verify_required: N, ... } }
+let _funnelDirty = 0;
+const FUNNEL_EVENTS = new Set([
+    'landing_view', 'signup_tab_open', 'signup_submit', 'verify_required',
+    'verify_resend', 'verify_complete', 'login_success', 'onboarding_complete',
+    'tool_open', 'ai_output_first', 'paywall_hit', 'checkout_start', 'subscribe_success'
+]);
+function recordFunnelEvent(event) {
+    if (!FUNNEL_EVENTS.has(event)) return;
+    const today = _analyticsToday();
+    if (!_funnelDB[today]) _funnelDB[today] = {};
+    _funnelDB[today][event] = (_funnelDB[today][event] || 0) + 1;
+    if (++_funnelDirty % 5 === 0) saveDB(FUNNEL_FILE, _funnelDB);
+}
+process.on('beforeExit', () => saveDB(FUNNEL_FILE, _funnelDB));
+
 const TRACKED_EXT_RE = /\.(html|htm)$|^\/$/;
 const SKIP_PREFIX_RE = /^\/api\//;
 
@@ -1761,13 +1781,19 @@ app.post('/api/auth/register', async (req, res) => {
         if (!emailSent) {
             console.error(`⚠️ Verification email failed for ${email}`);
         }
-        
+
         console.log(`✅ New registration (unverified): ${user.email}`);
-        
-        // Do NOT create a session — user must verify email first
+
+        // Do NOT create a session — user must verify email first.
+        // emailSent lets the client show a "couldn't send — resend?" path
+        // instead of pretending the email went out.
         res.json({
             requiresVerification: true,
-            message: 'Check your email to verify your account before signing in.'
+            emailSent: emailSent,
+            email: email,
+            message: emailSent
+                ? 'Check your email to verify your account before signing in.'
+                : 'Account created, but we could not send the verification email just now. Tap resend.'
         });
         
     } catch (error) {
@@ -2111,6 +2137,19 @@ app.post('/api/auth/resend-verification', async (req, res) => {
         console.error('Resend verification error:', error);
         res.status(500).json({ error: 'Failed to resend verification email' });
     }
+});
+
+/**
+ * GET /api/auth/verification-status?email= — lightweight poll so the verify
+ * screen can auto-advance the moment the user clicks the link in their inbox
+ * (in another tab). Returns only a boolean; rate-limited via the same limiter.
+ */
+app.use('/api/auth/verification-status', forgotPasswordLimiter);
+app.get('/api/auth/verification-status', (req, res) => {
+    const email = (req.query.email || '').toString();
+    if (!email || !isValidEmail(email)) return res.status(400).json({ error: 'Valid email required' });
+    const user = getUserByEmail(email);
+    res.json({ verified: !!(user && user.emailVerified) });
 });
 
 // ==================== OG CODE ROUTES ====================
@@ -4696,6 +4735,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
                     });
                     
                     console.log(`✅ Subscription activated for ${userId} - ${plan}`);
+                    recordFunnelEvent('subscribe_success');
                 }
                 break;
             }
@@ -4945,6 +4985,16 @@ app.get('/api/spots-left', (req, res) => {
 });
 
 /**
+ * POST /api/track — record a whitelisted funnel event. No PII, no auth.
+ * Used by sdTrack() in the client to make the activation funnel visible.
+ */
+app.post('/api/track', express.json({ limit: '2kb' }), (req, res) => {
+    const event = (req.body && req.body.event || '').toString();
+    recordFunnelEvent(event); // silently ignores anything not whitelisted
+    res.json({ ok: true });
+});
+
+/**
  * GET /api/classroom-pricing — public pricing for the classroom discount
  * tier (20% off lifetime while founding spots remain, $3/mo afterwards).
  */
@@ -5151,6 +5201,36 @@ app.get('/api/admin/analytics', requireOwner, (req, res) => {
         todayViews: (_analyticsDB[todayKey] || {}).views || 0,
         todayUnique: (_analyticsDB[todayKey] || {}).unique || 0
     });
+});
+
+/**
+ * GET /api/admin/funnel - Owner-only funnel totals + step-to-step drop-off.
+ * Optional ?days=N to window the totals (default: all-time).
+ */
+app.get('/api/admin/funnel', requireOwner, (req, res) => {
+    const order = [
+        'landing_view', 'signup_tab_open', 'signup_submit', 'verify_required',
+        'verify_complete', 'login_success', 'onboarding_complete',
+        'tool_open', 'ai_output_first', 'paywall_hit', 'checkout_start', 'subscribe_success'
+    ];
+    const days = parseInt(req.query.days, 10);
+    let cutoff = null;
+    if (days && days > 0) { const d = new Date(); d.setDate(d.getDate() - days); cutoff = d.toISOString().split('T')[0]; }
+    const totals = {};
+    order.forEach(e => totals[e] = 0);
+    totals.verify_resend = 0;
+    Object.keys(_funnelDB).forEach(date => {
+        if (cutoff && date < cutoff) return;
+        const day = _funnelDB[date];
+        Object.keys(day).forEach(ev => { if (ev in totals) totals[ev] += day[ev]; });
+    });
+    // Step-to-step conversion through the core path.
+    const steps = order.map((ev, i) => {
+        const prev = i > 0 ? totals[order[i - 1]] : null;
+        const pct = (prev && prev > 0) ? Math.round((totals[ev] / prev) * 1000) / 10 : null;
+        return { event: ev, count: totals[ev], fromPrevPct: pct };
+    });
+    res.json({ totals, steps, verifyResend: totals.verify_resend, windowDays: days || null });
 });
 
 /**

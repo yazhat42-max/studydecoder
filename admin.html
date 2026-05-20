@@ -639,7 +639,18 @@
                     </div>
                 </div>
             </div>
-            
+
+            <!-- Activation Funnel -->
+            <div class="admin-section">
+                <div class="section-header">
+                    <h2>🪜 Activation Funnel</h2>
+                    <span style="font-size:0.82rem;color:var(--text-secondary);">All time · where users drop out</span>
+                </div>
+                <div class="section-content" style="padding:20px;">
+                    <div id="funnelBody" style="color:var(--text-secondary);">Loading funnel…</div>
+                </div>
+            </div>
+
             <!-- Quick Actions -->
             <div class="admin-section">
                 <div class="section-header">
@@ -1063,7 +1074,35 @@
             }
         }
         
+        async function loadFunnel() {
+            try {
+                const r = await fetch('/api/admin/funnel', { credentials: 'include' });
+                if (!r.ok) throw new Error();
+                const d = await r.json();
+                const labels = {
+                    landing_view: 'Landing views', signup_tab_open: 'Opened signup', signup_submit: 'Submitted signup',
+                    verify_required: 'Hit email verification', verify_complete: 'Verified email', login_success: 'Logged in',
+                    onboarding_complete: 'Finished onboarding', tool_open: 'Opened a tool', ai_output_first: 'Got first AI output',
+                    paywall_hit: 'Hit a paywall', checkout_start: 'Started checkout', subscribe_success: 'Subscribed'
+                };
+                const rows = (d.steps || []).map(s => {
+                    const drop = s.fromPrevPct != null ? s.fromPrevPct : null;
+                    const dropColor = drop == null ? 'var(--text-secondary)' : (drop >= 60 ? '#22c55e' : drop >= 30 ? '#eab308' : '#ef4444');
+                    return '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid var(--border-color);">'
+                        + '<span style="color:var(--text-primary);font-size:0.9rem;">' + (labels[s.event] || s.event) + '</span>'
+                        + '<span style="display:flex;gap:14px;align-items:center;"><strong style="font-size:1rem;">' + s.count + '</strong>'
+                        + (drop != null ? '<span style="font-size:0.8rem;color:' + dropColor + ';min-width:54px;text-align:right;">' + drop + '%</span>' : '<span style="min-width:54px;"></span>')
+                        + '</span></div>';
+                }).join('');
+                document.getElementById('funnelBody').innerHTML = rows
+                    + '<div style="margin-top:10px;font-size:0.8rem;color:var(--text-secondary);">% = conversion from the step above. Resend clicks: <strong>' + (d.verifyResend || 0) + '</strong>. Watch the verify step — that\'s the known leak.</div>';
+            } catch (e) {
+                document.getElementById('funnelBody').innerHTML = '<span style="color:var(--error,#ef4444);">Could not load funnel.</span>';
+            }
+        }
+
         async function loadStats() {
+            loadFunnel();
             try {
                 const [statsRes, analyticsRes] = await Promise.all([
                     fetch('/api/admin/stats', { credentials: 'include' }),

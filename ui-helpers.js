@@ -18,6 +18,21 @@
     if (window.__sdUiHelpersInstalled) return;
     window.__sdUiHelpersInstalled = true;
 
+    // ── Funnel tracking (self-hosted; no third party, no cookies) ──
+    // Fire-and-forget; never blocks UI, never throws. Server whitelists the
+    // event names, so unknown events are harmless no-ops.
+    function sdTrack(event, props) {
+        try {
+            const body = JSON.stringify({ event: event, props: props || null });
+            if (navigator.sendBeacon) {
+                navigator.sendBeacon('/api/track', new Blob([body], { type: 'application/json' }));
+            } else {
+                fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true }).catch(function () {});
+            }
+        } catch (e) { /* analytics must never break the page */ }
+    }
+    window.sdTrack = sdTrack;
+
     // ── Toast container + styles ────────────────────────────────────────
     function ensureToastHost() {
         let host = document.getElementById('sd-toast-host');

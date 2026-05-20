@@ -1967,10 +1967,11 @@
                 <p class="sd-hero2-sub" style="font-weight:700;color:#fff;margin-bottom:.5rem;">AI study tools for the NSW HSC — practise real exam questions, get marked in seconds, and actually remember it.</p>
                 <p class="sd-hero2-sub">Your personal AI HSC tutor, full exam simulator, syllabus decoder + 11 more tools — all built on the official NESA syllabuses.</p>
                 <div class="sd-hero2-actions" id="heroButtons">
-                    <a href="login.html" class="btn btn-primary btn-glow" id="heroSignInBtn">Start Free — No Card →</a>
+                    <a href="login.html?signup=1" class="btn btn-primary btn-glow" id="heroSignInBtn">Start Free — No Card →</a>
                     <a href="#tools" class="btn btn-ghost">See all 14 tools ↓</a>
                 </div>
                 <p style="margin-top:1rem;font-size:.82rem;color:rgba(255,255,255,0.6);">🇦🇺 Built on official NESA syllabuses · Free to start · No card required</p>
+                <p style="margin-top:.5rem;font-size:.82rem;color:rgba(255,255,255,0.5);">Free forever, or go unlimited — <a href="#pricing" style="color:#a78bfa;text-decoration:underline;font-weight:600;">see plans &amp; pricing →</a></p>
 
                 <!-- Materializing chat demo -->
                 <div class="sd-hero2-chatbox" id="sdHero2Chat" aria-label="Chat tutor demo">
@@ -2917,7 +2918,7 @@
                     <li style="font-size:0.9rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;"><span style="color:#2f3336;">✗</span> Lower AI quality</li>
                     <li style="font-size:0.9rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;"><span style="color:#2f3336;">✗</span> No score history</li>
                 </ul>
-                <a href="login.html" id="pricingFreeCta" style="display:block;text-align:center;padding:12px;border:1px solid var(--border);border-radius:12px;color:var(--text-sec);font-weight:600;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-sec)'">Get Started Free</a>
+                <a href="login.html?signup=1" id="pricingFreeCta" style="display:block;text-align:center;padding:12px;border:1px solid var(--border);border-radius:12px;color:var(--text-sec);font-weight:600;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-sec)'">Get Started Free</a>
             </div>
             <!-- Premium (Monthly / Yearly) — hidden while the founding lifetime tier is open -->
             <div id="premiumCard" class="reveal stagger-2" style="flex:1;min-width:260px;max-width:300px;background:linear-gradient(160deg,#1a1235 0%,#16202a 100%);border:1px solid rgba(108,99,255,0.4);border-radius:20px;padding:2rem;position:relative;">
@@ -3011,7 +3012,7 @@
     <section class="cta">
         <h2 class="reveal">Stop Just Reading Notes.<br><span class="highlight">Start Practising.</span></h2>
         <p class="reveal">The students who do the best aren't the ones who study the most — they're the ones who practice smart. Join them.</p>
-        <a href="login.html" class="btn btn-primary btn-glow" id="ctaSignIn" style="font-size:1.1rem; padding:16px 40px;">Get Started — It's Free</a>
+        <a href="login.html?signup=1" class="btn btn-primary btn-glow" id="ctaSignIn" style="font-size:1.1rem; padding:16px 40px;">Get Started — It's Free</a>
         <p class="reveal" style="margin-top:1rem; font-size:0.85rem; color:var(--text-muted); position:relative; z-index:1;">No credit card required · Takes 30 seconds to sign up</p>
         <div id="ctaLoggedIn" style="display: none;">
             <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" style="font-size:1.1rem; padding:16px 40px;" onclick="return goExamMode(event)">Start Practice Exam</a>
@@ -3478,7 +3479,7 @@
         document.getElementById('heroButtons').style.display = 'flex';
         document.getElementById('heroSignInBtn').style.display = 'inline-block';
         document.getElementById('heroSignInBtn').textContent = 'Join Free →';
-        document.getElementById('heroSignInBtn').href = 'login.html';
+        document.getElementById('heroSignInBtn').href = 'login.html?signup=1';
         document.getElementById('ctaSignIn').style.display = 'inline-block';
         document.getElementById('ctaLoggedIn').style.display = 'none';
         document.querySelectorAll('.course-link-locked').forEach(el => el.style.display = 'inline-block');
@@ -4083,7 +4084,7 @@
                 ${chips ? `<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:20px;">${chips}</div>` : ''}
                 <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Recommended for you</p>
                 <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;">${recsHtml}</div>
-                <button onclick="document.getElementById('onboardingModal').style.display='none'; document.querySelector('#tools') && document.querySelector('#tools').scrollIntoView({behavior:'smooth'});" style="padding:14px 32px;border:none;border-radius:50px;background:var(--primary);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Let's go →</button>
+                <button onclick="window.sdTrack && sdTrack('onboarding_complete'); document.getElementById('onboardingModal').style.display='none'; document.querySelector('#tools') && document.querySelector('#tools').scrollIntoView({behavior:'smooth'});" style="padding:14px 32px;border:none;border-radius:50px;background:var(--primary);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Let's go →</button>
             </div>
         `;
     }
@@ -4328,7 +4329,7 @@
                      'enzyme','mitosis','democracy','derivative','equilibrium',
                      'Le Chatelier','Treaty','Romeo','π','dy/dx','ΔH','pH','Macbeth'];
         var R = MOBILE ? 180 : 280;
-        var N = MOBILE ? 30 : 60;
+        var N = MOBILE ? 20 : 40;
         var frag = document.createDocumentFragment();
         for (var i = 0; i < N; i++) {
           var lat = Math.acos(2 * Math.random() - 1);
@@ -4423,17 +4424,28 @@
             // keep it on once triggered to avoid replays on scroll up
           });
         }, { threshold: 0.25 });
+        // Skip the cursor-spotlight handler on touch devices (no hover) and
+        // on reduced-motion — saves needless listeners on phones.
+        var enableSpotlight = !REDUCED && window.matchMedia && window.matchMedia('(hover: hover)').matches;
         stages.forEach(function (s) {
           io.observe(s);
           // ambient code drift seed
           var holder = s.querySelector('.sd-codes');
           if (holder) seedAmbientCodes(holder);
-          // cursor-tracked spotlight
-          s.addEventListener('mousemove', function (e) {
-            var r = s.getBoundingClientRect();
-            s.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
-            s.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
-          });
+          // cursor-tracked spotlight — cache the rect (recompute on resize/scroll
+          // via rAF) instead of calling getBoundingClientRect() every mousemove,
+          // which forces a layout reflow per event across all tiles.
+          if (enableSpotlight) {
+            var rect = null, ticking = false;
+            var refreshRect = function () { rect = s.getBoundingClientRect(); ticking = false; };
+            window.addEventListener('resize', function () { rect = null; }, { passive: true });
+            window.addEventListener('scroll', function () { rect = null; }, { passive: true });
+            s.addEventListener('mousemove', function (e) {
+              if (!rect) { if (!ticking) { ticking = true; requestAnimationFrame(refreshRect); } return; }
+              s.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+              s.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+            }, { passive: true });
+          }
         });
       }
       function seedAmbientCodes(holder) {
@@ -4828,6 +4840,12 @@
     // Run on load
     loadBotReviews();
     loadBotUsageBadges();
+    if (window.sdTrack) sdTrack('landing_view');
+    // Funnel: count clicks on any tool tile CTA as a tool_open intent.
+    document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('.showcase-text .btn, .sd-trydemo-send');
+        if (a && window.sdTrack) sdTrack('tool_open');
+    }, true);
     </script>
 
     <!-- Sticky mobile CTA (additive; ≤720px only; no animation, respects reduced-motion) -->
@@ -4853,7 +4871,7 @@
     </style>
     <div class="sd-sticky-cta" id="sdStickyCta" aria-hidden="false">
         <span>Free to start · no card</span>
-        <a href="login.html">Start Free →</a>
+        <a href="login.html?signup=1">Start Free →</a>
     </div>
     <script>
     // Hide the sticky CTA for logged-in users (they don't need a signup nudge).
