@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Study Decoder Blog — HSC Study Tips That Actually Work</title>
+    <meta name="description" content="Real talk on HSC study: why you forget what you revise, how to remember it, and what actually moves your marks. Written for NSW HSC students.">
+    <link rel="canonical" href="https://www.studydecoder.com.au/blog/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Study Decoder">
+    <meta property="og:title" content="Study Decoder Blog — HSC Study Tips That Actually Work">
+    <meta property="og:description" content="Why you forget what you revise, how to remember it, and what actually moves your HSC marks.">
+    <meta property="og:url" content="https://www.studydecoder.com.au/blog/">
+    <meta property="og:image" content="https://www.studydecoder.com.au/logo.png">
+    <meta property="og:locale" content="en_AU">
+    <meta name="twitter:card" content="summary">
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#08080d">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary:#6C63FF; --primary-glow:rgba(108,99,255,0.3); --accent:#FF6584;
+            --bg:#08080d; --bg-card:#111118; --bg-elevated:#1a1a26;
+            --text:#fff; --text-sec:rgba(255,255,255,0.6); --text-muted:rgba(255,255,255,0.65);
+            --border:rgba(255,255,255,0.06); --white:#fff; --radius:16px;
+            --transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; scroll-behavior:smooth; }
+        body { background:var(--bg); color:var(--text); line-height:1.6; }
+        .navbar { display:flex; justify-content:space-between; align-items:center; padding:1rem 5%; background:rgba(8,8,13,0.82); backdrop-filter:blur(24px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:1000; }
+        .mobile-menu-btn { display:none; background:none; border:none; font-size:1.5rem; cursor:pointer; padding:8px; color:var(--text); }
+        .logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+        .logo img { height:42px; width:auto; }
+        .logo span { font-size:1.5rem; font-weight:700; color:var(--primary); letter-spacing:-0.5px; }
+        .nav-links { list-style:none; display:flex; gap:2.5rem; align-items:center; }
+        .nav-links a { text-decoration:none; color:var(--text-sec); font-weight:500; transition:var(--transition); }
+        .nav-links a:hover { color:var(--white); }
+        .btn { display:inline-block; padding:0.8rem 1.8rem; border-radius:50px; text-decoration:none; font-weight:600; font-size:0.95rem; cursor:pointer; transition:var(--transition); border:none; }
+        .btn-primary { background:var(--primary); color:var(--white) !important; }
+        .btn-primary:hover { transform:translateY(-3px); box-shadow:0 8px 25px var(--primary-glow); }
+        .highlight { color:var(--primary); }
+        .page-hero { background:linear-gradient(135deg,#1a1235 0%,#0f0a2e 50%,#14082e 100%); padding:5rem 5% 3.5rem; text-align:center; }
+        .page-hero h1 { font-size:2.6rem; font-weight:700; margin-bottom:0.6rem; }
+        .page-hero p { font-size:1.05rem; color:var(--text-sec); max-width:620px; margin:0 auto; }
+        .wrap { max-width:900px; margin:0 auto; padding:3.5rem 5%; }
+        .post-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.4rem; }
+        .post-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:1.6rem; text-decoration:none; color:inherit; transition:var(--transition); display:flex; flex-direction:column; }
+        .post-card:hover { border-color:rgba(108,99,255,0.35); transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,0.4); }
+        .post-card .tag { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#a78bfa; margin-bottom:0.6rem; }
+        .post-card h2 { font-size:1.2rem; font-weight:700; line-height:1.35; margin-bottom:0.6rem; }
+        .post-card p { font-size:0.92rem; color:var(--text-sec); flex:1; }
+        .post-card .read { margin-top:1rem; color:var(--primary); font-weight:600; font-size:0.9rem; }
+        footer { text-align:center; padding:3rem 5%; background:rgba(0,0,0,0.3); border-top:1px solid var(--border); }
+        footer h3 { font-size:1.1rem; margin-bottom:1.2rem; color:var(--text-sec); }
+        .footer-links { list-style:none; display:flex; justify-content:center; gap:2rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+        .footer-links a { color:var(--text-muted); text-decoration:none; }
+        .footer-links a:hover { color:var(--primary); }
+        .disclaimer { font-size:0.85rem; color:var(--text-muted); max-width:800px; margin:0 auto; }
+        @media (max-width:768px){ .page-hero h1{font-size:2rem;} .mobile-menu-btn{display:block;} .nav-links{display:none; position:absolute; top:100%; left:0; right:0; background:rgba(8,8,13,0.95); flex-direction:column; padding:1rem 5%; gap:0;} .nav-links.active{display:flex;} .nav-links li{padding:0.8rem 0; border-bottom:1px solid var(--border);} .footer-links{flex-direction:column; gap:1rem;} }
+    </style>
+    <script src="/ui-helpers.js" defer></script>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/index.html" class="logo"><img src="/logo.png" alt="Study Decoder"><span>Study Decoder</span></a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/blog/index.html" style="color:var(--white);">Blog</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+            <li><a href="/login.html" class="btn btn-primary">Start Free</a></li>
+        </ul>
+    </nav>
+
+    <section class="page-hero">
+        <h1>Study Decoder <span class="highlight">Blog</span></h1>
+        <p>No fluff. Just the study stuff that actually moved our marks in the HSC — and the science behind why it works.</p>
+    </section>
+
+    <div class="wrap">
+        <div class="post-grid">
+            <a class="post-card" href="/blog/why-you-forget-everything-in-exams.html">
+                <span class="tag">Memory</span>
+                <h2>Why You Study But Forget Everything in the Exam</h2>
+                <p>You read your notes five times and still blanked. Here's what's actually going wrong in your head — and the fix that finally made it stick.</p>
+                <span class="read">Read →</span>
+            </a>
+            <a class="post-card" href="/blog/studied-all-night-still-failed.html">
+                <span class="tag">Exam prep</span>
+                <h2>I Studied All Night and Still Failed</h2>
+                <p>The all-nighter that did absolutely nothing. Why cramming feels productive and betrays you, and the routine I switched to instead.</p>
+                <span class="read">Read →</span>
+            </a>
+            <a class="post-card" href="/blog/how-to-remember-what-you-study-hsc.html">
+                <span class="tag">HSC strategy</span>
+                <h2>How to Actually Remember What You Study for the HSC</h2>
+                <p>The HSC is too much content to "just remember". This is the retention system that beat my forgetting curve without living in the library.</p>
+                <span class="read">Read →</span>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/blog/index.html">Blog</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+        </ul>
+        <p class="disclaimer"><strong>Disclaimer:</strong> This service does not guarantee marks, and cannot be used to generate assessment responses. Responses may not be 100% accurate and should not be relied upon for official schoolwork or exams.</p>
+    </footer>
+
+    <script>
+    document.getElementById('mobileMenuBtn').addEventListener('click', function(){ document.getElementById('navLinks').classList.toggle('active'); });
+    </script>
+</body>
+</html>
