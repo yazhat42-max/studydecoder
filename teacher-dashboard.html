@@ -1124,7 +1124,8 @@ function renderPostList(posts){
         <button class="btn-danger post-del" data-id="${esc(p.postId)}" data-title="${esc(p.title)}" style="font-size:12px;padding:6px 12px;border-radius:8px;cursor:pointer;">Delete</button>
       </div>
     </li>
-  `).join('') + '</ul></div>';
+  `;
+  }).join('') + '</ul></div>';
   slot.querySelectorAll('.post-del').forEach(btn => btn.addEventListener('click', () => deletePost(btn.dataset.id, btn.dataset.title)));
 }
 
