@@ -8843,12 +8843,12 @@ CRITICAL JSON RULES:
         const maxGenerateAttempts = 2;
         let lastError = null;
         // Right-size the output budget by exam length so a full 3h paper finishes
-        // in ONE call. Previously the paid budget (4000) truncated long papers,
-        // the JSON parse failed, and a SECOND full call ran — the main cause of
-        // the long waits. A higher cap is not slower: latency tracks the tokens
-        // actually generated, and one complete call beats two truncated ones.
-        const fullBudget = durationHours >= 3 ? 16000 : durationHours === 2 ? 12000 : 8000;
-        const examTokenBudget = hasFull ? fullBudget : 7000;
+        // in ONE call, for EVERY tier. Previously the cap (4000 paid / 7000 free)
+        // truncated long papers, the JSON parse failed, and a SECOND full call
+        // ran — the main cause of the long waits on normal accounts. A higher cap
+        // is not slower: latency tracks the tokens actually generated, and one
+        // complete call beats two truncated ones.
+        const examTokenBudget = durationHours >= 3 ? 16000 : durationHours === 2 ? 12000 : 8000;
 
         while (generateAttempts < maxGenerateAttempts && !exam) {
             generateAttempts++;
