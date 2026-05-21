@@ -67,7 +67,19 @@ th { color:#8899a6; font-size:12px; text-transform:uppercase; letter-spacing:0.5
 .section-title { font-size:18px; font-weight:700; margin-bottom:14px; }
 .link-inline { color:#4f8cff; text-decoration:none; font-weight:600; }
 .success-note { background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.4); color:#7ee2a8; padding:12px 16px; border-radius:8px; margin-bottom:16px; }
+/* Premium plan-card depth + hover lift (paired with teacher-theme.css) */
+.plan-card { transition:transform .2s cubic-bezier(.2,.7,.2,1), box-shadow .2s, border-color .2s; }
+.plan-card:hover { transform:translateY(-4px); box-shadow:0 16px 44px rgba(0,0,0,0.45); border-color:rgba(108,99,255,0.45); }
+.plan-card.featured { border-color:rgba(108,99,255,0.6); box-shadow:0 0 34px rgba(108,99,255,0.16); }
+.plan-card.featured:hover { box-shadow:0 16px 48px rgba(108,99,255,0.28); }
+/* "What your students get" value strip */
+.value-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; }
+.value-item { display:flex; gap:12px; align-items:flex-start; }
+.value-item .vi-ico { font-size:1.5rem; line-height:1; }
+.value-item .vi-title { font-weight:700; font-size:14px; color:#fff; margin-bottom:2px; }
+.value-item .vi-sub { font-size:12.5px; color:#a9b3bd; line-height:1.45; }
 </style>
+<link rel="stylesheet" href="teacher-theme.css">
 </head>
 <body>
 <div id="authLoading" class="auth-loading-overlay"><div class="auth-spinner"></div><div style="margin-top:16px;color:#71767b;">Loading…</div></div>
@@ -154,12 +166,22 @@ function render(){
   root.innerHTML = `
     <div id="msgSlot"></div>
 
-    <section class="hero">
+    <section class="sd-hero-band sd-fade">
       <h1>Give your whole class <span class="grad">Study Decoder</span> — for the price of one seat.</h1>
       <p>One teacher seat unlocks full Study Decoder access for every student you link, up to <strong>100 students</strong> across all your classes. Pick the tier that matches what you teach.</p>
     </section>
 
     <div class="plan-grid">${PLANS.map(planCardHtml).join('')}</div>
+
+    <div class="card glow">
+      <div class="section-title">What your students get — free, while they're in your class</div>
+      <div class="value-strip">
+        <div class="value-item"><span class="vi-ico">🤖</span><div><div class="vi-title">Exam-style practice</div><div class="vi-sub">AI question bots that mark to NSW marking criteria and show band feedback.</div></div></div>
+        <div class="value-item"><span class="vi-ico">🌍</span><div><div class="vi-title">Learn IRL</div><div class="vi-sub">Real-world scenarios that turn dry syllabus dot points into things that stick.</div></div></div>
+        <div class="value-item"><span class="vi-ico">🃏</span><div><div class="vi-title">Smart flashcards</div><div class="vi-sub">Spaced-repetition decks built from the exact syllabus you're teaching.</div></div></div>
+        <div class="value-item"><span class="vi-ico">📊</span><div><div class="vi-title">Progress you can see</div><div class="vi-sub">You get live mastery maps per student so you know who needs help, and where.</div></div></div>
+      </div>
+    </div>
 
     <div class="card faq">
       <div class="section-title">Frequently asked questions</div>
@@ -203,7 +225,7 @@ function startCheckout(plan, btn){
       if (!r.ok){
         const err = d.error || 'Could not start checkout';
         if (err === 'Not authenticated' || r.status === 401){
-          window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname);
+          window.location.href = 'login.html?role=teacher&redirect=' + encodeURIComponent(location.pathname);
           return;
         }
         if (/already/i.test(err)){

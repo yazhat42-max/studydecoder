@@ -60,6 +60,7 @@ th { color:#8899a6; font-size:12px; text-transform:uppercase; letter-spacing:0.5
 .status-pending { background:rgba(234,179,8,0.15); color:#e8c463; }
 .muted { color:#71767b; font-size:14px; }
 </style>
+<link rel="stylesheet" href="teacher-theme.css">
 </head>
 <body>
 <div id="authLoading" class="auth-loading-overlay"><div class="auth-spinner"></div><div style="margin-top:16px;color:#71767b;">Loading…</div></div>
@@ -122,15 +123,17 @@ function render(){
   const root = document.getElementById('root');
   if (joined){
     root.innerHTML = `
-      <div class="success-card">
-        <h2>You're in! 🎉</h2>
-        <p>You now have full Study Decoder access while you're in ${esc(joinedClassName || 'your class')}.</p>
+      <div class="card glow sd-empty sd-fade">
+        <div class="ico">🎉</div>
+        <h3>You're in!</h3>
+        <p>You now have full Study Decoder access while you're in <strong>${esc(joinedClassName || 'your class')}</strong>. Jump into the tools and start studying.</p>
         <a href="index.html" class="btn" style="display:inline-block;text-decoration:none;">Start studying →</a>
       </div>
       <div id="assignSlot"></div>`;
   } else {
     root.innerHTML = `
-      <div class="card join-card">
+      <div class="card glow join-card sd-fade">
+        <div style="font-size:2.4rem;margin-bottom:8px;">🎟️</div>
         <h2>Join your class</h2>
         <div class="lead">Your teacher will have given you a 6-character code. Enter it below to link your account.</div>
         <div id="errSlot"></div>

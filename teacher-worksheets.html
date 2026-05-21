@@ -73,6 +73,7 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
   .ws-section { page-break-after:always; }
 }
 </style>
+<link rel="stylesheet" href="teacher-theme.css">
 </head>
 <body>
 <div id="authLoading" class="auth-loading-overlay"><div class="auth-spinner"></div><div style="margin-top:16px;color:#71767b;">Loading…</div></div>
@@ -121,7 +122,8 @@ function renderForm(){
   const subjects = Object.keys(SYLLABUS).sort();
   const root = document.getElementById('root');
   root.innerHTML = `
-    <div class="card">
+    <div class="card sd-fade">
+      <p style="color:#a9b3bd;font-size:14px;margin-bottom:18px;line-height:1.5;">Choose a subject and add your topics — I'll build a printable worksheet for each, with a matching answer key, ready to hand out or export to Word.</p>
       <div id="formError"></div>
       <div class="form-group">
         <label class="form-label" for="subject">Subject</label>
@@ -198,7 +200,7 @@ async function generate(){
   const btn = document.getElementById('generateBtn');
   btn.disabled = true;
   const output = document.getElementById('output');
-  output.innerHTML = `<div class="card"><div class="loading"><div class="loading-dots"><span></span><span></span><span></span></div><span>Building worksheets… this can take 30-60 seconds</span></div></div>`;
+  output.innerHTML = `<div class="card sd-fade"><div class="sd-loading"><div class="ring"></div><div>Building your worksheet bundle… this can take 30-60 seconds.</div></div></div>`;
 
   try {
     const res = await api('/api/teacher/ai/bulk-worksheets',{method:'POST',body:JSON.stringify({subject, topics, questionsPerTopic, difficulty})});

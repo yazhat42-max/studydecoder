@@ -1590,8 +1590,8 @@ async function sendVerificationEmail(email, token) {
  */
 app.post('/api/auth/google', async (req, res) => {
     try {
-        const { idToken } = req.body;
-        
+        const { idToken, role: signupRoleReq } = req.body;
+
         if (!idToken) {
             return res.status(400).json({ error: 'ID token required' });
         }
@@ -1615,12 +1615,13 @@ app.post('/api/auth/google', async (req, res) => {
         // If brand new user, mark as not onboarded
         if (!existingUser) {
             user.preferences = { ...(user.preferences || {}), onboarded: false };
+            if (signupRoleReq === 'teacher') user.signupRole = 'teacher';
             scheduleSave();
         } else {
             // Existing user: check if they signed up before preferences update
             ensureOnboardingFlag(user);
         }
-        
+
         // Auto-sync subscription status from Stripe (handles server restarts)
         await autoSyncStripeSubscription(userId, verified.email);
         
@@ -1656,8 +1657,8 @@ app.post('/api/auth/google', async (req, res) => {
  */
 app.post('/api/auth/google-oauth', async (req, res) => {
     try {
-        const { accessToken } = req.body;
-        
+        const { accessToken, role: signupRoleReq } = req.body;
+
         if (!accessToken) {
             return res.status(400).json({ error: 'Access token required' });
         }
@@ -1691,12 +1692,13 @@ app.post('/api/auth/google-oauth', async (req, res) => {
         // If brand new user, mark as not onboarded
         if (!existingUser) {
             user.preferences = { ...(user.preferences || {}), onboarded: false };
+            if (signupRoleReq === 'teacher') user.signupRole = 'teacher';
             scheduleSave();
         } else {
             // Existing user: check if they signed up before preferences update
             ensureOnboardingFlag(user);
         }
-        
+
         // Auto-sync subscription status from Stripe (handles server restarts)
         await autoSyncStripeSubscription(userId, userInfo.email);
         
@@ -1731,8 +1733,9 @@ app.post('/api/auth/google-oauth', async (req, res) => {
  */
 app.post('/api/auth/register', async (req, res) => {
     try {
-        const { name: rawName, email, password } = req.body;
+        const { name: rawName, email, password, role } = req.body;
         const name = sanitizeName(rawName);
+        const signupRole = role === 'teacher' ? 'teacher' : 'student';
         
         // Validation
         if (!name || !email || !password) {
@@ -1772,10 +1775,12 @@ app.post('/api/auth/register', async (req, res) => {
             verifyExpiry
         });
         
-        // Mark new registration as not onboarded
+        // Mark new registration as not onboarded; remember whether they signed
+        // up as a teacher so we can route them to seat checkout after verifying.
         user.preferences = { ...(user.preferences || {}), onboarded: false };
+        user.signupRole = signupRole;
         scheduleSave();
-        
+
         // Send verification email
         const emailSent = await sendVerificationEmail(email, verifyToken);
         if (!emailSent) {
@@ -2445,6 +2450,7 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         teacherSubscribed: hasActiveTeacherSeat(user),
         teacherExpiresAt: hasActiveTeacherSeat(user) ? user.teacherExpiresAt : null,
         teacherTier: hasActiveTeacherSeat(user) ? (user.teacherTier || 'both') : null,
+        signupRole: user.signupRole || null,
         linkedToTeacher: !!req.linkedTeacher,
         // Subjects the student has full access to via class memberships.
         // Used by tool UIs to pre-emptively lock other subject pickers.
@@ -2640,7 +2646,7 @@ function studentMasterySummary(userId) {
 }
 
 // Shared OpenAI chat call. Returns the raw assistant text.
-async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMode }) {
+async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMode, reasoningEffort }) {
     const mdl = model || 'gpt-4o-mini';
     const isGpt5 = mdl.startsWith('gpt-5');
     const body = {
@@ -2649,6 +2655,9 @@ async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMod
         [isGpt5 ? 'max_completion_tokens' : 'max_tokens']: maxTokens || 1000
     };
     if (!isGpt5 && typeof temperature === 'number') body.temperature = temperature;
+    // GPT-5 reasoning models: default heavy reasoning is the slow part. Default
+    // to 'low' so structured generations (teacher tools, assignments) stay fast.
+    if (isGpt5) body.reasoning_effort = reasoningEffort || 'low';
     if (jsonMode) body.response_format = { type: 'json_object' };
     const r = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -2715,6 +2724,102 @@ app.get('/api/teacher/classes', requireTeacher, (req, res) => {
         tier: req.user.teacherTier || 'both',
         studentTotal: activeStudentCount(req.user.userId),
         studentCap: TEACHER_STUDENT_CAP
+    });
+});
+
+// GET /api/teacher/overview — Home command-centre rollup across all of the
+// teacher's active classes. Reuses the same helpers/stores the per-class
+// endpoints use; no datastore changes.
+app.get('/api/teacher/overview', requireTeacher, (req, res) => {
+    const teacherId = req.user.userId;
+    const myClasses = Object.values(db.classes)
+        .filter(c => c.teacherUserId === teacherId && !c.archivedAt);
+    const classIds = new Set(myClasses.map(c => c.classId));
+
+    // Distinct active (non-removed) students across every class.
+    const studentIdSet = new Set();
+    for (const m of db.classMembers) {
+        if (m.removedAt || !classIds.has(m.classId)) continue;
+        studentIdSet.add(m.studentUserId);
+    }
+
+    // Class-average mastery: mean of each student's average (those with data).
+    let masterySum = 0, masteryN = 0;
+    for (const sid of studentIdSet) {
+        const s = studentMasterySummary(sid);
+        if (s.average != null) { masterySum += s.average; masteryN++; }
+    }
+    const avgMasteryPct = masteryN ? Math.round((masterySum / masteryN) * 100) : null;
+
+    // Weak topics aggregated across linked students (band === 'weak'),
+    // keyed by subject + dot point; ranked by how many students struggle.
+    const weakMap = {};
+    for (const rec of Object.values(db.mastery)) {
+        if (!studentIdSet.has(rec.userId)) continue;
+        if (SR.masteryBand(rec.score) !== 'weak') continue;
+        const subj = rec.subject || 'General';
+        const ref = rec.dotPointRef || rec.module || 'General';
+        const key = subj + '::' + ref;
+        if (!weakMap[key]) weakMap[key] = { subject: subj, topic: ref, students: 0, scoreSum: 0 };
+        weakMap[key].students++;
+        weakMap[key].scoreSum += rec.score;
+    }
+    const weakTopics = Object.values(weakMap)
+        .map(w => ({ subject: w.subject, topic: w.topic, students: w.students, avgScore: Math.round((w.scoreSum / w.students) * 100) }))
+        .sort((a, b) => b.students - a.students || a.avgScore - b.avgScore)
+        .slice(0, 5);
+
+    // Completed submissions (work turned in) across the teacher's assignments.
+    const myAssignmentIds = new Set(
+        Object.values(db.assignments).filter(a => classIds.has(a.classId)).map(a => a.assignmentId)
+    );
+    let submissionsToReview = 0;
+    const activity = [];
+    for (const s of db.assignmentSubmissions) {
+        if (!myAssignmentIds.has(s.assignmentId) || s.status !== 'completed') continue;
+        submissionsToReview++;
+        const a = db.assignments[s.assignmentId];
+        const u = db.users[s.studentUserId];
+        const cls = a ? db.classes[a.classId] : null;
+        activity.push({
+            type: 'submission',
+            name: u ? (u.name || u.email) : 'A student',
+            className: cls ? cls.name : '',
+            detail: a ? a.title : 'an assignment',
+            score: (s.totalAwarded != null && s.totalPossible != null) ? `${s.totalAwarded}/${s.totalPossible}` : null,
+            at: s.completedAt || null
+        });
+    }
+
+    // Recent joins.
+    for (const m of db.classMembers) {
+        if (m.removedAt || !classIds.has(m.classId)) continue;
+        const u = db.users[m.studentUserId];
+        const cls = db.classes[m.classId];
+        activity.push({
+            type: 'join',
+            name: u ? (u.name || u.email) : 'A student',
+            className: cls ? cls.name : '',
+            detail: 'joined the class',
+            score: null,
+            at: m.joinedAt || null
+        });
+    }
+
+    const recentActivity = activity
+        .filter(x => x.at)
+        .sort((a, b) => String(b.at).localeCompare(String(a.at)))
+        .slice(0, 8);
+
+    res.json({
+        tier: req.user.teacherTier || 'both',
+        classes: myClasses.length,
+        activeStudents: activeStudentCount(teacherId),
+        studentCap: TEACHER_STUDENT_CAP,
+        submissionsToReview,
+        avgMasteryPct,
+        weakTopics,
+        recentActivity
     });
 });
 
@@ -5208,29 +5313,33 @@ app.get('/api/admin/analytics', requireOwner, (req, res) => {
  * Optional ?days=N to window the totals (default: all-time).
  */
 app.get('/api/admin/funnel', requireOwner, (req, res) => {
-    const order = [
-        'landing_view', 'signup_tab_open', 'signup_submit', 'verify_required',
-        'verify_complete', 'login_success', 'onboarding_complete',
-        'tool_open', 'ai_output_first', 'paywall_hit', 'checkout_start', 'subscribe_success'
-    ];
+    // The acquisition funnel is monotonic + per-user, so step-to-step % is
+    // meaningful. The activity events below are repeatable (a user logs in /
+    // opens tools many times), so showing them as "% of the previous step"
+    // produced nonsense like 600%. They're reported as all-time counts instead.
+    const funnelOrder = ['landing_view', 'signup_tab_open', 'signup_submit', 'verify_required', 'verify_complete'];
+    const activityOrder = ['login_success', 'onboarding_complete', 'tool_open', 'ai_output_first', 'paywall_hit', 'checkout_start', 'subscribe_success'];
+    const all = [...funnelOrder, ...activityOrder, 'verify_resend'];
     const days = parseInt(req.query.days, 10);
     let cutoff = null;
     if (days && days > 0) { const d = new Date(); d.setDate(d.getDate() - days); cutoff = d.toISOString().split('T')[0]; }
     const totals = {};
-    order.forEach(e => totals[e] = 0);
-    totals.verify_resend = 0;
+    all.forEach(e => totals[e] = 0);
     Object.keys(_funnelDB).forEach(date => {
         if (cutoff && date < cutoff) return;
         const day = _funnelDB[date];
         Object.keys(day).forEach(ev => { if (ev in totals) totals[ev] += day[ev]; });
     });
-    // Step-to-step conversion through the core path.
-    const steps = order.map((ev, i) => {
-        const prev = i > 0 ? totals[order[i - 1]] : null;
-        const pct = (prev && prev > 0) ? Math.round((totals[ev] / prev) * 1000) / 10 : null;
-        return { event: ev, count: totals[ev], fromPrevPct: pct };
+    // Acquisition funnel: % from the step above AND % of the funnel entry.
+    const entry = totals[funnelOrder[0]] || 0;
+    const funnel = funnelOrder.map((ev, i) => {
+        const prev = i > 0 ? totals[funnelOrder[i - 1]] : null;
+        const fromPrevPct = (prev && prev > 0) ? Math.round((totals[ev] / prev) * 1000) / 10 : null;
+        const ofEntryPct = (entry > 0 && i > 0) ? Math.round((totals[ev] / entry) * 1000) / 10 : null;
+        return { event: ev, count: totals[ev], fromPrevPct, ofEntryPct };
     });
-    res.json({ totals, steps, verifyResend: totals.verify_resend, windowDays: days || null });
+    const activity = activityOrder.map(ev => ({ event: ev, count: totals[ev] }));
+    res.json({ totals, funnel, activity, verifyResend: totals.verify_resend, windowDays: days || null });
 });
 
 /**
@@ -8733,7 +8842,13 @@ CRITICAL JSON RULES:
         let generateAttempts = 0;
         const maxGenerateAttempts = 2;
         let lastError = null;
-        const examTokenBudget = hasFull ? Math.min(aiSettings.maxTokens, 16000) : 7000;
+        // Right-size the output budget by exam length so a full 3h paper finishes
+        // in ONE call, for EVERY tier. Previously the cap (4000 paid / 7000 free)
+        // truncated long papers, the JSON parse failed, and a SECOND full call
+        // ran — the main cause of the long waits on normal accounts. A higher cap
+        // is not slower: latency tracks the tokens actually generated, and one
+        // complete call beats two truncated ones.
+        const examTokenBudget = durationHours >= 3 ? 16000 : durationHours === 2 ? 12000 : 8000;
 
         while (generateAttempts < maxGenerateAttempts && !exam) {
             generateAttempts++;
@@ -8753,6 +8868,11 @@ CRITICAL JSON RULES:
                 [tokenParam]: examTokenBudget
             };
             if (!isGpt5) requestBody.temperature = Math.min(aiSettings.temperature, 0.7);
+            // Reasoning models default to heavy internal reasoning, which is the
+            // slowest part of generation. Exam JSON is structured and the mark
+            // totals are enforced deterministically server-side, so 'low' effort
+            // keeps quality while cutting the wait substantially.
+            if (isGpt5) requestBody.reasoning_effort = 'low';
 
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
