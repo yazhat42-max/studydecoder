@@ -115,7 +115,8 @@ function renderForm(){
   const subjects = Object.keys(SYLLABUS).sort();
   const root = document.getElementById('root');
   root.innerHTML = `
-    <div class="card">
+    <div class="card sd-fade">
+      <p style="color:#a9b3bd;font-size:14px;margin-bottom:18px;line-height:1.5;">Paste your rubric and a student's response — I'll mark it criterion-by-criterion with a score, band, strengths, improvements and an overall comment you can hand back.</p>
       <div id="formError"></div>
       <div class="form-group">
         <label class="form-label" for="subject">Subject <span style="color:#71767b;">(optional)</span></label>
@@ -160,7 +161,7 @@ async function mark(){
   const btn = document.getElementById('markBtn');
   btn.disabled = true;
   const output = document.getElementById('output');
-  output.innerHTML = `<div class="card"><div class="loading"><div class="loading-dots"><span></span><span></span><span></span></div><span>Marking… 10-20 seconds</span></div></div>`;
+  output.innerHTML = `<div class="card sd-fade"><div class="sd-loading"><div class="ring"></div><div>Marking against your rubric… this usually takes 10-20 seconds.</div></div></div>`;
 
   try {
     const res = await api('/api/teacher/ai/rubric-mark',{method:'POST',body:JSON.stringify({subject, questionText, rubric, response})});
