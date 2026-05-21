@@ -1590,8 +1590,8 @@ async function sendVerificationEmail(email, token) {
  */
 app.post('/api/auth/google', async (req, res) => {
     try {
-        const { idToken } = req.body;
-        
+        const { idToken, role: signupRoleReq } = req.body;
+
         if (!idToken) {
             return res.status(400).json({ error: 'ID token required' });
         }
@@ -1615,12 +1615,13 @@ app.post('/api/auth/google', async (req, res) => {
         // If brand new user, mark as not onboarded
         if (!existingUser) {
             user.preferences = { ...(user.preferences || {}), onboarded: false };
+            if (signupRoleReq === 'teacher') user.signupRole = 'teacher';
             scheduleSave();
         } else {
             // Existing user: check if they signed up before preferences update
             ensureOnboardingFlag(user);
         }
-        
+
         // Auto-sync subscription status from Stripe (handles server restarts)
         await autoSyncStripeSubscription(userId, verified.email);
         
@@ -1656,8 +1657,8 @@ app.post('/api/auth/google', async (req, res) => {
  */
 app.post('/api/auth/google-oauth', async (req, res) => {
     try {
-        const { accessToken } = req.body;
-        
+        const { accessToken, role: signupRoleReq } = req.body;
+
         if (!accessToken) {
             return res.status(400).json({ error: 'Access token required' });
         }
@@ -1691,12 +1692,13 @@ app.post('/api/auth/google-oauth', async (req, res) => {
         // If brand new user, mark as not onboarded
         if (!existingUser) {
             user.preferences = { ...(user.preferences || {}), onboarded: false };
+            if (signupRoleReq === 'teacher') user.signupRole = 'teacher';
             scheduleSave();
         } else {
             // Existing user: check if they signed up before preferences update
             ensureOnboardingFlag(user);
         }
-        
+
         // Auto-sync subscription status from Stripe (handles server restarts)
         await autoSyncStripeSubscription(userId, userInfo.email);
         
@@ -1731,8 +1733,9 @@ app.post('/api/auth/google-oauth', async (req, res) => {
  */
 app.post('/api/auth/register', async (req, res) => {
     try {
-        const { name: rawName, email, password } = req.body;
+        const { name: rawName, email, password, role } = req.body;
         const name = sanitizeName(rawName);
+        const signupRole = role === 'teacher' ? 'teacher' : 'student';
         
         // Validation
         if (!name || !email || !password) {
@@ -1772,10 +1775,12 @@ app.post('/api/auth/register', async (req, res) => {
             verifyExpiry
         });
         
-        // Mark new registration as not onboarded
+        // Mark new registration as not onboarded; remember whether they signed
+        // up as a teacher so we can route them to seat checkout after verifying.
         user.preferences = { ...(user.preferences || {}), onboarded: false };
+        user.signupRole = signupRole;
         scheduleSave();
-        
+
         // Send verification email
         const emailSent = await sendVerificationEmail(email, verifyToken);
         if (!emailSent) {
@@ -2445,6 +2450,7 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         teacherSubscribed: hasActiveTeacherSeat(user),
         teacherExpiresAt: hasActiveTeacherSeat(user) ? user.teacherExpiresAt : null,
         teacherTier: hasActiveTeacherSeat(user) ? (user.teacherTier || 'both') : null,
+        signupRole: user.signupRole || null,
         linkedToTeacher: !!req.linkedTeacher,
         // Subjects the student has full access to via class memberships.
         // Used by tool UIs to pre-emptively lock other subject pickers.

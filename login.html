@@ -208,6 +208,23 @@
         .form-error  { font-size: 0.8rem; color: var(--error);      margin-top: 6px; display: none; }
         .form-error.visible { display: block; }
 
+        /* Role chooser (Google-Classroom-style: student vs teacher) */
+        .role-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 7px; }
+        .role-opt {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            padding: 14px 10px; border-radius: var(--radius); cursor: pointer;
+            background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+            color: var(--text-sec); font-family: inherit; font-size: 0.92rem; font-weight: 600;
+            transition: border-color .15s, background .15s, transform .15s;
+        }
+        .role-opt .role-ico { font-size: 1.5rem; line-height: 1; }
+        .role-opt:hover { border-color: rgba(108,99,255,0.4); }
+        .role-opt.active {
+            background: rgba(108,99,255,0.12); border-color: var(--primary); color: #fff;
+            box-shadow: 0 0 0 3px rgba(108,99,255,0.16);
+        }
+        .role-hint { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; min-height: 1.1em; }
+
         /* Checkbox */
         .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
         .checkbox-input  { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
@@ -404,6 +421,18 @@
             <div class="auth-form" id="signupForm">
                 <form onsubmit="handleEmailRegister(event)">
                     <div class="form-group">
+                        <label class="form-label">I'm signing up as…</label>
+                        <div class="role-seg" id="roleSeg">
+                            <button type="button" class="role-opt active" data-role="student" onclick="selectRole('student')">
+                                <span class="role-ico">🎓</span> A student
+                            </button>
+                            <button type="button" class="role-opt" data-role="teacher" onclick="selectRole('teacher')">
+                                <span class="role-ico">🧑‍🏫</span> A teacher
+                            </button>
+                        </div>
+                        <p class="role-hint" id="roleHint">Revise smarter, get your work marked, and walk into exams ready.</p>
+                    </div>
+                    <div class="form-group">
                         <label class="form-label">Full Name</label>
                         <input type="text" class="form-input" id="registerName" placeholder="Your name" required autocomplete="name">
                     </div>
@@ -468,6 +497,7 @@
         
         // ==================== State ====================
         let isLoading = false;
+        let signupRole = 'student';     // 'student' | 'teacher' — chosen on the signup tab
         let googleInitialized = false;
         let googleTokenClient = null;
         let oneTapAvailable = false;
@@ -493,6 +523,18 @@
             }
         }
         
+        // ==================== Role chooser ====================
+        function selectRole(role) {
+            signupRole = role === 'teacher' ? 'teacher' : 'student';
+            document.querySelectorAll('#roleSeg .role-opt').forEach(b =>
+                b.classList.toggle('active', b.dataset.role === signupRole));
+            const hint = document.getElementById('roleHint');
+            if (hint) hint.textContent = signupRole === 'teacher'
+                ? 'Set up classes, track every student, and build lessons, worksheets and marking with AI.'
+                : 'Revise smarter, get your work marked, and walk into exams ready.';
+            if (window.sdTrack) sdTrack('signup_role_select', { role: signupRole });
+        }
+
         // ==================== Password Utilities ====================
         function togglePassword(inputId, btn) {
             const input = document.getElementById(inputId);
@@ -586,7 +628,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ name, email, password })
+                    body: JSON.stringify({ name, email, password, role: signupRole })
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Registration failed');
@@ -618,7 +660,10 @@
             // New users arriving from "Start Free" land on the Create Account
             // form directly — no extra click to find the signup tab.
             const sp = new URLSearchParams(window.location.search);
-            if (sp.get('signup') === '1' || sp.get('mode') === 'signup') {
+            if (sp.get('role') === 'teacher') {
+                selectRole('teacher');
+                switchTab('signup');
+            } else if (sp.get('signup') === '1' || sp.get('mode') === 'signup') {
                 switchTab('signup');
             }
 
@@ -701,7 +746,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ accessToken: tokenResponse.access_token })
+                    body: JSON.stringify({ accessToken: tokenResponse.access_token, role: signupRole })
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Authentication failed');
@@ -724,7 +769,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ idToken: response.credential })
+                    body: JSON.stringify({ idToken: response.credential, role: signupRole })
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Authentication failed');
@@ -819,10 +864,19 @@
                 && !redirectTo.startsWith('//')
                 && !redirectTo.startsWith('/\\');
             const userLevel = subData && subData.preferences && subData.preferences.level;
-            if (data.role === 'owner') {
+            const effectiveRole = (subData && subData.role) || data.role;
+            // A teacher who signed up but hasn't bought a seat yet still has the
+            // teacher *intent* — send them to seat checkout, not the student app.
+            const teacherIntent = (subData && subData.signupRole === 'teacher') || signupRole === 'teacher';
+            if (effectiveRole === 'owner') {
                 window.location.replace('/admin.html');
+            } else if (effectiveRole === 'teacher') {
+                // Active teacher seat → straight to the dashboard.
+                window.location.replace('/teacher-dashboard.html');
             } else if (isSafeRedirect) {
                 window.location.replace(redirectTo);
+            } else if (teacherIntent) {
+                window.location.replace('/teacher-pricing.html');
             } else if (userLevel === 'junior') {
                 window.location.replace('/junior-bot.html');
             } else {
@@ -831,6 +885,8 @@
         }
 
         function showTrialWelcome(name) {
+            // Teacher signups don't get the student trial overlay — straight to seat checkout.
+            if (signupRole === 'teacher') { window.location.href = '/teacher-pricing.html'; return; }
             const trialEnd = new Date();
             trialEnd.setDate(trialEnd.getDate() + 3);
             const dateStr = trialEnd.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -867,7 +923,7 @@
                                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                                 credentials: 'include', body: JSON.stringify({ email: email, password: pw })
                             });
-                            if (lr.ok) { window.location.href = '/index.html#tools'; return; }
+                            if (lr.ok) { window.location.href = signupRole === 'teacher' ? '/teacher-pricing.html' : '/index.html#tools'; return; }
                         } catch (e) {}
                         // Fallback: send them to sign in.
                         window.location.href = '/login.html';
