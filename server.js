@@ -2718,6 +2718,102 @@ app.get('/api/teacher/classes', requireTeacher, (req, res) => {
     });
 });
 
+// GET /api/teacher/overview — Home command-centre rollup across all of the
+// teacher's active classes. Reuses the same helpers/stores the per-class
+// endpoints use; no datastore changes.
+app.get('/api/teacher/overview', requireTeacher, (req, res) => {
+    const teacherId = req.user.userId;
+    const myClasses = Object.values(db.classes)
+        .filter(c => c.teacherUserId === teacherId && !c.archivedAt);
+    const classIds = new Set(myClasses.map(c => c.classId));
+
+    // Distinct active (non-removed) students across every class.
+    const studentIdSet = new Set();
+    for (const m of db.classMembers) {
+        if (m.removedAt || !classIds.has(m.classId)) continue;
+        studentIdSet.add(m.studentUserId);
+    }
+
+    // Class-average mastery: mean of each student's average (those with data).
+    let masterySum = 0, masteryN = 0;
+    for (const sid of studentIdSet) {
+        const s = studentMasterySummary(sid);
+        if (s.average != null) { masterySum += s.average; masteryN++; }
+    }
+    const avgMasteryPct = masteryN ? Math.round((masterySum / masteryN) * 100) : null;
+
+    // Weak topics aggregated across linked students (band === 'weak'),
+    // keyed by subject + dot point; ranked by how many students struggle.
+    const weakMap = {};
+    for (const rec of Object.values(db.mastery)) {
+        if (!studentIdSet.has(rec.userId)) continue;
+        if (SR.masteryBand(rec.score) !== 'weak') continue;
+        const subj = rec.subject || 'General';
+        const ref = rec.dotPointRef || rec.module || 'General';
+        const key = subj + '::' + ref;
+        if (!weakMap[key]) weakMap[key] = { subject: subj, topic: ref, students: 0, scoreSum: 0 };
+        weakMap[key].students++;
+        weakMap[key].scoreSum += rec.score;
+    }
+    const weakTopics = Object.values(weakMap)
+        .map(w => ({ subject: w.subject, topic: w.topic, students: w.students, avgScore: Math.round((w.scoreSum / w.students) * 100) }))
+        .sort((a, b) => b.students - a.students || a.avgScore - b.avgScore)
+        .slice(0, 5);
+
+    // Completed submissions (work turned in) across the teacher's assignments.
+    const myAssignmentIds = new Set(
+        Object.values(db.assignments).filter(a => classIds.has(a.classId)).map(a => a.assignmentId)
+    );
+    let submissionsToReview = 0;
+    const activity = [];
+    for (const s of db.assignmentSubmissions) {
+        if (!myAssignmentIds.has(s.assignmentId) || s.status !== 'completed') continue;
+        submissionsToReview++;
+        const a = db.assignments[s.assignmentId];
+        const u = db.users[s.studentUserId];
+        const cls = a ? db.classes[a.classId] : null;
+        activity.push({
+            type: 'submission',
+            name: u ? (u.name || u.email) : 'A student',
+            className: cls ? cls.name : '',
+            detail: a ? a.title : 'an assignment',
+            score: (s.totalAwarded != null && s.totalPossible != null) ? `${s.totalAwarded}/${s.totalPossible}` : null,
+            at: s.completedAt || null
+        });
+    }
+
+    // Recent joins.
+    for (const m of db.classMembers) {
+        if (m.removedAt || !classIds.has(m.classId)) continue;
+        const u = db.users[m.studentUserId];
+        const cls = db.classes[m.classId];
+        activity.push({
+            type: 'join',
+            name: u ? (u.name || u.email) : 'A student',
+            className: cls ? cls.name : '',
+            detail: 'joined the class',
+            score: null,
+            at: m.joinedAt || null
+        });
+    }
+
+    const recentActivity = activity
+        .filter(x => x.at)
+        .sort((a, b) => String(b.at).localeCompare(String(a.at)))
+        .slice(0, 8);
+
+    res.json({
+        tier: req.user.teacherTier || 'both',
+        classes: myClasses.length,
+        activeStudents: activeStudentCount(teacherId),
+        studentCap: TEACHER_STUDENT_CAP,
+        submissionsToReview,
+        avgMasteryPct,
+        weakTopics,
+        recentActivity
+    });
+});
+
 // DELETE /api/teacher/classes/:id — archive a class (students lose access)
 app.delete('/api/teacher/classes/:id', requireTeacher, (req, res) => {
     const cls = getOwnedClass(req, req.params.id);

@@ -157,6 +157,8 @@ let state = { view:'list', classId:null, className:'', tab:'roster', studentView
 let teacherTier = 'both';
 let studentTotal = 0;
 let studentCap = 100;
+let currentUser = null;          // the logged-in teacher (from /api/subscription)
+let myClasses = [];              // active classes, cached for Home quick-actions
 // Subject + module catalog comes from the shared subject-data.js
 // (window.SD_SUBJECTS) so the teacher dashboard shows the exact same
 // known modules as the Worksheet Generator / consumer tools.
@@ -199,7 +201,8 @@ function bandFromScore(score){
 function showList(){
   state = { view:'list', classId:null, className:'', tab:'roster', studentView:null };
   root.innerHTML = `
-    <div class="card">
+    <div id="overviewSlot" class="sd-fade"><div class="sd-loading"><div class="ring"></div><div>Loading your overview…</div></div></div>
+    <div class="card" id="classesCard">
       <div class="row-between" style="margin-bottom:16px;">
         <div>
           <div class="section-title">Your classes</div>
@@ -228,6 +231,140 @@ function showList(){
   });
   document.getElementById('ncCreate').addEventListener('click', createClass);
   loadClasses();
+  loadOverview();
+}
+
+function greetingWord(){
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 18) return 'Good afternoon';
+  return 'Good evening';
+}
+function firstName(){
+  const n = (currentUser && (currentUser.name || currentUser.email)) || '';
+  return esc(String(n).split(/[\s@]/)[0] || 'there');
+}
+
+function loadOverview(){
+  api('/api/teacher/overview')
+    .then(r => r.ok ? r.json() : Promise.reject(r))
+    .then(renderOverview)
+    .catch(() => {
+      const slot = document.getElementById('overviewSlot');
+      if (slot) slot.innerHTML = '';   // fail quietly; the class list still loads
+    });
+}
+
+function renderOverview(d){
+  const slot = document.getElementById('overviewSlot');
+  if (!slot) return;
+  const greet = `
+    <div class="sd-home-greet">${greetingWord()}, <span class="grad">${firstName()}</span> 👋</div>
+    <div class="sd-home-sub">Here's how your classes are tracking today.</div>`;
+
+  // New teacher with zero classes → inviting empty state, not blank stats.
+  if (!d.classes){
+    slot.innerHTML = greet + `
+      <div class="card glow sd-empty">
+        <div class="ico">🎓</div>
+        <h3>Let's set up your first class</h3>
+        <p>Create a class, then share the join code with your students. They get full Study Decoder access for your subject — and you get live progress, assignments and AI tools.</p>
+        <button class="btn" id="ovCreateFirst">+ Create your first class</button>
+      </div>`;
+    const b = document.getElementById('ovCreateFirst');
+    if (b) b.addEventListener('click', revealCreateForm);
+    return;
+  }
+
+  const capPct = d.studentCap ? Math.round((d.activeStudents / d.studentCap) * 100) : 0;
+  const masteryVal = d.avgMasteryPct == null ? '—' : d.avgMasteryPct + '%';
+  const masterySub = d.avgMasteryPct == null ? 'No data yet' : 'class average';
+  const stats = `
+    <div class="sd-stat-grid">
+      <div class="sd-stat s-students">
+        <div class="sd-stat-label">Active students</div>
+        <div class="sd-stat-value">${d.activeStudents}</div>
+        <div class="sd-stat-sub">${capPct}% of your ${d.studentCap}-seat cap</div>
+      </div>
+      <div class="sd-stat s-classes">
+        <div class="sd-stat-label">Classes</div>
+        <div class="sd-stat-value">${d.classes}</div>
+        <div class="sd-stat-sub">active</div>
+      </div>
+      <div class="sd-stat s-review">
+        <div class="sd-stat-label">Submissions in</div>
+        <div class="sd-stat-value">${d.submissionsToReview}</div>
+        <div class="sd-stat-sub">turned in by students</div>
+      </div>
+      <div class="sd-stat s-mastery">
+        <div class="sd-stat-label">Class mastery</div>
+        <div class="sd-stat-value">${masteryVal}</div>
+        <div class="sd-stat-sub">${masterySub}</div>
+      </div>
+    </div>`;
+
+  const quick = `
+    <div class="sd-quick-actions">
+      <button class="btn" data-qa="create">+ Create class</button>
+      <button class="btn-ghost" data-qa="assignment">📝 New assignment</button>
+      <button class="btn-ghost" data-qa="post">📣 New post</button>
+    </div>`;
+
+  // Needs attention — topics where the most students are weak.
+  let attention = '';
+  if (d.weakTopics && d.weakTopics.length){
+    const items = d.weakTopics.map(w => `
+      <li>
+        <span class="sd-chip">${esc(subjectDisplayName(w.subject))}</span>
+        <span style="flex:1;">${esc(w.topic)}</span>
+        <span class="when">${w.students} student${w.students===1?'':'s'} · ${w.avgScore}%</span>
+      </li>`).join('');
+    attention = `
+      <div class="card" style="margin-bottom:14px;">
+        <div class="section-title" style="margin-bottom:10px;">Needs attention</div>
+        <ul class="sd-activity">${items}</ul>
+      </div>`;
+  }
+
+  // Recent activity feed.
+  let recent = '';
+  if (d.recentActivity && d.recentActivity.length){
+    const items = d.recentActivity.map(a => {
+      const ico = a.type === 'submission' ? '✅' : '👋';
+      const right = a.score ? `<span class="sd-chip">${esc(a.score)}</span>` : '';
+      return `
+        <li>
+          <span>${ico}</span>
+          <span style="flex:1;"><strong>${esc(a.name)}</strong> ${esc(a.detail)}${a.className ? ` · ${esc(a.className)}` : ''}</span>
+          ${right}
+          <span class="when">${fmtDate(a.at)}</span>
+        </li>`;
+    }).join('');
+    recent = `
+      <div class="card" style="margin-bottom:14px;">
+        <div class="section-title" style="margin-bottom:10px;">Recent activity</div>
+        <ul class="sd-activity">${items}</ul>
+      </div>`;
+  }
+
+  slot.innerHTML = greet + stats + quick + attention + recent;
+
+  slot.querySelectorAll('[data-qa]').forEach(b => b.addEventListener('click', () => {
+    const qa = b.dataset.qa;
+    if (qa === 'create') return revealCreateForm();
+    if (!myClasses.length){ revealCreateForm(); alert('Create a class first, then you can add assignments and posts.'); return; }
+    const c = myClasses[0];
+    openClass(c.classId, c.name, c.subject || '', qa === 'assignment' ? 'assignments' : 'posts');
+  }));
+}
+
+function revealCreateForm(){
+  const form = document.getElementById('newClassForm');
+  const card = document.getElementById('classesCard');
+  if (form) form.classList.remove('hidden');
+  if (card) card.scrollIntoView({ behavior:'smooth', block:'start' });
+  const name = document.getElementById('ncName');
+  if (name) setTimeout(() => name.focus(), 300);
 }
 
 function loadClasses(){
@@ -237,6 +374,7 @@ function loadClasses(){
       teacherTier  = d.tier || 'both';
       studentTotal = d.studentTotal || 0;
       studentCap   = d.studentCap || 100;
+      myClasses    = (d.classes || []).filter(c => !c.archivedAt);
       updateSeatInfo();
       populateLevelSelect();
       renderClassList(d.classes || []);
@@ -304,9 +442,10 @@ function renderClassList(classes){
   const slot = document.getElementById('classListSlot');
   if (!active.length){
     slot.innerHTML = `
-      <div class="card empty-state">
+      <div class="card muted sd-empty">
+        <div class="ico">📚</div>
         <h3>No classes yet</h3>
-        <p>Create your first class, then share the join code with your students so they get full Study Decoder access.</p>
+        <p>Create your first class above, then share the join code with your students so they get full Study Decoder access for your subject.</p>
       </div>`;
     return;
   }
@@ -465,8 +604,8 @@ function openSetSubjectModal(classId, level) {
 }
 
 /* ===================== VIEW B: CLASS DRILL-DOWN ===================== */
-function openClass(classId, className, classSubject){
-  state = { view:'class', classId, className, classSubject: classSubject || '', tab:'roster', studentView:null };
+function openClass(classId, className, classSubject, tab){
+  state = { view:'class', classId, className, classSubject: classSubject || '', tab: tab || 'roster', studentView:null };
   renderClassShell();
 }
 
@@ -1378,6 +1517,7 @@ function wireAccountMenu(user){
         window.location.href = 'teacher-pricing.html';
         return;
       }
+      currentUser = d;
       wireAccountMenu(d);
       showList();
       document.getElementById('authLoading').classList.add('hidden');
