@@ -4840,7 +4840,13 @@
     // Run on load
     loadBotReviews();
     loadBotUsageBadges();
-    if (window.sdTrack) sdTrack('landing_view');
+    // Funnel: fire landing_view once sdTrack (from deferred ui-helpers.js) is
+    // ready. This inline script runs during parse, before deferred scripts, so
+    // calling sdTrack synchronously here would silently no-op.
+    (function fireLandingView(){
+        if (window.sdTrack) { sdTrack('landing_view'); return; }
+        document.addEventListener('DOMContentLoaded', function(){ if (window.sdTrack) sdTrack('landing_view'); });
+    })();
     // Funnel: count clicks on any tool tile CTA as a tool_open intent.
     document.addEventListener('click', function (e) {
         var a = e.target.closest && e.target.closest('.showcase-text .btn, .sd-trydemo-send');

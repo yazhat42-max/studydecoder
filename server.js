@@ -2646,7 +2646,7 @@ function studentMasterySummary(userId) {
 }
 
 // Shared OpenAI chat call. Returns the raw assistant text.
-async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMode }) {
+async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMode, reasoningEffort }) {
     const mdl = model || 'gpt-4o-mini';
     const isGpt5 = mdl.startsWith('gpt-5');
     const body = {
@@ -2655,6 +2655,9 @@ async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMod
         [isGpt5 ? 'max_completion_tokens' : 'max_tokens']: maxTokens || 1000
     };
     if (!isGpt5 && typeof temperature === 'number') body.temperature = temperature;
+    // GPT-5 reasoning models: default heavy reasoning is the slow part. Default
+    // to 'low' so structured generations (teacher tools, assignments) stay fast.
+    if (isGpt5) body.reasoning_effort = reasoningEffort || 'low';
     if (jsonMode) body.response_format = { type: 'json_object' };
     const r = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -5310,29 +5313,33 @@ app.get('/api/admin/analytics', requireOwner, (req, res) => {
  * Optional ?days=N to window the totals (default: all-time).
  */
 app.get('/api/admin/funnel', requireOwner, (req, res) => {
-    const order = [
-        'landing_view', 'signup_tab_open', 'signup_submit', 'verify_required',
-        'verify_complete', 'login_success', 'onboarding_complete',
-        'tool_open', 'ai_output_first', 'paywall_hit', 'checkout_start', 'subscribe_success'
-    ];
+    // The acquisition funnel is monotonic + per-user, so step-to-step % is
+    // meaningful. The activity events below are repeatable (a user logs in /
+    // opens tools many times), so showing them as "% of the previous step"
+    // produced nonsense like 600%. They're reported as all-time counts instead.
+    const funnelOrder = ['landing_view', 'signup_tab_open', 'signup_submit', 'verify_required', 'verify_complete'];
+    const activityOrder = ['login_success', 'onboarding_complete', 'tool_open', 'ai_output_first', 'paywall_hit', 'checkout_start', 'subscribe_success'];
+    const all = [...funnelOrder, ...activityOrder, 'verify_resend'];
     const days = parseInt(req.query.days, 10);
     let cutoff = null;
     if (days && days > 0) { const d = new Date(); d.setDate(d.getDate() - days); cutoff = d.toISOString().split('T')[0]; }
     const totals = {};
-    order.forEach(e => totals[e] = 0);
-    totals.verify_resend = 0;
+    all.forEach(e => totals[e] = 0);
     Object.keys(_funnelDB).forEach(date => {
         if (cutoff && date < cutoff) return;
         const day = _funnelDB[date];
         Object.keys(day).forEach(ev => { if (ev in totals) totals[ev] += day[ev]; });
     });
-    // Step-to-step conversion through the core path.
-    const steps = order.map((ev, i) => {
-        const prev = i > 0 ? totals[order[i - 1]] : null;
-        const pct = (prev && prev > 0) ? Math.round((totals[ev] / prev) * 1000) / 10 : null;
-        return { event: ev, count: totals[ev], fromPrevPct: pct };
+    // Acquisition funnel: % from the step above AND % of the funnel entry.
+    const entry = totals[funnelOrder[0]] || 0;
+    const funnel = funnelOrder.map((ev, i) => {
+        const prev = i > 0 ? totals[funnelOrder[i - 1]] : null;
+        const fromPrevPct = (prev && prev > 0) ? Math.round((totals[ev] / prev) * 1000) / 10 : null;
+        const ofEntryPct = (entry > 0 && i > 0) ? Math.round((totals[ev] / entry) * 1000) / 10 : null;
+        return { event: ev, count: totals[ev], fromPrevPct, ofEntryPct };
     });
-    res.json({ totals, steps, verifyResend: totals.verify_resend, windowDays: days || null });
+    const activity = activityOrder.map(ev => ({ event: ev, count: totals[ev] }));
+    res.json({ totals, funnel, activity, verifyResend: totals.verify_resend, windowDays: days || null });
 });
 
 /**
@@ -8835,7 +8842,13 @@ CRITICAL JSON RULES:
         let generateAttempts = 0;
         const maxGenerateAttempts = 2;
         let lastError = null;
-        const examTokenBudget = hasFull ? Math.min(aiSettings.maxTokens, 16000) : 7000;
+        // Right-size the output budget by exam length so a full 3h paper finishes
+        // in ONE call. Previously the paid budget (4000) truncated long papers,
+        // the JSON parse failed, and a SECOND full call ran — the main cause of
+        // the long waits. A higher cap is not slower: latency tracks the tokens
+        // actually generated, and one complete call beats two truncated ones.
+        const fullBudget = durationHours >= 3 ? 16000 : durationHours === 2 ? 12000 : 8000;
+        const examTokenBudget = hasFull ? fullBudget : 7000;
 
         while (generateAttempts < maxGenerateAttempts && !exam) {
             generateAttempts++;
@@ -8855,6 +8868,11 @@ CRITICAL JSON RULES:
                 [tokenParam]: examTokenBudget
             };
             if (!isGpt5) requestBody.temperature = Math.min(aiSettings.temperature, 0.7);
+            // Reasoning models default to heavy internal reasoning, which is the
+            // slowest part of generation. Exam JSON is structured and the mark
+            // totals are enforced deterministically server-side, so 'low' effort
+            // keeps quality while cutting the wait substantially.
+            if (isGpt5) requestBody.reasoning_effort = 'low';
 
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
