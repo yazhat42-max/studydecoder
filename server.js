@@ -10114,7 +10114,12 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         const lastMsg = messages.length > 0 ? messages[messages.length - 1].content : '';
         const botTopicMatch = lastMsg.match(/Topic:\s*(.+?)(?:\n|$)/i);
         const botTopic = botTopicMatch ? botTopicMatch[1].trim() : null;
-        const syllabusContent = getSyllabusContent(subjectId, chatIsJunior, botTopic);
+        // Support multiple modules separated by " | " (from the multi-module
+        // selector) so each gets an equal share of the syllabus grounding.
+        const botTopicList = botTopic ? botTopic.split('|').map(t => t.trim()).filter(Boolean) : [];
+        const syllabusContent = botTopicList.length > 1
+            ? getSyllabusContentMulti(subjectId, chatIsJunior, botTopicList, 100000)
+            : getSyllabusContent(subjectId, chatIsJunior, botTopic);
         if (syllabusContent) {
             const subjectName = chatSubjectMeta?.name || subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
             
