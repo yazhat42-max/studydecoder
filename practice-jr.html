@@ -572,6 +572,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script src="/ui-helpers.js" defer></script>
+    <script src="module-multiselect.js"></script>
 </head>
 <body>
     <!-- Auth loading overlay -->
@@ -2456,9 +2457,7 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
                         <div class="exam-setup-row">
                             <div class="form-group">
                                 <label class="form-label">📚 Modules / Topics</label>
-                                <select class="form-select" id="examSetupTopics">
-                                    <option value="All">All Modules</option>
-                                </select>
+                                <div id="examSetupTopicsMs"></div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">🎯 Difficulty</label>
@@ -2502,19 +2501,18 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
             loadExamHistory();
         }
 
+        let examTopicMs = null;
         function updateExamModules(subjectId) {
-            const sel = document.getElementById('examSetupTopics');
-            if (!sel) return;
-            sel.innerHTML = '<option value="All">All Modules</option>';
-            const topics = subjectTopics[subjectId];
-            if (topics && topics.length > 0) {
-                topics.forEach(t => {
-                    const opt = document.createElement('option');
-                    opt.value = t;
-                    opt.textContent = t;
-                    sel.appendChild(opt);
-                });
+            const slot = document.getElementById('examSetupTopicsMs');
+            if (!slot) return;
+            if (!examTopicMs && window.SDModuleSelect) {
+                examTopicMs = window.SDModuleSelect.create(slot, {});
             }
+            const topics = subjectTopics[subjectId] || [];
+            if (examTopicMs) examTopicMs.setModules(topics);
+        }
+        function getExamSelectedTopics() {
+            return (examTopicMs && examTopicMs.getSelected) ? examTopicMs.getSelected() : [];
         }
 
         async function loadExamHistory() {
@@ -2651,7 +2649,7 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
         async function generateExam() {
             const subjectEl = document.getElementById('examSetupSubject');
             const durationEl = document.getElementById('examSetupDuration');
-            const topicsEl = document.getElementById('examSetupTopics');
+            // exam modules are chosen via the examTopicMs multiselect
             const difficultyEl = document.getElementById('examSetupDifficulty');
             const genBtn = document.getElementById('examGenerateBtn');
             const printBtn = document.getElementById('examPrintSetupBtn');
@@ -2661,14 +2659,14 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
 
             const subjectName = subjectEl.options[subjectEl.selectedIndex].text;
             const duration = durationEl.value;
-            const selectedTopic = topicsEl.value;
-            const topics = selectedTopic === 'All' ? 'All topics' : selectedTopic;
+            const topics = getExamSelectedTopics();
+            const topicsLabel = topics.length ? topics.join(', ') : 'All modules';
             const difficulty = difficultyEl.value;
 
             genBtn.disabled = true;
             if (printBtn) printBtn.disabled = true;
             genBtn.textContent = 'Generating exam...';
-            trackUsage('exam', examSubjectId, subjectName, topics);
+            trackUsage('exam', examSubjectId, subjectName, topicsLabel);
 
             // Show loading with fun facts
             const examFacts = getFactsForSubject(examSubjectId);
@@ -2772,7 +2770,7 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
         async function printExamFromSetup() {
             const subjectEl = document.getElementById('examSetupSubject');
             const durationEl = document.getElementById('examSetupDuration');
-            const topicsEl = document.getElementById('examSetupTopics');
+            // exam modules are chosen via the examTopicMs multiselect
             const difficultyEl = document.getElementById('examSetupDifficulty');
             const genBtn = document.getElementById('examGenerateBtn');
             const printBtn = document.getElementById('examPrintSetupBtn');
@@ -2782,8 +2780,8 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
 
             const subjectName = subjectEl.options[subjectEl.selectedIndex].text;
             const duration = durationEl.value;
-            const selectedTopic = topicsEl.value;
-            const topics = selectedTopic === 'All' ? 'All topics' : selectedTopic;
+            const topics = getExamSelectedTopics();
+            const topicsLabel = topics.length ? topics.join(', ') : 'All modules';
             const difficulty = difficultyEl.value;
 
             if (genBtn) genBtn.disabled = true;
@@ -2791,7 +2789,7 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
                 printBtn.disabled = true;
                 printBtn.textContent = 'Preparing print...';
             }
-            trackUsage('exam', examSubjectId, subjectName, topics);
+            trackUsage('exam', examSubjectId, subjectName, topicsLabel);
 
             const examFacts = getFactsForSubject(examSubjectId);
             let examFactIdx = Math.floor(Math.random() * examFacts.length);
