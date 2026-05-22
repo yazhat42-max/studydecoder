@@ -790,6 +790,9 @@
             pointer-events: none; z-index: 0; opacity: 0.45;
         }
         @media (prefers-reduced-motion: reduce) { .sd-particles { display: none; } }
+        /* Ambient codes + rotating sphere are desktop-only flourishes — they
+           cause clutter once the hero copy wraps on laptops/tablets/phones. */
+        @media (max-width: 1024px) { .sd-particles, .sd-hero2-sphere { display: none !important; } }
 
         /* Shared tile stage primitives — applied inside each .showcase-demo */
         .sd-stage {
@@ -919,6 +922,12 @@
         .sd-hero2-content {
             position: relative; z-index: 5; text-align: center;
             max-width: 720px; padding: 0 1.2rem;
+        }
+        /* Soft scrim so the ambient codes always fade out under the hero copy —
+           guarantees readability wherever the codes drift, on any screen size. */
+        .sd-hero2-content::before {
+            content: ''; position: absolute; inset: -40px -10%; z-index: -1; pointer-events: none;
+            background: radial-gradient(ellipse 78% 76% at 50% 42%, rgba(8,8,13,0.94) 0%, rgba(8,8,13,0.74) 46%, rgba(8,8,13,0) 78%);
         }
         .sd-hero2-badge {
             display: inline-block; padding: 6px 14px;
@@ -1965,14 +1974,12 @@
             <div class="sd-hero2-content">
                 <div class="sd-hero2-badge">🤖 AI HSC Tutor · NESA Syllabuses · Built for the HSC</div>
                 <h1 class="sd-hero2-title">make study<br/><em>actually fun</em> again.</h1>
-                <p class="sd-hero2-sub" style="font-weight:700;color:#fff;margin-bottom:.5rem;">AI study tools for the NSW HSC — practise real exam questions, get marked in seconds, and actually remember it.</p>
-                <p class="sd-hero2-sub">Your personal AI HSC tutor, full exam simulator, syllabus decoder + 11 more tools — all built on the official NESA syllabuses.</p>
+                <p class="sd-hero2-sub" style="font-weight:700;color:#fff;">Practise real HSC exam questions, get marked in seconds, and actually remember it.</p>
                 <div class="sd-hero2-actions" id="heroButtons">
                     <a href="login.html?signup=1" class="btn btn-primary btn-glow" id="heroSignInBtn">Start Free — No Card →</a>
                     <a href="#tools" class="btn btn-ghost">See all 10 tools ↓</a>
                 </div>
-                <p style="margin-top:1rem;font-size:.82rem;color:rgba(255,255,255,0.6);">🇦🇺 Built on official NESA syllabuses · Free to start · No card required</p>
-                <p style="margin-top:.5rem;font-size:.82rem;color:rgba(255,255,255,0.5);">Free forever, or go unlimited — <a href="#pricing" style="color:#a78bfa;text-decoration:underline;font-weight:600;">see plans &amp; pricing →</a></p>
+                <p style="margin-top:1rem;font-size:.82rem;color:rgba(255,255,255,0.62);">🇦🇺 10 AI tools, built on the official NESA syllabuses · Free to start, no card · <a href="#pricing" style="color:#a78bfa;text-decoration:underline;font-weight:600;">go unlimited →</a></p>
 
                 <!-- Materializing chat demo -->
                 <div class="sd-hero2-chatbox" id="sdHero2Chat" aria-label="Chat tutor demo">
@@ -2160,8 +2167,48 @@
     <!-- Tools Section Header -->
     <div class="section-divider reveal" id="tools">
         <h2>Every Tool You Need, <span class="highlight">One Platform</span></h2>
-        <p>Seven AI-powered tools built for HSC students — including the brand new AI Chat Tutor. Scroll to explore each one.</p>
+        <p>Ten AI-powered tools built for HSC students — from the AI Chat Tutor to the new Study Games. Scroll to explore each one.</p>
     </div>
+
+    <!-- Demo: Study Games -->
+    <section class="showcase" id="gamesDemo">
+        <div class="showcase-inner">
+            <div class="showcase-text reveal-left">
+                <div class="showcase-label">⭐ New — Play to Revise</div>
+                <h2>Study <span class="highlight">Games</span></h2>
+                <p>Ten fast, addictive game modes built on your syllabus. Cross the tightrope, beat the Exam Demon, defuse the bomb — every correct answer is a real exam-style question from the modules you pick. Revision that actually feels like a break.</p>
+                <div class="showcase-pills">
+                    <span>10 Game Modes</span>
+                    <span>Pick Any Modules</span>
+                    <span>Syllabus Questions</span>
+                    <span>Beat Your Score</span>
+                </div>
+                <a href="games.html" class="btn btn-primary btn-glow">Play now →</a>
+            </div>
+            <div class="showcase-demo reveal-right">
+                <div class="sd-stage" data-tile="games" style="display:flex;align-items:center;justify-content:center;">
+                    <div style="width:90%;max-width:340px;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-weight:800;">
+                            <span>🤸 Tightrope</span>
+                            <span style="color:#ef4444;letter-spacing:2px;">❤❤❤</span>
+                        </div>
+                        <div style="height:6px;border-radius:999px;background:rgba(255,255,255,0.08);overflow:hidden;margin-bottom:14px;"><div style="width:60%;height:100%;background:linear-gradient(90deg,#6c63ff,#a78bfa);"></div></div>
+                        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;">
+                            <div style="font-weight:600;margin-bottom:12px;font-size:.95rem;">Which process produces genetically identical daughter cells?</div>
+                            <div style="display:grid;gap:8px;font-size:.85rem;">
+                                <div style="padding:9px 12px;border-radius:8px;background:rgba(34,197,94,0.14);border:1px solid #22c55e;">A · Mitosis</div>
+                                <div style="padding:9px 12px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);">B · Meiosis</div>
+                                <div style="padding:9px 12px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);">C · Fertilisation</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sd-trydemo">
+                    <a class="sd-trydemo-send" href="games.html" style="text-decoration:none;display:inline-block;">Play the games →</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Demo: AI Chat Tutor -->
     <section class="showcase showcase-reverse" id="chatTutorDemo">
@@ -3118,7 +3165,8 @@
             'learn-irl': { icon: '🎮', name: 'Learn IRL', page: 'learn-irl.html' },
             'worksheet': { icon: '📄', name: 'Worksheet Decoder', page: 'worksheet-decoder.html' },
             'worksheet-generator': { icon: '📝', name: 'Worksheet Generator', page: 'worksheet-generator.html' },
-            'notes': { icon: '📋', name: 'Notes Transcriber', page: 'notes-transcriber.html' }
+            'notes': { icon: '📋', name: 'Notes Transcriber', page: 'notes-transcriber.html' },
+            'games': { icon: '🎮', name: 'Study Games', page: 'games.html' }
         };
         let hasAnything = false;
         try {
@@ -4284,22 +4332,24 @@
         var c = document.getElementById('sdParticles');
         if (!c || REDUCED) return;
         var ctx = c.getContext('2d');
-        var W, H, DPR = Math.min(window.devicePixelRatio || 1, 2);
+        var W, H, DPR = Math.min(window.devicePixelRatio || 1, 1.5);
         var CODES = ['H1.1','H2.3','H4.2','H5.1','H6.3','M5','M6','M7','M8','define','analyse','evaluate','justify','contrast','outline','synthesise'];
         var nodes = [];
+        // Keep codes in the left/right thirds so they never sit behind centered copy.
+        function randX() { return Math.random() < 0.5 ? Math.random() * W * 0.26 : W * 0.74 + Math.random() * W * 0.26; }
         function size() {
           W = c.clientWidth; H = c.clientHeight;
-          c.width = W * DPR; c.height = H * DPR; ctx.scale(DPR, DPR);
+          c.width = W * DPR; c.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
         }
         function rebuild() {
           nodes = [];
-          var n = MOBILE ? 12 : 32;
+          var n = MOBILE ? 10 : 20;
           for (var i = 0; i < n; i++) nodes.push({
-            x: Math.random() * W,
+            x: randX(),
             y: Math.random() * H,
             vy: 0.15 + Math.random() * 0.45,
             txt: CODES[(Math.random() * CODES.length) | 0],
-            a: 0.10 + Math.random() * 0.18,
+            a: 0.10 + Math.random() * 0.16,
             sz: 11 + Math.random() * 4
           });
         }
@@ -4312,13 +4362,18 @@
             ctx.font = '500 ' + p.sz + 'px JetBrains Mono, monospace';
             ctx.fillText(p.txt, p.x, p.y);
             p.y -= p.vy;
-            if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; p.txt = CODES[(Math.random() * CODES.length) | 0]; }
+            if (p.y < -10) { p.y = H + 10; p.x = randX(); p.txt = CODES[(Math.random() * CODES.length) | 0]; }
           }
           raf = requestAnimationFrame(draw);
         }
         var raf;
         size(); rebuild(); draw();
         window.addEventListener('resize', function () { cancelAnimationFrame(raf); size(); rebuild(); draw(); });
+        // Pause the loop while the tab is hidden — no wasted frames in the background.
+        document.addEventListener('visibilitychange', function () {
+          cancelAnimationFrame(raf);
+          if (!document.hidden) draw();
+        });
       }
 
       // ---------- Hero pinned scroll story ----------
