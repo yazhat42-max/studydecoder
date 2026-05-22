@@ -48,6 +48,7 @@
       { label: 'Assignments', icon: '📌', href: 'student-assignments.html', need: 'linked' }
     ] },
     { sec: 'Account', items: [
+      { label: 'Manage subscription', icon: '⚙️', href: 'index.html?stay=1#manage', need: 'managesub' },
       { label: 'Profile', icon: '👤', href: 'profile.html' },
       { label: 'Sign out', icon: '↩️', href: '#', action: 'logout' }
     ] }
@@ -85,7 +86,10 @@
     aside.setAttribute('aria-label', 'Primary');
 
     var html = '';
-    html += '<a class="sd-sb-brand" href="dashboard.html"><img src="/logo.png" alt=""><b>Study Decoder</b></a>';
+    html += '<div class="sd-sb-top">'
+      + '<a class="sd-sb-brand" href="dashboard.html"><img src="/logo.png" alt=""><b>Study Decoder</b></a>'
+      + '<button class="sd-collapse" id="sdCollapse" type="button" title="Hide sidebar" aria-label="Hide sidebar">«</button>'
+      + '</div>';
     html += '<div class="sd-streak-chip" id="sdStreakChip"><span>🔥</span><span class="n" id="sdStreakNum">0</span><span>day streak</span></div>';
     html += '<nav class="sd-sb-nav">';
     for (var s = 0; s < NAV.length; s++) {
@@ -96,7 +100,7 @@
         var href = resolveHref(it, isJr);
         var attrs = 'class="sd-nav-item" data-href="' + href + '" href="' + (it.action ? '#' : href) + '"';
         if (it.action) attrs += ' data-action="' + it.action + '"';
-        if (it.need === 'linked') attrs += ' data-need="linked" hidden';
+        if (it.need) attrs += ' data-need="' + it.need + '" hidden';
         html += '<a ' + attrs + '><span class="ic">' + it.icon + '</span><span>' + it.label + '</span></a>';
       }
     }
@@ -119,10 +123,16 @@
     scrim.className = 'sd-scrim';
     scrim.id = 'sdScrim';
 
+    // Apply persisted desktop-collapsed state before the sidebar paints so it
+    // doesn't flash open on every page load.
+    var collapsed = false;
+    try { collapsed = localStorage.getItem('sd_shell_collapsed') === '1'; } catch (e) {}
+    body.classList.add('sd-shell-shifted');
+    if (collapsed) body.classList.add('sd-shell-collapsed');
+
     body.appendChild(aside);
     body.appendChild(scrim);
     body.appendChild(hamb);
-    body.classList.add('sd-shell-shifted');
 
     markActive(aside, isJr);
     wireInteractions(aside, hamb, scrim);
@@ -165,8 +175,26 @@
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
 
-    hamb.addEventListener('click', function () { isOpen() ? close() : open(); });
+    function isDesktop() { return window.matchMedia('(min-width: 1025px)').matches; }
+    function setCollapsed(val) {
+      document.body.classList.toggle('sd-shell-collapsed', val);
+      try { localStorage.setItem('sd_shell_collapsed', val ? '1' : '0'); } catch (e) {}
+      hamb.setAttribute('aria-expanded', String(!val));
+    }
+    hamb.setAttribute('aria-expanded', String(!document.body.classList.contains('sd-shell-collapsed')));
+
+    hamb.addEventListener('click', function () {
+      // Desktop: the hamburger only shows while collapsed, so it re-opens the
+      // sidebar. Mobile: it toggles the off-canvas drawer.
+      if (isDesktop()) setCollapsed(!document.body.classList.contains('sd-shell-collapsed') ? true : false);
+      else { isOpen() ? close() : open(); }
+    });
     scrim.addEventListener('click', close);
+    var collapseBtn = aside.querySelector('#sdCollapse');
+    if (collapseBtn) collapseBtn.addEventListener('click', function () {
+      if (isDesktop()) setCollapsed(true);
+      else close();
+    });
 
     aside.addEventListener('click', function (e) {
       var link = e.target.closest ? e.target.closest('.sd-nav-item') : null;
@@ -209,6 +237,14 @@
         if (auth.linkedToTeacher) {
           var as = aside.querySelector('.sd-nav-item[data-need="linked"]');
           if (as) as.removeAttribute('hidden');
+        }
+
+        // Manage subscription only for a self-managed paid plan (mirrors the
+        // condition index.html uses for its "Manage Sub" button).
+        var classLinkedOnly = auth.linkedToTeacher && !auth.plan && !auth.dayPassActive;
+        if (auth.subscribed && !classLinkedOnly && auth.role !== 'owner' && auth.role !== 'lifetime' && auth.role !== 'og_tester') {
+          var msEl = aside.querySelector('.sd-nav-item[data-need="managesub"]');
+          if (msEl) msEl.removeAttribute('hidden');
         }
 
         // Upgrade CTA only for free users.

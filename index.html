@@ -2976,6 +2976,8 @@
             document.getElementById('manageSubNavBtn').style.display = 'inline-block';
             document.getElementById('upgradeNavBtn').style.display = 'none';
             window.currentUser = user;
+            // Deep link from the app sidebar: open the manage-subscription modal.
+            if (location.hash === '#manage') { try { showManageSubscription(); } catch (e) {} }
         } else if ((!user.subscribed || isClassLinkedOnly) && user.role !== 'owner' && user.role !== 'lifetime' && user.role !== 'og_tester') {
             // Free users + class-linked-only users see the upgrade prompt
             // (class-linked users upgrade to unlock other subjects).
