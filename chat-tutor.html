@@ -54,15 +54,15 @@
         }
         .topbar-back {
             text-decoration: none;
-            color: #4f8cff;
+            color: #6C63FF;
             font-size: 0.88rem;
             font-weight: 500;
-            background: rgba(79,140,255,0.1);
+            background: rgba(108, 99, 255,0.1);
             padding: 6px 12px;
             border-radius: 8px;
             white-space: nowrap;
         }
-        .topbar-back:hover { background: rgba(79,140,255,0.2); }
+        .topbar-back:hover { background: rgba(108, 99, 255,0.2); }
 
         .topbar-title {
             font-size: 1rem;
@@ -96,7 +96,7 @@
         .mode-badge.study-btn.active { background: rgba(34,197,94,0.2); border-color: #4ade80; }
         .mode-badge.voice-btn { background: rgba(249,115,22,0.08); border-color: rgba(249,115,22,0.25); color: #fb923c; }
         .mode-badge.voice-btn.active { background: rgba(249,115,22,0.2); border-color: #fb923c; animation: pulse-ring 1.5s ease-in-out infinite; }
-        .mode-badge.history-btn { background: rgba(79,140,255,0.08); border-color: rgba(79,140,255,0.25); color: #4f8cff; }
+        .mode-badge.history-btn { background: rgba(108, 99, 255,0.08); border-color: rgba(108, 99, 255,0.25); color: #6C63FF; }
         .mode-badge.pins-btn { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.25); color: #fbbf24; }
 
         @keyframes pulse-ring {
@@ -143,7 +143,7 @@
             cursor: pointer;
             display: none;
         }
-        #historySelect:focus { outline: none; border-color: #4f8cff; }
+        #historySelect:focus { outline: none; border-color: #6C63FF; }
 
         /* ── CHAT AREA ── */
         #chatMessages {
@@ -265,13 +265,13 @@
             font-family: inherit;
             transition: all .18s;
         }
-        .msg-action-btn:hover { border-color: #4f8cff; color: #4f8cff; }
+        .msg-action-btn:hover { border-color: #6C63FF; color: #6C63FF; }
         .msg-action-btn.pinned { border-color: #fbbf24; color: #fbbf24; background: rgba(245,158,11,0.07); }
 
         /* Loading dots */
         .loading-dots { display: flex; gap: 5px; align-items: center; padding: 6px 0; }
         .loading-dots span {
-            width: 8px; height: 8px; border-radius: 50%; background: #4f8cff;
+            width: 8px; height: 8px; border-radius: 50%; background: #6C63FF;
             animation: bounce 1.2s ease-in-out infinite;
         }
         .loading-dots span:nth-child(2) { animation-delay: .2s; }
@@ -429,16 +429,16 @@
             border: 1px solid #2f3336; background: #1e2733;
             font-size: 0.83rem; color: #c9d1d9; transition: all .18s;
         }
-        .history-item:hover { border-color: #4f8cff; color: #e7e9ea; }
+        .history-item:hover { border-color: #6C63FF; color: #e7e9ea; }
         .history-item-date { font-size: 0.72rem; color: #71767b; margin-top: 3px; }
         .history-empty { text-align: center; color: #71767b; padding: 32px 16px; font-size: 0.88rem; }
         .history-new-btn {
             margin: 10px; padding: 10px;
-            background: rgba(79,140,255,0.1); border: 1px solid rgba(79,140,255,0.25);
-            color: #4f8cff; border-radius: 8px; cursor: pointer; font-family: inherit;
+            background: rgba(108, 99, 255,0.1); border: 1px solid rgba(108, 99, 255,0.25);
+            color: #6C63FF; border-radius: 8px; cursor: pointer; font-family: inherit;
             font-size: 0.85rem; font-weight: 600; transition: all .18s;
         }
-        .history-new-btn:hover { background: rgba(79,140,255,0.2); }
+        .history-new-btn:hover { background: rgba(108, 99, 255,0.2); }
 
         /* Study mode prompt overlay */
         #studyPromptModal {
@@ -477,6 +477,7 @@
         }
     </style>
     <script src="/ui-helpers.js" defer></script>
+    <link rel="stylesheet" href="app-shell.css">
 </head>
 <body>
 
@@ -577,6 +578,7 @@
 
 <script src="streak.js"></script>
 <script src="upsell.js"></script>
+<script src="subject-data.js"></script>
 
 <script>
     const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
@@ -595,43 +597,28 @@
     let isRecording = false;
 
     // ── SUBJECTS ──
-    const SUBJECTS = [
-        { id: 'mathematics-advanced', name: 'Mathematics Advanced' },
-        { id: 'mathematics-standard', name: 'Mathematics Standard' },
-        { id: 'mathematics-extension-1', name: 'Mathematics Extension 1' },
-        { id: 'mathematics-extension-2', name: 'Mathematics Extension 2' },
-        { id: 'english-advanced', name: 'English Advanced' },
-        { id: 'english-standard', name: 'English Standard' },
-        { id: 'english-extension', name: 'English Extension 1' },
-        { id: 'english-eald', name: 'English EAL/D' },
-        { id: 'chemistry', name: 'Chemistry' },
-        { id: 'biology', name: 'Biology' },
-        { id: 'physics', name: 'Physics' },
-        { id: 'earth-environmental-science', name: 'Earth & Environmental Science' },
-        { id: 'modern-history', name: 'Modern History' },
-        { id: 'ancient-history', name: 'Ancient History' },
-        { id: 'economics', name: 'Economics' },
-        { id: 'business-studies', name: 'Business Studies' },
-        { id: 'legal-studies', name: 'Legal Studies' },
-        { id: 'geography', name: 'Geography' },
-        { id: 'software-engineering', name: 'Software Engineering' },
-        { id: 'enterprise-computing', name: 'Enterprise Computing' },
-        { id: 'music-1', name: 'Music 1' },
-        { id: 'music-2', name: 'Music 2' },
-        { id: 'visual-arts', name: 'Visual Arts' },
-        { id: 'pdhpe', name: 'PDHPE' },
-        { id: 'cafs', name: 'CAFS' },
-        { id: 'society-culture', name: 'Society and Culture' },
-    ];
+    // Sourced from the canonical subject list (subject-data.js) so the chat
+    // tutor always offers the same full set as every other tool. The arrays
+    // below are only a fallback if that file fails to load.
+    const SUBJECTS = (window.SD_SUBJECTS && window.SD_SUBJECTS.subjectsForLevel)
+        ? window.SD_SUBJECTS.subjectsForLevel('senior').map(s => ({ id: s.id, name: s.name }))
+        : [
+            { id: 'mathematics-advanced', name: 'Mathematics Advanced' },
+            { id: 'mathematics-standard', name: 'Mathematics Standard' },
+            { id: 'english-advanced', name: 'English Advanced' },
+            { id: 'english-standard', name: 'English Standard' },
+            { id: 'chemistry', name: 'Chemistry' },
+            { id: 'biology', name: 'Biology' },
+            { id: 'physics', name: 'Physics' },
+        ];
 
-    // Junior subject set (Years 7-10). Used when the signed-in user has
-    // preferences.level === 'junior'. IDs match what the backend syllabus
-    // loader expects (mathematics-7-10, english-7-10, science-7-10).
-    const JUNIOR_SUBJECTS = [
-        { id: 'english-7-10', name: 'English (Years 7-10)' },
-        { id: 'mathematics-7-10', name: 'Mathematics (Years 7-10)' },
-        { id: 'science-7-10', name: 'Science (Years 7-10)' }
-    ];
+    const JUNIOR_SUBJECTS = (window.SD_SUBJECTS && window.SD_SUBJECTS.subjectsForLevel)
+        ? window.SD_SUBJECTS.subjectsForLevel('junior').map(s => ({ id: s.id, name: s.name }))
+        : [
+            { id: 'english-7-10', name: 'English (Years 7-10)' },
+            { id: 'mathematics-7-10', name: 'Mathematics (Years 7-10)' },
+            { id: 'science-7-10', name: 'Science (Years 7-10)' }
+        ];
 
     // ── INIT ──
     (function init() {
@@ -648,13 +635,12 @@
     function populateSubjects(level) {
         const sel = document.getElementById('subjectSelect');
         const list = level === 'junior' ? JUNIOR_SUBJECTS : SUBJECTS;
-        sel.innerHTML = '<option value="">Choose a subject…</option>';
-        list.forEach(s => {
-            const opt = document.createElement('option');
-            opt.value = s.id;
-            opt.textContent = s.name;
-            sel.appendChild(opt);
-        });
+        if (window.SD_SUBJECTS && window.SD_SUBJECTS.fillSubjectSelect) {
+            window.SD_SUBJECTS.fillSubjectSelect(sel, level, { placeholder: '— General (any subject) —' });
+        } else {
+            sel.innerHTML = '<option value="">— General (any subject) —</option>';
+            list.forEach(s => { const opt = document.createElement('option'); opt.value = s.id; opt.textContent = s.name; sel.appendChild(opt); });
+        }
 
         // Pre-emptively mark subjects locked for class-linked-only students
         // (paid users / teachers / free tier are unaffected).
@@ -710,7 +696,7 @@
             // Junior students should head back to the junior tools page, not
             // the HSC tools page.
             const back = document.querySelector('.topbar-back');
-            if (back && userLevel === 'junior') back.setAttribute('href', 'junior-bot.html');
+            if (back && userLevel === 'junior') back.setAttribute('href', 'dashboard.html');
 
             if (data.freeTier?.gracePeriodEnding && window.Upsell) Upsell.checkGracePeriodEnding(data.freeTier);
             if (data.freeTier?.inGracePeriod) {
@@ -804,10 +790,13 @@
             else if (m.role === 'assistant') appendAssistantMsg(m.content, false);
         });
 
-        // Set subject if available
+        // Set subject if available. Resolve via the canonical helper first so
+        // sessions saved under older subject names still match; fall back to an
+        // exact name match against the current list.
         const sel = document.getElementById('subjectSelect');
-        const match = SUBJECTS.find(s => sessionData.subject === s.name);
-        if (match) { sel.value = match.id; onSubjectChange(); }
+        let subId = (window.SD_SUBJECTS && window.SD_SUBJECTS.resolveId) ? window.SD_SUBJECTS.resolveId(sessionData.subject) : null;
+        if (!subId) { const m = SUBJECTS.find(s => sessionData.subject === s.name); subId = m ? m.id : null; }
+        if (subId) { sel.value = subId; onSubjectChange(); }
 
         closeHistory();
         msgs.scrollTop = msgs.scrollHeight;
@@ -1220,5 +1209,6 @@
     }
 </script>
 
+    <script src="app-shell.js" defer></script>
 </body>
 </html>

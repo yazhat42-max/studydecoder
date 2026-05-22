@@ -161,10 +161,53 @@
     return level === 'junior' ? SUBJECTS_JUNIOR.slice() : SUBJECTS_SENIOR.slice();
   }
 
+  // Faculty display order for grouping subjects in dropdowns.
+  const FACULTY_ORDER = ['Mathematics', 'English', 'Science', 'HSIE', 'Creative Arts', 'PDHPE', 'TAS', 'VET'];
+
+  // Subjects for a level grouped by faculty, in a sensible faculty order and
+  // alphabetised within each faculty.
+  function groupedForLevel(level) {
+    const groups = {};
+    subjectsForLevel(level).forEach(s => {
+      const cat = s.category || 'Other';
+      (groups[cat] = groups[cat] || []).push(s);
+    });
+    const order = FACULTY_ORDER.filter(c => groups[c]).concat(
+      Object.keys(groups).filter(c => FACULTY_ORDER.indexOf(c) === -1).sort()
+    );
+    return order.map(cat => ({
+      category: cat,
+      subjects: groups[cat].slice().sort((a, b) => a.name.localeCompare(b.name))
+    }));
+  }
+
+  // Populate a <select> with every subject for the level, grouped into
+  // <optgroup> by faculty. Options carry the canonical id as value (or the
+  // display name when opts.useName is set, for tools keyed on names).
+  function fillSubjectSelect(sel, level, opts) {
+    opts = opts || {};
+    if (!sel) return;
+    const useName = !!opts.useName;
+    let html = '';
+    if (opts.placeholder !== false) {
+      html += '<option value="">' + (opts.placeholder || 'Select your subject…') + '</option>';
+    }
+    groupedForLevel(level).forEach(g => {
+      html += '<optgroup label="' + g.category + '">';
+      g.subjects.forEach(s => {
+        const val = useName ? s.name : s.id;
+        html += '<option value="' + val + '">' + s.name + '</option>';
+      });
+      html += '</optgroup>';
+    });
+    sel.innerHTML = html;
+  }
+
   window.SD_SUBJECTS = {
     senior: SUBJECTS_SENIOR,
     junior: SUBJECTS_JUNIOR,
     topics: ALL_TOPICS,
-    resolveId, displayName, modulesFor, subjectsForLevel
+    resolveId, displayName, modulesFor, subjectsForLevel,
+    groupedForLevel, fillSubjectSelect
   };
 })();

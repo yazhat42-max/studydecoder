@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dashboard | Study Decoder</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#08080d">
+  <link rel="apple-touch-icon" href="logo.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(108,99,255,0.10), transparent 60%), #08080d; color: #fff; min-height: 100vh; }
+    .hidden { display: none !important; }
+
+    .auth-loading-overlay { position: fixed; inset: 0; background: #08080d; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+    .auth-spinner { width: 46px; height: 46px; border: 3px solid rgba(108,99,255,0.2); border-top-color: #6C63FF; border-radius: 50%; animation: sdSpin .9s linear infinite; }
+    @keyframes sdSpin { to { transform: rotate(360deg); } }
+
+    .dash { padding: 38px 28px 80px; }
+    .dash-inner { max-width: 1120px; margin: 0 auto; }
+
+    .sd-home-greet { font-size: 26px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 4px; }
+    .sd-home-greet .grad { background: linear-gradient(135deg, #a78bfa, #f472b6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .dash-streak { color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 22px; }
+    .dash-streak b { color: #c4b5fd; }
+
+    .continue-row { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 8px; }
+    .continue-row.solo { grid-template-columns: 1fr; max-width: 520px; }
+    .continue-card { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 16px; text-decoration: none; color: #fff; transition: transform .2s ease, box-shadow .2s ease; }
+    .continue-card:hover { transform: translateY(-3px); }
+    .cc-resume { background: linear-gradient(135deg, rgba(108,99,255,0.22), rgba(167,139,250,0.08)); border: 1px solid rgba(108,99,255,0.3); }
+    .cc-challenge { background: linear-gradient(135deg, rgba(244,114,182,0.16), rgba(108,99,255,0.06)); border: 1px solid rgba(244,114,182,0.25); }
+    .continue-card .ic { font-size: 30px; flex: none; }
+    .continue-card .t { font-size: 15px; font-weight: 800; }
+    .continue-card .d { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+
+    .dash-h2 { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; margin: 30px 0 12px; }
+
+    .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .t-card { display: flex; flex-direction: column; gap: 8px; padding: 20px; border-radius: 16px; background: linear-gradient(160deg, #14121f, #0e0c18); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.4); text-decoration: none; color: #fff; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+    .t-card:hover { transform: translateY(-4px); border-color: rgba(108,99,255,0.35); box-shadow: 0 14px 40px rgba(108,99,255,0.16); }
+    .t-card .ic { font-size: 28px; }
+    .t-card h3 { font-size: 16px; font-weight: 800; }
+    .t-card p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.5; flex: 1; }
+    .t-card .go { font-size: 13px; font-weight: 700; color: #a78bfa; }
+
+    .activity { list-style: none; }
+    .activity li { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); font-size: 14px; color: rgba(255,255,255,0.82); margin-bottom: 8px; }
+    .activity .when { margin-left: auto; color: rgba(255,255,255,0.45); font-size: 12px; }
+    .empty { text-align: center; padding: 36px 20px; color: rgba(255,255,255,0.5); font-size: 14px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); border-radius: 16px; }
+
+    @media (max-width: 720px) {
+      .dash { padding: 70px 16px 70px; }
+      .continue-row { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="stylesheet" href="app-shell.css">
+</head>
+<body>
+  <div id="authLoading" class="auth-loading-overlay">
+    <div class="auth-spinner"></div>
+    <div style="margin-top:16px;color:rgba(255,255,255,0.5);">Loading…</div>
+  </div>
+
+  <main class="dash hidden" id="appContainer">
+    <div class="dash-inner">
+      <h1 class="sd-home-greet"><span id="greetLead">Welcome back</span>, <span class="grad" id="greetName">there</span></h1>
+      <div class="dash-streak" id="streakLine">Open any tool to start a study streak.</div>
+
+      <div class="continue-row">
+        <a class="continue-card cc-resume hidden" id="resumeCard" href="#">
+          <span class="ic" id="resumeIcon">📖</span>
+          <span><span class="t" id="resumeTitle">Continue</span><span class="d" id="resumeDesc"></span></span>
+        </a>
+        <a class="continue-card cc-challenge" id="challengeCard" href="profile.html#challengeSection">
+          <span class="ic">⚡</span>
+          <span><span class="t">Daily challenge</span><span class="d">Keep your streak alive</span></span>
+        </a>
+      </div>
+
+      <h2 class="dash-h2">Your tools</h2>
+      <div class="tool-grid" id="toolGrid"></div>
+
+      <h2 class="dash-h2">Recent activity</h2>
+      <ul class="activity" id="activityList"></ul>
+    </div>
+  </main>
+
+  <script src="/ui-helpers.js"></script>
+  <script src="auth.js"></script>
+  <script src="streak.js"></script>
+  <script src="subject-data.js"></script>
+  <script src="upsell.js"></script>
+  <script src="app-shell.js"></script>
+  <script src="pwa.js"></script>
+  <script>
+    (function () {
+      var TOOLS = [
+        { icon: '📖', name: 'Syllabus Decoder', desc: 'Decode any syllabus dot point into plain English.', href: 'syllabus.html', jr: 'syllabus-jr.html' },
+        { icon: '📝', name: 'Practice Questions', desc: 'Targeted questions with instant marking and feedback.', href: 'practice.html', jr: 'practice-jr.html' },
+        { icon: '🎓', name: 'Full Exam', desc: 'Sit a timed, exam-style paper from start to finish.', href: 'practice.html?mode=exam', jr: 'practice-jr.html?mode=exam' },
+        { icon: '🎮', name: 'Learn IRL', desc: 'See how each topic shows up in the real world.', href: 'learn-irl.html' },
+        { icon: '🃏', name: 'Flashcards', desc: 'AI flashcards that test understanding, not memory.', href: 'flashcards.html' },
+        { icon: '🤖', name: 'Chat Tutor', desc: 'A patient tutor for any subject, any question.', href: 'chat-tutor.html' },
+        { icon: '📋', name: 'Notes Transcriber', desc: 'Turn messy notes and photos into clean study notes.', href: 'notes-transcriber.html' },
+        { icon: '📄', name: 'Worksheet Decoder', desc: 'Upload a worksheet and get worked solutions.', href: 'worksheet-decoder.html' },
+        { icon: '🖨️', name: 'Worksheet Generator', desc: 'Build a printable worksheet with an answer key.', href: 'worksheet-generator.html' },
+        { icon: '🎯', name: 'Study Games', desc: 'Revise through quick, competitive games.', href: 'games.html' }
+      ];
+
+      var BOT_META = {
+        'syllabus': { icon: '📖', name: 'Syllabus Decoder', page: 'syllabus.html' },
+        'practice': { icon: '📝', name: 'Practice Questions', page: 'practice.html' },
+        'exam': { icon: '🎓', name: 'Full Exam Bot', page: 'practice.html?mode=exam' },
+        'learn-irl': { icon: '🎮', name: 'Learn IRL', page: 'learn-irl.html' },
+        'worksheet': { icon: '📄', name: 'Worksheet Decoder', page: 'worksheet-decoder.html' },
+        'worksheet-generator': { icon: '🖨️', name: 'Worksheet Generator', page: 'worksheet-generator.html' },
+        'notes': { icon: '📋', name: 'Notes Transcriber', page: 'notes-transcriber.html' },
+        'games': { icon: '🎯', name: 'Study Games', page: 'games.html' }
+      };
+
+      function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+
+      function renderTools(isJr) {
+        var grid = document.getElementById('toolGrid');
+        var html = '';
+        for (var i = 0; i < TOOLS.length; i++) {
+          var t = TOOLS[i];
+          var href = (isJr && t.jr) ? t.jr : t.href;
+          html += '<a class="t-card" href="' + href + '">'
+            + '<span class="ic">' + t.icon + '</span>'
+            + '<h3>' + esc(t.name) + '</h3>'
+            + '<p>' + esc(t.desc) + '</p>'
+            + '<span class="go">Open →</span></a>';
+        }
+        grid.innerHTML = html;
+      }
+
+      function renderResume(isJr) {
+        try {
+          var last = JSON.parse(localStorage.getItem('sd_last_activity') || 'null');
+          if (!last || !last.bot || !BOT_META[last.bot]) return;
+          var meta = BOT_META[last.bot];
+          var href = meta.page;
+          if (isJr) href = href.replace('syllabus.html', 'syllabus-jr.html').replace('practice.html', 'practice-jr.html');
+          if (last.subject) href += (href.indexOf('?') > -1 ? '&' : '?') + 'subject=' + encodeURIComponent(last.subject);
+          if (last.topic) href += '&topic=' + encodeURIComponent(last.topic);
+          document.getElementById('resumeIcon').textContent = meta.icon;
+          document.getElementById('resumeTitle').textContent = 'Continue: ' + meta.name;
+          document.getElementById('resumeDesc').textContent = last.subject_name ? (last.subject_name + (last.topic ? ' · ' + last.topic : '')) : 'Pick up where you left off';
+          var card = document.getElementById('resumeCard');
+          card.href = href;
+          card.classList.remove('hidden');
+
+          var list = document.getElementById('activityList');
+          var when = last.at ? timeAgo(last.at) : '';
+          list.innerHTML = '<li><span>' + meta.icon + '</span><span>' + esc(meta.name)
+            + (last.subject_name ? ' · ' + esc(last.subject_name) : '') + '</span>'
+            + (when ? '<span class="when">' + esc(when) + '</span>' : '') + '</li>';
+          return true;
+        } catch (e) {}
+        return false;
+      }
+
+      function timeAgo(ts) {
+        var d = Date.now() - ts; var m = Math.floor(d / 60000);
+        if (m < 1) return 'just now'; if (m < 60) return m + 'm ago';
+        var h = Math.floor(m / 60); if (h < 24) return h + 'h ago';
+        return Math.floor(h / 24) + 'd ago';
+      }
+
+      function renderStreak(auth) {
+        try {
+          if (window.StreakManager && auth.streak) { try { window.StreakManager.mergeFromServer(auth.streak); } catch (e) {} }
+          var count = 0;
+          if (auth.streak && typeof auth.streak.count === 'number') count = auth.streak.count;
+          else { try { count = (JSON.parse(localStorage.getItem('sd_study_streak') || '{}').count) || 0; } catch (e) {} }
+          if (count > 0) {
+            var lvl = (window.StreakManager && window.StreakManager.getLevel) ? window.StreakManager.getLevel(count) : null;
+            var lvlName = lvl && lvl.name ? lvl.name : '';
+            document.getElementById('streakLine').innerHTML = '🔥 <b>' + count + '-day streak</b>' + (lvlName ? ' · ' + esc(lvlName) + ' League' : '');
+          }
+        } catch (e) {}
+      }
+
+      function render(auth) {
+        var first = (auth.name || (auth.email || '').split('@')[0] || 'there').split(' ')[0];
+        document.getElementById('greetName').textContent = first;
+        var h = new Date().getHours();
+        document.getElementById('greetLead').textContent = h < 12 ? 'Good morning' : (h < 17 ? 'Good afternoon' : 'Good evening');
+        var isJr = !!(auth.preferences && auth.preferences.level === 'junior');
+        renderTools(isJr);
+        if (!renderResume(isJr)) { var row = document.querySelector('.continue-row'); if (row) row.classList.add('solo'); }
+        renderStreak(auth);
+        if (!document.getElementById('activityList').children.length) {
+          document.getElementById('activityList').innerHTML = '<div class="empty">No activity yet — open a tool above to get started.</div>';
+        }
+        document.getElementById('authLoading').classList.add('hidden');
+        document.getElementById('appContainer').classList.remove('hidden');
+      }
+
+      var authP = window.__sdAuth || fetch('/api/subscription', { credentials: 'include' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+      authP.then(function (auth) {
+        if (!auth || !auth.email) { window.location.replace('/login.html?redirect=/dashboard.html'); return; }
+        if (auth.role === 'teacher') { window.location.replace('/teacher-dashboard.html'); return; }
+        render(auth);
+      });
+    })();
+  </script>
+</body>
+</html>

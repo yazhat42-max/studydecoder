@@ -148,8 +148,35 @@ body {
 @keyframes fl { 0%{opacity:.9;} 100%{opacity:0;} }
 .big-emoji { font-size:64px; }
 .timer-big { font-family:'Poppins',sans-serif; font-size:2.4rem; font-weight:800; }
+
+/* ===== Juicy feedback animations ===== */
+@keyframes sdPop { 0%{transform:scale(1);} 45%{transform:scale(1.32);} 100%{transform:scale(1);} }
+@keyframes sdShake { 0%,100%{transform:translateX(0);} 18%{transform:translateX(-9px);} 36%{transform:translateX(8px);} 54%{transform:translateX(-6px);} 72%{transform:translateX(4px);} 88%{transform:translateX(-2px);} }
+@keyframes sdFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-7px);} }
+@keyframes sdRise { 0%{opacity:0;transform:translate(-50%,6px) scale(.7);} 18%{opacity:1;} 100%{opacity:0;transform:translate(-50%,-60px) scale(1.18);} }
+@keyframes sdBurst { 0%{opacity:.9;transform:translate(-50%,-50%) scale(.2);} 100%{opacity:0;transform:translate(-50%,-50%) scale(2.7);} }
+@keyframes sdOptIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:none;} }
+@keyframes sdScorePop { 0%{transform:scale(1);} 40%{transform:scale(1.55);color:#fde047;} 100%{transform:scale(1);} }
+@keyframes sdConfetti { 0%{opacity:1;transform:translateY(-12px) rotate(0);} 100%{opacity:0;transform:translateY(230px) rotate(560deg);} }
+@keyframes sdEndPop { 0%{transform:scale(.3);opacity:0;} 60%{transform:scale(1.18);opacity:1;} 100%{transform:scale(1);} }
+
+.stage .big-emoji { animation: sdFloat 2.6s ease-in-out infinite; will-change:transform; }
+.stage.shake { animation: sdShake .45s cubic-bezier(.36,.07,.19,.97); }
+.opt { animation: sdOptIn .34s ease backwards; }
+.opt.correct { animation: sdPop .45s ease; box-shadow:0 0 0 1px var(--good), 0 0 22px rgba(34,197,94,0.35); }
+.opt.wrong { animation: sdShake .42s; }
+.opt.dim { opacity:.45; transition:opacity .25s; }
+.stage-fx { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.burst { position:absolute; left:50%; top:52%; width:64px; height:64px; border-radius:50%; transform:translate(-50%,-50%); }
+.burst.good { background:radial-gradient(circle,rgba(34,197,94,0.55),transparent 70%); box-shadow:0 0 34px rgba(34,197,94,0.6); animation:sdBurst .6s ease-out forwards; }
+.burst.bad { background:radial-gradient(circle,rgba(239,68,68,0.5),transparent 70%); animation:sdBurst .6s ease-out forwards; }
+.score-pop { position:absolute; left:50%; bottom:26px; transform:translateX(-50%); font-family:'Poppins',sans-serif; font-weight:900; font-size:1.7rem; color:#22c55e; text-shadow:0 2px 14px rgba(0,0,0,0.55); animation:sdRise 1s ease-out forwards; }
+#hudScore.bump { display:inline-block; animation:sdScorePop .45s ease; }
+.confetti { position:absolute; top:-14px; width:9px; height:15px; border-radius:2px; animation:sdConfetti linear forwards; }
+.end .big { animation: sdEndPop .55s cubic-bezier(.2,.7,.2,1) both; }
 @media (prefers-reduced-motion: reduce){ * { animation-duration:.001s !important; transition-duration:.05s !important; } }
 </style>
+    <link rel="stylesheet" href="app-shell.css">
 </head>
 <body>
 <div class="auth-overlay" id="authOverlay"><div class="ring"></div><div>Loading…</div></div>
@@ -352,8 +379,12 @@ function renderSetup(){
 function populateSubjects(){
   const sel = document.getElementById('subjectSel');
   if (!sel) return;
-  const subs = (window.SD_SUBJECTS ? window.SD_SUBJECTS.subjectsForLevel(level) : []);
-  sel.innerHTML = subs.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+  if (window.SD_SUBJECTS && window.SD_SUBJECTS.fillSubjectSelect) {
+    window.SD_SUBJECTS.fillSubjectSelect(sel, level, { placeholder: false });
+  } else {
+    const subs = (window.SD_SUBJECTS ? window.SD_SUBJECTS.subjectsForLevel(level) : []);
+    sel.innerHTML = subs.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+  }
   refreshModules();
 }
 function refreshModules(){
@@ -441,14 +472,14 @@ function renderGameShell(s){
         <div class="hud-name">${s.game.ico} ${esc(s.game.name)}</div>
         <div class="hud-stats"><span>⭐ <span id="hudScore">0</span></span><span id="hudRight"></span></div>
       </div>
-      <div class="stage" id="stage"></div>
+      <div class="stage" id="stage"><div id="stageInner"></div><div class="flash" id="flash"></div><div class="stage-fx" id="stageFx"></div></div>
       <div class="qbar"><div id="qbarFill" style="width:0%"></div></div>
       <div id="qslot"></div>
     </div>`;
 }
 
 function updateStage(s){
-  const st = document.getElementById('stage'); if (st) st.innerHTML = s.game.stage(s) + `<div class="flash ${s._flash||''}" id="flash"></div>`;
+  const si = document.getElementById('stageInner'); if (si) si.innerHTML = s.game.stage(s);
   const hr = document.getElementById('hudRight'); if (hr && s.game.hud) hr.innerHTML = s.game.hud(s).right || '';
   const sc = document.getElementById('hudScore'); if (sc) sc.textContent = s.correct;
 }
@@ -465,7 +496,7 @@ function showQuestion(s){
       ${q.module ? `<div class="qmod">${esc(q.module)}</div>` : ''}
       <div class="qtext">${esc(q.question)}</div>
       <div class="opts" id="opts">
-        ${q.options.map((o,i) => `<button class="opt" data-i="${i}"><span class="key">${'ABCD'[i]}</span><span>${esc(o)}</span></button>`).join('')}
+        ${q.options.map((o,i) => `<button class="opt" data-i="${i}" style="animation-delay:${i*55}ms"><span class="key">${'ABCD'[i]}</span><span>${esc(o)}</span></button>`).join('')}
       </div>
       <div id="explainSlot"></div>
     </div>`;
@@ -498,6 +529,11 @@ function answer(s, choice){
     else if (i===choice) b.classList.add('wrong');
   });
   flash(s, ok?'good':'bad');
+  if (ok){
+    scorePop(s.game.id === 'quickdraw' && s.combo > 1 ? '+' + s.combo + ' 🔥' : '+1');
+    const sc = document.getElementById('hudScore'); if (sc){ sc.classList.remove('bump'); void sc.offsetWidth; sc.classList.add('bump'); }
+  }
+  document.querySelectorAll('#opts .opt').forEach(b => { if (!b.classList.contains('correct') && !b.classList.contains('wrong')) b.classList.add('dim'); });
   updateStage(s);
   showExplain(s, ok, (ok?'✅ ':'❌ ') + (q.explanation || (ok?'Correct!':'Not quite.')));
   const e = s.game.ended(s);
@@ -505,7 +541,25 @@ function answer(s, choice){
   advance(s);
 }
 
-function flash(s, kind){ s._flash = kind; const f = document.getElementById('flash'); if (f){ f.className = 'flash ' + kind; f.style.animation='none'; void f.offsetWidth; f.style.animation=''; } setTimeout(()=>{ s._flash=''; }, 500); }
+function flash(s, kind){
+  const f = document.getElementById('flash');
+  if (f){ f.className = 'flash ' + kind; f.style.animation='none'; void f.offsetWidth; f.style.animation=''; }
+  const fx = document.getElementById('stageFx');
+  if (fx){ const b = document.createElement('div'); b.className = 'burst ' + kind; fx.appendChild(b); setTimeout(()=>b.remove(), 650); }
+  if (kind === 'bad'){ const st = document.getElementById('stage'); if (st){ st.classList.remove('shake'); void st.offsetWidth; st.classList.add('shake'); setTimeout(()=>st.classList.remove('shake'), 480); } }
+}
+function scorePop(text){ const fx = document.getElementById('stageFx'); if (!fx) return; const p = document.createElement('div'); p.className = 'score-pop'; p.textContent = text; fx.appendChild(p); setTimeout(()=>p.remove(), 1000); }
+function confettiBurst(host){
+  const colors = ['#6c63ff','#a78bfa','#22c55e','#fde047','#f472b6','#38bdf8','#ff6b35'];
+  for (let i = 0; i < 28; i++){
+    const c = document.createElement('div'); c.className = 'confetti';
+    c.style.left = (Math.random()*100) + '%';
+    c.style.background = colors[i % colors.length];
+    c.style.animationDuration = (0.9 + Math.random()*0.8) + 's';
+    c.style.animationDelay = (Math.random()*0.3) + 's';
+    host.appendChild(c); setTimeout(() => c.remove(), 2300);
+  }
+}
 
 function showExplain(s, ok, text){
   const slot = document.getElementById('explainSlot');
@@ -556,6 +610,7 @@ function finish(s, outcome){
     </div></div>`;
   document.getElementById('againBtn').addEventListener('click', () => startGame(s.game.id));
   document.getElementById('menuBtn').addEventListener('click', renderSetup);
+  if (won){ const gv = root.querySelector('.game-view'); if (gv){ gv.style.position = 'relative'; gv.style.overflow = 'hidden'; confettiBurst(gv); } }
   if (window.sdTrack) sdTrack('tool_open');
 }
 
@@ -578,5 +633,6 @@ function finish(s, outcome){
     .catch(() => { window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname); });
 })();
 </script>
+    <script src="app-shell.js" defer></script>
 </body>
 </html>

@@ -14,29 +14,29 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
 .app-container { display:flex; flex-direction:column; min-height:100vh; width:100%; overflow-x:hidden; }
 .header { background:#16202a; border-bottom:1px solid #2f3336; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
 .header-left { display:flex; align-items:center; gap:16px; }
-.back-btn { color:#4f8cff; text-decoration:none; font-size:14px; font-weight:500; padding:8px 16px; border-radius:8px; background:rgba(79,140,255,0.1); }
+.back-btn { color:#6C63FF; text-decoration:none; font-size:14px; font-weight:500; padding:8px 16px; border-radius:8px; background:rgba(108, 99, 255,0.1); }
 .header-title { font-size:20px; font-weight:700; }
 .header-subtitle { font-size:12px; color:#71767b; margin-top:2px; }
 .main-content { flex:1; padding:32px 24px; }
 .container { max-width:980px; margin:0 auto; }
 .card { background:#16202a; border:1px solid #2f3336; border-radius:16px; padding:24px; margin-bottom:20px; }
-.btn { background:linear-gradient(135deg,#4f8cff,#6c63ff); color:#fff; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; cursor:pointer; transition:transform .15s; }
+.btn { background:linear-gradient(135deg,#6C63FF,#6c63ff); color:#fff; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; cursor:pointer; transition:transform .15s; }
 .btn:hover:not(:disabled) { transform:translateY(-1px); }
 .btn:disabled { opacity:0.5; cursor:not-allowed; }
-.btn-ghost { background:#1d3a5f; color:#e7e9ea; border:1px solid rgba(79,140,255,0.3); }
+.btn-ghost { background:#1d3a5f; color:#e7e9ea; border:1px solid rgba(108, 99, 255,0.3); }
 .btn-danger { background:rgba(220,53,69,0.15); color:#ff8088; border:1px solid rgba(220,53,69,0.4); }
 .form-input,.form-select,textarea { background:#0f1419; border:1px solid #2f3336; border-radius:8px; padding:12px 14px; color:#e7e9ea; font-size:14px; font-family:inherit; width:100%; }
-.form-input:focus,.form-select:focus,textarea:focus { outline:none; border-color:#4f8cff; }
+.form-input:focus,.form-select:focus,textarea:focus { outline:none; border-color:#6C63FF; }
 .form-label { font-size:13px; font-weight:500; color:#c8ccd0; display:block; margin-bottom:6px; }
 .form-group { margin-bottom:16px; }
 .auth-loading-overlay { position:fixed; inset:0; background:#0f1419; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
-.auth-spinner { width:50px; height:50px; border:4px solid #2f3336; border-top-color:#4f8cff; border-radius:50%; animation:spin 1s linear infinite; }
+.auth-spinner { width:50px; height:50px; border:4px solid #2f3336; border-top-color:#6C63FF; border-radius:50%; animation:spin 1s linear infinite; }
 @keyframes spin { to { transform:rotate(360deg); } }
 .hidden { display:none !important; }
 .error-banner { background:rgba(220,53,69,0.1); border:1px solid rgba(220,53,69,0.4); color:#ff8088; padding:12px 16px; border-radius:8px; margin-bottom:16px; }
 .loading { display:flex; align-items:center; gap:10px; color:#71767b; padding:20px 0; justify-content:center; }
 .loading-dots { display:flex; gap:4px; }
-.loading-dots span { width:8px; height:8px; background:#4f8cff; border-radius:50%; animation:bounce 1.4s infinite ease-in-out both; }
+.loading-dots span { width:8px; height:8px; background:#6C63FF; border-radius:50%; animation:bounce 1.4s infinite ease-in-out both; }
 .loading-dots span:nth-child(1){animation-delay:-0.32s;} .loading-dots span:nth-child(2){animation-delay:-0.16s;}
 @keyframes bounce { 0%,80%,100%{transform:scale(0);} 40%{transform:scale(1);} }
 @media (max-width:720px){ .main-content{padding:16px;} }
@@ -45,31 +45,32 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
 .explainer strong { color:#e7e9ea; }
 .row-between { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
 .section-title { font-size:16px; font-weight:700; }
-.mastery-link { background:#1d3a5f; color:#e7e9ea; border:1px solid rgba(79,140,255,0.3); border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; text-decoration:none; display:inline-block; }
+.mastery-link { background:#1d3a5f; color:#e7e9ea; border:1px solid rgba(108, 99, 255,0.3); border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; text-decoration:none; display:inline-block; }
 .deck-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
 .deck-card { background:#16202a; border:1px solid #2f3336; border-radius:14px; padding:18px; display:flex; flex-direction:column; gap:10px; }
 .deck-title { font-size:16px; font-weight:700; }
 .deck-meta { font-size:12px; color:#71767b; }
 .badges { display:flex; gap:6px; flex-wrap:wrap; }
 .badge { font-size:11px; font-weight:600; padding:3px 9px; border-radius:999px; }
-.badge-count { background:rgba(79,140,255,0.15); color:#4f8cff; }
+.badge-count { background:rgba(108, 99, 255,0.15); color:#6C63FF; }
 .badge-public { background:rgba(34,197,94,0.18); color:#4ade80; }
 .badge-owned { background:rgba(255,255,255,0.06); color:#aab0b6; }
 .deck-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:auto; }
 .btn-sm { padding:8px 14px; font-size:13px; border-radius:8px; }
 .deck-cards-list { border-top:1px solid #2f3336; margin-top:6px; padding-top:10px; font-size:13px; color:#c8ccd0; }
 .deck-cards-list li { margin:6px 0; padding-left:14px; position:relative; line-height:1.5; }
-.deck-cards-list li:before { content:"›"; position:absolute; left:0; color:#4f8cff; }
+.deck-cards-list li:before { content:"›"; position:absolute; left:0; color:#6C63FF; }
 .empty-state { text-align:center; color:#71767b; padding:40px 20px; }
 .chip-area { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
-.chip { background:rgba(79,140,255,0.15); color:#cfe0ff; border:1px solid rgba(79,140,255,0.3); border-radius:999px; padding:5px 12px; font-size:13px; display:flex; align-items:center; gap:8px; }
+.chip { background:rgba(108, 99, 255,0.15); color:#cfe0ff; border:1px solid rgba(108, 99, 255,0.3); border-radius:999px; padding:5px 12px; font-size:13px; display:flex; align-items:center; gap:8px; }
 .chip button { background:none; border:none; color:#9fc0ff; cursor:pointer; font-size:14px; line-height:1; padding:0; }
 .chip-input-row { display:flex; gap:8px; }
 .checkbox-row { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
-.checkbox-row input { width:16px; height:16px; accent-color:#4f8cff; }
+.checkbox-row input { width:16px; height:16px; accent-color:#6C63FF; }
 .checkbox-row label { font-size:14px; color:#c8ccd0; }
 .muted { color:#71767b; font-size:12px; margin-top:4px; }
 </style>
+    <link rel="stylesheet" href="app-shell.css">
 </head>
 <body>
 <div id="authLoading" class="auth-loading-overlay"><div class="auth-spinner"></div><div style="margin-top:16px;color:#71767b;">Loading…</div></div>
@@ -85,6 +86,7 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
 <script src="auth.js"></script>
 <script src="upsell.js"></script>
 <script src="module-multiselect.js"></script>
+<script src="subject-data.js"></script>
 <script>
 const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
 function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
@@ -92,6 +94,7 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;'
 
 const root = document.getElementById('root');
 let SYLLABUS = {};
+let userLevel = 'senior';
 let DECKS = [];
 let formOpen = false;
 let dotPoints = [];
@@ -124,6 +127,9 @@ function render(){
 function renderForm(){
   const slot = document.getElementById('formSlot');
   const subjects = Object.keys(SYLLABUS);
+  // Fallback markup if the canonical list isn't available.
+  const flatOptions = '<option value="">— Select a subject —</option>'
+    + subjects.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
   slot.innerHTML = `
     <div class="card">
       <div class="section-title" style="margin-bottom:14px;">New deck</div>
@@ -133,10 +139,7 @@ function renderForm(){
       </div>
       <div class="form-group">
         <label class="form-label" for="fSubject">Subject</label>
-        <select class="form-select" id="fSubject">
-          <option value="">— Select a subject —</option>
-          ${subjects.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('')}
-        </select>
+        <select class="form-select" id="fSubject">${flatOptions}</select>
       </div>
       <div class="form-group">
         <label class="form-label" for="fModule">Modules</label>
@@ -177,6 +180,11 @@ function renderForm(){
     </div>
   `;
   const subjSel = document.getElementById('fSubject');
+  // Show every subject, grouped by faculty (canonical list). Values stay as
+  // display names so they match the SYLLABUS module map and saved decks.
+  if (window.SD_SUBJECTS && window.SD_SUBJECTS.fillSubjectSelect) {
+    window.SD_SUBJECTS.fillSubjectSelect(subjSel, userLevel, { useName: true, placeholder: '— Select a subject —' });
+  }
   if (window.SDModuleSelect && !fModuleMs) {
     fModuleMs = window.SDModuleSelect.create(document.getElementById('fModuleMs'), {});
   }
@@ -186,7 +194,10 @@ function renderForm(){
   }
   subjSel.onchange = () => {
     if (window.SDUpsell && window.SDUpsell.onSubjectChange && window.SDUpsell.onSubjectChange(subjSel)) return;
-    if (fModuleMs) fModuleMs.setModules(SYLLABUS[subjSel.value] || []);
+    const mods = (SYLLABUS[subjSel.value] && SYLLABUS[subjSel.value].length)
+      ? SYLLABUS[subjSel.value]
+      : (window.SD_SUBJECTS ? window.SD_SUBJECTS.modulesFor(subjSel.value) : []);
+    if (fModuleMs) fModuleMs.setModules(mods);
   };
   const aiGen = document.getElementById('fAiGen');
   aiGen.onchange = () => document.getElementById('aiOpts').classList.toggle('hidden', !aiGen.checked);
@@ -364,18 +375,12 @@ function loadDecks(){
       return null;
     }
     SYLLABUS = syll || {};
-    // Junior users: replace the HSC subject list with the three junior
-    // subjects so they don't pick HSC subjects they can't study.
+    // Capture level so the subject dropdown shows the right set (the canonical
+    // subject list drives the options; SYLLABUS only supplies module names).
     try {
       const data = await sub.json();
-      if (data && data.preferences && data.preferences.level === 'junior') {
-        SYLLABUS = {
-          'English (Years 7-10)': [],
-          'Mathematics (Years 7-10)': [],
-          'Science (Years 7-10)': []
-        };
-      }
-    } catch (e) { /* keep HSC fallback */ }
+      if (data && data.preferences && data.preferences.level === 'junior') userLevel = 'junior';
+    } catch (e) { /* default senior */ }
     return loadDecks();
   })
   .then(done => {
@@ -389,5 +394,6 @@ function loadDecks(){
   });
 })();
 </script>
+    <script src="app-shell.js" defer></script>
 </body>
 </html>

@@ -38,11 +38,11 @@
         }
         .header-left { display: flex; align-items: center; gap: 16px; }
         .back-btn {
-            color: #4f8cff; text-decoration: none; font-size: 14px; font-weight: 500;
-            padding: 8px 16px; border-radius: 8px; background: rgba(79, 140, 255, 0.1);
+            color: #6C63FF; text-decoration: none; font-size: 14px; font-weight: 500;
+            padding: 8px 16px; border-radius: 8px; background: rgba(108, 99, 255, 0.1);
             transition: all 0.2s;
         }
-        .back-btn:hover { background: rgba(79, 140, 255, 0.2); }
+        .back-btn:hover { background: rgba(108, 99, 255, 0.2); }
         .header-title { font-size: 20px; font-weight: 700; color: #e7e9ea; }
         .header-subtitle { font-size: 12px; color: #71767b; margin-top: 2px; }
         .mode-toggle { display: flex; background: #0f1419; border-radius: 8px; padding: 4px; gap: 4px; }
@@ -50,8 +50,8 @@
             padding: 8px 16px; border: none; background: transparent; color: #71767b;
             font-size: 13px; font-weight: 500; border-radius: 6px; cursor: pointer; transition: all 0.2s;
         }
-        .mode-btn.active { background: #4f8cff; color: #fff; }
-        .mode-btn:hover:not(.active) { background: rgba(79, 140, 255, 0.1); color: #e7e9ea; }
+        .mode-btn.active { background: #6C63FF; color: #fff; }
+        .mode-btn:hover:not(.active) { background: rgba(108, 99, 255, 0.1); color: #e7e9ea; }
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .output-panel { flex: 1; overflow-y: auto; padding: 24px; background: #0f1419; }
         .output-content { max-width: 900px; margin: 0 auto; }
@@ -60,7 +60,7 @@
         .welcome-message p { font-size: 16px; line-height: 1.6; max-width: 500px; margin: 0 auto; }
         .welcome-features { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
         .welcome-feature { background: #16202a; border: 1px solid #2f3336; border-radius: 12px; padding: 16px 20px; max-width: 200px; }
-        .welcome-feature h4 { color: #4f8cff; font-size: 14px; margin-bottom: 6px; }
+        .welcome-feature h4 { color: #6C63FF; font-size: 14px; margin-bottom: 6px; }
         .welcome-feature p { font-size: 12px; color: #71767b; margin: 0; }
         .message { margin-bottom: 24px; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -72,12 +72,12 @@
             background: #16202a; border: 1px solid #2f3336;
             border-radius: 4px 16px 16px 16px; padding: 20px 24px;
         }
-        .message-assistant strong { color: #4f8cff; }
+        .message-assistant strong { color: #6C63FF; }
         .message-assistant p { margin-bottom: 12px; line-height: 1.7; }
         .loading { display: flex; align-items: center; gap: 8px; color: #71767b; padding: 16px; }
         .loading-dots { display: flex; gap: 4px; }
         .loading-dots span {
-            width: 8px; height: 8px; background: #4f8cff; border-radius: 50%;
+            width: 8px; height: 8px; background: #6C63FF; border-radius: 50%;
             animation: bounce 1.4s infinite ease-in-out both;
         }
         .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
@@ -85,12 +85,12 @@
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
         /* Fun facts during loading */
         .fun-fact-box {
-            background: linear-gradient(135deg, rgba(79,140,255,0.08), rgba(108,99,255,0.08));
-            border: 1px solid rgba(79,140,255,0.2); border-radius: 12px;
+            background: linear-gradient(135deg, rgba(108, 99, 255,0.08), rgba(108,99,255,0.08));
+            border: 1px solid rgba(108, 99, 255,0.2); border-radius: 12px;
             padding: 16px 20px; margin-top: 12px; max-width: 600px;
             animation: fadeIn 0.5s ease;
         }
-        .fun-fact-box .ff-label { font-size: 11px; font-weight: 700; color: #4f8cff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .fun-fact-box .ff-label { font-size: 11px; font-weight: 700; color: #6C63FF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
         .fun-fact-box .ff-text { font-size: 14px; color: #c8ccd0; line-height: 1.6; }
         @keyframes factSwap { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
         .ff-swap { animation: factSwap 0.4s ease; }
@@ -103,15 +103,15 @@
         .rec-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
         .rec-card {
             display: flex; align-items: center; gap: 12px; padding: 14px 16px;
-            background: rgba(79,140,255,0.06); border: 1px solid rgba(79,140,255,0.15);
+            background: rgba(108, 99, 255,0.06); border: 1px solid rgba(108, 99, 255,0.15);
             border-radius: 10px; cursor: pointer; transition: all 0.2s; text-decoration: none; color: inherit;
         }
-        .rec-card:hover { background: rgba(79,140,255,0.12); border-color: rgba(79,140,255,0.35); transform: translateY(-2px); }
+        .rec-card:hover { background: rgba(108, 99, 255,0.12); border-color: rgba(108, 99, 255,0.35); transform: translateY(-2px); }
         .rec-card .rc-icon { font-size: 24px; flex-shrink: 0; }
         .rec-card .rc-info { flex: 1; min-width: 0; }
         .rec-card .rc-title { font-size: 13px; font-weight: 600; color: #e7e9ea; }
         .rec-card .rc-desc { font-size: 11px; color: #71767b; margin-top: 2px; }
-        .rec-card .rc-arrow { color: #4f8cff; font-size: 16px; flex-shrink: 0; }
+        .rec-card .rc-arrow { color: #6C63FF; font-size: 16px; flex-shrink: 0; }
         @media (max-width: 768px) { .rec-cards { grid-template-columns: 1fr; } }
         .input-panel { background: #16202a; border-top: 1px solid #2f3336; padding: 20px 24px; flex-shrink: 0; }
         .input-form { max-width: 900px; margin: 0 auto; }
@@ -125,12 +125,12 @@
             padding: 12px 14px; color: #e7e9ea; font-size: 14px; font-family: inherit;
             transition: border-color 0.2s;
         }
-        .form-input:focus, .form-select:focus { outline: none; border-color: #4f8cff; }
+        .form-input:focus, .form-select:focus { outline: none; border-color: #6C63FF; }
         .checkbox-group { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
-        .checkbox-group input { width: 18px; height: 18px; accent-color: #4f8cff; }
+        .checkbox-group input { width: 18px; height: 18px; accent-color: #6C63FF; }
         .checkbox-group label { font-size: 14px; color: #e7e9ea; }
         .submit-btn {
-            width: 100%; background: #4f8cff; color: #fff; border: none; border-radius: 8px;
+            width: 100%; background: #6C63FF; color: #fff; border: none; border-radius: 8px;
             padding: 14px 24px; font-size: 15px; font-weight: 600; cursor: pointer;
             transition: all 0.2s; margin-top: 8px;
         }
@@ -147,16 +147,16 @@
             border-radius: 6px; padding: 8px; color: #e7e9ea; font-size: 13px;
             font-family: inherit; resize: none; margin-top: 2px;
         }
-        .feedback-textarea:focus { outline: none; border-color: #4f8cff; }
+        .feedback-textarea:focus { outline: none; border-color: #6C63FF; }
         .feedback-note {
-            border: 1px solid rgba(79, 140, 255, 0.3);
+            border: 1px solid rgba(108, 99, 255, 0.3);
             border-radius: 6px; font-size: 12px; color: #8ab4f8;
         }
         .exam-duration-info {
             background: #1d3a5f; border-radius: 8px; padding: 12px 16px;
             margin-bottom: 16px; font-size: 13px; color: #8ab4f8;
         }
-        .exam-duration-info strong { color: #4f8cff; }
+        .exam-duration-info strong { color: #6C63FF; }
         /* Auth overlay styles */
         .auth-loading-overlay {
             position: fixed;
@@ -175,7 +175,7 @@
             width: 50px;
             height: 50px;
             border: 4px solid #2f3336;
-            border-top-color: #4f8cff;
+            border-top-color: #6C63FF;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -189,11 +189,11 @@
 
         /* Chat history sidebar */
         .history-btn {
-            color: #4f8cff; text-decoration: none; font-size: 14px; font-weight: 500;
-            padding: 8px 16px; border-radius: 8px; background: rgba(79, 140, 255, 0.1);
+            color: #6C63FF; text-decoration: none; font-size: 14px; font-weight: 500;
+            padding: 8px 16px; border-radius: 8px; background: rgba(108, 99, 255, 0.1);
             transition: all 0.2s; cursor: pointer; border: none;
         }
-        .history-btn:hover { background: rgba(79, 140, 255, 0.2); }
+        .history-btn:hover { background: rgba(108, 99, 255, 0.2); }
         .history-panel {
             position: fixed; top: 0; right: -360px; width: 340px; height: 100vh;
             background: #16202a; border-left: 1px solid #2f3336; z-index: 1000;
@@ -217,7 +217,7 @@
             background: #0f1419; border: 1px solid #2f3336; border-radius: 10px;
             padding: 12px 16px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
         }
-        .history-item:hover { border-color: #4f8cff; background: rgba(79, 140, 255, 0.05); }
+        .history-item:hover { border-color: #6C63FF; background: rgba(108, 99, 255, 0.05); }
         .history-item-title { color: #e7e9ea; font-size: 13px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .history-item-date { color: #71767b; font-size: 11px; }
         .history-item-preview { color: #8b949e; font-size: 12px; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -241,8 +241,8 @@
         }
         .mode-card:hover {
             transform: translateY(-6px);
-            border-color: #4f8cff;
-            box-shadow: 0 12px 40px rgba(79, 140, 255, 0.15);
+            border-color: #6C63FF;
+            box-shadow: 0 12px 40px rgba(108, 99, 255, 0.15);
         }
         .mode-card-icon {
             font-size: 2.5rem;
@@ -264,7 +264,7 @@
         .mode-card-cta {
             font-size: 0.9rem;
             font-weight: 600;
-            color: #4f8cff;
+            color: #6C63FF;
         }
 
         @media (max-width: 768px) {
@@ -292,7 +292,7 @@
         .exam-header-left { display: flex; align-items: center; gap: 16px; }
         .exam-header-title { font-size: 18px; font-weight: 700; color: #e7e9ea; }
         .exam-header-meta { font-size: 12px; color: #71767b; margin-top: 2px; }
-        .exam-timer { font-size: 14px; font-weight: 600; color: #4f8cff; background: rgba(79,140,255,0.1); padding: 6px 14px; border-radius: 8px; transition: color 0.3s, background 0.3s; }
+        .exam-timer { font-size: 14px; font-weight: 600; color: #6C63FF; background: rgba(108, 99, 255,0.1); padding: 6px 14px; border-radius: 8px; transition: color 0.3s, background 0.3s; }
         .exam-timer.warning { color: #f59e0b; background: rgba(245,158,11,0.15); }
         .exam-timer.critical { color: #ef4444; background: rgba(239,68,68,0.15); animation: timerPulse 1s infinite; }
         .exam-print-btn {
@@ -305,7 +305,7 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .exam-print-btn:hover { border-color: #4f8cff; color: #4f8cff; }
+        .exam-print-btn:hover { border-color: #6C63FF; color: #6C63FF; }
         @keyframes timerPulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
 
         /* Lockdown overlay for tab-switch violations */
@@ -319,7 +319,7 @@
         .lockdown-overlay h2 { color: #ef4444; font-size: 28px; margin-bottom: 12px; }
         .lockdown-overlay p { color: #a0a0a0; font-size: 15px; max-width: 450px; text-align: center; line-height: 1.5; }
         .lockdown-overlay .violation-count { color: #f59e0b; font-size: 18px; font-weight: 600; margin-top: 16px; }
-        .lockdown-overlay button { margin-top: 24px; padding: 12px 32px; background: #4f8cff; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+        .lockdown-overlay button { margin-top: 24px; padding: 12px 32px; background: #6C63FF; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
         .lockdown-overlay button:hover { background: #3a6fd8; }
         .lockdown-badge { display: none; font-size: 11px; font-weight: 600; color: #ef4444; background: rgba(239,68,68,0.12); padding: 3px 10px; border-radius: 6px; margin-left: 10px; }
         .lockdown-badge.active { display: inline-block; }
@@ -331,27 +331,27 @@
         .exam-setup-title { font-size: 1.6rem; font-weight: 700; color: #e7e9ea; margin-bottom: 6px; text-align: center; }
         .exam-setup-sub { font-size: 0.95rem; color: #71767b; text-align: center; margin-bottom: 24px; }
         .exam-limits-banner {
-            background: rgba(79,140,255,0.08); border: 1px solid rgba(79,140,255,0.2);
+            background: rgba(108, 99, 255,0.08); border: 1px solid rgba(108, 99, 255,0.2);
             border-radius: 12px; padding: 14px 18px; margin-bottom: 20px;
             font-size: 13px; color: #8ab4f8; text-align: center;
         }
-        .exam-limits-banner strong { color: #4f8cff; }
+        .exam-limits-banner strong { color: #6C63FF; }
         .exam-setup-form { display: flex; flex-direction: column; gap: 14px; }
         .exam-setup-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .exam-setup-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
         .exam-generate-btn {
-            width: 100%; background: linear-gradient(135deg, #4f8cff, #6C63FF); color: #fff;
+            width: 100%; background: linear-gradient(135deg, #6C63FF, #6C63FF); color: #fff;
             border: none; border-radius: 10px; padding: 14px 24px; font-size: 15px;
             font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 8px;
         }
-        .exam-generate-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(79,140,255,0.3); }
+        .exam-generate-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(108, 99, 255,0.3); }
         .exam-generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .exam-print-setup-btn {
             width: 100%; background: #16181c; color: #e7e9ea;
             border: 1px solid #2f3336; border-radius: 10px; padding: 14px 24px; font-size: 15px;
             font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 8px;
         }
-        .exam-print-setup-btn:hover:not(:disabled) { border-color: #4f8cff; color: #4f8cff; transform: translateY(-1px); }
+        .exam-print-setup-btn:hover:not(:disabled) { border-color: #6C63FF; color: #6C63FF; transform: translateY(-1px); }
         .exam-print-setup-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .print-answer-key { background: #16202a; border: 1px solid #2f3336; border-radius: 14px; padding: 20px; margin-bottom: 16px; }
@@ -368,8 +368,8 @@
             border-radius: 10px; padding: 12px 8px; font-size: 0.9rem; font-weight: 600;
             cursor: pointer; text-align: center; transition: all 0.2s; line-height: 1.4;
         }
-        .quick-dur-btn:hover { border-color: #4f8cff; background: #1a2340; }
-        .quick-dur-btn.active { border-color: #4f8cff; background: linear-gradient(135deg,#1a2340,#1a1a2e); color: #4f8cff; }
+        .quick-dur-btn:hover { border-color: #6C63FF; background: #1a2340; }
+        .quick-dur-btn.active { border-color: #6C63FF; background: linear-gradient(135deg,#1a2340,#1a1a2e); color: #6C63FF; }
 
         /* Question display */
         .exam-question-card {
@@ -377,14 +377,14 @@
             padding: 28px; margin-bottom: 20px; animation: fadeIn 0.3s ease;
         }
         .exam-section-header {
-            font-size: 15px; font-weight: 600; color: #4f8cff;
+            font-size: 15px; font-weight: 600; color: #6C63FF;
             margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;
         }
         .exam-q-number { font-size: 13px; color: #71767b; margin-bottom: 12px; }
-        .exam-q-marks { background: rgba(79,140,255,0.15); color: #4f8cff; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-left: 8px; }
+        .exam-q-marks { background: rgba(108, 99, 255,0.15); color: #6C63FF; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-left: 8px; }
         .exam-q-text { font-size: 15px; color: #e7e9ea; line-height: 1.7; margin-bottom: 16px; white-space: pre-wrap; }
         .exam-stimulus {
-            background: #0f1419; border-left: 3px solid #4f8cff; padding: 14px 18px;
+            background: #0f1419; border-left: 3px solid #6C63FF; padding: 14px 18px;
             margin-bottom: 16px; border-radius: 0 8px 8px 0; font-size: 14px;
             color: #c0c8d0; line-height: 1.6; font-style: italic;
         }
@@ -399,13 +399,13 @@
         }
         .exam-stimulus th, .exam-q-text th, .exam-result-feedback th, .exam-result-sample th,
         .exam-data-table th, .message th {
-            background: rgba(79,140,255,0.1); font-weight: 600; color: #8ab4f8;
+            background: rgba(108, 99, 255,0.1); font-weight: 600; color: #8ab4f8;
         }
         .exam-stimulus tr:nth-child(even) td, .exam-q-text tr:nth-child(even) td,
         .exam-data-table tr:nth-child(even) td, .message tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
 
         /* Sub-parts */
-        .exam-part { margin-top: 16px; padding: 12px 16px; background: rgba(255,255,255,0.02); border-radius: 8px; border-left: 2px solid #4f8cff; }
+        .exam-part { margin-top: 16px; padding: 12px 16px; background: rgba(255,255,255,0.02); border-radius: 8px; border-left: 2px solid #6C63FF; }
         .exam-part-label { font-weight: 700; color: #8ab4f8; margin-bottom: 6px; font-size: 14px; }
         .exam-part-text { color: #c0c8d0; font-size: 14px; line-height: 1.5; margin-bottom: 8px; }
 
@@ -416,9 +416,9 @@
             background: #0f1419; border: 1px solid #2f3336; border-radius: 10px;
             cursor: pointer; transition: all 0.2s; font-size: 14px; color: #e7e9ea;
         }
-        .exam-mc-option:hover { border-color: #4f8cff; background: rgba(79,140,255,0.05); }
-        .exam-mc-option.selected { border-color: #4f8cff; background: rgba(79,140,255,0.1); }
-        .exam-mc-option input[type="radio"] { accent-color: #4f8cff; width: 16px; height: 16px; flex-shrink: 0; }
+        .exam-mc-option:hover { border-color: #6C63FF; background: rgba(108, 99, 255,0.05); }
+        .exam-mc-option.selected { border-color: #6C63FF; background: rgba(108, 99, 255,0.1); }
+        .exam-mc-option input[type="radio"] { accent-color: #6C63FF; width: 16px; height: 16px; flex-shrink: 0; }
 
         /* Text answer */
         .exam-answer-box {
@@ -426,7 +426,7 @@
             padding: 14px; color: #e7e9ea; font-size: 14px; font-family: inherit;
             resize: vertical; min-height: 100px; line-height: 1.6;
         }
-        .exam-answer-box:focus { outline: none; border-color: #4f8cff; }
+        .exam-answer-box:focus { outline: none; border-color: #6C63FF; }
         .exam-answer-box.extended { min-height: 200px; }
 
         /* Working out area */
@@ -440,10 +440,10 @@
             padding: 14px; color: #b0bec5; font-size: 13px; font-family: 'Courier New', Consolas, monospace;
             resize: vertical; min-height: 80px; line-height: 1.6;
         }
-        .exam-working-box:focus { outline: none; border-color: #4f8cff; border-style: solid; }
+        .exam-working-box:focus { outline: none; border-color: #6C63FF; border-style: solid; }
         .exam-working-box.extended { min-height: 140px; }
         .exam-answer-label {
-            font-size: 12px; font-weight: 600; color: #4f8cff; text-transform: uppercase;
+            font-size: 12px; font-weight: 600; color: #6C63FF; text-transform: uppercase;
             letter-spacing: 0.5px; margin-bottom: 6px;
         }
 
@@ -457,8 +457,8 @@
             background: transparent; color: #e7e9ea; font-size: 14px; font-weight: 500;
             cursor: pointer; transition: all 0.2s;
         }
-        .exam-nav-btn:hover { border-color: #4f8cff; color: #4f8cff; }
-        .exam-nav-btn.primary { background: #4f8cff; border-color: #4f8cff; color: #fff; }
+        .exam-nav-btn:hover { border-color: #6C63FF; color: #6C63FF; }
+        .exam-nav-btn.primary { background: #6C63FF; border-color: #6C63FF; color: #fff; }
         .exam-nav-btn.primary:hover { background: #3d7ae8; }
         .exam-nav-btn.submit-exam { background: linear-gradient(135deg, #22c55e, #16a34a); border-color: #22c55e; color: #fff; }
         .exam-nav-btn.submit-exam:hover { background: linear-gradient(135deg, #16a34a, #15803d); }
@@ -466,7 +466,7 @@
         .exam-progress-bar {
             flex: 1; margin: 0 20px; height: 6px; background: #2f3336; border-radius: 3px; overflow: hidden;
         }
-        .exam-progress-fill { height: 100%; background: #4f8cff; border-radius: 3px; transition: width 0.3s ease; }
+        .exam-progress-fill { height: 100%; background: #6C63FF; border-radius: 3px; transition: width 0.3s ease; }
         .exam-q-counter { font-size: 13px; color: #71767b; text-align: center; min-width: 80px; }
 
         /* Question dots nav */
@@ -480,9 +480,9 @@
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.2s;
         }
-        .exam-dot:hover { border-color: #4f8cff; }
-        .exam-dot.current { border-color: #4f8cff; background: rgba(79,140,255,0.15); color: #4f8cff; }
-        .exam-dot.answered { background: rgba(79,140,255,0.1); border-color: #4f8cff; color: #4f8cff; }
+        .exam-dot:hover { border-color: #6C63FF; }
+        .exam-dot.current { border-color: #6C63FF; background: rgba(108, 99, 255,0.15); color: #6C63FF; }
+        .exam-dot.answered { background: rgba(108, 99, 255,0.1); border-color: #6C63FF; color: #6C63FF; }
 
         /* Results */
         .exam-results { animation: fadeIn 0.3s ease; }
@@ -493,14 +493,14 @@
             font-size: 3rem; font-weight: 800; margin-bottom: 8px;
         }
         .exam-results-score.band6 { color: #22c55e; }
-        .exam-results-score.band5 { color: #4f8cff; }
+        .exam-results-score.band5 { color: #6C63FF; }
         .exam-results-score.band4 { color: #eab308; }
         .exam-results-score.band3 { color: #f97316; }
         .exam-results-score.low { color: #ef4444; }
         .exam-results-band { font-size: 1.3rem; font-weight: 600; color: #e7e9ea; margin-bottom: 4px; }
         .exam-results-marks { font-size: 0.95rem; color: #71767b; }
         .exam-results-comparison {
-            background: rgba(79,140,255,0.08); border: 1px solid rgba(79,140,255,0.2);
+            background: rgba(108, 99, 255,0.08); border: 1px solid rgba(108, 99, 255,0.2);
             border-radius: 12px; padding: 16px; margin: 16px auto; max-width: 400px;
             font-size: 14px; color: #8ab4f8; text-align: center;
         }
@@ -521,7 +521,7 @@
         .exam-result-q-score.partial { background: rgba(234,179,8,0.15); color: #eab308; }
         .exam-result-q-score.zero { background: rgba(239,68,68,0.15); color: #ef4444; }
         .exam-result-feedback { font-size: 13px; color: #8b949e; line-height: 1.5; margin-top: 6px; }
-        .exam-result-sample { font-size: 13px; color: #4f8cff; line-height: 1.5; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2f3336; }
+        .exam-result-sample { font-size: 13px; color: #6C63FF; line-height: 1.5; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2f3336; }
         .exam-result-sample strong { color: #6C63FF; }
         .exam-results-actions { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
 
@@ -535,8 +535,8 @@
         .exam-history-section { margin-top: 28px; border-top: 1px solid #2f3336; padding-top: 24px; }
         .exam-history-header h3 { color: #e7e9ea; font-size: 1.1rem; margin: 0 0 16px; }
         .exam-history-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-        .exam-history-stat { background: rgba(79,140,255,0.08); border: 1px solid rgba(79,140,255,0.15); border-radius: 10px; padding: 14px 12px; text-align: center; }
-        .exam-history-stat-value { font-size: 1.4rem; font-weight: 700; color: #4f8cff; }
+        .exam-history-stat { background: rgba(108, 99, 255,0.08); border: 1px solid rgba(108, 99, 255,0.15); border-radius: 10px; padding: 14px 12px; text-align: center; }
+        .exam-history-stat-value { font-size: 1.4rem; font-weight: 700; color: #6C63FF; }
         .exam-history-stat-label { font-size: 0.75rem; color: #71767b; margin-top: 4px; }
         .exam-history-subjects { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
         .exam-history-subject-card { background: rgba(255,255,255,0.03); border: 1px solid #2f3336; border-radius: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
@@ -544,7 +544,7 @@
         .exam-history-subject-stats { display: flex; gap: 12px; align-items: center; font-size: 0.8rem; color: #8899a6; }
         .exam-history-badge { padding: 3px 10px; border-radius: 50px; font-size: 0.78rem; font-weight: 700; }
         .exam-history-badge.band6 { background: rgba(34,197,94,0.15); color: #22c55e; }
-        .exam-history-badge.band5 { background: rgba(79,140,255,0.15); color: #4f8cff; }
+        .exam-history-badge.band5 { background: rgba(108, 99, 255,0.15); color: #6C63FF; }
         .exam-history-badge.band4 { background: rgba(245,158,11,0.15); color: #f59e0b; }
         .exam-history-badge.band3 { background: rgba(251,146,60,0.15); color: #fb923c; }
         .exam-history-badge.low { background: rgba(239,68,68,0.15); color: #ef4444; }
@@ -573,6 +573,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script src="/ui-helpers.js" defer></script>
     <script src="module-multiselect.js"></script>
+    <link rel="stylesheet" href="app-shell.css">
 </head>
 <body>
     <!-- Auth loading overlay -->
@@ -689,7 +690,7 @@
                         </div>
                     </div>
                     <div class="feedback-panel" id="feedbackPanel" style="display: none;">
-                        <div class="feedback-note" style="font-size: 0.85rem; padding: 8px 10px; margin-bottom: 8px; background: rgba(79,140,255,0.1); border-radius: 6px;">
+                        <div class="feedback-note" style="font-size: 0.85rem; padding: 8px 10px; margin-bottom: 8px; background: rgba(108, 99, 255,0.1); border-radius: 6px;">
                             <strong>Feedback Mode:</strong> Paste a question and your answer to get marking feedback.
                         </div>
                         <div class="form-grid" style="gap: 6px;">
@@ -1441,7 +1442,7 @@
                 // Notify on reset button
                 const notifyBtn = document.createElement('button');
                 notifyBtn.textContent = '🔔 Email me when my uses reset';
-                notifyBtn.style.cssText = 'display:block;margin:0 auto 12px;background:none;border:none;color:#4f8cff;font-size:0.82rem;cursor:pointer;font-family:inherit;';
+                notifyBtn.style.cssText = 'display:block;margin:0 auto 12px;background:none;border:none;color:#6C63FF;font-size:0.82rem;cursor:pointer;font-family:inherit;';
                 notifyBtn.onclick = () => window.Upsell && Upsell.notifyOnReset(notifyBtn);
                 messageDiv.appendChild(notifyBtn);
             } else {
@@ -1906,11 +1907,11 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 // Show a resume banner above the exam setup area
                 const banner = document.createElement('div');
                 banner.id = 'resumeExamBanner';
-                banner.style.cssText = 'background:rgba(79,140,255,0.1);border:1px solid rgba(79,140,255,0.3);border-radius:12px;padding:14px 18px;margin:0 0 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;';
+                banner.style.cssText = 'background:rgba(108, 99, 255,0.1);border:1px solid rgba(108, 99, 255,0.3);border-radius:12px;padding:14px 18px;margin:0 0 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;';
                 const savedDate = new Date(activeExam.savedAt).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
                 const answerCount = Object.keys(activeExam.examAnswers || {}).length;
                 const totalQ = (activeExam.examData?.sections || []).reduce((a, s) => a + (s.questions?.length || 0), 0);
-                banner.innerHTML = `<span style="font-size:1.3rem;">&#128203;</span><div style="flex:1;"><strong style="color:#4f8cff;">Resume Exam</strong><div style="font-size:0.82rem;color:#8899a6;margin-top:2px;">Saved ${savedDate} &middot; ${answerCount}/${totalQ} questions answered</div></div><button onclick="resumeSavedExam(window._savedActiveExam)" style="background:#4f8cff;color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;">Resume &#x2192;</button><button onclick="document.getElementById('resumeExamBanner').remove();clearActiveExam();" style="background:none;border:1px solid #2f3336;color:#71767b;padding:8px 12px;border-radius:8px;cursor:pointer;font-family:inherit;margin-left:4px;">Discard</button>`;
+                banner.innerHTML = `<span style="font-size:1.3rem;">&#128203;</span><div style="flex:1;"><strong style="color:#6C63FF;">Resume Exam</strong><div style="font-size:0.82rem;color:#8899a6;margin-top:2px;">Saved ${savedDate} &middot; ${answerCount}/${totalQ} questions answered</div></div><button onclick="resumeSavedExam(window._savedActiveExam)" style="background:#6C63FF;color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;">Resume &#x2192;</button><button onclick="document.getElementById('resumeExamBanner').remove();clearActiveExam();" style="background:none;border:1px solid #2f3336;color:#71767b;padding:8px 12px;border-radius:8px;cursor:pointer;font-family:inherit;margin-left:4px;">Discard</button>`;
                 window._savedActiveExam = activeExam;
                 // Insert before exam setup area
                 const examContent = document.getElementById('examContent');
@@ -2460,7 +2461,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                         examSubjectId = saved.examSubjectId;
                         document.getElementById('examContent').innerHTML = `
                             <div style="text-align:center;padding:60px 20px;">
-                                <h2 style="color:#4f8cff;margin-bottom:12px;">📋 Exam Recovered</h2>
+                                <h2 style="color:#6C63FF;margin-bottom:12px;">📋 Exam Recovered</h2>
                                 <p style="color:#a1a1aa;margin-bottom:8px;">Your previous exam and answers were saved after marking failed.</p>
                                 <p style="color:#71717a;font-size:0.85rem;margin-bottom:24px;">You can retry marking or start fresh.</p>
                                 <button class="exam-nav-btn primary" onclick="retryMarking()" style="margin-right:10px;">🔄 Retry Marking</button>
@@ -2492,16 +2493,16 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     examIsPremium = limits.isPremium;
                     examIsOwner = !!limits.isOwner;
                     if (!limits.isPremium) {
-                        limitsHtml = `<div class="exam-limits-banner" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid #4f8cff33;border-radius:12px;padding:18px 20px;margin-bottom:18px;color:#e7e9ea;">
+                        limitsHtml = `<div class="exam-limits-banner" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid #6C63FF33;border-radius:12px;padding:18px 20px;margin-bottom:18px;color:#e7e9ea;">
                             <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px;">🏆 Full Exam Mode — Our Flagship Feature</div>
-                            <div style="color:#8899a6;font-size:0.9rem;margin-bottom:10px;">Sit complete HSC exams with auto-marking & band feedback. This is <strong style="color:#4f8cff;">the #1 reason students upgrade</strong>.</div>
+                            <div style="color:#8899a6;font-size:0.9rem;margin-bottom:10px;">Sit complete HSC exams with auto-marking & band feedback. This is <strong style="color:#6C63FF;">the #1 reason students upgrade</strong>.</div>
                             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
                                 <span style="color:#f59e0b;font-weight:600;">${limits.remaining} of 3 free exams left this week</span>
-                                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="background:linear-gradient(135deg,#4f8cff,#764ba2);color:white;padding:8px 20px;border-radius:50px;font-size:0.85rem;font-weight:700;text-decoration:none;">Upgrade for Unlimited Exams →</a>
+                                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="background:linear-gradient(135deg,#6C63FF,#764ba2);color:white;padding:8px 20px;border-radius:50px;font-size:0.85rem;font-weight:700;text-decoration:none;">Upgrade for Unlimited Exams →</a>
                             </div>
                         </div>`;
                     } else {
-                        limitsHtml = `<div class="exam-limits-banner" style="background:linear-gradient(135deg,#0f3460,#1a1a2e);border:1px solid #4f8cff44;border-radius:12px;padding:16px 20px;margin-bottom:18px;color:#e7e9ea;">
+                        limitsHtml = `<div class="exam-limits-banner" style="background:linear-gradient(135deg,#0f3460,#1a1a2e);border:1px solid #6C63FF44;border-radius:12px;padding:16px 20px;margin-bottom:18px;color:#e7e9ea;">
                             <div style="font-size:0.95rem;">✅ <strong>Premium</strong> — Unlimited exams, full NESA-style structure, all 45 subjects. Generate as many as you need.</div>
                         </div>`;
                     }
@@ -3380,9 +3381,9 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
             // Free tier hint — unlimited retries, weekly cap on new exams
             if (!isPremium) {
-                html += `<div style="background:rgba(79,140,255,0.08);border:1px solid rgba(79,140,255,0.25);border-radius:12px;padding:14px 18px;margin-bottom:20px;text-align:center;">
-                    <strong style="color:#4f8cff;">🔄 Retry as many times as you want</strong>
-                    <p style="color:#71767b;font-size:13px;margin:6px 0 0;">Retries don’t count against your weekly limit — questions get reshuffled each time. Or <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="color:#4f8cff;font-weight:600;">upgrade to Premium</a> for unlimited new exams.</p>
+                html += `<div style="background:rgba(108, 99, 255,0.08);border:1px solid rgba(108, 99, 255,0.25);border-radius:12px;padding:14px 18px;margin-bottom:20px;text-align:center;">
+                    <strong style="color:#6C63FF;">🔄 Retry as many times as you want</strong>
+                    <p style="color:#71767b;font-size:13px;margin:6px 0 0;">Retries don’t count against your weekly limit — questions get reshuffled each time. Or <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" style="color:#6C63FF;font-weight:600;">upgrade to Premium</a> for unlimited new exams.</p>
                 </div>`;
             }
 
@@ -3401,7 +3402,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                         </div>
                         <div class="exam-result-feedback">${parseMarkdownTables(r.feedback || '')}</div>`;
                     if (origQ && origQ.markingCriteria && origQ.type !== 'mc') {
-                        html += `<div class="exam-result-criteria" style="background:rgba(79,140,255,0.08);border:1px solid rgba(79,140,255,0.2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px;color:#8899a6;"><strong style="color:#4f8cff;">Marking Criteria:</strong> ${parseMarkdownTables(origQ.markingCriteria)}</div>`;
+                        html += `<div class="exam-result-criteria" style="background:rgba(108, 99, 255,0.08);border:1px solid rgba(108, 99, 255,0.2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px;color:#8899a6;"><strong style="color:#6C63FF;">Marking Criteria:</strong> ${parseMarkdownTables(origQ.markingCriteria)}</div>`;
                     }
                     if (r.sampleAnswer) {
                         html += `<div class="exam-result-sample"><strong>Sample Answer:</strong> ${parseMarkdownTables(r.sampleAnswer)}</div>`;
@@ -3409,7 +3410,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     // "Explain my mark" button — only for non-MC questions
                     if (origQ && origQ.type !== 'mc') {
                         const qKey = JSON.stringify({ q: r.questionNumber, subj: examSubjectId });
-                        html += `<button class="explain-btn" onclick="explainMark(${r.questionNumber}, this)" style="margin-top:8px;padding:6px 14px;border:1px solid rgba(79,140,255,0.3);border-radius:8px;background:transparent;color:#4f8cff;font-size:0.8rem;cursor:pointer;font-family:inherit;">💬 Why did I get this mark?</button><div class="explain-box" id="explainBox_${r.questionNumber}" style="display:none;margin-top:8px;"></div>`;
+                        html += `<button class="explain-btn" onclick="explainMark(${r.questionNumber}, this)" style="margin-top:8px;padding:6px 14px;border:1px solid rgba(108, 99, 255,0.3);border-radius:8px;background:transparent;color:#6C63FF;font-size:0.8rem;cursor:pointer;font-family:inherit;">💬 Why did I get this mark?</button><div class="explain-box" id="explainBox_${r.questionNumber}" style="display:none;margin-top:8px;"></div>`;
                     }
                     // "Show model answer" button — premium, non-MC. Sample is lazy-loaded so marking stays fast & reliable.
                     const isMcType = origQ && (origQ.type === 'mc' || origQ.type === 'multiple-choice' || origQ.type === 'multiplechoice');
@@ -3494,7 +3495,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     box.innerHTML = '<div style="font-size:0.82rem;color:#ef4444;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:10px 14px;">No explanation came back — try again in a moment.</div>';
                     box.style.display = 'block'; btn.textContent = '💬 Why did I get this mark?';
                 } else {
-                    box.innerHTML = `<div style="font-size:0.85rem;color:#8b949e;line-height:1.65;background:rgba(79,140,255,0.06);border:1px solid rgba(79,140,255,0.15);border-radius:8px;padding:12px 14px;">${replyText.replace(/\n/g,'<br>')}</div>`;
+                    box.innerHTML = `<div style="font-size:0.85rem;color:#8b949e;line-height:1.65;background:rgba(108, 99, 255,0.06);border:1px solid rgba(108, 99, 255,0.15);border-radius:8px;padding:12px 14px;">${replyText.replace(/\n/g,'<br>')}</div>`;
                     box.style.display = 'block'; btn.textContent = '✕ Hide explanation';
                 }
             } catch {
@@ -3590,4 +3591,5 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
     <script src="streak.js"></script>
     <script src="upsell.js"></script>
     <script src="pwa.js"></script>
+    <script src="app-shell.js" defer></script>
 </body></html>

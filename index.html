@@ -790,6 +790,9 @@
             pointer-events: none; z-index: 0; opacity: 0.45;
         }
         @media (prefers-reduced-motion: reduce) { .sd-particles { display: none; } }
+        /* Ambient codes + rotating sphere are desktop-only flourishes — they
+           cause clutter once the hero copy wraps on laptops/tablets/phones. */
+        @media (max-width: 1024px) { .sd-particles, .sd-hero2-sphere { display: none !important; } }
 
         /* Shared tile stage primitives — applied inside each .showcase-demo */
         .sd-stage {
@@ -919,6 +922,12 @@
         .sd-hero2-content {
             position: relative; z-index: 5; text-align: center;
             max-width: 720px; padding: 0 1.2rem;
+        }
+        /* Soft scrim so the ambient codes always fade out under the hero copy —
+           guarantees readability wherever the codes drift, on any screen size. */
+        .sd-hero2-content::before {
+            content: ''; position: absolute; inset: -40px -10%; z-index: -1; pointer-events: none;
+            background: radial-gradient(ellipse 78% 76% at 50% 42%, rgba(8,8,13,0.94) 0%, rgba(8,8,13,0.74) 46%, rgba(8,8,13,0) 78%);
         }
         .sd-hero2-badge {
             display: inline-block; padding: 6px 14px;
@@ -1965,14 +1974,12 @@
             <div class="sd-hero2-content">
                 <div class="sd-hero2-badge">🤖 AI HSC Tutor · NESA Syllabuses · Built for the HSC</div>
                 <h1 class="sd-hero2-title">make study<br/><em>actually fun</em> again.</h1>
-                <p class="sd-hero2-sub" style="font-weight:700;color:#fff;margin-bottom:.5rem;">AI study tools for the NSW HSC — practise real exam questions, get marked in seconds, and actually remember it.</p>
-                <p class="sd-hero2-sub">Your personal AI HSC tutor, full exam simulator, syllabus decoder + 11 more tools — all built on the official NESA syllabuses.</p>
+                <p class="sd-hero2-sub" style="font-weight:700;color:#fff;">Practise real HSC exam questions, get marked in seconds, and actually remember it.</p>
                 <div class="sd-hero2-actions" id="heroButtons">
                     <a href="login.html?signup=1" class="btn btn-primary btn-glow" id="heroSignInBtn">Start Free — No Card →</a>
                     <a href="#tools" class="btn btn-ghost">See all 10 tools ↓</a>
                 </div>
-                <p style="margin-top:1rem;font-size:.82rem;color:rgba(255,255,255,0.6);">🇦🇺 Built on official NESA syllabuses · Free to start · No card required</p>
-                <p style="margin-top:.5rem;font-size:.82rem;color:rgba(255,255,255,0.5);">Free forever, or go unlimited — <a href="#pricing" style="color:#a78bfa;text-decoration:underline;font-weight:600;">see plans &amp; pricing →</a></p>
+                <p style="margin-top:1rem;font-size:.82rem;color:rgba(255,255,255,0.62);">🇦🇺 10 AI tools, built on the official NESA syllabuses · Free to start, no card · <a href="#pricing" style="color:#a78bfa;text-decoration:underline;font-weight:600;">go unlimited →</a></p>
 
                 <!-- Materializing chat demo -->
                 <div class="sd-hero2-chatbox" id="sdHero2Chat" aria-label="Chat tutor demo">
@@ -2034,79 +2041,6 @@
         </div>
     </div>
 
-    <!-- FAQ Section (sits right under the hero chatbot demo) -->
-    <section id="faq" class="faq-section">
-        <div class="faq-bg-glow"></div>
-        <div class="faq-inner">
-            <div class="faq-header">
-                <div class="faq-eyebrow">FAQ</div>
-                <h2 class="faq-title">Frequently <span class="highlight">Asked</span></h2>
-                <p class="faq-sub">Everything you need to know before you start. Tap any question to reveal the answer.</p>
-            </div>
-            <div class="faq-list">
-                <details class="faq-item">
-                    <summary>
-                        <span class="faq-q">Why do I study but forget everything in the exam?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-a">Because re-reading notes <em>feels</em> like learning but barely sticks. Your brain keeps what it has to actively pull back out — so you remember more by testing yourself than by reviewing. Study Decoder is built around that: <a href="blog/why-you-forget-everything-in-exams.html">here's the full breakdown of why you forget</a>, or jump straight into <a href="flashcards.html">conversational flashcards</a> and <a href="practice.html">practice questions</a> that make it stick.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>
-                        <span class="faq-q">How do I actually remember what I study for the HSC?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-a">Three things, on repeat: active recall (test yourself instead of re-reading), spaced repetition (review just before you'd forget), and real exam-style questions under pressure. <a href="blog/how-to-remember-what-you-study-hsc.html">Full routine here</a> — or let our <a href="flashcards.html">spaced-repetition flashcards</a> and <a href="practice.html">free HSC practice questions</a> handle the schedule for you.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>
-                        <span class="faq-q">How is this different to ChatGPT?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-a">ChatGPT isn't trained on the syllabus. Our bots are trained directly on the official NESA documents — and they're fully interactive, so you can chat, follow up, and dig deeper into any topic.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>
-                        <span class="faq-q">Which subjects do you support?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-a">All 45 NSW HSC (Stage 6) subjects across English, Maths, Sciences, HSIE, Creative Arts, TAS, PDHPE and VET — plus Years 7–10 English, Maths and Science for junior students.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>
-                        <span class="faq-q">Is there a free version?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-a">Yes. You can try every tool for free with daily limits. Upgrade only if you want unlimited use, longer chats and full access to PDF exports.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>
-                        <span class="faq-q">Will the answers actually match what NESA wants?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-a">Our bots reference the syllabus dot-points, glossary and marking guidance directly. Practice questions are styled like real HSC items, and feedback is mapped to the criteria markers actually use.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>
-                        <span class="faq-q">Can I cancel anytime?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-a">Yes. Subscriptions are month-to-month — cancel from your account in one click. Lifetime access is a one-off payment with no recurring charges.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>
-                        <span class="faq-q">Is my data private?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-a">Your chats and uploads are tied to your account and never sold. We only use them to power the tools you're using right now — that's it.</div>
-                </details>
-            </div>
-            <div class="faq-cta">
-                Still curious? <a href="contact.html">Drop us a message →</a>
-            </div>
-        </div>
-    </section>
-
     <!-- Continue Where You Left Off -->
     <div class="continue-section active" id="continueSection">
         <div class="continue-inner">
@@ -2157,11 +2091,65 @@
         </div>
     </div>
 
+    <!-- Stats Strip -->
+    <section class="stats-strip">
+        <div class="stats-inner">
+            <div class="stat-item reveal stagger-1"><div class="stat-number">45</div><div class="stat-label">HSC Subjects Covered</div></div>
+            <div class="stat-item reveal stagger-2"><div class="stat-number">10</div><div class="stat-label">AI-Powered Tools</div></div>
+            <div class="stat-item reveal stagger-3"><div class="stat-number">100%</div><div class="stat-label">Official NESA Curriculum</div></div>
+        </div>
+    </section>
+
+    <!-- NESA Trust Bar -->
+    <div style="padding:0 5% 2.8rem;text-align:center;">
+        <p style="display:inline-flex;align-items:center;gap:8px;background:rgba(108,99,255,0.06);border:1px solid rgba(108,99,255,0.14);border-radius:50px;padding:8px 20px;font-size:0.82rem;color:var(--text-muted);margin:0;">📋 <span>All content is built directly from <strong style="color:var(--text-sec);">official NESA-published syllabus documents</strong> — the same ones used by NSW teachers and schools.</span></p>
+    </div>
+
     <!-- Tools Section Header -->
     <div class="section-divider reveal" id="tools">
         <h2>Every Tool You Need, <span class="highlight">One Platform</span></h2>
-        <p>Seven AI-powered tools built for HSC students — including the brand new AI Chat Tutor. Scroll to explore each one.</p>
+        <p>Ten AI-powered tools built for HSC students. Here are three favourites — see the full lineup just below.</p>
     </div>
+
+    <!-- Demo: Study Games -->
+    <section class="showcase" id="gamesDemo">
+        <div class="showcase-inner">
+            <div class="showcase-text reveal-left">
+                <div class="showcase-label">⭐ New — Play to Revise</div>
+                <h2>Study <span class="highlight">Games</span></h2>
+                <p>Ten fast, addictive game modes built on your syllabus. Cross the tightrope, beat the Exam Demon, defuse the bomb — every correct answer is a real exam-style question from the modules you pick. Revision that actually feels like a break.</p>
+                <div class="showcase-pills">
+                    <span>10 Game Modes</span>
+                    <span>Pick Any Modules</span>
+                    <span>Syllabus Questions</span>
+                    <span>Beat Your Score</span>
+                </div>
+                <a href="games.html" class="btn btn-primary btn-glow">Play now →</a>
+            </div>
+            <div class="showcase-demo reveal-right">
+                <div class="sd-stage" data-tile="games" style="display:flex;align-items:center;justify-content:center;">
+                    <div style="width:90%;max-width:340px;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-weight:800;">
+                            <span>🤸 Tightrope</span>
+                            <span style="color:#ef4444;letter-spacing:2px;">❤❤❤</span>
+                        </div>
+                        <div style="height:6px;border-radius:999px;background:rgba(255,255,255,0.08);overflow:hidden;margin-bottom:14px;"><div style="width:60%;height:100%;background:linear-gradient(90deg,#6c63ff,#a78bfa);"></div></div>
+                        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;">
+                            <div style="font-weight:600;margin-bottom:12px;font-size:.95rem;">Which process produces genetically identical daughter cells?</div>
+                            <div style="display:grid;gap:8px;font-size:.85rem;">
+                                <div style="padding:9px 12px;border-radius:8px;background:rgba(34,197,94,0.14);border:1px solid #22c55e;">A · Mitosis</div>
+                                <div style="padding:9px 12px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);">B · Meiosis</div>
+                                <div style="padding:9px 12px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);">C · Fertilisation</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sd-trydemo">
+                    <a class="sd-trydemo-send" href="games.html" style="text-decoration:none;display:inline-block;">Play the games →</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Demo: AI Chat Tutor -->
     <section class="showcase showcase-reverse" id="chatTutorDemo">
@@ -2243,505 +2231,33 @@
         </div>
     </section>
 
-    <!-- Demo: Quick Paper -->
-    <section class="showcase showcase-reverse" id="quickPaperDemo">
-        <div class="showcase-inner">
-            <div class="showcase-demo reveal-left">
-                <div class="sd-stage sd-tile-qp" data-tile="qp">
-                    <div class="ink"></div><div class="ink"></div><div class="ink"></div>
-                    <div class="stack">
-                        <div class="sheet"></div>
-                        <div class="sheet"></div>
-                        <div class="sheet">
-                            <div style="font-size:.6rem;color:#666;margin-bottom:4px;font-family:'JetBrains Mono',monospace;">CHEMISTRY · 20 MIN · 6 Q</div>
-                            <div class="qline"></div>
-                            <div class="qline"></div>
-                            <div class="qline"></div>
-                            <div class="qline"></div>
-                            <div class="qline"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Quick 20-min Chemistry paper, please</div>
-                    <button class="sd-trydemo-send" data-canned="qp">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-qp"></div>
-            </div>
-            <div class="showcase-text reveal-right">
-                <div class="showcase-label">New Mode</div>
-                <h2>Quick <span class="highlight">Paper</span></h2>
-                <p>Not enough time for a full exam? Pick 10, 20, or 30 minutes and get a focused sprint — same quality questions, done in your lunch break.</p>
-                <div class="showcase-pills">
-                    <span>10 / 20 / 30 min</span>
-                    <span>3–9 questions</span>
-                    <span>Timed</span>
-                    <span>Auto-marked</span>
-                </div>
-                <a href="practice.html?mode=quick" class="btn btn-primary btn-glow">Start Quick Paper →</a>
-            </div>
+    <!-- Tools Overview Grid (compact) — replaces the long per-tool showcases -->
+    <style>
+      .tool-mini { display:flex; flex-direction:column; gap:8px; padding:20px; border-radius:16px; background:rgba(255,255,255,0.03); border:1px solid var(--border); text-decoration:none; color:var(--text); transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+      .tool-mini:hover { transform:translateY(-4px); border-color:rgba(108,99,255,0.4); box-shadow:0 12px 32px rgba(108,99,255,0.14); }
+      .tool-mini .tm-ic { font-size:26px; }
+      .tool-mini b { font-size:15px; font-weight:700; }
+      .tool-mini .d { font-size:13px; color:var(--text-sec); line-height:1.5; }
+      .tools-grid-wrap { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:16px; }
+    </style>
+    <section class="tools-overview" id="toolsGrid" style="padding:3.5rem 5% 1rem;">
+      <div style="max-width:1100px;margin:0 auto;">
+        <h2 class="section-title reveal" style="text-align:center;margin-bottom:0.6rem;">Everything you get — <span class="highlight">10 tools</span></h2>
+        <p class="reveal" style="text-align:center;color:var(--text-sec);max-width:620px;margin:0 auto 2.2rem;">One subscription unlocks every AI study tool, all built directly from official NESA syllabus documents.</p>
+        <div class="tools-grid-wrap">
+          <a href="syllabus.html" class="tool-mini reveal"><span class="tm-ic">📖</span><b>Syllabus Decoder</b><span class="d">Decode any syllabus dot point into plain English.</span></a>
+          <a href="practice.html" class="tool-mini reveal"><span class="tm-ic">📝</span><b>Practice Questions</b><span class="d">Targeted questions with instant marking and feedback.</span></a>
+          <a href="practice.html?mode=exam" class="tool-mini reveal"><span class="tm-ic">🎓</span><b>Full Exam</b><span class="d">Sit a timed, exam-style paper from start to finish.</span></a>
+          <a href="learn-irl.html" class="tool-mini reveal"><span class="tm-ic">🎮</span><b>Learn IRL</b><span class="d">See how each topic shows up in the real world.</span></a>
+          <a href="flashcards.html" class="tool-mini reveal"><span class="tm-ic">🃏</span><b>Flashcards</b><span class="d">AI flashcards that test understanding, not memory.</span></a>
+          <a href="chat-tutor.html" class="tool-mini reveal"><span class="tm-ic">🤖</span><b>Chat Tutor</b><span class="d">A patient tutor for any subject, any question.</span></a>
+          <a href="notes-transcriber.html" class="tool-mini reveal"><span class="tm-ic">📋</span><b>Notes Transcriber</b><span class="d">Turn messy notes and photos into clean study notes.</span></a>
+          <a href="worksheet-decoder.html" class="tool-mini reveal"><span class="tm-ic">📄</span><b>Worksheet Decoder</b><span class="d">Upload a worksheet and get worked solutions.</span></a>
+          <a href="worksheet-generator.html" class="tool-mini reveal"><span class="tm-ic">🖨️</span><b>Worksheet Generator</b><span class="d">Build a printable worksheet with an answer key.</span></a>
+          <a href="games.html" class="tool-mini reveal"><span class="tm-ic">🎯</span><b>Study Games</b><span class="d">Revise through quick, competitive games.</span></a>
         </div>
+      </div>
     </section>
-
-    <!-- Demo: Self-Marking -->
-    <section class="showcase showcase-reverse" id="markingDemo">
-        <div class="showcase-inner">
-            <div class="showcase-demo reveal-left">
-                <div class="sd-stage sd-tile-mark" data-tile="mark">
-                    <div class="paper">
-                        <div class="line"><span class="text"></span><span class="underline"></span></div>
-                        <div class="line"><span class="text" style="width:80%;background:rgba(0,0,0,0.1);"></span></div>
-                        <div class="line"><span class="text"></span><span class="underline"></span></div>
-                        <div class="line"><span class="text" style="width:65%;background:rgba(0,0,0,0.1);"></span></div>
-                        <div class="line"><span class="text" style="width:90%;background:rgba(0,0,0,0.1);"></span></div>
-                        <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
-                            <span class="tick">✓</span>
-                            <span class="text" style="flex:1;height:6px;background:rgba(0,0,0,0.1);border-radius:3px;"></span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <span class="tick">✓</span>
-                            <span class="text" style="flex:1;height:6px;background:rgba(0,0,0,0.1);border-radius:3px;"></span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <span class="tick">✓</span>
-                            <span class="text" style="flex:1;height:6px;background:rgba(0,0,0,0.1);border-radius:3px;"></span>
-                        </div>
-                        <div class="stamp">12/15<br><span style="font-size:.55rem;display:block;">BAND 5</span></div>
-                    </div>
-                    <div class="pen"></div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Mark my Modern History paragraph on the Meiji Restoration</div>
-                    <button class="sd-trydemo-send" data-canned="mark">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-mark"></div>
-            </div>
-            <div class="showcase-text reveal-right">
-                <div class="showcase-label">Mark Your Own Work</div>
-                <h2>Self <span class="highlight">Marking</span></h2>
-                <p>An <strong>AI HSC essay marker</strong> for any subject — paste a question and your answer, get a band verdict, a mark, and specific suggestions in under 10 seconds. Faster than any teacher.</p>
-                <div class="showcase-pills">
-                    <span>Any Question</span>
-                    <span>Band-level Verdict</span>
-                    <span>Specific Feedback</span>
-                    <span>Know Exactly What to Fix</span>
-                </div>
-                <a href="practice.html?mode=feedback" class="btn btn-primary btn-glow">Get Feedback →</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo: Syllabus Decoder -->
-    <section class="showcase showcase-reverse" id="syllabusDemo">
-        <div class="showcase-inner">
-            <div class="showcase-demo reveal-left">
-                <div class="sd-stage sd-tile-syl" data-tile="syl">
-                    <div class="wall">
-                        analyse impact innovation operations<br>
-                        define examine evaluate justify<br>
-                        explain compare contrast assess<br>
-                        H4.1 outline H4.2 describe H5.1<br>
-                        analyse impact innovation operations<br>
-                        H6.3 evaluate H7.2 synthesise<br>
-                        define examine evaluate justify<br>
-                    </div>
-                    <div class="fan">
-                        <div class="fan-card"><b>What it means</b>Plain-English breakdown of the dot point.</div>
-                        <div class="fan-card"><b>What's tested</b>How this appears in HSC short-answer & extended response.</div>
-                        <div class="fan-card"><b>Sample Q</b>Practice question with marking criteria preview.</div>
-                    </div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Decode "Analyse the impact of innovation on operations"</div>
-                    <button class="sd-trydemo-send" data-canned="syl">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-syl"></div>
-            </div>
-            <div class="showcase-text reveal-right">
-                <div class="showcase-label">Decode Anything</div>
-                <h2>Syllabus <span class="highlight">Decoder</span></h2>
-                <p>Paste any dot-point and get a plain-English breakdown: what it means, what to study, and how it'll be examined — delivered as interactive scroll cards.</p>
-                <div class="showcase-pills">
-                    <span>Interactive Cards</span>
-                    <span>Examiner's Lens</span>
-                    <span>Practice Q Generator</span>
-                    <span>All Subjects</span>
-                </div>
-                <a href="#" onclick="openTool('syllabus'); return false;" class="btn btn-primary btn-glow">Decode Your Syllabus →</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo: Learn IRL -->
-    <section class="showcase" id="irlDemo">
-        <div class="showcase-inner">
-            <div class="showcase-text reveal-left">
-                <div class="showcase-label">Interactive Game</div>
-                <h2>Learn <span class="highlight">IRL</span></h2>
-                <p>Apply your HSC content in real-world survival scenarios. Make decisions, manage resources, and see what happens when the wrong answer has consequences.</p>
-                <div class="showcase-pills">
-                    <span>Real-World Scenarios</span>
-                    <span>Resource Management</span>
-                    <span>Any HSC Subject</span>
-                </div>
-                <a href="#" onclick="openTool('learn-irl'); return false;" class="btn btn-primary btn-glow">Play Now →</a>
-            </div>
-            <div class="showcase-demo reveal-right">
-                <div class="sd-stage sd-tile-irl" data-tile="irl">
-                    <div class="room">
-                        <div class="frame">
-                            <div class="glow"></div>
-                            <div class="door"></div>
-                        </div>
-                    </div>
-                    <div class="scenarios">
-                        <div class="scen"><div class="ico">☕</div><b>Math</b>Buying coffee, calculating change & tip.</div>
-                        <div class="scen"><div class="ico">🥫</div><b>Chem</b>Reading a food label, decoding additives.</div>
-                        <div class="scen"><div class="ico">💬</div><b>English</b>Convincing a friend with a real-life argument.</div>
-                    </div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Drop me into a Biology lab survival scenario</div>
-                    <button class="sd-trydemo-send" data-canned="irl">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-irl"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo: Worksheet Decoder -->
-    <section class="showcase showcase-reverse" id="worksheetDemo">
-        <div class="showcase-inner">
-            <div class="showcase-demo reveal-left">
-                <div class="sd-stage sd-tile-wd" data-tile="wd">
-                    <div class="phone">
-                        <div class="phone-screen">
-                            <div class="viewfinder"></div>
-                            <div class="flash"></div>
-                        </div>
-                    </div>
-                    <div class="notes">
-                        <div style="font-size:.55rem;color:#555;margin-bottom:4px;font-family:'JetBrains Mono',monospace;">CH3 · BIOLOGY</div>
-                        <div class="nline"></div>
-                        <div class="nline"></div>
-                        <div class="nline"></div>
-                        <div class="nline"></div>
-                        <div class="nline"></div>
-                    </div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Snap and decode my Bio worksheet</div>
-                    <button class="sd-trydemo-send" data-canned="wd">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-wd"></div>
-            </div>
-            <div class="showcase-text reveal-right">
-                <div class="showcase-label">Photo-to-Notes</div>
-                <h2>Worksheet <span class="highlight">Decoder</span></h2>
-                <p>Photograph any worksheet, teacher handout, or textbook exercise and get structured notes back with built-in hints for every question.</p>
-                <div class="showcase-pills">
-                    <span>Image Upload</span>
-                    <span>OCR Recognition</span>
-                    <span>Structured Hints</span>
-                    <span>Any Subject</span>
-                </div>
-                <a href="#" onclick="openTool('worksheet'); return false;" class="btn btn-primary btn-glow">Decode a Worksheet →</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo: Worksheet Generator -->
-    <section class="showcase" id="worksheetGeneratorDemo">
-        <div class="showcase-inner">
-            <div class="showcase-text reveal-left">
-                <div class="showcase-label">Build Your Own</div>
-                <h2>Worksheet <span class="highlight">Generator</span></h2>
-                <p>Pick a subject and a topic. Get a print-ready PDF worksheet with mixed-format questions and a full answer key — perfect for revision, homework, or a quick test.</p>
-                <div class="showcase-pills">
-                    <span>5–25 Questions</span>
-                    <span>Mixed Formats</span>
-                    <span>PDF Export</span>
-                    <span>Full Answer Key</span>
-                </div>
-                <a href="#" onclick="openTool('worksheet-generator'); return false;" class="btn btn-primary btn-glow">Generate a Worksheet →</a>
-            </div>
-            <div class="showcase-demo reveal-right">
-                <div class="sd-stage sd-tile-wg" data-tile="wg">
-                    <div class="pad">
-                        <h4><span>Maths Advanced — Differentiation · 10 Q · 25 marks</span></h4>
-                        <div class="chip">PDF Ready</div>
-                        <div class="question"><b>Q1.</b> Differentiate f(x) = 3x² − 5x + 2. &nbsp;<span style="float:right;color:#888;">[2]</span></div>
-                        <div class="question"><b>Q2.</b> Find dy/dx if y = (2x + 1)⁴. &nbsp;<span style="float:right;color:#888;">[3]</span></div>
-                        <div class="question"><b>Q3.</b> Sketch f(x) = x³ − 6x and find stationary points. &nbsp;<span style="float:right;color:#888;">[5]</span></div>
-                    </div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Build a 10-question Differentiation worksheet</div>
-                    <button class="sd-trydemo-send" data-canned="wg">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-wg"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo: Conversational Flashcards -->
-    <section class="showcase showcase-reverse" id="flashcardsDemo">
-        <div class="showcase-inner">
-            <div class="showcase-text reveal-left">
-                <div class="showcase-label">New — Spaced Repetition</div>
-                <h2>Conversational <span class="highlight">Flashcards</span></h2>
-                <p>Not flip cards. Each card is a short Socratic exchange — the AI asks, you explain in your own words, and it grades you and pushes a hint if you're close. An adaptive spaced-repetition engine schedules every review and builds a mastery map of your whole syllabus.</p>
-                <div class="showcase-pills">
-                    <span>Explain, Don't Memorise</span>
-                    <span>Adaptive SR Engine</span>
-                    <span>Syllabus Mastery Map</span>
-                    <span>AI-Built Decks</span>
-                </div>
-                <a href="flashcards.html" class="btn btn-primary btn-glow">Open Flashcards →</a>
-            </div>
-            <div class="showcase-demo reveal-right">
-                <div class="sd-stage sd-tile-fc" data-tile="fc">
-                    <div class="deck">
-                        <div class="deck-shadow deck-shadow2"></div>
-                        <div class="deck-shadow"></div>
-                        <div class="flipper">
-                            <div class="card card-back">Enzyme inhibition?</div>
-                            <div class="card card-front">Two types: competitive (active site) & non-competitive (allosteric).</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Quiz me on Biology Module 5</div>
-                    <button class="sd-trydemo-send" data-canned="fc">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-fc"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo: Teacher Mode / Classroom -->
-    <section class="showcase" id="teacherDemo">
-        <div class="showcase-inner">
-            <div class="showcase-text reveal-left">
-                <div class="showcase-label">For Teachers</div>
-                <h2>Classroom <span class="highlight">Mode</span></h2>
-                <p>One teacher seat unlocks full Study Decoder access for every student you link — free while they're in your class. Junior ($15/mo), Senior ($25/mo) or Combined ($35/mo), up to 100 linked students. Create a class, share a join code, watch a live progress dashboard with per-student mastery maps. Plus teacher-only AI tools: lesson plans, bulk worksheets and rubric marking.</p>
-                <div class="showcase-pills">
-                    <span>From $15/mo · Up to 100 Students</span>
-                    <span>Class Progress Dashboard</span>
-                    <span>Lesson Plan AI</span>
-                    <span>Rubric Marker</span>
-                </div>
-                <a href="teacher-pricing.html" id="teacherCtaLink" class="btn btn-primary btn-glow">For Teachers — see the plan →</a>
-            </div>
-            <div class="showcase-demo reveal-right">
-                <div class="sd-stage sd-tile-cls" data-tile="cls">
-                    <div class="board"><span class="code">Y12 CHEM · K7M2QP</span></div>
-                    <div class="counter">25 / 100</div>
-                    <div class="seats">
-                        <div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div>
-                        <div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div>
-                        <div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div>
-                        <div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div>
-                        <div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div><div class="seat">👤</div>
-                    </div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Open the Year 12 Chemistry classroom</div>
-                    <button class="sd-trydemo-send" data-canned="cls">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-cls"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo: Notes Transcriber -->
-    <section class="showcase" id="notesDemo">
-        <div class="showcase-inner">
-            <div class="showcase-text reveal-left">
-                <div class="showcase-label">Digitise Notes</div>
-                <h2>Notes <span class="highlight">Transcriber</span></h2>
-                <p>Take a photo of your handwritten notes and get formatted digital text in seconds — ready to share, search, and revise later.</p>
-                <div class="showcase-pills">
-                    <span>Handwriting Recognition</span>
-                    <span>Auto-formatting</span>
-                    <span>Organised Output</span>
-                </div>
-                <a href="#" onclick="openTool('notes-transcriber'); return false;" class="btn btn-primary btn-glow">Transcribe Notes →</a>
-            </div>
-            <div class="showcase-demo reveal-right">
-                <div class="sd-stage sd-tile-nt" data-tile="nt">
-                    <div class="crumple">
-                        mitosis → cell div<br>
-                        prophase metaphase<br>
-                        anaphase telophse<br>
-                        cytokinesis = ☆<br>
-                    </div>
-                    <div class="arrow">→</div>
-                    <div class="digital">
-                        <div style="font-size:.55rem;color:#a78bfa;margin-bottom:5px;">MITOSIS · BIO</div>
-                        <div class="dline"></div>
-                        <div class="dline"></div>
-                        <div class="dline"></div>
-                        <div class="dline"></div>
-                        <div class="dline"></div>
-                    </div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Transcribe my Bio handwritten notes</div>
-                    <button class="sd-trydemo-send" data-canned="nt">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-nt"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo: Practice Questions -->
-    <section class="showcase showcase-reverse" id="practiceDemo">
-        <div class="showcase-inner">
-            <div class="showcase-demo reveal-left">
-                <div class="sd-stage sd-tile-pq" data-tile="pq">
-                    <div class="score">12/16</div>
-                    <div class="target">
-                        <div class="ring"></div>
-                        <div class="ring"></div>
-                        <div class="ring"></div>
-                        <div class="ring"></div>
-                        <div class="hit" style="left:50%; top:50%;"></div>
-                        <div class="hit" style="left:62%; top:48%;"></div>
-                        <div class="hit" style="left:42%; top:55%;"></div>
-                        <div class="hit" style="left:55%; top:38%;"></div>
-                    </div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Give me 4 short-answer Chemistry questions</div>
-                    <button class="sd-trydemo-send" data-canned="pq">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-pq"></div>
-            </div>
-            <div class="showcase-text reveal-right">
-                <div class="showcase-label">Quick Practice</div>
-                <h2>Practice <span class="highlight">Questions</span></h2>
-                <p>Generate <strong>free HSC practice questions</strong> for any topic and mark range — then submit your answers for instant AI feedback.</p>
-                <div class="showcase-pills">
-                    <span>Any Topic</span>
-                    <span>AI Feedback Mode</span>
-                    <span>HSC-Style Format</span>
-                    <span>All Mark Values</span>
-                </div>
-                <a href="#" onclick="openTool('practice'); return false;" class="btn btn-primary btn-glow">Generate Questions →</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo: Timetable Generator -->
-    <section class="showcase" id="timetableDemo">
-        <div class="showcase-inner">
-            <div class="showcase-text reveal-left">
-                <div class="showcase-label">Smart Scheduling</div>
-                <h2>Timetable <span class="highlight">Generator</span></h2>
-                <p>Add your subjects, exam dates, and commitments — get a personalised weekly plan weighted towards the subjects you need the most work on.</p>
-                <div class="showcase-pills">
-                    <span>Personalised</span>
-                    <span>Exam-weighted</span>
-                    <span>Adapts to You</span>
-                </div>
-                <a href="#" onclick="openTool('timetable'); return false;" class="btn btn-primary btn-glow">Build Your Timetable →</a>
-            </div>
-            <div class="showcase-demo reveal-right">
-                <div class="sd-stage sd-tile-tt" data-tile="tt">
-                    <div class="grid">
-                        <div class="day">Mon</div><div class="day">Tue</div><div class="day">Wed</div><div class="day">Thu</div><div class="day">Fri</div>
-                        <div class="blk s1" style="animation-delay:1.0s;">Math</div>
-                        <div class="blk s2" style="animation-delay:1.1s;">Bio</div>
-                        <div class="blk s3" style="animation-delay:1.2s;">Eng</div>
-                        <div class="blk s4" style="animation-delay:1.3s;">Hist</div>
-                        <div class="blk s1" style="animation-delay:1.4s;">Math</div>
-                        <div class="blk s2" style="animation-delay:1.5s;">Bio</div>
-                        <div class="blk s1" style="animation-delay:1.6s;">Math</div>
-                        <div class="blk s4" style="animation-delay:1.7s;">Hist</div>
-                        <div class="blk s3" style="animation-delay:1.8s;">Eng</div>
-                        <div class="blk s2" style="animation-delay:1.9s;">Bio</div>
-                        <div class="blk s3" style="animation-delay:2.0s;">Eng</div>
-                        <div class="blk s4" style="animation-delay:2.1s;">Hist</div>
-                        <div class="blk s1" style="animation-delay:2.2s;">Math</div>
-                        <div class="blk s2" style="animation-delay:2.3s;">Bio</div>
-                        <div class="blk s1" style="animation-delay:2.4s;">Rev</div>
-                        <div class="blk s4" style="animation-delay:2.5s;">Hist</div>
-                        <div class="blk s3" style="animation-delay:2.6s;">Eng</div>
-                        <div class="blk s1" style="animation-delay:2.7s;">Math</div>
-                        <div class="blk s2" style="animation-delay:2.8s;">Bio</div>
-                        <div class="blk s4" style="animation-delay:2.9s;">Hist</div>
-                        <div class="blk s2" style="animation-delay:3.0s;">Bio</div>
-                        <div class="blk s1" style="animation-delay:3.1s;">Math</div>
-                        <div class="blk s3" style="animation-delay:3.2s;">Eng</div>
-                        <div class="blk s4" style="animation-delay:3.3s;">Hist</div>
-                        <div class="blk s1" style="animation-delay:3.4s;">Rev</div>
-                        <div class="blk s3" style="animation-delay:3.5s;">Eng</div>
-                        <div class="blk s2" style="animation-delay:3.6s;">Bio</div>
-                        <div class="blk s4" style="animation-delay:3.7s;">Hist</div>
-                        <div class="blk s1" style="animation-delay:3.8s;">Math</div>
-                        <div class="blk s3" style="animation-delay:3.9s;">Free</div>
-                    </div>
-                    <div class="nowline"></div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Build a 4-subject Year 12 weekly timetable</div>
-                    <button class="sd-trydemo-send" data-canned="tt">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-tt"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo: Mastery Map (3D) -->
-    <section class="showcase showcase-reverse" id="masteryMapDemo">
-        <div class="showcase-inner">
-            <div class="showcase-demo reveal-left">
-                <div class="sd-stage sd-tile-mm" data-tile="mm">
-                    <div class="mm-plane">
-                        <div class="cell h1"></div><div class="cell h2"></div><div class="cell h2"></div><div class="cell h3"></div><div class="cell h2"></div><div class="cell h1"></div>
-                        <div class="cell h2"></div><div class="cell h3"></div><div class="cell h3"></div><div class="cell h4"></div><div class="cell h3"></div><div class="cell h2"></div>
-                        <div class="cell h2"></div><div class="cell h3"></div><div class="cell h4"></div><div class="cell h5"></div><div class="cell h4"></div><div class="cell h3"></div>
-                        <div class="cell h3"></div><div class="cell h4"></div><div class="cell h5"></div><div class="cell h5"></div><div class="cell h4"></div><div class="cell h3"></div>
-                        <div class="cell h2"></div><div class="cell h3"></div><div class="cell h4"></div><div class="cell h4"></div><div class="cell h3"></div><div class="cell h2"></div>
-                        <div class="cell h1"></div><div class="cell h2"></div><div class="cell h3"></div><div class="cell h3"></div><div class="cell h2"></div><div class="cell h1"></div>
-                    </div>
-                </div>
-                <div class="sd-trydemo">
-                    <div class="sd-trydemo-input">Show me my Module 5 mastery heatmap</div>
-                    <button class="sd-trydemo-send" data-canned="mm">Send →</button>
-                </div>
-                <div class="sd-trydemo-result" id="sdResult-mm"></div>
-            </div>
-            <div class="showcase-text reveal-right">
-                <div class="showcase-label">Visualise Your Progress</div>
-                <h2>Mastery <span class="highlight">Map</span></h2>
-                <p>Every dot point you've revised, plotted as a 3D heatmap. The peaks show what's solid, the dips show what's missing — so you stop revising the wrong things.</p>
-                <div class="showcase-pills">
-                    <span>Per-Subject Heatmap</span>
-                    <span>Auto-Built From Reviews</span>
-                    <span>Drill Into Any Cell</span>
-                    <span>Identifies Gaps</span>
-                </div>
-                <a href="mastery-map.html" class="btn btn-primary btn-glow">Open Your Map →</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Strip -->
-    <section class="stats-strip">
-        <div class="stats-inner">
-            <div class="stat-item reveal stagger-1"><div class="stat-number">45</div><div class="stat-label">HSC Subjects Covered</div></div>
-            <div class="stat-item reveal stagger-2"><div class="stat-number">10</div><div class="stat-label">AI-Powered Tools</div></div>
-            <div class="stat-item reveal stagger-3"><div class="stat-number">100%</div><div class="stat-label">Official NESA Curriculum</div></div>
-        </div>
-    </section>
-
-    <!-- NESA Trust Bar -->
-    <div style="padding:0 5% 2.8rem;text-align:center;">
-        <p style="display:inline-flex;align-items:center;gap:8px;background:rgba(108,99,255,0.06);border:1px solid rgba(108,99,255,0.14);border-radius:50px;padding:8px 20px;font-size:0.82rem;color:var(--text-muted);margin:0;">📋 <span>All content is built directly from <strong style="color:var(--text-sec);">official NESA-published syllabus documents</strong> — the same ones used by NSW teachers and schools.</span></p>
-    </div>
 
     <!-- Features Section (Why Choose Us) -->
     <section class="features">
@@ -3009,6 +2525,79 @@
         </div>
     </div>
 
+    <!-- FAQ Section -->
+    <section id="faq" class="faq-section">
+        <div class="faq-bg-glow"></div>
+        <div class="faq-inner">
+            <div class="faq-header">
+                <div class="faq-eyebrow">FAQ</div>
+                <h2 class="faq-title">Frequently <span class="highlight">Asked</span></h2>
+                <p class="faq-sub">Everything you need to know before you start. Tap any question to reveal the answer.</p>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>
+                        <span class="faq-q">Why do I study but forget everything in the exam?</span>
+                        <span class="faq-icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="faq-a">Because re-reading notes <em>feels</em> like learning but barely sticks. Your brain keeps what it has to actively pull back out — so you remember more by testing yourself than by reviewing. Study Decoder is built around that: <a href="blog/why-you-forget-everything-in-exams.html">here's the full breakdown of why you forget</a>, or jump straight into <a href="flashcards.html">conversational flashcards</a> and <a href="practice.html">practice questions</a> that make it stick.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span class="faq-q">How do I actually remember what I study for the HSC?</span>
+                        <span class="faq-icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="faq-a">Three things, on repeat: active recall (test yourself instead of re-reading), spaced repetition (review just before you'd forget), and real exam-style questions under pressure. <a href="blog/how-to-remember-what-you-study-hsc.html">Full routine here</a> — or let our <a href="flashcards.html">spaced-repetition flashcards</a> and <a href="practice.html">free HSC practice questions</a> handle the schedule for you.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span class="faq-q">How is this different to ChatGPT?</span>
+                        <span class="faq-icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="faq-a">ChatGPT isn't trained on the syllabus. Our bots are trained directly on the official NESA documents — and they're fully interactive, so you can chat, follow up, and dig deeper into any topic.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span class="faq-q">Which subjects do you support?</span>
+                        <span class="faq-icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="faq-a">All 45 NSW HSC (Stage 6) subjects across English, Maths, Sciences, HSIE, Creative Arts, TAS, PDHPE and VET — plus Years 7–10 English, Maths and Science for junior students.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span class="faq-q">Is there a free version?</span>
+                        <span class="faq-icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="faq-a">Yes. You can try every tool for free with daily limits. Upgrade only if you want unlimited use, longer chats and full access to PDF exports.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span class="faq-q">Will the answers actually match what NESA wants?</span>
+                        <span class="faq-icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="faq-a">Our bots reference the syllabus dot-points, glossary and marking guidance directly. Practice questions are styled like real HSC items, and feedback is mapped to the criteria markers actually use.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span class="faq-q">Can I cancel anytime?</span>
+                        <span class="faq-icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="faq-a">Yes. Subscriptions are month-to-month — cancel from your account in one click. Lifetime access is a one-off payment with no recurring charges.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span class="faq-q">Is my data private?</span>
+                        <span class="faq-icon" aria-hidden="true"></span>
+                    </summary>
+                    <div class="faq-a">Your chats and uploads are tied to your account and never sold. We only use them to power the tools you're using right now — that's it.</div>
+                </details>
+            </div>
+            <div class="faq-cta">
+                Still curious? <a href="contact.html">Drop us a message →</a>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="cta">
         <h2 class="reveal">Stop Just Reading Notes.<br><span class="highlight">Start Practising.</span></h2>
@@ -3118,7 +2707,8 @@
             'learn-irl': { icon: '🎮', name: 'Learn IRL', page: 'learn-irl.html' },
             'worksheet': { icon: '📄', name: 'Worksheet Decoder', page: 'worksheet-decoder.html' },
             'worksheet-generator': { icon: '📝', name: 'Worksheet Generator', page: 'worksheet-generator.html' },
-            'notes': { icon: '📋', name: 'Notes Transcriber', page: 'notes-transcriber.html' }
+            'notes': { icon: '📋', name: 'Notes Transcriber', page: 'notes-transcriber.html' },
+            'games': { icon: '🎮', name: 'Study Games', page: 'games.html' }
         };
         let hasAnything = false;
         try {
@@ -3219,20 +2809,21 @@
         // junior-bot page take over. Skip if a query string explicitly
         // requested staying here (e.g. ?stay=1 or post-Stripe ?plan=…).
         try {
-            var lvl = user && user.preferences && user.preferences.level;
             var stay = new URLSearchParams(window.location.search).has('stay')
                 || new URLSearchParams(window.location.search).has('plan')
                 || new URLSearchParams(window.location.search).has('session_id')
                 || new URLSearchParams(window.location.search).has('cancelled')
                 || new URLSearchParams(window.location.search).has('upgrade');
-            if (lvl === 'junior' && !stay) {
-                window.location.replace('/junior-bot.html');
-                return;
-            }
             // Teachers land on their dashboard, not the consumer homepage.
             // Same ?stay= escape hatch — adding ?stay=1 keeps you on the home page.
             if (user.role === 'teacher' && !stay) {
                 window.location.replace('/teacher-dashboard.html');
+                return;
+            }
+            // Students (junior + senior) land on the app dashboard, not the
+            // marketing scroll. Owners stay here to manage the marketing page.
+            if (!stay && user.role !== 'owner') {
+                window.location.replace('/dashboard.html');
                 return;
             }
         } catch (e) { /* ignore */ }
@@ -4049,9 +3640,9 @@
         let hasEng = selectedSubjectIds.some(id => englishIds.includes(id));
 
         let recs;
-        if (hasMath) recs = [{ icon:'📝', name:'Practice Exam', href:'practice.html' }, { icon:'🤖', name:'Chat Tutor', href:'junior-bot.html' }];
+        if (hasMath) recs = [{ icon:'📝', name:'Practice Exam', href:'practice.html' }, { icon:'🤖', name:'Chat Tutor', href:'chat-tutor.html' }];
         else if (hasSci) recs = [{ icon:'📖', name:'Syllabus Decoder', href:'syllabus.html' }, { icon:'📝', name:'Practice Exam', href:'practice.html' }];
-        else if (hasEng) recs = [{ icon:'📖', name:'Syllabus Decoder', href:'syllabus.html' }, { icon:'🤖', name:'Chat Tutor', href:'junior-bot.html' }];
+        else if (hasEng) recs = [{ icon:'📖', name:'Syllabus Decoder', href:'syllabus.html' }, { icon:'🤖', name:'Chat Tutor', href:'chat-tutor.html' }];
         else recs = [{ icon:'📖', name:'Syllabus Decoder', href:'syllabus.html' }, { icon:'📝', name:'Practice Exam', href:'practice.html' }];
 
         // Build subject label chips (up to 4)
@@ -4284,22 +3875,24 @@
         var c = document.getElementById('sdParticles');
         if (!c || REDUCED) return;
         var ctx = c.getContext('2d');
-        var W, H, DPR = Math.min(window.devicePixelRatio || 1, 2);
+        var W, H, DPR = Math.min(window.devicePixelRatio || 1, 1.5);
         var CODES = ['H1.1','H2.3','H4.2','H5.1','H6.3','M5','M6','M7','M8','define','analyse','evaluate','justify','contrast','outline','synthesise'];
         var nodes = [];
+        // Keep codes in the left/right thirds so they never sit behind centered copy.
+        function randX() { return Math.random() < 0.5 ? Math.random() * W * 0.26 : W * 0.74 + Math.random() * W * 0.26; }
         function size() {
           W = c.clientWidth; H = c.clientHeight;
-          c.width = W * DPR; c.height = H * DPR; ctx.scale(DPR, DPR);
+          c.width = W * DPR; c.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
         }
         function rebuild() {
           nodes = [];
-          var n = MOBILE ? 12 : 32;
+          var n = MOBILE ? 10 : 20;
           for (var i = 0; i < n; i++) nodes.push({
-            x: Math.random() * W,
+            x: randX(),
             y: Math.random() * H,
             vy: 0.15 + Math.random() * 0.45,
             txt: CODES[(Math.random() * CODES.length) | 0],
-            a: 0.10 + Math.random() * 0.18,
+            a: 0.10 + Math.random() * 0.16,
             sz: 11 + Math.random() * 4
           });
         }
@@ -4312,13 +3905,18 @@
             ctx.font = '500 ' + p.sz + 'px JetBrains Mono, monospace';
             ctx.fillText(p.txt, p.x, p.y);
             p.y -= p.vy;
-            if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; p.txt = CODES[(Math.random() * CODES.length) | 0]; }
+            if (p.y < -10) { p.y = H + 10; p.x = randX(); p.txt = CODES[(Math.random() * CODES.length) | 0]; }
           }
           raf = requestAnimationFrame(draw);
         }
         var raf;
         size(); rebuild(); draw();
         window.addEventListener('resize', function () { cancelAnimationFrame(raf); size(); rebuild(); draw(); });
+        // Pause the loop while the tab is hidden — no wasted frames in the background.
+        document.addEventListener('visibilitychange', function () {
+          cancelAnimationFrame(raf);
+          if (!document.hidden) draw();
+        });
       }
 
       // ---------- Hero pinned scroll story ----------

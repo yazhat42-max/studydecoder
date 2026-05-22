@@ -313,6 +313,35 @@
         .gstat-fill.time { background: #3b82f6; }
         .gstat-fill.risk { background: #ef4444; }
         .gstat-fill.energy { background: #f59e0b; }
+        .gstat-dir { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.3px; margin-top: 2px; text-align: center; }
+        .gstat-dir.up { color: rgba(16,185,129,0.85); }
+        .gstat-dir.down { color: rgba(239,68,68,0.85); }
+
+        .gstat-help {
+            align-self: center; width: 26px; height: 26px; border-radius: 50%;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16);
+            color: rgba(255,255,255,0.7); font-size: 0.82rem; font-weight: 700; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-family: 'Poppins', sans-serif; transition: all 0.2s;
+        }
+        .gstat-help:hover { background: rgba(255,255,255,0.14); color: #fff; transform: scale(1.08); }
+        .gstat-legend {
+            max-width: 580px; margin: 0 auto 6px; padding: 16px 18px;
+            background: rgba(20,18,31,0.94); border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+        }
+        .gstat-legend.hidden { display: none; }
+        .gstat-legend-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .gstat-legend-head h4 { font-size: 0.82rem; margin: 0; color: #fff; font-family: 'Poppins', sans-serif; font-weight: 700; }
+        .gstat-legend-close { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 1rem; cursor: pointer; line-height: 1; padding: 2px 6px; border-radius: 6px; }
+        .gstat-legend-close:hover { color: #fff; background: rgba(255,255,255,0.08); }
+        .gstat-legend ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+        .gstat-legend li { display: flex; gap: 9px; align-items: flex-start; font-size: 0.82rem; line-height: 1.45; color: rgba(255,255,255,0.72); }
+        .gstat-legend li .lg-ico { font-size: 0.95rem; flex-shrink: 0; }
+        .gstat-legend li b { color: rgba(255,255,255,0.95); }
+        .gstat-legend .keep-up { color: #10b981; font-weight: 700; }
+        .gstat-legend .keep-down { color: #ef4444; font-weight: 700; }
+        .gstat-legend .rule { margin-top: 12px; padding-top: 11px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.78rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
 
         .game-stage {
             flex: 1; display: flex; align-items: center; justify-content: center;
@@ -581,6 +610,7 @@
     </style>
     <script src="/ui-helpers.js" defer></script>
     <script src="module-multiselect.js"></script>
+    <link rel="stylesheet" href="app-shell.css">
 </head>
 <body>
     <nav class="navbar">
@@ -673,10 +703,36 @@
             <button class="game-new-btn" onclick="resetSession()">New Scenario</button>
         </div>
         <div class="game-stats" id="gameStats">
-            <div class="gstat"><span class="gstat-icon">💰</span><div class="gstat-group"><span class="gstat-label">Resources</span><div class="gstat-bar"><div class="gstat-fill money" id="statMoney"></div></div><div class="gstat-value" id="statMoneyVal"></div></div></div>
-            <div class="gstat"><span class="gstat-icon">⏱️</span><div class="gstat-group"><span class="gstat-label">Time</span><div class="gstat-bar"><div class="gstat-fill time" id="statTime"></div></div><div class="gstat-value" id="statTimeVal"></div></div></div>
-            <div class="gstat"><span class="gstat-icon">⚠️</span><div class="gstat-group"><span class="gstat-label">Risk</span><div class="gstat-bar"><div class="gstat-fill risk" id="statRisk"></div></div><div class="gstat-value" id="statRiskVal"></div></div></div>
-            <div class="gstat"><span class="gstat-icon">⚡</span><div class="gstat-group"><span class="gstat-label">Energy</span><div class="gstat-bar"><div class="gstat-fill energy" id="statEnergy"></div></div><div class="gstat-value" id="statEnergyVal"></div></div></div>
+            <div class="gstat" title="Resources — your budget for the scenario. Keep it above 0, or you can't act.">
+                <span class="gstat-icon">💰</span>
+                <div class="gstat-group"><span class="gstat-label">Resources</span><div class="gstat-bar"><div class="gstat-fill money" id="statMoney"></div></div><div class="gstat-value" id="statMoneyVal"></div><div class="gstat-dir up">keep&nbsp;high</div></div>
+            </div>
+            <div class="gstat" title="Time — how much time you have left. Keep it above 0, or you run out of time.">
+                <span class="gstat-icon">⏱️</span>
+                <div class="gstat-group"><span class="gstat-label">Time</span><div class="gstat-bar"><div class="gstat-fill time" id="statTime"></div></div><div class="gstat-value" id="statTimeVal"></div><div class="gstat-dir up">keep&nbsp;high</div></div>
+            </div>
+            <div class="gstat" title="Risk — how close things are to going wrong. Keep it BELOW 100, or it all falls apart.">
+                <span class="gstat-icon">⚠️</span>
+                <div class="gstat-group"><span class="gstat-label">Risk</span><div class="gstat-bar"><div class="gstat-fill risk" id="statRisk"></div></div><div class="gstat-value" id="statRiskVal"></div><div class="gstat-dir down">keep&nbsp;low</div></div>
+            </div>
+            <div class="gstat" title="Energy — your focus and stamina. Keep it above 0, or you burn out.">
+                <span class="gstat-icon">⚡</span>
+                <div class="gstat-group"><span class="gstat-label">Energy</span><div class="gstat-bar"><div class="gstat-fill energy" id="statEnergy"></div></div><div class="gstat-value" id="statEnergyVal"></div><div class="gstat-dir up">keep&nbsp;high</div></div>
+            </div>
+            <button class="gstat-help" id="gstatHelp" title="What do these meters mean?" onclick="toggleStatLegend()">?</button>
+        </div>
+        <div class="gstat-legend hidden" id="gstatLegend">
+            <div class="gstat-legend-head">
+                <h4>What the meters mean</h4>
+                <button class="gstat-legend-close" onclick="toggleStatLegend()" title="Close">✕</button>
+            </div>
+            <ul>
+                <li><span class="lg-ico">💰</span><span><b>Resources</b> — your budget for the scenario. <span class="keep-up">Keep it up</span>; at 0 you can't make a move.</span></li>
+                <li><span class="lg-ico">⏱️</span><span><b>Time</b> — how much time is left on the clock. <span class="keep-up">Keep it up</span>; at 0 you run out of time.</span></li>
+                <li><span class="lg-ico">⚡</span><span><b>Energy</b> — your focus and stamina. <span class="keep-up">Keep it up</span>; at 0 you burn out.</span></li>
+                <li><span class="lg-ico">⚠️</span><span><b>Risk</b> — how close things are to going wrong. <span class="keep-down">Keep it down</span>; at 100 it all falls apart.</span></li>
+            </ul>
+            <div class="rule">Each meter starts halfway (50/100). The run ends if Resources, Time or Energy hit 0 — or if Risk hits 100. Every choice is a trade-off, so watch all four.</div>
         </div>
         <div class="game-objective" id="gameObjective">
             <div class="game-objective-label">&#127919; Objective</div>
@@ -2970,6 +3026,15 @@
             gv.classList.add('active');
             document.body.style.overflow = 'hidden';
 
+            // First-timers: reveal the meter legend once so the bars aren't a mystery.
+            try {
+                if (!localStorage.getItem('sd_irl_meters_seen')) {
+                    const lg = document.getElementById('gstatLegend');
+                    if (lg) lg.classList.remove('hidden');
+                    localStorage.setItem('sd_irl_meters_seen', '1');
+                }
+            } catch (e) {}
+
             const initMessage = 'Subject: ' + subject + '\nTopic: ' + topic + '\nMode: game\n' + scenario.context;
             trackUsage();
             await sendMessage(initMessage, false);
@@ -3247,6 +3312,11 @@
         }
 
         // Game view helpers
+        function toggleStatLegend() {
+            const el = document.getElementById('gstatLegend');
+            if (el) el.classList.toggle('hidden');
+        }
+
         function updateGameStats() {
             if (!gameState) return;
             const sid = subjectInput ? subjectInput.value : '';
@@ -3652,5 +3722,6 @@
     <script src="streak.js"></script>
     <script src="upsell.js"></script>
     <script src="pwa.js"></script>
+    <script src="app-shell.js" defer></script>
 </body>
 </html>
