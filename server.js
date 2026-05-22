@@ -3890,7 +3890,18 @@ app.post('/api/decks/:id/generate-cards', requireAuth, async (req, res) => {
     const dotPoints = (reqDotPoints.length ? reqDotPoints : deck.dotPoints).slice(0, 12);
     const subjectMeta = resolveSubjectMeta(deck.subject);
     const subjectName = subjectMeta.name || deck.subject || 'this subject';
-    const syllabusContext = (getSyllabusContent(deck.subject, subjectMeta.isJunior, deck.module) || '').substring(0, 12000);
+    // Decks can target several modules ("A | B | C") — give each an equal share
+    // of the syllabus context so cards are spread evenly across them.
+    const deckModules = String(deck.module || '').split('|').map(s => s.trim()).filter(Boolean);
+    const syllabusContext = (deckModules.length > 1
+        ? getSyllabusContentMulti(deck.subject, subjectMeta.isJunior, deckModules, 12000)
+        : getSyllabusContent(deck.subject, subjectMeta.isJunior, deck.module) || '').substring(0, 12000);
+    let moduleDistribution = '';
+    if (deckModules.length > 1) {
+        const dist = distributeAcrossModules(deckModules, count);
+        moduleDistribution = '\nDistribute the cards EVENLY across these modules (equal treatment), and set each card\'s dotPointRef to its module:\n' +
+            dist.map(d => `- "${d.module}": ${d.n} card${d.n === 1 ? '' : 's'}`).join('\n') + '\n';
+    }
 
     recordBotStat('flashcards');
     recordUserBotUsage(req.user.userId, 'flashcards');
@@ -3904,7 +3915,7 @@ RULES:
 - "dotPointRef" MUST be one of the dot points provided below (copy it verbatim).
 - 2 hints per card: the first a gentle nudge, the second more direct. Never give the answer away in a hint.
 - Ground everything in the syllabus content. Output ONLY the JSON.`;
-    const usr = `Subject: ${subjectName}\nModule: ${deck.module || 'General'}\nDot points:\n${dotPoints.length ? dotPoints.map((d, i) => `${i + 1}. ${d}`).join('\n') : '(none specified — pick suitable dot points for the module)'}\n\n=== SYLLABUS REFERENCE ===\n${syllabusContext || '(rely on standard curriculum knowledge)'}\n=== END ===`;
+    const usr = `Subject: ${subjectName}\nModule(s): ${deck.module || 'General'}\n${moduleDistribution}Dot points:\n${dotPoints.length ? dotPoints.map((d, i) => `${i + 1}. ${d}`).join('\n') : '(none specified — pick suitable dot points for the module)'}\n\n=== SYLLABUS REFERENCE ===\n${syllabusContext || '(rely on standard curriculum knowledge)'}\n=== END ===`;
 
     try {
         const aiSettings = getAISettings(req.user);
