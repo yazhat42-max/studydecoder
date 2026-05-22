@@ -379,8 +379,12 @@ function renderSetup(){
 function populateSubjects(){
   const sel = document.getElementById('subjectSel');
   if (!sel) return;
-  const subs = (window.SD_SUBJECTS ? window.SD_SUBJECTS.subjectsForLevel(level) : []);
-  sel.innerHTML = subs.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+  if (window.SD_SUBJECTS && window.SD_SUBJECTS.fillSubjectSelect) {
+    window.SD_SUBJECTS.fillSubjectSelect(sel, level, { placeholder: false });
+  } else {
+    const subs = (window.SD_SUBJECTS ? window.SD_SUBJECTS.subjectsForLevel(level) : []);
+    sel.innerHTML = subs.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+  }
   refreshModules();
 }
 function refreshModules(){

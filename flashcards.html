@@ -86,6 +86,7 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
 <script src="auth.js"></script>
 <script src="upsell.js"></script>
 <script src="module-multiselect.js"></script>
+<script src="subject-data.js"></script>
 <script>
 const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
 function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
@@ -93,6 +94,7 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;'
 
 const root = document.getElementById('root');
 let SYLLABUS = {};
+let userLevel = 'senior';
 let DECKS = [];
 let formOpen = false;
 let dotPoints = [];
@@ -125,6 +127,9 @@ function render(){
 function renderForm(){
   const slot = document.getElementById('formSlot');
   const subjects = Object.keys(SYLLABUS);
+  // Fallback markup if the canonical list isn't available.
+  const flatOptions = '<option value="">— Select a subject —</option>'
+    + subjects.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
   slot.innerHTML = `
     <div class="card">
       <div class="section-title" style="margin-bottom:14px;">New deck</div>
@@ -134,10 +139,7 @@ function renderForm(){
       </div>
       <div class="form-group">
         <label class="form-label" for="fSubject">Subject</label>
-        <select class="form-select" id="fSubject">
-          <option value="">— Select a subject —</option>
-          ${subjects.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('')}
-        </select>
+        <select class="form-select" id="fSubject">${flatOptions}</select>
       </div>
       <div class="form-group">
         <label class="form-label" for="fModule">Modules</label>
@@ -178,6 +180,11 @@ function renderForm(){
     </div>
   `;
   const subjSel = document.getElementById('fSubject');
+  // Show every subject, grouped by faculty (canonical list). Values stay as
+  // display names so they match the SYLLABUS module map and saved decks.
+  if (window.SD_SUBJECTS && window.SD_SUBJECTS.fillSubjectSelect) {
+    window.SD_SUBJECTS.fillSubjectSelect(subjSel, userLevel, { useName: true, placeholder: '— Select a subject —' });
+  }
   if (window.SDModuleSelect && !fModuleMs) {
     fModuleMs = window.SDModuleSelect.create(document.getElementById('fModuleMs'), {});
   }
@@ -187,7 +194,10 @@ function renderForm(){
   }
   subjSel.onchange = () => {
     if (window.SDUpsell && window.SDUpsell.onSubjectChange && window.SDUpsell.onSubjectChange(subjSel)) return;
-    if (fModuleMs) fModuleMs.setModules(SYLLABUS[subjSel.value] || []);
+    const mods = (SYLLABUS[subjSel.value] && SYLLABUS[subjSel.value].length)
+      ? SYLLABUS[subjSel.value]
+      : (window.SD_SUBJECTS ? window.SD_SUBJECTS.modulesFor(subjSel.value) : []);
+    if (fModuleMs) fModuleMs.setModules(mods);
   };
   const aiGen = document.getElementById('fAiGen');
   aiGen.onchange = () => document.getElementById('aiOpts').classList.toggle('hidden', !aiGen.checked);
@@ -365,18 +375,12 @@ function loadDecks(){
       return null;
     }
     SYLLABUS = syll || {};
-    // Junior users: replace the HSC subject list with the three junior
-    // subjects so they don't pick HSC subjects they can't study.
+    // Capture level so the subject dropdown shows the right set (the canonical
+    // subject list drives the options; SYLLABUS only supplies module names).
     try {
       const data = await sub.json();
-      if (data && data.preferences && data.preferences.level === 'junior') {
-        SYLLABUS = {
-          'English (Years 7-10)': [],
-          'Mathematics (Years 7-10)': [],
-          'Science (Years 7-10)': []
-        };
-      }
-    } catch (e) { /* keep HSC fallback */ }
+      if (data && data.preferences && data.preferences.level === 'junior') userLevel = 'junior';
+    } catch (e) { /* default senior */ }
     return loadDecks();
   })
   .then(done => {

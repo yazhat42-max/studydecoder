@@ -635,13 +635,12 @@
     function populateSubjects(level) {
         const sel = document.getElementById('subjectSelect');
         const list = level === 'junior' ? JUNIOR_SUBJECTS : SUBJECTS;
-        sel.innerHTML = '<option value="">Choose a subject…</option>';
-        list.forEach(s => {
-            const opt = document.createElement('option');
-            opt.value = s.id;
-            opt.textContent = s.name;
-            sel.appendChild(opt);
-        });
+        if (window.SD_SUBJECTS && window.SD_SUBJECTS.fillSubjectSelect) {
+            window.SD_SUBJECTS.fillSubjectSelect(sel, level, { placeholder: '— General (any subject) —' });
+        } else {
+            sel.innerHTML = '<option value="">— General (any subject) —</option>';
+            list.forEach(s => { const opt = document.createElement('option'); opt.value = s.id; opt.textContent = s.name; sel.appendChild(opt); });
+        }
 
         // Pre-emptively mark subjects locked for class-linked-only students
         // (paid users / teachers / free tier are unaffected).
