@@ -152,7 +152,7 @@
     <div class="app-container hidden" id="mainContent">
         <header class="header">
             <div class="header-left">
-                <a href="junior-bot.html" class="back-btn">← Back</a>
+                <a href="dashboard.html" class="back-btn">← Back</a>
                 <div>
                     <div class="header-title">Syllabus Decoder</div>
                     <div class="header-subtitle">StudyDecoder Junior • Years 7-10</div>
@@ -399,7 +399,7 @@
                 // Check if has access (owner, lifetime, og_tester, subscribed, or free tier acknowledged)
                 const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged || data.preferences?.onboarded;
                 if (!hasAccess) {
-                    window.location.href = '/junior-bot.html';
+                    window.location.href = '/dashboard.html';
                     return;
                 }
                 

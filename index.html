@@ -3267,20 +3267,21 @@
         // junior-bot page take over. Skip if a query string explicitly
         // requested staying here (e.g. ?stay=1 or post-Stripe ?plan=…).
         try {
-            var lvl = user && user.preferences && user.preferences.level;
             var stay = new URLSearchParams(window.location.search).has('stay')
                 || new URLSearchParams(window.location.search).has('plan')
                 || new URLSearchParams(window.location.search).has('session_id')
                 || new URLSearchParams(window.location.search).has('cancelled')
                 || new URLSearchParams(window.location.search).has('upgrade');
-            if (lvl === 'junior' && !stay) {
-                window.location.replace('/junior-bot.html');
-                return;
-            }
             // Teachers land on their dashboard, not the consumer homepage.
             // Same ?stay= escape hatch — adding ?stay=1 keeps you on the home page.
             if (user.role === 'teacher' && !stay) {
                 window.location.replace('/teacher-dashboard.html');
+                return;
+            }
+            // Students (junior + senior) land on the app dashboard, not the
+            // marketing scroll. Owners stay here to manage the marketing page.
+            if (!stay && user.role !== 'owner') {
+                window.location.replace('/dashboard.html');
                 return;
             }
         } catch (e) { /* ignore */ }
@@ -4097,9 +4098,9 @@
         let hasEng = selectedSubjectIds.some(id => englishIds.includes(id));
 
         let recs;
-        if (hasMath) recs = [{ icon:'📝', name:'Practice Exam', href:'practice.html' }, { icon:'🤖', name:'Chat Tutor', href:'junior-bot.html' }];
+        if (hasMath) recs = [{ icon:'📝', name:'Practice Exam', href:'practice.html' }, { icon:'🤖', name:'Chat Tutor', href:'chat-tutor.html' }];
         else if (hasSci) recs = [{ icon:'📖', name:'Syllabus Decoder', href:'syllabus.html' }, { icon:'📝', name:'Practice Exam', href:'practice.html' }];
-        else if (hasEng) recs = [{ icon:'📖', name:'Syllabus Decoder', href:'syllabus.html' }, { icon:'🤖', name:'Chat Tutor', href:'junior-bot.html' }];
+        else if (hasEng) recs = [{ icon:'📖', name:'Syllabus Decoder', href:'syllabus.html' }, { icon:'🤖', name:'Chat Tutor', href:'chat-tutor.html' }];
         else recs = [{ icon:'📖', name:'Syllabus Decoder', href:'syllabus.html' }, { icon:'📝', name:'Practice Exam', href:'practice.html' }];
 
         // Build subject label chips (up to 4)

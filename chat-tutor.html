@@ -710,7 +710,7 @@
             // Junior students should head back to the junior tools page, not
             // the HSC tools page.
             const back = document.querySelector('.topbar-back');
-            if (back && userLevel === 'junior') back.setAttribute('href', 'junior-bot.html');
+            if (back && userLevel === 'junior') back.setAttribute('href', 'dashboard.html');
 
             if (data.freeTier?.gracePeriodEnding && window.Upsell) Upsell.checkGracePeriodEnding(data.freeTier);
             if (data.freeTier?.inGracePeriod) {

@@ -863,7 +863,6 @@
                 && redirectTo.startsWith('/')
                 && !redirectTo.startsWith('//')
                 && !redirectTo.startsWith('/\\');
-            const userLevel = subData && subData.preferences && subData.preferences.level;
             const effectiveRole = (subData && subData.role) || data.role;
             // A teacher who signed up but hasn't bought a seat yet still has the
             // teacher *intent* — send them to seat checkout, not the student app.
@@ -877,10 +876,9 @@
                 window.location.replace(redirectTo);
             } else if (teacherIntent) {
                 window.location.replace('/teacher-pricing.html');
-            } else if (userLevel === 'junior') {
-                window.location.replace('/junior-bot.html');
             } else {
-                window.location.replace('/index.html');
+                // All students (junior + senior) land on the app dashboard.
+                window.location.replace('/dashboard.html');
             }
         }
 
@@ -923,7 +921,7 @@
                                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                                 credentials: 'include', body: JSON.stringify({ email: email, password: pw })
                             });
-                            if (lr.ok) { window.location.href = signupRole === 'teacher' ? '/teacher-pricing.html' : '/index.html#tools'; return; }
+                            if (lr.ok) { window.location.href = signupRole === 'teacher' ? '/teacher-pricing.html' : '/dashboard.html'; return; }
                         } catch (e) {}
                         // Fallback: send them to sign in.
                         window.location.href = '/login.html';
@@ -992,7 +990,7 @@
                     <li style="font-size:0.88rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:8px;"><span style="color:#10b981;">&#x2713;</span> No card required</li>
                 </ul>
             </div>
-            <a href="/index.html#tools" onclick="this.textContent='Loading…';this.style.pointerEvents='none';" style="display:block;padding:15px 24px;background:#6C63FF;color:#fff;border-radius:50px;text-decoration:none;font-weight:700;font-size:1rem;margin-bottom:12px;box-shadow:0 4px 20px rgba(108,99,255,0.4);transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(108,99,255,0.5)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 20px rgba(108,99,255,0.4)'">Start Exploring Tools &#x2192;</a>
+            <a href="/dashboard.html" onclick="this.textContent='Loading…';this.style.pointerEvents='none';" style="display:block;padding:15px 24px;background:#6C63FF;color:#fff;border-radius:50px;text-decoration:none;font-weight:700;font-size:1rem;margin-bottom:12px;box-shadow:0 4px 20px rgba(108,99,255,0.4);transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(108,99,255,0.5)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 20px rgba(108,99,255,0.4)'">Start Exploring Tools &#x2192;</a>
             <a href="/join-class.html" style="display:block;font-size:0.85rem;color:#a59fff;text-decoration:none;font-weight:600;padding:8px;margin-bottom:8px;">🎓 Got a class code from your teacher? Join here →</a>
             <p style="font-size:0.78rem;color:rgba(255,255,255,0.3);">After 3 days you'll have 10 free uses/day forever, or upgrade to keep unlimited.</p>
         </div>
