@@ -578,6 +578,7 @@
 
 <script src="streak.js"></script>
 <script src="upsell.js"></script>
+<script src="subject-data.js"></script>
 
 <script>
     const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
@@ -596,43 +597,28 @@
     let isRecording = false;
 
     // ── SUBJECTS ──
-    const SUBJECTS = [
-        { id: 'mathematics-advanced', name: 'Mathematics Advanced' },
-        { id: 'mathematics-standard', name: 'Mathematics Standard' },
-        { id: 'mathematics-extension-1', name: 'Mathematics Extension 1' },
-        { id: 'mathematics-extension-2', name: 'Mathematics Extension 2' },
-        { id: 'english-advanced', name: 'English Advanced' },
-        { id: 'english-standard', name: 'English Standard' },
-        { id: 'english-extension', name: 'English Extension 1' },
-        { id: 'english-eald', name: 'English EAL/D' },
-        { id: 'chemistry', name: 'Chemistry' },
-        { id: 'biology', name: 'Biology' },
-        { id: 'physics', name: 'Physics' },
-        { id: 'earth-environmental-science', name: 'Earth & Environmental Science' },
-        { id: 'modern-history', name: 'Modern History' },
-        { id: 'ancient-history', name: 'Ancient History' },
-        { id: 'economics', name: 'Economics' },
-        { id: 'business-studies', name: 'Business Studies' },
-        { id: 'legal-studies', name: 'Legal Studies' },
-        { id: 'geography', name: 'Geography' },
-        { id: 'software-engineering', name: 'Software Engineering' },
-        { id: 'enterprise-computing', name: 'Enterprise Computing' },
-        { id: 'music-1', name: 'Music 1' },
-        { id: 'music-2', name: 'Music 2' },
-        { id: 'visual-arts', name: 'Visual Arts' },
-        { id: 'pdhpe', name: 'PDHPE' },
-        { id: 'cafs', name: 'CAFS' },
-        { id: 'society-culture', name: 'Society and Culture' },
-    ];
+    // Sourced from the canonical subject list (subject-data.js) so the chat
+    // tutor always offers the same full set as every other tool. The arrays
+    // below are only a fallback if that file fails to load.
+    const SUBJECTS = (window.SD_SUBJECTS && window.SD_SUBJECTS.subjectsForLevel)
+        ? window.SD_SUBJECTS.subjectsForLevel('senior').map(s => ({ id: s.id, name: s.name }))
+        : [
+            { id: 'mathematics-advanced', name: 'Mathematics Advanced' },
+            { id: 'mathematics-standard', name: 'Mathematics Standard' },
+            { id: 'english-advanced', name: 'English Advanced' },
+            { id: 'english-standard', name: 'English Standard' },
+            { id: 'chemistry', name: 'Chemistry' },
+            { id: 'biology', name: 'Biology' },
+            { id: 'physics', name: 'Physics' },
+        ];
 
-    // Junior subject set (Years 7-10). Used when the signed-in user has
-    // preferences.level === 'junior'. IDs match what the backend syllabus
-    // loader expects (mathematics-7-10, english-7-10, science-7-10).
-    const JUNIOR_SUBJECTS = [
-        { id: 'english-7-10', name: 'English (Years 7-10)' },
-        { id: 'mathematics-7-10', name: 'Mathematics (Years 7-10)' },
-        { id: 'science-7-10', name: 'Science (Years 7-10)' }
-    ];
+    const JUNIOR_SUBJECTS = (window.SD_SUBJECTS && window.SD_SUBJECTS.subjectsForLevel)
+        ? window.SD_SUBJECTS.subjectsForLevel('junior').map(s => ({ id: s.id, name: s.name }))
+        : [
+            { id: 'english-7-10', name: 'English (Years 7-10)' },
+            { id: 'mathematics-7-10', name: 'Mathematics (Years 7-10)' },
+            { id: 'science-7-10', name: 'Science (Years 7-10)' }
+        ];
 
     // ── INIT ──
     (function init() {
@@ -805,10 +791,13 @@
             else if (m.role === 'assistant') appendAssistantMsg(m.content, false);
         });
 
-        // Set subject if available
+        // Set subject if available. Resolve via the canonical helper first so
+        // sessions saved under older subject names still match; fall back to an
+        // exact name match against the current list.
         const sel = document.getElementById('subjectSelect');
-        const match = SUBJECTS.find(s => sessionData.subject === s.name);
-        if (match) { sel.value = match.id; onSubjectChange(); }
+        let subId = (window.SD_SUBJECTS && window.SD_SUBJECTS.resolveId) ? window.SD_SUBJECTS.resolveId(sessionData.subject) : null;
+        if (!subId) { const m = SUBJECTS.find(s => sessionData.subject === s.name); subId = m ? m.id : null; }
+        if (subId) { sel.value = subId; onSubjectChange(); }
 
         closeHistory();
         msgs.scrollTop = msgs.scrollHeight;
