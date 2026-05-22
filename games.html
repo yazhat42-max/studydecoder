@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Study Games | Study Decoder</title>
+<meta name="description" content="Turn revision into a game. Survive the tightrope, defuse the bomb, beat the boss — answer syllabus questions to win. Pick your subject and modules and play.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#08080d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --primary:#6C63FF; --primary-2:#a78bfa; --accent:#FF6584;
+  --bg:#08080d; --bg-card:#14121f; --border:rgba(255,255,255,0.10);
+  --text:#fff; --text-sec:rgba(255,255,255,0.82); --text-muted:rgba(255,255,255,0.55);
+  --good:#22c55e; --bad:#ef4444; --warn:#fbbf24;
+}
+html,body { height:100%; }
+body {
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:radial-gradient(ellipse 80% 50% at 50% -10%, rgba(108,99,255,0.12), transparent 60%), var(--bg);
+  color:var(--text); min-height:100vh;
+}
+.hidden { display:none !important; }
+.header {
+  position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between;
+  padding:12px 20px; background:rgba(8,8,13,0.78); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.header-left { display:flex; align-items:center; gap:14px; }
+.back-btn { color:var(--primary-2); text-decoration:none; font-size:14px; font-weight:600; padding:8px 14px; border-radius:10px; background:rgba(108,99,255,0.1); }
+.back-btn:hover { background:rgba(108,99,255,0.2); }
+.header-title { font-family:'Poppins',sans-serif; font-size:18px; font-weight:800; letter-spacing:-0.3px; }
+.header-sub { font-size:11px; color:var(--text-muted); }
+.wrap { max-width:1000px; margin:0 auto; padding:24px 18px 60px; }
+
+.hero { text-align:center; padding:18px 8px 26px; }
+.hero h1 { font-family:'Poppins',sans-serif; font-size:clamp(1.7rem,4vw,2.5rem); font-weight:800; line-height:1.12; margin-bottom:8px; }
+.hero h1 .grad { background:linear-gradient(135deg,#a78bfa,#f472b6); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.hero p { color:var(--text-sec); font-size:1rem; max-width:560px; margin:0 auto; }
+
+.setup-card {
+  background:linear-gradient(160deg,var(--bg-card),#0e0c18); border:1px solid var(--border);
+  border-radius:18px; padding:20px; box-shadow:0 8px 32px rgba(0,0,0,0.4); margin-bottom:24px;
+}
+.setup-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media (max-width:640px){ .setup-grid { grid-template-columns:1fr; } }
+.field label { display:block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); margin-bottom:7px; }
+.sel, select.sel {
+  width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:10px;
+  color:var(--text); padding:12px 14px; font-size:14px; font-family:inherit; cursor:pointer;
+}
+.sel:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(108,99,255,0.18); }
+.seg { display:inline-flex; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:10px; padding:3px; gap:3px; }
+.seg button { background:none; border:none; color:var(--text-muted); font-family:inherit; font-size:13px; font-weight:700; padding:8px 14px; border-radius:8px; cursor:pointer; }
+.seg button.on { background:var(--primary); color:#fff; }
+.diff-row { display:flex; gap:8px; }
+.diff-row .seg { flex:1; display:flex; }
+.diff-row .seg button { flex:1; }
+
+.games-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+.game-card {
+  position:relative; overflow:hidden; text-align:left; cursor:pointer;
+  background:linear-gradient(160deg,var(--bg-card),#0e0c18); border:1px solid var(--border);
+  border-radius:16px; padding:18px; color:var(--text); font-family:inherit;
+  transition:transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s, border-color .18s;
+}
+.game-card:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,0.45); border-color:rgba(108,99,255,0.5); }
+.game-card .gc-ico { font-size:2rem; line-height:1; margin-bottom:10px; }
+.game-card .gc-name { font-family:'Poppins',sans-serif; font-weight:800; font-size:1.05rem; margin-bottom:4px; }
+.game-card .gc-blurb { font-size:12.5px; color:var(--text-muted); line-height:1.45; }
+.game-card::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--gc, #6c63ff), transparent); }
+
+.btn { background:linear-gradient(135deg,#6c63ff,#a78bfa); color:#fff; border:none; border-radius:12px; padding:12px 22px; font-size:15px; font-weight:700; font-family:inherit; cursor:pointer; box-shadow:0 4px 16px rgba(108,99,255,0.3); transition:transform .15s, box-shadow .15s; }
+.btn:hover:not(:disabled){ transform:translateY(-2px); box-shadow:0 10px 26px rgba(108,99,255,0.45); }
+.btn:disabled { opacity:.6; cursor:default; box-shadow:none; }
+.btn-ghost { background:rgba(108,99,255,0.1); border:1px solid rgba(108,99,255,0.3); box-shadow:none; }
+
+/* ===== Loading ===== */
+.loader { display:flex; flex-direction:column; align-items:center; gap:16px; padding:60px 16px; color:var(--text-muted); }
+.ring { width:46px; height:46px; border:3px solid rgba(108,99,255,0.2); border-top-color:var(--primary); border-radius:50%; animation:spin .9s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ===== Auth overlay ===== */
+.auth-overlay { position:fixed; inset:0; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; gap:14px; color:var(--text-muted); }
+
+/* ===== Game view ===== */
+.game-view { max-width:680px; margin:0 auto; }
+.hud { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
+.hud .hud-name { font-family:'Poppins',sans-serif; font-weight:800; font-size:1rem; display:flex; align-items:center; gap:8px; }
+.hud .hud-stats { display:flex; gap:14px; font-size:14px; font-weight:700; }
+.hud .hud-stats .lives { color:var(--bad); letter-spacing:2px; }
+.stage {
+  position:relative; height:200px; border-radius:16px; overflow:hidden; margin-bottom:14px;
+  background:linear-gradient(160deg,#100e1b,#0a0910); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+}
+.qbar { height:6px; border-radius:999px; background:rgba(255,255,255,0.08); overflow:hidden; margin-bottom:14px; }
+.qbar > div { height:100%; background:linear-gradient(90deg,#6c63ff,#a78bfa); transition:width .3s; }
+.qcard { background:linear-gradient(160deg,var(--bg-card),#0e0c18); border:1px solid var(--border); border-radius:16px; padding:18px; box-shadow:0 8px 32px rgba(0,0,0,0.4); }
+.qmod { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--primary-2); margin-bottom:8px; }
+.qtext { font-size:1.08rem; font-weight:600; line-height:1.4; margin-bottom:16px; }
+.opts { display:grid; gap:10px; }
+.opt {
+  display:flex; align-items:center; gap:12px; text-align:left; width:100%;
+  background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:12px;
+  color:var(--text); padding:14px 16px; font-size:15px; font-family:inherit; cursor:pointer;
+  transition:border-color .12s, background .12s, transform .1s;
+}
+.opt:hover:not(:disabled){ border-color:rgba(108,99,255,0.55); background:rgba(108,99,255,0.07); }
+.opt:disabled { cursor:default; }
+.opt .key { width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border-radius:8px; background:rgba(255,255,255,0.07); font-size:13px; font-weight:800; }
+.opt.correct { border-color:var(--good); background:rgba(34,197,94,0.14); }
+.opt.correct .key { background:var(--good); color:#04210f; }
+.opt.wrong { border-color:var(--bad); background:rgba(239,68,68,0.14); }
+.opt.wrong .key { background:var(--bad); color:#2a0606; }
+.explain { margin-top:14px; font-size:13.5px; color:var(--text-sec); line-height:1.5; padding:12px 14px; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid var(--border); }
+.explain.good { border-color:rgba(34,197,94,0.4); }
+.explain.bad { border-color:rgba(239,68,68,0.4); }
+
+/* ===== End screen ===== */
+.end { text-align:center; padding:30px 16px; }
+.end .big { font-size:3rem; margin-bottom:8px; }
+.end h2 { font-family:'Poppins',sans-serif; font-size:1.6rem; font-weight:800; margin-bottom:6px; }
+.end .score { font-size:1.05rem; color:var(--text-sec); margin-bottom:6px; }
+.end .sub { color:var(--text-muted); font-size:14px; margin-bottom:20px; }
+.end-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+
+/* stage bits */
+.walker { position:absolute; bottom:70px; font-size:30px; transition:left .4s cubic-bezier(.2,.7,.2,1); }
+.rope { position:absolute; bottom:64px; left:6%; right:6%; height:3px; background:linear-gradient(90deg,#a78bfa,#6c63ff); }
+.lava { position:absolute; left:0; right:0; bottom:0; background:linear-gradient(0deg,#ff5722,#ff8a3d); transition:height .25s; }
+.platform { position:absolute; left:50%; transform:translateX(-50%); width:80px; height:10px; background:#a78bfa; border-radius:4px; transition:bottom .25s; }
+.bar-wrap { width:80%; }
+.bar-lbl { display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:5px; }
+.bar { height:14px; border-radius:999px; background:rgba(255,255,255,0.08); overflow:hidden; }
+.bar > div { height:100%; transition:width .3s; }
+.flash { position:absolute; inset:0; opacity:0; pointer-events:none; }
+.flash.good { background:radial-gradient(circle,rgba(34,197,94,0.4),transparent 70%); animation:fl .5s; }
+.flash.bad { background:radial-gradient(circle,rgba(239,68,68,0.4),transparent 70%); animation:fl .5s; }
+@keyframes fl { 0%{opacity:.9;} 100%{opacity:0;} }
+.big-emoji { font-size:64px; }
+.timer-big { font-family:'Poppins',sans-serif; font-size:2.4rem; font-weight:800; }
+@media (prefers-reduced-motion: reduce){ * { animation-duration:.001s !important; transition-duration:.05s !important; } }
+</style>
+</head>
+<body>
+<div class="auth-overlay" id="authOverlay"><div class="ring"></div><div>Loading…</div></div>
+
+<div class="hidden" id="app">
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html#tools" class="back-btn">← Tools</a>
+      <div><div class="header-title">🎮 Study Games</div><div class="header-sub">Revision, but make it a game.</div></div>
+    </div>
+    <a href="index.html" class="back-btn" style="background:rgba(255,255,255,0.05);">Home</a>
+  </header>
+
+  <div class="wrap" id="root"></div>
+</div>
+
+<script src="subject-data.js"></script>
+<script src="module-multiselect.js"></script>
+<script src="/ui-helpers.js"></script>
+<script src="upsell.js"></script>
+<script>
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let level = 'senior';
+let moduleSel = null;
+const root = document.getElementById('root');
+
+/* ============================ GAME DEFINITIONS ============================ */
+// Each game is a themed skin over the same MC loop. Hooks:
+//   init(s)            set up game-specific fields
+//   onResult(s,ok)     update state after an answer
+//   ended(s)           returns null | 'win' | 'lose'
+//   stage(s)           HTML for the themed visual
+//   hud(s)             { right: '<html>' } extra HUD content
+//   realtime?, tick(s, dtMs)   for timed games
+const GAMES = [
+  {
+    id:'tightrope', name:'Tightrope Walk', ico:'🤸', colour:'#a78bfa', count:12,
+    blurb:'Each correct answer is a step across the chasm. Three slips and you fall.',
+    init(s){ s.lives=3; },
+    onResult(s,ok){ if(!ok) s.lives--; },
+    ended(s){ if(s.lives<=0) return 'lose'; if(s.i>=s.qs.length-1 && s.answered) return 'win'; return null; },
+    hud(s){ return { right:`<span class="lives">${'❤'.repeat(Math.max(0,s.lives))}</span>` }; },
+    stage(s){ const p = 6 + (s.correct/s.qs.length)*84; return `<div class="rope"></div><div class="walker" style="left:${p}%;">${s.lives<=0?'💀':'🚶'}</div><div style="position:absolute;bottom:30px;left:6%;font-size:22px;">🟫</div><div style="position:absolute;bottom:30px;right:6%;font-size:22px;">🏁</div>`; }
+  },
+  {
+    id:'lava', name:'Floor is Lava', ico:'🌋', colour:'#ff6b35', count:12, realtime:true,
+    blurb:'Lava keeps rising. Correct answers lift your platform — outlast it.',
+    init(s){ s.lava=10; s.platform=120; },
+    tick(s,dt){ s.lava += dt*0.006; },
+    onResult(s,ok){ s.platform += ok? 24 : -10; if(s.platform<30) s.platform=30; },
+    ended(s){ if(s.lava>=s.platform) return 'lose'; if(s.i>=s.qs.length-1 && s.answered) return 'win'; return null; },
+    hud(s){ return { right:`🔥 ${Math.max(0,Math.round(s.platform-s.lava))}` }; },
+    stage(s){ return `<div class="lava" style="height:${Math.min(200,s.lava)}px;"></div><div class="platform" style="bottom:${Math.min(190,s.platform)}px;"></div><div style="position:absolute;left:50%;transform:translateX(-50%);bottom:${Math.min(190,s.platform)+8}px;font-size:24px;">🧍</div>`; }
+  },
+  {
+    id:'boss', name:'Boss Battle', ico:'👹', colour:'#ef4444', count:10,
+    blurb:'Face the Exam Demon. Right answers deal damage; wrong ones let it hit back.',
+    init(s){ s.boss=100; s.hp=100; },
+    onResult(s,ok){ if(ok) s.boss-=Math.ceil(100/s.qs.length)+4; else s.hp-=16; if(s.boss<0)s.boss=0; if(s.hp<0)s.hp=0; },
+    ended(s){ if(s.hp<=0) return 'lose'; if(s.boss<=0) return 'win'; if(s.i>=s.qs.length-1 && s.answered) return s.boss<s.hp?'win':'lose'; return null; },
+    hud(s){ return { right:`🛡️ ${s.hp}` }; },
+    stage(s){ return `<div style="text-align:center;width:100%;padding:0 24px;">
+      <div class="big-emoji" style="font-size:${s.boss<=0?'48px':'56px'};">${s.boss<=0?'💥':'👹'}</div>
+      <div class="bar-wrap" style="width:100%;margin-top:14px;"><div class="bar-lbl"><span>Exam Demon</span><span>${s.boss}%</span></div><div class="bar"><div style="width:${s.boss}%;background:linear-gradient(90deg,#ef4444,#f97316);"></div></div></div>
+      <div class="bar-wrap" style="width:100%;margin-top:10px;"><div class="bar-lbl"><span>You</span><span>${s.hp}%</span></div><div class="bar"><div style="width:${s.hp}%;background:linear-gradient(90deg,#22c55e,#a3e635);"></div></div></div>
+    </div>`; }
+  },
+  {
+    id:'bomb', name:'Bomb Defusal', ico:'💣', colour:'#fbbf24', count:10, realtime:true,
+    blurb:'Cut every wire before the timer hits zero. Right adds time, wrong burns it.',
+    init(s){ s.time=42000; s.wires=s.qs.length; s.cut=0; },
+    tick(s,dt){ s.time -= dt; },
+    onResult(s,ok){ if(ok){ s.cut++; s.time+=4000; } else { s.time-=6000; } },
+    ended(s){ if(s.time<=0) return 'lose'; if(s.cut>=s.wires) return 'win'; if(s.i>=s.qs.length-1 && s.answered) return 'lose'; return null; },
+    hud(s){ return { right:`✂️ ${s.cut}/${s.wires}` }; },
+    stage(s){ const sec=Math.max(0,s.time/1000); const danger=sec<10; return `<div style="text-align:center;"><div class="timer-big" style="color:${danger?'#ef4444':'#fbbf24'};">${sec.toFixed(1)}s</div><div style="margin-top:10px;font-size:28px;letter-spacing:4px;">${'🧵'.repeat(Math.max(0,s.wires-s.cut))}${'✅'.repeat(s.cut)}</div><div style="margin-top:8px;font-size:34px;">${danger?'💣🔥':'💣'}</div></div>`; }
+  },
+  {
+    id:'tower', name:'Tower Climb', ico:'🏯', colour:'#38bdf8', count:12,
+    blurb:'Climb floor by floor to the summit. Wrong answers cost a life, not a floor.',
+    init(s){ s.lives=3; },
+    onResult(s,ok){ if(!ok) s.lives--; },
+    ended(s){ if(s.lives<=0) return 'lose'; if(s.correct>=s.qs.length) return 'win'; if(s.i>=s.qs.length-1 && s.answered) return s.lives>0?'win':'lose'; return null; },
+    hud(s){ return { right:`<span class="lives">${'❤'.repeat(Math.max(0,s.lives))}</span>` }; },
+    stage(s){ const floors=s.qs.length; const at=s.correct; const pct=(at/floors)*100; return `<div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:90px;height:100%;background:linear-gradient(0deg,#1b1830,#100e1b);"></div><div style="position:absolute;left:50%;transform:translateX(-50%);bottom:${10+pct*1.6}px;font-size:28px;transition:bottom .4s;">🧗</div><div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:24px;">🏁</div><div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:13px;color:var(--text-muted);">Floor ${at} / ${floors}</div>`; }
+  },
+  {
+    id:'laststand', name:'Last Stand', ico:'🛡️', colour:'#22c55e', count:16,
+    blurb:'Endless waves. Three lives. How many can you survive? Chase the high score.',
+    init(s){ s.lives=3; },
+    onResult(s,ok){ if(!ok) s.lives--; },
+    ended(s){ if(s.lives<=0) return 'lose'; if(s.i>=s.qs.length-1 && s.answered) return 'win'; return null; },
+    hud(s){ return { right:`<span class="lives">${'❤'.repeat(Math.max(0,s.lives))}</span>` }; },
+    stage(s){ return `<div style="text-align:center;"><div class="big-emoji">${s.lives<=0?'💥':'🛡️'}</div><div style="margin-top:10px;font-size:1.4rem;font-weight:800;font-family:Poppins;">Wave ${s.i+1}</div><div style="color:var(--text-muted);font-size:13px;margin-top:4px;">${s.correct} survived</div></div>`; }
+  },
+  {
+    id:'quickdraw', name:'Quick Draw', ico:'⚡', colour:'#f472b6', count:14, realtime:true, perQuestionMs:8000,
+    blurb:'Beat the clock on every question. Build a combo multiplier for big points.',
+    init(s){ s.combo=0; s.best=0; },
+    onResult(s,ok){ if(ok){ s.combo++; if(s.combo>s.best)s.best=s.combo; } else { s.combo=0; } },
+    onTimeout(s){ s.combo=0; },
+    ended(s){ if(s.i>=s.qs.length-1 && s.answered) return 'win'; return null; },
+    hud(s){ return { right:`🔥 x${s.combo}` }; },
+    stage(s){ const sec=Math.max(0,(s.qTime||0)/1000); const danger=sec<3; return `<div style="text-align:center;"><div class="timer-big" style="color:${danger?'#ef4444':'#f472b6'};">${sec.toFixed(1)}s</div><div style="margin-top:8px;font-size:14px;color:var(--text-muted);">Combo <b style="color:#f472b6;">x${s.combo}</b> · best x${s.best}</div><div style="margin-top:8px;font-size:30px;">${danger?'😬':'⚡'}</div></div>`; }
+  },
+  {
+    id:'ship', name:'Sinking Ship', ico:'🚢', colour:'#0ea5e9', count:12,
+    blurb:'Water floods in on every wrong answer. Bail it out by getting them right.',
+    init(s){ s.water=20; },
+    onResult(s,ok){ s.water += ok? -16 : 26; if(s.water<0)s.water=0; },
+    ended(s){ if(s.water>=100) return 'lose'; if(s.i>=s.qs.length-1 && s.answered) return 'win'; return null; },
+    hud(s){ return { right:`💧 ${Math.round(s.water)}%` }; },
+    stage(s){ return `<div style="position:absolute;left:0;right:0;bottom:0;height:${Math.min(100,s.water)}%;background:linear-gradient(0deg,#0369a1,#0ea5e9);transition:height .3s;opacity:.8;"></div><div style="position:absolute;left:50%;transform:translateX(-50%);top:30px;font-size:44px;">${s.water>=100?'🌊':'🚢'}</div>`; }
+  },
+  {
+    id:'ladder', name:'Quiz Ladder', ico:'🪜', colour:'#eab308', count:12,
+    blurb:'Climb the points ladder. Wrong answers drop you to your last checkpoint.',
+    init(s){ s.rung=0; s.checkpoint=0; },
+    onResult(s,ok){ if(ok){ s.rung++; if(s.rung%3===0) s.checkpoint=s.rung; } else { s.rung=s.checkpoint; } },
+    ended(s){ if(s.rung>=s.qs.length) return 'win'; if(s.i>=s.qs.length-1 && s.answered) return s.rung>=s.qs.length?'win':'lose'; return null; },
+    hud(s){ return { right:`🪜 ${s.rung}/${s.qs.length}` }; },
+    stage(s){ const total=s.qs.length; let rungs=''; for(let r=total;r>=1;r--){ const here=r===s.rung; const cp=r%3===0; rungs+=`<div style="display:flex;align-items:center;gap:8px;justify-content:center;font-size:12px;color:${here?'#eab308':'var(--text-muted)'};">${here?'🧗':(cp?'🚩':'▫️')} <span>Rung ${r}${cp?' · checkpoint':''}</span></div>`; } return `<div style="max-height:180px;overflow:hidden;width:100%;padding:0 20px;">${rungs}</div>`; }
+  },
+  {
+    id:'asteroid', name:'Asteroid Defense', ico:'🛰️', colour:'#8b5cf6', count:12,
+    blurb:'Incoming asteroids! Pick the correct answer to blast each one. Three hits and it’s over.',
+    init(s){ s.lives=3; },
+    onResult(s,ok){ if(!ok) s.lives--; },
+    ended(s){ if(s.lives<=0) return 'lose'; if(s.i>=s.qs.length-1 && s.answered) return 'win'; return null; },
+    hud(s){ return { right:`<span class="lives">${'❤'.repeat(Math.max(0,s.lives))}</span>` }; },
+    stage(s){ const remaining=s.qs.length-s.i; return `<div style="text-align:center;"><div style="font-size:40px;letter-spacing:6px;">${'☄️'.repeat(Math.min(5,remaining))}</div><div style="margin-top:18px;font-size:34px;">${s.lives<=0?'💥':'🛰️'}</div><div style="margin-top:6px;font-size:13px;color:var(--text-muted);">${remaining} incoming</div></div>`; }
+  }
+];
+
+/* ============================ SETUP SCREEN ============================ */
+function renderSetup(){
+  root.innerHTML = `
+    <div class="hero">
+      <h1>Turn revision into a <span class="grad">game</span>.</h1>
+      <p>Pick your subject and the modules you want to drill, then choose a challenge. Every question is straight from your syllabus.</p>
+    </div>
+    <div class="setup-card">
+      <div class="setup-grid">
+        <div class="field">
+          <label>Level</label>
+          <div class="seg" id="levelSeg">
+            <button data-lvl="senior" class="on">Senior (HSC)</button>
+            <button data-lvl="junior">Junior (7–10)</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Difficulty</label>
+          <div class="diff-row"><div class="seg" id="diffSeg">
+            <button data-diff="easy">Easy</button>
+            <button data-diff="medium" class="on">Medium</button>
+            <button data-diff="hard">Hard</button>
+          </div></div>
+        </div>
+        <div class="field">
+          <label>Subject</label>
+          <select class="sel" id="subjectSel"></select>
+        </div>
+        <div class="field">
+          <label>Modules</label>
+          <div id="moduleSlot"></div>
+        </div>
+      </div>
+    </div>
+    <div class="games-grid" id="gamesGrid">
+      ${GAMES.map(g => `
+        <button class="game-card" data-game="${g.id}" style="--gc:${g.colour};">
+          <div class="gc-ico">${g.ico}</div>
+          <div class="gc-name">${esc(g.name)}</div>
+          <div class="gc-blurb">${esc(g.blurb)}</div>
+        </button>`).join('')}
+    </div>`;
+
+  // Level toggle
+  root.querySelectorAll('#levelSeg button').forEach(b => b.addEventListener('click', () => {
+    root.querySelectorAll('#levelSeg button').forEach(x => x.classList.remove('on'));
+    b.classList.add('on'); level = b.dataset.lvl; populateSubjects();
+  }));
+  // Difficulty toggle
+  root.querySelectorAll('#diffSeg button').forEach(b => b.addEventListener('click', () => {
+    root.querySelectorAll('#diffSeg button').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+  }));
+  // Module multiselect
+  moduleSel = SDModuleSelect.create(document.getElementById('moduleSlot'), {});
+  // Subject select
+  document.getElementById('subjectSel').addEventListener('change', refreshModules);
+  populateSubjects();
+
+  root.querySelectorAll('.game-card').forEach(c => c.addEventListener('click', () => startGame(c.dataset.game)));
+}
+
+function populateSubjects(){
+  const sel = document.getElementById('subjectSel');
+  if (!sel) return;
+  const subs = (window.SD_SUBJECTS ? window.SD_SUBJECTS.subjectsForLevel(level) : []);
+  sel.innerHTML = subs.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+  refreshModules();
+}
+function refreshModules(){
+  const sel = document.getElementById('subjectSel');
+  const mods = (window.SD_SUBJECTS ? window.SD_SUBJECTS.modulesFor(sel.value) : []);
+  if (moduleSel) moduleSel.setModules(mods);
+}
+function selectedDifficulty(){ const b = root.querySelector('#diffSeg button.on'); return b ? b.dataset.diff : 'medium'; }
+
+/* ============================ START + FETCH ============================ */
+async function startGame(gameId){
+  const game = GAMES.find(g => g.id === gameId);
+  if (!game) return;
+  const subjectId = document.getElementById('subjectSel').value;
+  const subjectName = window.SD_SUBJECTS ? window.SD_SUBJECTS.displayName(subjectId) : subjectId;
+  const modules = moduleSel ? moduleSel.getSelected() : [];
+  const difficulty = selectedDifficulty();
+
+  showLoader(game, subjectName);
+  try {
+    const res = await api('/api/games/questions', { method:'POST', body: JSON.stringify({
+      subject: subjectId, topics: modules, difficulty, count: game.count
+    })});
+    if (res.status === 402) { if (window.SDUpsell && window.SDUpsell.handleApiError) { await window.SDUpsell.handleApiError(res); } renderSetup(); return; }
+    if (res.status === 403) { const d = await res.json().catch(()=>({})); if (window.showToast) showToast(d.error || 'Daily game limit reached.', 'warn', 5000); renderSetup(); return; }
+    if (!res.ok) { const d = await res.json().catch(()=>({})); if (window.showToast) showToast(d.error || 'Could not start the game.', 'error'); renderSetup(); return; }
+    const data = await res.json();
+    const qs = (data.questions || []).map(prepQuestion).filter(Boolean);
+    if (!qs.length) { if (window.showToast) showToast('No questions came back — try again.', 'error'); renderSetup(); return; }
+    runGame(game, qs, { subjectName, difficulty });
+  } catch (e) {
+    if (window.showToast) showToast('Network error. Please try again.', 'error');
+    renderSetup();
+  }
+}
+
+// Shuffle options so the correct one isn't always in the same place; remap index.
+function prepQuestion(q){
+  if (!q || !Array.isArray(q.options) || q.options.length !== 4) return null;
+  const idx = [0,1,2,3];
+  for (let i = idx.length - 1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; }
+  return {
+    module: q.module || '',
+    question: q.question,
+    options: idx.map(i => q.options[i]),
+    answer: idx.indexOf(q.answer),
+    explanation: q.explanation || ''
+  };
+}
+
+function showLoader(game, subjectName){
+  root.innerHTML = `<div class="loader"><div class="ring"></div><div><b>${esc(game.ico)} ${esc(game.name)}</b><br><span style="font-size:13px;">Building your ${esc(subjectName)} questions…</span></div></div>`;
+}
+
+/* ============================ GAME RUNTIME ============================ */
+let _tickTimer = null;
+function clearTick(){ if (_tickTimer){ clearInterval(_tickTimer); _tickTimer = null; } }
+
+function runGame(game, qs, meta){
+  clearTick();
+  const s = { game, qs, i:0, correct:0, wrong:0, answered:false, locked:false, meta };
+  game.init(s);
+  renderGameShell(s);
+  showQuestion(s);
+  if (game.realtime){
+    let last = performance.now();
+    _tickTimer = setInterval(() => {
+      const now = performance.now(); const dt = now - last; last = now;
+      if (s.locked && !game.perQuestionMs) return; // pause global timers while showing feedback (except per-Q games handle own)
+      if (game.perQuestionMs){
+        if (!s.locked){ s.qTime = (s.qTime||0) - dt; if (s.qTime <= 0){ onTimeout(s); } }
+      } else {
+        if (game.tick) game.tick(s, dt);
+      }
+      updateStage(s);
+      const e = game.ended(s); if (e) finish(s, e);
+    }, 80);
+  }
+}
+
+function renderGameShell(s){
+  root.innerHTML = `
+    <div class="game-view">
+      <div class="hud">
+        <div class="hud-name">${s.game.ico} ${esc(s.game.name)}</div>
+        <div class="hud-stats"><span>⭐ <span id="hudScore">0</span></span><span id="hudRight"></span></div>
+      </div>
+      <div class="stage" id="stage"></div>
+      <div class="qbar"><div id="qbarFill" style="width:0%"></div></div>
+      <div id="qslot"></div>
+    </div>`;
+}
+
+function updateStage(s){
+  const st = document.getElementById('stage'); if (st) st.innerHTML = s.game.stage(s) + `<div class="flash ${s._flash||''}" id="flash"></div>`;
+  const hr = document.getElementById('hudRight'); if (hr && s.game.hud) hr.innerHTML = s.game.hud(s).right || '';
+  const sc = document.getElementById('hudScore'); if (sc) sc.textContent = s.correct;
+}
+
+function showQuestion(s){
+  s.answered = false; s.locked = false;
+  if (s.game.perQuestionMs) s.qTime = s.game.perQuestionMs;
+  const q = s.qs[s.i];
+  updateStage(s);
+  const fill = document.getElementById('qbarFill'); if (fill) fill.style.width = ((s.i)/s.qs.length*100) + '%';
+  const slot = document.getElementById('qslot');
+  slot.innerHTML = `
+    <div class="qcard">
+      ${q.module ? `<div class="qmod">${esc(q.module)}</div>` : ''}
+      <div class="qtext">${esc(q.question)}</div>
+      <div class="opts" id="opts">
+        ${q.options.map((o,i) => `<button class="opt" data-i="${i}"><span class="key">${'ABCD'[i]}</span><span>${esc(o)}</span></button>`).join('')}
+      </div>
+      <div id="explainSlot"></div>
+    </div>`;
+  slot.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => answer(s, +b.dataset.i)));
+}
+
+function onTimeout(s){
+  if (s.locked) return;
+  s.locked = true; s.answered = true;
+  if (s.game.onTimeout) s.game.onTimeout(s);
+  s.wrong++;
+  const q = s.qs[s.i];
+  // reveal the right answer
+  document.querySelectorAll('#opts .opt').forEach((b,i) => { b.disabled = true; if (i===q.answer) b.classList.add('correct'); });
+  flash(s,'bad');
+  showExplain(s, false, '⏱️ Time! ' + (q.explanation||''));
+  advance(s);
+}
+
+function answer(s, choice){
+  if (s.locked) return;
+  s.locked = true; s.answered = true;
+  const q = s.qs[s.i];
+  const ok = choice === q.answer;
+  if (ok) s.correct++; else s.wrong++;
+  s.game.onResult(s, ok);
+  document.querySelectorAll('#opts .opt').forEach((b,i) => {
+    b.disabled = true;
+    if (i===q.answer) b.classList.add('correct');
+    else if (i===choice) b.classList.add('wrong');
+  });
+  flash(s, ok?'good':'bad');
+  updateStage(s);
+  showExplain(s, ok, (ok?'✅ ':'❌ ') + (q.explanation || (ok?'Correct!':'Not quite.')));
+  const e = s.game.ended(s);
+  if (e){ setTimeout(() => finish(s, e), 1100); return; }
+  advance(s);
+}
+
+function flash(s, kind){ s._flash = kind; const f = document.getElementById('flash'); if (f){ f.className = 'flash ' + kind; f.style.animation='none'; void f.offsetWidth; f.style.animation=''; } setTimeout(()=>{ s._flash=''; }, 500); }
+
+function showExplain(s, ok, text){
+  const slot = document.getElementById('explainSlot');
+  if (slot) slot.innerHTML = `<div class="explain ${ok?'good':'bad'}">${esc(text)}</div>`;
+}
+
+function advance(s){
+  const delay = 1150;
+  setTimeout(() => {
+    const e = s.game.ended(s); if (e){ finish(s, e); return; }
+    s.i++;
+    if (s.i >= s.qs.length){ finish(s, s.game.ended(s) || 'win'); return; }
+    showQuestion(s);
+  }, delay);
+}
+
+/* ============================ END SCREEN ============================ */
+function finish(s, outcome){
+  clearTick();
+  if (s._done) return; s._done = true;
+  const won = outcome === 'win';
+  const acc = s.correct + s.wrong > 0 ? Math.round(s.correct/(s.correct+s.wrong)*100) : 0;
+  const lines = {
+    tightrope: won?'You made it across! 🏁':'You lost your balance.',
+    lava: won?'You stayed above the lava!':'The lava caught up to you.',
+    boss: won?'Exam Demon defeated! 💥':'The Exam Demon won this round.',
+    bomb: won?'Bomb defused! 💣✅':'Boom. Out of time.',
+    tower: won?'You reached the summit! 🏯':'You ran out of lives on the climb.',
+    laststand: won?'You survived every wave!':'Your last stand has ended.',
+    quickdraw: won?'Lightning fast! ⚡':'Round over.',
+    ship: won?'You kept her afloat! 🚢':'The ship went under. 🌊',
+    ladder: won?'You topped the ladder! 🪜':'You slipped off the ladder.',
+    asteroid: won?'Sector cleared! 🛰️':'Your station took too many hits.'
+  };
+  let extra = '';
+  if (s.game.id==='quickdraw') extra = `Best combo: x${s.best}`;
+  if (s.game.id==='laststand') extra = `Waves survived: ${s.correct}`;
+  root.innerHTML = `
+    <div class="game-view"><div class="end">
+      <div class="big">${won?'🎉':'💥'}</div>
+      <h2>${esc(lines[s.game.id] || (won?'You win!':'Game over'))}</h2>
+      <div class="score">${s.correct} correct · ${acc}% accuracy${extra?` · ${esc(extra)}`:''}</div>
+      <div class="sub">${won?'Nice work — that knowledge is sticking.':'Every miss is a flashcard you now know to review. Run it back.'}</div>
+      <div class="end-actions">
+        <button class="btn" id="againBtn">Play again</button>
+        <button class="btn btn-ghost" id="menuBtn">Choose another game</button>
+      </div>
+    </div></div>`;
+  document.getElementById('againBtn').addEventListener('click', () => startGame(s.game.id));
+  document.getElementById('menuBtn').addEventListener('click', renderSetup);
+  if (window.sdTrack) sdTrack('tool_open');
+}
+
+/* ============================ AUTH / INIT ============================ */
+(function init(){
+  api('/api/subscription')
+    .then(r => {
+      if (!r.ok || r.status === 401){ window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname); return null; }
+      return r.json();
+    })
+    .then(d => {
+      if (!d) return;
+      const hasAccess = d.role === 'owner' || d.role === 'lifetime' || d.role === 'og_tester' || d.subscribed || d.freeAcknowledged || (d.preferences && d.preferences.onboarded);
+      if (!hasAccess){ window.location.href = 'index.html'; return; }
+      if (d.preferences && d.preferences.level === 'junior') level = 'junior';
+      document.getElementById('authOverlay').classList.add('hidden');
+      document.getElementById('app').classList.remove('hidden');
+      renderSetup();
+    })
+    .catch(() => { window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname); });
+})();
+</script>
+</body>
+</html>
