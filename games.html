@@ -150,6 +150,7 @@ body {
 .timer-big { font-family:'Poppins',sans-serif; font-size:2.4rem; font-weight:800; }
 @media (prefers-reduced-motion: reduce){ * { animation-duration:.001s !important; transition-duration:.05s !important; } }
 </style>
+    <link rel="stylesheet" href="app-shell.css">
 </head>
 <body>
 <div class="auth-overlay" id="authOverlay"><div class="ring"></div><div>Loading…</div></div>
@@ -578,5 +579,6 @@ function finish(s, outcome){
     .catch(() => { window.location.href = 'login.html?redirect=' + encodeURIComponent(location.pathname); });
 })();
 </script>
+    <script src="app-shell.js" defer></script>
 </body>
 </html>

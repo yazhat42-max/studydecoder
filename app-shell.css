@@ -88,6 +88,8 @@ body.sd-shell-shifted .back-btn-container { display: none !important; }
 
 @media (max-width: 1024px) {
   body.sd-shell-shifted { padding-left: 0; }
+  /* Clear the fixed hamburger so page headers/back areas don't sit under it */
+  body.sd-shell-shifted .header { padding-left: 62px; }
   .sd-sidebar {
     transform: translateX(-100%);
     transition: transform .25s cubic-bezier(.2, .7, .2, 1);
