@@ -159,7 +159,8 @@ const FREE_TIER_CONFIG = {
         'worksheet': 1,          // 1 worksheet decode per day
         'notes-transcriber': 1,  // 1 notes transcription per day
         'learn-irl': 1,          // 1 learn IRL session per day
-        'flashcards': 3          // 3 conversational flashcard reviews per day
+        'flashcards': 3,         // 3 conversational flashcard reviews per day
+        'games': 5               // 5 arcade game rounds per day
     },
     enabled: true
 };
@@ -872,6 +873,7 @@ const aiLimiter = rateLimit({
 app.use('/api/exam/generate', aiLimiter);
 app.use('/api/exam/mark', aiLimiter);
 app.use('/api/exam/sample-answer', aiLimiter);
+app.use('/api/games/questions', aiLimiter);
 app.use('/api/chat/', aiLimiter);
 app.use('/api/junior-chat/', aiLimiter);
 // Assignment marking + draft-saves: also rate-limit. The marking endpoint
@@ -3888,7 +3890,18 @@ app.post('/api/decks/:id/generate-cards', requireAuth, async (req, res) => {
     const dotPoints = (reqDotPoints.length ? reqDotPoints : deck.dotPoints).slice(0, 12);
     const subjectMeta = resolveSubjectMeta(deck.subject);
     const subjectName = subjectMeta.name || deck.subject || 'this subject';
-    const syllabusContext = (getSyllabusContent(deck.subject, subjectMeta.isJunior, deck.module) || '').substring(0, 12000);
+    // Decks can target several modules ("A | B | C") — give each an equal share
+    // of the syllabus context so cards are spread evenly across them.
+    const deckModules = String(deck.module || '').split('|').map(s => s.trim()).filter(Boolean);
+    const syllabusContext = (deckModules.length > 1
+        ? getSyllabusContentMulti(deck.subject, subjectMeta.isJunior, deckModules, 12000)
+        : getSyllabusContent(deck.subject, subjectMeta.isJunior, deck.module) || '').substring(0, 12000);
+    let moduleDistribution = '';
+    if (deckModules.length > 1) {
+        const dist = distributeAcrossModules(deckModules, count);
+        moduleDistribution = '\nDistribute the cards EVENLY across these modules (equal treatment), and set each card\'s dotPointRef to its module:\n' +
+            dist.map(d => `- "${d.module}": ${d.n} card${d.n === 1 ? '' : 's'}`).join('\n') + '\n';
+    }
 
     recordBotStat('flashcards');
     recordUserBotUsage(req.user.userId, 'flashcards');
@@ -3902,7 +3915,7 @@ RULES:
 - "dotPointRef" MUST be one of the dot points provided below (copy it verbatim).
 - 2 hints per card: the first a gentle nudge, the second more direct. Never give the answer away in a hint.
 - Ground everything in the syllabus content. Output ONLY the JSON.`;
-    const usr = `Subject: ${subjectName}\nModule: ${deck.module || 'General'}\nDot points:\n${dotPoints.length ? dotPoints.map((d, i) => `${i + 1}. ${d}`).join('\n') : '(none specified — pick suitable dot points for the module)'}\n\n=== SYLLABUS REFERENCE ===\n${syllabusContext || '(rely on standard curriculum knowledge)'}\n=== END ===`;
+    const usr = `Subject: ${subjectName}\nModule(s): ${deck.module || 'General'}\n${moduleDistribution}Dot points:\n${dotPoints.length ? dotPoints.map((d, i) => `${i + 1}. ${d}`).join('\n') : '(none specified — pick suitable dot points for the module)'}\n\n=== SYLLABUS REFERENCE ===\n${syllabusContext || '(rely on standard curriculum knowledge)'}\n=== END ===`;
 
     try {
         const aiSettings = getAISettings(req.user);
@@ -5892,6 +5905,52 @@ function getSyllabusContent(subjectId, isJunior = false, topic = null) {
     
     syllabusCache[cacheKey] = content;
     return content;
+}
+
+// Normalize a `topics` request value (legacy single string, an array of module
+// names, or an "All ... content" sentinel) into a clean array of module names.
+// An empty array means "all modules".
+function normalizeTopics(topics) {
+    const list = Array.isArray(topics) ? topics : (topics != null ? [topics] : []);
+    const cleaned = list
+        .map(t => String(t == null ? '' : t).trim())
+        .filter(Boolean)
+        .filter(t => !/^all\b.*content$/i.test(t));   // drop "All Year 12 content" sentinels
+    // De-dupe while preserving order.
+    return [...new Set(cleaned)].slice(0, 12);
+}
+
+// Load syllabus content spanning MULTIPLE modules, giving each selected module
+// an EQUAL share of the character budget so every module gets equivalent
+// grounding (and therefore equivalent question quality + length). An empty
+// module list falls back to the full subject syllabus.
+function getSyllabusContentMulti(subjectId, isJunior, topics, totalBudget) {
+    const budget = totalBudget || 15000;
+    const list = normalizeTopics(topics);
+    if (list.length === 0) {
+        return (getSyllabusContent(subjectId, isJunior, null) || '').substring(0, budget);
+    }
+    if (list.length === 1) {
+        return (getSyllabusContent(subjectId, isJunior, list[0]) || '').substring(0, budget);
+    }
+    const per = Math.max(1500, Math.floor(budget / list.length));
+    let out = '';
+    for (const t of list) {
+        const c = (getSyllabusContent(subjectId, isJunior, t) || '').substring(0, per);
+        if (c) out += `\n\n--- MODULE: ${t} ---\n${c}`;
+    }
+    return out || (getSyllabusContent(subjectId, isJunior, null) || '').substring(0, budget);
+}
+
+// Compute an EXACTLY-even distribution of `count` items across `modules`.
+// Returns [{ module, n }]. Remainder is spread one-per-module from the top so
+// the spread never differs by more than 1 between modules.
+function distributeAcrossModules(modules, count) {
+    const list = normalizeTopics(modules);
+    if (!list.length) return [];
+    const base = Math.floor(count / list.length);
+    let rem = count - base * list.length;
+    return list.map(m => ({ module: m, n: base + (rem-- > 0 ? 1 : 0) }));
 }
 
 // API endpoint to get subjects list (Senior - HSC)
@@ -7985,8 +8044,15 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
 
     const hasFull = hasFullAccess(user);
 
-    const { subject, topics, duration, difficulty, quickPaper, questionCount } = req.body;
+    const { subject, topics: topicsRaw, duration, difficulty, quickPaper, questionCount } = req.body;
     if (!subject) return res.status(400).json({ error: 'Subject is required' });
+
+    // Multi-module support: `topics` may be a single string (legacy), an array
+    // of module names, or an "All ... content" sentinel. Normalize to a list,
+    // then keep `topics` as a human-readable label so all the existing
+    // single-module prompt logic below keeps working unchanged.
+    const moduleList = normalizeTopics(topicsRaw);
+    const topics = moduleList.length ? moduleList.join('" + "') : (typeof topicsRaw === 'string' ? topicsRaw : '');
 
     // Subject lock: class-linked-only students can only generate for their
     // enrolled class subjects. Paid users + free tier bypass this gate.
@@ -8019,14 +8085,21 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     const subjectName = subjectMeta.name;
     const isJunior = subjectMeta.isJunior;
 
-    // Keep context lean for faster generation — only enough for style & accuracy
-    // Pass topics so we load module-specific syllabus content when available.
+    // Keep context lean for faster generation — only enough for style & accuracy.
+    // For multiple selected modules, each gets an EQUAL share of the syllabus
+    // budget so every module is grounded (and graded) to the same depth.
     // Junior subjects have no NESA past papers or marking guidelines, so we
     // skip those lookups entirely and rely on the syllabus alone.
-    const syllabusContent = getSyllabusContent(subject, isJunior, topics);
+    const syllabusContent = getSyllabusContentMulti(subject, isJunior, moduleList, 15000);
     if (syllabusContent) {
         const truncated = syllabusContent.substring(0, 15000);
         contextPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS (key topics) ===\n${truncated}\n=== END SYLLABUS ===`;
+    }
+
+    // When the student picks several modules, demand EQUAL coverage so no module
+    // is short-changed on question count or depth.
+    if (moduleList.length > 1) {
+        contextPrompt += `\n\n=== MULTI-MODULE COVERAGE (MANDATORY) ===\nThis paper spans ${moduleList.length} modules: ${moduleList.map(m => `"${m}"`).join(', ')}.\nDistribute questions and marks AS EVENLY AS POSSIBLE across these modules — each module must get an equal number of questions (differ by at most one) and comparable mark weight and depth. Do not over-represent any single module. Every listed module MUST appear.\n=== END MULTI-MODULE COVERAGE ===`;
     }
 
     const examPapers = isJunior ? null : getExamPaperContent(subject);
@@ -9029,6 +9102,96 @@ CRITICAL JSON RULES:
     }
 });
 
+// POST /api/games/questions — a batch of fast multiple-choice questions for the
+// arcade games. ONE AI call returns N MC questions spread EVENLY across the
+// selected module(s), so every module gets equal treatment. Questions carry the
+// correct-answer index + a short explanation, so games run entirely client-side
+// with no per-question round-trip.
+app.post('/api/games/questions', express.json(), async (req, res) => {
+    if (!req.session?.userId) return res.status(401).json({ error: 'Authentication required' });
+    const user = getUser(req.session.userId);
+    if (!user) return res.status(401).json({ error: 'User not found' });
+    if (!config.openaiApiKey) return res.status(503).json({ error: 'AI not configured' });
+
+    const { subject, topics, difficulty } = req.body || {};
+    if (!subject) return res.status(400).json({ error: 'Subject is required' });
+
+    // Class-linked students can only play for their enrolled subjects.
+    const subjectLock = checkSubjectGate(user, subject);
+    if (subjectLock) return res.status(402).json(subjectLock);
+
+    // Free tier: limited game rounds per day.
+    const hasFull = hasFullAccess(user);
+    if (!hasFull && !tryUseFreeTier(req.session.userId, 'games')) {
+        return res.status(403).json({ error: 'You’ve used your free game rounds for today. Upgrade for unlimited play.', freeLimitReached: true });
+    }
+
+    recordBotStat('games');
+    recordUserBotUsage(req.session.userId, 'games');
+
+    const meta = resolveSubjectMeta(subject);
+    const subjectName = meta.name;
+    const isJunior = meta.isJunior;
+    const count = Math.min(Math.max(parseInt(req.body.count, 10) || 12, 6), 20);
+    const diff = ['easy', 'medium', 'hard'].includes(difficulty) ? difficulty : 'medium';
+
+    const modules = normalizeTopics(topics);
+    const syllabus = (getSyllabusContentMulti(subject, isJunior, modules, 12000) || '').substring(0, 12000);
+
+    // Even per-module distribution so each selected module gets the same count.
+    let distributionLine;
+    if (modules.length > 1) {
+        const dist = distributeAcrossModules(modules, count);
+        distributionLine = 'Distribute the questions EXACTLY like this (equal treatment per module), and tag each question with its module:\n' +
+            dist.map(d => `- "${d.module}": ${d.n} question${d.n === 1 ? '' : 's'}`).join('\n') + '\n';
+    } else if (modules.length === 1) {
+        distributionLine = `Every question must come from "${modules[0]}".\n`;
+    } else {
+        distributionLine = 'Spread the questions EVENLY across ALL modules of the course — each module equally represented.\n';
+    }
+
+    const levelWord = isJunior ? 'NSW Years 7-10' : 'NSW HSC';
+    const sys = `You are an expert ${levelWord} ${subjectName} examiner writing fast multiple-choice quiz questions for a study game. Each question must be answerable in under 20 seconds, have EXACTLY four options with EXACTLY one correct answer, and be grounded ONLY in the official syllabus content provided. Difficulty: ${diff}. Return ONLY valid JSON.`;
+    const usr = `Generate EXACTLY ${count} ${diff}-difficulty multiple-choice questions for ${subjectName}.
+${distributionLine}
+Rules:
+- Exactly 4 options each; exactly one correct.
+- Mix recall and application; keep stems concise (<240 chars) and options short.
+- Include a one-sentence explanation of why the answer is correct.
+- Every question must be distinct — no repeats or rewordings.
+
+Return JSON of this exact shape:
+{ "questions": [ { "module": "<module name or ''>", "question": "<stem>", "options": ["<a>","<b>","<c>","<d>"], "answer": <0-3 index of the correct option>, "explanation": "<one sentence>" } ] }
+
+=== ${subjectName.toUpperCase()} SYLLABUS ===
+${syllabus}
+=== END SYLLABUS ===`;
+
+    try {
+        const reply = await callOpenAIChat({
+            model: 'gpt-4o-mini', jsonMode: true, maxTokens: 4000, temperature: 0.85,
+            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+        });
+        const parsed = parseJsonLoose(reply);
+        let questions = Array.isArray(parsed.questions) ? parsed.questions : [];
+        questions = questions
+            .filter(q => q && typeof q.question === 'string' && Array.isArray(q.options) && q.options.length === 4 &&
+                Number.isInteger(q.answer) && q.answer >= 0 && q.answer <= 3)
+            .map(q => ({
+                module: String(q.module || '').slice(0, 120),
+                question: String(q.question).slice(0, 400),
+                options: q.options.map(o => String(o).slice(0, 200)),
+                answer: q.answer,
+                explanation: String(q.explanation || '').slice(0, 300)
+            }));
+        if (!questions.length) return res.status(502).json({ error: 'Could not generate questions just now. Please try again.' });
+        res.json({ questions, subject: subjectName });
+    } catch (e) {
+        console.error('Games question generation failed:', e.message);
+        res.status(502).json({ error: 'Could not generate questions right now. Please try again.' });
+    }
+});
+
 // --- Auto-mark helpers ----------------------------------------------------
 // Determine if a question is multiple-choice (handles 'mc' and 'multiple-choice')
 function isMCQuestion(q) {
@@ -9962,7 +10125,12 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         const lastMsg = messages.length > 0 ? messages[messages.length - 1].content : '';
         const botTopicMatch = lastMsg.match(/Topic:\s*(.+?)(?:\n|$)/i);
         const botTopic = botTopicMatch ? botTopicMatch[1].trim() : null;
-        const syllabusContent = getSyllabusContent(subjectId, chatIsJunior, botTopic);
+        // Support multiple modules separated by " | " (from the multi-module
+        // selector) so each gets an equal share of the syllabus grounding.
+        const botTopicList = botTopic ? botTopic.split('|').map(t => t.trim()).filter(Boolean) : [];
+        const syllabusContent = botTopicList.length > 1
+            ? getSyllabusContentMulti(subjectId, chatIsJunior, botTopicList, 100000)
+            : getSyllabusContent(subjectId, chatIsJunior, botTopic);
         if (syllabusContent) {
             const subjectName = chatSubjectMeta?.name || subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
             

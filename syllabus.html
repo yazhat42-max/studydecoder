@@ -384,6 +384,7 @@
         .hidden { display: none !important; }
     </style>
     <script src="/ui-helpers.js" defer></script>
+    <script src="module-multiselect.js"></script>
 </head>
 <body>
     <!-- Auth loading overlay -->
@@ -429,9 +430,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">📚 Topic/Module</label>
-                            <select class="form-select" id="topic" required>
-                                <option value="">Select year first...</option>
-                            </select>
+                            <div id="topicMs"></div>
                         </div>
                     </div>
                     <div class="form-grid" style="grid-template-columns: 1fr;">
@@ -791,7 +790,7 @@
 
             const subjectId = subjectSelect.value;
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex]?.text || '';
-            const topicName = topicSelect.options[topicSelect.selectedIndex]?.text || '';
+            const topicName = getTopicLabel();
 
             sendBtn.disabled = true;
             sendBtn.textContent = '...';
@@ -858,7 +857,11 @@ STRICT RULES — you MUST follow these without exception:
         const submitBtn = document.getElementById('submitBtn');
         const subjectSelect = document.getElementById('subject');
         const yearSelect = document.getElementById('year');
-        const topicSelect = document.getElementById('topic');
+        const topicMs = window.SDModuleSelect ? window.SDModuleSelect.create(document.getElementById('topicMs'), {}) : null;
+        function syllabusYearTopics(){ const s = subjectSelect.value, y = yearSelect.value; return (subjectTopics[s] && subjectTopics[s][y]) || []; }
+        // Selected topics, or all of the year's topics if none picked ("All modules").
+        function getSelectedTopics(){ const sel = topicMs ? topicMs.getSelected() : []; return sel.length ? sel : syllabusYearTopics(); }
+        function getTopicLabel(){ return getSelectedTopics().join(' | '); }
         const detailSlider = document.getElementById('detailLevel');
         const detailLabel = document.getElementById('detailLabel');
         
@@ -1034,8 +1037,8 @@ STRICT RULES — you MUST follow these without exception:
             if (window.SDUpsell && window.SDUpsell.onSubjectChange && window.SDUpsell.onSubjectChange(subjectSelect)) return;
             const subjectId = subjectSelect.value;
             yearSelect.innerHTML = '';
-            topicSelect.innerHTML = '';
-            
+            if (topicMs) topicMs.setModules([]);
+
             // Clear conversation history when subject changes
             conversationHistory = [];
             console.log('[DEBUG] Subject changed, conversation history cleared');
@@ -1045,10 +1048,10 @@ STRICT RULES — you MUST follow these without exception:
             
             if (!subjectId) {
                 yearSelect.innerHTML = '<option value="">Select subject first...</option>';
-                topicSelect.innerHTML = '<option value="">Select year first...</option>';
+                if (topicMs) topicMs.setModules([]);
                 return;
             }
-            
+
             const subjectData = subjectTopics[subjectId];
             if (subjectData) {
                 yearSelect.innerHTML = '<option value="">Select a year...</option>';
@@ -1060,10 +1063,10 @@ STRICT RULES — you MUST follow these without exception:
                         yearSelect.appendChild(opt);
                     }
                 });
-                topicSelect.innerHTML = '<option value="">Select year first...</option>';
+                if (topicMs) topicMs.setModules([]);
             } else {
                 yearSelect.innerHTML = '<option value="">No years available</option>';
-                topicSelect.innerHTML = '<option value="">No modules available</option>';
+                if (topicMs) topicMs.setModules([]);
             }
         });
         
@@ -1071,24 +1074,17 @@ STRICT RULES — you MUST follow these without exception:
         yearSelect.addEventListener('change', () => {
             const subjectId = subjectSelect.value;
             const year = yearSelect.value;
-            topicSelect.innerHTML = '';
-            
+
             if (!subjectId || !year) {
-                topicSelect.innerHTML = '<option value="">Select year first...</option>';
+                if (topicMs) topicMs.setModules([]);
                 return;
             }
-            
+
             const topics = subjectTopics[subjectId][year];
             if (topics && topics.length > 0) {
-                topicSelect.innerHTML = '<option value="">Select a topic/module...</option>';
-                topics.forEach(t => {
-                    const opt = document.createElement('option');
-                    opt.value = t;
-                    opt.textContent = t;
-                    topicSelect.appendChild(opt);
-                });
+                if (topicMs) topicMs.setModules(topics);
             } else {
-                topicSelect.innerHTML = '<option value="">No topics available for this year</option>';
+                if (topicMs) topicMs.setModules([]);
             }
         });
         // loadSubjects is called in checkAuth() after preferences load
@@ -1364,9 +1360,8 @@ STRICT RULES — you MUST follow these without exception:
             // Pull the current subject + topic from the dropdowns so we can
             // pre-fill the post title with useful context.
             const subjSel = document.getElementById('subject');
-            const topicSel = document.getElementById('topic');
             const subjectName = subjSel && subjSel.options[subjSel.selectedIndex] ? subjSel.options[subjSel.selectedIndex].text : '';
-            const topicName = topicSel && topicSel.value ? topicSel.value : '';
+            const topicName = getTopicLabel();
             const titleSuggestion = (subjectName || 'Syllabus') + (topicName ? ' — ' + topicName : '') + ' decoded';
 
             let overlay = document.getElementById('sdPostOverlay');
@@ -1555,7 +1550,7 @@ STRICT RULES — you MUST follow these without exception:
 
                 // Record syllabus progress
                 try {
-                    const topicNameRec = topicSelect.options[topicSelect.selectedIndex]?.text || '';
+                    const topicNameRec = getTopicLabel();
                     const dotPointRec = (document.getElementById('dotPoint')?.value || '').trim();
                     fetch(`${API_BASE}/api/user/syllabus-progress`, {
                         method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
@@ -1567,7 +1562,7 @@ STRICT RULES — you MUST follow these without exception:
 
                 // Show "Generate Practice Question" button
                 (function() {
-                    const tp = topicSelect.options[topicSelect.selectedIndex]?.text || '';
+                    const tp = getTopicLabel();
                     const dp = (document.getElementById('dotPoint')?.value || '').trim();
                     const practiceUrl = `practice.html?subject=${encodeURIComponent(subjectId)}&module=${encodeURIComponent(tp)}${dp?'&dotpoint='+encodeURIComponent(dp):''}`;
                     const msgDivs = outputContent.querySelectorAll('.message-assistant');
@@ -1581,7 +1576,7 @@ STRICT RULES — you MUST follow these without exception:
                 })();
 
                 // Show cross-bot recommendations
-                const topicName = topicSelect.options[topicSelect.selectedIndex]?.text || '';
+                const topicName = getTopicLabel();
                 showRecommendations(subjectId, topicName);
                 
                 // Keep conversationHistory for Ask More Questions context
@@ -1603,10 +1598,11 @@ STRICT RULES — you MUST follow these without exception:
             console.log('[DEBUG] Submit handler triggered for syllabus');
             const subjectId = document.getElementById('subject').value;
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
-            const topic = topicSelect.options[topicSelect.selectedIndex].text;
+            const topic = getTopicLabel();
             
             if (!subjectId) { alert('Please select a subject.'); return; }
-            if (!topic || topic === 'Select subject first...' || topic === 'Select a topic/module...' || topic === 'Select year first...') { alert('Please select a topic.'); return; }
+            if (!yearSelect.value) { alert('Please select a year.'); return; }
+            if (!getSelectedTopics().length) { alert('Please select at least one topic (or “All modules”).'); return; }
             
             console.log('[DEBUG] Subject:', subjectName, 'Topic:', topic, 'SubjectId:', subjectId);
             

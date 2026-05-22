@@ -84,6 +84,7 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
 </div>
 <script src="auth.js"></script>
 <script src="upsell.js"></script>
+<script src="module-multiselect.js"></script>
 <script>
 const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
 function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts||{})); }
@@ -94,6 +95,7 @@ let SYLLABUS = {};
 let DECKS = [];
 let formOpen = false;
 let dotPoints = [];
+let fModuleMs = null;
 const expanded = {}; // deckId -> {cards}
 
 function render(){
@@ -137,10 +139,10 @@ function renderForm(){
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label" for="fModule">Module</label>
-        <select class="form-select" id="fModule"><option value="">— Select a subject first —</option></select>
+        <label class="form-label" for="fModule">Modules</label>
+        <div id="fModuleMs"></div>
         <input class="form-input" id="fModuleCustom" placeholder="…or type a custom module / topic" style="margin-top:8px;">
-        <div class="muted">Pick from the list or type your own.</div>
+        <div class="muted">Pick one, several, or all modules — or type your own. Cards are spread evenly across what you choose.</div>
       </div>
       <div class="checkbox-row">
         <input type="checkbox" id="fAiGen">
@@ -175,17 +177,16 @@ function renderForm(){
     </div>
   `;
   const subjSel = document.getElementById('fSubject');
-  const modSel = document.getElementById('fModule');
+  if (window.SDModuleSelect && !fModuleMs) {
+    fModuleMs = window.SDModuleSelect.create(document.getElementById('fModuleMs'), {});
+  }
   // Pre-emptively mark non-enrolled subjects as locked for class-linked-only students.
   if (window.SDUpsell && window.SDUpsell.decorateSubjectSelect) {
     window.SDUpsell.decorateSubjectSelect(subjSel);
   }
   subjSel.onchange = () => {
     if (window.SDUpsell && window.SDUpsell.onSubjectChange && window.SDUpsell.onSubjectChange(subjSel)) return;
-    const mods = SYLLABUS[subjSel.value] || [];
-    modSel.innerHTML = mods.length
-      ? '<option value="">— Select a module —</option>' + mods.map(m=>`<option value="${esc(m)}">${esc(m)}</option>`).join('')
-      : '<option value="">(no modules listed — use custom field)</option>';
+    if (fModuleMs) fModuleMs.setModules(SYLLABUS[subjSel.value] || []);
   };
   const aiGen = document.getElementById('fAiGen');
   aiGen.onchange = () => document.getElementById('aiOpts').classList.toggle('hidden', !aiGen.checked);
@@ -212,7 +213,9 @@ function submitDeck(){
   const title = document.getElementById('fTitle').value.trim();
   const subject = document.getElementById('fSubject').value;
   const modCustom = document.getElementById('fModuleCustom').value.trim();
-  const module = modCustom || document.getElementById('fModule').value;
+  const selMods = fModuleMs ? fModuleMs.getSelected() : [];
+  // Custom text wins; otherwise join selected modules with " | " (empty = all).
+  const module = modCustom || (selMods.length ? selMods.join(' | ') : '');
   const isPublic = document.getElementById('fPublic').checked;
   const aiGen = document.getElementById('fAiGen').checked;
   const count = parseInt(document.getElementById('fCount') ? document.getElementById('fCount').value : '8', 10);

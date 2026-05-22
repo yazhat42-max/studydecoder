@@ -140,6 +140,7 @@
         .hidden { display: none !important; }
     </style>
     <script src="/ui-helpers.js" defer></script>
+    <script src="module-multiselect.js"></script>
 </head>
 <body>
     <!-- Auth loading overlay -->
@@ -187,10 +188,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Topic</label>
-                            <select class="form-select" id="topic" required>
-                                <option value="">Select subject first...</option>
-                            </select>
+                            <label class="form-label">Topics</label>
+                            <div id="topicMs"></div>
                         </div>
                     </div>
                     <button type="submit" class="submit-btn" id="submitBtn">Decode</button>
@@ -209,7 +208,9 @@
         const outputPanel = document.getElementById('outputPanel');
         const submitBtn = document.getElementById('submitBtn');
         const subjectSelect = document.getElementById('subject');
-        const topicSelect = document.getElementById('topic');
+        const topicMs = window.SDModuleSelect ? window.SDModuleSelect.create(document.getElementById('topicMs'), {}) : null;
+        function getSelectedTopics(){ const sel = topicMs ? topicMs.getSelected() : []; return sel.length ? sel : (subjectTopics[subjectSelect.value] || []); }
+        function getTopicLabel(){ const a = getSelectedTopics(); return a.length ? a.join(' | ') : 'All topics'; }
         
         // Hardcoded Junior subjects (Years 7-10)
         subjects = [
@@ -281,25 +282,7 @@
         // Update topics when subject changes
         subjectSelect.addEventListener('change', () => {
             const subjectId = subjectSelect.value;
-            topicSelect.innerHTML = '';
-            
-            if (!subjectId) {
-                topicSelect.innerHTML = '<option value="">Select subject first...</option>';
-                return;
-            }
-            
-            const topics = subjectTopics[subjectId];
-            if (topics && topics.length > 0) {
-                topicSelect.innerHTML = '<option value="">Select a topic...</option>';
-                topics.forEach(t => {
-                    const opt = document.createElement('option');
-                    opt.value = t;
-                    opt.textContent = t;
-                    topicSelect.appendChild(opt);
-                });
-            } else {
-                topicSelect.innerHTML = '<option value="">All Topics (General)</option>';
-            }
+            if (topicMs) topicMs.setModules(subjectId ? (subjectTopics[subjectId] || []) : []);
         });
         
         function formatResponse(text) {
@@ -392,7 +375,7 @@
             const subjectId = document.getElementById('subject').value;
             const subjectName = subjectSelect.options[subjectSelect.selectedIndex].text;
             const yearLevel = document.getElementById('yearLevel').value;
-            const topic = topicSelect.options[topicSelect.selectedIndex].text;
+            const topic = getTopicLabel();
             const message = `Subject: ${subjectName}\nYear Level: ${yearLevel}\nTopic: ${topic}\n\nPlease explain this topic from the syllabus in simple terms. What do I need to know?`;
             sendMessage(message, subjectId);
         });
