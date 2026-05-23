@@ -868,7 +868,9 @@
             // teacher *intent* — send them to seat checkout, not the student app.
             const teacherIntent = (subData && subData.signupRole === 'teacher') || signupRole === 'teacher';
             if (effectiveRole === 'owner') {
-                window.location.replace('/admin.html');
+                // Owner uses the app like everyone else; Admin is reachable from
+                // the sidebar (and the index nav).
+                window.location.replace('/dashboard.html');
             } else if (effectiveRole === 'teacher') {
                 // Active teacher seat → straight to the dashboard.
                 window.location.replace('/teacher-dashboard.html');

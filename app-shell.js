@@ -48,6 +48,7 @@
       { label: 'Assignments', icon: '📌', href: 'student-assignments.html', need: 'linked' }
     ] },
     { sec: 'Account', items: [
+      { label: 'Admin', icon: '🛠️', href: 'admin.html', need: 'owner' },
       { label: 'Manage subscription', icon: '⚙️', href: 'index.html?stay=1#manage', need: 'managesub' },
       { label: 'Profile', icon: '👤', href: 'profile.html' },
       { label: 'Sign out', icon: '↩️', href: '#', action: 'logout' }
@@ -237,6 +238,12 @@
         if (auth.linkedToTeacher) {
           var as = aside.querySelector('.sd-nav-item[data-need="linked"]');
           if (as) as.removeAttribute('hidden');
+        }
+
+        // Admin link only for the owner account.
+        if (auth.role === 'owner') {
+          var adm = aside.querySelector('.sd-nav-item[data-need="owner"]');
+          if (adm) adm.removeAttribute('hidden');
         }
 
         // Manage subscription only for a self-managed paid plan (mirrors the
