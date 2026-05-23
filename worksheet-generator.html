@@ -635,7 +635,7 @@
                 + `<td style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:6pt 0;"><b>Date:</b> ${dateStr}</td>`
                 + `<td style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:6pt 0;"><b>Mark:</b> ____ / ${data.totalMarks}</td>`
                 + `</tr></table>`;
-            return head + titleBlock + q + ak + '<script src="theme.js"></script>
+            return head + titleBlock + q + ak + '
 </body></html>';
         }
 
@@ -658,5 +658,6 @@
         init();
     </script>
     <script src="app-shell.js" defer></script>
+<script src="theme.js"></script>
 </body>
 </html>
