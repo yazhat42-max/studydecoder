@@ -582,6 +582,8 @@ function finish(s, outcome){
   if (s._done) return; s._done = true;
   const won = outcome === 'win';
   const acc = s.correct + s.wrong > 0 ? Math.round(s.correct/(s.correct+s.wrong)*100) : 0;
+  // Record the round for XP + the weekly class leaderboard (best-effort).
+  try { api('/api/games/score', { method:'POST', body: JSON.stringify({ gameId: s.game.id, correct: s.correct, total: s.correct + s.wrong }) }).catch(function(){}); } catch (e) {}
   const lines = {
     tightrope: won?'You made it across! 🏁':'You lost your balance.',
     lava: won?'You stayed above the lava!':'The lava caught up to you.',

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Documents | Study Decoder</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#08080d">
+  <link rel="apple-touch-icon" href="logo.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(108,99,255,0.10), transparent 60%), #08080d; color: #fff; min-height: 100vh; }
+    .hidden { display: none !important; }
+    .auth-loading-overlay { position: fixed; inset: 0; background: #08080d; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+    .auth-spinner { width: 46px; height: 46px; border: 3px solid rgba(108,99,255,0.2); border-top-color: #6C63FF; border-radius: 50%; animation: sdSpin .9s linear infinite; }
+    @keyframes sdSpin { to { transform: rotate(360deg); } }
+    .dash { padding: 38px 28px 80px; }
+    .dash-inner { max-width: 1120px; margin: 0 auto; }
+    .doc-h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 4px; }
+    .doc-sub { color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 24px; }
+    .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .t-card { display: flex; flex-direction: column; gap: 8px; padding: 22px; border-radius: 16px; background: linear-gradient(160deg, #14121f, #0e0c18); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.4); text-decoration: none; color: #fff; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+    .t-card:hover { transform: translateY(-4px); border-color: rgba(108,99,255,0.35); box-shadow: 0 14px 40px rgba(108,99,255,0.16); }
+    .t-card .ic { font-size: 30px; }
+    .t-card h3 { font-size: 16px; font-weight: 800; }
+    .t-card p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.5; flex: 1; }
+    .t-card .go { font-size: 13px; font-weight: 700; color: #a78bfa; }
+    @media (max-width: 720px) { .dash { padding: 70px 16px 70px; } }
+  </style>
+  <link rel="stylesheet" href="app-shell.css">
+</head>
+<body>
+  <div id="authLoading" class="auth-loading-overlay">
+    <div class="auth-spinner"></div>
+    <div style="margin-top:16px;color:rgba(255,255,255,0.5);">Loading…</div>
+  </div>
+
+  <main class="dash hidden" id="appContainer">
+    <div class="dash-inner">
+      <h1 class="doc-h1">Documents</h1>
+      <div class="doc-sub">Turn notes, worksheets and blank pages into study-ready material.</div>
+      <div class="tool-grid">
+        <a class="t-card" href="notes-transcriber.html"><span class="ic">📋</span><h3>Notes Transcriber</h3><p>Turn messy notes and photos into clean, organised study notes.</p><span class="go">Open →</span></a>
+        <a class="t-card" href="worksheet-decoder.html"><span class="ic">📄</span><h3>Worksheet Decoder</h3><p>Upload a worksheet and get clear worked solutions.</p><span class="go">Open →</span></a>
+        <a class="t-card" href="worksheet-generator.html"><span class="ic">🖨️</span><h3>Worksheet Generator</h3><p>Build a printable worksheet with a full answer key.</p><span class="go">Open →</span></a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/ui-helpers.js"></script>
+  <script src="auth.js"></script>
+  <script src="streak.js"></script>
+  <script src="subject-data.js"></script>
+  <script src="upsell.js"></script>
+  <script src="app-shell.js"></script>
+  <script src="pwa.js"></script>
+  <script>
+    (function () {
+      var authP = window.__sdAuth || fetch('/api/subscription', { credentials: 'include' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+      authP.then(function (auth) {
+        if (!auth || !auth.email) { window.location.replace('/login.html?redirect=/documents.html'); return; }
+        if (auth.role === 'teacher') { window.location.replace('/teacher-dashboard.html'); return; }
+        document.getElementById('authLoading').classList.add('hidden');
+        document.getElementById('appContainer').classList.remove('hidden');
+      });
+    })();
+  </script>
+</body>
+</html>

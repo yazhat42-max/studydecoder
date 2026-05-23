@@ -38,9 +38,7 @@
       { label: 'Chat Tutor', icon: '🤖', href: 'chat-tutor.html' }
     ] },
     { sec: 'Create & revise', items: [
-      { label: 'Notes Transcriber', icon: '📋', href: 'notes-transcriber.html' },
-      { label: 'Worksheet Decoder', icon: '📄', href: 'worksheet-decoder.html' },
-      { label: 'Worksheet Generator', icon: '🖨️', href: 'worksheet-generator.html' },
+      { label: 'Documents', icon: '📂', href: 'documents.html' },
       { label: 'Study Games', icon: '🎯', href: 'games.html' }
     ] },
     { sec: 'Class', items: [

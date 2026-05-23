@@ -2591,19 +2591,29 @@ function computeStreakTrack(prev) {
  */
 app.post('/api/streak/track', requireAuth, (req, res) => {
     const user = req.user;
-    const clientStreak = req.body && req.body.streak;
-    let base;
-    if (user.streak && typeof user.streak.count === 'number') {
-        base = user.streak;                       // server is authoritative
-    } else if (clientStreak && typeof clientStreak.count === 'number') {
-        base = clientStreak;                      // first sync — seed from client
-    } else {
-        base = null;                              // fresh streak
+    // First-ever sync: seed the server streak from the client's localStorage.
+    if (!(user.streak && typeof user.streak.count === 'number')) {
+        const cs = req.body && req.body.streak;
+        if (cs && typeof cs.count === 'number') {
+            user.streak = {
+                count: cs.count, lastDate: cs.lastDate || '',
+                shields: Number(cs.shields) || 0, shieldsEarned: Number(cs.shieldsEarned) || 0,
+                totalDays: Number(cs.totalDays) || 0, theme: cs.theme || 'default',
+                milestonesShown: Array.isArray(cs.milestonesShown) ? cs.milestonesShown : []
+            };
+        }
     }
-    const result = computeStreakTrack(base);
-    user.streak = result.streak;
+    // The streak now advances only when today's plan is completed (concrete,
+    // finite daily goal). refreshPlanProgress() runs advanceStreakOnPlanComplete
+    // the moment the last task is done, so this endpoint just reports status.
+    const plan = buildTodayPlan(user.userId);
+    refreshPlanProgress(user.userId);
     scheduleSave();
-    res.json(result);
+    res.json({
+        streak: user.streak || { count: 0, lastDate: '', shields: 0, shieldsEarned: 0, totalDays: 0, theme: 'default' },
+        isNew: false, newMilestone: null, shieldEarned: false, shieldUsed: false,
+        planComplete: !!(plan && plan.complete), plan
+    });
 });
 
 // crypto-strong join code — excludes ambiguous chars (0/O, 1/I/L)
@@ -2645,6 +2655,215 @@ function studentMasterySummary(userId) {
         else if (band === 'strong') strong++;
     }
     return { average: Math.round((sum / recs.length) * 1000) / 1000, dotPoints: recs.length, weak, strong };
+}
+
+/* ===================================================================== *
+ *  GAMIFICATION — XP economy · Today plan · Exam readiness · leaderboard *
+ *  Additive layer over the existing mastery / streak / SR systems.       *
+ *  State lives on user.gamification, persisted via scheduleSave() the    *
+ *  same way user.streak is. No new data files.                           *
+ * ===================================================================== */
+
+const XP_THEME_UNLOCKS = [
+    { level: 3, theme: 'bronze' }, { level: 6, theme: 'silver' },
+    { level: 10, theme: 'gold' }, { level: 15, theme: 'platinum' }
+];
+function xpToLevel(xp) { return Math.floor(Math.sqrt(Math.max(0, Number(xp) || 0) / 100)); }
+function xpForLevel(level) { return level * level * 100; }
+
+function getGamification(userId) {
+    const user = db.users[userId];
+    if (!user) return null;
+    const g = user.gamification || (user.gamification = {});
+    if (typeof g.xp !== 'number') g.xp = 0;
+    if (typeof g.level !== 'number') g.level = xpToLevel(g.xp);
+    if (!Array.isArray(g.unlockedThemes)) g.unlockedThemes = [];
+    if (!g.weekly || typeof g.weekly !== 'object') g.weekly = {};
+    if (!g.awarded || typeof g.awarded !== 'object') g.awarded = {};
+    return g;
+}
+
+function _isoWeekKey(d) { const w = _getISOWeek(d || new Date()); return w.year + '-W' + String(w.week).padStart(2, '0'); }
+
+// Single chokepoint for ALL XP. dedupeKey (optional) blocks same-day double counts.
+function awardXp(userId, source, amount, dedupeKey) {
+    const g = getGamification(userId);
+    if (!g) return null;
+    amount = Math.max(0, Math.round(Number(amount) || 0));
+    if (!amount) return g;
+    const today = _getToday();
+    if (dedupeKey) {
+        if (!Array.isArray(g.awarded[today])) g.awarded = { [today]: [] }; // prune older days
+        if (g.awarded[today].indexOf(dedupeKey) !== -1) return g;          // already counted today
+        g.awarded[today].push(dedupeKey);
+    }
+    g.xp += amount;
+    const wk = _isoWeekKey();
+    g.weekly[wk] = (g.weekly[wk] || 0) + amount;
+    const keep = { [wk]: 1, [_isoWeekKey(new Date(Date.now() - 7 * 864e5))]: 1 };
+    for (const k of Object.keys(g.weekly)) if (!keep[k]) delete g.weekly[k];
+    const lvl = xpToLevel(g.xp);
+    if (lvl > g.level) {
+        g.level = lvl;
+        for (const u of XP_THEME_UNLOCKS) if (lvl >= u.level && g.unlockedThemes.indexOf(u.theme) === -1) g.unlockedThemes.push(u.theme);
+    }
+    g.lastXpAt = new Date().toISOString();
+    scheduleSave();
+    return g;
+}
+
+function xpState(userId) {
+    const g = getGamification(userId);
+    if (!g) return null;
+    const level = g.level || 0;
+    return {
+        xp: g.xp, level,
+        levelFloor: xpForLevel(level),
+        nextLevelXp: xpForLevel(level + 1),
+        weeklyXp: g.weekly[_isoWeekKey()] || 0,
+        unlockedThemes: g.unlockedThemes.slice()
+    };
+}
+
+// ── Exam readiness ──
+function readinessPredictBand(pct, isJunior) {
+    if (isJunior) { if (pct >= 85) return 'A'; if (pct >= 70) return 'B'; if (pct >= 55) return 'C'; if (pct >= 40) return 'D'; return 'E'; }
+    if (pct >= 85) return 'Band 6'; if (pct >= 72) return 'Band 5'; if (pct >= 58) return 'Band 4'; if (pct >= 44) return 'Band 3'; if (pct >= 30) return 'Band 2'; return 'Band 1';
+}
+function subjectReadiness(userId) {
+    const user = db.users[userId];
+    const isJunior = !!(user && user.preferences && user.preferences.level === 'junior');
+    const groups = {};
+    for (const r of Object.values(db.mastery)) {
+        if (r.userId !== userId) continue;
+        const s = r.subject || 'General';
+        (groups[s] = groups[s] || []).push(r);
+    }
+    const bySubject = {};
+    for (const [subj, list] of Object.entries(groups)) {
+        const avg = list.reduce((a, r) => a + (r.score || 0), 0) / list.length;
+        const times = list.map(r => new Date(r.lastUpdate || 0).getTime()).filter(Number.isFinite);
+        const lastMs = times.length ? Math.max(...times) : 0;
+        const days = lastMs ? Math.max(0, (Date.now() - lastMs) / 864e5) : 0;
+        const decay = Math.max(0.5, Math.pow(0.97, days)); // gentle FOMO; never below 0.5
+        const pct = Math.round(avg * decay * 100);
+        bySubject[subj] = {
+            pct, avgMastery: Math.round(avg * 100), dotPoints: list.length,
+            band: SR.masteryBand(avg), predictedBand: readinessPredictBand(pct, isJunior)
+        };
+    }
+    return bySubject;
+}
+
+// ── Today plan ──
+function dueCardCount(userId) {
+    const now = Date.now();
+    let n = 0;
+    for (const r of Object.values(db.cardReviews)) {
+        if (r.userId !== userId) continue;
+        if (!r.dueAt || new Date(r.dueAt).getTime() <= now) n++;
+    }
+    return n;
+}
+function weakestModule(userId) {
+    const groups = {};
+    for (const r of Object.values(db.mastery)) {
+        if (r.userId !== userId) continue;
+        const key = (r.subject || 'General') + '||' + (r.module || 'General');
+        (groups[key] = groups[key] || []).push(r.score || 0);
+    }
+    let best = null;
+    for (const [key, scores] of Object.entries(groups)) {
+        const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+        if (!best || avg < best.avg) { const parts = key.split('||'); best = { subject: parts[0], module: parts[1], avg }; }
+    }
+    return best;
+}
+function buildTodayPlan(userId) {
+    const g = getGamification(userId);
+    if (!g) return null;
+    const today = _getToday();
+    if (g.plan && g.plan.date === today) return g.plan;
+    const user = db.users[userId];
+    const isJr = !!(user && user.preferences && user.preferences.level === 'junior');
+    const practiceHref = isJr ? 'practice-jr.html' : 'practice.html';
+    const tasks = [];
+    const due = dueCardCount(userId);
+    if (due > 0) tasks.push({ id: 'cards', kind: 'cards', icon: '🃏', label: 'Review ' + due + ' flashcard' + (due === 1 ? '' : 's') + ' due today', href: 'flashcards.html' });
+    const weak = weakestModule(userId);
+    if (weak && weak.module && weak.module !== 'General') {
+        tasks.push({ id: 'practice', kind: 'practice', icon: '📝', label: 'Practise your weakest area: ' + weak.module, href: practiceHref + '?subject=' + encodeURIComponent(weak.subject) + '&topic=' + encodeURIComponent(weak.module) });
+    } else {
+        tasks.push({ id: 'practice', kind: 'practice', icon: '📝', label: 'Do a quick practice set', href: practiceHref });
+    }
+    if ((new Date().getDate()) % 2 === 0) tasks.push({ id: 'irl', kind: 'irl', icon: '🎮', label: 'Play one Learn IRL scenario', href: 'learn-irl.html' });
+    else tasks.push({ id: 'game', kind: 'game', icon: '🎯', label: 'Win one study game', href: 'games.html' });
+    g.plan = { date: today, tasks, doneIds: [], complete: false };
+    scheduleSave();
+    return g.plan;
+}
+function refreshPlanProgress(userId) {
+    const g = getGamification(userId);
+    const today = _getToday();
+    if (!g || !g.plan || g.plan.date !== today) return g ? g.plan : null;
+    const kinds = (g.act && g.act.date === today) ? g.act.kinds : {};
+    g.plan.doneIds = g.plan.tasks.filter(t => (kinds[t.kind] || 0) > 0).map(t => t.id);
+    const wasComplete = g.plan.complete;
+    g.plan.complete = g.plan.tasks.length > 0 && g.plan.doneIds.length >= g.plan.tasks.length;
+    if (g.plan.complete && !wasComplete) {
+        awardXp(userId, 'plan', 30, 'plan_' + today);
+        advanceStreakOnPlanComplete(userId);
+    }
+    return g.plan;
+}
+// Plan completion is what advances the streak (concrete, finite daily goal).
+function notePlanActivity(userId, kind) {
+    const g = getGamification(userId);
+    if (!g) return;
+    buildTodayPlan(userId);
+    const today = _getToday();
+    if (!g.act || g.act.date !== today) g.act = { date: today, kinds: {} };
+    g.act.kinds[kind] = (g.act.kinds[kind] || 0) + 1;
+    refreshPlanProgress(userId);
+    scheduleSave();
+}
+function advanceStreakOnPlanComplete(userId) {
+    const user = db.users[userId];
+    if (!user) return;
+    if (user.streak && user.streak.lastDate === _getToday()) return; // already counted today
+    const result = computeStreakTrack(user.streak || null);
+    user.streak = result.streak;
+    if (result.isNew) awardXp(userId, 'streak', 20 + (result.newMilestone || 0), 'streak_' + _getToday());
+    scheduleSave();
+}
+
+// ── Leaderboard (weekly XP; friends = classmates for v1) ──
+function classmateIds(userId) {
+    const myClassIds = db.classMembers.filter(m => m.studentUserId === userId && !m.removedAt).map(m => m.classId);
+    const ids = new Set([userId]);
+    if (myClassIds.length) {
+        const set = new Set(myClassIds);
+        for (const m of db.classMembers) if (set.has(m.classId) && !m.removedAt) ids.add(m.studentUserId);
+    }
+    return ids;
+}
+function leaderboardRows(userIds, weekKey) {
+    const wk = weekKey || _isoWeekKey();
+    const rows = [];
+    for (const uid of userIds) {
+        const u = db.users[uid];
+        if (!u) continue;
+        const g = u.gamification;
+        rows.push({
+            userId: uid,
+            name: (u.name || (u.email || '').split('@')[0] || 'Student').split(' ')[0],
+            weeklyXp: (g && g.weekly && g.weekly[wk]) || 0,
+            level: (g && g.level) || 0
+        });
+    }
+    rows.sort((a, b) => b.weeklyXp - a.weeklyXp || b.level - a.level);
+    rows.forEach((r, i) => r.rank = i + 1);
+    return rows;
 }
 
 // Shared OpenAI chat call. Returns the raw assistant text.
@@ -4062,6 +4281,12 @@ For "correct", set hint and exemplarAnswer to null. Keep feedback encouraging an
     };
     scheduleClassroomSave();
 
+    // Gamification: reward understanding (quality-weighted) + mark plan progress.
+    try {
+        notePlanActivity(req.user.userId, 'cards');
+        awardXp(req.user.userId, 'card', quality * 2, 'card_' + card.cardId + '_' + _getToday());
+    } catch (e) { /* never block grading on gamification */ }
+
     res.json({
         grade: graded.grade,
         feedback: graded.feedback || '',
@@ -4100,6 +4325,47 @@ function buildMasteryMap(userId) {
 // GET /api/mastery — the user's own mastery map
 app.get('/api/mastery', requireAuth, (req, res) => {
     res.json({ mastery: buildMasteryMap(req.user.userId), summary: studentMasterySummary(req.user.userId) });
+});
+
+/* ------------------------- GAMIFICATION ROUTES ------------------------- */
+
+// GET /api/today — daily plan + streak + XP + readiness in one dashboard fetch
+app.get('/api/today', requireAuth, (req, res) => {
+    const uid = req.user.userId;
+    const plan = buildTodayPlan(uid);
+    refreshPlanProgress(uid);
+    res.json({
+        plan,
+        streak: req.user.streak || { count: 0, lastDate: '', shields: 0, theme: 'default' },
+        xp: xpState(uid),
+        readiness: subjectReadiness(uid)
+    });
+});
+
+// GET /api/xp — XP total, level + theme unlocks
+app.get('/api/xp', requireAuth, (req, res) => res.json(xpState(req.user.userId)));
+
+// GET /api/readiness — per-subject exam readiness %
+app.get('/api/readiness', requireAuth, (req, res) => res.json({ bySubject: subjectReadiness(req.user.userId) }));
+
+// POST /api/games/score — record a finished game round (greenfield; awards XP from correct answers)
+app.post('/api/games/score', requireAuth, express.json(), (req, res) => {
+    const correct = Math.max(0, Math.min(500, parseInt(req.body && req.body.correct, 10) || 0));
+    const total = Math.max(correct, Math.min(500, parseInt(req.body && req.body.total, 10) || 0));
+    const gameId = String((req.body && req.body.gameId) || '').slice(0, 40);
+    notePlanActivity(req.user.userId, 'game');
+    awardXp(req.user.userId, 'game', Math.min(15, correct), null);
+    const x = xpState(req.user.userId);
+    res.json({ ok: true, gameId, correct, total, xp: x.xp, level: x.level, weeklyXp: x.weeklyXp });
+});
+
+// GET /api/leaderboard — weekly XP among classmates (friends = class for v1)
+app.get('/api/leaderboard', requireAuth, (req, res) => {
+    const uid = req.user.userId;
+    const ids = classmateIds(uid);
+    const rows = leaderboardRows(ids).slice(0, 50);
+    const me = rows.find(r => r.userId === uid) || null;
+    res.json({ week: _isoWeekKey(), rows, me, hasClass: ids.size > 1 });
 });
 
 // GET /api/mastery/:studentUserId — teacher-only, gated by class membership
@@ -9627,6 +9893,12 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
         }
         saveExamProgress(req.session.userId, progress);
 
+        // Gamification: reward exam practice (capped, once per subject per day).
+        try {
+            notePlanActivity(req.session.userId, 'practice');
+            awardXp(req.session.userId, 'exam', Math.min(50, markingResult.totalMarksAwarded || 0), 'exam_' + subject + '_' + _getToday());
+        } catch (e) { /* never block marking on gamification */ }
+
         // Include progress comparison
         const previousAttempts = progress[subject].attempts;
         let comparison = null;
@@ -10078,6 +10350,11 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     // Track bot usage (per-bot daily stats + per-user lifetime stats)
     recordBotStat(botType);
     recordUserBotUsage(req.session.userId, botType);
+    // Today-plan progress for the Learn IRL / practice tasks.
+    try {
+        if (botType === 'learn-irl') notePlanActivity(req.session.userId, 'irl');
+        else if (botType === 'practice') notePlanActivity(req.session.userId, 'practice');
+    } catch (e) { /* ignore */ }
 
     const { messages, subject, detailLevel } = req.body;
 
