@@ -106,6 +106,7 @@
     html += '</nav>';
     html += '<div class="sd-sb-foot">';
     html += '<a class="sd-upgrade" id="sdUpgrade" href="index.html?stay=1#pricing"><b>Upgrade to Pro</b><span>Unlock every tool, unlimited</span></a>';
+    html += '<button class="sd-nav-item" id="sdThemeToggle" type="button" data-sd-theme-toggle hidden style="width:100%;background:none;border:none;cursor:pointer;font:inherit;text-align:left;"><span class="ic tt-ic">☀️</span><span class="tt-label">Light mode</span></button>';
     html += '</div>';
     aside.innerHTML = html;
 
@@ -132,6 +133,12 @@
     body.appendChild(aside);
     body.appendChild(scrim);
     body.appendChild(hamb);
+
+    // Theme toggle: only surface it where theme.js (light mode) is loaded.
+    if (window.SDTheme) {
+      var tt = aside.querySelector('#sdThemeToggle');
+      if (tt) { tt.removeAttribute('hidden'); window.SDTheme.refresh(); }
+    }
 
     markActive(aside, isJr);
     wireInteractions(aside, hamb, scrim);
