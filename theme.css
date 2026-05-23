@@ -1,0 +1,94 @@
+/* theme.css — light-mode overrides. Loaded AFTER each page's own styles on the
+ * themed surfaces (dashboard, documents, onboarding, SEO pages, app shell).
+ * Dark is the default (untouched); everything here is scoped to
+ * :root[data-theme="light"] so it only applies when light mode is on. */
+
+/* ── Toggle button (sidebar row + inline) ── */
+[data-sd-theme-toggle] { cursor: pointer; }
+button[data-sd-theme-toggle] { font: inherit; }
+.sd-theme-inline {
+  display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px; border-radius: 999px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
+  color: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+:root[data-theme="light"] .sd-theme-inline { background: rgba(15,18,30,0.05); border-color: rgba(15,18,30,0.12); color: #15151f; }
+
+/* ============================ APP SHELL ============================ */
+:root[data-theme="light"] {
+  --sd-sb-bg: rgba(255,255,255,0.96);
+  --sd-sb-border: rgba(15,18,30,0.10);
+  --sd-sb-text: rgba(20,20,35,0.74);
+}
+:root[data-theme="light"] .sd-sb-brand b { color: #15151f; }
+:root[data-theme="light"] .sd-sb-sec { color: rgba(20,20,35,0.45); }
+:root[data-theme="light"] .sd-nav-item:hover { background: rgba(108,99,255,0.10); color: #15151f; }
+:root[data-theme="light"] .sd-nav-item.active { background: rgba(108,99,255,0.14); color: #15151f; }
+:root[data-theme="light"] .sd-collapse { background: rgba(15,18,30,0.05); border-color: rgba(15,18,30,0.12); color: rgba(20,20,35,0.6); }
+:root[data-theme="light"] .sd-collapse:hover { background: rgba(15,18,30,0.10); color: #15151f; }
+:root[data-theme="light"] .sd-hamb { background: rgba(255,255,255,0.92); color: #15151f; border-color: rgba(15,18,30,0.14); }
+:root[data-theme="light"] .sd-streak-chip { background: rgba(108,99,255,0.12); color: #5b52e0; }
+:root[data-theme="light"] .sd-streak-chip .n { color: #15151f; }
+:root[data-theme="light"] .sd-sidebar::-webkit-scrollbar-thumb { background: rgba(15,18,30,0.18); }
+
+/* ============================ DASHBOARD ============================ */
+:root[data-theme="light"] body { background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(108,99,255,0.10), transparent 60%), #f6f7fb; color: #15151f; }
+:root[data-theme="light"] .auth-loading-overlay { background: #f6f7fb; color: #15151f; }
+:root[data-theme="light"] .sd-home-greet { color: #15151f; }
+:root[data-theme="light"] .dash-streak { color: rgba(20,20,35,0.6); }
+:root[data-theme="light"] .dash-h2 { color: #15151f; }
+:root[data-theme="light"] .t-card { background: #fff; border-color: rgba(15,18,30,0.10); box-shadow: 0 8px 24px rgba(15,18,30,0.06); color: #15151f; }
+:root[data-theme="light"] .t-card h3 { color: #15151f; }
+:root[data-theme="light"] .t-card p { color: rgba(20,20,35,0.6); }
+:root[data-theme="light"] .today-card { background: #fff; border-color: rgba(108,99,255,0.20); box-shadow: 0 8px 24px rgba(15,18,30,0.06); }
+:root[data-theme="light"] .today-head h2 { color: #15151f; }
+:root[data-theme="light"] .share-btn { color: #5b52e0; }
+:root[data-theme="light"] .xp-num, :root[data-theme="light"] .xp-foot { color: rgba(20,20,35,0.6); }
+:root[data-theme="light"] .xp-track, :root[data-theme="light"] .rd-track { background: rgba(15,18,30,0.08); }
+:root[data-theme="light"] .plan-task { background: #fff; border-color: rgba(15,18,30,0.08); color: #15151f; }
+:root[data-theme="light"] .pt-label { color: #15151f; }
+:root[data-theme="light"] .pt-circle { border-color: rgba(15,18,30,0.3); }
+:root[data-theme="light"] .plan-empty { color: rgba(20,20,35,0.5); }
+:root[data-theme="light"] .rd-chip { background: #fff; border-color: rgba(15,18,30,0.08); }
+:root[data-theme="light"] .rd-name { color: #15151f; }
+:root[data-theme="light"] .rd-band { color: rgba(20,20,35,0.5); }
+:root[data-theme="light"] .readiness-note { color: rgba(20,20,35,0.45); }
+:root[data-theme="light"] .lb-row { background: #fff; border-color: rgba(15,18,30,0.08); }
+:root[data-theme="light"] .lb-row.me { background: rgba(108,99,255,0.10); border-color: rgba(108,99,255,0.4); }
+:root[data-theme="light"] .lb-name { color: #15151f; }
+:root[data-theme="light"] .lb-rank { color: rgba(20,20,35,0.6); }
+:root[data-theme="light"] .lb-you { color: rgba(20,20,35,0.55); }
+:root[data-theme="light"] .activity li { background: #fff; border-color: rgba(15,18,30,0.08); color: #15151f; }
+:root[data-theme="light"] .activity .when { color: rgba(20,20,35,0.45); }
+:root[data-theme="light"] .empty { background: #fff; border-color: rgba(15,18,30,0.12); color: rgba(20,20,35,0.5); }
+:root[data-theme="light"] .continue-card { color: #15151f; }
+:root[data-theme="light"] .continue-card .d { color: rgba(20,20,35,0.6); }
+
+/* ============================ DOCUMENTS ============================ */
+:root[data-theme="light"] .doc-h1 { color: #15151f; }
+:root[data-theme="light"] .doc-sub { color: rgba(20,20,35,0.6); }
+
+/* ============================ ONBOARDING ============================ */
+:root[data-theme="light"] h1 { color: #15151f; }
+:root[data-theme="light"] .sub { color: rgba(20,20,35,0.6); }
+:root[data-theme="light"] .toggle { background: rgba(15,18,30,0.05); }
+:root[data-theme="light"] .toggle button { color: rgba(20,20,35,0.6); }
+:root[data-theme="light"] .chip { background: #fff; border-color: rgba(15,18,30,0.12); color: #15151f; }
+:root[data-theme="light"] .q-card { background: #fff; border-color: rgba(15,18,30,0.10); }
+:root[data-theme="light"] .q-stem { color: #15151f; }
+:root[data-theme="light"] .opt { background: #f6f7fb; border-color: rgba(15,18,30,0.10); color: #15151f; }
+:root[data-theme="light"] .explain { color: #3a3a4a; }
+:root[data-theme="light"] .win h2 { color: #15151f; }
+:root[data-theme="light"] .win p { color: rgba(20,20,35,0.65); }
+
+/* ============================ SEO /learn PAGES ============================ */
+:root[data-theme="light"] body.sd-seo { background: #f6f7fb; color: #15151f; }
+:root[data-theme="light"] body.sd-seo header.site { background: rgba(246,247,251,0.92); border-color: rgba(15,18,30,0.10); }
+:root[data-theme="light"] body.sd-seo .brand { color: #15151f; }
+:root[data-theme="light"] body.sd-seo h1, :root[data-theme="light"] body.sd-seo h2 { color: #15151f; }
+:root[data-theme="light"] body.sd-seo p, :root[data-theme="light"] body.sd-seo li, :root[data-theme="light"] body.sd-seo .lead { color: #3a3a4a; }
+:root[data-theme="light"] body.sd-seo .crumb { color: rgba(20,20,35,0.5); }
+:root[data-theme="light"] body.sd-seo .card { background: #fff; border-color: rgba(15,18,30,0.10); }
+:root[data-theme="light"] body.sd-seo .card .t { color: #15151f; }
+:root[data-theme="light"] body.sd-seo .card .s { color: rgba(20,20,35,0.55); }
+:root[data-theme="light"] body.sd-seo .cat { color: #6b6b7a; }
+:root[data-theme="light"] body.sd-seo footer.site { border-color: rgba(15,18,30,0.10); color: rgba(20,20,35,0.5); }

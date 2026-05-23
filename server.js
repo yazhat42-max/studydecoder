@@ -11773,6 +11773,7 @@ function seoShell({ title, desc, canonical, body }) {
     const site = config.frontendUrl || 'https://www.studydecoder.com.au';
     return `<!DOCTYPE html><html lang="en-AU"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){try{var t=localStorage.getItem('sd_theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="${escapeHtml(desc)}">
 <link rel="canonical" href="${site}${canonical}">
@@ -11803,10 +11804,13 @@ ul{margin:0 0 16px 22px}li{margin:6px 0;color:#c8c8d4}
 .cat{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#8b8b9a;margin:26px 0 10px;font-weight:700}
 footer.site{border-top:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);font-size:13px}
 footer.site .wrap{padding:24px 20px}
-</style></head><body>
-<header class="site"><div class="wrap"><a class="brand" href="/">Study<span>Decoder</span></a><a class="btn" href="/login.html">Start free</a></div></header>
+.sd-theme-inline{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);color:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-right:10px}
+</style>
+<link rel="stylesheet" href="/theme.css"></head><body class="sd-seo">
+<header class="site"><div class="wrap"><a class="brand" href="/">Study<span>Decoder</span></a><div style="display:flex;align-items:center"><button class="sd-theme-inline" data-sd-theme-toggle type="button" aria-label="Toggle theme"><span class="tt-ic">☀️</span><span class="tt-label">Light mode</span></button><a class="btn" href="/login.html">Start free</a></div></div></header>
 <main class="wrap">${body}</main>
 <footer class="site"><div class="wrap">Study Decoder · AI-powered HSC &amp; Years 7–10 study, aligned to the NSW NESA syllabus · <a href="/learn">Browse all subjects</a></div></footer>
+<script src="/theme.js"></script>
 </body></html>`;
 }
 
