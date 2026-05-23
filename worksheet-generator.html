@@ -20,11 +20,11 @@
         html, body {
             height: 100%; width: 100%;
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0f1419; color: #e7e9ea;
+            background: var(--tool-bg); color: #e7e9ea;
         }
         .app-container { display: flex; flex-direction: column; min-height: 100vh; width: 100%; overflow-x: hidden; }
         .header {
-            background: #16202a; border-bottom: 1px solid #2f3336;
+            background: var(--tool-surface); border-bottom: 1px solid #2f3336;
             padding: 12px 24px; display: flex; align-items: center;
             justify-content: space-between; flex-shrink: 0; position: sticky; top: 0; z-index: 50;
         }
@@ -41,7 +41,7 @@
         .container { max-width: 980px; margin: 0 auto; }
 
         .config-card {
-            background: #16202a; border: 1px solid #2f3336; border-radius: 16px;
+            background: var(--tool-surface); border: 1px solid #2f3336; border-radius: 16px;
             padding: 28px; margin-bottom: 24px;
         }
         .config-card h2 { font-size: 22px; margin-bottom: 6px; color: #e7e9ea; }
@@ -51,12 +51,12 @@
         .form-group.full { grid-column: 1 / -1; }
         .form-label { font-size: 13px; font-weight: 500; color: #c8ccd0; }
         .form-input, .form-select {
-            background: #0f1419; border: 1px solid #2f3336; border-radius: 8px;
+            background: var(--tool-bg); border: 1px solid #2f3336; border-radius: 8px;
             padding: 12px 14px; color: #e7e9ea; font-size: 14px; font-family: inherit;
         }
         .form-input:focus, .form-select:focus { outline: none; border-color: #6C63FF; }
         .submit-btn {
-            width: 100%; background: linear-gradient(135deg, #6C63FF, #6c63ff); color: #fff;
+            width: 100%; background: linear-gradient(135deg, #6C63FF, #6c63ff); color:var(--tool-ink);
             border: none; border-radius: 10px; padding: 14px 24px;
             font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 18px;
         }
@@ -74,12 +74,12 @@
 
         .toolbar {
             display: flex; gap: 10px; flex-wrap: wrap; padding: 14px 16px;
-            background: #16202a; border: 1px solid #2f3336; border-radius: 12px;
+            background: var(--tool-surface); border: 1px solid #2f3336; border-radius: 12px;
             margin-bottom: 16px; align-items: center;
         }
         .toolbar-info { flex: 1; font-size: 13px; color: #8899a6; }
         .tb-btn {
-            background: #1d3a5f; color: #e7e9ea; border: 1px solid rgba(108, 99, 255,0.3);
+            background: var(--tool-surface); color: #e7e9ea; border: 1px solid rgba(108, 99, 255,0.3);
             padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500;
             cursor: pointer; transition: all 0.2s;
         }
@@ -143,7 +143,7 @@
 
         .auth-loading-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #0f1419; display: flex; flex-direction: column;
+            background: var(--tool-bg); display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 9999;
         }
         .auth-spinner {
@@ -159,6 +159,8 @@
         }
     </style>
     <link rel="stylesheet" href="app-shell.css">
+<script>(function(){try{var t=localStorage.getItem('sd_theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="theme.css">
 </head>
 <body>
     <div id="authLoading" class="auth-loading-overlay">
@@ -633,7 +635,8 @@
                 + `<td style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:6pt 0;"><b>Date:</b> ${dateStr}</td>`
                 + `<td style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:6pt 0;"><b>Mark:</b> ____ / ${data.totalMarks}</td>`
                 + `</tr></table>`;
-            return head + titleBlock + q + ak + '</body></html>';
+            return head + titleBlock + q + ak + '<script src="theme.js"></script>
+</body></html>';
         }
 
         document.getElementById('wordBtn').addEventListener('click', () => {
