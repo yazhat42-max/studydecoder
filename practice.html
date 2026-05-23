@@ -2046,8 +2046,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
   <h1>${escapeHtml(examData.title || 'Practice Exam')}</h1>
   <div class="meta">Duration: ${escapeHtml(examData.duration || '')} • Total Marks: ${escapeHtml(examData.totalMarks || '')}</div>
   ${instructions}
-  ${sectionsHtml}
-<script src="theme.js"></script>
+  ${sectionsHtml}
 </body>
 </html>`;
 
@@ -3341,7 +3340,8 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             html += `<div class="exam-results-header">
                 <div class="exam-results-score ${scoreClass}">${Math.round(pct)}%</div>
                 <div class="exam-results-band">${marking.expectedBand || ''}</div>
-                <div class="exam-results-marks">${marking.totalMarksAwarded} / ${marking.totalMarksPossible} marks</div>`;
+                <div class="exam-results-marks">${marking.totalMarksAwarded} / ${marking.totalMarksPossible} marks</div>
+                <button id="examShareBtn" type="button" hidden style="margin-top:14px;background:rgba(108,99,255,0.15);border:1px solid rgba(108,99,255,0.4);color:#c4b5fd;font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer;">📸 Share my result</button>`;
 
             // Comparison with previous
             if (progress.comparison) {
@@ -3459,6 +3459,19 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
 
             document.getElementById('examContent').innerHTML = html;
             document.getElementById('examBody').scrollTop = 0;
+            // Shareable result card (a free ad with built-in social proof).
+            var _sb = document.getElementById('examShareBtn');
+            if (_sb && window.SDShareCard) {
+                _sb.removeAttribute('hidden');
+                _sb.addEventListener('click', function () {
+                    window.SDShareCard.share({
+                        kind: 'exam', accent: '#6C63FF',
+                        title: 'HSC practice exam',
+                        bigValue: Math.round(pct) + '%',
+                        subtitle: (marking.expectedBand ? marking.expectedBand + ' · ' : '') + 'scored on Study Decoder'
+                    });
+                });
+            }
         }
 
         async function recordExamScore(data) {
@@ -3595,4 +3608,6 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
     <script src="upsell.js"></script>
     <script src="pwa.js"></script>
     <script src="app-shell.js" defer></script>
+<script src="theme.js"></script>
+<script src="share-card.js"></script>
 </body></html>

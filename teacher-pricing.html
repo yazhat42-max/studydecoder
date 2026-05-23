@@ -78,6 +78,10 @@ th { color:#8899a6; font-size:12px; text-transform:uppercase; letter-spacing:0.5
 .value-item .vi-ico { font-size:1.5rem; line-height:1; }
 .value-item .vi-title { font-weight:700; font-size:14px; color:#fff; margin-bottom:2px; }
 .value-item .vi-sub { font-size:12.5px; color:#a9b3bd; line-height:1.45; }
+.trial-banner { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; background:linear-gradient(135deg,rgba(79,140,255,0.16),rgba(108,99,255,0.08)); border:1px solid rgba(108,99,255,0.35); border-radius:14px; padding:16px 20px; margin:0 0 22px; }
+.trial-banner .tb-text { font-size:15px; color:#dfe6ee; }
+.trial-banner .tb-btn { flex:none; background:linear-gradient(135deg,#4f8cff,#6c63ff); color:#fff; border:none; border-radius:10px; padding:11px 20px; font-size:14px; font-weight:700; cursor:pointer; transition:transform .15s; }
+.trial-banner .tb-btn:hover { transform:translateY(-2px); }
 </style>
 <link rel="stylesheet" href="teacher-theme.css">
 </head>
@@ -99,6 +103,7 @@ function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 let isTeacher = false;
+let subData = null;
 
 const PLANS = [
   {
@@ -161,6 +166,15 @@ function planCardHtml(p){
     </div>`;
 }
 
+function trialBannerHtml(){
+  if (isTeacher) return '';
+  if (subData && subData.teacherTrialUsed) return '';
+  return `<div class="trial-banner">
+    <div class="tb-text"><strong>New to Study Decoder?</strong> Start a free 30-day teacher trial — set up a class and onboard your students, no card required.</div>
+    <button id="startTrialBtn" class="tb-btn" type="button">Start free trial</button>
+  </div>`;
+}
+
 function render(){
   const root = document.getElementById('root');
   root.innerHTML = `
@@ -170,6 +184,8 @@ function render(){
       <h1>Give your whole class <span class="grad">Study Decoder</span> — for the price of one seat.</h1>
       <p>One teacher seat unlocks full Study Decoder access for every student you link, up to <strong>100 students</strong> across all your classes. Pick the tier that matches what you teach.</p>
     </section>
+
+    ${trialBannerHtml()}
 
     <div class="plan-grid">${PLANS.map(planCardHtml).join('')}</div>
 
@@ -211,6 +227,22 @@ function render(){
       </details>
     </div>
   `;
+
+  const stb = document.getElementById('startTrialBtn');
+  if (stb){
+    stb.addEventListener('click', () => {
+      stb.disabled = true; stb.textContent = 'Starting…';
+      api('/api/teacher/start-trial', { method:'POST' })
+        .then(async r => {
+          const d = await r.json().catch(()=>({}));
+          if (r.status === 401){ window.location.href = 'login.html?role=teacher&redirect=' + encodeURIComponent('/teacher-dashboard.html'); return; }
+          if (r.ok){ window.location.href = 'teacher-dashboard.html'; return; }
+          document.getElementById('msgSlot').innerHTML = '<div class="error-banner">' + esc(d.error || 'Could not start trial') + '</div>';
+          stb.disabled = false; stb.textContent = 'Start free trial';
+        })
+        .catch(() => { document.getElementById('msgSlot').innerHTML = '<div class="error-banner">Network error. Please try again.</div>'; stb.disabled = false; stb.textContent = 'Start free trial'; });
+    });
+  }
 }
 
 function startCheckout(plan, btn){
@@ -256,6 +288,7 @@ function startCheckout(plan, btn){
     .then(async r => {
       if (r.ok){
         const d = await r.json().catch(()=>({}));
+        subData = d;
         isTeacher = d.role === 'teacher';
       }
     })

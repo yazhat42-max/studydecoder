@@ -610,10 +610,21 @@ function finish(s, outcome){
       <div class="end-actions">
         <button class="btn" id="againBtn">Play again</button>
         <button class="btn btn-ghost" id="menuBtn">Choose another game</button>
+        <button class="btn btn-ghost" id="shareBtn" hidden>📸 Share</button>
       </div>
     </div></div>`;
   document.getElementById('againBtn').addEventListener('click', () => startGame(s.game.id));
   document.getElementById('menuBtn').addEventListener('click', renderSetup);
+  const _shb = document.getElementById('shareBtn');
+  if (_shb && window.SDShareCard){
+    _shb.removeAttribute('hidden');
+    _shb.addEventListener('click', () => window.SDShareCard.share({
+      kind:'game', accent:'#6C63FF',
+      title: (s.game.name || 'Study game'),
+      bigValue: s.correct + (won ? ' 🏆' : ''),
+      subtitle: acc + '% accuracy on Study Decoder'
+    }));
+  }
   if (won){ const gv = root.querySelector('.game-view'); if (gv){ gv.style.position = 'relative'; gv.style.overflow = 'hidden'; confettiBurst(gv); } }
   if (window.sdTrack) sdTrack('tool_open');
 }
@@ -639,5 +650,6 @@ function finish(s, outcome){
 </script>
     <script src="app-shell.js" defer></script>
 <script src="theme.js"></script>
+<script src="share-card.js"></script>
 </body>
 </html>
