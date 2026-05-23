@@ -270,6 +270,7 @@
       authP.then(function (auth) {
         if (!auth || !auth.email) { window.location.replace('/login.html?redirect=/dashboard.html'); return; }
         if (auth.role === 'teacher') { window.location.replace('/teacher-dashboard.html'); return; }
+        if (auth.preferences && auth.preferences.onboarded === false) { window.location.replace('/onboarding.html'); return; }
         render(auth);
       });
     })();

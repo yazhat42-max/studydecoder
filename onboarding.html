@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Get started | Study Decoder</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="logo.png">
+  <meta name="theme-color" content="#08080d">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(108,99,255,0.12), transparent 60%), #08080d; color: #fff; min-height: 100vh; }
+    .hidden { display: none !important; }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 48px 20px 80px; }
+    .spinner { width: 44px; height: 44px; border: 3px solid rgba(108,99,255,0.2); border-top-color: #6C63FF; border-radius: 50%; animation: sp .9s linear infinite; margin: 80px auto; }
+    @keyframes sp { to { transform: rotate(360deg); } }
+    .step-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 28px; }
+    .dot { width: 28px; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.15); }
+    .dot.on { background: #6C63FF; }
+    h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; text-align: center; }
+    .sub { color: rgba(255,255,255,0.6); text-align: center; margin-bottom: 28px; font-size: 15px; }
+    .toggle { display: flex; gap: 8px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 5px; margin: 0 auto 22px; max-width: 320px; }
+    .toggle button { flex: 1; padding: 10px; border: none; background: transparent; color: rgba(255,255,255,0.6); font-weight: 700; font-size: 14px; border-radius: 9px; cursor: pointer; }
+    .toggle button.on { background: #6C63FF; color: #fff; }
+    .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 28px; }
+    .chip { padding: 9px 15px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #e8e8ef; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .chip:hover { border-color: rgba(108,99,255,0.5); }
+    .chip.sel { background: rgba(108,99,255,0.22); border-color: #6C63FF; color: #fff; }
+    .btn { display: block; width: 100%; padding: 15px; border: none; border-radius: 12px; background: #6C63FF; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; transition: opacity .2s, transform .15s; }
+    .btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-ghost { background: rgba(255,255,255,0.07); margin-top: 10px; }
+    .q-card { background: linear-gradient(160deg, #14121f, #0e0c18); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 24px; margin-bottom: 20px; }
+    .q-stem { font-size: 17px; font-weight: 700; line-height: 1.5; margin-bottom: 18px; }
+    .opt { display: block; width: 100%; text-align: left; padding: 14px 16px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #e8e8ef; font-size: 14.5px; margin-bottom: 10px; cursor: pointer; transition: all .15s; }
+    .opt:hover:not(:disabled) { border-color: rgba(108,99,255,0.5); }
+    .opt.correct { background: rgba(34,197,94,0.18); border-color: #22c55e; }
+    .opt.wrong { background: rgba(239,68,68,0.16); border-color: #ef4444; }
+    .opt:disabled { cursor: default; }
+    .explain { font-size: 14px; line-height: 1.55; color: #c8c8d4; background: rgba(108,99,255,0.1); border: 1px solid rgba(108,99,255,0.25); border-radius: 12px; padding: 14px 16px; margin-bottom: 18px; }
+    .win { text-align: center; padding: 30px 10px; }
+    .win .big { font-size: 60px; }
+    .win h2 { font-size: 22px; font-weight: 800; margin: 10px 0 6px; }
+    .win p { color: rgba(255,255,255,0.65); margin-bottom: 22px; }
+  </style>
+</head>
+<body>
+  <div id="loading"><div class="spinner"></div></div>
+
+  <main class="wrap hidden" id="app">
+    <div class="step-dots"><span class="dot on" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span></div>
+
+    <!-- STEP 1: subjects -->
+    <section id="step1">
+      <h1>What are you studying?</h1>
+      <div class="sub">Pick your subjects — we’ll tailor your daily plan around them.</div>
+      <div class="toggle">
+        <button id="lvlSenior" class="on" type="button">HSC (Yr 11–12)</button>
+        <button id="lvlJunior" type="button">Years 7–10</button>
+      </div>
+      <div class="chips" id="chips"></div>
+      <button class="btn" id="toStep2" disabled>Continue</button>
+    </section>
+
+    <!-- STEP 2: taster question -->
+    <section id="step2" class="hidden">
+      <h1>Try one quick question</h1>
+      <div class="sub" id="q2sub">A 10-second taster from your first subject.</div>
+      <div id="qHost"></div>
+    </section>
+
+    <!-- STEP 3: win -->
+    <section id="step3" class="hidden">
+      <div class="win">
+        <div class="big">🔥</div>
+        <h2>You’re all set!</h2>
+        <p>That’s a 1-day streak and your first XP. Your daily plan is ready.</p>
+        <button class="btn" id="goDash">Go to my dashboard →</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="subject-data.js"></script>
+  <script>
+    (function () {
+      var state = { level: 'senior', selected: [], answeredCorrectly: false };
+
+      function $(id) { return document.getElementById(id); }
+      function api(path, opts) { return fetch(path, Object.assign({ credentials: 'include', headers: { 'Content-Type': 'application/json' } }, opts || {})); }
+
+      function renderChips() {
+        var list = (window.SD_SUBJECTS && (state.level === 'junior' ? window.SD_SUBJECTS.junior : window.SD_SUBJECTS.senior)) || [];
+        var host = $('chips');
+        host.innerHTML = '';
+        list.forEach(function (s) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'chip' + (state.selected.some(function (x) { return x.id === s.id; }) ? ' sel' : '');
+          b.textContent = s.name;
+          b.addEventListener('click', function () {
+            var i = state.selected.findIndex(function (x) { return x.id === s.id; });
+            if (i > -1) state.selected.splice(i, 1); else state.selected.push({ id: s.id, name: s.name });
+            b.classList.toggle('sel');
+            $('toStep2').disabled = state.selected.length === 0;
+          });
+          host.appendChild(b);
+        });
+      }
+
+      function setLevel(lvl) {
+        state.level = lvl; state.selected = [];
+        $('lvlSenior').classList.toggle('on', lvl === 'senior');
+        $('lvlJunior').classList.toggle('on', lvl === 'junior');
+        $('toStep2').disabled = true;
+        renderChips();
+      }
+      $('lvlSenior').addEventListener('click', function () { setLevel('senior'); });
+      $('lvlJunior').addEventListener('click', function () { setLevel('junior'); });
+
+      function showStep(n) {
+        $('step1').classList.toggle('hidden', n !== 1);
+        $('step2').classList.toggle('hidden', n !== 2);
+        $('step3').classList.toggle('hidden', n !== 3);
+        $('d2').classList.toggle('on', n >= 2);
+        $('d3').classList.toggle('on', n >= 3);
+      }
+
+      function finishCard(answeredCorrectly) {
+        state.answeredCorrectly = !!answeredCorrectly;
+        var c = document.createElement('button');
+        c.className = 'btn'; c.textContent = 'Finish setup →';
+        c.addEventListener('click', complete);
+        $('qHost').appendChild(c);
+      }
+
+      function renderQuestion(q) {
+        var host = $('qHost');
+        host.innerHTML = '';
+        var card = document.createElement('div'); card.className = 'q-card';
+        var stem = document.createElement('div'); stem.className = 'q-stem'; stem.textContent = q.question;
+        card.appendChild(stem);
+        var answered = false;
+        q.options.forEach(function (opt, idx) {
+          var b = document.createElement('button');
+          b.className = 'opt'; b.textContent = opt;
+          b.addEventListener('click', function () {
+            if (answered) return; answered = true;
+            var correct = idx === q.answer;
+            var btns = card.querySelectorAll('.opt');
+            btns.forEach(function (x, i) { x.disabled = true; if (i === q.answer) x.classList.add('correct'); });
+            if (!correct) b.classList.add('wrong');
+            var ex = document.createElement('div'); ex.className = 'explain';
+            ex.textContent = (correct ? '✅ Correct! ' : '❌ Not quite. ') + (q.explanation || '');
+            card.appendChild(ex);
+            finishCard(correct);
+          });
+          card.appendChild(b);
+        });
+        host.appendChild(card);
+      }
+
+      function loadQuestion() {
+        showStep(2);
+        var subj = state.selected[0];
+        $('q2sub').textContent = 'A quick taster from ' + (subj ? subj.name : 'your subject') + '.';
+        $('qHost').innerHTML = '<div class="spinner"></div>';
+        api('/api/games/questions', { method: 'POST', body: JSON.stringify({ subject: subj.id, difficulty: 'easy' }) })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (d) {
+            if (d && d.questions && d.questions.length) { renderQuestion(d.questions[0]); }
+            else { skipQuestion(); }
+          })
+          .catch(function () { skipQuestion(); });
+      }
+
+      function skipQuestion() {
+        $('qHost').innerHTML = '<p class="sub">Your subjects are saved. Let’s get you started.</p>';
+        finishCard(false);
+      }
+
+      function complete() {
+        api('/api/onboarding/complete', {
+          method: 'POST',
+          body: JSON.stringify({ subjects: state.selected.map(function (x) { return x.name; }), level: state.level, answeredCorrectly: state.answeredCorrectly })
+        }).then(function (r) { return r.ok ? r.json() : null; })
+          .then(function () { showStep(3); })
+          .catch(function () { showStep(3); });
+      }
+
+      $('toStep2').addEventListener('click', loadQuestion);
+      $('goDash').addEventListener('click', function () { window.location.replace('/dashboard.html'); });
+
+      // Auth gate
+      api('/api/subscription').then(function (r) { return r.ok ? r.json() : null; }).then(function (auth) {
+        if (!auth || !auth.email) { window.location.replace('/login.html?redirect=/onboarding.html'); return; }
+        if (auth.role === 'teacher') { window.location.replace('/teacher-dashboard.html'); return; }
+        if (!(auth.preferences && auth.preferences.onboarded === false)) { window.location.replace('/dashboard.html'); return; }
+        if (auth.preferences && auth.preferences.level === 'junior') setLevel('junior'); else renderChips();
+        $('loading').classList.add('hidden');
+        $('app').classList.remove('hidden');
+      }).catch(function () { window.location.replace('/login.html?redirect=/onboarding.html'); });
+    })();
+  </script>
+</body>
+</html>

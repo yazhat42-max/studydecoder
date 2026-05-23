@@ -9,3 +9,4 @@ Disallow: /api/
 Disallow: /data/
 
 Sitemap: https://www.studydecoder.com.au/sitemap.xml
+Sitemap: https://www.studydecoder.com.au/sitemap-learn.xml
