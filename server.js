@@ -1077,6 +1077,7 @@ let _funnelDirty = 0;
 const FUNNEL_EVENTS = new Set([
     'landing_view', 'signup_tab_open', 'signup_submit', 'verify_required',
     'verify_resend', 'verify_complete', 'login_success', 'onboarding_complete',
+    'activation_first_question', 'activation_first_correct',
     'tool_open', 'ai_output_first', 'paywall_hit', 'checkout_start', 'subscribe_success'
 ]);
 function recordFunnelEvent(event) {
@@ -4366,6 +4367,30 @@ app.get('/api/leaderboard', requireAuth, (req, res) => {
     const rows = leaderboardRows(ids).slice(0, 50);
     const me = rows.find(r => r.userId === uid) || null;
     res.json({ week: _isoWeekKey(), rows, me, hasClass: ids.size > 1 });
+});
+
+// POST /api/onboarding/complete — finish the 30-second activation flow.
+// Saves subjects + level, ends the session on a win (kickstart streak + XP),
+// and records the activation funnel events.
+app.post('/api/onboarding/complete', requireAuth, express.json(), (req, res) => {
+    const user = req.user;
+    const level = (req.body && req.body.level === 'junior') ? 'junior' : 'senior';
+    let subjects = Array.isArray(req.body && req.body.subjects) ? req.body.subjects : [];
+    subjects = subjects.map(s => String(s || '').slice(0, 80)).filter(Boolean).slice(0, 16);
+    user.preferences = Object.assign({}, user.preferences, { onboarded: true, freeAcknowledged: true, level, subjects });
+    // Kickstart the streak so the first session ends on a win (1-day streak).
+    if (!user.streak || !user.streak.count) {
+        const r = computeStreakTrack(null);
+        user.streak = r.streak;
+    }
+    awardXp(user.userId, 'onboard', 25, 'onboard');
+    try {
+        recordFunnelEvent('onboarding_complete');
+        recordFunnelEvent('activation_first_question');
+        if (req.body && req.body.answeredCorrectly) recordFunnelEvent('activation_first_correct');
+    } catch (e) { /* analytics best-effort */ }
+    scheduleSave();
+    res.json({ ok: true, streak: user.streak, xp: xpState(user.userId) });
 });
 
 // GET /api/mastery/:studentUserId — teacher-only, gated by class membership
@@ -11415,6 +11440,54 @@ async function tryEmail(label, fn, ...args) {
     }
 }
 
+// Current hour in NSW (handles AEST/AEDT) so nudges land in the evening, never
+// at 3am. Falls back to UTC if the ICU timezone DB is unavailable.
+function nswHour() {
+    try { return parseInt(new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Sydney', hour: '2-digit', hour12: false }).format(new Date()), 10) || 0; }
+    catch (e) { return new Date().getUTCHours(); }
+}
+
+// Study reminders ride the existing opt-out (unsubscribe) stream plus a per-user
+// toggle (studyReminders !== false). canSendPromoEmail already excludes
+// lifetime/owner/og + the unsubscribed.
+function canSendStudyNudge(user) {
+    return canSendPromoEmail(user) && user.studyReminders !== false;
+}
+
+// One gentle, loss-framed daily nudge: keep your streak / cards due / finish plan.
+async function sendDailyNudgeEmail(user, kind, ctx) {
+    if (!emailTransporter || !canSendStudyNudge(user)) return;
+    ctx = ctx || {};
+    const name = escapeHtml((user.name || 'there').split(' ')[0]);
+    const dash = `${config.frontendUrl}/dashboard.html`;
+    let subject, heading, body, cta = 'Open my plan →';
+    if (kind === 'streak') {
+        subject = `🔥 Keep your ${ctx.streakCount}-day streak alive`;
+        heading = `Don’t lose your ${ctx.streakCount}-day streak`;
+        body = `You’ve studied ${ctx.streakCount} day${ctx.streakCount === 1 ? '' : 's'} in a row. Finish today’s quick plan to keep it going — it only takes a few minutes.`;
+    } else if (kind === 'cards') {
+        subject = `🃏 ${ctx.dueCards} flashcard${ctx.dueCards === 1 ? '' : 's'} due today`;
+        heading = `${ctx.dueCards} card${ctx.dueCards === 1 ? '' : 's'} ready to review`;
+        body = `Spaced repetition works best right on time. A few minutes now locks these in before they fade.`;
+        cta = 'Review now →';
+    } else {
+        subject = `📋 Your study plan is waiting`;
+        heading = `Finish today’s plan, ${name}`;
+        body = `You’ve still got tasks left on today’s plan. Knock them out to keep your momentum (and your streak).`;
+    }
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject,
+        html: `<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:24px;color:#222;">
+  <h2 style="color:#6C63FF;margin:0 0 12px;">${heading}</h2>
+  <p style="font-size:15px;line-height:1.6;color:#444;">Hi ${name}, ${body}</p>
+  <p style="margin:24px 0;"><a href="${dash}" style="display:inline-block;background:#6C63FF;color:#fff;padding:12px 24px;text-decoration:none;border-radius:8px;font-weight:700;">${cta}</a></p>
+  ${getEmailFooter(user)}
+</div>`
+    });
+}
+
 setInterval(async () => {
     if (_cronRunning) {
         console.warn('[cron] previous run still in progress, skipping this tick');
@@ -11563,6 +11636,30 @@ setInterval(async () => {
             }
         }
 
+        // ── 7) DAILY STUDY NUDGE — one per day, evening NSW window, opt-out aware ──
+        // Only fires when there's something actionable (streak at risk / cards due /
+        // unfinished plan). Loss-framed but light; respects quiet hours + unsubscribe.
+        if (nswHour() >= 17 && nswHour() <= 20) {
+            const yday = new Date(now - oneDayMs).toISOString().slice(0, 10);
+            for (const user of users) {
+                if (!user.email || user.dailyNudgeDate === todayStr) continue;
+                if (!canSendStudyNudge(user)) continue;
+                const g = user.gamification;
+                const planToday = (g && g.plan && g.plan.date === todayStr) ? g.plan : null;
+                if (planToday && planToday.complete) continue;     // nothing to nudge
+                const streakAtRisk = user.streak && user.streak.count > 0 && user.streak.lastDate === yday;
+                const due = dueCardCount(user.userId);
+                let kind = null; const ctx = {};
+                if (streakAtRisk) { kind = 'streak'; ctx.streakCount = user.streak.count; }
+                else if (due > 0) { kind = 'cards'; ctx.dueCards = due; }
+                else if (planToday) { kind = 'plan'; }
+                if (!kind) continue;
+                if (await tryEmail('daily-nudge', sendDailyNudgeEmail, user, kind, ctx)) {
+                    user.dailyNudgeDate = todayStr;
+                }
+            }
+        }
+
         scheduleSave();
     } catch (e) {
         console.error('Scheduled jobs error:', e.message);
@@ -11616,6 +11713,193 @@ function renderIndexHtml() {
         injected + '\n    <!-- SD_PRICING_BOOTSTRAP -->'
     );
 }
+
+/* ===================================================================== *
+ *  SEO LANDING PAGES — one indexable page per syllabus subject + module  *
+ *  Content is the pre-generated AI "plain English" decode (cached under  *
+ *  syllabuses/decoded/), with a graceful fallback so pages are live even *
+ *  before the generation script (generate-seo.js) has run. Ungated       *
+ *  content + a signup soft-wall CTA.                                     *
+ * ===================================================================== */
+const vm = require('vm');
+const SEO_DECODED_PATH = path.join(SYLLABUSES_PATH, 'decoded');
+
+function seoSlug(s) {
+    return String(s || '').toLowerCase().trim()
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 80);
+}
+
+// Build the subject→module catalog from the tracked client file subject-data.js
+// (window.SD_SUBJECTS) so it works everywhere, even without the production
+// syllabuses/ tree.
+function buildSeoCatalog() {
+    let SD = null;
+    try {
+        const code = fs.readFileSync(path.join(__dirname, 'subject-data.js'), 'utf8');
+        const sandbox = { window: {} };
+        vm.runInNewContext(code, sandbox, { timeout: 2000 });
+        SD = sandbox.window.SD_SUBJECTS;
+    } catch (e) { console.error('[seo] failed to load subject catalog:', e.message); }
+    const catalog = [];
+    if (!SD) return catalog;
+    const topics = SD.topics || {};
+    const add = (list, level) => {
+        for (const s of (list || [])) {
+            const mods = (topics[s.id] || []).map(m => ({ name: m, slug: seoSlug(m) }));
+            catalog.push({ id: s.id, name: s.name, category: s.category || 'Other', level, slug: seoSlug(s.name), modules: mods });
+        }
+    };
+    add(SD.senior, 'senior');
+    add(SD.junior, 'junior');
+    return catalog;
+}
+const SEO_CATALOG = buildSeoCatalog();
+const SEO_SUBJECT_BY_SLUG = {};
+for (const s of SEO_CATALOG) SEO_SUBJECT_BY_SLUG[s.slug] = s;
+console.log(`🔎 SEO catalog: ${SEO_CATALOG.length} subjects, ${SEO_CATALOG.reduce((n, s) => n + s.modules.length, 0)} module pages`);
+
+function getDecodedContent(subjectId, moduleSlug) {
+    try {
+        const p = path.join(SEO_DECODED_PATH, subjectId, moduleSlug + '.json');
+        if (fs.existsSync(p)) return JSON.parse(fs.readFileSync(p, 'utf8'));
+    } catch (e) { /* fall through to fallback */ }
+    return null;
+}
+
+function seoShell({ title, desc, canonical, body }) {
+    const site = config.frontendUrl || 'https://www.studydecoder.com.au';
+    return `<!DOCTYPE html><html lang="en-AU"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(title)}</title>
+<meta name="description" content="${escapeHtml(desc)}">
+<link rel="canonical" href="${site}${canonical}">
+<meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(desc)}">
+<meta property="og:type" content="article"><meta property="og:url" content="${site}${canonical}">
+<link rel="icon" type="image/png" href="/logo.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#08080d;color:#e8e8ef;line-height:1.65}
+a{color:#a78bfa;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 20px 80px}
+header.site{border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;background:rgba(8,8,13,0.9);backdrop-filter:blur(8px);z-index:5}
+header.site .wrap{padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:800;color:#fff;font-size:18px}.brand span{color:#6C63FF}
+.btn{display:inline-block;background:#6C63FF;color:#fff;padding:10px 18px;border-radius:8px;font-weight:700}
+.btn:hover{text-decoration:none;background:#5a52e0}
+.crumb{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:16px}
+h1{font-size:30px;font-weight:800;letter-spacing:-0.5px;margin:6px 0 14px;color:#fff}
+h2{font-size:20px;font-weight:800;margin:30px 0 12px;color:#fff}
+p{margin:0 0 14px;color:#c8c8d4}.lead{font-size:18px;color:#d8d8e2}
+ul{margin:0 0 16px 22px}li{margin:6px 0;color:#c8c8d4}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:8px 0}
+.card{display:block;padding:16px 18px;border-radius:14px;background:linear-gradient(160deg,#14121f,#0e0c18);border:1px solid rgba(255,255,255,0.08)}
+.card:hover{border-color:rgba(108,99,255,0.4);text-decoration:none}
+.card .t{font-weight:700;color:#fff;margin-bottom:4px}.card .s{font-size:12.5px;color:rgba(255,255,255,0.55)}
+.cta{margin:28px 0;padding:22px;border-radius:16px;background:linear-gradient(135deg,rgba(108,99,255,0.22),rgba(167,139,250,0.07));border:1px solid rgba(108,99,255,0.32)}
+.cta h3{color:#fff;font-size:18px;margin-bottom:6px}
+.cat{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#8b8b9a;margin:26px 0 10px;font-weight:700}
+footer.site{border-top:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);font-size:13px}
+footer.site .wrap{padding:24px 20px}
+</style></head><body>
+<header class="site"><div class="wrap"><a class="brand" href="/">Study<span>Decoder</span></a><a class="btn" href="/login.html">Start free</a></div></header>
+<main class="wrap">${body}</main>
+<footer class="site"><div class="wrap">Study Decoder · AI-powered HSC &amp; Years 7–10 study, aligned to the NSW NESA syllabus · <a href="/learn">Browse all subjects</a></div></footer>
+</body></html>`;
+}
+
+function seoCta(label) {
+    return `<div class="cta"><h3>${escapeHtml(label)}</h3>
+<p>Decoding is free. Create a free account to <strong>practise this with AI-marked questions</strong>, build flashcards, and track your exam readiness.</p>
+<a class="btn" href="/login.html">Start free →</a></div>`;
+}
+
+// GET /learn — hub: all subjects grouped by category
+app.get('/learn', (req, res) => {
+    const byCat = {};
+    for (const s of SEO_CATALOG) (byCat[s.category] = byCat[s.category] || []).push(s);
+    let body = `<div class="crumb">Learn</div><h1>Decode the NSW syllabus in plain English</h1>
+<p class="lead">Every HSC and Years 7–10 subject, broken down module by module — what it actually means, in language that makes sense.</p>`;
+    for (const cat of Object.keys(byCat).sort()) {
+        body += `<div class="cat">${escapeHtml(cat)}</div><div class="card-grid">`;
+        for (const s of byCat[cat].sort((a, b) => a.name.localeCompare(b.name))) {
+            body += `<a class="card" href="/learn/${s.slug}"><div class="t">${escapeHtml(s.name)}</div><div class="s">${s.modules.length} module${s.modules.length === 1 ? '' : 's'} decoded</div></a>`;
+        }
+        body += `</div>`;
+    }
+    body += seoCta('Ready to actually study, not just read?');
+    res.set('Content-Type', 'text/html; charset=utf-8');
+    res.send(seoShell({ title: 'Decode the NSW Syllabus in Plain English | Study Decoder', desc: 'Free plain-English breakdowns of every NSW HSC and Years 7–10 syllabus module. Understand what each topic really means, then practise it with AI.', canonical: '/learn', body }));
+});
+
+// GET /learn/:subjectSlug — subject hub
+app.get('/learn/:subjectSlug', (req, res, next) => {
+    const s = SEO_SUBJECT_BY_SLUG[req.params.subjectSlug];
+    if (!s) return next();
+    const levelWord = s.level === 'junior' ? 'Years 7–10' : 'HSC';
+    let body = `<div class="crumb"><a href="/learn">Learn</a> › ${escapeHtml(s.name)}</div>
+<h1>${escapeHtml(s.name)} (${levelWord}) — every module decoded</h1>
+<p class="lead">Plain-English breakdowns of every module in ${escapeHtml(s.name)}, aligned to the NSW NESA syllabus.</p>`;
+    if (s.modules.length) {
+        body += `<div class="card-grid">`;
+        for (const m of s.modules) body += `<a class="card" href="/learn/${s.slug}/${m.slug}"><div class="t">${escapeHtml(m.name)}</div><div class="s">Decoded in plain English →</div></a>`;
+        body += `</div>`;
+    } else {
+        body += `<p>Module breakdowns for this subject are coming soon.</p>`;
+    }
+    body += seoCta(`Master ${s.name} faster`);
+    res.set('Content-Type', 'text/html; charset=utf-8');
+    res.send(seoShell({ title: `${s.name} (${levelWord}) Syllabus Decoded | Study Decoder`, desc: `Every ${s.name} module explained in plain English, aligned to the NSW NESA syllabus. Then practise with AI-marked questions.`, canonical: `/learn/${s.slug}`, body }));
+});
+
+// GET /learn/:subjectSlug/:moduleSlug — module decode page
+app.get('/learn/:subjectSlug/:moduleSlug', (req, res, next) => {
+    const s = SEO_SUBJECT_BY_SLUG[req.params.subjectSlug];
+    if (!s) return next();
+    const m = s.modules.find(x => x.slug === req.params.moduleSlug);
+    if (!m) return next();
+    const levelWord = s.level === 'junior' ? 'Years 7–10' : 'HSC';
+    const decoded = getDecodedContent(s.id, m.slug);
+    const summary = (decoded && decoded.summary) ? decoded.summary
+        : `${m.name} is a core part of the ${s.name} (${levelWord}) course. This module builds the knowledge and skills the NSW NESA syllabus expects you to demonstrate in assessments and the exam. Below is what it covers and what you need to be able to do.`;
+    const points = (decoded && Array.isArray(decoded.points) && decoded.points.length) ? decoded.points : null;
+    let body = `<div class="crumb"><a href="/learn">Learn</a> › <a href="/learn/${s.slug}">${escapeHtml(s.name)}</a> › ${escapeHtml(m.name)}</div>
+<h1>${escapeHtml(m.name)} — explained simply</h1>
+<p class="lead">${escapeHtml(s.name)} (${levelWord}) · NSW NESA syllabus</p>
+<p>${escapeHtml(summary)}</p>`;
+    if (points) {
+        body += `<h2>What this module covers</h2><ul>`;
+        for (const p of points.slice(0, 12)) body += `<li>${escapeHtml(p)}</li>`;
+        body += `</ul>`;
+    }
+    if (decoded && decoded.examTips) body += `<h2>How it’s tested</h2><p>${escapeHtml(decoded.examTips)}</p>`;
+    body += seoCta(`Practise ${m.name} with AI feedback`);
+    const others = s.modules.filter(x => x.slug !== m.slug).slice(0, 6);
+    if (others.length) {
+        body += `<h2>More ${escapeHtml(s.name)} modules</h2><div class="card-grid">`;
+        for (const o of others) body += `<a class="card" href="/learn/${s.slug}/${o.slug}"><div class="t">${escapeHtml(o.name)}</div></a>`;
+        body += `</div>`;
+    }
+    res.set('Content-Type', 'text/html; charset=utf-8');
+    res.send(seoShell({ title: `${m.name} — ${s.name} Explained Simply | Study Decoder`, desc: `${m.name} (${s.name}, ${levelWord}) decoded in plain English, aligned to the NSW NESA syllabus. Understand it, then practise with AI.`, canonical: `/learn/${s.slug}/${m.slug}`, body }));
+});
+
+// GET /sitemap-learn.xml — all SEO learn URLs
+app.get('/sitemap-learn.xml', (req, res) => {
+    const site = config.frontendUrl || 'https://www.studydecoder.com.au';
+    const urls = [`${site}/learn`];
+    for (const s of SEO_CATALOG) {
+        urls.push(`${site}/learn/${s.slug}`);
+        for (const m of s.modules) urls.push(`${site}/learn/${s.slug}/${m.slug}`);
+    }
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+        urls.map(u => `  <url><loc>${u}</loc><changefreq>monthly</changefreq></url>`).join('\n') + `\n</urlset>`;
+    res.set('Content-Type', 'application/xml; charset=utf-8');
+    res.send(xml);
+});
+
 function sendRenderedIndex(req, res) {
     const html = renderIndexHtml();
     if (!html) return res.status(500).send('Server error');
