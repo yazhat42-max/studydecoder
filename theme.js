@@ -19,6 +19,10 @@
   apply(current);
 
   function updateButtons() {
+    // Reveal the app-shell sidebar toggle once theme support is present,
+    // regardless of whether theme.js loaded before or after app-shell.js.
+    var st = document.getElementById('sdThemeToggle');
+    if (st) st.removeAttribute('hidden');
     var btns = document.querySelectorAll('[data-sd-theme-toggle]');
     var icon = current === 'light' ? '🌙' : '☀️';
     var label = current === 'light' ? 'Dark mode' : 'Light mode';

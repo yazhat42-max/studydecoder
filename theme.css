@@ -1,7 +1,37 @@
 /* theme.css — light-mode overrides. Loaded AFTER each page's own styles on the
- * themed surfaces (dashboard, documents, onboarding, SEO pages, app shell).
- * Dark is the default (untouched); everything here is scoped to
- * :root[data-theme="light"] so it only applies when light mode is on. */
+ * themed surfaces (dashboard, documents, onboarding, SEO pages, app shell, and
+ * the converted tool pages). Dark is the default; light rules are scoped to
+ * :root[data-theme="light"]. */
+
+/* ── Tool-page palette tokens ──
+ * Tool pages were converted to reference these vars inside their <style> blocks.
+ * The dark DEFAULTS equal the original hardcoded colours, so dark mode is
+ * unchanged; light mode just flips the values. */
+:root {
+  --tool-bg: #0f1419;
+  --tool-surface: #16202a;
+  --tool-surface-2: #1e2733;
+  --tool-ink: #ffffff;
+  --tool-ink-rgb: 255, 255, 255;
+}
+:root[data-theme="light"] {
+  --tool-bg: #f4f6fb;
+  --tool-surface: #ffffff;
+  --tool-surface-2: #eef1f7;
+  --tool-ink: #15151f;
+  --tool-ink-rgb: 21, 21, 31;
+}
+/* Light-mode fixes for two patterns the var-flip can't cover on its own: */
+/* native dropdown menus (their bg was a hardcoded dark hex) */
+:root[data-theme="light"] option { background: #ffffff; color: #15151f; }
+/* keep text white on solid/gradient primary buttons (their label used #fff) */
+:root[data-theme="light"] .btn,
+:root[data-theme="light"] .btn-primary,
+:root[data-theme="light"] .primary-btn,
+:root[data-theme="light"] .cta-btn,
+:root[data-theme="light"] .submit-btn,
+:root[data-theme="light"] .generate-btn,
+:root[data-theme="light"] .seg button.on { color: #ffffff; }
 
 /* ── Toggle button (sidebar row + inline) ── */
 [data-sd-theme-toggle] { cursor: pointer; }

@@ -100,9 +100,19 @@
     panel.innerHTML = html;
   }
 
+  function renderEvent(ev) {
+    var box = el('seasonalBanner');
+    if (!box) return;
+    if (!ev) { box.innerHTML = ''; return; }
+    var mult = ev.xpMultiplier > 1 ? (ev.xpMultiplier + '× XP on everything right now') : 'Limited-time event';
+    box.innerHTML = '<div class="seasonal-banner"><span class="sb-ico">' + esc(ev.emoji || '🔥') + '</span>' +
+      '<span><span class="sb-text">' + esc(ev.label) + '</span><br><span class="sb-sub">' + esc(mult) + '</span></span></div>';
+  }
+
   function init(auth) {
     getJSON('/api/today').then(function (d) {
       if (!d) return;
+      renderEvent(d.event);
       renderXp(d.xp);
       renderPlan(d.plan);
       renderReadiness(d.readiness);

@@ -33,7 +33,7 @@
 
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-            background: #0f1419;
+            background: var(--tool-bg);
             color: #e7e9ea;
             height: 100dvh;
             display: flex;
@@ -47,7 +47,7 @@
             align-items: center;
             gap: 12px;
             padding: 12px 16px;
-            background: #16202a;
+            background: var(--tool-surface);
             border-bottom: 1px solid #2f3336;
             flex-shrink: 0;
             flex-wrap: wrap;
@@ -110,7 +110,7 @@
             align-items: center;
             gap: 10px;
             padding: 10px 16px;
-            background: #16202a;
+            background: var(--tool-surface);
             border-bottom: 1px solid #2f3336;
             flex-shrink: 0;
         }
@@ -118,7 +118,7 @@
         .subjectbar select {
             flex: 1;
             max-width: 280px;
-            background: #1e2733;
+            background: var(--tool-surface-2);
             border: 1px solid #2f3336;
             color: #e7e9ea;
             padding: 7px 10px;
@@ -133,7 +133,7 @@
         #historySelect {
             flex: 1;
             max-width: 200px;
-            background: #1e2733;
+            background: var(--tool-surface-2);
             border: 1px solid #2f3336;
             color: #71767b;
             padding: 7px 10px;
@@ -202,11 +202,11 @@
         }
         .msg.user .msg-bubble {
             background: #6C63FF;
-            color: #fff;
+            color:var(--tool-ink);
             border-bottom-right-radius: 4px;
         }
         .msg.assistant .msg-bubble {
-            background: #1e2733;
+            background: var(--tool-surface-2);
             border: 1px solid #2f3336;
             color: #e7e9ea;
             border-bottom-left-radius: 4px;
@@ -228,7 +228,7 @@
 
         /* Code blocks */
         .msg-bubble pre {
-            background: #0d1117;
+            background: var(--tool-bg);
             border: 1px solid #2f3336;
             border-radius: 8px;
             padding: 12px;
@@ -284,7 +284,7 @@
             position: fixed;
             top: 0; right: 0; bottom: 0;
             width: min(360px, 90vw);
-            background: #16202a;
+            background: var(--tool-surface);
             border-left: 1px solid #2f3336;
             z-index: 500;
             flex-direction: column;
@@ -310,7 +310,7 @@
             gap: 10px;
         }
         .pin-card {
-            background: #1e2733;
+            background: var(--tool-surface-2);
             border: 1px solid #2f3336;
             border-radius: 10px;
             padding: 12px;
@@ -337,7 +337,7 @@
         /* ── INPUT BAR ── */
         .input-area {
             padding: 12px 16px;
-            background: #16202a;
+            background: var(--tool-surface);
             border-top: 1px solid #2f3336;
             flex-shrink: 0;
         }
@@ -345,7 +345,7 @@
             display: flex;
             gap: 8px;
             align-items: flex-end;
-            background: #1e2733;
+            background: var(--tool-surface-2);
             border: 1px solid #2f3336;
             border-radius: 14px;
             padding: 8px 8px 8px 14px;
@@ -378,8 +378,8 @@
             display: flex;
             align-items: center;
         }
-        .input-btn:hover { color: #e7e9ea; background: rgba(255,255,255,0.07); }
-        .input-btn.send { background: #6C63FF; color: #fff; border-radius: 10px; padding: 8px 10px; }
+        .input-btn:hover { color: #e7e9ea; background: rgba(var(--tool-ink-rgb),0.07); }
+        .input-btn.send { background: #6C63FF; color:var(--tool-ink); border-radius: 10px; padding: 8px 10px; }
         .input-btn.send:hover { background: #5a52e0; }
         .input-btn.send:disabled { background: #2f3336; color: #4d5762; cursor: default; }
         .input-btn.voice-active { color: #fb923c; animation: pulse-ring 1.5s ease-in-out infinite; }
@@ -407,7 +407,7 @@
             position: fixed;
             top: 0; left: 0; bottom: 0;
             width: min(320px, 85vw);
-            background: #16202a;
+            background: var(--tool-surface);
             border-right: 1px solid #2f3336;
             z-index: 500;
             flex-direction: column;
@@ -426,7 +426,7 @@
         }
         .history-item {
             padding: 10px 12px; border-radius: 8px; cursor: pointer;
-            border: 1px solid #2f3336; background: #1e2733;
+            border: 1px solid #2f3336; background: var(--tool-surface-2);
             font-size: 0.83rem; color: #c9d1d9; transition: all .18s;
         }
         .history-item:hover { border-color: #6C63FF; color: #e7e9ea; }
@@ -449,13 +449,13 @@
         }
         #studyPromptModal.open { display: flex; }
         .study-modal-inner {
-            background: #16202a; border: 1px solid #2f3336; border-radius: 16px;
+            background: var(--tool-surface); border: 1px solid #2f3336; border-radius: 16px;
             padding: 28px; max-width: 400px; width: 92%;
         }
         .study-modal-inner h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
         .study-modal-inner p { font-size: 0.88rem; color: #71767b; margin-bottom: 16px; line-height: 1.6; }
         .study-modal-inner input {
-            width: 100%; background: #1e2733; border: 1px solid #2f3336; color: #e7e9ea;
+            width: 100%; background: var(--tool-surface-2); border: 1px solid #2f3336; color: #e7e9ea;
             padding: 10px 12px; border-radius: 8px; font-family: inherit; font-size: 0.92rem;
             margin-bottom: 10px; outline: none;
         }
@@ -465,9 +465,9 @@
             flex: 1; padding: 10px; border-radius: 8px; font-family: inherit;
             font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none;
         }
-        .study-start-btn { background: #4ade80; color: #0f1419; }
+        .study-start-btn { background: #4ade80; color: var(--tool-bg); }
         .study-start-btn:hover { background: #22c55e; }
-        .study-cancel-btn { background: #1e2733; border: 1px solid #2f3336 !important; color: #71767b; }
+        .study-cancel-btn { background: var(--tool-surface-2); border: 1px solid #2f3336 !important; color: #71767b; }
 
         @media (max-width: 600px) {
             .topbar { padding: 10px 12px; gap: 8px; }
@@ -478,6 +478,8 @@
     </style>
     <script src="/ui-helpers.js" defer></script>
     <link rel="stylesheet" href="app-shell.css">
+<script>(function(){try{var t=localStorage.getItem('sd_theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="theme.css">
 </head>
 <body>
 
@@ -1210,5 +1212,6 @@
 </script>
 
     <script src="app-shell.js" defer></script>
+<script src="theme.js"></script>
 </body>
 </html>

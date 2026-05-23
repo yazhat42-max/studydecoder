@@ -461,7 +461,7 @@ function getUserRole(email) {
     // Teacher seat — a separate paid subscription. Distinct from `subscribed`
     // so a single account can be both a paying student and a teacher.
     const teacherUser = email ? getUserByEmail(email) : null;
-    if (teacherUser && hasActiveTeacherSeat(teacherUser)) {
+    if (teacherUser && hasTeacherAccess(teacherUser)) {
         return 'teacher';
     }
     return 'user';
@@ -475,6 +475,19 @@ function hasActiveTeacherSeat(user) {
     if (!user.teacherExpiresAt) return false;
     const exp = new Date(user.teacherExpiresAt).getTime();
     return Number.isFinite(exp) && exp > Date.now();
+}
+
+// Free teacher trial — full teaching access for a window, no payment. Distinct
+// from a paid seat: billing/display still keys off hasActiveTeacherSeat.
+const TEACHER_TRIAL_DAYS = 30;
+function hasTeacherTrial(user) {
+    if (!user || !user.teacherTrialExpiry) return false;
+    const exp = new Date(user.teacherTrialExpiry).getTime();
+    return Number.isFinite(exp) && exp > Date.now();
+}
+// The single access switch for "can teach": a paid seat OR an active free trial.
+function hasTeacherAccess(user) {
+    return hasActiveTeacherSeat(user) || hasTeacherTrial(user);
 }
 
 /**
@@ -528,7 +541,7 @@ function isLinkedToActiveTeacher(userId) {
         const cls = db.classes[m.classId];
         if (!cls || cls.archivedAt) continue;
         const teacher = db.users[cls.teacherUserId];
-        if (teacher && hasActiveTeacherSeat(teacher)) return true;
+        if (teacher && hasTeacherAccess(teacher)) return true;
     }
     return false;
 }
@@ -568,7 +581,7 @@ function getEnrolledSubjects(userId) {
         const cls = db.classes[m.classId];
         if (!cls || cls.archivedAt) continue;
         const teacher = db.users[cls.teacherUserId];
-        if (!teacher || !hasActiveTeacherSeat(teacher)) continue;
+        if (!teacher || !hasTeacherAccess(teacher)) continue;
         if (cls.subject) subjects.add(cls.subject);
     }
     return subjects;
@@ -593,7 +606,7 @@ function checkSubjectGate(user, subject) {
     if (role === 'owner' || role === 'lifetime' || role === 'og_tester') return null;
     if (hasDayPassActive(user)) return null;
     if (user.subscribed === true) return null;
-    if (hasActiveTeacherSeat(user)) return null;
+    if (hasTeacherAccess(user)) return null;
     if (!isLinkedToActiveTeacher(user.userId)) return null;
     // Class-linked-only access: subject must match one of their enrolled classes.
     // Match is loose because class.subject is free-text typed by the teacher
@@ -1782,6 +1795,14 @@ app.post('/api/auth/register', async (req, res) => {
         // up as a teacher so we can route them to seat checkout after verifying.
         user.preferences = { ...(user.preferences || {}), onboarded: false };
         user.signupRole = signupRole;
+        // Teachers get a free full-access trial so they can set up a class and
+        // onboard students without paying first (B2B2C land-grab).
+        if (signupRole === 'teacher' && !user.teacherTrialExpiry && !hasActiveTeacherSeat(user)) {
+            user.teacherTrialExpiry = new Date(Date.now() + TEACHER_TRIAL_DAYS * 864e5).toISOString();
+            user.teacherTrialStartedAt = new Date().toISOString();
+            user.teacherTrialUsed = true;
+            user.teacherTier = user.teacherTier || 'both';
+        }
         scheduleSave();
 
         // Send verification email
@@ -2453,6 +2474,9 @@ app.get('/api/subscription', requireAuth, (req, res) => {
         teacherSubscribed: hasActiveTeacherSeat(user),
         teacherExpiresAt: hasActiveTeacherSeat(user) ? user.teacherExpiresAt : null,
         teacherTier: hasActiveTeacherSeat(user) ? (user.teacherTier || 'both') : null,
+        teacherTrialActive: hasTeacherTrial(user) && !hasActiveTeacherSeat(user),
+        teacherTrialExpiresAt: (hasTeacherTrial(user) && !hasActiveTeacherSeat(user)) ? user.teacherTrialExpiry : null,
+        teacherTrialUsed: !!user.teacherTrialUsed,
         signupRole: user.signupRole || null,
         linkedToTeacher: !!req.linkedTeacher,
         // Subjects the student has full access to via class memberships.
@@ -2686,6 +2710,23 @@ function getGamification(userId) {
 
 function _isoWeekKey(d) { const w = _getISOWeek(d || new Date()); return w.year + '-W' + String(w.week).padStart(2, '0'); }
 
+// ── Seasonal events: date-ranged XP boosts + a dashboard banner. Edit each
+// term; dates are inclusive 'YYYY-MM-DD' (server local). Ride the natural
+// exam-season usage spikes instead of fighting them. ──
+const SEASONAL_EVENTS = [
+    { id: 'trials-2026', label: 'Trials season — Double XP', emoji: '🔥', start: '2026-07-27', end: '2026-08-21', xpMultiplier: 2 },
+    { id: 'hsc-2026', label: 'HSC countdown — Double XP', emoji: '🎓', start: '2026-10-12', end: '2026-11-07', xpMultiplier: 2 }
+];
+function currentSeasonalEvent() {
+    const today = _getToday();
+    for (const e of SEASONAL_EVENTS) { if (today >= e.start && today <= e.end) return e; }
+    return null;
+}
+function currentXpMultiplier() {
+    const e = currentSeasonalEvent();
+    return (e && e.xpMultiplier > 0) ? e.xpMultiplier : 1;
+}
+
 // Single chokepoint for ALL XP. dedupeKey (optional) blocks same-day double counts.
 function awardXp(userId, source, amount, dedupeKey) {
     const g = getGamification(userId);
@@ -2698,9 +2739,10 @@ function awardXp(userId, source, amount, dedupeKey) {
         if (g.awarded[today].indexOf(dedupeKey) !== -1) return g;          // already counted today
         g.awarded[today].push(dedupeKey);
     }
-    g.xp += amount;
+    const gained = Math.round(amount * currentXpMultiplier()); // seasonal boost
+    g.xp += gained;
     const wk = _isoWeekKey();
-    g.weekly[wk] = (g.weekly[wk] || 0) + amount;
+    g.weekly[wk] = (g.weekly[wk] || 0) + gained;
     const keep = { [wk]: 1, [_isoWeekKey(new Date(Date.now() - 7 * 864e5))]: 1 };
     for (const k of Object.keys(g.weekly)) if (!keep[k]) delete g.weekly[k];
     const lvl = xpToLevel(g.xp);
@@ -2902,6 +2944,24 @@ function parseJsonLoose(text) {
     if (s !== -1 && e > s) t = t.substring(s, e + 1);
     return JSON.parse(t);
 }
+
+/* ----------------------------- TEACHER: TRIAL ----------------------------- */
+
+// POST /api/teacher/start-trial — begin a free full-access teacher trial.
+// One per account; a paid seat supersedes it. Grants the teacher role for the
+// trial window so the dashboard + class tools unlock without payment.
+app.post('/api/teacher/start-trial', requireAuth, (req, res) => {
+    const user = req.user;
+    if (hasActiveTeacherSeat(user)) return res.status(400).json({ error: 'You already have a teacher seat.' });
+    if (hasTeacherTrial(user)) return res.json({ ok: true, teacherTrialExpiry: user.teacherTrialExpiry, alreadyActive: true });
+    if (user.teacherTrialUsed) return res.status(400).json({ error: 'Your free teacher trial has already been used.', trialUsed: true });
+    user.teacherTrialExpiry = new Date(Date.now() + TEACHER_TRIAL_DAYS * 864e5).toISOString();
+    user.teacherTrialStartedAt = new Date().toISOString();
+    user.teacherTrialUsed = true;
+    user.teacherTier = user.teacherTier || 'both';
+    scheduleSave();
+    res.json({ ok: true, teacherTrialExpiry: user.teacherTrialExpiry, days: TEACHER_TRIAL_DAYS });
+});
 
 /* ----------------------------- TEACHER: CLASSES ----------------------------- */
 
@@ -4339,7 +4399,8 @@ app.get('/api/today', requireAuth, (req, res) => {
         plan,
         streak: req.user.streak || { count: 0, lastDate: '', shields: 0, theme: 'default' },
         xp: xpState(uid),
-        readiness: subjectReadiness(uid)
+        readiness: subjectReadiness(uid),
+        event: currentSeasonalEvent()
     });
 });
 
@@ -11173,6 +11234,11 @@ async function sendReengagementEmail(user) {
     ];
     const pick = msgs[Math.floor(Math.random() * msgs.length)];
     const lifetimePromo = hasFullAccess(user) ? '' : getLifetimePromoBlock();
+    // Streak-shield framing: the strongest reason to come back is loss of progress.
+    const st = (user.streak && user.streak.count > 0) ? user.streak : null;
+    const streakNote = st
+        ? `<p style="background:#f1f0ff;border-radius:8px;padding:12px 14px;color:#4b3fb3;">Your <strong>${st.count}-day streak</strong> is paused${st.shields > 0 ? ' — a streak shield is protecting your progress for now, but it won’t hold forever' : ''}. Finish today’s quick plan to bring it back.</p>`
+        : '';
     await emailTransporter.sendMail({
         from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
         to: user.email,
@@ -11181,8 +11247,9 @@ async function sendReengagementEmail(user) {
 <h2 style="color:#6366f1;">${pick.subject}</h2>
 <p>Hi ${escapeHtml(user.name) || 'there'},</p>
 <p>${pick.body}</p>
+${streakNote}
 <div style="text-align:center;margin:30px 0;">
-  <a href="${config.frontendUrl}/senior-bot.html" style="background-color:#6366f1;color:white;padding:12px 30px;text-decoration:none;border-radius:8px;display:inline-block;">Study Now →</a>
+  <a href="${config.frontendUrl}/dashboard.html" style="background-color:#6366f1;color:white;padding:12px 30px;text-decoration:none;border-radius:8px;display:inline-block;">Open my plan →</a>
 </div>
 ${lifetimePromo}
 ${getEmailFooter(user)}
@@ -11454,6 +11521,25 @@ function canSendStudyNudge(user) {
     return canSendPromoEmail(user) && user.studyReminders !== false;
 }
 
+// Teacher free-trial ending soon — convert to a paid seat to keep the class.
+async function sendTeacherTrialEndingEmail(user) {
+    if (!emailTransporter || !canSendPromoEmail(user)) return;
+    const name = escapeHtml((user.name || 'there').split(' ')[0]);
+    const url = `${config.frontendUrl}/teacher-pricing.html`;
+    const days = Math.max(1, Math.ceil((new Date(user.teacherTrialExpiry).getTime() - Date.now()) / 864e5));
+    await emailTransporter.sendMail({
+        from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: `Your teacher trial ends in ${days} day${days === 1 ? '' : 's'}`,
+        html: `<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:24px;color:#222;">
+  <h2 style="color:#6C63FF;margin:0 0 12px;">Keep your class on Study Decoder</h2>
+  <p style="font-size:15px;line-height:1.6;color:#444;">Hi ${name}, your free teacher trial ends in <strong>${days} day${days === 1 ? '' : 's'}</strong>. Pick a plan now so your students keep full access without interruption — one seat covers up to ${TEACHER_STUDENT_CAP} students.</p>
+  <p style="margin:24px 0;"><a href="${url}" style="display:inline-block;background:#6C63FF;color:#fff;padding:12px 24px;text-decoration:none;border-radius:8px;font-weight:700;">Choose a plan →</a></p>
+  ${getEmailFooter(user)}
+</div>`
+    });
+}
+
 // One gentle, loss-framed daily nudge: keep your streak / cards due / finish plan.
 async function sendDailyNudgeEmail(user, kind, ctx) {
     if (!emailTransporter || !canSendStudyNudge(user)) return;
@@ -11534,6 +11620,17 @@ setInterval(async () => {
             if (ageMs >= 22 * oneHourMs && ageMs < 30 * oneHourMs && !user.day1RecapEmailSent && !hasFullAccess(user)) {
                 if (await tryEmail('day1-recap', sendDay1RecapEmail, user)) {
                     user.day1RecapEmailSent = true;
+                }
+            }
+
+            // Teacher trial ending — once, within 3 days of expiry, no paid seat.
+            if (user.teacherTrialExpiry && !hasActiveTeacherSeat(user) && !user.teacherTrialEndingSent) {
+                const tExp = new Date(user.teacherTrialExpiry).getTime();
+                const msLeft = tExp - now;
+                if (Number.isFinite(tExp) && msLeft > 0 && msLeft <= 3 * oneDayMs) {
+                    if (await tryEmail('teacher-trial-ending', sendTeacherTrialEndingEmail, user)) {
+                        user.teacherTrialEndingSent = true;
+                    }
                 }
             }
 
