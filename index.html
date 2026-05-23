@@ -2820,9 +2820,9 @@
                 window.location.replace('/teacher-dashboard.html');
                 return;
             }
-            // Students (junior + senior) land on the app dashboard, not the
-            // marketing scroll. Owners stay here to manage the marketing page.
-            if (!stay && user.role !== 'owner') {
+            // Everyone else (students + owner) lands on the app dashboard, not
+            // the marketing scroll. The ?stay= escape hatch keeps you here.
+            if (!stay) {
                 window.location.replace('/dashboard.html');
                 return;
             }
