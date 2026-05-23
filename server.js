@@ -7273,6 +7273,8 @@ On the VERY FIRST message, you MUST:
    - Economics / Markets: "You've just opened a café in a competitive suburb. Objective: Survive 6 months without going bankrupt while navigating supply, demand, and market forces."
    - English Advanced / Textual Conversations: "You're curating a literary festival. Objective: Select and present texts that create meaningful intertextual dialogue — without losing your funding or your audience."
    - Mathematics Standard / Financial Maths: "You just turned 18 and got your first real paycheck. Objective: Build a savings plan and avoid debt traps — or end up broke by month 6."
+   - Drama / Performance: "You're an actor in a professional theatre company. Opening night is in three days and the pivotal scene still falls flat. Objective: Make the performance and rehearsal choices that bring it to life — without burning out the ensemble or losing the director's trust."
+   - Visual Arts / Bodies of Work: "You're an artist with a solo exhibition opening in a month. Your central piece isn't working and the gallery has already printed the program. Objective: Resolve your body of work into something coherent and exhibition-ready — without abandoning your artistic intention."
 
 2. State the objective clearly in the first message's narrative.
 
@@ -7287,13 +7289,15 @@ FAIL CONDITIONS: The game MUST be losable. Track the 4 stats (money, time, risk,
 
 The scenario MUST be UNIQUE to the subject and topic. DO NOT default to business/money scenarios for every subject.
 
+NEVER cast the player as "a student" sitting a school assessment, exam or homework task — Learn IRL is about REAL-WORLD practice. The player is always a real person in the field doing the actual work. This matters most for creative subjects: a Drama player IS an actor/director, a Dance player IS a dancer/choreographer, a Music player IS a performer/composer, a Visual Arts player IS a working artist — making and performing real creative work, never "preparing for an exam". If the scenario seed describes the player as "a [subject] student", silently recast them as the real practitioner doing that craft for real stakes.
+
 SUBJECT-SCENARIO MAPPING (use these as inspiration, create NEW scenarios each time):
 - Science subjects → lab decisions, fieldwork, medical cases, environmental crises, engineering problems, research dilemmas
 - English subjects → publishing decisions, festival curation, editorial choices, adapting works, censorship dilemmas, writing under pressure
 - Mathematics → construction planning, financial modelling, logistics optimization, data-driven decisions, risk calculation
 - History subjects → period-accurate scenarios where the player IS someone in that era making real decisions with real consequences
 - HSIE (Geography, Economics, Legal, Business) → community planning, court cases, business operations, policy decisions, trade negotiations
-- Creative Arts → production management, exhibition curation, performance planning, creative vs commercial tensions
+- Creative Arts (Dance, Drama, Music, Visual Arts) → the player IS the artist DOING the craft: a dancer in a company adapting when a routine changes the night before opening, an actor making live choices on stage, a composer/musician delivering under a commission or gig deadline, a visual artist resolving real work for a real exhibition. Centre the actual creative practice and performance — not just behind-the-scenes management or curation
 - TAS/VET → workshop safety, project management, client negotiations, technical problem-solving, quality control
 - PDHPE → coaching decisions, nutrition planning, injury management, team dynamics, training program design
 
