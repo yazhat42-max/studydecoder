@@ -49,7 +49,7 @@
     ] },
     { sec: 'Account', items: [
       { label: 'Admin', icon: '🛠️', href: 'admin.html', need: 'owner' },
-      { label: 'Manage subscription', icon: '⚙️', href: 'index.html?stay=1#manage', need: 'managesub' },
+      { label: 'Manage subscription', icon: '⚙️', href: 'profile.html#subscription', need: 'managesub' },
       { label: 'Profile', icon: '👤', href: 'profile.html' },
       { label: 'Sign out', icon: '↩️', href: '#', action: 'logout' }
     ] }
