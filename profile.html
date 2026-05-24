@@ -209,7 +209,7 @@
         <div class="profile-header">
             <div class="profile-avatar" id="profileAvatar">?</div>
             <div class="profile-info">
-                <div class="profile-name" id="profileName">Loading…</div>
+                <div class="profile-name" id="profileName"><span id="profileNameText">Loading…</span><span id="profilePro" style="display:none;font-size:0.62em;font-weight:800;letter-spacing:0.5px;color:#fde047;background:rgba(253,224,71,0.14);border:1px solid rgba(253,224,71,0.4);border-radius:6px;padding:2px 7px;margin-left:8px;vertical-align:middle;">PRO</span></div>
                 <div class="profile-email" id="profileEmail"></div>
                 <div class="profile-level" id="profileLevelBadge" style="display:none;"></div>
                 <div id="atarLine" style="display:none;font-size:0.84rem;margin-top:8px;"></div>
@@ -726,7 +726,10 @@
             var name = (user && user.name) || (user && user.email && user.email.split('@')[0]) || 'Student';
             var initials = name.slice(0, 1).toUpperCase();
             document.getElementById('profileAvatar').textContent = initials;
-            document.getElementById('profileName').textContent = name;
+            document.getElementById('profileNameText').textContent = name;
+            var _prem = !!(user && (user.subscribed || user.role === 'owner' || user.role === 'lifetime' || user.role === 'og_tester' || user.plan === 'lifetime'));
+            var _proEl = document.getElementById('profilePro');
+            if (_proEl) _proEl.style.display = _prem ? 'inline-block' : 'none';
             if (user && user.email) document.getElementById('profileEmail').textContent = user.email;
 
             // Show "Your Assignments" tile only if the student is linked to

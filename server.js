@@ -2941,7 +2941,8 @@ function leaderboardRows(userIds, weekKey) {
             userId: uid,
             name: safeDisplayName((u.name || (u.email || '').split('@')[0] || 'Student').split(' ')[0]),
             weeklyXp: (g && g.weekly && g.weekly[wk]) || 0,
-            level: (g && g.level) || 0
+            level: (g && g.level) || 0,
+            premium: hasFullAccess(u)
         });
     }
     rows.sort((a, b) => b.weeklyXp - a.weeklyXp || b.level - a.level);

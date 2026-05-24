@@ -90,7 +90,7 @@
       var mine = r.userId === meId;
       html += '<li class="lb-row' + (mine ? ' me' : '') + '">' +
         '<span class="lb-rank">' + (r.rank <= 3 ? ['🥇', '🥈', '🥉'][r.rank - 1] : r.rank) + '</span>' +
-        '<span class="lb-name">' + esc(r.name) + (mine ? ' (you)' : '') + '</span>' +
+        '<span class="lb-name">' + esc(r.name) + (mine ? ' (you)' : '') + (r.premium ? ' <span class="lb-pro">PRO</span>' : '') + '</span>' +
         '<span class="lb-xp">' + r.weeklyXp + ' XP</span></li>';
     }
     html += '</ul>';
