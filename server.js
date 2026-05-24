@@ -173,10 +173,13 @@ const AI_QUALITY_TIERS = {
         temperature: 1.0,     // Maximum creativity
         model: 'gpt-5-mini'   // Latest flagship model
     },
+    // Premium tiers get the smarter model (gpt-5-mini). Cost is held down by
+    // reasoning_effort:'low' on every call + the token caps below — and only
+    // paying/lifetime users hit it. Free stays on gpt-4o-mini.
     lifetime: {
-        maxTokens: 4000,
+        maxTokens: 5000,
         temperature: 0.7,
-        model: 'gpt-4o-mini'
+        model: 'gpt-5-mini'
     },
     og_tester: {
         maxTokens: 4000,
@@ -184,9 +187,9 @@ const AI_QUALITY_TIERS = {
         model: 'gpt-4o-mini'
     },
     paid: {
-        maxTokens: 4000,      // Standard for subscribers
+        maxTokens: 5000,      // Premium subscribers — smarter model + a bit more room
         temperature: 0.7,
-        model: 'gpt-4o-mini'
+        model: 'gpt-5-mini'
     },
     free: {
         maxTokens: 1500,      // Limited output
@@ -6995,7 +6998,9 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
         const requestBody = {
             model: aiSettings.model,
             messages,
-            [tokenParam]: Math.min(aiSettings.maxTokens, 3000)
+            [tokenParam]: Math.min(aiSettings.maxTokens, 3000),
+
+            ...(isGpt5 ? { reasoning_effort: 'low' } : {})
         };
         if (!isGpt5) requestBody.temperature = aiSettings.temperature;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -7986,7 +7991,9 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
         const requestBody = {
             model: aiSettings.model,
             messages: [{ role: 'system', content: systemPrompt }, ...messages.slice(-20).map(m => ({ role: m.role, content: m.content }))],
-            [tokenParam]: aiSettings.maxTokens
+            [tokenParam]: aiSettings.maxTokens,
+
+            ...(isGpt5 ? { reasoning_effort: 'low' } : {})
         };
         if (!isGpt5) requestBody.temperature = 0.3;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -8048,7 +8055,9 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
         const requestBody = {
             model: aiSettings.model,
             messages: [{ role: 'system', content: systemPrompt }, ...messages.map(m => ({ role: m.role, content: m.content }))],
-            [tokenParam]: aiSettings.maxTokens
+            [tokenParam]: aiSettings.maxTokens,
+
+            ...(isGpt5 ? { reasoning_effort: 'low' } : {})
         };
         if (!isGpt5) requestBody.temperature = 0.3;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -9356,7 +9365,9 @@ CRITICAL JSON RULES:
                     { role: 'system', content: finalSystemPrompt },
                     { role: 'user', content: userPromptText }
                 ],
-                [tokenParam]: examTokenBudget
+                [tokenParam]: examTokenBudget,
+
+                ...(isGpt5 ? { reasoning_effort: 'low' } : {})
             };
             if (!isGpt5) requestBody.temperature = Math.min(aiSettings.temperature, 0.7);
             // Reasoning models default to heavy internal reasoning, which is the
@@ -9924,7 +9935,9 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                     { role: 'user', content: userContent }
                 ],
                 response_format: { type: 'json_object' },
-                [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
+                [tokenParam]: Math.min(aiSettings.maxTokens, 16000),
+
+                ...(isGpt5 ? { reasoning_effort: 'low' } : {})
             };
             if (!isGpt5) requestBody.temperature = 0.3; // Low temp for consistent marking
 
@@ -9966,7 +9979,9 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                             { role: 'user', content: retryUserContent }
                         ],
                         response_format: { type: 'json_object' },
-                        [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
+                        [tokenParam]: Math.min(aiSettings.maxTokens, 16000),
+
+                        ...(isGpt5 ? { reasoning_effort: 'low' } : {})
                     };
                     if (!isGpt5) retryBody.temperature = 0.1;
                     const retryRes = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -10153,7 +10168,9 @@ Return ONLY valid JSON: {"sampleAnswer": "<the full sample answer text>"}`;
             { role: 'user', content: questionText }
         ],
         response_format: { type: 'json_object' },
-        [tokenParam]: outputBudget
+        [tokenParam]: outputBudget,
+
+        ...(isGpt5 ? { reasoning_effort: 'low' } : {})
     };
     if (!isGpt5) requestBody.temperature = 0.4;
 
@@ -10363,7 +10380,9 @@ ${syllabusContext || '(No syllabus content available — rely on standard curric
             { role: 'user', content: userPrompt }
         ],
         response_format: { type: 'json_object' },
-        [tokenParam]: Math.min(aiSettings.maxTokens, 16000)
+        [tokenParam]: Math.min(aiSettings.maxTokens, 16000),
+
+        ...(isGpt5 ? { reasoning_effort: 'low' } : {})
     };
     if (!isGpt5) requestBody.temperature = 0.6;
 
@@ -10690,7 +10709,9 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
                 { role: 'system', content: systemPrompt },
                 ...apiMessages
             ],
-            [tokenParam]: aiSettings.maxTokens
+            [tokenParam]: aiSettings.maxTokens,
+
+            ...(isGpt5 ? { reasoning_effort: 'low' } : {})
         };
         if (!isGpt5) requestBody.temperature = aiSettings.temperature;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -10799,7 +10820,9 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
                     content: m.content
                 }))
             ],
-            [tokenParam]: aiSettings.maxTokens
+            [tokenParam]: aiSettings.maxTokens,
+
+            ...(isGpt5 ? { reasoning_effort: 'low' } : {})
         };
         if (!isGpt5) requestBody.temperature = aiSettings.temperature;
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
