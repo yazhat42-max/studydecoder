@@ -4539,6 +4539,23 @@ app.put('/api/user/preferences', requireAuth, express.json(), (req, res) => {
 });
 
 /**
+ * POST /api/user/subjects
+ * Deliberate, user-driven edit of "Your Subjects" from the profile page. Unlike
+ * PUT /api/user/preferences (which locks subjects after onboarding to stop tools
+ * from rewriting them), this endpoint always applies — it's an explicit choice.
+ */
+app.post('/api/user/subjects', requireAuth, express.json(), (req, res) => {
+    const user = req.user;
+    const subjects = req.body && req.body.subjects;
+    if (!Array.isArray(subjects)) return res.status(400).json({ error: 'subjects must be an array' });
+    if (!user.preferences) user.preferences = {};
+    user.preferences.subjects = subjects.map(String).map(s => s.trim()).filter(Boolean).slice(0, 20);
+    if (req.body.level && ['senior', 'junior'].includes(req.body.level)) user.preferences.level = req.body.level;
+    scheduleSave();
+    res.json({ success: true, subjects: user.preferences.subjects, level: user.preferences.level });
+});
+
+/**
  * POST /api/set-pending-plan
  * @deprecated - No longer used, kept for backwards compatibility
  */

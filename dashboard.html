@@ -115,7 +115,11 @@
     .onb-toggle { display: flex; gap: 6px; background: rgba(255,255,255,0.05); border-radius: 11px; padding: 4px; margin: 0 auto 16px; max-width: 300px; }
     .onb-toggle button { flex: 1; padding: 9px; border: none; background: transparent; color: rgba(255,255,255,0.6); font-weight: 700; font-size: 13.5px; border-radius: 8px; cursor: pointer; }
     .onb-toggle button.on { background: #6C63FF; color: #fff; }
+    .onb-search { width: 100%; padding: 11px 14px; margin-bottom: 12px; border-radius: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #fff; font-size: 14px; font-family: inherit; outline: none; }
+    .onb-search:focus { border-color: rgba(108,99,255,0.5); }
+    .onb-search::placeholder { color: rgba(255,255,255,0.4); }
     .onb-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; max-height: 220px; overflow-y: auto; }
+    .onb-empty { color: rgba(255,255,255,0.4); font-size: 13px; padding: 8px 2px; }
     .onb-chip { padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #e8e8ef; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
     .onb-chip:hover { border-color: rgba(108,99,255,0.5); }
     .onb-chip.sel { background: rgba(108,99,255,0.22); border-color: #6C63FF; color: #fff; }
@@ -153,6 +157,7 @@
           <button id="onbSenior" class="on" type="button">HSC (Yr 11–12)</button>
           <button id="onbJunior" type="button">Years 7–10</button>
         </div>
+        <input type="text" class="onb-search" id="onbSearch" placeholder="Search subjects…" autocomplete="off">
         <div class="onb-chips" id="onbChips"></div>
         <button class="onb-btn" id="onbToStep2" disabled>Continue</button>
       </section>
@@ -360,7 +365,19 @@
             });
             host.appendChild(b);
           });
+          filterChips();
         }
+        function filterChips() {
+          var q = (el2('onbSearch').value || '').trim().toLowerCase();
+          var btns = el2('onbChips').querySelectorAll('.onb-chip');
+          var shown = 0;
+          btns.forEach(function (b) {
+            var match = !q || b.textContent.toLowerCase().indexOf(q) !== -1;
+            b.style.display = match ? '' : 'none';
+            if (match) shown++;
+          });
+        }
+        el2('onbSearch').addEventListener('input', filterChips);
         function setLvl(l) { st.level = l; st.selected = []; el2('onbSenior').classList.toggle('on', l === 'senior'); el2('onbJunior').classList.toggle('on', l === 'junior'); el2('onbToStep2').disabled = true; chips(); }
         function step(n) { el2('onbStep1').classList.toggle('hidden', n !== 1); el2('onbStep2').classList.toggle('hidden', n !== 2); el2('onbStep3').classList.toggle('hidden', n !== 3); el2('onbD2').classList.toggle('on', n >= 2); el2('onbD3').classList.toggle('on', n >= 3); }
         el2('onbSenior').addEventListener('click', function () { setLvl('senior'); });
@@ -390,7 +407,7 @@
           // Taster is generated from the user's own first subject so it's relevant.
           el2('onbQSub').textContent = 'A quick taster from ' + (subj ? subj.name : 'your subject') + '.';
           el2('onbQHost').innerHTML = '<div class="onb-spin"></div>';
-          fetch('/api/games/questions', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subject: subj.id, difficulty: 'easy' }) })
+          fetch('/api/games/questions', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subject: subj.id, difficulty: 'hard' }) })
             .then(function (r) { return r.ok ? r.json() : null; })
             .then(function (d) { if (d && d.questions && d.questions.length) renderQ(d.questions[0]); else skipQ(); })
             .catch(skipQ);

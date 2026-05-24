@@ -130,6 +130,16 @@
         .sub-btn.cancel { background:#ef4444; color:#fff; }
         .sub-btn.cancel:disabled { background:#64748b; cursor:default; }
         .sub-btn.upgrade { background:linear-gradient(135deg,var(--primary,#6C63FF),#8b5cf6); color:#fff; }
+        .subj-pills { display:flex; flex-wrap:wrap; gap:8px; }
+        .subj-pill { padding:7px 13px; border-radius:999px; background:rgba(108,99,255,0.16); color:var(--text); font-size:0.85rem; font-weight:600; border:1px solid rgba(108,99,255,0.3); }
+        .seg-row { display:inline-flex; gap:6px; background:rgba(127,127,140,0.12); border-radius:11px; padding:4px; margin-bottom:12px; }
+        .seg-row .lvlbtn { border:none; background:transparent; color:var(--text-muted); font-weight:700; font-size:0.85rem; padding:8px 14px; border-radius:8px; cursor:pointer; font-family:inherit; }
+        .seg-row .lvlbtn.on { background:var(--primary,#6C63FF); color:#fff; }
+        .subj-search { width:100%; padding:11px 14px; margin-bottom:12px; border-radius:11px; background:rgba(127,127,140,0.10); border:1px solid var(--border); color:var(--text); font-size:0.9rem; font-family:inherit; outline:none; }
+        .subj-search:focus { border-color:rgba(108,99,255,0.5); }
+        .subj-chips { display:flex; flex-wrap:wrap; gap:8px; max-height:240px; overflow-y:auto; }
+        .subj-chip { padding:8px 13px; border-radius:999px; background:rgba(127,127,140,0.10); border:1px solid var(--border); color:var(--text); font-size:0.83rem; font-weight:600; cursor:pointer; font-family:inherit; }
+        .subj-chip.sel { background:rgba(108,99,255,0.22); border-color:var(--primary,#6C63FF); }
         .new-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:22px 24px; margin-bottom:0; }
 
         /* challenge */
@@ -182,6 +192,7 @@
         .empty-note { color:var(--text-muted); font-size:0.88rem; text-align:center; padding:20px 0; }
     </style>
     <script src="/ui-helpers.js" defer></script>
+    <script src="subject-data.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -274,6 +285,10 @@
                 <a href="worksheet-decoder.html" class="quick-link"><span class="ql-icon">📄</span><div><div class="ql-name">Worksheet Decoder</div><div class="ql-sub">Crack any question</div></div></a>
             </div>
         </div>
+
+        <!-- My Subjects -->
+        <div class="sec-header" id="mySubjects">📚 My Subjects</div>
+        <div class="new-card" id="subjectsCard"><div class="empty-note"><span class="spinner-sm"></span> Loading…</div></div>
 
         <!-- Subscription -->
         <div class="sec-header" id="subscription">💳 Subscription</div>
@@ -551,6 +566,82 @@
         }
 
         function fmtDate(d) { try { return new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } }
+        function escSub(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+
+        // ── My Subjects (deliberate editor; bypasses the onboarding lock) ──
+        var subjState = { user: null, level: 'senior', selected: [] };
+        function renderMySubjects(user) {
+            subjState.user = user;
+            subjState.level = (user.preferences && user.preferences.level) || 'senior';
+            var card = document.getElementById('subjectsCard');
+            if (!card) return;
+            var names = (user.preferences && Array.isArray(user.preferences.subjects)) ? user.preferences.subjects : [];
+            var pills = names.length
+                ? '<div class="subj-pills">' + names.map(function (n) { return '<span class="subj-pill">' + escSub(n) + '</span>'; }).join('') + '</div>'
+                : '<div class="empty-note">No subjects saved yet.</div>';
+            card.innerHTML = pills + '<button class="sub-btn upgrade" id="editSubjectsBtn" style="margin-top:14px;">Edit subjects</button>';
+            document.getElementById('editSubjectsBtn').addEventListener('click', openSubjectEditor);
+        }
+        function renderSubjChips() {
+            var host = document.getElementById('subjChips');
+            if (!host) return;
+            var SD = window.SD_SUBJECTS;
+            var list = (SD && (subjState.level === 'junior' ? SD.junior : SD.senior)) || [];
+            var q = (document.getElementById('subjSearch').value || '').trim().toLowerCase();
+            host.innerHTML = '';
+            list.forEach(function (s) {
+                if (q && s.name.toLowerCase().indexOf(q) === -1) return;
+                var b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'subj-chip' + (subjState.selected.indexOf(s.id) !== -1 ? ' sel' : '');
+                b.textContent = s.name;
+                b.addEventListener('click', function () {
+                    var i = subjState.selected.indexOf(s.id);
+                    if (i > -1) subjState.selected.splice(i, 1); else subjState.selected.push(s.id);
+                    b.classList.toggle('sel');
+                });
+                host.appendChild(b);
+            });
+        }
+        function openSubjectEditor() {
+            var SD = window.SD_SUBJECTS;
+            var names = (subjState.user.preferences && subjState.user.preferences.subjects) || [];
+            subjState.selected = names.map(function (n) { return (SD && SD.resolveId) ? SD.resolveId(n) : n; });
+            var card = document.getElementById('subjectsCard');
+            card.innerHTML =
+                '<div class="seg-row"><button class="lvlbtn" data-lvl="senior">HSC (Yr 11–12)</button><button class="lvlbtn" data-lvl="junior">Years 7–10</button></div>' +
+                '<input type="text" class="subj-search" id="subjSearch" placeholder="Search subjects…" autocomplete="off">' +
+                '<div class="subj-chips" id="subjChips"></div>' +
+                '<div style="display:flex;gap:8px;margin-top:14px;"><button class="sub-btn upgrade" id="saveSubjectsBtn">Save</button><button class="sub-btn" id="cancelSubjectsBtn" style="background:rgba(127,127,140,0.18);color:var(--text);">Cancel</button></div>';
+            card.querySelectorAll('.lvlbtn').forEach(function (b) {
+                b.classList.toggle('on', b.dataset.lvl === subjState.level);
+                b.addEventListener('click', function () {
+                    subjState.level = b.dataset.lvl;
+                    card.querySelectorAll('.lvlbtn').forEach(function (x) { x.classList.toggle('on', x === b); });
+                    renderSubjChips();
+                });
+            });
+            document.getElementById('subjSearch').addEventListener('input', renderSubjChips);
+            document.getElementById('saveSubjectsBtn').addEventListener('click', saveSubjects);
+            document.getElementById('cancelSubjectsBtn').addEventListener('click', function () { renderMySubjects(subjState.user); });
+            renderSubjChips();
+        }
+        async function saveSubjects() {
+            var SD = window.SD_SUBJECTS;
+            var names = subjState.selected.map(function (id) { return (SD && SD.displayName) ? SD.displayName(id) : id; }).filter(Boolean);
+            var btn = document.getElementById('saveSubjectsBtn');
+            btn.disabled = true; btn.textContent = 'Saving…';
+            try {
+                var res = await fetch(API_BASE + '/api/user/subjects', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subjects: names, level: subjState.level }) });
+                var d = await res.json().catch(function () { return null; });
+                if (!res.ok || !d) { (window.showToast ? showToast((d && d.error) || 'Could not save.', 'error') : alert('Could not save.')); btn.disabled = false; btn.textContent = 'Save'; return; }
+                subjState.user.preferences = subjState.user.preferences || {};
+                subjState.user.preferences.subjects = d.subjects;
+                subjState.user.preferences.level = d.level || subjState.level;
+                if (window.showToast) showToast('Subjects updated.', 'success');
+                renderMySubjects(subjState.user);
+            } catch (e) { (window.showToast ? showToast('Network error. Try again.', 'error') : alert('Network error.')); btn.disabled = false; btn.textContent = 'Save'; }
+        }
 
         function renderSubscription(user) {
             var card = document.getElementById('subCard');
@@ -605,6 +696,7 @@
             // Apply theme
             if (window.StreakManager) window.StreakManager.applyTheme(s.theme);
 
+            renderMySubjects(user);
             renderSubscription(user);
 
             // Header
