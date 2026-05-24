@@ -1765,6 +1765,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         // =====================
         let userSavedSubjects = [];
         async function saveSubjectPreference(subjectId) {
+            return; // "Your Subjects" is locked to the onboarding choice — no tool-driven changes.
             if (!subjectId || userSavedSubjects.includes(subjectId)) return;
             userSavedSubjects.push(subjectId);
             if (userSavedSubjects.length > 10) userSavedSubjects = userSavedSubjects.slice(-10);
@@ -2046,7 +2047,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
   <h1>${escapeHtml(examData.title || 'Practice Exam')}</h1>
   <div class="meta">Duration: ${escapeHtml(examData.duration || '')} • Total Marks: ${escapeHtml(examData.totalMarks || '')}</div>
   ${instructions}
-  ${sectionsHtml}
+  ${sectionsHtml}
 </body>
 </html>`;
 

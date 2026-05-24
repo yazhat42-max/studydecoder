@@ -4509,7 +4509,12 @@ app.put('/api/user/preferences', requireAuth, express.json(), (req, res) => {
 
     if (subjects !== undefined) {
         if (!Array.isArray(subjects)) return res.status(400).json({ error: 'subjects must be an array' });
-        user.preferences.subjects = subjects.map(String).slice(0, 20);
+        // "Your Subjects" is locked to the student's onboarding choice. Only accept
+        // subject updates while the account is still being onboarded — never let
+        // ongoing tool usage rewrite the saved list.
+        if (!user.preferences.onboarded) {
+            user.preferences.subjects = subjects.map(String).slice(0, 20);
+        }
     }
     if (detailLevel !== undefined) {
         const dl = parseInt(detailLevel);

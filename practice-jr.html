@@ -1681,6 +1681,7 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
         // =====================
         let userSavedSubjects = [];
         async function saveSubjectPreference(subjectId) {
+            return; // "Your Subjects" is locked to the onboarding choice — no tool-driven changes.
             if (!subjectId || userSavedSubjects.includes(subjectId)) return;
             userSavedSubjects.push(subjectId);
             if (userSavedSubjects.length > 10) userSavedSubjects = userSavedSubjects.slice(-10);
