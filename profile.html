@@ -123,6 +123,13 @@
 
         /* ── NEW SECTIONS ── */
         .sec-header { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border); margin-top:3rem; }
+        .sub-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; font-size:0.92rem; color:var(--text-muted); }
+        .sub-row b { color:var(--text); font-weight:700; }
+        .sub-note { font-size:0.82rem; color:var(--text-muted); line-height:1.5; margin:10px 0 0; }
+        .sub-btn { display:inline-block; margin-top:14px; padding:11px 20px; border-radius:10px; font-size:0.9rem; font-weight:700; cursor:pointer; border:none; text-decoration:none; }
+        .sub-btn.cancel { background:#ef4444; color:#fff; }
+        .sub-btn.cancel:disabled { background:#64748b; cursor:default; }
+        .sub-btn.upgrade { background:linear-gradient(135deg,var(--primary,#6C63FF),#8b5cf6); color:#fff; }
         .new-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:22px 24px; margin-bottom:0; }
 
         /* challenge */
@@ -267,6 +274,10 @@
                 <a href="worksheet-decoder.html" class="quick-link"><span class="ql-icon">📄</span><div><div class="ql-name">Worksheet Decoder</div><div class="ql-sub">Crack any question</div></div></a>
             </div>
         </div>
+
+        <!-- Subscription -->
+        <div class="sec-header" id="subscription">💳 Subscription</div>
+        <div class="new-card" id="subCard"><div class="empty-note"><span class="spinner-sm"></span> Loading…</div></div>
 
         <!-- Daily Challenge -->
         <div class="sec-header">⚡ Today's Daily Challenge</div>
@@ -539,11 +550,62 @@
             });
         }
 
+        function fmtDate(d) { try { return new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } }
+
+        function renderSubscription(user) {
+            var card = document.getElementById('subCard');
+            if (!card || !user) return;
+            var role = user.role;
+            var classLinkedOnly = user.linkedToTeacher && !user.plan && !user.dayPassActive && !user.subscribed;
+            var html = '';
+            if (role === 'owner' || role === 'lifetime' || role === 'og_tester' || user.plan === 'lifetime') {
+                html = '<div class="sub-row"><span>Plan</span><b>Lifetime / full access</b></div><p class="sub-note">You have permanent full access — nothing to manage here. 🎉</p>';
+            } else if (classLinkedOnly) {
+                html = '<div class="sub-row"><span>Plan</span><b>Free via your class</b></div><p class="sub-note">Your access comes from your teacher\'s seat. To unlock every subject on your own account, you can upgrade anytime.</p><a class="sub-btn upgrade" href="index.html?stay=1#pricing">Upgrade my account →</a>';
+            } else if (user.subscribed) {
+                var planLabel = user.plan === 'yearly' ? 'Yearly' : user.plan === 'monthly' ? 'Monthly' : 'Active';
+                html += '<div class="sub-row"><span>Plan</span><b>' + planLabel + '</b></div>';
+                if (user.expiresAt) html += '<div class="sub-row"><span>' + (user.cancelAtPeriodEnd ? 'Access until' : 'Renews') + '</span><b>' + fmtDate(user.expiresAt) + '</b></div>';
+                if (user.cancelAtPeriodEnd) {
+                    html += '<p class="sub-note">Your subscription is set to cancel — you keep full access until the date above.</p>';
+                } else {
+                    html += '<button class="sub-btn cancel" id="cancelSubBtn2">Cancel subscription</button>';
+                }
+            } else if (user.dayPassActive) {
+                html = '<div class="sub-row"><span>Plan</span><b>Day Pass</b></div>' + (user.dayPassExpiry ? '<div class="sub-row"><span>Active until</span><b>' + fmtDate(user.dayPassExpiry) + '</b></div>' : '') + '<p class="sub-note">Enjoy full access for the day.</p>';
+            } else {
+                html = '<div class="sub-row"><span>Plan</span><b>Free</b></div><p class="sub-note">You\'re on the free tier with daily limits. Upgrade for unlimited access to every tool.</p><a class="sub-btn upgrade" href="index.html?stay=1#pricing">See plans →</a>';
+            }
+            card.innerHTML = html;
+            var cb = document.getElementById('cancelSubBtn2');
+            if (cb) cb.addEventListener('click', cancelSubscription);
+            if (location.hash === '#subscription' && !window.__sdSubScrolled) {
+                window.__sdSubScrolled = true;
+                setTimeout(function () { var el = document.getElementById('subscription'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150);
+            }
+        }
+
+        async function cancelSubscription() {
+            if (!confirm('Cancel your subscription? You\'ll keep access until the end of your current billing period.')) return;
+            var btn = document.getElementById('cancelSubBtn2');
+            if (btn) { btn.disabled = true; btn.textContent = 'Cancelling…'; }
+            try {
+                var res = await fetch(API_BASE + '/api/cancel', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' } });
+                var d = await res.json().catch(function () { return {}; });
+                if (!res.ok) { (window.showToast ? showToast(d.error || 'Could not cancel.', 'error') : alert(d.error || 'Could not cancel.')); if (btn) { btn.disabled = false; btn.textContent = 'Cancel subscription'; } return; }
+                if (window.showToast) showToast(d.message || 'Subscription cancelled.', 'success', 5000); else alert(d.message || 'Subscription cancelled.');
+                var r2 = await fetch(API_BASE + '/api/subscription', { credentials: 'include' });
+                if (r2.ok) renderSubscription(await r2.json());
+            } catch (e) { (window.showToast ? showToast('Network error. Try again.', 'error') : alert('Network error.')); if (btn) { btn.disabled = false; btn.textContent = 'Cancel subscription'; } }
+        }
+
         function render(user) {
             var s = window.StreakManager ? window.StreakManager.load() : { count:0, shields:0, totalDays:0, days:{}, theme:'default' };
 
             // Apply theme
             if (window.StreakManager) window.StreakManager.applyTheme(s.theme);
+
+            renderSubscription(user);
 
             // Header
             var name = (user && user.name) || (user && user.email && user.email.split('@')[0]) || 'Student';

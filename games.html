@@ -205,6 +205,7 @@ function api(path, opts){ return fetch(API_BASE+path, Object.assign({credentials
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 let level = 'senior';
+let mySubjects = [];
 let moduleSel = null;
 const root = document.getElementById('root');
 
@@ -328,8 +329,8 @@ function renderSetup(){
         <div class="field">
           <label>Level</label>
           <div class="seg" id="levelSeg">
-            <button data-lvl="senior" class="on">Senior (HSC)</button>
-            <button data-lvl="junior">Junior (7–10)</button>
+            <button data-lvl="senior" class="${level === 'senior' ? 'on' : ''}">Senior (HSC)</button>
+            <button data-lvl="junior" class="${level === 'junior' ? 'on' : ''}">Junior (7–10)</button>
           </div>
         </div>
         <div class="field">
@@ -386,6 +387,13 @@ function populateSubjects(){
   } else {
     const subs = (window.SD_SUBJECTS ? window.SD_SUBJECTS.subjectsForLevel(level) : []);
     sel.innerHTML = subs.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+  }
+  // Auto-select one of the student's own subjects when it's available at this level.
+  if (mySubjects.length && window.SD_SUBJECTS) {
+    for (const name of mySubjects) {
+      const id = window.SD_SUBJECTS.resolveId ? window.SD_SUBJECTS.resolveId(name) : name;
+      if ([].some.call(sel.options, o => o.value === id)) { sel.value = id; break; }
+    }
   }
   refreshModules();
 }
@@ -641,6 +649,7 @@ function finish(s, outcome){
       const hasAccess = d.role === 'owner' || d.role === 'lifetime' || d.role === 'og_tester' || d.subscribed || d.freeAcknowledged || (d.preferences && d.preferences.onboarded);
       if (!hasAccess){ window.location.href = 'index.html'; return; }
       if (d.preferences && d.preferences.level === 'junior') level = 'junior';
+      mySubjects = (d.preferences && Array.isArray(d.preferences.subjects)) ? d.preferences.subjects : [];
       document.getElementById('authOverlay').classList.add('hidden');
       document.getElementById('app').classList.remove('hidden');
       renderSetup();
