@@ -212,6 +212,7 @@
                 <div class="profile-name" id="profileName">Loading…</div>
                 <div class="profile-email" id="profileEmail"></div>
                 <div class="profile-level" id="profileLevelBadge" style="display:none;"></div>
+                <div id="atarLine" style="display:none;font-size:0.84rem;margin-top:8px;"></div>
             </div>
         </div>
 
@@ -568,6 +569,27 @@
         function fmtDate(d) { try { return new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } }
         function escSub(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
 
+        // ── Predicted ATAR (subtle; premium only, rough guide from practice exams) ──
+        async function renderAtar() {
+            var line = document.getElementById('atarLine');
+            if (!line) return;
+            try {
+                var res = await fetch(API_BASE + '/api/atar-estimate', { credentials: 'include' });
+                if (!res.ok) return;
+                var d = await res.json();
+                if (d.locked) {
+                    line.style.display = '';
+                    line.style.color = 'var(--text-muted)';
+                    line.innerHTML = '🔒 <a href="index.html?stay=1#pricing" style="color:#a59fff;text-decoration:none;">Unlock your predicted ATAR with Premium</a>';
+                } else if (d.estimate && d.estimate.atar) {
+                    line.style.display = '';
+                    line.style.color = '#a59fff';
+                    line.innerHTML = '🎯 On track for <strong>~ATAR ' + d.estimate.atar + '</strong> <span style="color:var(--text-muted);font-weight:400;">· rough guide from your practice exams</span>';
+                }
+                // premium but no exam data yet → stay hidden (no noise)
+            } catch (e) { /* silent */ }
+        }
+
         // ── My Subjects (deliberate editor; bypasses the onboarding lock) ──
         var subjState = { user: null, level: 'senior', selected: [] };
         function renderMySubjects(user) {
@@ -698,6 +720,7 @@
 
             renderMySubjects(user);
             renderSubscription(user);
+            renderAtar();
 
             // Header
             var name = (user && user.name) || (user && user.email && user.email.split('@')[0]) || 'Student';

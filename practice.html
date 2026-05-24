@@ -3331,7 +3331,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         }
 
         function renderExamResults(data) {
-            const { marking, progress, isPremium } = data;
+            const { marking, progress, isPremium, atarEstimate } = data;
             const pct = marking.percentage || 0;
             const scoreClass = pct >= 90 ? 'band6' : pct >= 80 ? 'band5' : pct >= 70 ? 'band4' : pct >= 60 ? 'band3' : 'low';
 
@@ -3342,6 +3342,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 <div class="exam-results-score ${scoreClass}">${Math.round(pct)}%</div>
                 <div class="exam-results-band">${marking.expectedBand || ''}</div>
                 <div class="exam-results-marks">${marking.totalMarksAwarded} / ${marking.totalMarksPossible} marks</div>
+                ${atarEstimate && atarEstimate.atar ? `<div style="margin-top:10px;font-size:13px;color:#a59fff;">🎯 On track for <strong>~ATAR ${atarEstimate.atar}</strong> <span style="color:#71767b;">· rough guide from your practice</span></div>` : ''}
                 <button id="examShareBtn" type="button" hidden style="margin-top:14px;background:rgba(108,99,255,0.15);border:1px solid rgba(108,99,255,0.4);color:#c4b5fd;font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer;">📸 Share my result</button>`;
 
             // Comparison with previous

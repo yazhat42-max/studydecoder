@@ -4470,6 +4470,13 @@ app.get('/api/leaderboard', requireAuth, (req, res) => {
     res.json({ week: _isoWeekKey(), rows, me, hasClass: ids.size > 1 });
 });
 
+// GET /api/atar-estimate — premium-only, rough predicted ATAR from practice exams.
+// Deliberately subtle: free users get { locked:true } and see an upsell teaser.
+app.get('/api/atar-estimate', requireAuth, (req, res) => {
+    if (!hasFullAccess(req.user)) return res.json({ locked: true });
+    res.json({ locked: false, estimate: estimateAtar(req.user.userId) });
+});
+
 // POST /api/onboarding/complete — finish the 30-second activation flow.
 // Saves subjects + level, ends the session on a win (kickstart streak + XP),
 // and records the activation funnel events.
@@ -8153,6 +8160,31 @@ function getExamProgress(userId) {
     return user.examProgress || {};
 }
 
+// Rough, deliberately-conservative ATAR estimate from practice-exam performance.
+// It's a motivational guide, never a guarantee — always labelled as an estimate.
+function _percentToAtar(p) {
+    if (p >= 95) return 99; if (p >= 90) return 97; if (p >= 85) return 94; if (p >= 80) return 90;
+    if (p >= 75) return 85; if (p >= 70) return 80; if (p >= 65) return 74; if (p >= 60) return 68;
+    if (p >= 55) return 62; if (p >= 50) return 55; if (p >= 40) return 45; return 35;
+}
+function estimateAtar(userId) {
+    const progress = getExamProgress(userId);
+    const scores = [];
+    for (const s of Object.values(progress || {})) {
+        if (!s) continue;
+        if (typeof s.bestScore === 'number' && s.bestScore > 0) scores.push(s.bestScore);
+        else if (Array.isArray(s.attempts) && s.attempts.length) {
+            const avg = s.attempts.reduce((a, x) => a + (x.percentage || 0), 0) / s.attempts.length;
+            if (avg > 0) scores.push(avg);
+        }
+    }
+    if (!scores.length) return null;
+    scores.sort((a, b) => b - a);
+    const top = scores.slice(0, Math.min(scores.length, 8));
+    const avg = top.reduce((a, b) => a + b, 0) / top.length;
+    return { atar: _percentToAtar(avg), avgPercent: Math.round(avg), subjects: scores.length };
+}
+
 // Save exam progress for a user
 function saveExamProgress(userId, progress) {
     const user = getUser(userId);
@@ -10083,7 +10115,9 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                 comparison,
                 canGenerateNew: hasFull || markingResult.percentage >= 80
             },
-            isPremium: hasFull
+            isPremium: hasFull,
+            // Premium-only, subtle predicted ATAR (rough guide from practice exams).
+            atarEstimate: hasFull ? estimateAtar(req.session.userId) : null
         });
     } catch (error) {
         console.error('Exam mark error:', error);
