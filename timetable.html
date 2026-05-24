@@ -710,6 +710,7 @@ Please generate a detailed weekly study timetable in a clear table format with s
         // SAVE SUBJECTS TO PREFERENCES
         // =====================
         async function saveSubjectsToPreferences(subjectIds) {
+            return; // "Your Subjects" is locked to the onboarding choice — no tool-driven changes.
             try {
                 await fetch(`${API_BASE}/api/user/preferences`, {
                     method: 'PUT',

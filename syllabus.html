@@ -1642,6 +1642,7 @@ Output the complete decoded content for this topic. Do not ask any questions. Do
         // =====================
         let userSavedSubjects = [];
         async function saveSubjectPreference(subjectId) {
+            return; // "Your Subjects" is locked to the onboarding choice — no tool-driven changes.
             if (!subjectId || userSavedSubjects.includes(subjectId)) return;
             userSavedSubjects.push(subjectId);
             // Keep max 10 most recent
