@@ -173,13 +173,14 @@ const AI_QUALITY_TIERS = {
         temperature: 1.0,     // Maximum creativity
         model: 'gpt-5-mini'   // Latest flagship model
     },
-    // Premium tiers get the smarter model (gpt-5-mini). Cost is held down by
-    // reasoning_effort:'low' on every call + the token caps below — and only
-    // paying/lifetime users hit it. Free stays on gpt-4o-mini.
+    // Premium tiers get gpt-4.1-mini: clearly smarter than free's gpt-4o-mini,
+    // but NON-reasoning — so no hidden reasoning-token surcharge and low latency
+    // (better than gpt-5-mini for a chat tutor, and cheaper in real terms). Free
+    // stays on gpt-4o-mini.
     lifetime: {
         maxTokens: 5000,
         temperature: 0.7,
-        model: 'gpt-5-mini'
+        model: 'gpt-4.1-mini'
     },
     og_tester: {
         maxTokens: 4000,
@@ -189,7 +190,7 @@ const AI_QUALITY_TIERS = {
     paid: {
         maxTokens: 5000,      // Premium subscribers — smarter model + a bit more room
         temperature: 0.7,
-        model: 'gpt-5-mini'
+        model: 'gpt-4.1-mini'
     },
     free: {
         maxTokens: 1500,      // Limited output
@@ -1412,6 +1413,10 @@ function requireAuth(req, res, next) {
         req.session?.destroy?.(() => {});
         return res.status(401).json({ error: 'User not found' });
     }
+    if (user.banned) {
+        req.session?.destroy?.(() => {});
+        return res.status(403).json({ error: 'This account has been suspended.', banned: true });
+    }
 
     req.user = checkSubscriptionStatus(user);
     // Cache the linked-teacher lookup once per request so handlers + repeated
@@ -1905,7 +1910,12 @@ app.post('/api/auth/login', async (req, res) => {
         if (!valid) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
-        
+
+        // Suspended (banned) accounts can't sign in.
+        if (user.banned) {
+            return res.status(403).json({ error: 'This account has been suspended.', banned: true });
+        }
+
         // Block unverified email accounts
         if (user.provider !== 'google' && !user.emailVerified) {
             return res.status(403).json({
@@ -5646,6 +5656,7 @@ app.get('/api/admin/users', requireOwner, (req, res) => {
         provider: u.provider,
         subscribed: hasFullAccess(u),
         plan: u.plan,
+        banned: !!u.banned,
         createdAt: u.createdAt
     }));
 
@@ -5866,9 +5877,30 @@ app.delete('/api/admin/delete-user', requireOwner, (req, res) => {
     
     delete db.users[user.userId];
     scheduleSave();
-    
+
     console.log(`👑 Owner deleted account: ${email}`);
     res.json({ success: true, message: `Deleted account: ${email}` });
+});
+
+/**
+ * POST /api/admin/ban-user - Owner suspends (or un-suspends) any account.
+ * Banned users can't log in and any active session is rejected by requireAuth.
+ */
+app.post('/api/admin/ban-user', requireOwner, express.json(), (req, res) => {
+    const { email, banned } = req.body || {};
+    if (!email) return res.status(400).json({ error: 'Email required' });
+    const user = getUserByEmail(email);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    const role = getUserRole(email);
+    if (role === 'owner' || role === 'og_tester') {
+        return res.status(403).json({ error: 'Cannot ban owner or OG tester accounts' });
+    }
+    const ban = banned !== false; // default to banning
+    user.banned = ban;
+    user.bannedAt = ban ? new Date().toISOString() : null;
+    scheduleSave();
+    console.log(`👑 Owner ${ban ? 'banned' : 'un-banned'} account: ${email}`);
+    res.json({ success: true, banned: ban, message: `${ban ? 'Banned' : 'Un-banned'}: ${email}` });
 });
 
 /**
