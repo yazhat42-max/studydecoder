@@ -10,7 +10,7 @@
 
   function preferred() {
     try { var t = localStorage.getItem(KEY); if (t === 'light' || t === 'dark') return t; } catch (e) {}
-    try { if (window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) return 'light'; } catch (e) {}
+    // Study Decoder is dark-first: default to dark unless the user opts into light.
     return 'dark';
   }
   function apply(t) { document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark'); }
