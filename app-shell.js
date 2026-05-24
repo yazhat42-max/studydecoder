@@ -31,8 +31,10 @@
     ] },
     { sec: 'Study', items: [
       { label: 'Syllabus Decoder', icon: '📖', href: 'syllabus.html', jr: 'syllabus-jr.html' },
-      { label: 'Practice Questions', icon: '📝', href: 'practice.html', jr: 'practice-jr.html' },
+      { label: 'Practice Questions', icon: '📝', href: 'practice.html?mode=standard', jr: 'practice-jr.html?mode=standard' },
       { label: 'Full Exam', icon: '🎓', href: 'practice.html?mode=exam', jr: 'practice-jr.html?mode=exam' },
+      { label: 'Quick Paper', icon: '⚡', href: 'practice.html?mode=quick', jr: 'practice-jr.html?mode=quick' },
+      { label: 'Get Feedback', icon: '✅', href: 'practice.html?mode=feedback', jr: 'practice-jr.html?mode=feedback' },
       { label: 'Learn IRL', icon: '🎮', href: 'learn-irl.html' },
       { label: 'Flashcards', icon: '🃏', href: 'flashcards.html' },
       { label: 'Chat Tutor', icon: '🤖', href: 'chat-tutor.html' }
@@ -57,15 +59,17 @@
     return (isJr && item.jr) ? item.jr : item.href;
   }
 
+  function modeOf(str) { var m = (str || '').match(/[?&]mode=([^&]+)/); return m ? m[1] : ''; }
+
   function markActive(root, isJr) {
     var path = (location.pathname.split('/').pop() || 'index.html');
-    var curExam = location.search.indexOf('mode=exam') > -1;
+    var curMode = modeOf(location.search);
     var links = root.querySelectorAll('.sd-nav-item[data-href]');
     for (var i = 0; i < links.length; i++) {
       var href = links[i].getAttribute('data-href');
       var page = href.split('?')[0];
-      var itemExam = href.indexOf('mode=exam') > -1;
-      var on = page === path && itemExam === curExam;
+      // Pages with multiple modes (practice) only match when the mode matches too.
+      var on = page === path && modeOf(href) === curMode;
       links[i].classList.toggle('active', on);
       if (on) links[i].setAttribute('aria-current', 'page');
       else links[i].removeAttribute('aria-current');
