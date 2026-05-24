@@ -734,6 +734,23 @@
                 </div>
             </div>
             
+            <!-- Manage Users (search + delete/ban ANY account) -->
+            <div class="admin-section">
+                <div class="section-header">
+                    <h2>🔎 Manage Users</h2>
+                </div>
+                <div class="section-content">
+                    <input id="userSearch" type="text" placeholder="Search any account by name or email…" autocomplete="off" style="width:100%;max-width:440px;padding:10px 14px;border-radius:8px;border:1px solid var(--border,#333);background:rgba(255,255,255,0.05);color:inherit;font-size:0.95rem;margin-bottom:10px;">
+                    <div id="userSearchHint" style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:10px;">Type at least 2 characters to search every account.</div>
+                    <table class="admin-table">
+                        <thead>
+                            <tr><th>User</th><th>Role</th><th>Status</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="userSearchResults"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Recent Signups -->
             <div class="admin-section">
                 <div class="section-header">
@@ -1008,7 +1025,12 @@
                 
                 // Load stats
                 await loadStats();
-                
+
+                // Manage-users search (all accounts)
+                loadAllUsers();
+                var _us = document.getElementById('userSearch');
+                if (_us) _us.addEventListener('input', renderUserSearch);
+
                 // Start live user tracking
                 startLiveUsersPolling();
                 
@@ -1288,9 +1310,56 @@
                 }
                 alert(data.message || 'Account deleted');
                 loadStats();
+                await loadAllUsers(); renderUserSearch();
             } catch (e) {
                 alert('Network error. Please try again.');
             }
+        }
+
+        // ===== Manage any user (search + ban) =====
+        let _allUsers = null;
+        async function loadAllUsers() {
+            try {
+                const res = await fetch('/api/admin/users', { credentials: 'include' });
+                if (!res.ok) return;
+                const d = await res.json();
+                _allUsers = d.users || [];
+            } catch (e) { /* silent */ }
+        }
+        function renderUserSearch() {
+            const q = (document.getElementById('userSearch').value || '').trim().toLowerCase();
+            const tb = document.getElementById('userSearchResults');
+            const hint = document.getElementById('userSearchHint');
+            if (q.length < 2) { tb.innerHTML = ''; hint.style.display = ''; return; }
+            hint.style.display = 'none';
+            if (!_allUsers) { tb.innerHTML = '<tr><td colspan="4">Loading…</td></tr>'; return; }
+            const matches = _allUsers.filter(u =>
+                (u.email || '').toLowerCase().includes(q) || (u.name || '').toLowerCase().includes(q)
+            ).slice(0, 50);
+            if (!matches.length) { tb.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);">No matching accounts</td></tr>'; return; }
+            tb.innerHTML = matches.map(u => `
+                <tr>
+                    <td>${escapeHtml(u.name || '—')}<br><span style="color:var(--text-secondary);font-size:0.8rem;">${escapeHtml(u.email)}</span></td>
+                    <td>${escapeHtml(u.role || 'user')}</td>
+                    <td>${u.banned ? '<span style="color:#ef4444;font-weight:700;">Banned</span>' : (u.subscribed ? 'Premium' : 'Free')}</td>
+                    <td>
+                        <button onclick="banUser('${escapeAttr(u.email)}', ${u.banned ? 'false' : 'true'})" style="background:${u.banned ? '#64748b' : '#f59e0b'};color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:0.8rem;margin-right:6px;">${u.banned ? 'Unban' : '🚫 Ban'}</button>
+                        <button onclick="deleteUser('${escapeAttr(u.email)}')" style="background:#ef4444;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:0.8rem;">🗑️ Delete</button>
+                    </td>
+                </tr>`).join('');
+        }
+        async function banUser(email, ban) {
+            if (!confirm((ban ? 'Ban' : 'Unban') + ' ' + email + '?' + (ban ? '\n\nThey will be signed out and blocked from logging in.' : ''))) return;
+            try {
+                const res = await fetch('/api/admin/ban-user', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+                    body: JSON.stringify({ email, banned: ban })
+                });
+                const d = await res.json();
+                if (!res.ok) { alert('Error: ' + (d.error || 'Failed')); return; }
+                alert(d.message || 'Done');
+                await loadAllUsers(); renderUserSearch();
+            } catch (e) { alert('Network error. Please try again.'); }
         }
         
         function formatDate(dateStr) {
