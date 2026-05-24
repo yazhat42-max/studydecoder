@@ -1505,6 +1505,38 @@ function sanitizeName(name) {
         .slice(0, 50);
 }
 
+// ==================== PROFANITY / SLUR FILTER ====================
+// Blocks slurs + strong profanity in user-set, publicly-shown fields (names,
+// reviews) and masks any that slipped through on public surfaces. Deliberately
+// conservative to avoid Scunthorpe-style false positives:
+//   - "boundary" terms match only as whole words (won't flag e.g. Scunthorpe / Pakistani).
+//   - "loose" slurs (which never appear inside normal words) also match through
+//     spacing + basic leetspeak evasion (n i g g e r, n1gg3r, f.a.g.g.o.t).
+function _escapeRegex(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+const PROFANITY_LOOSE = ['nigger', 'nigga', 'niglet', 'faggot', 'kike', 'tranny', 'fuck'];
+const PROFANITY_BOUNDARY = [
+    'chink', 'spic', 'spick', 'wetback', 'beaner', 'gook', 'coon', 'raghead', 'towelhead',
+    'retard', 'retarded', 'rapist', 'rape', 'pedophile', 'paedophile', 'molester',
+    'cunt', 'shit', 'bitch', 'asshole', 'whore', 'slut', 'motherfucker', 'wanker', 'twat'
+];
+const _profanityBoundaryRe = new RegExp('\\b(' + PROFANITY_BOUNDARY.map(_escapeRegex).join('|') + ')\\b', 'i');
+const _profanityLooseRes = PROFANITY_LOOSE.map(w => new RegExp(w.split('').map(_escapeRegex).join('[^a-z0-9]{0,2}'), 'i'));
+function containsProfanity(s) {
+    if (!s) return false;
+    const lower = String(s).toLowerCase();
+    if (_profanityBoundaryRe.test(lower)) return true;
+    const norm = lower
+        .replace(/[1!|]/g, 'i').replace(/3/g, 'e').replace(/0/g, 'o').replace(/4/g, 'a')
+        .replace(/5/g, 's').replace(/7/g, 't').replace(/@/g, 'a').replace(/\$/g, 's');
+    if (_profanityLooseRes.some(re => re.test(norm))) return true;
+    const stripped = norm.replace(/[^a-z]/g, '');
+    return PROFANITY_LOOSE.some(w => stripped.includes(w));
+}
+// Replace a profane public-facing name with a safe placeholder.
+function safeDisplayName(name, fallback) {
+    return containsProfanity(name) ? (fallback || 'Student') : name;
+}
+
 /**
  * Sanitize user input to prevent XSS
  * Strips HTML tags and encodes special characters
@@ -1756,6 +1788,9 @@ app.post('/api/auth/register', async (req, res) => {
         // Validation
         if (!name || !email || !password) {
             return res.status(400).json({ error: 'All fields are required' });
+        }
+        if (containsProfanity(rawName) || containsProfanity(name)) {
+            return res.status(400).json({ error: 'Please use your real name — offensive language isn’t allowed.' });
         }
         
         if (!isValidEmail(email)) {
@@ -2899,7 +2934,7 @@ function leaderboardRows(userIds, weekKey) {
         const g = u.gamification;
         rows.push({
             userId: uid,
-            name: (u.name || (u.email || '').split('@')[0] || 'Student').split(' ')[0],
+            name: safeDisplayName((u.name || (u.email || '').split('@')[0] || 'Student').split(' ')[0]),
             weeklyXp: (g && g.weekly && g.weekly[wk]) || 0,
             level: (g && g.level) || 0
         });
@@ -5891,6 +5926,9 @@ app.post('/api/reviews', requireAuth, (req, res) => {
     if (text && text.length > 500) {
         return res.status(400).json({ error: 'Review text too long (max 500 chars)' });
     }
+    if (containsProfanity(displayName) || containsProfanity(text)) {
+        return res.status(400).json({ error: 'Please remove offensive language before submitting.' });
+    }
 
     const user = req.user;
 
@@ -5933,8 +5971,8 @@ app.get('/api/reviews/public', (req, res) => {
         .map(r => ({
             id: r.id,
             rating: r.rating,
-            text: r.text,
-            displayName: r.displayName || 'Anonymous',
+            text: containsProfanity(r.text) ? '' : r.text,
+            displayName: safeDisplayName(r.displayName || 'Anonymous', 'Anonymous'),
             botType: r.botType,
             createdAt: r.createdAt
         }));
