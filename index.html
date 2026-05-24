@@ -2430,7 +2430,7 @@
                 <div style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$0</div>
                 <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">Always free</div>
                 <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:1.8rem;">
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> 3 days full access on signup, then 10 uses/day free forever <span style="color:var(--text-muted);font-size:0.8rem;">(≈ 1 full exam or 10 chat messages)</span></li>
+                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> 1 day full access on signup, then 10 uses/day free forever <span style="color:var(--text-muted);font-size:0.8rem;">(≈ 1 full exam or 10 chat messages)</span></li>
                     <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> All 10 AI tools</li>
                     <li style="font-size:0.9rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;"><span style="color:#2f3336;">✗</span> Lower AI quality</li>
                     <li style="font-size:0.9rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;"><span style="color:#2f3336;">✗</span> No score history</li>
@@ -2866,7 +2866,7 @@
                     banner.innerHTML = '⏳ <strong>Your free trial ends tonight</strong> — don\'t lose unlimited access. <a href="#" onclick="createCheckout(\'lifetime\'); return false;" style="color:#fff;font-weight:700;">Lock in lifetime <span class="sd-lifetime-price-inline">$37.50</span> →</a>';
                     banner.style.background = 'linear-gradient(90deg,#ef4444,#dc2626)';
                 } else {
-                    banner.innerHTML = '⏳ <strong>Free trial active</strong> — Unlimited access until <strong>' + (trialEndStr || '3 days after signup') + '</strong>. Try everything while it lasts. <a href="#tools" style="color:#fff;font-weight:600;">Explore tools →</a>';
+                    banner.innerHTML = '⏳ <strong>Free trial active</strong> — Unlimited access until <strong>' + (trialEndStr || '24 hours after signup') + '</strong>. Try everything while it lasts. <a href="#tools" style="color:#fff;font-weight:600;">Explore tools →</a>';
                     banner.style.background = 'linear-gradient(90deg,#6C63FF,#8b5cf6)';
                 }
                 banner.style.color = '#fff';
@@ -3664,7 +3664,7 @@
             : null;
         const trialBannerHtml = inTrial ? `
             <div style="background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.3);border-radius:12px;padding:14px 16px;margin-bottom:20px;">
-                <p style="color:var(--primary);font-weight:700;font-size:0.9rem;margin-bottom:4px;">⏳ You have 3 days of unlimited access${trialEndStr ? ' — until ' + trialEndStr : ''}</p>
+                <p style="color:var(--primary);font-weight:700;font-size:0.9rem;margin-bottom:4px;">⏳ You have 1 day of unlimited access${trialEndStr ? ' — until ' + trialEndStr : ''}</p>
                 <p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:10px;">Try everything while it lasts. Or skip the trial:</p>
                 <button onclick="document.getElementById('onboardingModal').style.display='none';showUpgradeModal();" style="padding:9px 20px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:inherit;">Get Lifetime Access — <span class="sd-lifetime-price-inline">$37.50</span> →</button>
             </div>` : '';
