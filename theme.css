@@ -97,6 +97,19 @@ button[data-sd-theme-toggle] { font: inherit; }
 :root[data-theme="light"] .doc-h1 { color: #15151f; }
 :root[data-theme="light"] .doc-sub { color: rgba(20,20,35,0.6); }
 
+/* ============================ ONBOARDING MODAL ============================ */
+:root[data-theme="light"] .onb-overlay { background: rgba(240,242,248,0.75); }
+:root[data-theme="light"] .onb-card { background: #ffffff; border-color: rgba(108,99,255,0.25); box-shadow: 0 24px 70px rgba(15,18,30,0.18); color: #15151f; }
+:root[data-theme="light"] .onb-card h2 { color: #15151f; }
+:root[data-theme="light"] .onb-sub { color: rgba(20,20,35,0.6); }
+:root[data-theme="light"] .onb-dots span { background: rgba(15,18,30,0.15); }
+:root[data-theme="light"] .onb-toggle { background: rgba(15,18,30,0.05); }
+:root[data-theme="light"] .onb-toggle button { color: rgba(20,20,35,0.6); }
+:root[data-theme="light"] .onb-chip { background: #f4f6fb; border-color: rgba(15,18,30,0.12); color: #15151f; }
+:root[data-theme="light"] .onb-opt { background: #f4f6fb; border-color: rgba(15,18,30,0.1); color: #15151f; }
+:root[data-theme="light"] .onb-explain { color: #3a3a4a; }
+:root[data-theme="light"] .onb-win p { color: rgba(20,20,35,0.65); }
+
 /* ============================ ONBOARDING ============================ */
 :root[data-theme="light"] h1 { color: #15151f; }
 :root[data-theme="light"] .sub { color: rgba(20,20,35,0.6); }

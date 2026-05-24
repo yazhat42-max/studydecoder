@@ -104,6 +104,36 @@
     .lb-xp { color: #a78bfa; font-weight: 700; }
     .lb-you { font-size: 12.5px; color: rgba(255,255,255,0.55); margin-top: 4px; }
 
+    /* ── Onboarding modal ── */
+    .onb-overlay { position: fixed; inset: 0; z-index: 10000; background: rgba(4,4,8,0.72); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .onb-card { width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; background: linear-gradient(160deg, #14121f, #0e0c18); border: 1px solid rgba(108,99,255,0.28); border-radius: 20px; padding: 26px 24px; box-shadow: 0 24px 70px rgba(0,0,0,0.6); }
+    .onb-dots { display: flex; gap: 7px; justify-content: center; margin-bottom: 20px; }
+    .onb-dots span { width: 26px; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.15); }
+    .onb-dots span.on { background: #6C63FF; }
+    .onb-card h2 { font-size: 21px; font-weight: 800; text-align: center; letter-spacing: -0.3px; margin-bottom: 6px; }
+    .onb-sub { color: rgba(255,255,255,0.6); text-align: center; font-size: 14px; margin-bottom: 18px; }
+    .onb-toggle { display: flex; gap: 6px; background: rgba(255,255,255,0.05); border-radius: 11px; padding: 4px; margin: 0 auto 16px; max-width: 300px; }
+    .onb-toggle button { flex: 1; padding: 9px; border: none; background: transparent; color: rgba(255,255,255,0.6); font-weight: 700; font-size: 13.5px; border-radius: 8px; cursor: pointer; }
+    .onb-toggle button.on { background: #6C63FF; color: #fff; }
+    .onb-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; max-height: 220px; overflow-y: auto; }
+    .onb-chip { padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #e8e8ef; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .onb-chip:hover { border-color: rgba(108,99,255,0.5); }
+    .onb-chip.sel { background: rgba(108,99,255,0.22); border-color: #6C63FF; color: #fff; }
+    .onb-btn { display: block; width: 100%; padding: 14px; border: none; border-radius: 12px; background: #6C63FF; color: #fff; font-size: 15px; font-weight: 800; cursor: pointer; transition: transform .15s; }
+    .onb-btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .onb-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .onb-q-stem { font-size: 16px; font-weight: 700; line-height: 1.5; margin-bottom: 16px; }
+    .onb-opt { display: block; width: 100%; text-align: left; padding: 13px 15px; border-radius: 11px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #e8e8ef; font-size: 14px; margin-bottom: 9px; cursor: pointer; transition: all .15s; }
+    .onb-opt:hover:not(:disabled) { border-color: rgba(108,99,255,0.5); }
+    .onb-opt.correct { background: rgba(34,197,94,0.18); border-color: #22c55e; }
+    .onb-opt.wrong { background: rgba(239,68,68,0.16); border-color: #ef4444; }
+    .onb-opt:disabled { cursor: default; }
+    .onb-explain { font-size: 13.5px; line-height: 1.5; color: #c8c8d4; background: rgba(108,99,255,0.1); border: 1px solid rgba(108,99,255,0.25); border-radius: 11px; padding: 12px 14px; margin-bottom: 16px; }
+    .onb-win { text-align: center; padding: 16px 6px; }
+    .onb-win .big { font-size: 54px; }
+    .onb-win p { color: rgba(255,255,255,0.65); margin: 8px 0 20px; }
+    .onb-spin { width: 38px; height: 38px; border: 3px solid rgba(108,99,255,0.2); border-top-color: #6C63FF; border-radius: 50%; animation: sdSpin .9s linear infinite; margin: 30px auto; }
+
     @media (max-width: 720px) {
       .dash { padding: 70px 16px 70px; }
       .continue-row { grid-template-columns: 1fr; }
@@ -113,6 +143,35 @@
   <link rel="stylesheet" href="theme.css">
 </head>
 <body>
+  <div id="onbOverlay" class="onb-overlay hidden">
+    <div class="onb-card">
+      <div class="onb-dots"><span class="on" id="onbD1"></span><span id="onbD2"></span><span id="onbD3"></span></div>
+      <section id="onbStep1">
+        <h2>What are you studying?</h2>
+        <div class="onb-sub">Pick your subjects — we’ll tailor your daily plan around them.</div>
+        <div class="onb-toggle">
+          <button id="onbSenior" class="on" type="button">HSC (Yr 11–12)</button>
+          <button id="onbJunior" type="button">Years 7–10</button>
+        </div>
+        <div class="onb-chips" id="onbChips"></div>
+        <button class="onb-btn" id="onbToStep2" disabled>Continue</button>
+      </section>
+      <section id="onbStep2" class="hidden">
+        <h2>Try one quick question</h2>
+        <div class="onb-sub" id="onbQSub">A 10-second taster from your subject.</div>
+        <div id="onbQHost"></div>
+      </section>
+      <section id="onbStep3" class="hidden">
+        <div class="onb-win">
+          <div class="big">🔥</div>
+          <h2>You’re all set!</h2>
+          <p>That’s a 1-day streak and your first XP. Your daily plan is ready.</p>
+          <button class="onb-btn" id="onbFinish">Let’s go →</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
   <div id="authLoading" class="auth-loading-overlay">
     <div class="auth-spinner"></div>
     <div style="margin-top:16px;color:rgba(255,255,255,0.5);">Loading…</div>
@@ -277,12 +336,79 @@
         document.getElementById('appContainer').classList.remove('hidden');
       }
 
+      // ── First-run onboarding, as a modal over the (dark) dashboard ──
+      function startOnboarding(auth) {
+        var st = { level: 'senior', selected: [], answeredCorrectly: false };
+        var el2 = function (id) { return document.getElementById(id); };
+        document.body.style.overflow = 'hidden';
+        el2('onbOverlay').classList.remove('hidden');
+        if (auth.preferences && auth.preferences.level === 'junior') st.level = 'junior';
+
+        function chips() {
+          var list = (window.SD_SUBJECTS && (st.level === 'junior' ? window.SD_SUBJECTS.junior : window.SD_SUBJECTS.senior)) || [];
+          var host = el2('onbChips'); host.innerHTML = '';
+          list.forEach(function (s) {
+            var b = document.createElement('button'); b.type = 'button';
+            b.className = 'onb-chip' + (st.selected.some(function (x) { return x.id === s.id; }) ? ' sel' : '');
+            b.textContent = s.name;
+            b.addEventListener('click', function () {
+              var i = st.selected.findIndex(function (x) { return x.id === s.id; });
+              if (i > -1) st.selected.splice(i, 1); else st.selected.push({ id: s.id, name: s.name });
+              b.classList.toggle('sel'); el2('onbToStep2').disabled = st.selected.length === 0;
+            });
+            host.appendChild(b);
+          });
+        }
+        function setLvl(l) { st.level = l; st.selected = []; el2('onbSenior').classList.toggle('on', l === 'senior'); el2('onbJunior').classList.toggle('on', l === 'junior'); el2('onbToStep2').disabled = true; chips(); }
+        function step(n) { el2('onbStep1').classList.toggle('hidden', n !== 1); el2('onbStep2').classList.toggle('hidden', n !== 2); el2('onbStep3').classList.toggle('hidden', n !== 3); el2('onbD2').classList.toggle('on', n >= 2); el2('onbD3').classList.toggle('on', n >= 3); }
+        el2('onbSenior').addEventListener('click', function () { setLvl('senior'); });
+        el2('onbJunior').addEventListener('click', function () { setLvl('junior'); });
+
+        function finishCard(ok) { st.answeredCorrectly = !!ok; var c = document.createElement('button'); c.className = 'onb-btn'; c.textContent = 'Finish →'; c.addEventListener('click', complete); el2('onbQHost').appendChild(c); }
+        function renderQ(q) {
+          var host = el2('onbQHost'); host.innerHTML = '';
+          var stem = document.createElement('div'); stem.className = 'onb-q-stem'; stem.textContent = q.question; host.appendChild(stem);
+          var answered = false;
+          q.options.forEach(function (opt, idx) {
+            var b = document.createElement('button'); b.className = 'onb-opt'; b.textContent = opt;
+            b.addEventListener('click', function () {
+              if (answered) return; answered = true;
+              var correct = idx === q.answer;
+              host.querySelectorAll('.onb-opt').forEach(function (x, i) { x.disabled = true; if (i === q.answer) x.classList.add('correct'); });
+              if (!correct) b.classList.add('wrong');
+              var ex = document.createElement('div'); ex.className = 'onb-explain'; ex.textContent = (correct ? '✅ Correct! ' : '❌ Not quite. ') + (q.explanation || ''); host.appendChild(ex);
+              finishCard(correct);
+            });
+            host.appendChild(b);
+          });
+        }
+        function loadQ() {
+          step(2);
+          var subj = st.selected[0];
+          // Taster is generated from the user's own first subject so it's relevant.
+          el2('onbQSub').textContent = 'A quick taster from ' + (subj ? subj.name : 'your subject') + '.';
+          el2('onbQHost').innerHTML = '<div class="onb-spin"></div>';
+          fetch('/api/games/questions', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subject: subj.id, difficulty: 'easy' }) })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (d) { if (d && d.questions && d.questions.length) renderQ(d.questions[0]); else skipQ(); })
+            .catch(skipQ);
+        }
+        function skipQ() { el2('onbQHost').innerHTML = '<div class="onb-sub">Your subjects are saved. Let’s get you started.</div>'; finishCard(false); }
+        function complete() {
+          fetch('/api/onboarding/complete', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subjects: st.selected.map(function (x) { return x.name; }), level: st.level, answeredCorrectly: st.answeredCorrectly }) })
+            .then(function () { step(3); }).catch(function () { step(3); });
+        }
+        el2('onbToStep2').addEventListener('click', loadQ);
+        el2('onbFinish').addEventListener('click', function () { window.location.reload(); });
+        chips();
+      }
+
       var authP = window.__sdAuth || fetch('/api/subscription', { credentials: 'include' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
       authP.then(function (auth) {
         if (!auth || !auth.email) { window.location.replace('/login.html?redirect=/dashboard.html'); return; }
         if (auth.role === 'teacher') { window.location.replace('/teacher-dashboard.html'); return; }
-        if (auth.preferences && auth.preferences.onboarded === false) { window.location.replace('/onboarding.html'); return; }
         render(auth);
+        if (auth.preferences && auth.preferences.onboarded === false) { startOnboarding(auth); }
       });
     })();
   </script>
