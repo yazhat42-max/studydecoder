@@ -11870,7 +11870,7 @@ function seoShell({ title, desc, canonical, body }) {
     const site = config.frontendUrl || 'https://www.studydecoder.com.au';
     return `<!DOCTYPE html><html lang="en-AU"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>(function(){try{var t=localStorage.getItem('sd_theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('sd_theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="${escapeHtml(desc)}">
 <link rel="canonical" href="${site}${canonical}">
