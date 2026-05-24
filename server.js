@@ -257,7 +257,11 @@ function incrementFreeTierUsage(userId, botType) {
     return _getCount(totalKey);
 }
 
-// Check if a user is within the 3-day "unlimited trial" grace period
+// New accounts get a short "unlimited" grace window, then drop to the 10/day
+// free tier. Kept to 1 day so it can't be farmed by making a fresh account.
+const GRACE_PERIOD_MS = 1 * 24 * 60 * 60 * 1000;
+
+// Check if a user is within the unlimited-trial grace period.
 // Uses trialStart if set (allows admin reset), otherwise falls back to createdAt
 function isWithinGracePeriod(userId) {
     const user = getUser(userId);
@@ -266,10 +270,10 @@ function isWithinGracePeriod(userId) {
     if (typeof ref !== 'string' || ref.length === 0) return false;
     const refMs = new Date(ref).getTime();
     if (!Number.isFinite(refMs)) return false;
-    return (Date.now() - refMs) < 3 * 24 * 60 * 60 * 1000;
+    return (Date.now() - refMs) < GRACE_PERIOD_MS;
 }
 
-// Check if a user is on their final grace period day (day 3)
+// Check if a user is in the final stretch of the grace window (last ~6 hours).
 function isGracePeriodEnding(userId) {
     const user = getUser(userId);
     if (!user) return false;
@@ -278,14 +282,12 @@ function isGracePeriodEnding(userId) {
     const refMs = new Date(ref).getTime();
     if (!Number.isFinite(refMs)) return false;
     const ageMs = Date.now() - refMs;
-    const twoDays = 2 * 24 * 60 * 60 * 1000;
-    const threeDays = 3 * 24 * 60 * 60 * 1000;
-    return ageMs >= twoDays && ageMs < threeDays;
+    return ageMs >= (GRACE_PERIOD_MS - 6 * 60 * 60 * 1000) && ageMs < GRACE_PERIOD_MS;
 }
 
 function canUseFreeTier(userId, botType) {
     if (!FREE_TIER_CONFIG.enabled) return false;
-    // During 3-day grace period: unlimited access
+    // During grace period: unlimited access
     if (isWithinGracePeriod(userId)) return true;
     // Check special per-bot limit (worksheet, notes-transcriber)
     const specialLimit = FREE_TIER_CONFIG.specialLimits[botType];
@@ -303,7 +305,7 @@ function canUseFreeTier(userId, botType) {
  */
 function tryUseFreeTier(userId, botType) {
     if (!FREE_TIER_CONFIG.enabled) return false;
-    // During 3-day grace period: allow without counting usage
+    // During grace period: allow without counting usage
     if (isWithinGracePeriod(userId)) return true;
     const specialLimit = FREE_TIER_CONFIG.specialLimits[botType];
     if (specialLimit !== undefined && getFreeTierUsage(userId, botType) >= specialLimit) return false;
@@ -2532,7 +2534,7 @@ app.get('/api/subscription', requireAuth, (req, res) => {
             gracePeriodEnding: isGracePeriodEnding(req.session.userId),
             trialEndsAt: (() => {
                 const refMs = user.trialStart ? new Date(user.trialStart).getTime() : (user.createdAt ? new Date(user.createdAt).getTime() : null);
-                return refMs ? new Date(refMs + 3 * 24 * 60 * 60 * 1000).toISOString() : null;
+                return refMs ? new Date(refMs + GRACE_PERIOD_MS).toISOString() : null;
             })()
         } : null
     });
@@ -11327,7 +11329,7 @@ async function sendTrialEndingSoonEmail(user) {
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
 <h2 style="color:#6366f1;">Your unlimited trial ends tomorrow 🔥</h2>
 <p>Hi ${escapeHtml(user.name) || 'there'},</p>
-<p>Your 3-day unlimited trial on Study Decoder expires <strong>tomorrow</strong>. Here's what to squeeze in tonight:</p>
+<p>Your free unlimited trial on Study Decoder expires <strong>soon</strong>. Here's what to squeeze in tonight:</p>
 <ul style="margin:12px 0;padding-left:20px;line-height:2.2;">
   <li>📝 Run a full practice exam for an upcoming assessment</li>
   <li>📖 Decode your syllabus dot points for the next module</li>
@@ -11351,7 +11353,7 @@ async function sendTrialExpiredEmail(user) {
         to: user.email,
         subject: 'Your trial ended — founding lifetime spots are still open',
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-<h2 style="color:#6366f1;">Your 3-day trial has ended</h2>
+<h2 style="color:#6366f1;">Your free trial has ended</h2>
 <p>Hi ${escapeHtml(user.name) || 'there'},</p>
 <p>Your unlimited trial on Study Decoder is over — but you haven't lost everything:</p>
 <div style="background:#f8f9fa;border-radius:10px;padding:16px;margin:16px 0;">
@@ -11413,7 +11415,7 @@ async function sendWelcomeEmail(user) {
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333;">
 <h2 style="color:#6366f1;">Welcome aboard 🎉</h2>
 <p>Hi ${escapeHtml(user.name) || 'there'},</p>
-<p>You've just unlocked <strong>3 days of unlimited access</strong> to every tool on Study Decoder. To make the most of it, here are 3 things worth trying tonight:</p>
+<p>You've just unlocked <strong>a full day of unlimited access</strong> to every tool on Study Decoder. To make the most of it, here are 3 things worth trying tonight:</p>
 <ol style="line-height:2;padding-left:20px;">
   <li><strong>📝 Run a practice exam</strong> — pick a subject and let the AI generate a Band-6-style paper with marking criteria.</li>
   <li><strong>📖 Decode a syllabus dot point</strong> — paste any NESA dot point and get a clear, exam-ready breakdown.</li>
@@ -11697,14 +11699,14 @@ setInterval(async () => {
             // Trial-lifecycle emails only fire while user is still on free tier
             if (hasFullAccess(user)) continue;
 
-            // Day 2: trial ending soon (send once, between 1-2 days old)
-            if (ageMs >= oneDayMs && ageMs < 2 * oneDayMs && !user.trialEndingEmailSent) {
+            // Trial ending soon — final hours of the 1-day grace (send once, 12-24h old)
+            if (ageMs >= 12 * oneHourMs && ageMs < oneDayMs && !user.trialEndingEmailSent) {
                 if (await tryEmail('trial-ending', sendTrialEndingSoonEmail, user)) {
                     user.trialEndingEmailSent = true;
                 }
             }
-            // Day 3+: trial expired (send once, after 3 days)
-            if (ageMs >= 3 * oneDayMs && !user.trialExpiredEmailSent) {
+            // Trial expired — once the 1-day grace has ended (send once)
+            if (ageMs >= oneDayMs && !user.trialExpiredEmailSent) {
                 if (await tryEmail('trial-expired', sendTrialExpiredEmail, user)) {
                     user.trialExpiredEmailSent = true;
                 }
@@ -12151,7 +12153,7 @@ app.listen(config.port, () => {
 
     // ── Retroactive trial grant ──────────────────────────────────────
     // Any free user who existed before trialStart was introduced gets
-    // their 3-day trial reset to now, so they don't miss out.
+    // their free trial reset to now, so they don't miss out.
     const now = new Date().toISOString();
     let granted = 0;
     for (const user of Object.values(db.users)) {
