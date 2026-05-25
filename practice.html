@@ -2350,23 +2350,9 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             genBtn.textContent = 'Generating...';
             trackUsage('quick', subjectId, subjectName, topics);
 
-            const examFacts = getFactsForSubject(subjectId);
-            let examFactIdx = Math.floor(Math.random() * examFacts.length);
-            document.getElementById('examContent').innerHTML = `
-                <div class="exam-loading">
-                    <div class="loading-dots" style="justify-content:center;"><span></span><span></span><span></span></div>
-                    <div class="exam-loading-text">Building your ${quickDurationMinutes}-minute ${subjectName} quick paper...</div>
-                    <div class="fun-fact-box" style="margin:20px auto;max-width:500px;">
-                        <div class="ff-label">💡 Did you know?</div>
-                        <div class="ff-text ff-swap" id="quickGenFact">${examFacts[examFactIdx]}</div>
-                    </div>
-                </div>`;
-            const factInterval = setInterval(() => {
-                examFactIdx = (examFactIdx + 1) % examFacts.length;
-                const el = document.getElementById('quickGenFact');
-                if (el) { el.className = 'ff-text'; setTimeout(() => { el.textContent = examFacts[examFactIdx]; el.className = 'ff-text ff-swap'; }, 50); }
-                else clearInterval(factInterval);
-            }, 4500);
+            // Quick warm-up quiz while the quick paper generates.
+            document.getElementById('examContent').innerHTML = '<div class="exam-loading" id="quickLgHost"></div>';
+            let lgCtrl = (window.SDLoadingGame) ? SDLoadingGame.start(document.getElementById('quickLgHost'), { subject: subjectId, label: subjectName + ' quick paper' }) : null;
 
             try {
                 // Reuse exam API with a short duration and pass a question count hint via topics string
@@ -2377,7 +2363,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     body: JSON.stringify({ subject: subjectId, topics, duration: '1', difficulty: 'medium', quickPaper: true, questionCount })
                 });
 
-                clearInterval(factInterval);
+                if (lgCtrl) { lgCtrl.stop(); lgCtrl = null; }
 
                 if (!res.ok) {
                     // Subject lock for class-linked students → dedicated unlock modal
@@ -2442,7 +2428,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 renderExamQuestion();
 
             } catch (error) {
-                clearInterval(factInterval);
+                if (lgCtrl) { lgCtrl.stop(); lgCtrl = null; }
                 document.getElementById('examContent').innerHTML = `
                     <div style="text-align:center;padding:60px 20px;">
                         <h2 style="color:#ef4444;margin-bottom:12px;">Failed to Generate Quick Paper</h2>
@@ -2762,24 +2748,9 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             genBtn.textContent = 'Generating exam...';
             trackUsage('exam', examSubjectId, subjectName, topicsLabel);
 
-            // Show loading with fun facts
-            const examFacts = getFactsForSubject(examSubjectId);
-            let examFactIdx = Math.floor(Math.random() * examFacts.length);
-            document.getElementById('examContent').innerHTML = `
-                <div class="exam-loading">
-                    <div class="loading-dots" style="justify-content:center;"><span></span><span></span><span></span></div>
-                    <div class="exam-loading-text">Generating your ${subjectName} exam paper... This may take a moment.</div>
-                    <div class="fun-fact-box" style="margin:20px auto;max-width:500px;">
-                        <div class="ff-label">💡 Did you know?</div>
-                        <div class="ff-text ff-swap" id="examGenFact">${examFacts[examFactIdx]}</div>
-                    </div>
-                </div>`;
-            const examGenFactInterval = setInterval(() => {
-                examFactIdx = (examFactIdx + 1) % examFacts.length;
-                const el = document.getElementById('examGenFact');
-                if (el) { el.className = 'ff-text'; setTimeout(() => { el.textContent = examFacts[examFactIdx]; el.className = 'ff-text ff-swap'; }, 50); }
-                else clearInterval(examGenFactInterval);
-            }, 4500);
+            // Play a quick warm-up quiz while the (slow) exam generates.
+            document.getElementById('examContent').innerHTML = '<div class="exam-loading" id="examLgHost"></div>';
+            let lgCtrl = (window.SDLoadingGame) ? SDLoadingGame.start(document.getElementById('examLgHost'), { subject: examSubjectId, label: subjectName + ' exam' }) : null;
 
             try {
                 const res = await fetch(`${API_BASE}/api/exam/generate`, {
@@ -2788,6 +2759,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     credentials: 'include',
                     body: JSON.stringify({ subject: examSubjectId, topics, duration, difficulty })
                 });
+                if (lgCtrl) { lgCtrl.stop(); lgCtrl = null; }
 
                 if (!res.ok) {
                     if (window.SDUpsell && await window.SDUpsell.handleApiError(res)) return;
@@ -2852,6 +2824,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                         <button class="exam-nav-btn primary" onclick="showExamSetup()">Try Again</button>
                     </div>`;
             } finally {
+                if (lgCtrl) { lgCtrl.stop(); lgCtrl = null; }
                 const setupGenBtn = document.getElementById('examGenerateBtn');
                 const setupPrintBtn = document.getElementById('examPrintSetupBtn');
                 if (setupGenBtn) {
@@ -3612,4 +3585,5 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
     <script src="app-shell.js" defer></script>
 <script src="theme.js"></script>
 <script src="share-card.js"></script>
+<script src="loading-game.js"></script>
 </body></html>
