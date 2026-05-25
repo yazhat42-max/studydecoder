@@ -262,8 +262,14 @@ function incrementFreeTierUsage(userId, botType) {
 }
 
 // New accounts get a short "unlimited" grace window, then drop to the 10/day
-// free tier. Kept to 1 day so it can't be farmed by making a fresh account.
+// free tier. New signups get 1 day (set at signup so it can't be farmed by
+// making a fresh account); accounts created before this field existed are
+// grandfathered to the original 3 days.
 const GRACE_PERIOD_MS = 1 * 24 * 60 * 60 * 1000;
+function userGraceMs(user) {
+    const days = (user && typeof user.graceDays === 'number') ? user.graceDays : 3;
+    return days * 24 * 60 * 60 * 1000;
+}
 
 // Check if a user is within the unlimited-trial grace period.
 // Uses trialStart if set (allows admin reset), otherwise falls back to createdAt
@@ -274,7 +280,7 @@ function isWithinGracePeriod(userId) {
     if (typeof ref !== 'string' || ref.length === 0) return false;
     const refMs = new Date(ref).getTime();
     if (!Number.isFinite(refMs)) return false;
-    return (Date.now() - refMs) < GRACE_PERIOD_MS;
+    return (Date.now() - refMs) < userGraceMs(user);
 }
 
 // Check if a user is in the final stretch of the grace window (last ~6 hours).
@@ -286,7 +292,8 @@ function isGracePeriodEnding(userId) {
     const refMs = new Date(ref).getTime();
     if (!Number.isFinite(refMs)) return false;
     const ageMs = Date.now() - refMs;
-    return ageMs >= (GRACE_PERIOD_MS - 6 * 60 * 60 * 1000) && ageMs < GRACE_PERIOD_MS;
+    const graceMs = userGraceMs(user);
+    return ageMs >= (graceMs - 6 * 60 * 60 * 1000) && ageMs < graceMs;
 }
 
 function canUseFreeTier(userId, botType) {
@@ -1325,7 +1332,11 @@ function upsertUser(userId, data) {
         verifyToken: data.verifyToken !== undefined ? data.verifyToken : existing.verifyToken,
         verifyExpiry: data.verifyExpiry !== undefined ? data.verifyExpiry : existing.verifyExpiry,
         resetToken: data.resetToken !== undefined ? data.resetToken : existing.resetToken,
-        resetExpiry: data.resetExpiry !== undefined ? data.resetExpiry : existing.resetExpiry
+        resetExpiry: data.resetExpiry !== undefined ? data.resetExpiry : existing.resetExpiry,
+        // Free unlimited-trial length, fixed at signup. New accounts get 1 day;
+        // accounts that predate this field are grandfathered to the old 3 days
+        // (handled by userGraceMs's default). Existing value is always preserved.
+        graceDays: existing.graceDays !== undefined ? existing.graceDays : (existing.createdAt ? existing.graceDays : 1)
     };
     // Recompute role *after* merging — getUserRole inspects the just-merged
     // teacher fields (it reads the live db.users record by email).
@@ -2547,7 +2558,7 @@ app.get('/api/subscription', requireAuth, (req, res) => {
             gracePeriodEnding: isGracePeriodEnding(req.session.userId),
             trialEndsAt: (() => {
                 const refMs = user.trialStart ? new Date(user.trialStart).getTime() : (user.createdAt ? new Date(user.createdAt).getTime() : null);
-                return refMs ? new Date(refMs + GRACE_PERIOD_MS).toISOString() : null;
+                return refMs ? new Date(refMs + userGraceMs(user)).toISOString() : null;
             })()
         } : null
     });
