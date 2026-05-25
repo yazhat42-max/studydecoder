@@ -468,6 +468,8 @@
             btn.disabled = true; btn.textContent = 'Generating…';
             loadingBox.classList.remove('hidden');
             document.getElementById('errorBanner').classList.add('hidden');
+            // Quick warm-up quiz while the worksheet generates.
+            let lgCtrl = (window.SDLoadingGame) ? SDLoadingGame.start(loadingBox, { subject, label: 'worksheet' }) : null;
 
             try {
                 const r = await fetch(`${API_BASE}/api/worksheet/generate`, {
@@ -492,6 +494,7 @@
             } catch (e) {
                 showError('Network error. Please retry.');
             } finally {
+                if (lgCtrl) { lgCtrl.stop(); lgCtrl = null; }
                 btn.disabled = false; btn.textContent = 'Generate Worksheet';
                 loadingBox.classList.add('hidden');
             }
@@ -659,5 +662,6 @@
     </script>
     <script src="app-shell.js" defer></script>
 <script src="theme.js"></script>
+<script src="loading-game.js"></script>
 </body>
 </html>

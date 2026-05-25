@@ -9627,6 +9627,39 @@ CRITICAL JSON RULES:
 // selected module(s), so every module gets equal treatment. Questions carry the
 // correct-answer index + a short explanation, so games run entirely client-side
 // with no per-question round-trip.
+// Loading-quiz: a few quick MCQs to play WHILE a big thing (exam/worksheet)
+// generates. Does NOT consume the games free-tier slot and bypasses the subject
+// gate — it's a courtesy distraction, not full access. Cached per subject so
+// repeated waits don't keep paying for generation.
+const _loadingQuizCache = new Map(); // subject -> { at, questions }
+const _LOADING_QUIZ_TTL = 12 * 60 * 1000;
+app.post('/api/loading-quiz', requireAuth, express.json(), async (req, res) => {
+    if (!config.openaiApiKey) return res.json({ questions: [] });
+    const subject = String((req.body && req.body.subject) || '').slice(0, 80);
+    if (!subject) return res.json({ questions: [] });
+    const cached = _loadingQuizCache.get(subject);
+    if (cached && (Date.now() - cached.at) < _LOADING_QUIZ_TTL) return res.json({ questions: cached.questions, cached: true });
+    try {
+        const meta = resolveSubjectMeta(subject);
+        const subjectName = meta.name;
+        const syllabus = (getSyllabusContentMulti(subject, meta.isJunior, [], 6000) || '').substring(0, 6000);
+        const levelWord = meta.isJunior ? 'NSW Years 7-10' : 'NSW HSC';
+        const sys = `You are a ${levelWord} ${subjectName} examiner writing fast, fun multiple-choice quiz questions for a short loading-screen game. Each: answerable in <15s, EXACTLY 4 options, EXACTLY one correct, grounded only in the syllabus. Return ONLY valid JSON: { "questions": [ { "question": "<stem>", "options": ["a","b","c","d"], "answer": <0-3>, "explanation": "<one sentence>" } ] }`;
+        const usr = `Generate EXACTLY 6 medium multiple-choice questions for ${subjectName}.\n=== SYLLABUS ===\n${syllabus}\n=== END ===`;
+        const reply = await callOpenAIChat({ model: 'gpt-4o-mini', jsonMode: true, maxTokens: 1600, temperature: 0.8, messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }] });
+        const parsed = parseJsonLoose(reply);
+        let questions = Array.isArray(parsed.questions) ? parsed.questions : [];
+        questions = questions
+            .filter(q => q && typeof q.question === 'string' && Array.isArray(q.options) && q.options.length === 4 && Number.isInteger(q.answer) && q.answer >= 0 && q.answer <= 3)
+            .map(q => ({ question: String(q.question).slice(0, 400), options: q.options.map(o => String(o).slice(0, 200)), answer: q.answer, explanation: String(q.explanation || '').slice(0, 300) }));
+        if (questions.length) _loadingQuizCache.set(subject, { at: Date.now(), questions });
+        res.json({ questions });
+    } catch (e) {
+        console.error('Loading quiz failed:', e.message);
+        res.json({ questions: [] });
+    }
+});
+
 app.post('/api/games/questions', express.json(), async (req, res) => {
     if (!req.session?.userId) return res.status(401).json({ error: 'Authentication required' });
     const user = getUser(req.session.userId);
