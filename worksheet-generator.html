@@ -438,6 +438,7 @@
                     html += '<option value="' + escapeAttr(t) + '">' + escapeHtml(t) + '</option>';
                 });
                 topicSel.innerHTML = html;
+                if (window.SDLoadingGame) SDLoadingGame.prefetch(id); // preload warm-up quiz
             };
             subjectSel.addEventListener('change', updateTopics);
             subjectSel.addEventListener('input', updateTopics);
