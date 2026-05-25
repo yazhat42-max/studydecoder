@@ -12,7 +12,7 @@ window.Upsell = (function () {
             exam: {
                 emoji: '✏️',
                 headline: 'You\'ve seen what Band 6 looks like.',
-                body: 'Premium gives you unlimited full exams across all 45 subjects — plus score history so you can track exactly which modules you\'re improving in.',
+                body: 'Premium gives you unlimited full exams across all 45 subjects — plus Band 6 model answers on every question and your predicted ATAR.',
                 ctaLabel: 'Unlock Unlimited Exams →',
             },
             quick: {
