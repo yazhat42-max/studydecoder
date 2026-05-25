@@ -167,20 +167,25 @@ const FREE_TIER_CONFIG = {
 
 // ==================== AI QUALITY TIERS ====================
 // Different quality settings based on user role (owner > lifetime > paid > free)
+// Model choice is cost-aware (OpenAI list prices, per 1M tokens):
+//   gpt-5-mini   $0.25 in / $2.00 out   — smart GPT-5 reasoning, cheap
+//   gpt-4.1-mini $0.40 in / $1.60 out
+//   gpt-4o-mini  $0.15 in / $0.60 out   — cheapest sensible model
+//   gpt-5.1      $1.25 in / $10.00 out  — flagship
+// Premium now runs GPT-5 (gpt-5-mini): nearly cost-neutral vs the old
+// gpt-4.1-mini (cheaper input, ~same output) but a real quality + marketing
+// upgrade. Free stays on gpt-4o-mini, so the Free→Premium gap is "GPT-4o mini
+// vs GPT-5" — an honest, sellable difference.
 const AI_QUALITY_TIERS = {
     owner: {
-        maxTokens: 35000,     // GPT-5 mini supports up to 128k, but 35k is plenty
-        temperature: 1.0,     // Maximum creativity
-        model: 'gpt-5-mini'   // Latest flagship model
+        maxTokens: 35000,
+        temperature: 1.0,     // ignored by GPT-5 reasoning models (default only)
+        model: 'gpt-5.1'      // flagship — owner/testing account
     },
-    // Premium tiers get gpt-4.1-mini: clearly smarter than free's gpt-4o-mini,
-    // but NON-reasoning — so no hidden reasoning-token surcharge and low latency
-    // (better than gpt-5-mini for a chat tutor, and cheaper in real terms). Free
-    // stays on gpt-4o-mini.
     lifetime: {
-        maxTokens: 5000,
+        maxTokens: 8000,
         temperature: 0.7,
-        model: 'gpt-4.1-mini'
+        model: 'gpt-5-mini'   // GPT-5
     },
     og_tester: {
         maxTokens: 4000,
@@ -188,9 +193,9 @@ const AI_QUALITY_TIERS = {
         model: 'gpt-4o-mini'
     },
     paid: {
-        maxTokens: 5000,      // Premium subscribers — smarter model + a bit more room
+        maxTokens: 8000,      // GPT-5 reasoning tokens count toward the cap, so give headroom
         temperature: 0.7,
-        model: 'gpt-4.1-mini'
+        model: 'gpt-5-mini'   // Premium subscribers — real GPT-5
     },
     free: {
         maxTokens: 1500,      // Limited output
@@ -9449,7 +9454,10 @@ CRITICAL JSON RULES:
         // ran — the main cause of the long waits on normal accounts. A higher cap
         // is not slower: latency tracks the tokens actually generated, and one
         // complete call beats two truncated ones.
-        const examTokenBudget = durationHours >= 3 ? 16000 : durationHours === 2 ? 12000 : 8000;
+        let examTokenBudget = durationHours >= 3 ? 16000 : durationHours === 2 ? 12000 : 8000;
+        // GPT-5 reasoning tokens are billed/counted inside max_completion_tokens,
+        // so give reasoning models extra headroom or the visible JSON truncates.
+        if (isGpt5) examTokenBudget += 5000;
 
         while (generateAttempts < maxGenerateAttempts && !exam) {
             generateAttempts++;
