@@ -184,6 +184,29 @@
   // Populate a <select> with every subject for the level, grouped into
   // <optgroup> by faculty. Options carry the canonical id as value (or the
   // display name when opts.useName is set, for tools keyed on names).
+  // The student's saved subjects (names), for the "⭐ Your Subjects" group.
+  // Prefers the live global (set by app-shell after auth), falls back to the
+  // cached user record so the group shows on first paint too.
+  function getSavedSubjects() {
+    try { if (typeof window !== 'undefined' && Array.isArray(window.SD_MY_SUBJECTS)) return window.SD_MY_SUBJECTS; } catch (e) {}
+    try {
+      var c = JSON.parse(localStorage.getItem('sd_user_cache') || 'null');
+      return (c && c.preferences && Array.isArray(c.preferences.subjects)) ? c.preferences.subjects : [];
+    } catch (e) { return []; }
+  }
+  function savedSubjectsForLevel(level) {
+    var names = getSavedSubjects();
+    if (!names.length) return [];
+    var list = subjectsForLevel(level);
+    var out = [];
+    names.forEach(function (n) {
+      var id = resolveId(n);
+      var s = list.find(function (x) { return x.id === id; });
+      if (s && !out.some(function (o) { return o.id === s.id; })) out.push(s);
+    });
+    return out;
+  }
+
   function fillSubjectSelect(sel, level, opts) {
     opts = opts || {};
     if (!sel) return;
@@ -191,6 +214,18 @@
     let html = '';
     if (opts.placeholder !== false) {
       html += '<option value="">' + (opts.placeholder || 'Select your subject…') + '</option>';
+    }
+    // "⭐ Your Subjects" pinned at the top — consistent across every dropdown.
+    if (opts.yourSubjects !== false) {
+      const mine = savedSubjectsForLevel(level);
+      if (mine.length) {
+        html += '<optgroup label="⭐ Your Subjects">';
+        mine.forEach(s => {
+          const val = useName ? s.name : s.id;
+          html += '<option value="' + val + '">' + s.name + '</option>';
+        });
+        html += '</optgroup>';
+      }
     }
     groupedForLevel(level).forEach(g => {
       html += '<optgroup label="' + g.category + '">';

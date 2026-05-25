@@ -224,6 +224,11 @@
     window.__sdAuth.then(function (auth) {
       if (!auth) return;
       try {
+        // Publish saved subjects so every subject dropdown can show "Your Subjects",
+        // and keep the user cache fresh for first-paint reads.
+        window.SD_MY_SUBJECTS = (auth.preferences && Array.isArray(auth.preferences.subjects)) ? auth.preferences.subjects : [];
+        try { localStorage.setItem('sd_user_cache', JSON.stringify({ email: auth.email, name: auth.name, role: auth.role, subscribed: auth.subscribed, preferences: auth.preferences || {}, cachedAt: Date.now() })); } catch (e) {}
+
         var isJr = auth.preferences && auth.preferences.level === 'junior';
         if (isJr) {
           // Re-resolve hrefs for junior variants then re-mark the active item.
