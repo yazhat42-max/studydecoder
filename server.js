@@ -4347,13 +4347,14 @@ app.post('/api/cards/:id/answer', requireAuth, async (req, res) => {
 
     // AI grading prompt — strict JSON, capped output.
     const sys = `You are a Socratic tutor grading ONE student answer to a conversational flashcard. Compare the student's answer to the ideal answer and the syllabus dot point. Return ONLY valid JSON, no prose:
-{ "grade": "correct|partial|incorrect|off-track", "feedback": "<=40 words", "hint": "<=25 words, or null>", "exemplarAnswer": "<=60 words, or null>" }
+{ "grade": "correct|partial|incorrect|off-track", "feedback": "<=40 words", "hint": "<=25 words, or null>", "approach": "<=30 words, or null>", "exemplarAnswer": "<=60 words, or null>" }
 Grading guide:
 - "correct": the answer captures the key idea accurately.
 - "partial": on the right track but missing/imprecise — give a "hint", exemplarAnswer null.
 - "incorrect": wrong but engaging with the topic — give a "hint", exemplarAnswer null.
 - "off-track": not addressing the question — hint null, give a short "exemplarAnswer".
-For "correct", set hint and exemplarAnswer to null. Keep feedback encouraging and specific.`;
+- "approach": for ANY non-correct grade, teach HOW to tackle this TYPE of question — the structure/strategy to use (e.g. "Define the term, then link it to the syllabus outcome with one example"), NOT the answer itself. Null when grade is "correct".
+For "correct", set hint, approach and exemplarAnswer to null. Keep feedback encouraging and specific.`;
     const usr = `Dot point: ${card.dotPointRef}\nQuestion: ${card.prompt}\nIdeal answer: ${card.idealAnswer}\nStudent answer: ${answer}`;
 
     let graded;
@@ -4414,6 +4415,7 @@ For "correct", set hint and exemplarAnswer to null. Keep feedback encouraging an
         grade: graded.grade,
         feedback: graded.feedback || '',
         hint: graded.hint || null,
+        approach: graded.approach || null,
         exemplarAnswer: graded.exemplarAnswer || null,
         idealAnswer: graded.grade === 'correct' ? card.idealAnswer : null,
         quality,
