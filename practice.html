@@ -2313,6 +2313,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                     topicSel.innerHTML = '<option value="All">All Topics</option>';
                     topicSel.disabled = !sid;
                     if (!sid) return;
+                    if (window.SDLoadingGame) SDLoadingGame.prefetch(sid); // preload warm-up quiz
                     const topics = subjectTopics[sid];
                     if (topics && topics.length > 0) {
                         topics.forEach(t => {
@@ -2567,13 +2568,18 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             if (!savedSubject) savedSubject = localStorage.getItem('sd_subject_preference');
             if (savedSubject) {
                 const sel = document.getElementById('examSetupSubject');
-                if (sel) { sel.value = savedSubject; updateExamModules(savedSubject); }
+                if (sel) { sel.value = savedSubject; updateExamModules(savedSubject); if (window.SDLoadingGame) SDLoadingGame.prefetch(savedSubject); }
             }
 
-            // Wire subject change to update modules
+            // Wire subject change to update modules + preload the warm-up quiz so
+            // it's ready the instant the user clicks Generate (no "Loading…" wait).
             const examSubjectEl = document.getElementById('examSetupSubject');
             if (examSubjectEl) {
-                examSubjectEl.addEventListener('change', () => updateExamModules(examSubjectEl.value));
+                examSubjectEl.addEventListener('change', () => {
+                    updateExamModules(examSubjectEl.value);
+                    if (window.SDLoadingGame) SDLoadingGame.prefetch(examSubjectEl.value);
+                });
+                if (examSubjectEl.value && window.SDLoadingGame) SDLoadingGame.prefetch(examSubjectEl.value);
             }
 
             // Load exam history

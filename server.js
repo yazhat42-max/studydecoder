@@ -9417,6 +9417,24 @@ CRITICAL JSON RULES:
             .replace(/NESA-style/g, 'syllabus-aligned');
     }
 
+    // Long papers truncate when every question also carries a full Band 6
+    // sampleAnswer (often longer than the question itself) — the JSON overflows
+    // the output cap, parsing fails, and the whole paper fails to generate.
+    // Sample answers load on demand (/api/exam/sample-answer) instead, so for
+    // 2h+ papers we OMIT them — and do it CONSISTENTLY (a high-priority system
+    // override + the user prompt) so the model never sees a contradictory
+    // "include sampleAnswer ... but omit sampleAnswer" instruction.
+    const includeSamples = durationHours < 2;
+    if (!includeSamples) {
+        finalSystemPrompt += `\n\n=== OUTPUT LENGTH OVERRIDE (HIGHEST PRIORITY — overrides anything above) ===\nThis is a long ${durationHours}-hour paper. To guarantee the COMPLETE paper fits in ONE response without truncation:\n- OMIT the "sampleAnswer" field ENTIRELY from EVERY question. Model answers are generated separately on demand. Never write a sampleAnswer under any circumstance.\n- Keep each "markingCriteria" to ONE concise sentence (max ~25 words).\nThis SUPERSEDES any earlier rule or JSON-spec field that asks for sampleAnswer.`;
+    }
+    const samplesClauseHsc = includeSamples
+        ? 'Include NESA-aligned markingCriteria and a Band 6 sampleAnswer for every non-MC question.'
+        : 'Include a concise one-sentence NESA-aligned markingCriteria for every non-MC question. Do NOT include sampleAnswer — model answers are generated separately on demand.';
+    const samplesClauseJr = includeSamples
+        ? 'Include syllabus-aligned markingCriteria and an A-grade sampleAnswer for every non-MC question.'
+        : 'Include a concise one-sentence syllabus-aligned markingCriteria for every non-MC question. Do NOT include sampleAnswer — model answers are generated separately on demand.';
+
     try {
         const isGpt5 = aiSettings.model.startsWith('gpt-5');
         const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
@@ -9432,14 +9450,6 @@ CRITICAL JSON RULES:
         // is not slower: latency tracks the tokens actually generated, and one
         // complete call beats two truncated ones.
         const examTokenBudget = durationHours >= 3 ? 16000 : durationHours === 2 ? 12000 : 8000;
-        // Long papers (2h/3h) blow past the output cap when every question also
-        // carries a full Band 6 sampleAnswer — the JSON truncates and parsing
-        // fails. Sample answers load on demand (/api/exam/sample-answer), so for
-        // long papers we drop them from the bulk generation and keep criteria
-        // tight. This is the main fix for 3-hour exams not completing.
-        const lengthOpt = durationHours >= 2
-            ? ' LENGTH LIMIT (MANDATORY for this long paper): OMIT the "sampleAnswer" field from EVERY question — model answers are generated separately on demand. Keep each "markingCriteria" to ONE concise sentence (max ~25 words). This keeps the complete paper within output limits so it generates fully in one pass without truncation.'
-            : '';
 
         while (generateAttempts < maxGenerateAttempts && !exam) {
             generateAttempts++;
@@ -9448,8 +9458,8 @@ CRITICAL JSON RULES:
                 : '';
 
             const userPromptText = isJunior
-                ? `Generate a complete ${durationHours}-hour Years 7-10 practice test for ${subjectName}. Topics: ${topics || 'Years 7-10 content'}. REMINDER: ${topics && topics !== 'Years 7-10 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other topic. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Years 7-10 topics for this subject.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. Include syllabus-aligned markingCriteria and an A-grade sampleAnswer for every non-MC question. Use age-appropriate language and contexts for the chosen year level. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}${lengthOpt}`
-                : `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. Include NESA-aligned markingCriteria and Band 6 sampleAnswer for every non-MC question. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}${lengthOpt}`;
+                ? `Generate a complete ${durationHours}-hour Years 7-10 practice test for ${subjectName}. Topics: ${topics || 'Years 7-10 content'}. REMINDER: ${topics && topics !== 'Years 7-10 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other topic. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Years 7-10 topics for this subject.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. ${samplesClauseJr} Use age-appropriate language and contexts for the chosen year level. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}`
+                : `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. ${samplesClauseHsc} VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}`;
             const requestBody = {
                 model: aiSettings.model,
                 messages: [
