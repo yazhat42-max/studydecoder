@@ -52,6 +52,7 @@ html,body { height:100%; width:100%; font-family:'Segoe UI',-apple-system,BlinkM
 .action-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
 .action-row .btn { flex:1; min-width:140px; }
 .hint-box { background:rgba(79,140,255,0.08); border:1px solid rgba(79,140,255,0.25); border-radius:10px; padding:12px 14px; margin-top:12px; font-size:14px; color:#cfe0ff; line-height:1.5; }
+.approach-box { background:rgba(168,85,247,0.10); border:1px solid rgba(168,85,247,0.3); border-radius:10px; padding:12px 14px; margin-top:12px; font-size:14px; color:#e6d6ff; line-height:1.5; }
 .grade-pill { display:inline-block; font-size:13px; font-weight:700; padding:5px 14px; border-radius:999px; margin-bottom:12px; text-transform:capitalize; }
 .feedback { font-size:15px; line-height:1.6; color:#e7e9ea; }
 .result-block { margin-top:14px; padding-top:14px; border-top:1px solid #2f3336; }
@@ -141,6 +142,7 @@ function renderCard(){
     const r = result;
     let extra = '';
     if (r.hint) extra += `<div class="hint-box"><strong>Hint:</strong> ${esc(r.hint)}</div>`;
+    if (r.approach) extra += `<div class="approach-box"><strong>How to answer this:</strong> ${esc(r.approach)}</div>`;
     if (r.exemplarAnswer) extra += `<div class="result-block"><div class="result-label">Exemplar answer</div><div class="result-text">${esc(r.exemplarAnswer)}</div></div>`;
     if (r.idealAnswer) extra += `<div class="result-block"><div class="result-label">The full answer</div><div class="result-text">${esc(r.idealAnswer)}</div></div>`;
     let masteryNote = '';
