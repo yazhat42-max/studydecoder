@@ -705,21 +705,21 @@
             <button class="game-new-btn" onclick="resetSession()">New Scenario</button>
         </div>
         <div class="game-stats" id="gameStats">
-            <div class="gstat" title="Resources — your budget for the scenario. Keep it above 0, or you can't act.">
-                <span class="gstat-icon">💰</span>
-                <div class="gstat-group"><span class="gstat-label">Resources</span><div class="gstat-bar"><div class="gstat-fill money" id="statMoney"></div></div><div class="gstat-value" id="statMoneyVal"></div><div class="gstat-dir up">keep&nbsp;high</div></div>
+            <div class="gstat" id="gstatMoney" title="Resources — your budget for the scenario. Keep it above 0, or you can't act.">
+                <span class="gstat-icon" id="icoMoney">💰</span>
+                <div class="gstat-group"><span class="gstat-label" id="lblMoney">Resources</span><div class="gstat-bar"><div class="gstat-fill money" id="statMoney"></div></div><div class="gstat-value" id="statMoneyVal"></div><div class="gstat-dir up">keep&nbsp;high</div></div>
             </div>
-            <div class="gstat" title="Time — how much time you have left. Keep it above 0, or you run out of time.">
-                <span class="gstat-icon">⏱️</span>
-                <div class="gstat-group"><span class="gstat-label">Time</span><div class="gstat-bar"><div class="gstat-fill time" id="statTime"></div></div><div class="gstat-value" id="statTimeVal"></div><div class="gstat-dir up">keep&nbsp;high</div></div>
+            <div class="gstat" id="gstatTime" title="Time — how much time you have left. Keep it above 0, or you run out of time.">
+                <span class="gstat-icon" id="icoTime">⏱️</span>
+                <div class="gstat-group"><span class="gstat-label" id="lblTime">Time</span><div class="gstat-bar"><div class="gstat-fill time" id="statTime"></div></div><div class="gstat-value" id="statTimeVal"></div><div class="gstat-dir up">keep&nbsp;high</div></div>
             </div>
-            <div class="gstat" title="Risk — how close things are to going wrong. Keep it BELOW 100, or it all falls apart.">
-                <span class="gstat-icon">⚠️</span>
-                <div class="gstat-group"><span class="gstat-label">Risk</span><div class="gstat-bar"><div class="gstat-fill risk" id="statRisk"></div></div><div class="gstat-value" id="statRiskVal"></div><div class="gstat-dir down">keep&nbsp;low</div></div>
+            <div class="gstat" id="gstatRisk" title="Risk — how close things are to going wrong. Keep it BELOW 100, or it all falls apart.">
+                <span class="gstat-icon" id="icoRisk">⚠️</span>
+                <div class="gstat-group"><span class="gstat-label" id="lblRisk">Risk</span><div class="gstat-bar"><div class="gstat-fill risk" id="statRisk"></div></div><div class="gstat-value" id="statRiskVal"></div><div class="gstat-dir down">keep&nbsp;low</div></div>
             </div>
-            <div class="gstat" title="Energy — your focus and stamina. Keep it above 0, or you burn out.">
-                <span class="gstat-icon">⚡</span>
-                <div class="gstat-group"><span class="gstat-label">Energy</span><div class="gstat-bar"><div class="gstat-fill energy" id="statEnergy"></div></div><div class="gstat-value" id="statEnergyVal"></div><div class="gstat-dir up">keep&nbsp;high</div></div>
+            <div class="gstat" id="gstatEnergy" title="Energy — your focus and stamina. Keep it above 0, or you burn out.">
+                <span class="gstat-icon" id="icoEnergy">⚡</span>
+                <div class="gstat-group"><span class="gstat-label" id="lblEnergy">Energy</span><div class="gstat-bar"><div class="gstat-fill energy" id="statEnergy"></div></div><div class="gstat-value" id="statEnergyVal"></div><div class="gstat-dir up">keep&nbsp;high</div></div>
             </div>
             <button class="gstat-help" id="gstatHelp" title="What do these meters mean?" onclick="toggleStatLegend()">?</button>
         </div>
@@ -3021,6 +3021,7 @@
             objEl.classList.add('active');
 
             gameState = { money: 50, time: 50, risk: 50, energy: 50, misconceptions: [] };
+            resetMeterLabels(); // fresh scenario starts with defaults until the AI relabels
             updateGameStats();
             document.getElementById('gameNarrative').innerHTML = '';
             document.getElementById('gameChoices').innerHTML = '';
@@ -3210,6 +3211,8 @@
                     if (gameState.risk >= 100) gameState.risk = 95;
                 }
             }
+            // First-turn: relabel the meters to fit this scenario's world.
+            if (data.meters) applyMeterLabels(data.meters);
             updateGameStats();
 
             // Show flashcard if AI flagged a missed concept (bad choice consequence)
@@ -3318,6 +3321,24 @@
             const el = document.getElementById('gstatLegend');
             if (el) el.classList.toggle('hidden');
         }
+
+        // Per-scenario meter labels. The 4 underlying meters (money/time/risk/
+        // energy) keep their mechanics; only the displayed names change to fit
+        // the subject's scenario (e.g. "Trust", "Patient risk", "Crew morale").
+        const DEFAULT_METERS = { money: 'Resources', time: 'Time', risk: 'Risk', energy: 'Energy' };
+        function setMeterLabel(key, text) {
+            const el = document.getElementById('lbl' + key.charAt(0).toUpperCase() + key.slice(1));
+            if (el && text) el.textContent = String(text).slice(0, 16);
+            const grp = document.getElementById('gstat' + key.charAt(0).toUpperCase() + key.slice(1));
+            if (grp && text) {
+                const dir = (key === 'risk') ? 'Keep it low' : 'Keep it high';
+                grp.title = text + ' — ' + dir + '.';
+            }
+        }
+        function applyMeterLabels(meters) {
+            ['money', 'time', 'risk', 'energy'].forEach(k => setMeterLabel(k, (meters && meters[k]) || DEFAULT_METERS[k]));
+        }
+        function resetMeterLabels() { applyMeterLabels(DEFAULT_METERS); }
 
         function updateGameStats() {
             if (!gameState) return;

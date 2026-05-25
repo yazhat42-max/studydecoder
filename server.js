@@ -7722,9 +7722,14 @@ You MUST return ONLY valid JSON in this exact format:
   "message": "scenario narration text",
   "choices": ["option A", "option B", "option C"],
     "effects": { "money": number, "time": number, "risk": number, "energy": number },
+    "meters": { "money": "<label>", "time": "<label>", "risk": "<label>", "energy": "<label>" },
     "flashcard": { "term": "HSC concept name", "definition": "one-sentence plain-English explanation tied to the syllabus", "tag": "module_keyword" },
     "final": false
 }
+
+METER RULES:
+- On the VERY FIRST message ONLY, include "meters" — relabel the four meters to fit THIS scenario's world while keeping their roles EXACTLY: "money" = the main resource/currency at stake, "time" = time pressure, "risk" = what could go wrong (this one is kept LOW), "energy" = the player's personal capacity/standing. Use short, scenario-specific names (≤14 chars), e.g. a genetics counsellor → {"money":"Trust","time":"Time","risk":"Patient risk","energy":"Composure"}; a film stunt → {"money":"Budget","time":"Schedule","risk":"Danger","energy":"Crew morale"}. The "effects" keys ALWAYS stay money/time/risk/energy regardless of labels.
+- On later turns, OMIT "meters" (labels persist).
 
 FLASHCARD RULES:
 - Include "flashcard" when the player just made a choice that reveals they likely misunderstood a key subject concept. The flashcard reinforces what they missed.
