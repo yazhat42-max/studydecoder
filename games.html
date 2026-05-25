@@ -650,6 +650,7 @@ function finish(s, outcome){
       if (!hasAccess){ window.location.href = 'index.html'; return; }
       if (d.preferences && d.preferences.level === 'junior') level = 'junior';
       mySubjects = (d.preferences && Array.isArray(d.preferences.subjects)) ? d.preferences.subjects : [];
+      window.SD_MY_SUBJECTS = mySubjects; // power the "⭐ Your Subjects" group in the dropdown
       document.getElementById('authOverlay').classList.add('hidden');
       document.getElementById('app').classList.remove('hidden');
       renderSetup();
