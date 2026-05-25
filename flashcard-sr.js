@@ -16,9 +16,10 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const MIN_EASE = 1.3;
 const DEFAULT_EASE = 2.5;
 
-// EMA smoothing factor — tuned so the score behaves like an average over the
-// last ~5 grades:  alpha = 2 / (N + 1)  with N = 5.
-const MASTERY_ALPHA = 2 / (5 + 1);
+// EMA smoothing factor — alpha = 2 / (N + 1). N = 3 keeps the score responsive
+// so recent answers visibly move the bar (a correct after a partial jumps it
+// from 60% to ~80% instead of crawling), rather than feeling stuck.
+const MASTERY_ALPHA = 2 / (3 + 1);
 
 /**
  * Map an AI grade (+ whether a hint was used) to an SM-2 quality score 0–5.
