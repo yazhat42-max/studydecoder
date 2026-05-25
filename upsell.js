@@ -12,7 +12,7 @@ window.Upsell = (function () {
             exam: {
                 emoji: '✏️',
                 headline: 'You\'ve seen what Band 6 looks like.',
-                body: 'Premium gives you unlimited full exams across all 45 subjects — plus Band 6 model answers on every question and your predicted ATAR.',
+                body: 'Premium runs on smarter <strong>GPT-5</strong> and gives you unlimited full exams across all 45 subjects — plus Band 6 model answers on every question and your predicted ATAR.',
                 ctaLabel: 'Unlock Unlimited Exams →',
             },
             quick: {
@@ -74,7 +74,7 @@ window.Upsell = (function () {
             default: {
                 emoji: '🚀',
                 headline: 'You\'ve hit your free limit for today.',
-                body: 'Upgrade to premium for unlimited access to all tools — no caps, no daily resets, better AI quality.',
+                body: 'Upgrade to premium for unlimited access to all tools — no caps, no daily resets, and smarter <strong>GPT-5</strong> answers (Free runs on GPT-4o mini).',
                 ctaLabel: 'Upgrade to Premium →',
             }
         }
@@ -251,7 +251,15 @@ window.Upsell = (function () {
             overlay.innerHTML = `
                 <div style="background:#1a1a26;border:1px solid rgba(108,99,255,0.3);border-radius:20px;padding:28px 28px 22px;max-width:480px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.7);">
                     <h2 style="color:#a78bfa;font-size:1.3rem;margin-bottom:4px;">Upgrade to Premium</h2>
-                    <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;margin-bottom:20px;">Unlimited uses &middot; Better AI quality &middot; All 7 tools</p>
+                    <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;margin-bottom:16px;">Powered by GPT-5 &middot; Unlimited uses &middot; All tools</p>
+
+                    <!-- VALUE STACK -->
+                    <div style="text-align:left;background:rgba(255,255,255,0.03);border:1px solid rgba(167,139,250,0.18);border-radius:12px;padding:13px 16px;margin-bottom:16px;font-size:0.85rem;color:rgba(255,255,255,0.82);line-height:1.95;">
+                        <div><span style="color:#a78bfa;">✦</span> <strong>Smarter GPT-5 answers</strong> <span style="color:rgba(255,255,255,0.4);">— Free runs on GPT-4o mini</span></div>
+                        <div><span style="color:#a78bfa;">✦</span> <strong>Unlimited</strong> exams, worksheets, flashcards &amp; tutor chat</div>
+                        <div><span style="color:#a78bfa;">✦</span> Band 6 model answers + your predicted ATAR</div>
+                        <div><span style="color:#a78bfa;">✦</span> All 45 subjects &amp; every tool unlocked</div>
+                    </div>
 
                     <!-- LIFETIME HERO (full width) -->
                     <div style="position:relative;margin-bottom:10px;">
