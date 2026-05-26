@@ -935,6 +935,7 @@ const ogCodeLimiter = rateLimit({
 
 app.use('/api/auth/forgot-password', forgotPasswordLimiter);
 app.use('/api/auth/resend-verification', forgotPasswordLimiter);
+app.use('/api/auth/verify-code', authLimiter);
 app.use('/api/og-code/redeem', ogCodeLimiter);
 app.use('/api/og-code/complete-setup', authLimiter);
 
@@ -1666,12 +1667,19 @@ function ensureOnboardingFlag(user) {
     }
 }
 
-async function sendVerificationEmail(email, token) {
+async function sendVerificationEmail(email, token, code) {
     if (!emailTransporter) {
         console.error('❌ EMAIL NOT CONFIGURED - Cannot send verification to:', email);
         return false;
     }
     const verifyLink = `${config.frontendUrl}/verify-email.html?token=${token}&email=${encodeURIComponent(email)}`;
+    const codeBlock = code ? `
+                <p style="text-align:center;margin:20px 0 6px;color:#444;font-size:0.95rem;">Or paste this 6-digit code into the open signup tab:</p>
+                <div style="text-align:center;margin:0 0 24px;">
+                    <span style="display:inline-block;background:#f3f0ff;border:1px solid #d8d0ff;color:#3d2fa3;font-family:'SFMono-Regular',Menlo,monospace;font-weight:800;font-size:2rem;letter-spacing:0.45em;padding:14px 22px 14px 28px;border-radius:12px;">${code}</span>
+                </div>
+                <p style="text-align:center;color:#888;font-size:0.8rem;margin:-8px 0 24px;">Code expires in 30 minutes.</p>
+    ` : '';
     const mailOptions = {
         from: `"Study Decoder" <${process.env.EMAIL_USER}>`,
         to: email,
@@ -1680,11 +1688,12 @@ async function sendVerificationEmail(email, token) {
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                 <h2 style="color: #6366f1;">Verify Your Email</h2>
                 <p>Hi,</p>
-                <p>Thanks for signing up to Study Decoder! Please verify your email address to activate your account.</p>
-                <p>Click the button below — this link expires in 24 hours.</p>
+                <p>Thanks for signing up to Study Decoder! Verify your email to activate your account.</p>
                 <div style="text-align: center; margin: 30px 0;">
                     <a href="${verifyLink}" style="background-color: #6366f1; color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; display: inline-block;">Verify Email</a>
                 </div>
+                <p style="text-align:center;color:#888;font-size:0.8rem;margin:-18px 0 18px;">Link valid for 7 days.</p>
+                ${codeBlock}
                 <p>If you didn't create an account, you can safely ignore this email.</p>
                 <p style="color: #666; font-size: 12px; margin-top: 30px;">
                     If the button doesn't work, copy and paste this link:<br>
@@ -1886,10 +1895,13 @@ app.post('/api/auth/register', async (req, res) => {
         const userId = `email:${email.toLowerCase()}`;
         const passwordHash = await hashPassword(password);
         
-        // Generate email verification token (24h expiry)
+        // Generate verify credentials: long-lived link token (7d) + short 6-digit
+        // code (30 min) so the user can complete signup in-tab without inbox bouncing.
         const verifyToken = generateSecureToken();
-        const verifyExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-        
+        const verifyExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+        const verifyCode = String(crypto.randomInt(100000, 1000000));
+        const verifyCodeExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+
         const user = upsertUser(userId, {
             email,
             name,
@@ -1897,7 +1909,9 @@ app.post('/api/auth/register', async (req, res) => {
             provider: 'email',
             emailVerified: false,
             verifyToken,
-            verifyExpiry
+            verifyExpiry,
+            verifyCode,
+            verifyCodeExpiry
         });
         
         // Mark new registration as not onboarded; remember whether they signed
@@ -1914,8 +1928,8 @@ app.post('/api/auth/register', async (req, res) => {
         }
         scheduleSave();
 
-        // Send verification email
-        const emailSent = await sendVerificationEmail(email, verifyToken);
+        // Send verification email (link + 6-digit code)
+        const emailSent = await sendVerificationEmail(email, verifyToken, verifyCode);
         if (!emailSent) {
             console.error(`⚠️ Verification email failed for ${email}`);
         }
@@ -2235,10 +2249,12 @@ app.get('/api/auth/verify-email', async (req, res) => {
             return res.status(410).json({ error: 'Verification link has expired', expired: true });
         }
 
-        // Mark verified and clear token
+        // Mark verified and clear all verify credentials
         user.emailVerified = true;
         delete user.verifyToken;
         delete user.verifyExpiry;
+        delete user.verifyCode;
+        delete user.verifyCodeExpiry;
         upsertUser(user.userId, user);
         scheduleSave();
 
@@ -2247,6 +2263,83 @@ app.get('/api/auth/verify-email', async (req, res) => {
 
     } catch (error) {
         console.error('Verify email error:', error);
+        res.status(500).json({ error: 'Verification failed' });
+    }
+});
+
+/**
+ * POST /api/auth/verify-code - Verify the 6-digit code from the email and
+ * sign the user in in one step. Lets new users finish signup without
+ * leaving the tab they signed up in.
+ */
+app.post('/api/auth/verify-code', async (req, res) => {
+    try {
+        const { email, code } = req.body || {};
+        if (!email || !isValidEmail(email) || !code) {
+            return res.status(400).json({ error: 'Email and code are required' });
+        }
+
+        const user = getUserByEmail(email);
+        if (!user) {
+            return res.status(400).json({ error: 'Invalid code' });
+        }
+        if (user.banned) {
+            return res.status(403).json({ error: 'This account has been suspended.', banned: true });
+        }
+        if (user.emailVerified) {
+            return res.json({ success: true, alreadyVerified: true });
+        }
+        if (!user.verifyCode || !user.verifyCodeExpiry) {
+            return res.status(400).json({ error: 'No active code — request a new one.', needsResend: true });
+        }
+        // Account-level lockout after too many wrong tries to defeat brute force
+        // even if the IP rotates. Resending generates a fresh code and resets this.
+        if ((user.verifyCodeAttempts || 0) >= 5) {
+            return res.status(429).json({ error: 'Too many failed attempts. Tap "Resend email" for a new code.', needsResend: true });
+        }
+        if (new Date() > new Date(user.verifyCodeExpiry)) {
+            return res.status(410).json({ error: 'Code expired — tap "Resend email" for a new one.', needsResend: true });
+        }
+
+        const cleanCode = String(code).replace(/\D/g, '');
+        if (cleanCode !== user.verifyCode) {
+            user.verifyCodeAttempts = (user.verifyCodeAttempts || 0) + 1;
+            upsertUser(user.userId, user);
+            scheduleSave();
+            return res.status(401).json({ error: 'That code didn’t match. Check the email and try again.' });
+        }
+
+        // Code accepted — mark verified, clear all verify credentials, log in.
+        user.emailVerified = true;
+        delete user.verifyToken;
+        delete user.verifyExpiry;
+        delete user.verifyCode;
+        delete user.verifyCodeExpiry;
+        delete user.verifyCodeAttempts;
+        upsertUser(user.userId, user);
+        scheduleSave();
+        ensureOnboardingFlag(user);
+
+        await new Promise((resolve, reject) => req.session.regenerate(err => err ? reject(err) : resolve()));
+        req.session.userId = user.userId;
+
+        console.log(`✅ Email verified via code: ${email}`);
+
+        const role = getUserRole(user.email);
+        res.json({
+            success: true,
+            user: {
+                userId: user.userId,
+                email: user.email,
+                name: user.name,
+                role,
+                plan: user.plan || 'free',
+                signupRole: user.signupRole || null,
+                preferences: user.preferences || {}
+            }
+        });
+    } catch (error) {
+        console.error('Verify-code error:', error);
         res.status(500).json({ error: 'Verification failed' });
     }
 });
@@ -2266,12 +2359,17 @@ app.post('/api/auth/resend-verification', async (req, res) => {
         const user = getUserByEmail(email);
         if (user && !user.emailVerified && user.provider !== 'google') {
             const verifyToken = generateSecureToken();
-            const verifyExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+            const verifyExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+            const verifyCode = String(crypto.randomInt(100000, 1000000));
+            const verifyCodeExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString();
             user.verifyToken = verifyToken;
             user.verifyExpiry = verifyExpiry;
+            user.verifyCode = verifyCode;
+            user.verifyCodeExpiry = verifyCodeExpiry;
+            delete user.verifyCodeAttempts; // fresh code = fresh lockout budget
             upsertUser(user.userId, user);
             scheduleSave();
-            await sendVerificationEmail(email, verifyToken);
+            await sendVerificationEmail(email, verifyToken, verifyCode);
         }
 
         res.json({ success: true, message: 'If an unverified account exists, a verification email has been sent.' });

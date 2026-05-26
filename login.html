@@ -898,6 +898,35 @@
         // ==================== Email verification screen ====================
         let _verifyPoll = null;
         let _verifyResendCooldown = 0;
+        async function submitVerifyCode() {
+            const email = document.getElementById('verifyEmailAddr').textContent;
+            const codeRaw = document.getElementById('verifyCodeInput').value || '';
+            const code = codeRaw.replace(/\D/g, '');
+            const errEl = document.getElementById('verifyCodeError');
+            const btn = document.getElementById('verifyCodeBtn');
+            errEl.textContent = '';
+            if (code.length !== 6) { errEl.textContent = 'Enter the 6-digit code from your email.'; return; }
+            btn.disabled = true; btn.textContent = 'Verifying…';
+            try {
+                const r = await fetch('/api/auth/verify-code', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include', body: JSON.stringify({ email: email, code: code })
+                });
+                const d = await r.json().catch(() => ({}));
+                if (r.ok && d.success) {
+                    if (_verifyPoll) { clearInterval(_verifyPoll); _verifyPoll = null; }
+                    if (window.sdTrack) sdTrack('verify_complete', { method: 'code' });
+                    document.getElementById('verifyStatus').textContent = '✓ Verified! Loading…';
+                    window.location.href = (signupRole === 'teacher') ? '/teacher-pricing.html' : '/dashboard.html';
+                    return;
+                }
+                errEl.textContent = d.error || 'Could not verify. Try again.';
+            } catch (e) {
+                errEl.textContent = 'Network error — try again.';
+            } finally {
+                btn.disabled = false; btn.textContent = 'Verify & continue →';
+            }
+        }
         function showVerifyScreen(email, emailSent) {
             document.getElementById('verifyEmailAddr').textContent = email;
             const warn = document.getElementById('verifySendWarn');
@@ -944,6 +973,9 @@
                 });
                 document.getElementById('verifyStatus').textContent = 'Sent again — check your inbox + spam.';
                 document.getElementById('verifySendWarn').style.display = 'none';
+                // Fresh code → reset the code input and any prior error
+                document.getElementById('verifyCodeInput').value = '';
+                document.getElementById('verifyCodeError').textContent = '';
             } catch (e) {
                 document.getElementById('verifyStatus').textContent = 'Could not resend. Try again in a moment.';
             }
@@ -965,12 +997,18 @@
             <p style="color:rgba(255,255,255,0.6);font-size:0.95rem;margin-bottom:6px;">We sent a verification link to</p>
             <p style="color:#a59fff;font-weight:700;font-size:1rem;margin-bottom:16px;"><span id="verifyEmailAddr"></span></p>
             <div id="verifySendWarn" style="display:none;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.35);color:#fcd34d;border-radius:10px;padding:10px 14px;font-size:0.85rem;margin-bottom:14px;">We had trouble sending it just now — tap resend below.</div>
-            <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;margin-bottom:18px;">Click the link and this page will continue automatically. Can't find it? Check your spam folder.</p>
+            <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;margin-bottom:14px;">Click the link in the email, or enter the 6-digit code below — whichever's faster.</p>
+            <form id="verifyCodeForm" onsubmit="event.preventDefault();submitVerifyCode();" style="margin:0 0 14px;">
+                <input id="verifyCodeInput" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.18);color:#fff;border-radius:10px;padding:13px 14px;font-size:1.4rem;letter-spacing:0.3em;text-align:center;width:100%;max-width:240px;font-family:'SFMono-Regular',Menlo,monospace;font-weight:700;margin-bottom:10px;" />
+                <br/>
+                <button id="verifyCodeBtn" type="submit" style="background:#6C63FF;color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;">Verify &amp; continue →</button>
+                <p id="verifyCodeError" style="font-size:0.82rem;color:#f87171;min-height:1.1em;margin:8px 0 0;"></p>
+            </form>
             <div style="display:flex;gap:10px;justify-content:center;margin-bottom:14px;flex-wrap:wrap;">
-                <a href="https://mail.google.com" target="_blank" rel="noopener" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;padding:10px 16px;border-radius:10px;font-size:0.85rem;font-weight:600;">Open Gmail</a>
-                <a href="https://outlook.live.com/mail" target="_blank" rel="noopener" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;padding:10px 16px;border-radius:10px;font-size:0.85rem;font-weight:600;">Open Outlook</a>
+                <a href="https://mail.google.com" target="_blank" rel="noopener" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;padding:8px 14px;border-radius:10px;font-size:0.8rem;font-weight:600;">Open Gmail</a>
+                <a href="https://outlook.live.com/mail" target="_blank" rel="noopener" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;text-decoration:none;padding:8px 14px;border-radius:10px;font-size:0.8rem;font-weight:600;">Open Outlook</a>
             </div>
-            <button id="verifyResendBtn" onclick="resendVerification()" style="background:#6C63FF;color:#fff;border:none;border-radius:50px;padding:12px 26px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px;">Resend email</button>
+            <button id="verifyResendBtn" onclick="resendVerification()" style="background:none;border:1px solid rgba(255,255,255,0.18);color:#fff;border-radius:50px;padding:9px 22px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:10px;">Resend email</button>
             <p id="verifyStatus" style="font-size:0.82rem;color:#10b981;min-height:1.1em;margin-bottom:8px;"></p>
             <button onclick="switchTab('signin');document.getElementById('verifyOverlay').style.display='none';if(_verifyPoll){clearInterval(_verifyPoll);_verifyPoll=null;}" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:0.82rem;cursor:pointer;text-decoration:underline;font-family:inherit;">Wrong email? Go back</button>
         </div>
