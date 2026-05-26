@@ -1986,10 +1986,16 @@
                         <div class="meta"><b>Chat Tutor</b><span>Online · HSC AI</span></div>
                     </div>
                     <div class="h2c-body" id="sdHero2Body">
-                        <div class="h2c-ai">
+                        <div class="h2c-ai" id="sdHero2Greet">
                             <div class="av">🤖</div>
-                            <div class="bubble">Hey 👋 I'm your HSC AI tutor. Ask me anything — pick the question below to see what I can do.</div>
+                            <div class="bubble">Hey 👋 I'm your HSC AI tutor. Tap a question to see how I answer — no signup needed.</div>
                         </div>
+                    </div>
+                    <div class="h2c-chips" id="sdHero2Chips" style="display:flex;gap:6px;padding:8px 12px 0;flex-wrap:wrap;justify-content:center;">
+                        <button type="button" class="h2c-chip" data-key="chat" data-prompt="Explain enzyme inhibition — I have a test tomorrow" style="background:rgba(108,99,255,0.14);border:1px solid rgba(108,99,255,0.4);color:#cdc6ff;border-radius:50px;padding:7px 13px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">🧪 Explain enzyme inhibition</button>
+                        <button type="button" class="h2c-chip" data-key="mark" data-prompt="Mark my Mod History paragraph on Meiji Japan" style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.4);color:#bbf7d0;border-radius:50px;padding:7px 13px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">📝 Mark my essay paragraph</button>
+                        <button type="button" class="h2c-chip" data-key="qp" data-prompt="Make me a 5-question Chemistry quiz on Module 5" style="background:rgba(244,114,182,0.12);border:1px solid rgba(244,114,182,0.4);color:#fbcfe8;border-radius:50px;padding:7px 13px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">⚡ Quick 5-Q quiz</button>
+                        <button type="button" class="h2c-chip" data-key="syl" data-prompt="Decode this dot point: innovation in business operations" style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.4);color:#fde68a;border-radius:50px;padding:7px 13px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">📘 Decode a dot point</button>
                     </div>
                     <div class="h2c-input">
                         <div class="typed" id="sdHero2Typed"></div>
@@ -4027,6 +4033,8 @@
           typed.classList.add('is-typing');
           var i = 0;
           (function tick() {
+            // If the user has clicked a chip, hand off the input and stop.
+            if (_heroDemoRunning) { typed.classList.remove('is-typing'); return; }
             typed.textContent = msg.slice(0, i++);
             if (i <= msg.length) setTimeout(tick, 38);
             else {
@@ -4144,40 +4152,71 @@
         });
       }
 
-      // Hero send button (the chatbox inside the hero)
-      window.sdHero2Submit = function () {
+      // Hero send button + chip handlers (the chatbox inside the hero)
+      var _heroDemoRunning = false;
+      function _heroReset() {
+        var body = document.getElementById('sdHero2Body');
+        if (!body) return;
+        // Keep the initial greeting bubble; remove anything appended after it.
+        var greet = document.getElementById('sdHero2Greet');
+        while (body.lastChild && body.lastChild !== greet) body.removeChild(body.lastChild);
+      }
+      function _heroRun(key, prompt) {
+        if (_heroDemoRunning) return;
         var body = document.getElementById('sdHero2Body');
         var typed = document.getElementById('sdHero2Typed');
         var send = document.getElementById('sdHero2Send');
         if (!body || !typed) return;
-        var msg = typed.textContent || "Explain enzyme inhibition — I have a test tomorrow";
-        // Avoid duplicate sends
-        if (body.querySelector('.h2c-user-sent')) return;
-        var u = document.createElement('div');
-        u.className = 'h2c-user h2c-user-sent';
-        u.textContent = msg;
-        body.appendChild(u);
+        _heroDemoRunning = true;
+        _heroReset();
+        var html = CANNED[key] || CANNED.chat;
+        var msg = prompt || typed.textContent || "Explain enzyme inhibition — I have a test tomorrow";
+        // Type the user's prompt into the input, then "send" it
         typed.textContent = '';
-        send.classList.remove('is-pulse');
-        // Type the AI response
-        var ai = document.createElement('div');
-        ai.className = 'h2c-ai';
-        ai.innerHTML = '<div class="av">🤖</div><div class="bubble"><span class="sd-typed-out"></span><span class="sd-caret"></span></div>';
-        body.appendChild(ai);
-        var span = ai.querySelector('.sd-typed-out');
-        var html = CANNED.chat;
-        var temp = document.createElement('div'); temp.innerHTML = html;
-        var plain = temp.textContent || '';
-        var i = 0;
-        (function tick() {
-          span.textContent = plain.slice(0, i++);
-          body.scrollTop = body.scrollHeight;
-          if (i <= plain.length) setTimeout(tick, 14);
-          else {
-            ai.querySelector('.bubble').innerHTML = html + ' <a href="login.html" style="color:#a78bfa;text-decoration:underline;font-weight:700;">Sign up to chat for real →</a>';
-          }
+        typed.classList.add('is-typing');
+        var p = 0;
+        (function typePrompt() {
+          typed.textContent = msg.slice(0, p++);
+          if (p <= msg.length) return setTimeout(typePrompt, 22);
+          typed.classList.remove('is-typing');
+          send.classList.add('is-pulse');
+          // Push user bubble + clear input
+          setTimeout(function () {
+            send.classList.remove('is-pulse');
+            var u = document.createElement('div');
+            u.className = 'h2c-user h2c-user-sent';
+            u.textContent = msg;
+            body.appendChild(u);
+            typed.textContent = '';
+            // Stream AI response
+            var ai = document.createElement('div');
+            ai.className = 'h2c-ai';
+            ai.innerHTML = '<div class="av">🤖</div><div class="bubble"><span class="sd-typed-out"></span><span class="sd-caret"></span></div>';
+            body.appendChild(ai);
+            var span = ai.querySelector('.sd-typed-out');
+            var temp = document.createElement('div'); temp.innerHTML = html;
+            var plain = temp.textContent || '';
+            var i = 0;
+            (function tick() {
+              span.textContent = plain.slice(0, i++);
+              body.scrollTop = body.scrollHeight;
+              if (i <= plain.length) setTimeout(tick, 14);
+              else {
+                ai.querySelector('.bubble').innerHTML = html + ' <a href="login.html?signup=1" style="color:#a78bfa;text-decoration:underline;font-weight:700;">Try this on your own subject — free →</a>';
+                _heroDemoRunning = false;
+              }
+            })();
+          }, 220);
         })();
-      };
+      }
+      window.sdHero2Submit = function () { _heroRun('chat'); };
+      function initHeroChips() {
+        document.querySelectorAll('#sdHero2Chips .h2c-chip').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            _heroRun(btn.getAttribute('data-key'), btn.getAttribute('data-prompt'));
+          });
+        });
+      }
 
       // Auto-stamp the comparison-table year
       function initCmpYear() {
@@ -4191,6 +4230,7 @@
         initHeroSphere();
         initTiles();
         initCannedDemos();
+        initHeroChips();
         initCmpYear();
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
