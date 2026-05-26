@@ -197,6 +197,22 @@ const AI_QUALITY_TIERS = {
         temperature: 0.7,
         model: 'gpt-5-mini'   // Premium subscribers — real GPT-5
     },
+    // Monthly student tiers (post-founding). Quality climbs starter→plus→pro.
+    starter: {
+        maxTokens: 4000,
+        temperature: 0.7,
+        model: 'gpt-5-mini'   // GPT-5 quality, shorter answers
+    },
+    plus: {
+        maxTokens: 8000,
+        temperature: 0.7,
+        model: 'gpt-5-mini'   // GPT-5, longer step-by-step answers
+    },
+    pro: {
+        maxTokens: 12000,
+        temperature: 0.7,
+        model: 'gpt-5.1'      // flagship — deepest, exam-grade reasoning
+    },
     free: {
         maxTokens: 1500,      // Limited output
         temperature: 0.5,     // Less creative
@@ -204,14 +220,21 @@ const AI_QUALITY_TIERS = {
     }
 };
 
-// Get AI settings based on user role
+// Get AI settings based on user role / subscription plan.
+// Role-based grants (owner/lifetime/og) win first; then the user's paid plan
+// (starter/plus/pro) selects its quality tier; any other subscriber falls back
+// to the generic `paid` tier.
 function getAISettings(user) {
     if (!user) return AI_QUALITY_TIERS.free;
     const role = getUserRole(user.email);
     if (role === 'owner') return AI_QUALITY_TIERS.owner;
     if (role === 'lifetime') return AI_QUALITY_TIERS.lifetime;
     if (role === 'og_tester') return AI_QUALITY_TIERS.og_tester;
-    if (user.subscribed === true) return AI_QUALITY_TIERS.paid;
+    if (user.subscribed === true) {
+        const plan = STUDENT_PLANS[user.plan];
+        if (plan && AI_QUALITY_TIERS[plan.aiTier]) return AI_QUALITY_TIERS[plan.aiTier];
+        return AI_QUALITY_TIERS.paid;
+    }
     return AI_QUALITY_TIERS.free;
 }
 
@@ -4717,23 +4740,35 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
         const { plan } = req.body;
         const isTeacherPlan = !!TEACHER_PLANS[plan];
         const isClassroomPlan = CLASSROOM_PLANS.has(plan);
-        if (!isTeacherPlan && !isClassroomPlan && !['monthly', 'yearly', 'lifetime'].includes(plan)) {
+        const isStudentSub = isStudentSubPlan(plan);
+        if (!isTeacherPlan && !isClassroomPlan && !isStudentSub && plan !== 'lifetime') {
             return res.status(400).json({ error: 'Invalid plan' });
         }
 
-        // Block monthly/yearly subscriptions while founding lifetime tier is
-        // still open. Subscriptions cannibalise the founding offer (cheaper
+        // Block the monthly student tiers while the founding lifetime offer is
+        // still open. Subscriptions cannibalise the founding offer (a cheaper
         // monthly anchor pulls users away from the higher-LTV one-time buy).
-        // Once all 1000 founding spots are claimed, both plans unlock.
-        if (plan === 'monthly' || plan === 'yearly') {
+        // The three tiers (starter/plus/pro) unlock only once all founding
+        // lifetime spots are claimed.
+        if (isStudentSub) {
             const claimed = countLifetimeClaimed();
-            if (claimed < 1000) {
+            if (isFoundingActive(claimed)) {
                 const tier = getCurrentFoundingTier(claimed);
                 return res.status(409).json({
-                    error: `Subscription plans are unavailable while the founding lifetime offer is open. Choose Lifetime (${tier.priceLabel} one-time) or Day Pass.`,
+                    error: `Monthly plans unlock once the founding lifetime offer sells out. For now, grab Lifetime access (${tier.priceLabel} one-time).`,
                     code: 'FOUNDING_TIER_ACTIVE'
                 });
             }
+        }
+
+        // Lifetime is a strictly capped founding offer. Once all FOUNDING_FINAL_CAP
+        // spots are sold it closes for good — block further lifetime purchases so
+        // the forever-usage liability stays bounded.
+        if (plan === 'lifetime' && !isFoundingActive()) {
+            return res.status(409).json({
+                error: 'The founding lifetime offer has sold out. Choose a monthly plan instead.',
+                code: 'FOUNDING_CLOSED'
+            });
         }
 
         const user = req.user;
@@ -4808,16 +4843,22 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
                 },
                 quantity: 1
             }];
-        } else if (plan === 'yearly') {
-            sessionParams.mode = 'payment';
+        } else if (isStudentSub) {
+            // Monthly student tier — starter / plus / pro. Differentiated by AI
+            // quality + daily usage; details in STUDENT_PLANS.
+            const meta = STUDENT_PLANS[plan];
+            sessionParams.mode = 'subscription';
             sessionParams.line_items = [{
                 price_data: {
                     currency: 'aud',
                     product_data: {
-                        name: 'Study Decoder Premium — Yearly Access',
-                        description: '12 months of unlimited access'
+                        name: `Study Decoder Premium — ${meta.label}`,
+                        description: meta.dailyUses === null
+                            ? 'Unlimited daily uses + flagship AI'
+                            : `${meta.dailyUses} AI uses/day`
                     },
-                    unit_amount: 5000 // $50.00 AUD
+                    unit_amount: meta.amount,
+                    recurring: { interval: 'month' }
                 },
                 quantity: 1
             }];
@@ -4871,22 +4912,8 @@ app.post('/api/create-checkout-session', requireAuth, async (req, res) => {
                 },
                 quantity: 1
             }];
-        } else {
-            // Monthly recurring subscription
-            sessionParams.mode = 'subscription';
-            sessionParams.line_items = [{
-                price_data: {
-                    currency: 'aud',
-                    product_data: {
-                        name: 'Study Decoder Premium — Monthly',
-                    },
-                    unit_amount: 500, // $5.00 AUD
-                    recurring: { interval: 'month' }
-                },
-                quantity: 1
-            }];
         }
-        
+
         const session = await stripe.checkout.sessions.create(sessionParams);
         
         console.log(`💳 Checkout session created for ${user.email} - plan: ${plan}`);
@@ -5470,16 +5497,25 @@ async function getOrCreateStripeCustomer(user) {
     return customer.id;
 }
 
+// Founding lifetime ladder — cheap, student-affordable, capped at 200 buyers.
+// Price climbs gently with cumulative sales; once 200 lifetime spots are sold
+// the offer closes for good and the app switches to monthly subscriptions.
+// Each tier's `cap` is the cumulative-sold threshold at which it ends, so
+// `spotsLeft = cap - claimed` shows how many remain at the current price.
+// With expandWhenLeftLEQ = 0, getCurrentFoundingTier advances exactly when
+// claimed reaches a tier's cap.
 const FOUNDING_TIERS = [
-    { cap: 50,   expandWhenLeftLEQ: 40,  priceCents: 1499, priceLabel: '$14.99' },
-    { cap: 125,  expandWhenLeftLEQ: 60,  priceCents: 1799, priceLabel: '$17.99' },
-    { cap: 225,  expandWhenLeftLEQ: 75,  priceCents: 1999, priceLabel: '$19.99' },
-    { cap: 350,  expandWhenLeftLEQ: 90,  priceCents: 2299, priceLabel: '$22.99' },
-    { cap: 500,  expandWhenLeftLEQ: 100, priceCents: 2599, priceLabel: '$25.99' },
-    { cap: 650,  expandWhenLeftLEQ: 110, priceCents: 2899, priceLabel: '$28.99' },
-    { cap: 800,  expandWhenLeftLEQ: 120, priceCents: 3199, priceLabel: '$31.99' },
-    { cap: 1000, priceCents: 3750, priceLabel: '$37.50' } // final tier
+    { cap: 25,  expandWhenLeftLEQ: 0, priceCents: 1900, priceLabel: '$19' },
+    { cap: 50,  expandWhenLeftLEQ: 0, priceCents: 2100, priceLabel: '$21' },
+    { cap: 90,  expandWhenLeftLEQ: 0, priceCents: 2300, priceLabel: '$23' },
+    { cap: 130, expandWhenLeftLEQ: 0, priceCents: 2500, priceLabel: '$25' },
+    { cap: 170, expandWhenLeftLEQ: 0, priceCents: 2700, priceLabel: '$27' },
+    { cap: 200, priceCents: 2900, priceLabel: '$29' } // final tier — lifetime closes at 200
 ];
+
+// Total founding lifetime spots that will ever be sold. After this, lifetime is
+// permanently closed and only the monthly tiers are offered.
+const FOUNDING_FINAL_CAP = FOUNDING_TIERS[FOUNDING_TIERS.length - 1].cap;
 
 function getCurrentFoundingTier(claimed) {
     for (let i = 0; i < FOUNDING_TIERS.length - 1; i++) {
@@ -5492,6 +5528,54 @@ function getCurrentFoundingTier(claimed) {
 
 function getFoundingCap(claimed) {
     return getCurrentFoundingTier(claimed).cap;
+}
+
+// Single source of truth for "is the founding lifetime offer still open?".
+// Once FOUNDING_FINAL_CAP lifetime spots are sold, this returns false and the
+// app exposes the three monthly tiers instead.
+function isFoundingActive(claimed) {
+    if (typeof claimed !== 'number') claimed = countLifetimeClaimed();
+    return claimed < FOUNDING_FINAL_CAP;
+}
+
+// ==================== MONTHLY STUDENT TIERS ====================
+// Three subscription tiers offered after the founding lifetime offer closes.
+// Differentiated by AI quality (model + answer depth) and usage volume, all
+// well under a ChatGPT Plus subscription (~$30 AUD/mo). Every paid tier keeps
+// access to every tool — we differentiate on quality + volume, not by locking
+// tools away. `dailyUses: null` means unlimited (fair-use). `aiTier` keys into
+// AI_QUALITY_TIERS for model/maxTokens. `specialLimits` overrides the free
+// per-tool caps (null = uncapped).
+const STUDENT_PLANS = {
+    starter: {
+        label: 'Starter',
+        amount: 499,                 // $4.99 AUD / month
+        aiTier: 'starter',
+        dailyUses: 50,
+        specialLimits: { worksheet: 5, 'notes-transcriber': 5, 'learn-irl': 10, flashcards: 20, games: 20 },
+        uploads: 'basic'
+    },
+    plus: {
+        label: 'Plus',
+        amount: 999,                 // $9.99 AUD / month
+        aiTier: 'plus',
+        dailyUses: 200,
+        specialLimits: null,         // uncapped per-tool
+        uploads: 'full'
+    },
+    pro: {
+        label: 'Pro',
+        amount: 1499,                // $14.99 AUD / month
+        aiTier: 'pro',
+        dailyUses: null,             // unlimited (fair-use)
+        specialLimits: null,
+        uploads: 'full',
+        earlyAccess: true
+    }
+};
+
+function isStudentSubPlan(plan) {
+    return Object.prototype.hasOwnProperty.call(STUDENT_PLANS, plan);
 }
 
 /**
@@ -5510,7 +5594,7 @@ const CLASSROOM_MONTHLY_PRICE_CENTS = 300; // $3.00 AUD
 function getClassroomPricing() {
     const claimed = countLifetimeClaimed();
     const tier = getCurrentFoundingTier(claimed);
-    const foundingActive = claimed < 1000;
+    const foundingActive = isFoundingActive(claimed);
     const lifeCents = Math.round(tier.priceCents * (1 - CLASSROOM_LIFETIME_DISCOUNT));
     const lifeLabel = '$' + (lifeCents / 100).toFixed(2);
     return {
@@ -5542,13 +5626,23 @@ app.get('/api/spots-left', (req, res) => {
     const claimed = countLifetimeClaimed();
     const tier = getCurrentFoundingTier(claimed);
     const spotsLeft = Math.max(0, tier.cap - claimed);
+    const foundingActive = isFoundingActive(claimed);
     res.set('Cache-Control', 'public, max-age=60');
     res.json({
         total: tier.cap,
         claimed,
         spotsLeft,
+        foundingActive,
         lifetimePriceCents: tier.priceCents,
-        lifetimePriceLabel: tier.priceLabel
+        lifetimePriceLabel: tier.priceLabel,
+        // Monthly tiers the UI should show once the founding offer closes.
+        monthlyTiers: Object.entries(STUDENT_PLANS).map(([id, p]) => ({
+            id,
+            label: p.label,
+            priceCents: p.amount,
+            priceLabel: '$' + (p.amount / 100).toFixed(2),
+            dailyUses: p.dailyUses
+        }))
     });
 });
 

@@ -95,14 +95,12 @@ window.Upsell = (function () {
      */
     function renderModal(container, botType, mode, onUpgrade, onRemind) {
         const msg = get(botType, mode);
-        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
         container.innerHTML = `
             <div style="background:#16202a;border:1px solid #2f3336;border-radius:20px;padding:32px;max-width:440px;width:92%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
                 <div style="font-size:2.5rem;margin-bottom:12px;">${msg.emoji}</div>
                 <h2 style="color:#e7e9ea;font-size:1.3rem;font-weight:700;margin-bottom:10px;font-family:inherit;">${msg.headline}</h2>
                 <p style="color:#71767b;font-size:0.95rem;line-height:1.65;margin-bottom:24px;">${msg.body}</p>
                 <button id="upsellUpgradeBtn" style="display:block;width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#6C63FF,#8b5cf6);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px;font-family:inherit;">${msg.ctaLabel}</button>
-                <button id="upsellDayPassBtn" style="display:block;width:100%;padding:12px;border:1px solid rgba(251,191,36,0.35);border-radius:12px;background:rgba(251,191,36,0.07);color:#fbbf24;font-size:0.92rem;font-weight:600;cursor:pointer;margin-bottom:10px;font-family:inherit;">⚡ Day Pass — $1.99 for 24 hours</button>
                 <a id="upsellTeacherBtn" href="/teacher-pricing.html" style="display:block;width:100%;padding:12px;border:1px solid rgba(34,197,94,0.35);border-radius:12px;background:rgba(34,197,94,0.07);color:#4ade80;font-size:0.92rem;font-weight:600;cursor:pointer;margin-bottom:10px;font-family:inherit;text-decoration:none;">🎓 Are you a teacher? Get the classroom plan →</a>
                 <div style="display:flex;gap:8px;justify-content:center;margin-top:6px;">
                     <button id="upsellRemindBtn" style="background:none;border:none;color:#4f8cff;font-size:0.85rem;cursor:pointer;font-family:inherit;padding:6px 12px;border-radius:8px;">🔔 Remind me tomorrow</button>
@@ -112,26 +110,6 @@ window.Upsell = (function () {
         `;
 
         container.querySelector('#upsellUpgradeBtn').onclick = onUpgrade;
-
-        const dayPassBtn = container.querySelector('#upsellDayPassBtn');
-        dayPassBtn.onclick = async () => {
-            dayPassBtn.textContent = '⏳ Redirecting…';
-            dayPassBtn.disabled = true;
-            try {
-                const r = await fetch(API_BASE + '/api/create-daypass-session', { method: 'POST', credentials: 'include' });
-                const d = await r.json();
-                if (d.alreadySubscribed) {
-                    dayPassBtn.textContent = '✓ You already have full access';
-                } else if (d.url) {
-                    window.location.href = d.url;
-                } else {
-                    throw new Error(d.error || 'Unknown error');
-                }
-            } catch (e) {
-                dayPassBtn.textContent = '⚡ Day Pass — $1.99 for 24 hours';
-                dayPassBtn.disabled = false;
-            }
-        };
 
         container.querySelector('#upsellRemindBtn').onclick = () => {
             // Flag for tomorrow's visit
@@ -261,26 +239,20 @@ window.Upsell = (function () {
                         <div><span style="color:#a78bfa;">✦</span> All 45 subjects &amp; every tool unlocked</div>
                     </div>
 
-                    <!-- LIFETIME HERO (full width) -->
-                    <div style="position:relative;margin-bottom:10px;">
+                    <!-- LIFETIME HERO (full width) — shown only while founding is open -->
+                    <div id="sdUMLifetimeWrap" style="position:relative;margin-bottom:14px;">
                         <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;font-weight:800;font-size:0.68rem;padding:3px 14px;border-radius:20px;letter-spacing:0.5px;">
                             ⭐ FOUNDING OFFER — LIMITED RELEASE &nbsp;·&nbsp; <span id="sdUMSpotsLeft">?? spots</span> left
                         </div>
                         <button id="sdUMLifetimeBtn" style="width:100%;padding:28px 20px 22px;background:linear-gradient(135deg,#4f3dc4,#7c3aed);color:#fff;border:2px solid rgba(167,139,250,0.4);border-radius:16px;display:flex;flex-direction:column;align-items:center;cursor:pointer;font-family:inherit;box-shadow:0 6px 30px rgba(102,126,234,0.4);transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 40px rgba(102,126,234,0.55)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 6px 30px rgba(102,126,234,0.4)'">
                             <span style="font-size:0.78rem;opacity:0.7;letter-spacing:0.5px;text-transform:uppercase;">One-Time Payment &nbsp;&middot;&nbsp; Lifetime Access</span>
-                            <span style="font-size:2.8rem;font-weight:900;margin:6px 0 0;line-height:1;" id="sdUMLifetimePrice">$37.50</span>
-                            <span style="font-size:0.8rem;opacity:0.55;text-decoration:line-through;margin-bottom:6px;">$60/yr if you paid monthly</span>
-                            <span style="background:rgba(255,255,255,0.12);border-radius:8px;padding:5px 14px;font-size:0.8rem;font-weight:600;">Pay once. Use through all of Year 11 &amp; 12. ✓</span>
+                            <span style="font-size:2.8rem;font-weight:900;margin:6px 0 0;line-height:1;" id="sdUMLifetimePrice">$29</span>
+                            <span style="background:rgba(255,255,255,0.12);border-radius:8px;padding:5px 14px;font-size:0.8rem;font-weight:600;margin-top:8px;">Pay once. Use through all of Year 11 &amp; 12. ✓</span>
                         </button>
                     </div>
 
-                    <!-- MONTHLY FOOTNOTE (not a card) -->
-                    <p style="color:rgba(255,255,255,0.45);font-size:0.82rem;margin-bottom:14px;">
-                        Not sure yet? <button id="sdUMMonthlyBtn" style="background:none;border:none;color:#a59fff;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">$5/month</button> — cancel anytime.
-                    </p>
-
-                    <!-- DAY PASS -->
-                    <button id="sdUMDayPassBtn" style="display:block;width:100%;background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.25);border-radius:10px;color:#fbbf24;padding:10px 20px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:14px;">⚡ Just need today? Day Pass — $1.99</button>
+                    <!-- MONTHLY TIERS — populated from /api/spots-left once founding closes -->
+                    <div id="sdUMMonthlyTiers" style="display:none;"></div>
 
                     <div id="sdUMPollingStatus" style="display:none;text-align:center;margin-bottom:10px;padding:10px;background:rgba(22,163,74,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;color:#22c55e;font-size:0.85rem;">⏳ Waiting for payment... Will activate automatically.</div>
                     <p id="sdUMManualHint" style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin-bottom:10px;display:none;">Not detected? <a href="#" id="sdUMManualCheck" style="color:#6C63FF;">Check manually</a></p>
@@ -289,24 +261,48 @@ window.Upsell = (function () {
             `;
             document.body.appendChild(overlay);
 
-            // Fetch and display live spot count + current lifetime price
+            // Fetch live offer state: while founding is open, show the lifetime
+            // hero; once it closes, hide lifetime and render the monthly tiers.
             fetch(API_BASE + '/api/spots-left')
                 .then(r => r.json())
                 .then(d => {
+                    if (d.foundingActive === false) {
+                        renderMonthlyTiers(d.monthlyTiers || []);
+                        return;
+                    }
                     const el = document.getElementById('sdUMSpotsLeft');
                     if (el && d.spotsLeft !== undefined) {
                         el.textContent = d.spotsLeft + ' spot' + (d.spotsLeft !== 1 ? 's' : '');
-                        // If sold out, hide lifetime and swap hero to sprint
-                        if (d.spotsLeft <= 0) {
-                            const lifetimeBtn = document.getElementById('sdUMLifetimeBtn');
-                            if (lifetimeBtn) lifetimeBtn.closest('div').style.display = 'none';
-                        }
                     }
                     if (d.lifetimePriceLabel) {
                         const p = document.getElementById('sdUMLifetimePrice');
                         if (p) p.textContent = d.lifetimePriceLabel;
                     }
                 }).catch(() => {});
+
+            // Render the three monthly tier cards in place of the lifetime hero.
+            function renderMonthlyTiers(tiers) {
+                const wrap = document.getElementById('sdUMLifetimeWrap');
+                if (wrap) wrap.style.display = 'none';
+                const box = document.getElementById('sdUMMonthlyTiers');
+                if (!box || !tiers.length) return;
+                box.style.display = 'block';
+                box.innerHTML = tiers.map((t, i) => {
+                    const featured = t.id === 'plus';
+                    const uses = t.dailyUses === null ? 'Unlimited uses' : t.dailyUses + ' uses/day';
+                    return '<button data-plan="' + t.id + '" style="width:100%;text-align:left;padding:14px 16px;margin-bottom:8px;border-radius:12px;cursor:pointer;font-family:inherit;'
+                        + 'border:' + (featured ? '2px solid rgba(167,139,250,0.6)' : '1px solid rgba(255,255,255,0.12)') + ';'
+                        + 'background:' + (featured ? 'rgba(124,58,237,0.18)' : 'rgba(255,255,255,0.03)') + ';color:#fff;display:flex;justify-content:space-between;align-items:center;">'
+                        + '<span><strong style="font-size:0.98rem;">' + t.label + '</strong>'
+                        + (featured ? ' <span style="font-size:0.62rem;background:#7c3aed;border-radius:6px;padding:2px 6px;vertical-align:middle;">POPULAR</span>' : '')
+                        + '<br><span style="font-size:0.78rem;color:rgba(255,255,255,0.55);">' + uses + '</span></span>'
+                        + '<span style="font-size:1.15rem;font-weight:800;">' + t.priceLabel + '<span style="font-size:0.72rem;font-weight:500;color:rgba(255,255,255,0.5);">/mo</span></span>'
+                        + '</button>';
+                }).join('');
+                box.querySelectorAll('button[data-plan]').forEach(b => {
+                    b.onclick = () => checkout(b.getAttribute('data-plan'));
+                });
+            }
 
             let sdPollInterval = null;
             const startPoll = () => {
@@ -344,18 +340,6 @@ window.Upsell = (function () {
                 } catch(e) { alert('Error starting checkout. Please try again.'); }
             };
             document.getElementById('sdUMLifetimeBtn').onclick = () => checkout('lifetime');
-            document.getElementById('sdUMMonthlyBtn').onclick = () => checkout('monthly');
-            document.getElementById('sdUMDayPassBtn').onclick = async () => {
-                const btn = document.getElementById('sdUMDayPassBtn');
-                btn.textContent = '⏳ Redirecting…'; btn.disabled = true;
-                try {
-                    const r = await fetch(API_BASE + '/api/create-daypass-session', { method: 'POST', credentials: 'include' });
-                    const d = await r.json();
-                    if (d.url) window.location.href = d.url;
-                    else if (d.error === 'Not authenticated') window.location.href = '/login.html';
-                    else { btn.textContent = '⚡ Just need today? Day Pass — $1.99'; btn.disabled = false; }
-                } catch(e) { btn.textContent = '⚡ Just need today? Day Pass — $1.99'; btn.disabled = false; }
-            };
             document.getElementById('sdUMManualCheck').onclick = async (e) => {
                 e.preventDefault();
                 try {

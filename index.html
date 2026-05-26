@@ -9,7 +9,7 @@
     <script>
     // Server-injected (or null on first dev load); used to paint the right
     // founding-tier price and remaining spots on the very first frame so
-    // visitors don't see a "$37.50 / ?? spots" placeholder flash.
+    // visitors don't see a "$29 / ?? spots" placeholder flash.
     window._sdLivePricing = null;
     window._applyLivePricing = function (d) {
         d = d || window._sdLivePricing;
@@ -23,17 +23,15 @@
                 var b = document.getElementById('saleBanner');
                 if (b && /spotsLeft/.test(b.innerHTML)) b.style.display = 'none';
             }
-            // Hide monthly subscription option entirely while founding lifetime
-            // tier still has spots — too cheap a comparison ($5/mo vs $37.50
-            // lifetime) cannibalises lifetime conversions. Re-enable once the
-            // 1000 founding spots are gone.
-            var foundingActive = d.spotsLeft > 0;
+            // Hide the monthly subscription UI entirely while the founding
+            // lifetime offer is still open — a cheap monthly anchor cannibalises
+            // the higher-LTV one-time lifetime buy. Re-enabled automatically once
+            // all founding spots are sold (server reports foundingActive).
+            var foundingActive = (typeof d.foundingActive === 'boolean') ? d.foundingActive : (d.spotsLeft > 0);
             var premium = document.getElementById('premiumCard');
             var toggle = document.getElementById('pricingPeriodToggle');
-            var footnote = document.getElementById('upgradeMonthlyFootnote');
             if (premium) premium.style.display = foundingActive ? 'none' : '';
             if (toggle) toggle.style.display = foundingActive ? 'none' : 'inline-flex';
-            if (footnote) footnote.style.display = foundingActive ? 'none' : '';
         }
         if (d.lifetimePriceLabel) {
             var p1 = document.getElementById('pricingLifetimePrice');
@@ -2396,7 +2394,7 @@
                             </tr>
                             <tr class="sd-cmp-price">
                                 <td>Entry price<small>What you'd pay to actually use it daily.</small></td>
-                                <td class="sd-cmp-us"><b>Free</b><small>or <b class="sd-lifetime-price-inline">$37.50</b> lifetime (founding)</small></td>
+                                <td class="sd-cmp-us"><b>Free</b><small>or <b class="sd-lifetime-price-inline">$29</b> lifetime (founding)</small></td>
                                 <td><b>$20/mo</b><small>USD · generic GPT, no HSC</small></td>
                                 <td><b>$15-25/mo</b><small>AUD · per subject tiers</small></td>
                                 <td><b>Free notes</b><small>Tutors $40-80/hr</small></td>
@@ -2460,7 +2458,7 @@
                 <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap;" id="pricingFoundingBadge">Founding Members Only</div>
                 <div style="font-size:0.8rem;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem;">Lifetime</div>
                 <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:2px;">
-                    <span style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;" id="pricingLifetimePrice">$37.50</span>
+                    <span style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;" id="pricingLifetimePrice">$29</span>
                 </div>
                 <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:4px;"><s style="color:#666;">$75/yr normally</s> — pay once, use forever</div>
                 <div style="font-size:0.8rem;color:#f59e0b;font-weight:600;margin-bottom:1.2rem;">⚡ Only <span id="pricingSpotsLeft">??</span> spots left</div>
@@ -2648,15 +2646,12 @@
                 </div>
                 <button id="upgradeYearlyBtn" onclick="createCheckout('lifetime')" style="width:100%;padding:28px 20px 22px;background:linear-gradient(135deg,#4f3dc4,#7c3aed);color:#fff;border:2px solid rgba(167,139,250,0.4);border-radius:16px;display:flex;flex-direction:column;align-items:center;cursor:pointer;font-family:inherit;box-shadow:0 6px 30px rgba(102,126,234,0.4);transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 40px rgba(102,126,234,0.55)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 6px 30px rgba(102,126,234,0.4)'">
                     <span style="font-size:0.78rem;opacity:0.7;letter-spacing:0.5px;text-transform:uppercase;">One-Time Payment &nbsp;&middot;&nbsp; Lifetime Access</span>
-                    <span style="font-size:2.8rem;font-weight:900;margin:6px 0 0;line-height:1;" id="upgradeModalLifetimePrice">$37.50</span>
-                    <span style="font-size:0.8rem;opacity:0.55;text-decoration:line-through;margin-bottom:6px;">$60/yr if you paid monthly</span>
-                    <span style="background:rgba(255,255,255,0.12);border-radius:8px;padding:5px 14px;font-size:0.8rem;font-weight:600;">Pay once. Use through all of Year 11 &amp; 12. ✓</span>
+                    <span style="font-size:2.8rem;font-weight:900;margin:6px 0 0;line-height:1;" id="upgradeModalLifetimePrice">$29</span>
+                    <span style="background:rgba(255,255,255,0.12);border-radius:8px;padding:5px 14px;font-size:0.8rem;font-weight:600;margin-top:8px;">Pay once. Use through all of Year 11 &amp; 12. ✓</span>
                 </button>
             </div>
-            <!-- MONTHLY FOOTNOTE — hidden while founding lifetime tier is open -->
-            <p id="upgradeMonthlyFootnote" style="color:rgba(255,255,255,0.45);font-size:0.82rem;margin-bottom:12px;">
-                Not sure yet? <button onclick="createCheckout('monthly')" style="background:none;border:none;color:#a59fff;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">$5/month</button> — cancel anytime.
-            </p>
+            <!-- MONTHLY TIERS — shown only after the founding lifetime offer closes -->
+            <div id="upgradeModalMonthlyTiers" style="display:none;margin-bottom:12px;"></div>
             
             <div id="paymentPollingStatus" style="display: none; text-align: center; margin-bottom: 12px; padding: 12px; background: rgba(22,163,74,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px;">
                 <span style="font-size: 0.9rem; color: #22c55e;">⏳ Waiting for payment confirmation... This will activate automatically.</span>
@@ -2865,7 +2860,7 @@
             }
             if (banner) {
                 if (user.freeTier.gracePeriodEnding) {
-                    banner.innerHTML = '⏳ <strong>Your free trial ends tonight</strong> — don\'t lose unlimited access. <a href="#" onclick="createCheckout(\'lifetime\'); return false;" style="color:#fff;font-weight:700;">Lock in lifetime <span class="sd-lifetime-price-inline">$37.50</span> →</a>';
+                    banner.innerHTML = '⏳ <strong>Your free trial ends tonight</strong> — don\'t lose unlimited access. <a href="#" onclick="createCheckout(\'lifetime\'); return false;" style="color:#fff;font-weight:700;">Lock in lifetime <span class="sd-lifetime-price-inline">$29</span> →</a>';
                     banner.style.background = 'linear-gradient(90deg,#ef4444,#dc2626)';
                 } else {
                     banner.innerHTML = '⏳ <strong>Free trial active</strong> — Unlimited access until <strong>' + (trialEndStr || '24 hours after signup') + '</strong>. Try everything while it lasts. <a href="#tools" style="color:#fff;font-weight:600;">Explore tools →</a>';
@@ -2878,7 +2873,7 @@
         } else if (!user.subscribed && user.role !== 'owner' && user.role !== 'og_tester' && user.role !== 'lifetime') {
             // Free user (post-trial) → lead with the lifetime founding deal (scarcity + value)
             if (banner) {
-                banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="createCheckout(\'lifetime\'); return false;">Lock it in →</a>';
+                banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$29</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="createCheckout(\'lifetime\'); return false;">Lock it in →</a>';
                 banner.onclick = function(e) {
                     if (e.target.tagName === 'A') return;
                     createCheckout('lifetime');
@@ -2893,7 +2888,7 @@
         }
 
         // Re-apply live pricing now that the banner has been (re)written —
-        // the innerHTML assignments above contain hardcoded "??" / "$37.50"
+        // the innerHTML assignments above contain hardcoded "??" / "$29"
         // placeholders that need to be replaced with the actual tier values.
         if (typeof window._applyLivePricing === 'function') {
             window._applyLivePricing(window._sdLivePricing);
@@ -3085,11 +3080,11 @@
         // Top banner: advertise founding lifetime deal for logged-out visitors
         var banner = document.getElementById('saleBanner');
         if (banner) {
-            banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$37.50</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="login.html?upgrade=1">Sign up to claim →</a>';
+            banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$29</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="login.html?upgrade=1">Sign up to claim →</a>';
             banner.onclick = null;
             banner.style.display = '';
         }
-        // Re-apply live pricing — replace the hardcoded "??" / "$37.50" with actuals
+        // Re-apply live pricing — replace the hardcoded "??" / "$29" with actuals
         if (typeof window._applyLivePricing === 'function') {
             window._applyLivePricing(window._sdLivePricing);
         }
@@ -3144,7 +3139,10 @@
             var classLinkedOnly = currentUser.linkedToTeacher && !currentUser.plan && !currentUser.dayPassActive;
             document.getElementById('subPlan').textContent =
                 classLinkedOnly ? 'Free access via your teacher\'s class' :
-                currentUser.plan === 'lifetime' ? 'Lifetime ($37.50 one-time)' :
+                currentUser.plan === 'lifetime' ? 'Lifetime ($29 one-time)' :
+                currentUser.plan === 'starter' ? 'Starter ($4.99/month)' :
+                currentUser.plan === 'plus' ? 'Plus ($9.99/month)' :
+                currentUser.plan === 'pro' ? 'Pro ($14.99/month)' :
                 currentUser.plan === 'yearly' ? 'Yearly ($50/year)' :
                 currentUser.plan === 'monthly' ? 'Monthly ($5/month)' :
                 currentUser.plan === 'classroom-lifetime' ? 'Classroom Lifetime (discounted)' :
@@ -3276,10 +3274,18 @@
         const modal = document.getElementById('upgradeModalOverlay');
         modal.style.display = 'flex';
         modal.classList.remove('hidden');
-        // Fetch live spots left and update badge
+        // While founding is open: show the lifetime hero. Once it closes: hide
+        // lifetime and render the three monthly tiers (no dead buttons).
         fetch(API_BASE + '/api/spots-left')
             .then(r => r.json())
             .then(d => {
+                const foundingActive = (typeof d.foundingActive === 'boolean') ? d.foundingActive : (d.spotsLeft > 0);
+                if (!foundingActive) {
+                    const wrap = document.getElementById('upgradeModalLifetimeWrap');
+                    if (wrap) wrap.style.display = 'none';
+                    renderUpgradeModalTiers(d.monthlyTiers || []);
+                    return;
+                }
                 const el = document.getElementById('upgradeModalSpotsLeft');
                 if (el && d.spotsLeft !== undefined) {
                     el.textContent = d.spotsLeft + ' spot' + (d.spotsLeft !== 1 ? 's' : '');
@@ -3289,11 +3295,29 @@
                     if (p) p.textContent = d.lifetimePriceLabel;
                     document.querySelectorAll('.sd-lifetime-price-inline').forEach(function(n){ n.textContent = d.lifetimePriceLabel; });
                 }
-                if (d.spotsLeft <= 0) {
-                    const wrap = document.getElementById('upgradeModalLifetimeWrap');
-                    if (wrap) wrap.style.display = 'none';
-                }
             }).catch(() => {});
+    }
+
+    // Render the three monthly tier buttons inside the upgrade modal.
+    function renderUpgradeModalTiers(tiers) {
+        const box = document.getElementById('upgradeModalMonthlyTiers');
+        if (!box || !tiers.length) return;
+        box.style.display = 'block';
+        box.innerHTML = tiers.map(function(t) {
+            const featured = t.id === 'plus';
+            const uses = t.dailyUses === null ? 'Unlimited uses' : (t.dailyUses + ' uses/day');
+            return '<button data-plan="' + t.id + '" style="width:100%;text-align:left;padding:14px 16px;margin-bottom:8px;border-radius:12px;cursor:pointer;font-family:inherit;'
+                + 'border:' + (featured ? '2px solid rgba(167,139,250,0.6)' : '1px solid var(--border)') + ';'
+                + 'background:' + (featured ? 'rgba(124,58,237,0.18)' : 'var(--bg-card)') + ';color:var(--text);display:flex;justify-content:space-between;align-items:center;">'
+                + '<span><strong style="font-size:0.98rem;">' + t.label + '</strong>'
+                + (featured ? ' <span style="font-size:0.62rem;background:#7c3aed;color:#fff;border-radius:6px;padding:2px 6px;vertical-align:middle;">POPULAR</span>' : '')
+                + '<br><span style="font-size:0.78rem;color:var(--text-muted);">' + uses + '</span></span>'
+                + '<span style="font-size:1.15rem;font-weight:800;">' + t.priceLabel + '<span style="font-size:0.72rem;font-weight:500;color:var(--text-muted);">/mo</span></span>'
+                + '</button>';
+        }).join('');
+        box.querySelectorAll('button[data-plan]').forEach(function(b) {
+            b.onclick = function() { createCheckout(b.getAttribute('data-plan')); };
+        });
     }
 
     async function createCheckout(plan) {
@@ -3668,7 +3692,7 @@
             <div style="background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.3);border-radius:12px;padding:14px 16px;margin-bottom:20px;">
                 <p style="color:var(--primary);font-weight:700;font-size:0.9rem;margin-bottom:4px;">⏳ You have 1 day of unlimited access${trialEndStr ? ' — until ' + trialEndStr : ''}</p>
                 <p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:10px;">Try everything while it lasts. Or skip the trial:</p>
-                <button onclick="document.getElementById('onboardingModal').style.display='none';showUpgradeModal();" style="padding:9px 20px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:inherit;">Get Lifetime Access — <span class="sd-lifetime-price-inline">$37.50</span> →</button>
+                <button onclick="document.getElementById('onboardingModal').style.display='none';showUpgradeModal();" style="padding:9px 20px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:inherit;">Get Lifetime Access — <span class="sd-lifetime-price-inline">$29</span> →</button>
             </div>` : '';
 
         modal.querySelector('.onboarding-modal').innerHTML = `
