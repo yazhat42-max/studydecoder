@@ -4430,27 +4430,35 @@
         else textDiv.appendChild(el);
     }
 
-    // Render the top approved review directly above the pricing block. One real
-    // review next to the Buy button outpulls the mid-page review carousel.
+    // Render every approved review (up to 3) directly above the pricing block.
+    // Real quotes next to the Buy button outpull a single isolated quote — let
+    // the social proof stack up. One column on mobile, three across on desktop.
     async function loadPricingReview() {
         try {
             const res = await fetch('/api/reviews/public');
             if (!res.ok) return;
             const { reviews } = await res.json();
             if (!reviews || !reviews.length) return;
-            // Pick the highest-rated, most recent review.
-            const top = reviews.slice().sort((a, b) => (b.rating - a.rating) || ((b.createdAt || '') > (a.createdAt || '') ? 1 : -1))[0];
             const strip = document.getElementById('pricingReviewStrip');
             if (!strip) return;
-            const stars = '★'.repeat(top.rating) + '☆'.repeat(5 - top.rating);
-            const who = top.displayName || top.name || 'Verified student';
-            const bot = top.botType ? ' · ' + top.botType.replace(/-/g, ' ') : '';
-            strip.innerHTML = `
-                <div style="color:#f59e0b;font-size:1rem;margin-bottom:6px;letter-spacing:2px;">${stars}</div>
-                <div style="font-size:1.02rem;color:#e7e9ea;font-style:italic;line-height:1.55;margin-bottom:8px;">&ldquo;${escHtml(top.text || '')}&rdquo;</div>
-                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">— ${escHtml(who)}${escHtml(bot)}</div>
-            `;
-            strip.style.display = '';
+            // Sort by rating desc, then most recent first; take up to 3.
+            const top = reviews.slice()
+                .sort((a, b) => (b.rating - a.rating) || ((b.createdAt || '') > (a.createdAt || '') ? 1 : -1))
+                .slice(0, 3);
+            const cards = top.map(r => {
+                const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                const who = r.displayName || r.name || 'Verified student';
+                const bot = r.botType ? ' · ' + r.botType.replace(/-/g, ' ') : '';
+                return `
+                    <div style="flex:1;min-width:240px;max-width:340px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1rem 1.15rem;text-align:left;">
+                        <div style="color:#f59e0b;font-size:0.92rem;margin-bottom:6px;letter-spacing:2px;">${stars}</div>
+                        <div style="font-size:0.92rem;color:#e7e9ea;font-style:italic;line-height:1.55;margin-bottom:8px;">&ldquo;${escHtml(r.text || '')}&rdquo;</div>
+                        <div style="font-size:0.78rem;color:var(--text-muted);font-weight:600;">— ${escHtml(who)}${escHtml(bot)}</div>
+                    </div>`;
+            }).join('');
+            // Override the inline container styling so we can lay reviews out in a row.
+            strip.setAttribute('style', 'display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;max-width:1100px;margin:0 auto 2rem;');
+            strip.innerHTML = cards;
         } catch (e) { /* fail silently */ }
     }
 
