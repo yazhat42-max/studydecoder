@@ -386,8 +386,9 @@
         }
         el2('onbToStep2').addEventListener('click', complete);
         el2('onbSkip').addEventListener('click', complete);
-        // Land them straight in practice so the first thing they touch is an AI tool.
-        el2('onbFinish').addEventListener('click', function () { window.location.href = '/practice.html?fromOnboarding=1'; });
+        // Land them in chat-tutor — it has one-click starter chips on the empty
+        // state, so the very first tap produces an AI answer with no form filling.
+        el2('onbFinish').addEventListener('click', function () { window.location.href = '/chat-tutor.html?fromOnboarding=1'; });
         chips();
       }
 

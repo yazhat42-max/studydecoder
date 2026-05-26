@@ -708,6 +708,17 @@
                 const topbar = document.querySelector('.topbar');
                 if (topbar) topbar.appendChild(badge);
             }
+
+            // Deep-link: ?ask=<question> auto-fires sendStarter so a user landing
+            // from onboarding or a recommendation card sees a real AI answer on
+            // first paint instead of an empty chat.
+            try {
+                const askParam = new URLSearchParams(location.search).get('ask');
+                if (askParam) {
+                    const trimmed = String(askParam).slice(0, 500);
+                    setTimeout(() => { if (typeof sendStarter === 'function') sendStarter(trimmed); }, 250);
+                }
+            } catch (e) {}
         } catch (e) {
             window.location.href = '/login.html';
         }
