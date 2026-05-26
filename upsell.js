@@ -246,7 +246,7 @@ window.Upsell = (function () {
                         </div>
                         <button id="sdUMLifetimeBtn" style="width:100%;padding:28px 20px 22px;background:linear-gradient(135deg,#4f3dc4,#7c3aed);color:#fff;border:2px solid rgba(167,139,250,0.4);border-radius:16px;display:flex;flex-direction:column;align-items:center;cursor:pointer;font-family:inherit;box-shadow:0 6px 30px rgba(102,126,234,0.4);transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 40px rgba(102,126,234,0.55)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 6px 30px rgba(102,126,234,0.4)'">
                             <span style="font-size:0.78rem;opacity:0.7;letter-spacing:0.5px;text-transform:uppercase;">One-Time Payment &nbsp;&middot;&nbsp; Lifetime Access</span>
-                            <span style="font-size:2.8rem;font-weight:900;margin:6px 0 0;line-height:1;" id="sdUMLifetimePrice">$29</span>
+                            <span style="font-size:2.8rem;font-weight:900;margin:6px 0 0;line-height:1;" id="sdUMLifetimePrice">$14.99</span>
                             <span style="background:rgba(255,255,255,0.12);border-radius:8px;padding:5px 14px;font-size:0.8rem;font-weight:600;margin-top:8px;">Pay once. Use through all of Year 11 &amp; 12. ✓</span>
                         </button>
                     </div>

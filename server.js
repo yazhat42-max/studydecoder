@@ -358,6 +358,31 @@ function getFreeTierRemaining(userId, botType) {
     return Math.max(0, FREE_TIER_CONFIG.totalUsesPerDay - totalUsed);
 }
 
+// ---- Metered monthly tiers (starter / plus) -------------------------------
+// Paid tiers with a finite daily cap. `pro` (dailyUses === null) is unlimited
+// and never metered. Uses the same per-day counters as the free tier.
+function isMeteredPlan(user) {
+    if (!user || user.subscribed !== true) return false;
+    const meta = STUDENT_PLANS[user.plan];
+    return !!(meta && meta.dailyUses !== null);
+}
+
+function tryUsePlanQuota(userId, botType, meta) {
+    const special = meta.specialLimits ? meta.specialLimits[botType] : undefined;
+    if (special !== undefined && getFreeTierUsage(userId, botType) >= special) return false;
+    if (meta.dailyUses !== null && getTotalFreeTierUsage(userId) >= meta.dailyUses) return false;
+    incrementFreeTierUsage(userId, botType);
+    return true;
+}
+
+// True when a metered (starter/plus) subscriber is OVER today's quota. Records
+// one use when allowed. No-op (false) for free users and unlimited tiers, so it
+// can be added to a generation gate without affecting their existing handling.
+function meteredPlanBlocked(user, botType) {
+    if (!isMeteredPlan(user)) return false;
+    return !tryUsePlanQuota(user.userId, botType, STUDENT_PLANS[user.plan]);
+}
+
 function getFreeTierStatus(userId, botType) {
     const totalUsed = getTotalFreeTierUsage(userId);
     const totalRemaining = Math.max(0, FREE_TIER_CONFIG.totalUsesPerDay - totalUsed);
@@ -4251,8 +4276,12 @@ app.post('/api/decks/:id/generate-cards', requireAuth, async (req, res) => {
     if (subjectLock) return res.status(402).json(subjectLock);
 
     const hasFull = hasFullAccess(req.user);
-    if (!hasFull && !tryUseFreeTier(req.user.userId, 'flashcards')) {
-        return res.status(403).json({ error: 'Daily flashcard limit reached', freeTierExhausted: true, botType: 'flashcards' });
+    if (!hasFull) {
+        if (!tryUseFreeTier(req.user.userId, 'flashcards')) {
+            return res.status(403).json({ error: 'Daily flashcard limit reached', freeTierExhausted: true, botType: 'flashcards' });
+        }
+    } else if (meteredPlanBlocked(req.user, 'flashcards')) {
+        return res.status(403).json({ error: 'You’ve reached your plan’s daily limit — it resets tomorrow, or upgrade to Pro for unlimited.', planLimitReached: true, botType: 'flashcards' });
     }
 
     const count = Math.max(3, Math.min(20, parseInt(req.body && req.body.count, 10) || 8));
@@ -4366,8 +4395,12 @@ app.post('/api/cards/:id/answer', requireAuth, async (req, res) => {
     const usedHint = !!(req.body && req.body.usedHint);
 
     const hasFull = hasFullAccess(req.user);
-    if (!hasFull && !tryUseFreeTier(req.user.userId, 'flashcards')) {
-        return res.status(403).json({ error: 'Daily flashcard limit reached', freeTierExhausted: true, botType: 'flashcards' });
+    if (!hasFull) {
+        if (!tryUseFreeTier(req.user.userId, 'flashcards')) {
+            return res.status(403).json({ error: 'Daily flashcard limit reached', freeTierExhausted: true, botType: 'flashcards' });
+        }
+    } else if (meteredPlanBlocked(req.user, 'flashcards')) {
+        return res.status(403).json({ error: 'You’ve reached your plan’s daily limit — it resets tomorrow, or upgrade to Pro for unlimited.', planLimitReached: true, botType: 'flashcards' });
     }
 
     recordBotStat('flashcards');
@@ -5498,18 +5531,18 @@ async function getOrCreateStripeCustomer(user) {
 }
 
 // Founding lifetime ladder — cheap, student-affordable, capped at 200 buyers.
-// Price climbs gently with cumulative sales; once 200 lifetime spots are sold
-// the offer closes for good and the app switches to monthly subscriptions.
-// Each tier's `cap` is the cumulative-sold threshold at which it ends, so
-// `spotsLeft = cap - claimed` shows how many remain at the current price.
-// With expandWhenLeftLEQ = 0, getCurrentFoundingTier advances exactly when
-// claimed reaches a tier's cap.
+// Honors the live $14.99 / first-50 promise: existing visitors don't get a
+// price jump. After the first 50, climbs gently to a $29 ceiling and closes
+// for good at 200 sold (bounding the forever-usage liability now that Premium
+// runs GPT-5). Each tier's `cap` is the cumulative-sold threshold at which it
+// ends, so `spotsLeft = cap - claimed` shows how many remain at the current
+// price. With expandWhenLeftLEQ = 0, getCurrentFoundingTier advances exactly
+// when claimed reaches a tier's cap.
 const FOUNDING_TIERS = [
-    { cap: 25,  expandWhenLeftLEQ: 0, priceCents: 1900, priceLabel: '$19' },
-    { cap: 50,  expandWhenLeftLEQ: 0, priceCents: 2100, priceLabel: '$21' },
-    { cap: 90,  expandWhenLeftLEQ: 0, priceCents: 2300, priceLabel: '$23' },
-    { cap: 130, expandWhenLeftLEQ: 0, priceCents: 2500, priceLabel: '$25' },
-    { cap: 170, expandWhenLeftLEQ: 0, priceCents: 2700, priceLabel: '$27' },
+    { cap: 50,  expandWhenLeftLEQ: 0, priceCents: 1499, priceLabel: '$14.99' }, // honoured from live state
+    { cap: 90,  expandWhenLeftLEQ: 0, priceCents: 1999, priceLabel: '$19.99' },
+    { cap: 130, expandWhenLeftLEQ: 0, priceCents: 2399, priceLabel: '$23.99' },
+    { cap: 170, expandWhenLeftLEQ: 0, priceCents: 2699, priceLabel: '$26.99' },
     { cap: 200, priceCents: 2900, priceLabel: '$29' } // final tier — lifetime closes at 200
 ];
 
@@ -7114,7 +7147,7 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
     const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'subject-advisor');
     
     if (!hasFull && !canUseFree) {
-        return res.status(403).json({ 
+        return res.status(403).json({
             error: 'Daily limit reached',
             freeTierExhausted: true,
             remaining: 0,
@@ -7122,7 +7155,10 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
             limitType: 'global'
         });
     }
-    
+    if (hasFull && meteredPlanBlocked(user, 'subject-advisor')) {
+        return res.status(403).json({ error: 'You’ve reached your plan’s daily limit — it resets tomorrow, or upgrade to Pro for unlimited.', planLimitReached: true, botType: 'subject-advisor' });
+    }
+
     const OPENAI_API_KEY = config.openaiApiKey;
     
     // Select prompt based on mode
@@ -8122,13 +8158,16 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
     const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'worksheet');
     if (!hasFull && !canUseFree) {
         const status = getFreeTierStatus(req.session.userId, 'worksheet');
-        return res.status(403).json({ 
+        return res.status(403).json({
             error: 'Daily limit reached',
             freeTierExhausted: true,
             remaining: status.totalRemaining,
             botType: 'worksheet',
             limitType: status.hitSpecialLimit ? 'special' : 'global'
         });
+    }
+    if (hasFull && meteredPlanBlocked(user, 'worksheet')) {
+        return res.status(403).json({ error: 'You’ve reached your plan’s daily limit — it resets tomorrow, or upgrade to Pro for unlimited.', planLimitReached: true, botType: 'worksheet' });
     }
 
     // Track bot usage
@@ -8186,13 +8225,16 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
     const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'notes-transcriber');
     if (!hasFull && !canUseFree) {
         const status = getFreeTierStatus(req.session.userId, 'notes-transcriber');
-        return res.status(403).json({ 
+        return res.status(403).json({
             error: 'Daily limit reached',
             freeTierExhausted: true,
             remaining: status.totalRemaining,
             botType: 'notes-transcriber',
             limitType: status.hitSpecialLimit ? 'special' : 'global'
         });
+    }
+    if (hasFull && meteredPlanBlocked(user, 'notes-transcriber')) {
+        return res.status(403).json({ error: 'You’ve reached your plan’s daily limit — it resets tomorrow, or upgrade to Pro for unlimited.', planLimitReached: true, botType: 'notes-transcriber' });
     }
 
     // Track bot usage
@@ -9787,8 +9829,12 @@ app.post('/api/games/questions', express.json(), async (req, res) => {
 
     // Free tier: limited game rounds per day.
     const hasFull = hasFullAccess(user);
-    if (!hasFull && !tryUseFreeTier(req.session.userId, 'games')) {
-        return res.status(403).json({ error: 'You’ve used your free game rounds for today. Upgrade for unlimited play.', freeLimitReached: true });
+    if (!hasFull) {
+        if (!tryUseFreeTier(req.session.userId, 'games')) {
+            return res.status(403).json({ error: 'You’ve used your free game rounds for today. Upgrade for unlimited play.', freeLimitReached: true });
+        }
+    } else if (meteredPlanBlocked(user, 'games')) {
+        return res.status(403).json({ error: 'You’ve reached your plan’s daily limit — it resets tomorrow, or upgrade to Pro for unlimited.', planLimitReached: true });
     }
 
     recordBotStat('games');
@@ -10535,6 +10581,9 @@ app.post('/api/worksheet/generate', express.json(), async (req, res) => {
             botType: 'worksheet-generator'
         });
     }
+    if (hasFull && meteredPlanBlocked(user, 'worksheet-generator')) {
+        return res.status(403).json({ error: 'You’ve reached your plan’s daily limit — it resets tomorrow, or upgrade to Pro for unlimited.', planLimitReached: true, botType: 'worksheet-generator' });
+    }
 
     const subjectMeta = resolveSubjectMeta(subject);
     const subjectName = subjectMeta.name || subject;
@@ -10743,13 +10792,16 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, botType);
     
     if (!hasFull && !canUseFree) {
-        return res.status(403).json({ 
+        return res.status(403).json({
             error: 'Daily limit reached',
             freeTierExhausted: true,
             remaining: 0,
             botType: botType,
             limitType: 'global'
         });
+    }
+    if (hasFull && meteredPlanBlocked(user, botType)) {
+        return res.status(403).json({ error: 'You’ve reached your plan’s daily limit — it resets tomorrow, or upgrade to Pro for unlimited.', planLimitReached: true, botType: botType });
     }
 
     // Track bot usage (per-bot daily stats + per-user lifetime stats)
@@ -11004,13 +11056,16 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
     const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'jr_' + botType);
     
     if (!hasFull && !canUseFree) {
-        return res.status(403).json({ 
+        return res.status(403).json({
             error: 'Daily limit reached',
             freeTierExhausted: true,
             remaining: 0,
             botType: 'jr_' + botType,
             limitType: 'global'
         });
+    }
+    if (hasFull && meteredPlanBlocked(user, 'jr_' + botType)) {
+        return res.status(403).json({ error: 'You’ve reached your plan’s daily limit — it resets tomorrow, or upgrade to Pro for unlimited.', planLimitReached: true, botType: 'jr_' + botType });
     }
     
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
