@@ -34,28 +34,18 @@
                 n.textContent = d.lifetimePriceLabel;
             });
         }
-        // Toggle the founding banner vs the monthly subscription tier CTAs.
-        // Server-side checkout rejects monthly tiers while founding is active,
-        // so the CTAs are downgraded to a disabled "coming soon" state instead
-        // of erroring on click. Once founding closes, the banner hides and the
-        // monthly CTAs go live automatically.
+        // Toggle the founding banner vs the monthly subscription tier cards.
+        // While founding is active we HIDE the monthly tier cards entirely —
+        // the founding lifetime is the only paid path in, and showing dormant
+        // tier cards clutters the buy decision. The cards reappear automatically
+        // the moment foundingActive flips false (server reports it once 200
+        // lifetime spots are claimed).
         var banner = document.getElementById('foundingBanner');
         var footnote = document.getElementById('foundingFootnote');
         if (banner) banner.style.display = foundingActive ? '' : 'none';
         if (footnote) footnote.style.display = foundingActive ? '' : 'none';
-        document.querySelectorAll('.sd-monthly-cta').forEach(function (btn) {
-            if (foundingActive) {
-                btn.disabled = true;
-                btn.style.opacity = '0.55';
-                btn.style.cursor = 'not-allowed';
-                if (!btn.dataset.origText) btn.dataset.origText = btn.textContent;
-                btn.textContent = 'Unlocks after founding sells out';
-            } else if (btn.dataset.origText) {
-                btn.disabled = false;
-                btn.style.opacity = '';
-                btn.style.cursor = '';
-                btn.textContent = btn.dataset.origText;
-            }
+        document.querySelectorAll('.sd-monthly-card').forEach(function (card) {
+            card.style.display = foundingActive ? 'none' : '';
         });
     };
     // Hydrate from localStorage cache for instant repeat-visit paint
@@ -2503,8 +2493,8 @@
                 <a href="login.html?signup=1" id="pricingFreeCta" style="display:block;text-align:center;padding:12px;border:1px solid var(--border);border-radius:12px;color:var(--text-sec);font-weight:600;font-size:0.92rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-sec)'">Start free →</a>
             </div>
 
-            <!-- Starter -->
-            <div class="reveal stagger-2 sd-monthly-card" data-plan="starter" style="flex:1;min-width:240px;max-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:1.8rem;">
+            <!-- Starter (hidden while founding lifetime is open — _applyLivePricing flips visibility) -->
+            <div class="reveal stagger-2 sd-monthly-card" data-plan="starter" style="display:none;flex:1;min-width:240px;max-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:1.8rem;">
                 <div style="font-size:0.78rem;font-weight:700;color:rgba(108,99,255,0.8);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.7rem;">Starter</div>
                 <div style="font-size:2.6rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$4.99<span style="font-size:0.95rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
                 <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.3rem;">The everyday upgrade</div>
@@ -2518,7 +2508,7 @@
             </div>
 
             <!-- Plus (most popular) -->
-            <div class="reveal stagger-3 sd-monthly-card" data-plan="plus" style="flex:1;min-width:240px;max-width:260px;background:linear-gradient(160deg,#1a1235 0%,#16202a 100%);border:1px solid rgba(108,99,255,0.5);border-radius:20px;padding:1.8rem;position:relative;">
+            <div class="reveal stagger-3 sd-monthly-card" data-plan="plus" style="display:none;flex:1;min-width:240px;max-width:260px;background:linear-gradient(160deg,#1a1235 0%,#16202a 100%);border:1px solid rgba(108,99,255,0.5);border-radius:20px;padding:1.8rem;position:relative;">
                 <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:0.72rem;font-weight:700;padding:4px 14px;border-radius:20px;white-space:nowrap;">MOST POPULAR</div>
                 <div style="font-size:0.78rem;font-weight:700;color:rgba(108,99,255,0.95);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.7rem;">Plus</div>
                 <div style="font-size:2.6rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$9.99<span style="font-size:0.95rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
@@ -2534,7 +2524,7 @@
             </div>
 
             <!-- Pro -->
-            <div class="reveal stagger-4 sd-monthly-card" data-plan="pro" style="flex:1;min-width:240px;max-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:1.8rem;">
+            <div class="reveal stagger-4 sd-monthly-card" data-plan="pro" style="display:none;flex:1;min-width:240px;max-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:1.8rem;">
                 <div style="font-size:0.78rem;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.7rem;">Pro</div>
                 <div style="font-size:2.6rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$14.99<span style="font-size:0.95rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
                 <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.3rem;">Truly unlimited · flagship AI</div>
