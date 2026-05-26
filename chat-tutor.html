@@ -700,6 +700,12 @@
             const back = document.querySelector('.topbar-back');
             if (back && userLevel === 'junior') back.setAttribute('href', 'dashboard.html');
 
+            // Funnel: real "tool_open" event — fires once on render, not on
+            // landing-page click. Earlier the landing-page CTA click was logged
+            // as tool_open, which inflated the numerator with visitors who
+            // never actually arrived at the tool page.
+            try { if (window.sdTrack) sdTrack('tool_open', { tool: 'chat-tutor' }); } catch (e) {}
+
             if (data.freeTier?.gracePeriodEnding && window.Upsell) Upsell.checkGracePeriodEnding(data.freeTier);
             if (data.freeTier?.inGracePeriod) {
                 const badge = document.createElement('span');

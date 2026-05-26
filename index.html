@@ -2599,7 +2599,7 @@
                 </div>
             </div>
 
-            <button class="onboard-submit-btn" id="onboardSubmitBtn" onclick="submitOnboarding()" disabled>Get Started 🚀</button>
+            <button class="onboard-submit-btn" id="onboardSubmitBtn" onclick="submitOnboarding()" disabled>Start studying →</button>
             <button class="onboard-skip" onclick="skipOnboarding()">Skip for now</button>
         </div>
     </div>
@@ -2681,7 +2681,7 @@
     <section class="cta">
         <h2 class="reveal">Stop Just Reading Notes.<br><span class="highlight">Start Practising.</span></h2>
         <p class="reveal">The students who do the best aren't the ones who study the most — they're the ones who practice smart. Join them.</p>
-        <a href="login.html?signup=1" class="btn btn-primary btn-glow" id="ctaSignIn" style="font-size:1.1rem; padding:16px 40px;">Get Started — It's Free</a>
+        <a href="login.html?signup=1" class="btn btn-primary btn-glow" id="ctaSignIn" style="font-size:1.1rem; padding:16px 40px;">Try the chat tutor — free →</a>
         <p class="reveal" style="margin-top:1rem; font-size:0.85rem; color:var(--text-muted); position:relative; z-index:1;">No credit card required · Takes 30 seconds to sign up</p>
         <div id="ctaLoggedIn" style="display: none;">
             <a href="practice.html?mode=exam" class="btn btn-primary btn-glow" style="font-size:1.1rem; padding:16px 40px;" onclick="return goExamMode(event)">Start Practice Exam</a>
@@ -3696,10 +3696,10 @@
         btn.disabled = !hasLevel;
         if (hasLevel) {
             if (onboardSelectedLevel === 'junior') {
-                btn.textContent = 'Get Started 🚀';
+                btn.textContent = 'Start studying →';
             } else {
                 const checkedCount = document.querySelectorAll('#onboardSubjectsGrid input:checked').length;
-                btn.textContent = checkedCount > 0 ? `Get Started with ${checkedCount} subject${checkedCount > 1 ? 's' : ''} 🚀` : 'Get Started 🚀';
+                btn.textContent = checkedCount > 0 ? `Start with ${checkedCount} subject${checkedCount > 1 ? 's' : ''} →` : 'Start studying →';
             }
         }
     }
@@ -3739,7 +3739,7 @@
         } catch (e) {
             console.error('Onboarding save error:', e);
             btn.disabled = false;
-            btn.textContent = 'Get Started 🚀';
+            btn.textContent = 'Start studying →';
               alert('Something went wrong. Please try again.');
         }
     }
@@ -4624,10 +4624,12 @@
         if (window.sdTrack) { sdTrack('landing_view'); return; }
         document.addEventListener('DOMContentLoaded', function(){ if (window.sdTrack) sdTrack('landing_view'); });
     })();
-    // Funnel: count clicks on any tool tile CTA as a tool_open intent.
+    // Funnel: landing-page intent — user clicked a tool tile CTA. The real
+    // tool_open event fires on the tool page itself once it renders, so this
+    // is now a separate "did the visitor express intent" signal.
     document.addEventListener('click', function (e) {
         var a = e.target.closest && e.target.closest('.showcase-text .btn, .sd-trydemo-send');
-        if (a && window.sdTrack) sdTrack('tool_open');
+        if (a && window.sdTrack) sdTrack('tool_intent');
     }, true);
     </script>
 
