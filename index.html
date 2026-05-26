@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="google-site-verification" content="v9ODAuxeJ2NSizFBDaV133p18_yxw1xbre9uw0UuKhg" />
-    <title>HSC Study Tools That Actually Stick — AI Tutor, Exam Sim &amp; Marking | Study Decoder</title>
+    <title>HSC AI Tutor, Exam Marker &amp; Practice — Study Decoder</title>
     <!-- SD_PRICING_BOOTSTRAP -->
     <script>
     // Server-injected (or null on first dev load); used to paint the right
@@ -15,23 +15,15 @@
         d = d || window._sdLivePricing;
         if (!d) return;
         window._sdLivePricing = d;
+        var foundingActive = (typeof d.foundingActive === 'boolean') ? d.foundingActive : (d.spotsLeft > 0);
         if (d.spotsLeft !== undefined && d.spotsLeft !== null) {
-            document.querySelectorAll('#spotsLeft, #pricingSpotsLeft').forEach(function (n) {
+            document.querySelectorAll('#spotsLeft, #pricingSpotsLeft, #foundingSpotsLeft').forEach(function (n) {
                 n.textContent = d.spotsLeft;
             });
             if (d.spotsLeft <= 0) {
                 var b = document.getElementById('saleBanner');
                 if (b && /spotsLeft/.test(b.innerHTML)) b.style.display = 'none';
             }
-            // Hide the monthly subscription UI entirely while the founding
-            // lifetime offer is still open — a cheap monthly anchor cannibalises
-            // the higher-LTV one-time lifetime buy. Re-enabled automatically once
-            // all founding spots are sold (server reports foundingActive).
-            var foundingActive = (typeof d.foundingActive === 'boolean') ? d.foundingActive : (d.spotsLeft > 0);
-            var premium = document.getElementById('premiumCard');
-            var toggle = document.getElementById('pricingPeriodToggle');
-            if (premium) premium.style.display = foundingActive ? 'none' : '';
-            if (toggle) toggle.style.display = foundingActive ? 'none' : 'inline-flex';
         }
         if (d.lifetimePriceLabel) {
             var p1 = document.getElementById('pricingLifetimePrice');
@@ -42,6 +34,29 @@
                 n.textContent = d.lifetimePriceLabel;
             });
         }
+        // Toggle the founding banner vs the monthly subscription tier CTAs.
+        // Server-side checkout rejects monthly tiers while founding is active,
+        // so the CTAs are downgraded to a disabled "coming soon" state instead
+        // of erroring on click. Once founding closes, the banner hides and the
+        // monthly CTAs go live automatically.
+        var banner = document.getElementById('foundingBanner');
+        var footnote = document.getElementById('foundingFootnote');
+        if (banner) banner.style.display = foundingActive ? '' : 'none';
+        if (footnote) footnote.style.display = foundingActive ? '' : 'none';
+        document.querySelectorAll('.sd-monthly-cta').forEach(function (btn) {
+            if (foundingActive) {
+                btn.disabled = true;
+                btn.style.opacity = '0.55';
+                btn.style.cursor = 'not-allowed';
+                if (!btn.dataset.origText) btn.dataset.origText = btn.textContent;
+                btn.textContent = 'Unlocks after founding sells out';
+            } else if (btn.dataset.origText) {
+                btn.disabled = false;
+                btn.style.opacity = '';
+                btn.style.cursor = '';
+                btn.textContent = btn.dataset.origText;
+            }
+        });
     };
     // Hydrate from localStorage cache for instant repeat-visit paint
     try {
@@ -56,7 +71,6 @@
     </script>
     <!-- /SD_PRICING_BOOTSTRAP -->
     <meta name="description" content="Study but forget everything? Study Decoder is the AI built on the NSW HSC syllabus — practise real exam questions, get marked in seconds, and actually remember it. Free to start.">
-    <meta name="keywords" content="HSC study tools, AI HSC tutor, HSC exam simulator, HSC essay marker, free HSC practice questions, HSC syllabus decoder, NSW HSC, Year 11 Year 12 study, HSC flashcards, study timetable generator">
     <link rel="canonical" href="https://www.studydecoder.com.au/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Study Decoder">
@@ -114,6 +128,24 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Study Decoder",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web",
+        "url": "https://www.studydecoder.com.au",
+        "description": "AI-powered HSC study tools — chat tutor, exam marker, syllabus decoder, flashcards and practice exams built on the official NSW NESA syllabus.",
+        "offers": [
+            { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "AUD" },
+            { "@type": "Offer", "name": "Lifetime (Founding)", "price": "14.99", "priceCurrency": "AUD" },
+            { "@type": "Offer", "name": "Starter", "price": "4.99", "priceCurrency": "AUD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "4.99", "priceCurrency": "AUD", "billingDuration": "P1M" } },
+            { "@type": "Offer", "name": "Plus", "price": "9.99", "priceCurrency": "AUD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "9.99", "priceCurrency": "AUD", "billingDuration": "P1M" } },
+            { "@type": "Offer", "name": "Pro", "price": "14.99", "priceCurrency": "AUD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "14.99", "priceCurrency": "AUD", "billingDuration": "P1M" } }
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
             {
@@ -162,6 +194,22 @@
                 "acceptedAnswer": {
                     "@type": "Answer",
                     "text": "Yes. Paste any question and your answer and you get a band verdict, a mark, and specific suggestions in under 10 seconds, mapped to the criteria HSC markers actually use."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I cancel anytime?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Monthly subscriptions are month-to-month and cancellable in one click from your account. Lifetime access is a one-off payment with no recurring charges."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is my data private?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Your chats, essays and uploads are tied to your account and never sold. They are only used to power the tools you are using — they are not used to train external AI models."
                 }
             }
         ]
@@ -1971,8 +2019,8 @@
             <!-- Centered content -->
             <div class="sd-hero2-content">
                 <div class="sd-hero2-badge">🤖 AI HSC Tutor · NESA Syllabuses · Built for the HSC</div>
-                <h1 class="sd-hero2-title">make study<br/><em>actually fun</em> again.</h1>
-                <p class="sd-hero2-sub" style="font-weight:700;color:#fff;">Practise real HSC exam questions, get marked in seconds, and actually remember it.</p>
+                <h1 class="sd-hero2-title">HSC study that<br/><em>actually sticks</em>.</h1>
+                <p class="sd-hero2-sub" style="font-weight:700;color:#fff;">Practise real HSC exam questions, get marked in seconds, and remember it on test day.</p>
                 <div class="sd-hero2-actions" id="heroButtons">
                     <a href="login.html?signup=1" class="btn btn-primary btn-glow" id="heroSignInBtn">Start Free — No Card →</a>
                     <a href="#tools" class="btn btn-ghost">See all 10 tools ↓</a>
@@ -1991,11 +2039,11 @@
                             <div class="bubble">Hey 👋 I'm your HSC AI tutor. Tap a question to see how I answer — no signup needed.</div>
                         </div>
                     </div>
-                    <div class="h2c-chips" id="sdHero2Chips" style="display:flex;gap:6px;padding:8px 12px 0;flex-wrap:wrap;justify-content:center;">
-                        <button type="button" class="h2c-chip" data-key="chat" data-prompt="Explain enzyme inhibition — I have a test tomorrow" style="background:rgba(108,99,255,0.14);border:1px solid rgba(108,99,255,0.4);color:#cdc6ff;border-radius:50px;padding:7px 13px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">🧪 Explain enzyme inhibition</button>
-                        <button type="button" class="h2c-chip" data-key="mark" data-prompt="Mark my Mod History paragraph on Meiji Japan" style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.4);color:#bbf7d0;border-radius:50px;padding:7px 13px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">📝 Mark my essay paragraph</button>
-                        <button type="button" class="h2c-chip" data-key="qp" data-prompt="Make me a 5-question Chemistry quiz on Module 5" style="background:rgba(244,114,182,0.12);border:1px solid rgba(244,114,182,0.4);color:#fbcfe8;border-radius:50px;padding:7px 13px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">⚡ Quick 5-Q quiz</button>
-                        <button type="button" class="h2c-chip" data-key="syl" data-prompt="Decode this dot point: innovation in business operations" style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.4);color:#fde68a;border-radius:50px;padding:7px 13px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">📘 Decode a dot point</button>
+                    <div class="h2c-chips" id="sdHero2Chips" style="display:flex;gap:6px;padding:8px 10px 0;flex-wrap:wrap;justify-content:center;">
+                        <button type="button" class="h2c-chip" data-key="chat" data-prompt="Explain enzyme inhibition — I have a test tomorrow" style="background:rgba(108,99,255,0.14);border:1px solid rgba(108,99,255,0.4);color:#cdc6ff;border-radius:50px;padding:6px 11px;font-size:0.76rem;font-weight:600;cursor:pointer;font-family:inherit;">🧪 Explain a concept</button>
+                        <button type="button" class="h2c-chip" data-key="mark" data-prompt="Mark my Mod History paragraph on Meiji Japan" style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.4);color:#bbf7d0;border-radius:50px;padding:6px 11px;font-size:0.76rem;font-weight:600;cursor:pointer;font-family:inherit;">📝 Mark my essay</button>
+                        <button type="button" class="h2c-chip" data-key="qp" data-prompt="Make me a 5-question Chemistry quiz on Module 5" style="background:rgba(244,114,182,0.12);border:1px solid rgba(244,114,182,0.4);color:#fbcfe8;border-radius:50px;padding:6px 11px;font-size:0.76rem;font-weight:600;cursor:pointer;font-family:inherit;">⚡ Quick quiz</button>
+                        <button type="button" class="h2c-chip" data-key="syl" data-prompt="Decode this dot point: innovation in business operations" style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.4);color:#fde68a;border-radius:50px;padding:6px 11px;font-size:0.76rem;font-weight:600;cursor:pointer;font-family:inherit;">📘 Decode a dot point</button>
                     </div>
                     <div class="h2c-input">
                         <div class="typed" id="sdHero2Typed"></div>
@@ -2418,65 +2466,90 @@
 
     <!-- Pricing Section -->
     <section id="pricing" style="padding:5rem 5%;border-top:1px solid var(--border);">
-        <div style="text-align:center;margin-bottom:3rem;">
+        <!-- Lift approved reviews directly above pricing so the social-proof
+             signal lands at the moment of the buying decision. Hidden until
+             /api/reviews/public returns at least one. -->
+        <div id="pricingReviewStrip" class="reveal" style="display:none;max-width:680px;margin:0 auto 2rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:1.1rem 1.4rem;text-align:center;"></div>
+        <div style="text-align:center;margin-bottom:2.5rem;">
             <h2 class="section-title reveal">Simple, <span class="highlight">Honest Pricing</span></h2>
             <p class="reveal" style="color:var(--text-sec);font-size:1.05rem;margin-top:0.5rem;">Start free — no card required. Upgrade when you're ready.</p>
-            <!-- Monthly / Yearly toggle -->
-            <div class="reveal" style="display:inline-flex;gap:4px;background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:4px;margin-top:1.5rem;">
-                <button id="pricingToggleMonthly" onclick="setPricingPeriod('monthly')" style="padding:8px 22px;border:none;border-radius:50px;cursor:pointer;font-size:0.9rem;font-weight:600;transition:all .2s;background:var(--primary);color:#fff;font-family:inherit;">Monthly</button>
-                <button id="pricingToggleYearly" onclick="setPricingPeriod('yearly')" style="padding:8px 22px;border:none;border-radius:50px;cursor:pointer;font-size:0.9rem;font-weight:600;transition:all .2s;background:transparent;color:var(--text-muted);font-family:inherit;">Yearly <span style="font-size:0.75rem;color:#22c55e;font-weight:700;">2 months free</span></button>
+        </div>
+
+        <!-- Founding lifetime banner (shown while founding lifetime is open) -->
+        <div id="foundingBanner" class="reveal" style="max-width:880px;margin:0 auto 2.5rem;background:linear-gradient(135deg,rgba(245,158,11,0.12) 0%,rgba(108,99,255,0.12) 100%);border:1px solid rgba(245,158,11,0.45);border-radius:22px;padding:1.7rem 1.9rem;display:flex;gap:1.8rem;align-items:center;flex-wrap:wrap;box-shadow:0 10px 40px rgba(245,158,11,0.10);">
+            <div style="flex:1;min-width:260px;text-align:left;">
+                <div style="font-size:0.7rem;font-weight:800;color:#f59e0b;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">⚡ Founding Members Deal · closes forever at 200</div>
+                <h3 style="font-size:1.5rem;font-weight:800;color:#fff;margin:0 0 6px;line-height:1.25;">Pay <span style="color:#fbbf24;" class="sd-lifetime-price-inline">$14.99</span> once — use everything, forever.</h3>
+                <p style="font-size:0.92rem;color:rgba(255,255,255,0.72);margin:6px 0 0;line-height:1.55;">That's the <strong style="color:#fff;">same price as one month of Pro</strong>. Pay it once, never pay again. <span style="color:#22c55e;font-weight:700;">7-day no-questions refund.</span></p>
+            </div>
+            <div style="text-align:center;flex:0 0 auto;">
+                <div style="font-size:0.8rem;color:#fbbf24;font-weight:700;margin-bottom:8px;">Only <span id="foundingSpotsLeft">limited</span> of 200 left</div>
+                <button onclick="createCheckout('lifetime')" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#0a0e16;border:none;padding:14px 28px;border-radius:50px;font-size:1.02rem;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 6px 25px rgba(245,158,11,0.35);transition:transform .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Lock in <span class="sd-lifetime-price-inline">$14.99</span> lifetime →</button>
             </div>
         </div>
-        <div style="display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;max-width:1000px;margin:0 auto;">
+
+        <div style="display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap;max-width:1100px;margin:0 auto;">
             <!-- Free -->
-            <div class="reveal stagger-1" style="flex:1;min-width:260px;max-width:300px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:2rem;">
-                <div style="font-size:0.8rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem;">Free</div>
-                <div style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$0</div>
-                <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">Always free</div>
-                <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:1.8rem;">
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> All 10 AI tools</li>
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> 10 AI uses/day <span style="color:var(--text-muted);font-size:0.8rem;">(+ 1 free day on signup)</span></li>
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Streaks, games, leaderboard &amp; progress tracking</li>
-                    <li style="font-size:0.9rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;"><span style="color:#2f3336;">✗</span> Standard AI (GPT-4o mini) · shorter answers</li>
-                    <li style="font-size:0.9rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;"><span style="color:#2f3336;">✗</span> No Band 6 model answers or predicted ATAR</li>
+            <div class="reveal stagger-1" style="flex:1;min-width:240px;max-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:1.8rem;">
+                <div style="font-size:0.78rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.7rem;">Free</div>
+                <div style="font-size:2.6rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$0</div>
+                <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.3rem;">Always free · no card</div>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:1.6rem;padding:0;">
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>All 10 AI tools</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span><strong>10 AI uses/day</strong> + 1 free day on signup</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Streaks, games, leaderboard</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-muted);display:flex;align-items:flex-start;gap:8px;"><span style="color:#2f3336;flex-shrink:0;">✗</span><span>GPT-4o mini · shorter answers</span></li>
                 </ul>
-                <a href="login.html?signup=1" id="pricingFreeCta" style="display:block;text-align:center;padding:12px;border:1px solid var(--border);border-radius:12px;color:var(--text-sec);font-weight:600;font-size:0.95rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-sec)'">Get Started Free</a>
+                <a href="login.html?signup=1" id="pricingFreeCta" style="display:block;text-align:center;padding:12px;border:1px solid var(--border);border-radius:12px;color:var(--text-sec);font-weight:600;font-size:0.92rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-sec)'">Start free →</a>
             </div>
-            <!-- Premium (Monthly / Yearly) — hidden while the founding lifetime tier is open -->
-            <div id="premiumCard" class="reveal stagger-2" style="flex:1;min-width:260px;max-width:300px;background:linear-gradient(160deg,#1a1235 0%,#16202a 100%);border:1px solid rgba(108,99,255,0.4);border-radius:20px;padding:2rem;position:relative;">
-                <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap;">MOST POPULAR</div>
-                <div style="font-size:0.8rem;font-weight:700;color:rgba(108,99,255,0.8);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem;">Premium</div>
-                <div id="pricingMonthlyPrice" style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$5<span style="font-size:1rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
-                <div id="pricingYearlyPrice" style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;display:none;">$50<span style="font-size:1rem;font-weight:500;color:var(--text-muted)">/yr</span></div>
-                <div id="pricingBillingNote" style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">Billed monthly</div>
-                <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:1.8rem;">
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Everything in Free, unlimited — no daily cap</li>
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> <strong style="color:var(--text);">Powered by GPT-5</strong> · longer, more detailed answers</li>
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Band 6 model answers on every exam</li>
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Predicted ATAR estimate</li>
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> PRO badge on the leaderboard</li>
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Cancel anytime</li>
+
+            <!-- Starter -->
+            <div class="reveal stagger-2 sd-monthly-card" data-plan="starter" style="flex:1;min-width:240px;max-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:1.8rem;">
+                <div style="font-size:0.78rem;font-weight:700;color:rgba(108,99,255,0.8);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.7rem;">Starter</div>
+                <div style="font-size:2.6rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$4.99<span style="font-size:0.95rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
+                <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.3rem;">The everyday upgrade</div>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:1.6rem;padding:0;">
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span><strong>GPT-5</strong> quality answers</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span><strong>50 AI uses/day</strong> · 5× free</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Band 6 model answers</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Cancel anytime</span></li>
                 </ul>
-                <button onclick="showUpgradeModal()" style="display:block;width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(108,99,255,0.3);transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Upgrade to Premium →</button>
+                <button class="sd-monthly-cta" data-plan="starter" onclick="createCheckout('starter')" style="display:block;width:100%;padding:12px;border:1px solid rgba(108,99,255,0.4);border-radius:12px;background:transparent;color:#a78bfa;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;" onmouseover="this.style.background='rgba(108,99,255,0.1)'" onmouseout="this.style.background='transparent'">Get Starter →</button>
             </div>
-            <!-- Lifetime -->
-            <div class="reveal stagger-3" style="flex:1;min-width:260px;max-width:300px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;">
-                <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap;" id="pricingFoundingBadge">Founding Members Only</div>
-                <div style="font-size:0.8rem;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem;">Lifetime</div>
-                <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:2px;">
-                    <span style="font-size:2.8rem;font-weight:800;color:var(--text);line-height:1;" id="pricingLifetimePrice">$14.99</span>
-                </div>
-                <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:4px;"><s style="color:#666;">$75/yr normally</s> — pay once, use forever</div>
-                <div style="font-size:0.8rem;color:#f59e0b;font-weight:600;margin-bottom:1.2rem;">⚡ Only <span id="pricingSpotsLeft">??</span> spots left</div>
-                <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:1.8rem;">
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Everything in Premium</li>
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> One-time payment</li>
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Covers all future tools</li>
-                    <li style="font-size:0.9rem;color:var(--text-sec);display:flex;align-items:center;gap:8px;"><span style="color:#22c55e;">✓</span> Early adopter OG badge</li>
+
+            <!-- Plus (most popular) -->
+            <div class="reveal stagger-3 sd-monthly-card" data-plan="plus" style="flex:1;min-width:240px;max-width:260px;background:linear-gradient(160deg,#1a1235 0%,#16202a 100%);border:1px solid rgba(108,99,255,0.5);border-radius:20px;padding:1.8rem;position:relative;">
+                <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:0.72rem;font-weight:700;padding:4px 14px;border-radius:20px;white-space:nowrap;">MOST POPULAR</div>
+                <div style="font-size:0.78rem;font-weight:700;color:rgba(108,99,255,0.95);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.7rem;">Plus</div>
+                <div style="font-size:2.6rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$9.99<span style="font-size:0.95rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
+                <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.3rem;">For exam-season volume</div>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:1.6rem;padding:0;">
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Everything in Starter</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span><strong>200 AI uses/day</strong> · near-unlimited</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Longer step-by-step answers</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Predicted ATAR estimate</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Per-tool caps removed</span></li>
                 </ul>
-                <button onclick="showUpgradeModal()" style="display:block;width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(108,99,255,0.3);transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Get Lifetime Access →</button>
+                <button class="sd-monthly-cta" data-plan="plus" onclick="createCheckout('plus')" style="display:block;width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(108,99,255,0.3);transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Get Plus →</button>
+            </div>
+
+            <!-- Pro -->
+            <div class="reveal stagger-4 sd-monthly-card" data-plan="pro" style="flex:1;min-width:240px;max-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:1.8rem;">
+                <div style="font-size:0.78rem;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.7rem;">Pro</div>
+                <div style="font-size:2.6rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$14.99<span style="font-size:0.95rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
+                <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.3rem;">Truly unlimited · flagship AI</div>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:1.6rem;padding:0;">
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Everything in Plus</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span><strong>Unlimited</strong> AI uses (fair-use)</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span><strong>GPT-5.1 flagship</strong> — exam-grade depth</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Priority response speed</span></li>
+                    <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Early access to new tools</span></li>
+                </ul>
+                <button class="sd-monthly-cta" data-plan="pro" onclick="createCheckout('pro')" style="display:block;width:100%;padding:12px;border:1px solid rgba(251,191,36,0.5);border-radius:12px;background:transparent;color:#fbbf24;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;" onmouseover="this.style.background='rgba(251,191,36,0.1)'" onmouseout="this.style.background='transparent'">Get Pro →</button>
             </div>
         </div>
+        <p id="foundingFootnote" style="text-align:center;color:var(--text-muted);font-size:0.82rem;margin:1.8rem auto 0;max-width:600px;line-height:1.55;">Monthly subscriptions unlock once the 200 founding lifetime spots sell out — grab the lifetime deal above for the cheapest path in.</p>
+        <p style="text-align:center;color:var(--text-muted);font-size:0.8rem;margin:0.7rem auto 0;max-width:600px;line-height:1.55;">🔒 Your essays, chats and uploads stay tied to your account — never sold, never used to train external AI.</p>
     </section>
 
     <!-- Level Selector Modal (fallback) -->
@@ -3104,18 +3177,30 @@
         fetch(API_BASE + '/api/stats/public')
             .then(r => r.json())
             .then(d => {
+                // Always render a credible social-proof line — never leave the
+                // hero spot empty just because a count is low. If we have real
+                // weekly numbers, show them; otherwise fall back to a generic
+                // "students using Study Decoder" so the slot stays populated.
                 const line = document.getElementById('heroSignupsLine');
-                if (line && d.weeklySignups > 0) {
-                    line.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.25);border-radius:50px;padding:6px 16px;font-size:0.9rem;font-weight:700;color:#ff9165;">🔥 ${d.weeklySignups} students joined</span>`;
+                if (line) {
+                    if (d.weeklySignups > 0) {
+                        line.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.25);border-radius:50px;padding:6px 16px;font-size:0.9rem;font-weight:700;color:#ff9165;">🔥 ${d.weeklySignups} students joined this week</span>`;
+                    } else if (d.totalUsers > 0) {
+                        line.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.22);border-radius:50px;padding:6px 16px;font-size:0.9rem;font-weight:700;color:#ff9165;">🇦🇺 ${d.totalUsers}+ HSC students on Study Decoder</span>`;
+                    } else {
+                        line.innerHTML = '<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.22);border-radius:50px;padding:6px 16px;font-size:0.9rem;font-weight:700;color:#ff9165;">🇦🇺 HSC students from across NSW</span>';
+                    }
                     line.style.display = '';
                 }
                 const countEl = document.getElementById('socialProofCount');
-                if (countEl && d.totalUsers > 0) {
-                    countEl.textContent = `Join ${d.totalUsers}+ HSC students already using Study Decoder`;
+                if (countEl) {
+                    countEl.textContent = d.totalUsers > 0
+                        ? `Join ${d.totalUsers}+ HSC students already using Study Decoder`
+                        : 'Built for NSW HSC students';
                 }
                 const badge = document.getElementById('socialProofWeeklyBadge');
                 if (badge && d.weeklySignups > 0) {
-                    badge.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.2);border-radius:50px;padding:7px 18px;font-size:0.88rem;font-weight:700;color:#ff9165;">🔥 ${d.weeklySignups} students joined</span>`;
+                    badge.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.2);border-radius:50px;padding:7px 18px;font-size:0.88rem;font-weight:700;color:#ff9165;">🔥 ${d.weeklySignups} students joined this week</span>`;
                     badge.style.display = 'block';
                 }
             }).catch(() => {});
@@ -4355,6 +4440,30 @@
         else textDiv.appendChild(el);
     }
 
+    // Render the top approved review directly above the pricing block. One real
+    // review next to the Buy button outpulls the mid-page review carousel.
+    async function loadPricingReview() {
+        try {
+            const res = await fetch('/api/reviews/public');
+            if (!res.ok) return;
+            const { reviews } = await res.json();
+            if (!reviews || !reviews.length) return;
+            // Pick the highest-rated, most recent review.
+            const top = reviews.slice().sort((a, b) => (b.rating - a.rating) || ((b.createdAt || '') > (a.createdAt || '') ? 1 : -1))[0];
+            const strip = document.getElementById('pricingReviewStrip');
+            if (!strip) return;
+            const stars = '★'.repeat(top.rating) + '☆'.repeat(5 - top.rating);
+            const who = top.displayName || top.name || 'Verified student';
+            const bot = top.botType ? ' · ' + top.botType.replace(/-/g, ' ') : '';
+            strip.innerHTML = `
+                <div style="color:#f59e0b;font-size:1rem;margin-bottom:6px;letter-spacing:2px;">${stars}</div>
+                <div style="font-size:1.02rem;color:#e7e9ea;font-style:italic;line-height:1.55;margin-bottom:8px;">&ldquo;${escHtml(top.text || '')}&rdquo;</div>
+                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">— ${escHtml(who)}${escHtml(bot)}</div>
+            `;
+            strip.style.display = '';
+        } catch (e) { /* fail silently */ }
+    }
+
     // ── BOT USAGE BADGES ──
     async function loadBotUsageBadges() {
         try {
@@ -4507,6 +4616,7 @@
     // Run on load
     loadBotReviews();
     loadBotUsageBadges();
+    loadPricingReview();
     // Funnel: fire landing_view once sdTrack (from deferred ui-helpers.js) is
     // ready. This inline script runs during parse, before deferred scripts, so
     // calling sdTrack synchronously here would silently no-op.
