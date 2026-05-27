@@ -32,7 +32,7 @@
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--tool-bg); color: #e7e9ea;
         }
-        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100%; overflow-x: hidden; }
+        .app-container { display: flex; flex-direction: column; height: 100vh; height: 100dvh; width: 100%; overflow-x: hidden; }
         .header {
             background: var(--tool-surface); border-bottom: 1px solid #2f3336;
             padding: 12px 24px; display: flex; align-items: center;
@@ -165,7 +165,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100vh; height: 100dvh;
             background: var(--tool-bg);
             display: flex;
             flex-direction: column;
@@ -197,13 +197,13 @@
         }
         .history-btn:hover { background: rgba(108, 99, 255, 0.2); }
         .history-panel {
-            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh;
+            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh; height: 100dvh;
             background: var(--tool-surface); border-left: 1px solid #2f3336; z-index: 1000;
             transition: right 0.3s ease; display: flex; flex-direction: column;
         }
         .history-panel.open { right: 0; }
         .history-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
             background: rgba(0,0,0,0.5); z-index: 999; display: none;
         }
         .history-overlay.open { display: block; }
@@ -281,7 +281,7 @@
         @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
 
         /* ===== INTERACTIVE EXAM MODE STYLES ===== */
-        .exam-view { display: none; height: 100vh; flex-direction: column; }
+        .exam-view { display: none; height: 100vh; height: 100dvh; flex-direction: column; }
         .exam-view.active { display: flex; }
         /* Hide the floating Upgrade FAB whenever the exam view is open — it overlaps exam controls and progress dots. */
         .exam-view.active ~ .sd-upgrade-float,
@@ -313,7 +313,7 @@
         /* Lockdown overlay for tab-switch violations */
         .lockdown-overlay {
             display: none;
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
             background: rgba(0,0,0,0.92); z-index: 99999;
             justify-content: center; align-items: center; flex-direction: column;
         }
@@ -644,7 +644,7 @@
         </div>
 
         <!-- ACTIVE MODE VIEW -->
-        <div id="activeView" style="display: none; height: 100vh; flex-direction: column;">
+        <div id="activeView" style="display: none; height: 100vh; height: 100dvh; flex-direction: column;">
             <header class="header">
                 <div class="header-left">
                     <a href="index.html" class="back-btn">← Home</a>

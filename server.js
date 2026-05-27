@@ -8576,6 +8576,61 @@ function distributeMarks(total, count, min, max) {
     return marks;
 }
 
+// Snap a marks array to a fixed allowed set (used for subjects whose real
+// NESA papers only use specific mark values, e.g. Enterprise Computing
+// uses {1,2,3,4,5,8} and never 6 or 7). Preserves the total mark count
+// exactly by redistributing any disallowed marks across nearby valid
+// slots. If a perfect mapping isn't possible (rare), it returns the
+// closest-by-total result rather than the original disallowed values.
+function snapMarksToAllowed(marks, allowed) {
+    if (!Array.isArray(marks) || marks.length === 0) return marks;
+    const allowedSorted = [...new Set(allowed)].sort((a, b) => a - b);
+    const targetTotal = marks.reduce((a, b) => a + b, 0);
+    // Map each mark to the nearest allowed value (round half down).
+    let snapped = marks.map(m => {
+        let best = allowedSorted[0], bestDiff = Math.abs(allowedSorted[0] - m);
+        for (const v of allowedSorted) {
+            const d = Math.abs(v - m);
+            if (d < bestDiff || (d === bestDiff && v < best)) { best = v; bestDiff = d; }
+        }
+        return best;
+    });
+    // Rebalance so the total matches the target.
+    let drift = snapped.reduce((a, b) => a + b, 0) - targetTotal;
+    // If snapped is too high, bump some down to the next-lower allowed.
+    // If too low, bump some up to the next-higher allowed. Walk from the
+    // largest slot down for predictable behaviour.
+    const order = snapped
+        .map((v, i) => ({ v, i }))
+        .sort((a, b) => b.v - a.v)
+        .map(x => x.i);
+    let guard = 200;
+    while (drift !== 0 && guard-- > 0) {
+        let moved = false;
+        for (const i of order) {
+            const cur = snapped[i];
+            const idx = allowedSorted.indexOf(cur);
+            if (drift > 0 && idx > 0) {
+                const next = allowedSorted[idx - 1];
+                const step = cur - next;
+                if (step > 0 && step <= drift) {
+                    snapped[i] = next; drift -= step; moved = true;
+                    if (drift === 0) break;
+                }
+            } else if (drift < 0 && idx < allowedSorted.length - 1) {
+                const next = allowedSorted[idx + 1];
+                const step = next - cur;
+                if (step > 0 && step <= -drift) {
+                    snapped[i] = next; drift += step; moved = true;
+                    if (drift === 0) break;
+                }
+            }
+        }
+        if (!moved) break;
+    }
+    return snapped;
+}
+
 // Compute exact per-question mark allocation for any category/subject/duration
 function computeExamAllocation(category, subject, durationHours, totalMarks, topics) {
     const sections = [];
@@ -8748,7 +8803,12 @@ function computeExamAllocation(category, subject, durationHours, totalMarks, top
         const mc = 10;
         sections.push({ name: 'Section I — Multiple Choice', marks: new Array(mc).fill(1) });
         const shortCount = d === 1 ? 12 : d === 2 ? 16 : 20;
-        sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(totalMarks - mc, shortCount, 3, 8) });
+        // Real NESA Enterprise Computing papers only use {1,2,3,4,5,8}
+        // mark allocations. Snap to that set so the AI never has to
+        // generate (or justify) a 6- or 7-mark Enterprise Computing
+        // question — those don't exist in authentic exams.
+        const ecRaw = distributeMarks(totalMarks - mc, shortCount, 3, 8);
+        sections.push({ name: 'Section II — Short Answer', marks: snapMarksToAllowed(ecRaw, [1, 2, 3, 4, 5, 8]) });
 
     // ---- TAS: Software Engineering ----
     } else if (category === 'tas' && subject === 'software-engineering') {
@@ -9299,21 +9359,22 @@ TOTAL: EXACTLY 100 marks. NO multiple choice for Creative Arts.`;
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — Enterprise Computing — NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks (includes matching, dropdown, and standard MC)
-- Section II — Short Answer: 10-14 questions totalling 50 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b). Include practical tasks: SQL queries, spreadsheet formulas, DFD construction, UI design, data dictionary completion.
+- Section II — Short Answer: 10-14 questions totalling 50 marks. Each question or sub-part MUST be worth exactly one of {1, 2, 3, 4, 5, 8} marks — NEVER 6 or 7. Most questions should have sub-parts (a)(b) so a 5-mark question becomes (a) 2 + (b) 3 etc. Include practical tasks: SQL queries, spreadsheet formulas, DFD construction, UI design, data dictionary completion.
 TOTAL: EXACTLY 60 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — Enterprise Computing — REAL HSC FORMAT, NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks (includes matching, dropdown, and standard MC)
-- Section II — Short Answer: 15-18 questions totalling 70 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b). Include practical tasks: SQL queries, spreadsheet formulas/design, DFD construction, UI prototyping, data dictionary completion, true/false checkbox questions.
+- Section II — Short Answer: 15-18 questions totalling 70 marks. Each question or sub-part MUST be worth exactly one of {1, 2, 3, 4, 5, 8} marks — NEVER 6 or 7. Most questions should have sub-parts (a)(b) so a 5-mark question becomes (a) 2 + (b) 3 etc. Include practical tasks: SQL queries, spreadsheet formulas/design, DFD construction, UI prototyping, data dictionary completion, true/false checkbox questions.
 TOTAL: EXACTLY 80 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — Enterprise Computing — NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 18-22 questions totalling 90 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include practical tasks: SQL queries, spreadsheet formulas, DFDs, UI design, data dictionaries.
+- Section II — Short Answer: 18-22 questions totalling 90 marks. Each question or sub-part MUST be worth exactly one of {1, 2, 3, 4, 5, 8} marks — NEVER 6 or 7. Most questions should have sub-parts (a)(b)(c) so a 5-mark question becomes (a) 2 + (b) 3 etc. Include practical tasks: SQL queries, spreadsheet formulas, DFDs, UI design, data dictionaries.
 TOTAL: EXACTLY 100 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
             }
             categoryRules = `ENTERPRISE COMPUTING-SPECIFIC RULES (based on real 2025 HSC marking guidelines):
 - ABSOLUTELY NO extended response questions. The maximum marks for ANY single question is 8.
+- ALLOWED MARK VALUES (HARD RULE): every question and every sub-part must be worth EXACTLY one of {1, 2, 3, 4, 5, 8} marks. NEVER use 6 marks, NEVER use 7 marks, NEVER use 9+ marks. Real NESA Enterprise Computing exams do not use 6- or 7-mark allocations — a 6-mark question is an instant give-away that the exam is not authentic. If you need a higher total, split it across sub-parts (e.g. a 6-mark idea becomes (a) 3 + (b) 3).
 - Question types from real exam: standard MC, matching (drag/drop), true/false checkbox sets (2 marks: all correct = 2, most correct = 1), dropdown completion, short answer describe/explain/outline.
 - Practical tasks are ESSENTIAL: SQL queries (SELECT with JOIN, WHERE, ORDER BY), spreadsheet design with formulas, data flow diagrams, user interface prototyping, data dictionary completion.
 - Content areas: Data science (data warehousing, data mining, data dictionaries, databases, SQL, spreadsheets), Data visualisation (charts, graphs, user experience, bias), Intelligent systems (expert systems, forward/backward chaining, decision support systems, neural networks), Enterprise project (DFDs, project management tools like Gantt charts, prototyping, requirements gathering, WHS).
