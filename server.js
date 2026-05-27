@@ -1052,18 +1052,69 @@ if (!config.isDev) {
     app.set('trust proxy', 1);
 }
 
-// Body parsing - raw for Stripe webhooks, large limit for image uploads, JSON for everything else
+// Body parsing. The global limits below take effect BEFORE per-route
+// express.json() calls, so they're authoritative for max body size.
+//
+// Per-endpoint sizing rules:
+//   /api/stripe-webhook         raw         Stripe-signed bytes
+//   image-bearing endpoints     25mb        drawings, photos, OCR
+//   chat history endpoints      1mb         multi-turn conversation
+//   teacher rubric/bulk         200kb       pasted essays
+//   everything else             100kb       generous default -- tiny
+//                                            endpoints have stricter
+//                                            limits applied on the route
+//                                            (e.g. /api/track at 2kb).
 app.use((req, res, next) => {
-    if (req.originalUrl === '/api/stripe-webhook') {
-        express.raw({ type: 'application/json' })(req, res, next);
-    } else if (req.originalUrl === '/api/chat/worksheet' || req.originalUrl === '/api/chat/notes-transcriber') {
-        express.json({ limit: '25mb' })(req, res, next);
-    } else if (req.originalUrl.startsWith('/api/teacher/ai/')) {
-        // Rubric marker / bulk worksheet builder accept pasted essays + rubrics
-        express.json({ limit: '200kb' })(req, res, next);
-    } else {
-        express.json({ limit: '10kb' })(req, res, next);
+    const url = req.originalUrl;
+    // Stripe-signed raw body must not be JSON-parsed.
+    if (url === '/api/stripe-webhook') {
+        return express.raw({ type: 'application/json' })(req, res, next);
     }
+    // Endpoints that carry base64 drawings, photos, or OCR uploads.
+    // Critical: /api/exam/mark receives the full exam JSON plus every
+    // student answer including data: URLs for drawing/graph widgets,
+    // which routinely exceeds 1MB. Was silently being rejected with the
+    // old 10kb default, surfacing to the client as a generic 500/413.
+    if (
+        url === '/api/chat/worksheet' ||
+        url === '/api/chat/notes-transcriber' ||
+        url === '/api/exam/mark' ||
+        url === '/api/exam/generate' ||
+        url.startsWith('/api/student/assignments/')
+    ) {
+        return express.json({ limit: '25mb' })(req, res, next);
+    }
+    // Chat endpoints carry growing message history.
+    if (url.startsWith('/api/chat/')) {
+        return express.json({ limit: '1mb' })(req, res, next);
+    }
+    // Teacher rubric marker + bulk worksheet builder accept pasted essays.
+    if (url.startsWith('/api/teacher/ai/')) {
+        return express.json({ limit: '200kb' })(req, res, next);
+    }
+    // Everything else: a sane default. Routes that want a stricter limit
+    // (e.g. /api/track, /api/contact) declare it on the route itself, but
+    // since the global parser runs first, we use a generous-but-bounded
+    // 100kb here so legitimate payloads (worksheet config, scores, etc.)
+    // are never silently truncated.
+    return express.json({ limit: '100kb' })(req, res, next);
+});
+
+// Body-parser error handler: convert PayloadTooLargeError / SyntaxError
+// into clean 413/400 JSON responses so the client shows something useful
+// instead of bare 500. Express's default sends HTML, which the practice
+// page would surface as 'Server error 500'.
+app.use((err, req, res, next) => {
+    if (err && err.type === 'entity.too.large') {
+        return res.status(413).json({
+            error: 'Request payload too large. Try fewer drawings or split your exam into smaller batches.',
+            limit: err.limit, length: err.length
+        });
+    }
+    if (err && err.type === 'entity.parse.failed') {
+        return res.status(400).json({ error: 'Invalid JSON in request body.' });
+    }
+    return next(err);
 });
 
 // Session with file store
@@ -3194,11 +3245,24 @@ async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMod
     // to 'low' so structured generations (teacher tools, assignments) stay fast.
     if (isGpt5) body.reasoning_effort = reasoningEffort || 'low';
     if (jsonMode) body.response_format = { type: 'json_object' };
-    const r = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
-        body: JSON.stringify(body)
-    });
+    // Per-call hard timeout so a hung OpenAI request can't pin the
+    // event loop and surface to the user as 'stuck on loading' forever.
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 110000);
+    let r;
+    try {
+        r = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
+            body: JSON.stringify(body),
+            signal: controller.signal
+        });
+    } catch (e) {
+        if (e.name === 'AbortError') throw new Error('OpenAI request timed out after 110s. Try a shorter prompt or retry.');
+        throw e;
+    } finally {
+        clearTimeout(tid);
+    }
     if (!r.ok) {
         const err = await r.json().catch(() => ({}));
         throw new Error('OpenAI error: ' + (err.error?.message || ('HTTP ' + r.status)));
@@ -7362,7 +7426,8 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         
         if (!response.ok) {
@@ -8360,7 +8425,8 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         if (!response.ok) {
             const error = await response.json();
@@ -8427,7 +8493,8 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         if (!response.ok) {
             const error = await response.json();
@@ -9850,7 +9917,8 @@ CRITICAL JSON RULES:
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify(requestBody),
+                signal: AbortSignal.timeout(115000)
             });
 
             if (!response.ok) {
@@ -10452,7 +10520,8 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify(requestBody),
+                signal: AbortSignal.timeout(115000)
             });
 
             if (!response.ok) {
@@ -10495,7 +10564,8 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                     const retryRes = await fetch('https://api.openai.com/v1/chat/completions', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-                        body: JSON.stringify(retryBody)
+                        body: JSON.stringify(retryBody),
+                        signal: AbortSignal.timeout(115000)
                     });
                     if (retryRes.ok) {
                         const retryData = await retryRes.json();
@@ -10688,7 +10758,8 @@ Return ONLY valid JSON: {"sampleAnswer": "<the full sample answer text>"}`;
         const r = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         if (!r.ok) {
             const err = await r.json().catch(() => ({}));
@@ -10903,7 +10974,8 @@ ${syllabusContext || '(No syllabus content available — rely on standard curric
         const r = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         if (!r.ok) {
             const err = await r.json().catch(() => ({}));
@@ -11272,7 +11344,8 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         
         if (!response.ok) {
@@ -11386,7 +11459,8 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         
         if (!response.ok) {
@@ -11609,7 +11683,8 @@ app.get('/api/challenge/today', requireAuth, async (req, res) => {
                 ],
                 max_tokens: 400,
                 temperature: 0.8
-            })
+            }),
+            signal: AbortSignal.timeout(115000)
         });
         const data  = await response.json();
         const raw   = data.choices?.[0]?.message?.content || '{}';
@@ -11658,7 +11733,8 @@ app.post('/api/challenge/submit', requireAuth, express.json(), async (req, res) 
                 ],
                 max_tokens: 600,
                 temperature: 0.3
-            })
+            }),
+            signal: AbortSignal.timeout(115000)
         });
         const data = await response.json();
         const raw = data.choices?.[0]?.message?.content || '{}';
