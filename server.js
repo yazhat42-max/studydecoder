@@ -12498,13 +12498,22 @@ app.get(['/blog', '/blog/'], (req, res) => {
     res.sendFile(path.join(__dirname, 'blog', 'index.html'));
 });
 
-// Serve index.html for SPA-like behavior (only for non-API routes)
+// Serve a real 404 for non-API routes that don't match any static file or
+// dynamic handler. This fixes the soft-404 bug where every unknown URL
+// previously returned the homepage with HTTP 200 — bad for SEO.
 app.get('*', (req, res, next) => {
-    // Don't serve HTML for API routes
+    // Don't serve HTML for API routes; let the JSON 404 below handle them.
     if (req.path.startsWith('/api/')) {
         return next();
     }
-    sendRenderedIndex(req, res);
+    res.status(404);
+    const notFoundPath = path.join(__dirname, '404.html');
+    if (fs.existsSync(notFoundPath)) {
+        res.set('Content-Type', 'text/html; charset=utf-8');
+        return res.sendFile(notFoundPath);
+    }
+    res.set('Content-Type', 'text/plain; charset=utf-8');
+    res.send('Not found');
 });
 
 // ==================== ERROR HANDLING ==
