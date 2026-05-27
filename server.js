@@ -132,10 +132,27 @@ function loadDB(filePath, defaultData = {}) {
 }
 
 function saveDB(filePath, data) {
+    // Atomic write: serialize, write to a temp file in the same directory,
+    // fsync, then rename. POSIX rename is atomic on the same filesystem, so a
+    // crash mid-write can never leave a half-written JSON behind (which used
+    // to be a real data-loss risk for users.json). Pretty-printing is kept in
+    // dev for diff-friendliness, dropped in prod to halve disk traffic.
+    const tmp = `${filePath}.tmp-${process.pid}-${Date.now()}`;
     try {
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        const payload = config.isDev
+            ? JSON.stringify(data, null, 2)
+            : JSON.stringify(data);
+        const fd = fs.openSync(tmp, 'w');
+        try {
+            fs.writeSync(fd, payload);
+            fs.fsyncSync(fd);
+        } finally {
+            fs.closeSync(fd);
+        }
+        fs.renameSync(tmp, filePath);
     } catch (e) {
         console.error(`Error saving ${filePath}:`, e.message);
+        try { if (fs.existsSync(tmp)) fs.unlinkSync(tmp); } catch (_) {}
     }
 }
 
@@ -1280,7 +1297,7 @@ async function autoSyncStripeSubscription(userId, email) {
         );
         
         if (completedSession) {
-            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 1000 ? 'monthly' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
+            const plan = resolvePlanFromSession(completedSession);
             const existingUser = getUser(userId);
             
             // If already valid but plan is wrong, correct it
@@ -1427,6 +1444,39 @@ function recordUserBotUsage(userId, botType) {
 /**
  * Log payment
  */
+/**
+ * Resolve a Stripe Checkout Session's plan name from session metadata.
+ * Sessions created by this app always set metadata.plan when checkout
+ * begins. If metadata is missing (e.g. external Payment Link, or a
+ * legacy session) we refuse to guess from amount_total — the previous
+ * amount-based fallback was inverted (charged $14.99 mis-labelled as
+ * 'lifetime') and would silently corrupt entitlements. Optional price
+ * ID fallback can be configured via STRIPE_PRICE_ID_<PLAN> env vars.
+ */
+function resolvePlanFromSession(session) {
+    if (!session) return null;
+    const metaPlan = session.metadata?.plan;
+    if (metaPlan) return metaPlan;
+    // Optional fallback: price-id lookup from env. Set
+    // STRIPE_PRICE_ID_MONTHLY / _YEARLY / _LIFETIME / _DAYPASS in
+    // env to enable matching external Payment Links to a plan name.
+    try {
+        const items = session.line_items?.data || session.display_items || [];
+        const priceId = items[0]?.price?.id || session.metadata?.price_id;
+        if (priceId) {
+            const mapping = {
+                [process.env.STRIPE_PRICE_ID_MONTHLY || '']: 'monthly',
+                [process.env.STRIPE_PRICE_ID_YEARLY || '']: 'yearly',
+                [process.env.STRIPE_PRICE_ID_LIFETIME || '']: 'lifetime',
+                [process.env.STRIPE_PRICE_ID_DAYPASS || '']: 'daypass'
+            };
+            if (mapping[priceId]) return mapping[priceId];
+        }
+    } catch (e) { /* fall through */ }
+    console.warn('[Stripe Webhook] Could not resolve plan for session', session.id, '— metadata.plan missing and no price-id mapping configured. Skipping.');
+    return null;
+}
+
 function logPayment(data) {
     db.payments.push({
         id: crypto.randomUUID(),
@@ -5157,7 +5207,7 @@ app.post('/api/verify-payment', requireAuth, async (req, res) => {
             s.payment_status === 'paid' || s.payment_status === 'no_payment_required'
         );
         if (completedSession) {
-            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 1000 ? 'monthly' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
+            const plan = resolvePlanFromSession(completedSession);
             const expiration = new Date();
             if (plan === 'lifetime') {
                 expiration.setFullYear(expiration.getFullYear() + 100);
@@ -5351,14 +5401,23 @@ app.post('/api/stripe-webhook', async (req, res) => {
         console.error('Webhook signature verification failed:', err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
-    
+
+    // Idempotency: Stripe retries deliveries on 5xx / network errors. If we've
+    // already processed this event.id, return 200 immediately so we don't grant
+    // a day pass / extend a subscription twice. db.payments is the source of
+    // truth — every state change writes a row tagged with stripeEventId.
+    if (event.id && db.payments.some(p => p.stripeEventId === event.id)) {
+        console.log(`[Stripe Webhook] Skipping duplicate event ${event.id} (${event.type})`);
+        return res.json({ received: true, duplicate: true });
+    }
+
     try {
         switch (event.type) {
             case 'checkout.session.completed': {
                 const session = event.data.object;
                 let userId = session.metadata?.userId;
                 // Detect plan from metadata, or fallback to amount-based detection
-                const plan = session.metadata?.plan || (session.amount_total <= 1000 ? 'monthly' : session.amount_total <= 5000 ? 'lifetime' : 'yearly');
+                const plan = resolvePlanFromSession(session);
 
                 // ── Day Pass ──
                 if (plan === 'daypass') {
@@ -12533,8 +12592,19 @@ app.use('/api/*', (req, res) => {
 
 function shutdown() {
     console.log('\n🛑 Shutting down gracefully...');
-    saveDB(USERS_FILE, db.users);
-    saveDB(PAYMENTS_FILE, db.payments);
+    // Cancel any pending debounced save so we don't fight ourselves.
+    try { if (typeof saveTimeout !== 'undefined' && saveTimeout) clearTimeout(saveTimeout); } catch (_) {}
+    // Flush ALL persistent state, not just users+payments. A SIGTERM that
+    // landed inside the 1-second debounce used to lose reviews/classes/etc.
+    try { saveDB(USERS_FILE, db.users); } catch (_) {}
+    try { saveDB(PAYMENTS_FILE, db.payments); } catch (_) {}
+    try { saveDB(REVIEWS_FILE, db.reviews); } catch (_) {}
+    try { saveDB(BOTSTATS_FILE, db.botStats); } catch (_) {}
+    try { saveDB(CLASSES_FILE, db.classes); } catch (_) {}
+    try { saveDB(OG_CODES_FILE, ogCodesState); } catch (_) {}
+    try { saveDB(ANALYTICS_FILE, db.analytics || {}); } catch (_) {}
+    try { saveDB(FREEUSAGE_FILE, db.freeUsage || {}); } catch (_) {}
+    try { saveDB(EXAMUSAGE_FILE, db.examUsage || {}); } catch (_) {}
     process.exit(0);
 }
 
