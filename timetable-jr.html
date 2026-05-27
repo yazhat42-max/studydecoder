@@ -437,7 +437,7 @@ Please create a weekly study timetable with specific times and subjects.`;
             try {
                 const res = await fetch(`${API_BASE}/api/subscription`, {
                     credentials: 'include'
-                });
+                , signal: AbortSignal.timeout(8000) });
                 
                 if (!res.ok) {
                     window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
@@ -475,5 +475,6 @@ Please create a weekly study timetable with specific times and subjects.`;
         
         checkAuth();
     </script>
+    <script src="auth-guard.js"></script>
 </body>
 </html>

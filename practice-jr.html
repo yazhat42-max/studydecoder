@@ -574,6 +574,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script src="/ui-helpers.js" defer></script>
+    <script src="auth-guard.js"></script>
     <script src="module-multiselect.js"></script>
     <link rel="stylesheet" href="app-shell.css">
 <script>(function(){try{var t=localStorage.getItem('sd_theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
@@ -1749,7 +1750,7 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
             try {
                 const res = await fetch(`${API_BASE}/api/subscription`, {
                     credentials: 'include'
-                });
+                , signal: AbortSignal.timeout(8000) });
                 
                 if (!res.ok) {
                     window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);

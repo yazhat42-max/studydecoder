@@ -142,6 +142,7 @@
         .hidden { display: none !important; }
     </style>
     <script src="/ui-helpers.js" defer></script>
+    <script src="auth-guard.js"></script>
     <script src="module-multiselect.js"></script>
     <link rel="stylesheet" href="app-shell.css">
 <script>(function(){try{var t=localStorage.getItem('sd_theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
@@ -438,7 +439,7 @@
             try {
                 const res = await fetch(`${API_BASE}/api/subscription`, {
                     credentials: 'include'
-                });
+                , signal: AbortSignal.timeout(8000) });
                 
                 if (!res.ok) {
                     window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
