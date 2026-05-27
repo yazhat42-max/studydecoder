@@ -6,7 +6,7 @@
  *   // msg: { emoji, headline, body, ctaLabel, softCta }
  */
 
-window.Upsell = (function () {
+window.SDUpsell = window.Upsell = (function () {
     const COPY = {
         practice: {
             exam: {
@@ -524,6 +524,46 @@ window.Upsell = (function () {
         }
         selectEl.selectedIndex = fallbackIdx >= 0 ? fallbackIdx : -1;
         return true;
+    }
+
+    /**
+     * Inspect a fetch Response for paywall / subject-lock signals and show
+     * the matching upgrade modal. Returns true if the response was "handled"
+     * (caller should bail out of its normal flow), false otherwise.
+     *
+     * Used from every tool page like:
+     *   if (window.SDUpsell && await window.SDUpsell.handleApiError(res)) return;
+     *
+     * Recognised signals:
+     *   - 402 Payment Required (any body)
+     *   - 4xx with body.error === 'free_tier_limit' | 'paywall' | 'upgrade_required'
+     *   - 403 with body.error === 'subject_locked'
+     */
+    async function handleApiError(response) {
+        if (!response || response.ok) return false;
+        let body = {};
+        try {
+            body = await response.clone().json();
+        } catch (e) {
+            body = {};
+        }
+        const err = body && body.error;
+        const upgradeErrors = ['free_tier_limit', 'paywall', 'upgrade_required'];
+        if (response.status === 402 || upgradeErrors.indexOf(err) !== -1) {
+            try { showPageUpgradeModal(); } catch (e) { /* ignore */ }
+            return true;
+        }
+        if (response.status === 403 && err === 'subject_locked') {
+            try {
+                showSubjectLockedModal({
+                    subject: body.subject,
+                    requestedSubjectName: body.requestedSubjectName || body.subjectName,
+                    enrolledSubjects: Array.isArray(body.enrolledSubjects) ? body.enrolledSubjects : []
+                });
+            } catch (e) { /* ignore */ }
+            return true;
+        }
+        return false;
     }
 
     return { get, renderModal, notifyOnReset, checkReminder, checkGracePeriodEnding, showPageUpgradeModal, showSubjectLockedModal, handleApiError, setCachedUser, isSubjectLocked, decorateSubjectSelect, onSubjectChange };
