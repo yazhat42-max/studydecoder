@@ -84,10 +84,15 @@ if (!config.sessionSecret) {
     }
 }
 
-// Initialize Stripe
+// Initialize Stripe. Pin apiVersion explicitly so silent SDK-default
+// drifts can't change webhook event shapes underneath us.
 let stripe = null;
 if (config.stripe.secretKey) {
-    stripe = require('stripe')(config.stripe.secretKey);
+    stripe = require('stripe')(config.stripe.secretKey, {
+        apiVersion: '2023-10-16',
+        maxNetworkRetries: 2,
+        timeout: 20000
+    });
 }
 
 // ==================== DATABASE (JSON File-Based) ====================
@@ -1680,6 +1685,9 @@ function sanitizeInput(input) {
  */
 function isValidPassword(password) {
     if (!password || password.length < 8) return false;
+    // Cap password length to bound bcrypt cost. Without this an attacker
+    // can submit a 1 MB password and pin the event loop hashing it.
+    if (password.length > 128) return false;
     // Require at least: 1 uppercase, 1 lowercase, 1 number
     return /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password);
 }
@@ -8925,7 +8933,7 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     console.log(`📝 Exam generate for ${subjectName}: syllabus=${syllabusContent ? syllabusContent.length + ' chars' : 'NONE'}, papers=${examPapers ? examPapers.length + ' chars' : 'NONE'}, MG=${mgContent ? mgContent.length + ' chars' : 'NONE'}, total context=${contextPrompt.length} chars`);
 
     // Generate a unique seed to ensure variety across exams
-    const examSeed = `SEED-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+    const examSeed = `SEED-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
 
     // Build previous questions list to prevent repeats (per user, per subject+topic).
     // Stored on the user object so a page refresh / new session doesn't reset history
