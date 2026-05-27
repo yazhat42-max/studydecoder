@@ -12411,6 +12411,9 @@ function seoShell({ title, desc, canonical, body }) {
 <link rel="canonical" href="${site}${canonical}">
 <meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(desc)}">
 <meta property="og:type" content="article"><meta property="og:url" content="${site}${canonical}">
+<meta property="og:image" content="${site}/logo.png"><meta property="og:site_name" content="Study Decoder"><meta property="og:locale" content="en_AU">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(desc)}"><meta name="twitter:image" content="${site}/logo.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":${JSON.stringify(title)},"description":${JSON.stringify(desc)},"url":${JSON.stringify(site + canonical)},"inLanguage":"en-AU","educationalLevel":"HighSchool","provider":{"@type":"Organization","name":"Study Decoder","url":${JSON.stringify(site + "/")},"logo":${JSON.stringify(site + "/logo.png")}},"audience":{"@type":"EducationalAudience","educationalRole":"student","audienceType":"NSW high school students"},"offers":{"@type":"Offer","price":"0","priceCurrency":"AUD","category":"free"}}</script>
 <link rel="icon" type="image/png" href="/logo.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -12467,6 +12470,7 @@ app.get('/learn', (req, res) => {
     }
     body += seoCta('Ready to actually study, not just read?');
     res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(seoShell({ title: 'Decode the NSW Syllabus in Plain English | Study Decoder', desc: 'Free plain-English breakdowns of every NSW HSC and Years 7–10 syllabus module. Understand what each topic really means, then practise it with AI.', canonical: '/learn', body }));
 });
 
@@ -12487,6 +12491,7 @@ app.get('/learn/:subjectSlug', (req, res, next) => {
     }
     body += seoCta(`Master ${s.name} faster`);
     res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(seoShell({ title: `${s.name} (${levelWord}) Syllabus Decoded | Study Decoder`, desc: `Every ${s.name} module explained in plain English, aligned to the NSW NESA syllabus. Then practise with AI-marked questions.`, canonical: `/learn/${s.slug}`, body }));
 });
 
@@ -12519,6 +12524,7 @@ app.get('/learn/:subjectSlug/:moduleSlug', (req, res, next) => {
         body += `</div>`;
     }
     res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(seoShell({ title: `${m.name} — ${s.name} Explained Simply | Study Decoder`, desc: `${m.name} (${s.name}, ${levelWord}) decoded in plain English, aligned to the NSW NESA syllabus. Understand it, then practise with AI.`, canonical: `/learn/${s.slug}/${m.slug}`, body }));
 });
 
@@ -12533,6 +12539,7 @@ app.get('/sitemap-learn.xml', (req, res) => {
     const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
         urls.map(u => `  <url><loc>${u}</loc><changefreq>monthly</changefreq></url>`).join('\n') + `\n</urlset>`;
     res.set('Content-Type', 'application/xml; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=600, s-maxage=1800');
     res.send(xml);
 });
 
@@ -12556,6 +12563,9 @@ app.use(express.static(path.join(__dirname), {
 app.get(['/blog', '/blog/'], (req, res) => {
     res.sendFile(path.join(__dirname, 'blog', 'index.html'));
 });
+
+// 301 redirect for the deprecated sign-in.html (duplicate of login.html).
+app.get(['/sign-in', '/sign-in.html'], (req, res) => res.redirect(301, '/login.html'));
 
 // Serve a real 404 for non-API routes that don't match any static file or
 // dynamic handler. This fixes the soft-404 bug where every unknown URL
