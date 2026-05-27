@@ -84,10 +84,15 @@ if (!config.sessionSecret) {
     }
 }
 
-// Initialize Stripe
+// Initialize Stripe. Pin apiVersion explicitly so silent SDK-default
+// drifts can't change webhook event shapes underneath us.
 let stripe = null;
 if (config.stripe.secretKey) {
-    stripe = require('stripe')(config.stripe.secretKey);
+    stripe = require('stripe')(config.stripe.secretKey, {
+        apiVersion: '2023-10-16',
+        maxNetworkRetries: 2,
+        timeout: 20000
+    });
 }
 
 // ==================== DATABASE (JSON File-Based) ====================
@@ -132,10 +137,27 @@ function loadDB(filePath, defaultData = {}) {
 }
 
 function saveDB(filePath, data) {
+    // Atomic write: serialize, write to a temp file in the same directory,
+    // fsync, then rename. POSIX rename is atomic on the same filesystem, so a
+    // crash mid-write can never leave a half-written JSON behind (which used
+    // to be a real data-loss risk for users.json). Pretty-printing is kept in
+    // dev for diff-friendliness, dropped in prod to halve disk traffic.
+    const tmp = `${filePath}.tmp-${process.pid}-${Date.now()}`;
     try {
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        const payload = config.isDev
+            ? JSON.stringify(data, null, 2)
+            : JSON.stringify(data);
+        const fd = fs.openSync(tmp, 'w');
+        try {
+            fs.writeSync(fd, payload);
+            fs.fsyncSync(fd);
+        } finally {
+            fs.closeSync(fd);
+        }
+        fs.renameSync(tmp, filePath);
     } catch (e) {
         console.error(`Error saving ${filePath}:`, e.message);
+        try { if (fs.existsSync(tmp)) fs.unlinkSync(tmp); } catch (_) {}
     }
 }
 
@@ -1280,7 +1302,7 @@ async function autoSyncStripeSubscription(userId, email) {
         );
         
         if (completedSession) {
-            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 1000 ? 'monthly' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
+            const plan = resolvePlanFromSession(completedSession);
             const existingUser = getUser(userId);
             
             // If already valid but plan is wrong, correct it
@@ -1427,6 +1449,39 @@ function recordUserBotUsage(userId, botType) {
 /**
  * Log payment
  */
+/**
+ * Resolve a Stripe Checkout Session's plan name from session metadata.
+ * Sessions created by this app always set metadata.plan when checkout
+ * begins. If metadata is missing (e.g. external Payment Link, or a
+ * legacy session) we refuse to guess from amount_total — the previous
+ * amount-based fallback was inverted (charged $14.99 mis-labelled as
+ * 'lifetime') and would silently corrupt entitlements. Optional price
+ * ID fallback can be configured via STRIPE_PRICE_ID_<PLAN> env vars.
+ */
+function resolvePlanFromSession(session) {
+    if (!session) return null;
+    const metaPlan = session.metadata?.plan;
+    if (metaPlan) return metaPlan;
+    // Optional fallback: price-id lookup from env. Set
+    // STRIPE_PRICE_ID_MONTHLY / _YEARLY / _LIFETIME / _DAYPASS in
+    // env to enable matching external Payment Links to a plan name.
+    try {
+        const items = session.line_items?.data || session.display_items || [];
+        const priceId = items[0]?.price?.id || session.metadata?.price_id;
+        if (priceId) {
+            const mapping = {
+                [process.env.STRIPE_PRICE_ID_MONTHLY || '']: 'monthly',
+                [process.env.STRIPE_PRICE_ID_YEARLY || '']: 'yearly',
+                [process.env.STRIPE_PRICE_ID_LIFETIME || '']: 'lifetime',
+                [process.env.STRIPE_PRICE_ID_DAYPASS || '']: 'daypass'
+            };
+            if (mapping[priceId]) return mapping[priceId];
+        }
+    } catch (e) { /* fall through */ }
+    console.warn('[Stripe Webhook] Could not resolve plan for session', session.id, '— metadata.plan missing and no price-id mapping configured. Skipping.');
+    return null;
+}
+
 function logPayment(data) {
     db.payments.push({
         id: crypto.randomUUID(),
@@ -1630,6 +1685,9 @@ function sanitizeInput(input) {
  */
 function isValidPassword(password) {
     if (!password || password.length < 8) return false;
+    // Cap password length to bound bcrypt cost. Without this an attacker
+    // can submit a 1 MB password and pin the event loop hashing it.
+    if (password.length > 128) return false;
     // Require at least: 1 uppercase, 1 lowercase, 1 number
     return /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password);
 }
@@ -5157,7 +5215,7 @@ app.post('/api/verify-payment', requireAuth, async (req, res) => {
             s.payment_status === 'paid' || s.payment_status === 'no_payment_required'
         );
         if (completedSession) {
-            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 1000 ? 'monthly' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
+            const plan = resolvePlanFromSession(completedSession);
             const expiration = new Date();
             if (plan === 'lifetime') {
                 expiration.setFullYear(expiration.getFullYear() + 100);
@@ -5351,14 +5409,23 @@ app.post('/api/stripe-webhook', async (req, res) => {
         console.error('Webhook signature verification failed:', err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
-    
+
+    // Idempotency: Stripe retries deliveries on 5xx / network errors. If we've
+    // already processed this event.id, return 200 immediately so we don't grant
+    // a day pass / extend a subscription twice. db.payments is the source of
+    // truth — every state change writes a row tagged with stripeEventId.
+    if (event.id && db.payments.some(p => p.stripeEventId === event.id)) {
+        console.log(`[Stripe Webhook] Skipping duplicate event ${event.id} (${event.type})`);
+        return res.json({ received: true, duplicate: true });
+    }
+
     try {
         switch (event.type) {
             case 'checkout.session.completed': {
                 const session = event.data.object;
                 let userId = session.metadata?.userId;
                 // Detect plan from metadata, or fallback to amount-based detection
-                const plan = session.metadata?.plan || (session.amount_total <= 1000 ? 'monthly' : session.amount_total <= 5000 ? 'lifetime' : 'yearly');
+                const plan = resolvePlanFromSession(session);
 
                 // ── Day Pass ──
                 if (plan === 'daypass') {
@@ -8866,7 +8933,7 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     console.log(`📝 Exam generate for ${subjectName}: syllabus=${syllabusContent ? syllabusContent.length + ' chars' : 'NONE'}, papers=${examPapers ? examPapers.length + ' chars' : 'NONE'}, MG=${mgContent ? mgContent.length + ' chars' : 'NONE'}, total context=${contextPrompt.length} chars`);
 
     // Generate a unique seed to ensure variety across exams
-    const examSeed = `SEED-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+    const examSeed = `SEED-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
 
     // Build previous questions list to prevent repeats (per user, per subject+topic).
     // Stored on the user object so a page refresh / new session doesn't reset history
@@ -12352,6 +12419,9 @@ function seoShell({ title, desc, canonical, body }) {
 <link rel="canonical" href="${site}${canonical}">
 <meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(desc)}">
 <meta property="og:type" content="article"><meta property="og:url" content="${site}${canonical}">
+<meta property="og:image" content="${site}/logo.png"><meta property="og:site_name" content="Study Decoder"><meta property="og:locale" content="en_AU">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(desc)}"><meta name="twitter:image" content="${site}/logo.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":${JSON.stringify(title)},"description":${JSON.stringify(desc)},"url":${JSON.stringify(site + canonical)},"inLanguage":"en-AU","educationalLevel":"HighSchool","provider":{"@type":"Organization","name":"Study Decoder","url":${JSON.stringify(site + "/")},"logo":${JSON.stringify(site + "/logo.png")}},"audience":{"@type":"EducationalAudience","educationalRole":"student","audienceType":"NSW high school students"},"offers":{"@type":"Offer","price":"0","priceCurrency":"AUD","category":"free"}}</script>
 <link rel="icon" type="image/png" href="/logo.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -12408,6 +12478,7 @@ app.get('/learn', (req, res) => {
     }
     body += seoCta('Ready to actually study, not just read?');
     res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(seoShell({ title: 'Decode the NSW Syllabus in Plain English | Study Decoder', desc: 'Free plain-English breakdowns of every NSW HSC and Years 7–10 syllabus module. Understand what each topic really means, then practise it with AI.', canonical: '/learn', body }));
 });
 
@@ -12428,6 +12499,7 @@ app.get('/learn/:subjectSlug', (req, res, next) => {
     }
     body += seoCta(`Master ${s.name} faster`);
     res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(seoShell({ title: `${s.name} (${levelWord}) Syllabus Decoded | Study Decoder`, desc: `Every ${s.name} module explained in plain English, aligned to the NSW NESA syllabus. Then practise with AI-marked questions.`, canonical: `/learn/${s.slug}`, body }));
 });
 
@@ -12460,6 +12532,7 @@ app.get('/learn/:subjectSlug/:moduleSlug', (req, res, next) => {
         body += `</div>`;
     }
     res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(seoShell({ title: `${m.name} — ${s.name} Explained Simply | Study Decoder`, desc: `${m.name} (${s.name}, ${levelWord}) decoded in plain English, aligned to the NSW NESA syllabus. Understand it, then practise with AI.`, canonical: `/learn/${s.slug}/${m.slug}`, body }));
 });
 
@@ -12474,6 +12547,7 @@ app.get('/sitemap-learn.xml', (req, res) => {
     const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
         urls.map(u => `  <url><loc>${u}</loc><changefreq>monthly</changefreq></url>`).join('\n') + `\n</urlset>`;
     res.set('Content-Type', 'application/xml; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=600, s-maxage=1800');
     res.send(xml);
 });
 
@@ -12498,13 +12572,25 @@ app.get(['/blog', '/blog/'], (req, res) => {
     res.sendFile(path.join(__dirname, 'blog', 'index.html'));
 });
 
-// Serve index.html for SPA-like behavior (only for non-API routes)
+// 301 redirect for the deprecated sign-in.html (duplicate of login.html).
+app.get(['/sign-in', '/sign-in.html'], (req, res) => res.redirect(301, '/login.html'));
+
+// Serve a real 404 for non-API routes that don't match any static file or
+// dynamic handler. This fixes the soft-404 bug where every unknown URL
+// previously returned the homepage with HTTP 200 — bad for SEO.
 app.get('*', (req, res, next) => {
-    // Don't serve HTML for API routes
+    // Don't serve HTML for API routes; let the JSON 404 below handle them.
     if (req.path.startsWith('/api/')) {
         return next();
     }
-    sendRenderedIndex(req, res);
+    res.status(404);
+    const notFoundPath = path.join(__dirname, '404.html');
+    if (fs.existsSync(notFoundPath)) {
+        res.set('Content-Type', 'text/html; charset=utf-8');
+        return res.sendFile(notFoundPath);
+    }
+    res.set('Content-Type', 'text/plain; charset=utf-8');
+    res.send('Not found');
 });
 
 // ==================== ERROR HANDLING ==
@@ -12524,8 +12610,19 @@ app.use('/api/*', (req, res) => {
 
 function shutdown() {
     console.log('\n🛑 Shutting down gracefully...');
-    saveDB(USERS_FILE, db.users);
-    saveDB(PAYMENTS_FILE, db.payments);
+    // Cancel any pending debounced save so we don't fight ourselves.
+    try { if (typeof saveTimeout !== 'undefined' && saveTimeout) clearTimeout(saveTimeout); } catch (_) {}
+    // Flush ALL persistent state, not just users+payments. A SIGTERM that
+    // landed inside the 1-second debounce used to lose reviews/classes/etc.
+    try { saveDB(USERS_FILE, db.users); } catch (_) {}
+    try { saveDB(PAYMENTS_FILE, db.payments); } catch (_) {}
+    try { saveDB(REVIEWS_FILE, db.reviews); } catch (_) {}
+    try { saveDB(BOTSTATS_FILE, db.botStats); } catch (_) {}
+    try { saveDB(CLASSES_FILE, db.classes); } catch (_) {}
+    try { saveDB(OG_CODES_FILE, ogCodesState); } catch (_) {}
+    try { saveDB(ANALYTICS_FILE, db.analytics || {}); } catch (_) {}
+    try { saveDB(FREEUSAGE_FILE, db.freeUsage || {}); } catch (_) {}
+    try { saveDB(EXAMUSAGE_FILE, db.examUsage || {}); } catch (_) {}
     process.exit(0);
 }
 
