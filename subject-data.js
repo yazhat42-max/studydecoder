@@ -73,10 +73,10 @@
     'earth-environmental-science': ['Module 1: Earth\'s Resources','Module 2: Plate Tectonics','Module 3: Energy Transformations','Module 4: Human Impacts','Module 5: Earth\'s Processes','Module 6: Hazards','Module 7: Climate Science','Module 8: Resource Management'],
     'economics': ['Introduction to Economics','Consumers and Business','Markets','Labour Markets','Financial Markets','Government and the Economy','The Global Economy','Australia\'s Place in the Global Economy','Economic Issues','Economic Policies and Management'],
     'engineering-studies': ['Engineering Fundamentals','Engineered Products','Braking Systems','Biomedical Engineering','Civil Structures','Personal and Public Transport','Aeronautical Engineering','Telecommunications Engineering'],
-    'english-advanced': ['Texts and human experiences','Textual conversations','Critical study of literature','Narratives that shape our world','The craft of writing'],
-    'english-eald': ['Texts and human experiences','Language, identity and culture','Close study of text','Texts and society','Writing'],
+    'english-advanced': ['Common Module: Texts and Human Experiences','Module A: Textual Conversations','Module B: Critical Study of Literature','Module C: The Craft of Writing'],
+    'english-eald': ['Common Module: Texts and Human Experiences','Module A: Language, Identity and Culture','Module B: Close Study of Text','Module C: Texts and Society'],
     'english-extension': ['Texts, culture and value','Related research project','Literary worlds (Extension 1)','Author and authority (Extension 2)','Major work (Extension 2)'],
-    'english-standard': ['Texts and human experiences','Language, identity and culture','Close study of literature','Contemporary possibilities','The craft of writing'],
+    'english-standard': ['Common Module: Texts and Human Experiences','Module A: Language, Identity and Culture','Module B: Close Study of Literature','Module C: The Craft of Writing'],
     'english-studies': ['Texts and human experiences','Achieving through English','Writing for purpose','Module options'],
     'enterprise-computing': ['Interactive Media and the User Experience','Networking Systems and Social Computing','Principles of Cybersecurity','Data Science','Data Visualisation','Intelligent Systems','Enterprise Project'],
     'food-technology': ['Food Availability and Selection','Food Quality','Nutrition','The Australian Food Industry','Food Manufacture','Food Product Development','Contemporary Nutrition Issues'],
@@ -238,11 +238,44 @@
     sel.innerHTML = html;
   }
 
+  // Return the same HTML string fillSubjectSelect builds, for callers
+  // that assemble a parent template literal (innerHTML pattern).
+  // Keeps the "⭐ Your Subjects" group consistent across ALL dropdowns.
+  function subjectOptionsHTML(level, opts) {
+    opts = opts || {};
+    const useName = !!opts.useName;
+    let html = '';
+    if (opts.placeholder !== false) {
+      html += '<option value="">' + (opts.placeholder || 'Select your subject…') + '</option>';
+    }
+    if (opts.yourSubjects !== false) {
+      const mine = savedSubjectsForLevel(level);
+      if (mine.length) {
+        html += '<optgroup label="⭐ Your Subjects">';
+        mine.forEach(function (s) {
+          const val = useName ? s.name : s.id;
+          html += '<option value="' + val + '">' + s.name + '</option>';
+        });
+        html += '</optgroup>';
+      }
+    }
+    groupedForLevel(level).forEach(function (g) {
+      html += '<optgroup label="' + g.category + '">';
+      g.subjects.forEach(function (s) {
+        const val = useName ? s.name : s.id;
+        html += '<option value="' + val + '">' + s.name + '</option>';
+      });
+      html += '</optgroup>';
+    });
+    return html;
+  }
+
   window.SD_SUBJECTS = {
     senior: SUBJECTS_SENIOR,
     junior: SUBJECTS_JUNIOR,
     topics: ALL_TOPICS,
     resolveId, displayName, modulesFor, subjectsForLevel,
-    groupedForLevel, fillSubjectSelect
+    groupedForLevel, fillSubjectSelect, subjectOptionsHTML,
+    savedSubjectsForLevel
   };
 })();

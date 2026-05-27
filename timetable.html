@@ -32,7 +32,7 @@
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #0f1419; color: #e7e9ea;
         }
-        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100%; overflow-x: hidden; }
+        .app-container { display: flex; flex-direction: column; height: 100vh; height: 100dvh; width: 100%; overflow-x: hidden; }
         .header {
             background: #16202a; border-bottom: 1px solid #2f3336;
             padding: 12px 24px; display: flex; align-items: center;
@@ -131,7 +131,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100vh; height: 100dvh;
             background: #0f1419;
             display: flex;
             flex-direction: column;
@@ -163,13 +163,13 @@
         }
         .history-btn:hover { background: rgba(79, 140, 255, 0.2); }
         .history-panel {
-            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh;
+            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh; height: 100dvh;
             background: #16202a; border-left: 1px solid #2f3336; z-index: 1000;
             transition: right 0.3s ease; display: flex; flex-direction: column;
         }
         .history-panel.open { right: 0; }
         .history-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
             background: rgba(0,0,0,0.5); z-index: 999; display: none;
         }
         .history-overlay.open { display: block; }
@@ -243,6 +243,7 @@
   }
 }
     </script>
+    <link rel="stylesheet" href="theme.css">
 </head>
 <body>
     <h1 style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">HSC Study Timetable Generator</h1>
@@ -776,7 +777,7 @@ Please generate a detailed weekly study timetable in a clear table format with s
             try {
                 const res = await fetch(`${API_BASE}/api/subscription`, {
                     credentials: 'include'
-                });
+                , signal: AbortSignal.timeout(8000) });
                 
                 if (!res.ok) {
                     window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
@@ -818,5 +819,6 @@ Please generate a detailed weekly study timetable in a clear table format with s
         
         checkAuth();
     </script>
+    <script src="auth-guard.js"></script>
 </body>
 </html>

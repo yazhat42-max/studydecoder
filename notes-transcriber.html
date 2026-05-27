@@ -32,7 +32,7 @@
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--tool-bg); color: #e7e9ea;
         }
-        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100%; overflow-x: hidden; }
+        .app-container { display: flex; flex-direction: column; height: 100vh; height: 100dvh; width: 100%; overflow-x: hidden; }
         .header {
             background: var(--tool-surface); border-bottom: 1px solid #2f3336;
             padding: 12px 24px; display: flex; align-items: center;
@@ -249,13 +249,13 @@
         }
         .history-btn:hover { background: rgba(16, 185, 129, 0.2); }
         .history-panel {
-            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh;
+            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh; height: 100dvh;
             background: var(--tool-surface); border-left: 1px solid #2f3336; z-index: 1000;
             transition: right 0.3s ease; display: flex; flex-direction: column;
         }
         .history-panel.open { right: 0; }
         .history-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
             background: rgba(0,0,0,0.5); z-index: 999; display: none;
         }
         .history-overlay.open { display: block; }
@@ -282,7 +282,7 @@
 
         /* Auth overlay */
         .auth-loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
             background: var(--tool-bg); display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 9999;
         }
@@ -1417,7 +1417,7 @@ The AI will transform them into polished, professional-looking notes with proper
         // ===== AUTH CHECK =====
         async function checkAuth() {
             try {
-                var res = await fetch(API_BASE + '/api/subscription', { credentials: 'include' });
+                var res = await fetch(API_BASE + '/api/subscription', { credentials: 'include' , signal: AbortSignal.timeout(8000) });
                 if (!res.ok) {
                     window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
                     return;
@@ -1461,6 +1461,7 @@ The AI will transform them into polished, professional-looking notes with proper
 
         checkAuth();
     </script>
+    <script src="auth-guard.js"></script>
     <script src="streak.js"></script>
     <script src="upsell.js"></script>
     <script src="pwa.js"></script>
