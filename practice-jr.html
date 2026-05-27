@@ -2216,19 +2216,25 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
             examDurationSeconds = 0;
 
             // Build subject options
-            let subjectOpts = '<option value="">Select your subject...</option>';
-            const byCat = {};
-            subjects.forEach(s => {
-                if (!byCat[s.category]) byCat[s.category] = [];
-                byCat[s.category].push(s);
-            });
-            Object.keys(byCat).sort().forEach(cat => {
-                subjectOpts += `<optgroup label="${cat}">`;
-                byCat[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
-                    subjectOpts += `<option value="${s.id}">${s.name}</option>`;
-                });
-                subjectOpts += '</optgroup>';
-            });
+            // Use the shared helper so the ⭐ Your Subjects group is included.
+            const subjectOpts = (window.SD_SUBJECTS && window.SD_SUBJECTS.subjectOptionsHTML)
+                ? window.SD_SUBJECTS.subjectOptionsHTML('junior', { placeholder: 'Select your subject...' })
+                : (function () {
+                    let h = '<option value="">Select your subject...</option>';
+                    const byCat = {};
+                    subjects.forEach(s => {
+                        if (!byCat[s.category]) byCat[s.category] = [];
+                        byCat[s.category].push(s);
+                    });
+                    Object.keys(byCat).sort().forEach(cat => {
+                        h += `<optgroup label="${cat}">`;
+                        byCat[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                            h += `<option value="${s.id}">${s.name}</option>`;
+                        });
+                        h += '</optgroup>';
+                    });
+                    return h;
+                })();
 
             // Pre-select from URL
             const urlParams = new URLSearchParams(window.location.search);
@@ -2471,19 +2477,25 @@ Base these questions on the style, format, and difficulty of typical NSW Years 7
             } catch (e) { /* ignore */ }
 
             // Build subject options from the already-loaded subjects array (grouped by category)
-            let subjectOpts = '<option value="">Select your subject...</option>';
-            const byCat = {};
-            subjects.forEach(s => {
-                if (!byCat[s.category]) byCat[s.category] = [];
-                byCat[s.category].push(s);
-            });
-            Object.keys(byCat).sort().forEach(cat => {
-                subjectOpts += `<optgroup label="${cat}">`;
-                byCat[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
-                    subjectOpts += `<option value="${s.id}">${s.name}</option>`;
-                });
-                subjectOpts += '</optgroup>';
-            });
+            // Use the shared helper so the ⭐ Your Subjects group is included.
+            const subjectOpts = (window.SD_SUBJECTS && window.SD_SUBJECTS.subjectOptionsHTML)
+                ? window.SD_SUBJECTS.subjectOptionsHTML('junior', { placeholder: 'Select your subject...' })
+                : (function () {
+                    let h = '<option value="">Select your subject...</option>';
+                    const byCat = {};
+                    subjects.forEach(s => {
+                        if (!byCat[s.category]) byCat[s.category] = [];
+                        byCat[s.category].push(s);
+                    });
+                    Object.keys(byCat).sort().forEach(cat => {
+                        h += `<optgroup label="${cat}">`;
+                        byCat[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                            h += `<option value="${s.id}">${s.name}</option>`;
+                        });
+                        h += '</optgroup>';
+                    });
+                    return h;
+                })();
 
             document.getElementById('examContent').innerHTML = `
                 <div class="exam-setup">

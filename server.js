@@ -11085,15 +11085,51 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             } else if (botType === 'syllabus') {
                 systemPrompt += `\n\n========== SYLLABUS CONTENT FOR ${subjectName.toUpperCase()} ==========\nThis is the COMPLETE official syllabus. Search this content for the requested topic and decode it.\n\n${truncatedSyllabus}\n\n========== END SYLLABUS ==========\n\nNow decode the requested topic using the syllabus above. OUTPUT ONLY - no questions.`;
                 
-                // Inject detail level preference
+                // Inject detail level preference.
+                //
+                // The previous version had no instruction for level 2,
+                // so BRIEF was clearly short but MODERATE and DETAILED
+                // were both the model's natural default verbosity —
+                // they looked identical to the user. We now give each
+                // band an explicit word target and a structural rubric
+                // so the slider actually does something.
                 const level = parseInt(detailLevel) || 2;
                 if (level === 1) {
-                    systemPrompt += `\n\nDETAIL LEVEL: BRIEF - Keep your response concise. Provide a short overview, list the key dot points, and give only the most important exam tips. Aim for a quick summary the student can scan in under 2 minutes.`;
+                    systemPrompt += `\n\nDETAIL LEVEL: BRIEF (target ~150–250 words).\n` +
+                        `- Two sentence plain-English overview.\n` +
+                        `- 3–5 key bullet points only — no sub-bullets.\n` +
+                        `- ONE exam tip at the end.\n` +
+                        `- No worked examples, no past-paper analysis.\n` +
+                        `Hard cap: do not exceed 250 words. A student should be able to scan it in under 60 seconds.`;
+                } else if (level === 2) {
+                    systemPrompt += `\n\nDETAIL LEVEL: MODERATE (target ~400–650 words).\n` +
+                        `- One paragraph overview (3–4 sentences).\n` +
+                        `- Cover every syllabus dot point with a short bullet + one-line explanation.\n` +
+                        `- ONE concrete worked example or HSC-style mini case.\n` +
+                        `- 2–3 exam tips.\n` +
+                        `- No deep edge-case analysis, no extended study notes.\n` +
+                        `Hard cap: do not exceed 700 words. Distinctly longer than BRIEF, distinctly shorter than DETAILED.`;
                 } else if (level === 3) {
-                    systemPrompt += `\n\nDETAIL LEVEL: DETAILED - Provide an extremely thorough breakdown. Explain every dot point in depth with examples, include detailed HSC exam analysis with past question references, provide extended study notes, and cover edge cases and common misunderstandings. Be as comprehensive as possible.`;
+                    systemPrompt += `\n\nDETAIL LEVEL: DETAILED (target ~900–1400 words).\n` +
+                        `- Full overview paragraph + why this topic matters in the syllabus.\n` +
+                        `- Decode every syllabus dot point in depth, with sub-bullets where useful.\n` +
+                        `- AT LEAST TWO worked examples or past-paper-style walkthroughs.\n` +
+                        `- Reference real HSC questions / common student mistakes / edge cases.\n` +
+                        `- Extended exam tips section with at least 5 tips, banded responses, and band 6 markers.\n` +
+                        `Hard floor: at least 900 words — if you finish shorter, keep going (deeper examples, more nuance). This MUST be visibly longer and richer than MODERATE.`;
                 }
             } else if (botType === 'learn-irl') {
                 systemPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) — LEARN IRL REFERENCE ===\nCRITICAL: Every concept, formula, term, and scenario MUST come exclusively from this official NSW NESA syllabus. Do NOT introduce any content, formulas, or concepts that are not in this syllabus. If a formula or concept is not listed here, do not use it.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
+                // Anti-hallucination clause: previously the model would invent
+                // module labels like "Module D" for subjects that don't have one
+                // (English HSC only has Common Module + Module A/B/C). Lock it
+                // to the names that actually appear in the syllabus we just
+                // injected.
+                systemPrompt += `\n\nMODULE LABEL RULES:\n` +
+                    `- Use ONLY module/topic names that appear verbatim in the syllabus content above.\n` +
+                    `- NEVER invent labels like "Module D", "Module E", "Module 5", "Topic 6" or any letter/number not present in the syllabus.\n` +
+                    `- If you need to reference the current focus, say the actual topic name (e.g. "Critical Study of Literature"), not a letter.\n` +
+                    `- If a player asks which module they're in, answer with the actual syllabus name shown above.`;
             } else {
                 // practice bot
                 systemPrompt += `\n\n=== OFFICIAL ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) ===\nThe following is the official syllabus content. Use this as your ONLY source of truth for content. All questions MUST be based on this syllabus.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
