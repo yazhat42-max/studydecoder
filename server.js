@@ -2826,16 +2826,16 @@ app.get('/api/subscription', requireAuth, (req, res) => {
 
 /**
  * GET /api/stats/public
- * Public endpoint — returns weekly signup count (no auth required).
- * Falls back to total user count when weekly < total (early-stage site).
+ * Public endpoint — returns honest signup counts (no auth required).
+ * The client picks which metric to surface — never fudge the numbers
+ * server-side or the label will lie about the timeframe.
  */
 app.get('/api/stats/public', (req, res) => {
     const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
     const allUsers = Object.values(db.users);
     const total = allUsers.length;
     const weekly = allUsers.filter(u => u.createdAt && new Date(u.createdAt).getTime() >= oneWeekAgo).length;
-    // Show total when weekly count is lower (early stage — avoid showing "2 joined this week")
-    res.json({ weeklySignups: Math.max(weekly, total), totalUsers: total });
+    res.json({ weeklySignups: weekly, totalUsers: total });
 });
 
 /**

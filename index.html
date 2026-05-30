@@ -2485,7 +2485,7 @@
             <div style="flex:1;min-width:260px;text-align:left;">
                 <div style="font-size:0.7rem;font-weight:800;color:#f59e0b;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">⚡ Founding price · ratchets up after these spots</div>
                 <h3 style="font-size:1.5rem;font-weight:800;color:#fff;margin:0 0 6px;line-height:1.25;">Pay <span style="color:#fbbf24;" class="sd-lifetime-price-inline">$14.99</span> once — use everything, forever.</h3>
-                <p style="font-size:0.92rem;color:rgba(255,255,255,0.72);margin:6px 0 0;line-height:1.55;">That's the <strong style="color:#fff;">same price as one month of Pro</strong>. Pay it once, never pay again. <span style="color:#22c55e;font-weight:700;">7-day no-questions refund.</span></p>
+                <p style="font-size:0.92rem;color:rgba(255,255,255,0.72);margin:6px 0 0;line-height:1.55;">That's the <strong style="color:#fff;">same price as one month of Pro</strong>. Pay it once, never pay again.</p>
             </div>
             <div style="text-align:center;flex:0 0 auto;">
                 <div style="font-size:0.8rem;color:#fbbf24;font-weight:700;margin-bottom:8px;">Only <span id="foundingSpotsLeft">a few</span> left at <span class="sd-lifetime-price-inline">$14.99</span><span id="foundingNextTier"></span></div>
@@ -3182,16 +3182,17 @@
         fetch(API_BASE + '/api/stats/public')
             .then(r => r.json())
             .then(d => {
-                // Always render a credible social-proof line — never leave the
-                // hero spot empty just because a count is low. If we have real
-                // weekly numbers, show them; otherwise fall back to a generic
-                // "students using Study Decoder" so the slot stays populated.
+                // Always render a credible social-proof line. Use total signups
+                // for the headline number — "X joined" is honest of any joiner,
+                // any time. weeklySignups is intentionally not labelled "this
+                // week" anywhere, because the count is too small at this stage
+                // to read as urgency (and the previous Math.max fudge was
+                // labelling total as weekly — a lie).
+                const proofCount = d.totalUsers || 0;
                 const line = document.getElementById('heroSignupsLine');
                 if (line) {
-                    if (d.weeklySignups > 0) {
-                        line.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.25);border-radius:50px;padding:6px 16px;font-size:0.9rem;font-weight:700;color:#ff9165;">🔥 ${d.weeklySignups} students joined this week</span>`;
-                    } else if (d.totalUsers > 0) {
-                        line.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.22);border-radius:50px;padding:6px 16px;font-size:0.9rem;font-weight:700;color:#ff9165;">🇦🇺 ${d.totalUsers}+ HSC students on Study Decoder</span>`;
+                    if (proofCount > 0) {
+                        line.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.25);border-radius:50px;padding:6px 16px;font-size:0.9rem;font-weight:700;color:#ff9165;">🔥 ${proofCount} students joined</span>`;
                     } else {
                         line.innerHTML = '<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.22);border-radius:50px;padding:6px 16px;font-size:0.9rem;font-weight:700;color:#ff9165;">🇦🇺 HSC students from across NSW</span>';
                     }
@@ -3199,13 +3200,13 @@
                 }
                 const countEl = document.getElementById('socialProofCount');
                 if (countEl) {
-                    countEl.textContent = d.totalUsers > 0
-                        ? `Join ${d.totalUsers}+ HSC students already using Study Decoder`
+                    countEl.textContent = proofCount > 0
+                        ? `Join ${proofCount}+ HSC students already using Study Decoder`
                         : 'Built for NSW HSC students';
                 }
                 const badge = document.getElementById('socialProofWeeklyBadge');
-                if (badge && d.weeklySignups > 0) {
-                    badge.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.2);border-radius:50px;padding:7px 18px;font-size:0.88rem;font-weight:700;color:#ff9165;">🔥 ${d.weeklySignups} students joined this week</span>`;
+                if (badge && proofCount > 0) {
+                    badge.innerHTML = `<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.2);border-radius:50px;padding:7px 18px;font-size:0.88rem;font-weight:700;color:#ff9165;">🔥 ${proofCount} students joined</span>`;
                     badge.style.display = 'block';
                 }
             }).catch(() => {});
