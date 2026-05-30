@@ -34,6 +34,13 @@
                 n.textContent = d.lifetimePriceLabel;
             });
         }
+        // Frame the urgency as "price ratchets up to X next", not "of 200" —
+        // the 200-spot final cap is internal; visitors should see the immediate
+        // next price jump instead.
+        var nextEl = document.getElementById('foundingNextTier');
+        if (nextEl) {
+            nextEl.textContent = d.nextTierPriceLabel ? ' · next price ' + d.nextTierPriceLabel : '';
+        }
         // Toggle the founding banner vs the monthly subscription tier cards.
         // While founding is active we HIDE the monthly tier cards entirely —
         // the founding lifetime is the only paid path in, and showing dormant
@@ -2468,12 +2475,12 @@
         <!-- Founding lifetime banner (shown while founding lifetime is open) -->
         <div id="foundingBanner" class="reveal" style="max-width:880px;margin:0 auto 2.5rem;background:linear-gradient(135deg,rgba(245,158,11,0.12) 0%,rgba(108,99,255,0.12) 100%);border:1px solid rgba(245,158,11,0.45);border-radius:22px;padding:1.7rem 1.9rem;display:flex;gap:1.8rem;align-items:center;flex-wrap:wrap;box-shadow:0 10px 40px rgba(245,158,11,0.10);">
             <div style="flex:1;min-width:260px;text-align:left;">
-                <div style="font-size:0.7rem;font-weight:800;color:#f59e0b;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">⚡ Founding Members Deal · closes forever at 200</div>
+                <div style="font-size:0.7rem;font-weight:800;color:#f59e0b;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">⚡ Founding price · ratchets up after these spots</div>
                 <h3 style="font-size:1.5rem;font-weight:800;color:#fff;margin:0 0 6px;line-height:1.25;">Pay <span style="color:#fbbf24;" class="sd-lifetime-price-inline">$14.99</span> once — use everything, forever.</h3>
                 <p style="font-size:0.92rem;color:rgba(255,255,255,0.72);margin:6px 0 0;line-height:1.55;">That's the <strong style="color:#fff;">same price as one month of Pro</strong>. Pay it once, never pay again. <span style="color:#22c55e;font-weight:700;">7-day no-questions refund.</span></p>
             </div>
             <div style="text-align:center;flex:0 0 auto;">
-                <div style="font-size:0.8rem;color:#fbbf24;font-weight:700;margin-bottom:8px;">Only <span id="foundingSpotsLeft">limited</span> of 200 left</div>
+                <div style="font-size:0.8rem;color:#fbbf24;font-weight:700;margin-bottom:8px;">Only <span id="foundingSpotsLeft">a few</span> left at <span class="sd-lifetime-price-inline">$14.99</span><span id="foundingNextTier"></span></div>
                 <button onclick="createCheckout('lifetime')" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#0a0e16;border:none;padding:14px 28px;border-radius:50px;font-size:1.02rem;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 6px 25px rgba(245,158,11,0.35);transition:transform .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Lock in <span class="sd-lifetime-price-inline">$14.99</span> lifetime →</button>
             </div>
         </div>
@@ -2538,7 +2545,7 @@
                 <button class="sd-monthly-cta" data-plan="pro" onclick="createCheckout('pro')" style="display:block;width:100%;padding:12px;border:1px solid rgba(251,191,36,0.5);border-radius:12px;background:transparent;color:#fbbf24;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;" onmouseover="this.style.background='rgba(251,191,36,0.1)'" onmouseout="this.style.background='transparent'">Get Pro →</button>
             </div>
         </div>
-        <p id="foundingFootnote" style="text-align:center;color:var(--text-muted);font-size:0.82rem;margin:1.8rem auto 0;max-width:600px;line-height:1.55;">Monthly subscriptions unlock once the 200 founding lifetime spots sell out — grab the lifetime deal above for the cheapest path in.</p>
+        <p id="foundingFootnote" style="text-align:center;color:var(--text-muted);font-size:0.82rem;margin:1.8rem auto 0;max-width:600px;line-height:1.55;">Monthly subscriptions open once the founding lifetime offer closes — grab the lifetime deal above for the cheapest path in.</p>
         <p style="text-align:center;color:var(--text-muted);font-size:0.8rem;margin:0.7rem auto 0;max-width:600px;line-height:1.55;">🔒 Your essays, chats and uploads stay tied to your account — never sold, never used to train external AI.</p>
     </section>
 
@@ -2942,7 +2949,7 @@
         } else if (!user.subscribed && user.role !== 'owner' && user.role !== 'og_tester' && user.role !== 'lifetime') {
             // Free user (post-trial) → lead with the lifetime founding deal (scarcity + value)
             if (banner) {
-                banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$14.99</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="#" onclick="createCheckout(\'lifetime\'); return false;">Lock it in →</a>';
+                banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$14.99</strong>. Only <strong><span id="spotsLeft">a few</span> left at this price</strong>. <a href="#" onclick="createCheckout(\'lifetime\'); return false;">Lock it in →</a>';
                 banner.onclick = function(e) {
                     if (e.target.tagName === 'A') return;
                     createCheckout('lifetime');
@@ -3149,7 +3156,7 @@
         // Top banner: advertise founding lifetime deal for logged-out visitors
         var banner = document.getElementById('saleBanner');
         if (banner) {
-            banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$14.99</strong>. Only <strong><span id="spotsLeft">??</span> spots left</strong>. <a href="login.html?upgrade=1">Sign up to claim →</a>';
+            banner.innerHTML = '⭐ <strong>Founding Members Deal</strong> — Lifetime access for just <strong class="sd-lifetime-price-inline">$14.99</strong>. Only <strong><span id="spotsLeft">a few</span> left at this price</strong>. <a href="login.html?upgrade=1">Sign up to claim →</a>';
             banner.onclick = null;
             banner.style.display = '';
         }

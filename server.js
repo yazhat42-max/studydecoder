@@ -5758,6 +5758,10 @@ app.get('/api/spots-left', (req, res) => {
     const tier = getCurrentFoundingTier(claimed);
     const spotsLeft = Math.max(0, tier.cap - claimed);
     const foundingActive = isFoundingActive(claimed);
+    const tierIdx = FOUNDING_TIERS.indexOf(tier);
+    const nextTier = tierIdx >= 0 && tierIdx < FOUNDING_TIERS.length - 1
+        ? FOUNDING_TIERS[tierIdx + 1]
+        : null;
     res.set('Cache-Control', 'public, max-age=60');
     res.json({
         total: tier.cap,
@@ -5766,6 +5770,10 @@ app.get('/api/spots-left', (req, res) => {
         foundingActive,
         lifetimePriceCents: tier.priceCents,
         lifetimePriceLabel: tier.priceLabel,
+        // Surface the next tier's price so the UI can frame the urgency as
+        // "price ratchets up" without leaking the total 200-spot cap.
+        nextTierPriceCents: nextTier ? nextTier.priceCents : null,
+        nextTierPriceLabel: nextTier ? nextTier.priceLabel : null,
         // Monthly tiers the UI should show once the founding offer closes.
         monthlyTiers: Object.entries(STUDENT_PLANS).map(([id, p]) => ({
             id,
