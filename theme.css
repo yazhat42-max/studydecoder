@@ -135,3 +135,42 @@ button[data-sd-theme-toggle] { font: inherit; }
 :root[data-theme="light"] body.sd-seo .card .s { color: rgba(20,20,35,0.55); }
 :root[data-theme="light"] body.sd-seo .cat { color: #6b6b7a; }
 :root[data-theme="light"] body.sd-seo footer.site { border-color: rgba(15,18,30,0.10); color: rgba(20,20,35,0.5); }
+
+/* ============================================================
+   <select> dropdown contrast — fixes white-on-white optgroup
+   labels in both dark and light themes. Browser-native dropdowns
+   ignore most CSS, but optgroup label/option color and bg can be
+   styled, and color-scheme:light forces the menu chrome to render
+   in light mode so the bold optgroup label is always readable.
+   ============================================================ */
+select {
+    color-scheme: light;
+}
+select optgroup {
+    color: #15151f;
+    background: #ffffff;
+    font-weight: 700;
+    font-style: normal;
+}
+select optgroup option {
+    color: #15151f;
+    background: #ffffff;
+    font-weight: 400;
+}
+/* Inline-styled selects on some pages override theme.css later in
+   the cascade — use a slightly higher-specificity selector just in
+   case. */
+select.form-select optgroup,
+.form-select optgroup,
+.select optgroup {
+    color: #15151f !important;
+    background: #ffffff !important;
+    font-weight: 700 !important;
+}
+select.form-select optgroup option,
+.form-select optgroup option,
+.select optgroup option {
+    color: #15151f !important;
+    background: #ffffff !important;
+    font-weight: 400 !important;
+}

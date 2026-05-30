@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>HSC Syllabus Decoder | Study Decoder</title>
-    <meta name="description" content="Decode your HSC syllabus with AI. Get clear explanations of syllabus dot points, key concepts and what examiners are looking for. All 45 HSC subjects covered.">
+    <meta name="twitter:image" content="https://www.studydecoder.com.au/logo.png">
+    <meta name="robots" content="index, follow">
+    <title>NSW HSC Syllabus Browser | Study Decoder</title>
+    <meta name="description" content="Browse every NSW HSC subject and module. Decode each outcome in plain English, then practise it with AI — free to start.">
     <link rel="canonical" href="https://www.studydecoder.com.au/syllabus.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Study Decoder">
-    <meta property="og:title" content="HSC Syllabus Decoder | Study Decoder">
-    <meta property="og:description" content="Decode your HSC syllabus with AI. Clear explanations of syllabus dot points for all 45 HSC subjects.">
+    <meta property="og:title" content="NSW HSC Syllabus Browser | Study Decoder">
+    <meta property="og:description" content="Browse every NSW HSC subject and module. Decode each outcome in plain English, then practise it with AI — free to start.">
     <meta property="og:url" content="https://www.studydecoder.com.au/syllabus.html">
     <meta property="og:image" content="https://www.studydecoder.com.au/logo.png">
     <meta property="og:locale" content="en_AU">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="HSC Syllabus Decoder | Study Decoder">
-    <meta name="twitter:description" content="Decode your HSC syllabus with AI. All 45 subjects covered.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NSW HSC Syllabus Browser | Study Decoder">
+    <meta name="twitter:description" content="Browse every NSW HSC subject and module. Decode each outcome in plain English, then practise it with AI — free to start.">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -30,7 +32,7 @@
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--tool-bg); color: #e7e9ea;
         }
-        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100%; overflow-x: hidden; }
+        .app-container { display: flex; flex-direction: column; height: 100vh; height: 100dvh; width: 100%; overflow-x: hidden; }
         .header {
             background: var(--tool-surface); border-bottom: 1px solid #2f3336;
             padding: 12px 24px; display: flex; align-items: center;
@@ -360,7 +362,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100vh; height: 100dvh;
             background: var(--tool-bg);
             display: flex;
             flex-direction: column;
@@ -384,12 +386,59 @@
         .hidden { display: none !important; }
     </style>
     <script src="/ui-helpers.js" defer></script>
+    <script src="auth-guard.js"></script>
     <script src="module-multiselect.js"></script>
     <link rel="stylesheet" href="app-shell.css">
 <script>(function(){try{var t=localStorage.getItem('sd_theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="stylesheet" href="theme.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Study Decoder Syllabus Browser",
+  "url": "https://www.studydecoder.com.au/syllabus.html",
+  "description": "Browse every NSW HSC subject and module with plain-English explanations.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "en-AU",
+  "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "student",
+    "audienceType": "NSW high school students"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "Study Decoder",
+    "url": "https://www.studydecoder.com.au/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "AUD",
+    "category": "free trial"
+  }
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Study Decoder",
+  "url": "https://www.studydecoder.com.au/",
+  "logo": "https://www.studydecoder.com.au/logo.png",
+  "sameAs": [],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "email": "support@studydecoder.com.au",
+    "areaServed": "AU",
+    "availableLanguage": "en"
+  }
+}
+    </script>
 </head>
 <body>
+    <h1 style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">NSW HSC Syllabus Browser</h1>
     <!-- Auth loading overlay -->
     <div class="auth-loading-overlay" id="authOverlay">
         <div class="auth-spinner"></div>
@@ -1664,7 +1713,7 @@ Output the complete decoded content for this topic. Do not ask any questions. Do
             try {
                 const res = await fetch(`${API_BASE}/api/subscription`, {
                     credentials: 'include'
-                });
+                , signal: AbortSignal.timeout(8000) });
                 
                 if (!res.ok) {
                     // Not logged in - redirect to login

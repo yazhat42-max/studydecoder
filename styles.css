@@ -615,7 +615,7 @@ footer {
 .checkout-form button { padding: 1rem; font-weight: 600; }
 
 /* --- Course Access Page --- */
-.course-player { display: flex; flex-direction: column; height: 100vh; }
+.course-player { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
 .course-header { background: var(--primary); color: white; padding: 1.5rem; text-align: center; }
 .course-tabs { display: flex; gap: 0; border-bottom: 2px solid #eee; background: var(--light-bg); }
 .course-tabs button { padding: 1rem; border: none; background: transparent; cursor: pointer; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.3s; }

@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Worksheet Decoder – AI Homework Helper | Study Decoder</title>
-    <meta name="description" content="Upload your worksheet and get AI-powered answers with step-by-step explanations. Works with photos of handwritten or printed worksheets for any HSC subject.">
+    <meta name="twitter:image" content="https://www.studydecoder.com.au/logo.png">
+    <meta name="robots" content="index, follow">
+    <title>Worksheet Decoder: Get Answers + Feedback | Study Decoder</title>
+    <meta name="description" content="Upload any worksheet and get clear, syllabus-aligned answers plus model working you can actually learn from.">
     <link rel="canonical" href="https://www.studydecoder.com.au/worksheet-decoder.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Study Decoder">
-    <meta property="og:title" content="Worksheet Decoder – AI Homework Helper | Study Decoder">
-    <meta property="og:description" content="Upload your worksheet and get AI-powered answers with step-by-step explanations.">
+    <meta property="og:title" content="Worksheet Decoder: Get Answers + Feedback | Study Decoder">
+    <meta property="og:description" content="Upload any worksheet and get clear, syllabus-aligned answers plus model working you can actually learn from.">
     <meta property="og:url" content="https://www.studydecoder.com.au/worksheet-decoder.html">
     <meta property="og:image" content="https://www.studydecoder.com.au/logo.png">
     <meta property="og:locale" content="en_AU">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Worksheet Decoder | Study Decoder">
-    <meta name="twitter:description" content="Upload worksheets and get AI-powered answers with explanations.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Worksheet Decoder: Get Answers + Feedback | Study Decoder">
+    <meta name="twitter:description" content="Upload any worksheet and get clear, syllabus-aligned answers plus model working you can actually learn from.">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -30,7 +32,7 @@
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--tool-bg); color: #e7e9ea;
         }
-        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100%; overflow-x: hidden; }
+        .app-container { display: flex; flex-direction: column; height: 100vh; height: 100dvh; width: 100%; overflow-x: hidden; }
         .header {
             background: var(--tool-surface); border-bottom: 1px solid #2f3336;
             padding: 12px 24px; display: flex; align-items: center;
@@ -195,7 +197,7 @@
 
         /* Auth overlay */
         .auth-loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
             background: var(--tool-bg); display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 9999;
         }
@@ -215,13 +217,13 @@
         }
         .history-btn:hover { background: rgba(108, 99, 255, 0.2); }
         .history-panel {
-            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh;
+            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh; height: 100dvh;
             background: var(--tool-surface); border-left: 1px solid #2f3336; z-index: 1000;
             transition: right 0.3s ease; display: flex; flex-direction: column;
         }
         .history-panel.open { right: 0; }
         .history-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
             background: rgba(0,0,0,0.5); z-index: 999; display: none;
         }
         .history-overlay.open { display: block; }
@@ -261,8 +263,54 @@
     <link rel="stylesheet" href="app-shell.css">
 <script>(function(){try{var t=localStorage.getItem('sd_theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="stylesheet" href="theme.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Study Decoder Worksheet Decoder",
+  "url": "https://www.studydecoder.com.au/worksheet-decoder.html",
+  "description": "Upload any worksheet and get clear, syllabus-aligned answers.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "en-AU",
+  "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "student",
+    "audienceType": "NSW high school students"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "Study Decoder",
+    "url": "https://www.studydecoder.com.au/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "AUD",
+    "category": "free trial"
+  }
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Study Decoder",
+  "url": "https://www.studydecoder.com.au/",
+  "logo": "https://www.studydecoder.com.au/logo.png",
+  "sameAs": [],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "email": "support@studydecoder.com.au",
+    "areaServed": "AU",
+    "availableLanguage": "en"
+  }
+}
+    </script>
 </head>
 <body>
+    <h1 style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Worksheet Decoder: Answers + Feedback</h1>
     <!-- Auth loading overlay -->
     <div class="auth-loading-overlay" id="authOverlay">
         <div class="auth-spinner"></div>
@@ -346,6 +394,7 @@
         </main>
     </div>
 
+    <script src="auth-guard.js"></script>
     <script>
         const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
         let conversationHistory = [];
@@ -851,36 +900,27 @@
         }
 
         // ===== AUTH CHECK =====
+        // Delegates to the shared SDAuthGuard helper so we get the 8s fetch
+        // timeout, one auto-retry, and a visible error overlay (with Retry
+        // button) on transient failures for free.
         async function checkAuth() {
-            try {
-                const res = await fetch(`${API_BASE}/api/subscription`, { credentials: 'include' });
-                if (!res.ok) {
-                    window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
-                    return;
+            const result = await window.SDAuthGuard.run({
+                onSuccess: function (data) {
+                    if (!data.subscribed && data.role !== 'owner' && data.role !== 'lifetime' && data.role !== 'og_tester') {
+                        const upgradeBtn = document.createElement('a');
+                        upgradeBtn.href = 'https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03';
+                        upgradeBtn.target = '_blank';
+                        upgradeBtn.innerHTML = '\u26A1 Upgrade';
+                        upgradeBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9rem;z-index:9999;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.2s,box-shadow 0.2s;';
+                        upgradeBtn.onmouseenter = () => { upgradeBtn.style.transform = 'scale(1.05)'; upgradeBtn.style.boxShadow = '0 6px 20px rgba(102,126,234,0.6)'; };
+                        upgradeBtn.onmouseleave = () => { upgradeBtn.style.transform = 'scale(1)'; upgradeBtn.style.boxShadow = '0 4px 15px rgba(102,126,234,0.4)'; };
+                        document.body.appendChild(upgradeBtn);
+                    }
                 }
-                const data = await res.json();
-                const hasAccess = data.role === 'owner' || data.role === 'lifetime' || data.role === 'og_tester' || data.subscribed || data.freeAcknowledged || data.preferences?.onboarded;
-                if (!hasAccess) {
-                    window.location.href = 'index.html';
-                    return;
-                }
-                document.getElementById('authOverlay').classList.add('hidden');
-                document.getElementById('mainContent').classList.remove('hidden');
-                
-                if (!data.subscribed && data.role !== 'owner' && data.role !== 'lifetime' && data.role !== 'og_tester') {
-                    const upgradeBtn = document.createElement('a');
-                    upgradeBtn.href = 'https://buy.stripe.com/fZufZgbx32wMcqSe9R7Vm03';
-                    upgradeBtn.target = '_blank';
-                    upgradeBtn.innerHTML = '⚡ Upgrade';
-                    upgradeBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.9rem;z-index:9999;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.2s,box-shadow 0.2s;';
-                    upgradeBtn.onmouseenter = () => { upgradeBtn.style.transform = 'scale(1.05)'; upgradeBtn.style.boxShadow = '0 6px 20px rgba(102,126,234,0.6)'; };
-                    upgradeBtn.onmouseleave = () => { upgradeBtn.style.transform = 'scale(1)'; upgradeBtn.style.boxShadow = '0 4px 15px rgba(102,126,234,0.4)'; };
-                    document.body.appendChild(upgradeBtn);
-                }
-            } catch (e) {
-                console.error('Auth check failed:', e);
-                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
-            }
+            });
+            // SDAuthGuard handles redirects + showing the error overlay on
+            // failure. If it returns null we just bail.
+            if (!result) return;
         }
 
         // ── Usage tracking for retention ──

@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>HSC Practice Question Generator | Study Decoder</title>
-    <meta name="description" content="Generate AI-powered HSC practice questions for any subject and module. Get instant marking with detailed feedback. Perfect for Year 11 & 12 exam prep.">
+    <meta name="twitter:image" content="https://www.studydecoder.com.au/logo.png">
+    <meta name="robots" content="index, follow">
+    <title>HSC Exam Practice with AI Marking | Study Decoder</title>
+    <meta name="description" content="Generate unlimited NSW HSC practice questions and get marked in seconds. Real exam-style answers, real feedback — free to start.">
     <link rel="canonical" href="https://www.studydecoder.com.au/practice.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Study Decoder">
-    <meta property="og:title" content="HSC Practice Question Generator | Study Decoder">
-    <meta property="og:description" content="Generate AI-powered HSC practice questions for any subject. Get instant marking with detailed feedback.">
+    <meta property="og:title" content="HSC Exam Practice with AI Marking | Study Decoder">
+    <meta property="og:description" content="Generate unlimited NSW HSC practice questions and get marked in seconds. Real exam-style answers, real feedback — free to start.">
     <meta property="og:url" content="https://www.studydecoder.com.au/practice.html">
     <meta property="og:image" content="https://www.studydecoder.com.au/logo.png">
     <meta property="og:locale" content="en_AU">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="HSC Practice Question Generator | Study Decoder">
-    <meta name="twitter:description" content="AI-powered HSC practice questions with instant marking.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HSC Exam Practice with AI Marking | Study Decoder">
+    <meta name="twitter:description" content="Generate unlimited NSW HSC practice questions and get marked in seconds. Real exam-style answers, real feedback — free to start.">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -30,7 +32,7 @@
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--tool-bg); color: #e7e9ea;
         }
-        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100%; overflow-x: hidden; }
+        .app-container { display: flex; flex-direction: column; height: 100vh; height: 100dvh; width: 100%; overflow-x: hidden; }
         .header {
             background: var(--tool-surface); border-bottom: 1px solid #2f3336;
             padding: 12px 24px; display: flex; align-items: center;
@@ -163,7 +165,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100vh; height: 100dvh;
             background: var(--tool-bg);
             display: flex;
             flex-direction: column;
@@ -195,13 +197,13 @@
         }
         .history-btn:hover { background: rgba(108, 99, 255, 0.2); }
         .history-panel {
-            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh;
+            position: fixed; top: 0; right: -360px; width: 340px; height: 100vh; height: 100dvh;
             background: var(--tool-surface); border-left: 1px solid #2f3336; z-index: 1000;
             transition: right 0.3s ease; display: flex; flex-direction: column;
         }
         .history-panel.open { right: 0; }
         .history-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
             background: rgba(0,0,0,0.5); z-index: 999; display: none;
         }
         .history-overlay.open { display: block; }
@@ -279,7 +281,7 @@
         @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
 
         /* ===== INTERACTIVE EXAM MODE STYLES ===== */
-        .exam-view { display: none; height: 100vh; flex-direction: column; }
+        .exam-view { display: none; height: 100vh; height: 100dvh; flex-direction: column; }
         .exam-view.active { display: flex; }
         /* Hide the floating Upgrade FAB whenever the exam view is open — it overlaps exam controls and progress dots. */
         .exam-view.active ~ .sd-upgrade-float,
@@ -311,7 +313,7 @@
         /* Lockdown overlay for tab-switch violations */
         .lockdown-overlay {
             display: none;
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
             background: rgba(0,0,0,0.92); z-index: 99999;
             justify-content: center; align-items: center; flex-direction: column;
         }
@@ -572,10 +574,56 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script src="/ui-helpers.js" defer></script>
+    <script src="auth-guard.js"></script>
     <script src="module-multiselect.js"></script>
     <link rel="stylesheet" href="app-shell.css">
 <script>(function(){try{var t=localStorage.getItem('sd_theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="stylesheet" href="theme.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Study Decoder HSC Practice",
+  "url": "https://www.studydecoder.com.au/practice.html",
+  "description": "AI-generated NSW HSC practice exam questions with instant marking.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "en-AU",
+  "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "student",
+    "audienceType": "NSW high school students"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "Study Decoder",
+    "url": "https://www.studydecoder.com.au/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "AUD",
+    "category": "free trial"
+  }
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Study Decoder",
+  "url": "https://www.studydecoder.com.au/",
+  "logo": "https://www.studydecoder.com.au/logo.png",
+  "sameAs": [],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "email": "support@studydecoder.com.au",
+    "areaServed": "AU",
+    "availableLanguage": "en"
+  }
+}
+    </script>
 </head>
 <body>
     <!-- Auth loading overlay -->
@@ -597,7 +645,7 @@
         </div>
 
         <!-- ACTIVE MODE VIEW -->
-        <div id="activeView" style="display: none; height: 100vh; flex-direction: column;">
+        <div id="activeView" style="display: none; height: 100vh; height: 100dvh; flex-direction: column;">
             <header class="header">
                 <div class="header-left">
                     <a href="index.html" class="back-btn">← Home</a>
@@ -1786,7 +1834,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             try {
                 const res = await fetch(`${API_BASE}/api/subscription`, {
                     credentials: 'include'
-                });
+                , signal: AbortSignal.timeout(8000) });
                 
                 if (!res.ok) {
                     window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
@@ -2253,19 +2301,27 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             examDurationSeconds = 0;
 
             // Build subject options
-            let subjectOpts = '<option value="">Select your subject...</option>';
-            const byCat = {};
-            subjects.forEach(s => {
-                if (!byCat[s.category]) byCat[s.category] = [];
-                byCat[s.category].push(s);
-            });
-            Object.keys(byCat).sort().forEach(cat => {
-                subjectOpts += `<optgroup label="${cat}">`;
-                byCat[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
-                    subjectOpts += `<option value="${s.id}">${s.name}</option>`;
-                });
-                subjectOpts += '</optgroup>';
-            });
+            // Use the shared helper so the ⭐ Your Subjects group is included
+            // consistently (instead of rebuilding by category from scratch and
+            // dropping the user's pinned subjects).
+            const subjectOpts = (window.SD_SUBJECTS && window.SD_SUBJECTS.subjectOptionsHTML)
+                ? window.SD_SUBJECTS.subjectOptionsHTML('senior', { placeholder: 'Select your subject...' })
+                : (function () {
+                    let h = '<option value="">Select your subject...</option>';
+                    const byCat = {};
+                    subjects.forEach(s => {
+                        if (!byCat[s.category]) byCat[s.category] = [];
+                        byCat[s.category].push(s);
+                    });
+                    Object.keys(byCat).sort().forEach(cat => {
+                        h += `<optgroup label="${cat}">`;
+                        byCat[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                            h += `<option value="${s.id}">${s.name}</option>`;
+                        });
+                        h += '</optgroup>';
+                    });
+                    return h;
+                })();
 
             // Pre-select from URL
             const urlParams = new URLSearchParams(window.location.search);
@@ -2500,19 +2556,27 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             } catch (e) { /* ignore */ }
 
             // Build subject options from the already-loaded subjects array (grouped by category)
-            let subjectOpts = '<option value="">Select your subject...</option>';
-            const byCat = {};
-            subjects.forEach(s => {
-                if (!byCat[s.category]) byCat[s.category] = [];
-                byCat[s.category].push(s);
-            });
-            Object.keys(byCat).sort().forEach(cat => {
-                subjectOpts += `<optgroup label="${cat}">`;
-                byCat[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
-                    subjectOpts += `<option value="${s.id}">${s.name}</option>`;
-                });
-                subjectOpts += '</optgroup>';
-            });
+            // Use the shared helper so the ⭐ Your Subjects group is included
+            // consistently (instead of rebuilding by category from scratch and
+            // dropping the user's pinned subjects).
+            const subjectOpts = (window.SD_SUBJECTS && window.SD_SUBJECTS.subjectOptionsHTML)
+                ? window.SD_SUBJECTS.subjectOptionsHTML('senior', { placeholder: 'Select your subject...' })
+                : (function () {
+                    let h = '<option value="">Select your subject...</option>';
+                    const byCat = {};
+                    subjects.forEach(s => {
+                        if (!byCat[s.category]) byCat[s.category] = [];
+                        byCat[s.category].push(s);
+                    });
+                    Object.keys(byCat).sort().forEach(cat => {
+                        h += `<optgroup label="${cat}">`;
+                        byCat[cat].sort((a,b) => a.name.localeCompare(b.name)).forEach(s => {
+                            h += `<option value="${s.id}">${s.name}</option>`;
+                        });
+                        h += '</optgroup>';
+                    });
+                    return h;
+                })();
 
             document.getElementById('examContent').innerHTML = `
                 <div class="exam-setup">

@@ -84,10 +84,15 @@ if (!config.sessionSecret) {
     }
 }
 
-// Initialize Stripe
+// Initialize Stripe. Pin apiVersion explicitly so silent SDK-default
+// drifts can't change webhook event shapes underneath us.
 let stripe = null;
 if (config.stripe.secretKey) {
-    stripe = require('stripe')(config.stripe.secretKey);
+    stripe = require('stripe')(config.stripe.secretKey, {
+        apiVersion: '2023-10-16',
+        maxNetworkRetries: 2,
+        timeout: 20000
+    });
 }
 
 // ==================== DATABASE (JSON File-Based) ====================
@@ -132,10 +137,27 @@ function loadDB(filePath, defaultData = {}) {
 }
 
 function saveDB(filePath, data) {
+    // Atomic write: serialize, write to a temp file in the same directory,
+    // fsync, then rename. POSIX rename is atomic on the same filesystem, so a
+    // crash mid-write can never leave a half-written JSON behind (which used
+    // to be a real data-loss risk for users.json). Pretty-printing is kept in
+    // dev for diff-friendliness, dropped in prod to halve disk traffic.
+    const tmp = `${filePath}.tmp-${process.pid}-${Date.now()}`;
     try {
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        const payload = config.isDev
+            ? JSON.stringify(data, null, 2)
+            : JSON.stringify(data);
+        const fd = fs.openSync(tmp, 'w');
+        try {
+            fs.writeSync(fd, payload);
+            fs.fsyncSync(fd);
+        } finally {
+            fs.closeSync(fd);
+        }
+        fs.renameSync(tmp, filePath);
     } catch (e) {
         console.error(`Error saving ${filePath}:`, e.message);
+        try { if (fs.existsSync(tmp)) fs.unlinkSync(tmp); } catch (_) {}
     }
 }
 
@@ -1030,18 +1052,69 @@ if (!config.isDev) {
     app.set('trust proxy', 1);
 }
 
-// Body parsing - raw for Stripe webhooks, large limit for image uploads, JSON for everything else
+// Body parsing. The global limits below take effect BEFORE per-route
+// express.json() calls, so they're authoritative for max body size.
+//
+// Per-endpoint sizing rules:
+//   /api/stripe-webhook         raw         Stripe-signed bytes
+//   image-bearing endpoints     25mb        drawings, photos, OCR
+//   chat history endpoints      1mb         multi-turn conversation
+//   teacher rubric/bulk         200kb       pasted essays
+//   everything else             100kb       generous default -- tiny
+//                                            endpoints have stricter
+//                                            limits applied on the route
+//                                            (e.g. /api/track at 2kb).
 app.use((req, res, next) => {
-    if (req.originalUrl === '/api/stripe-webhook') {
-        express.raw({ type: 'application/json' })(req, res, next);
-    } else if (req.originalUrl === '/api/chat/worksheet' || req.originalUrl === '/api/chat/notes-transcriber') {
-        express.json({ limit: '25mb' })(req, res, next);
-    } else if (req.originalUrl.startsWith('/api/teacher/ai/')) {
-        // Rubric marker / bulk worksheet builder accept pasted essays + rubrics
-        express.json({ limit: '200kb' })(req, res, next);
-    } else {
-        express.json({ limit: '10kb' })(req, res, next);
+    const url = req.originalUrl;
+    // Stripe-signed raw body must not be JSON-parsed.
+    if (url === '/api/stripe-webhook') {
+        return express.raw({ type: 'application/json' })(req, res, next);
     }
+    // Endpoints that carry base64 drawings, photos, or OCR uploads.
+    // Critical: /api/exam/mark receives the full exam JSON plus every
+    // student answer including data: URLs for drawing/graph widgets,
+    // which routinely exceeds 1MB. Was silently being rejected with the
+    // old 10kb default, surfacing to the client as a generic 500/413.
+    if (
+        url === '/api/chat/worksheet' ||
+        url === '/api/chat/notes-transcriber' ||
+        url === '/api/exam/mark' ||
+        url === '/api/exam/generate' ||
+        url.startsWith('/api/student/assignments/')
+    ) {
+        return express.json({ limit: '25mb' })(req, res, next);
+    }
+    // Chat endpoints carry growing message history.
+    if (url.startsWith('/api/chat/')) {
+        return express.json({ limit: '1mb' })(req, res, next);
+    }
+    // Teacher rubric marker + bulk worksheet builder accept pasted essays.
+    if (url.startsWith('/api/teacher/ai/')) {
+        return express.json({ limit: '200kb' })(req, res, next);
+    }
+    // Everything else: a sane default. Routes that want a stricter limit
+    // (e.g. /api/track, /api/contact) declare it on the route itself, but
+    // since the global parser runs first, we use a generous-but-bounded
+    // 100kb here so legitimate payloads (worksheet config, scores, etc.)
+    // are never silently truncated.
+    return express.json({ limit: '100kb' })(req, res, next);
+});
+
+// Body-parser error handler: convert PayloadTooLargeError / SyntaxError
+// into clean 413/400 JSON responses so the client shows something useful
+// instead of bare 500. Express's default sends HTML, which the practice
+// page would surface as 'Server error 500'.
+app.use((err, req, res, next) => {
+    if (err && err.type === 'entity.too.large') {
+        return res.status(413).json({
+            error: 'Request payload too large. Try fewer drawings or split your exam into smaller batches.',
+            limit: err.limit, length: err.length
+        });
+    }
+    if (err && err.type === 'entity.parse.failed') {
+        return res.status(400).json({ error: 'Invalid JSON in request body.' });
+    }
+    return next(err);
 });
 
 // Session with file store
@@ -1280,7 +1353,7 @@ async function autoSyncStripeSubscription(userId, email) {
         );
         
         if (completedSession) {
-            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 1000 ? 'monthly' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
+            const plan = resolvePlanFromSession(completedSession);
             const existingUser = getUser(userId);
             
             // If already valid but plan is wrong, correct it
@@ -1427,6 +1500,39 @@ function recordUserBotUsage(userId, botType) {
 /**
  * Log payment
  */
+/**
+ * Resolve a Stripe Checkout Session's plan name from session metadata.
+ * Sessions created by this app always set metadata.plan when checkout
+ * begins. If metadata is missing (e.g. external Payment Link, or a
+ * legacy session) we refuse to guess from amount_total — the previous
+ * amount-based fallback was inverted (charged $14.99 mis-labelled as
+ * 'lifetime') and would silently corrupt entitlements. Optional price
+ * ID fallback can be configured via STRIPE_PRICE_ID_<PLAN> env vars.
+ */
+function resolvePlanFromSession(session) {
+    if (!session) return null;
+    const metaPlan = session.metadata?.plan;
+    if (metaPlan) return metaPlan;
+    // Optional fallback: price-id lookup from env. Set
+    // STRIPE_PRICE_ID_MONTHLY / _YEARLY / _LIFETIME / _DAYPASS in
+    // env to enable matching external Payment Links to a plan name.
+    try {
+        const items = session.line_items?.data || session.display_items || [];
+        const priceId = items[0]?.price?.id || session.metadata?.price_id;
+        if (priceId) {
+            const mapping = {
+                [process.env.STRIPE_PRICE_ID_MONTHLY || '']: 'monthly',
+                [process.env.STRIPE_PRICE_ID_YEARLY || '']: 'yearly',
+                [process.env.STRIPE_PRICE_ID_LIFETIME || '']: 'lifetime',
+                [process.env.STRIPE_PRICE_ID_DAYPASS || '']: 'daypass'
+            };
+            if (mapping[priceId]) return mapping[priceId];
+        }
+    } catch (e) { /* fall through */ }
+    console.warn('[Stripe Webhook] Could not resolve plan for session', session.id, '— metadata.plan missing and no price-id mapping configured. Skipping.');
+    return null;
+}
+
 function logPayment(data) {
     db.payments.push({
         id: crypto.randomUUID(),
@@ -1630,6 +1736,9 @@ function sanitizeInput(input) {
  */
 function isValidPassword(password) {
     if (!password || password.length < 8) return false;
+    // Cap password length to bound bcrypt cost. Without this an attacker
+    // can submit a 1 MB password and pin the event loop hashing it.
+    if (password.length > 128) return false;
     // Require at least: 1 uppercase, 1 lowercase, 1 number
     return /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password);
 }
@@ -3136,11 +3245,24 @@ async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMod
     // to 'low' so structured generations (teacher tools, assignments) stay fast.
     if (isGpt5) body.reasoning_effort = reasoningEffort || 'low';
     if (jsonMode) body.response_format = { type: 'json_object' };
-    const r = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
-        body: JSON.stringify(body)
-    });
+    // Per-call hard timeout so a hung OpenAI request can't pin the
+    // event loop and surface to the user as 'stuck on loading' forever.
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 110000);
+    let r;
+    try {
+        r = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
+            body: JSON.stringify(body),
+            signal: controller.signal
+        });
+    } catch (e) {
+        if (e.name === 'AbortError') throw new Error('OpenAI request timed out after 110s. Try a shorter prompt or retry.');
+        throw e;
+    } finally {
+        clearTimeout(tid);
+    }
     if (!r.ok) {
         const err = await r.json().catch(() => ({}));
         throw new Error('OpenAI error: ' + (err.error?.message || ('HTTP ' + r.status)));
@@ -5157,7 +5279,7 @@ app.post('/api/verify-payment', requireAuth, async (req, res) => {
             s.payment_status === 'paid' || s.payment_status === 'no_payment_required'
         );
         if (completedSession) {
-            const plan = completedSession.metadata?.plan || (completedSession.amount_total <= 1000 ? 'monthly' : completedSession.amount_total <= 5000 ? 'lifetime' : 'yearly');
+            const plan = resolvePlanFromSession(completedSession);
             const expiration = new Date();
             if (plan === 'lifetime') {
                 expiration.setFullYear(expiration.getFullYear() + 100);
@@ -5351,14 +5473,23 @@ app.post('/api/stripe-webhook', async (req, res) => {
         console.error('Webhook signature verification failed:', err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
-    
+
+    // Idempotency: Stripe retries deliveries on 5xx / network errors. If we've
+    // already processed this event.id, return 200 immediately so we don't grant
+    // a day pass / extend a subscription twice. db.payments is the source of
+    // truth — every state change writes a row tagged with stripeEventId.
+    if (event.id && db.payments.some(p => p.stripeEventId === event.id)) {
+        console.log(`[Stripe Webhook] Skipping duplicate event ${event.id} (${event.type})`);
+        return res.json({ received: true, duplicate: true });
+    }
+
     try {
         switch (event.type) {
             case 'checkout.session.completed': {
                 const session = event.data.object;
                 let userId = session.metadata?.userId;
                 // Detect plan from metadata, or fallback to amount-based detection
-                const plan = session.metadata?.plan || (session.amount_total <= 1000 ? 'monthly' : session.amount_total <= 5000 ? 'lifetime' : 'yearly');
+                const plan = resolvePlanFromSession(session);
 
                 // ── Day Pass ──
                 if (plan === 'daypass') {
@@ -7303,7 +7434,8 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         
         if (!response.ok) {
@@ -8301,7 +8433,8 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         if (!response.ok) {
             const error = await response.json();
@@ -8368,7 +8501,8 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         if (!response.ok) {
             const error = await response.json();
@@ -8515,6 +8649,61 @@ function distributeMarks(total, count, min, max) {
         rem -= add;
     }
     return marks;
+}
+
+// Snap a marks array to a fixed allowed set (used for subjects whose real
+// NESA papers only use specific mark values, e.g. Enterprise Computing
+// uses {1,2,3,4,5,8} and never 6 or 7). Preserves the total mark count
+// exactly by redistributing any disallowed marks across nearby valid
+// slots. If a perfect mapping isn't possible (rare), it returns the
+// closest-by-total result rather than the original disallowed values.
+function snapMarksToAllowed(marks, allowed) {
+    if (!Array.isArray(marks) || marks.length === 0) return marks;
+    const allowedSorted = [...new Set(allowed)].sort((a, b) => a - b);
+    const targetTotal = marks.reduce((a, b) => a + b, 0);
+    // Map each mark to the nearest allowed value (round half down).
+    let snapped = marks.map(m => {
+        let best = allowedSorted[0], bestDiff = Math.abs(allowedSorted[0] - m);
+        for (const v of allowedSorted) {
+            const d = Math.abs(v - m);
+            if (d < bestDiff || (d === bestDiff && v < best)) { best = v; bestDiff = d; }
+        }
+        return best;
+    });
+    // Rebalance so the total matches the target.
+    let drift = snapped.reduce((a, b) => a + b, 0) - targetTotal;
+    // If snapped is too high, bump some down to the next-lower allowed.
+    // If too low, bump some up to the next-higher allowed. Walk from the
+    // largest slot down for predictable behaviour.
+    const order = snapped
+        .map((v, i) => ({ v, i }))
+        .sort((a, b) => b.v - a.v)
+        .map(x => x.i);
+    let guard = 200;
+    while (drift !== 0 && guard-- > 0) {
+        let moved = false;
+        for (const i of order) {
+            const cur = snapped[i];
+            const idx = allowedSorted.indexOf(cur);
+            if (drift > 0 && idx > 0) {
+                const next = allowedSorted[idx - 1];
+                const step = cur - next;
+                if (step > 0 && step <= drift) {
+                    snapped[i] = next; drift -= step; moved = true;
+                    if (drift === 0) break;
+                }
+            } else if (drift < 0 && idx < allowedSorted.length - 1) {
+                const next = allowedSorted[idx + 1];
+                const step = next - cur;
+                if (step > 0 && step <= -drift) {
+                    snapped[i] = next; drift += step; moved = true;
+                    if (drift === 0) break;
+                }
+            }
+        }
+        if (!moved) break;
+    }
+    return snapped;
 }
 
 // Compute exact per-question mark allocation for any category/subject/duration
@@ -8689,7 +8878,12 @@ function computeExamAllocation(category, subject, durationHours, totalMarks, top
         const mc = 10;
         sections.push({ name: 'Section I — Multiple Choice', marks: new Array(mc).fill(1) });
         const shortCount = d === 1 ? 12 : d === 2 ? 16 : 20;
-        sections.push({ name: 'Section II — Short Answer', marks: distributeMarks(totalMarks - mc, shortCount, 3, 8) });
+        // Real NESA Enterprise Computing papers only use {1,2,3,4,5,8}
+        // mark allocations. Snap to that set so the AI never has to
+        // generate (or justify) a 6- or 7-mark Enterprise Computing
+        // question — those don't exist in authentic exams.
+        const ecRaw = distributeMarks(totalMarks - mc, shortCount, 3, 8);
+        sections.push({ name: 'Section II — Short Answer', marks: snapMarksToAllowed(ecRaw, [1, 2, 3, 4, 5, 8]) });
 
     // ---- TAS: Software Engineering ----
     } else if (category === 'tas' && subject === 'software-engineering') {
@@ -8874,7 +9068,7 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     console.log(`📝 Exam generate for ${subjectName}: syllabus=${syllabusContent ? syllabusContent.length + ' chars' : 'NONE'}, papers=${examPapers ? examPapers.length + ' chars' : 'NONE'}, MG=${mgContent ? mgContent.length + ' chars' : 'NONE'}, total context=${contextPrompt.length} chars`);
 
     // Generate a unique seed to ensure variety across exams
-    const examSeed = `SEED-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+    const examSeed = `SEED-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
 
     // Build previous questions list to prevent repeats (per user, per subject+topic).
     // Stored on the user object so a page refresh / new session doesn't reset history
@@ -9240,21 +9434,22 @@ TOTAL: EXACTLY 100 marks. NO multiple choice for Creative Arts.`;
             if (durationHours === 1) {
                 structureGuide = `EXAM STRUCTURE (1h, 60 marks — Enterprise Computing — NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks (includes matching, dropdown, and standard MC)
-- Section II — Short Answer: 10-14 questions totalling 50 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b). Include practical tasks: SQL queries, spreadsheet formulas, DFD construction, UI design, data dictionary completion.
+- Section II — Short Answer: 10-14 questions totalling 50 marks. Each question or sub-part MUST be worth exactly one of {1, 2, 3, 4, 5, 8} marks — NEVER 6 or 7. Most questions should have sub-parts (a)(b) so a 5-mark question becomes (a) 2 + (b) 3 etc. Include practical tasks: SQL queries, spreadsheet formulas, DFD construction, UI design, data dictionary completion.
 TOTAL: EXACTLY 60 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
             } else if (durationHours === 2) {
                 structureGuide = `EXAM STRUCTURE (2h, 80 marks — Enterprise Computing — REAL HSC FORMAT, NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks (includes matching, dropdown, and standard MC)
-- Section II — Short Answer: 15-18 questions totalling 70 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b). Include practical tasks: SQL queries, spreadsheet formulas/design, DFD construction, UI prototyping, data dictionary completion, true/false checkbox questions.
+- Section II — Short Answer: 15-18 questions totalling 70 marks. Each question or sub-part MUST be worth exactly one of {1, 2, 3, 4, 5, 8} marks — NEVER 6 or 7. Most questions should have sub-parts (a)(b) so a 5-mark question becomes (a) 2 + (b) 3 etc. Include practical tasks: SQL queries, spreadsheet formulas/design, DFD construction, UI prototyping, data dictionary completion, true/false checkbox questions.
 TOTAL: EXACTLY 80 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
             } else {
                 structureGuide = `EXAM STRUCTURE (3h, 100 marks — Enterprise Computing — NO EXTENDED RESPONSE):
 - Section I — Multiple Choice: 10 questions × 1 mark = 10 marks
-- Section II — Short Answer: 18-22 questions totalling 90 marks. Max 8 marks per question. Most questions MUST have sub-parts (a)(b)(c). Include practical tasks: SQL queries, spreadsheet formulas, DFDs, UI design, data dictionaries.
+- Section II — Short Answer: 18-22 questions totalling 90 marks. Each question or sub-part MUST be worth exactly one of {1, 2, 3, 4, 5, 8} marks — NEVER 6 or 7. Most questions should have sub-parts (a)(b)(c) so a 5-mark question becomes (a) 2 + (b) 3 etc. Include practical tasks: SQL queries, spreadsheet formulas, DFDs, UI design, data dictionaries.
 TOTAL: EXACTLY 100 marks. TWO sections only. NO extended response section. NO question exceeds 8 marks.`;
             }
             categoryRules = `ENTERPRISE COMPUTING-SPECIFIC RULES (based on real 2025 HSC marking guidelines):
 - ABSOLUTELY NO extended response questions. The maximum marks for ANY single question is 8.
+- ALLOWED MARK VALUES (HARD RULE): every question and every sub-part must be worth EXACTLY one of {1, 2, 3, 4, 5, 8} marks. NEVER use 6 marks, NEVER use 7 marks, NEVER use 9+ marks. Real NESA Enterprise Computing exams do not use 6- or 7-mark allocations — a 6-mark question is an instant give-away that the exam is not authentic. If you need a higher total, split it across sub-parts (e.g. a 6-mark idea becomes (a) 3 + (b) 3).
 - Question types from real exam: standard MC, matching (drag/drop), true/false checkbox sets (2 marks: all correct = 2, most correct = 1), dropdown completion, short answer describe/explain/outline.
 - Practical tasks are ESSENTIAL: SQL queries (SELECT with JOIN, WHERE, ORDER BY), spreadsheet design with formulas, data flow diagrams, user interface prototyping, data dictionary completion.
 - Content areas: Data science (data warehousing, data mining, data dictionaries, databases, SQL, spreadsheets), Data visualisation (charts, graphs, user experience, bias), Intelligent systems (expert systems, forward/backward chaining, decision support systems, neural networks), Enterprise project (DFDs, project management tools like Gantt charts, prototyping, requirements gathering, WHS).
@@ -9730,7 +9925,8 @@ CRITICAL JSON RULES:
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify(requestBody),
+                signal: AbortSignal.timeout(115000)
             });
 
             if (!response.ok) {
@@ -10332,7 +10528,8 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify(requestBody),
+                signal: AbortSignal.timeout(115000)
             });
 
             if (!response.ok) {
@@ -10375,7 +10572,8 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                     const retryRes = await fetch('https://api.openai.com/v1/chat/completions', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
-                        body: JSON.stringify(retryBody)
+                        body: JSON.stringify(retryBody),
+                        signal: AbortSignal.timeout(115000)
                     });
                     if (retryRes.ok) {
                         const retryData = await retryRes.json();
@@ -10568,7 +10766,8 @@ Return ONLY valid JSON: {"sampleAnswer": "<the full sample answer text>"}`;
         const r = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         if (!r.ok) {
             const err = await r.json().catch(() => ({}));
@@ -10783,7 +10982,8 @@ ${syllabusContext || '(No syllabus content available — rely on standard curric
         const r = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         if (!r.ok) {
             const err = await r.json().catch(() => ({}));
@@ -11026,15 +11226,51 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             } else if (botType === 'syllabus') {
                 systemPrompt += `\n\n========== SYLLABUS CONTENT FOR ${subjectName.toUpperCase()} ==========\nThis is the COMPLETE official syllabus. Search this content for the requested topic and decode it.\n\n${truncatedSyllabus}\n\n========== END SYLLABUS ==========\n\nNow decode the requested topic using the syllabus above. OUTPUT ONLY - no questions.`;
                 
-                // Inject detail level preference
+                // Inject detail level preference.
+                //
+                // The previous version had no instruction for level 2,
+                // so BRIEF was clearly short but MODERATE and DETAILED
+                // were both the model's natural default verbosity —
+                // they looked identical to the user. We now give each
+                // band an explicit word target and a structural rubric
+                // so the slider actually does something.
                 const level = parseInt(detailLevel) || 2;
                 if (level === 1) {
-                    systemPrompt += `\n\nDETAIL LEVEL: BRIEF - Keep your response concise. Provide a short overview, list the key dot points, and give only the most important exam tips. Aim for a quick summary the student can scan in under 2 minutes.`;
+                    systemPrompt += `\n\nDETAIL LEVEL: BRIEF (target ~150–250 words).\n` +
+                        `- Two sentence plain-English overview.\n` +
+                        `- 3–5 key bullet points only — no sub-bullets.\n` +
+                        `- ONE exam tip at the end.\n` +
+                        `- No worked examples, no past-paper analysis.\n` +
+                        `Hard cap: do not exceed 250 words. A student should be able to scan it in under 60 seconds.`;
+                } else if (level === 2) {
+                    systemPrompt += `\n\nDETAIL LEVEL: MODERATE (target ~400–650 words).\n` +
+                        `- One paragraph overview (3–4 sentences).\n` +
+                        `- Cover every syllabus dot point with a short bullet + one-line explanation.\n` +
+                        `- ONE concrete worked example or HSC-style mini case.\n` +
+                        `- 2–3 exam tips.\n` +
+                        `- No deep edge-case analysis, no extended study notes.\n` +
+                        `Hard cap: do not exceed 700 words. Distinctly longer than BRIEF, distinctly shorter than DETAILED.`;
                 } else if (level === 3) {
-                    systemPrompt += `\n\nDETAIL LEVEL: DETAILED - Provide an extremely thorough breakdown. Explain every dot point in depth with examples, include detailed HSC exam analysis with past question references, provide extended study notes, and cover edge cases and common misunderstandings. Be as comprehensive as possible.`;
+                    systemPrompt += `\n\nDETAIL LEVEL: DETAILED (target ~900–1400 words).\n` +
+                        `- Full overview paragraph + why this topic matters in the syllabus.\n` +
+                        `- Decode every syllabus dot point in depth, with sub-bullets where useful.\n` +
+                        `- AT LEAST TWO worked examples or past-paper-style walkthroughs.\n` +
+                        `- Reference real HSC questions / common student mistakes / edge cases.\n` +
+                        `- Extended exam tips section with at least 5 tips, banded responses, and band 6 markers.\n` +
+                        `Hard floor: at least 900 words — if you finish shorter, keep going (deeper examples, more nuance). This MUST be visibly longer and richer than MODERATE.`;
                 }
             } else if (botType === 'learn-irl') {
                 systemPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) — LEARN IRL REFERENCE ===\nCRITICAL: Every concept, formula, term, and scenario MUST come exclusively from this official NSW NESA syllabus. Do NOT introduce any content, formulas, or concepts that are not in this syllabus. If a formula or concept is not listed here, do not use it.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
+                // Anti-hallucination clause: previously the model would invent
+                // module labels like "Module D" for subjects that don't have one
+                // (English HSC only has Common Module + Module A/B/C). Lock it
+                // to the names that actually appear in the syllabus we just
+                // injected.
+                systemPrompt += `\n\nMODULE LABEL RULES:\n` +
+                    `- Use ONLY module/topic names that appear verbatim in the syllabus content above.\n` +
+                    `- NEVER invent labels like "Module D", "Module E", "Module 5", "Topic 6" or any letter/number not present in the syllabus.\n` +
+                    `- If you need to reference the current focus, say the actual topic name (e.g. "Critical Study of Literature"), not a letter.\n` +
+                    `- If a player asks which module they're in, answer with the actual syllabus name shown above.`;
             } else {
                 // practice bot
                 systemPrompt += `\n\n=== OFFICIAL ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) ===\nThe following is the official syllabus content. Use this as your ONLY source of truth for content. All questions MUST be based on this syllabus.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
@@ -11116,7 +11352,8 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         
         if (!response.ok) {
@@ -11230,7 +11467,8 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            signal: AbortSignal.timeout(115000)
         });
         
         if (!response.ok) {
@@ -11453,7 +11691,8 @@ app.get('/api/challenge/today', requireAuth, async (req, res) => {
                 ],
                 max_tokens: 400,
                 temperature: 0.8
-            })
+            }),
+            signal: AbortSignal.timeout(115000)
         });
         const data  = await response.json();
         const raw   = data.choices?.[0]?.message?.content || '{}';
@@ -11502,7 +11741,8 @@ app.post('/api/challenge/submit', requireAuth, express.json(), async (req, res) 
                 ],
                 max_tokens: 600,
                 temperature: 0.3
-            })
+            }),
+            signal: AbortSignal.timeout(115000)
         });
         const data = await response.json();
         const raw = data.choices?.[0]?.message?.content || '{}';
@@ -12360,6 +12600,9 @@ function seoShell({ title, desc, canonical, body }) {
 <link rel="canonical" href="${site}${canonical}">
 <meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(desc)}">
 <meta property="og:type" content="article"><meta property="og:url" content="${site}${canonical}">
+<meta property="og:image" content="${site}/logo.png"><meta property="og:site_name" content="Study Decoder"><meta property="og:locale" content="en_AU">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(desc)}"><meta name="twitter:image" content="${site}/logo.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":${JSON.stringify(title)},"description":${JSON.stringify(desc)},"url":${JSON.stringify(site + canonical)},"inLanguage":"en-AU","educationalLevel":"HighSchool","provider":{"@type":"Organization","name":"Study Decoder","url":${JSON.stringify(site + "/")},"logo":${JSON.stringify(site + "/logo.png")}},"audience":{"@type":"EducationalAudience","educationalRole":"student","audienceType":"NSW high school students"},"offers":{"@type":"Offer","price":"0","priceCurrency":"AUD","category":"free"}}</script>
 <link rel="icon" type="image/png" href="/logo.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -12416,6 +12659,7 @@ app.get('/learn', (req, res) => {
     }
     body += seoCta('Ready to actually study, not just read?');
     res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(seoShell({ title: 'Decode the NSW Syllabus in Plain English | Study Decoder', desc: 'Free plain-English breakdowns of every NSW HSC and Years 7–10 syllabus module. Understand what each topic really means, then practise it with AI.', canonical: '/learn', body }));
 });
 
@@ -12436,6 +12680,7 @@ app.get('/learn/:subjectSlug', (req, res, next) => {
     }
     body += seoCta(`Master ${s.name} faster`);
     res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(seoShell({ title: `${s.name} (${levelWord}) Syllabus Decoded | Study Decoder`, desc: `Every ${s.name} module explained in plain English, aligned to the NSW NESA syllabus. Then practise with AI-marked questions.`, canonical: `/learn/${s.slug}`, body }));
 });
 
@@ -12468,6 +12713,7 @@ app.get('/learn/:subjectSlug/:moduleSlug', (req, res, next) => {
         body += `</div>`;
     }
     res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(seoShell({ title: `${m.name} — ${s.name} Explained Simply | Study Decoder`, desc: `${m.name} (${s.name}, ${levelWord}) decoded in plain English, aligned to the NSW NESA syllabus. Understand it, then practise with AI.`, canonical: `/learn/${s.slug}/${m.slug}`, body }));
 });
 
@@ -12482,6 +12728,7 @@ app.get('/sitemap-learn.xml', (req, res) => {
     const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
         urls.map(u => `  <url><loc>${u}</loc><changefreq>monthly</changefreq></url>`).join('\n') + `\n</urlset>`;
     res.set('Content-Type', 'application/xml; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=600, s-maxage=1800');
     res.send(xml);
 });
 
@@ -12506,13 +12753,25 @@ app.get(['/blog', '/blog/'], (req, res) => {
     res.sendFile(path.join(__dirname, 'blog', 'index.html'));
 });
 
-// Serve index.html for SPA-like behavior (only for non-API routes)
+// 301 redirect for the deprecated sign-in.html (duplicate of login.html).
+app.get(['/sign-in', '/sign-in.html'], (req, res) => res.redirect(301, '/login.html'));
+
+// Serve a real 404 for non-API routes that don't match any static file or
+// dynamic handler. This fixes the soft-404 bug where every unknown URL
+// previously returned the homepage with HTTP 200 — bad for SEO.
 app.get('*', (req, res, next) => {
-    // Don't serve HTML for API routes
+    // Don't serve HTML for API routes; let the JSON 404 below handle them.
     if (req.path.startsWith('/api/')) {
         return next();
     }
-    sendRenderedIndex(req, res);
+    res.status(404);
+    const notFoundPath = path.join(__dirname, '404.html');
+    if (fs.existsSync(notFoundPath)) {
+        res.set('Content-Type', 'text/html; charset=utf-8');
+        return res.sendFile(notFoundPath);
+    }
+    res.set('Content-Type', 'text/plain; charset=utf-8');
+    res.send('Not found');
 });
 
 // ==================== ERROR HANDLING ==
@@ -12532,8 +12791,19 @@ app.use('/api/*', (req, res) => {
 
 function shutdown() {
     console.log('\n🛑 Shutting down gracefully...');
-    saveDB(USERS_FILE, db.users);
-    saveDB(PAYMENTS_FILE, db.payments);
+    // Cancel any pending debounced save so we don't fight ourselves.
+    try { if (typeof saveTimeout !== 'undefined' && saveTimeout) clearTimeout(saveTimeout); } catch (_) {}
+    // Flush ALL persistent state, not just users+payments. A SIGTERM that
+    // landed inside the 1-second debounce used to lose reviews/classes/etc.
+    try { saveDB(USERS_FILE, db.users); } catch (_) {}
+    try { saveDB(PAYMENTS_FILE, db.payments); } catch (_) {}
+    try { saveDB(REVIEWS_FILE, db.reviews); } catch (_) {}
+    try { saveDB(BOTSTATS_FILE, db.botStats); } catch (_) {}
+    try { saveDB(CLASSES_FILE, db.classes); } catch (_) {}
+    try { saveDB(OG_CODES_FILE, ogCodesState); } catch (_) {}
+    try { saveDB(ANALYTICS_FILE, db.analytics || {}); } catch (_) {}
+    try { saveDB(FREEUSAGE_FILE, db.freeUsage || {}); } catch (_) {}
+    try { saveDB(EXAMUSAGE_FILE, db.examUsage || {}); } catch (_) {}
     process.exit(0);
 }
 

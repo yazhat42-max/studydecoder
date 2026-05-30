@@ -37,7 +37,7 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--light-bg); color: var(--secondary); min-height: 100vh; }
+        body { background: var(--light-bg); color: var(--secondary); min-height: 100vh; min-height: 100dvh; height: 100dvh; }
 
         .navbar {
             display: flex; justify-content: space-between; align-items: center;
@@ -3152,17 +3152,50 @@
         }
 
         function tryParseGameResponse(text) {
-            const jsonMatch = text.match(/\{[\s\S]*"message"[\s\S]*"choices"[\s\S]*\}/);
-            if (jsonMatch) {
-                try {
-                    const parsed = JSON.parse(jsonMatch[0]);
-                    if (parsed.message && parsed.choices) return parsed;
-                } catch (e) {}
-            }
+            if (!text) return null;
+            // Strip code fences ``` or ```json that the model sometimes wraps JSON in.
+            let s = String(text).trim();
+            s = s.replace(/^```(?:json|JSON)?\s*/, '').replace(/```\s*$/, '').trim();
+            // 1) Try the whole string as JSON first.
             try {
-                const parsed = JSON.parse(text);
-                if (parsed.message && parsed.choices) return parsed;
+                const parsed = JSON.parse(s);
+                if (parsed && typeof parsed === 'object' && parsed.message) return parsed;
             } catch (e) {}
+            // 2) Find the first balanced { ... } block by bracket counting.
+            //    This handles cases where the model emits prose before/after
+            //    the JSON envelope.
+            const start = s.indexOf('{');
+            if (start !== -1) {
+                let depth = 0, inStr = false, esc = false;
+                for (let i = start; i < s.length; i++) {
+                    const ch = s[i];
+                    if (inStr) {
+                        if (esc) { esc = false; continue; }
+                        if (ch === '\\') { esc = true; continue; }
+                        if (ch === '"') { inStr = false; continue; }
+                        continue;
+                    }
+                    if (ch === '"') { inStr = true; continue; }
+                    if (ch === '{') depth++;
+                    else if (ch === '}') {
+                        depth--;
+                        if (depth === 0) {
+                            const block = s.slice(start, i + 1);
+                            try {
+                                const parsed = JSON.parse(block);
+                                if (parsed && typeof parsed === 'object' && parsed.message) return parsed;
+                            } catch (e) {}
+                            break;
+                        }
+                    }
+                }
+            }
+            // 3) Last-resort soft regex (lenient) so partial replies still
+            //    surface something useful instead of leaking raw JSON.
+            const m = s.match(/\{[\s\S]*?"message"\s*:\s*"([^"]+(?:\\.[^"]*)*)"/);
+            if (m) {
+                return { message: m[1].replace(/\\"/g, '"').replace(/\\n/g, '\n'), choices: getFallbackChoices(), softFallback: true };
+            }
             return null;
         }
 
@@ -3385,10 +3418,25 @@
         function renderGameNarrative(text) {
             const narrativeEl = document.getElementById('gameNarrative');
             narrativeEl.className = 'game-narrative';
-            narrativeEl.innerHTML = `<p>${formatGameText(text)}</p>`;
+            // Belt-and-braces: never let raw JSON leak into the narrative
+            // panel. If the reply still looks like an unparsed object,
+            // show a graceful fallback instead of the raw payload.
+            let display = String(text || '').trim();
+            const looksLikeJson = /^[`\s]*\{[\s\S]*"(message|choices|effects)"/.test(display);
+            if (looksLikeJson) {
+                display = "The game tripped on its own response. Pick a choice below to keep going.";
+                // Keep existing choices visible if any; otherwise inject fallback
+                const choicesEl = document.getElementById('gameChoices');
+                if (!choicesEl.innerHTML.trim()) {
+                    const fc = getFallbackChoices();
+                    choicesEl.innerHTML = fc.map((c, i) =>
+                        `<button class="choice-btn" onclick="pickChoice(this, ${JSON.stringify(c)})">${formatGameText(c)}</button>`
+                    ).join('');
+                }
+            }
+            narrativeEl.innerHTML = `<p>${formatGameText(display)}</p>`;
             void narrativeEl.offsetWidth;
             narrativeEl.classList.add('fade-in');
-            document.getElementById('gameChoices').innerHTML = '';
         }
 
         // ── FLASHCARD FUNCTIONS ──
