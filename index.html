@@ -34,12 +34,20 @@
                 n.textContent = d.lifetimePriceLabel;
             });
         }
-        // Frame the urgency as "price ratchets up to X next", not "of 200" —
-        // the 200-spot final cap is internal; visitors should see the immediate
-        // next price jump instead.
+        // Append a vague urgency tag to the spots line. Don't reveal the next
+        // tier's exact price — concrete numbers reframe scarcity as a small
+        // discount and weaken FOMO. The visitor's brain fills the blank with
+        // worst-case. Switch to "lifetime closes after this" on the final
+        // tier where there's no next price, just a hard close.
         var nextEl = document.getElementById('foundingNextTier');
         if (nextEl) {
-            nextEl.textContent = d.nextTierPriceLabel ? ' · next price ' + d.nextTierPriceLabel : '';
+            if (!foundingActive) {
+                nextEl.textContent = '';
+            } else if (d.nextTierPriceLabel) {
+                nextEl.textContent = ' · price goes up after these spots';
+            } else {
+                nextEl.textContent = ' · lifetime closes after this';
+            }
         }
         // Toggle the founding banner vs the monthly subscription tier cards.
         // While founding is active we HIDE the monthly tier cards entirely —
