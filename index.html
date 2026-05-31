@@ -143,8 +143,8 @@
             { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "AUD" },
             { "@type": "Offer", "name": "Lifetime (Founding)", "price": "14.99", "priceCurrency": "AUD" },
             { "@type": "Offer", "name": "Starter", "price": "4.99", "priceCurrency": "AUD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "4.99", "priceCurrency": "AUD", "billingDuration": "P1M" } },
-            { "@type": "Offer", "name": "Plus", "price": "9.99", "priceCurrency": "AUD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "9.99", "priceCurrency": "AUD", "billingDuration": "P1M" } },
-            { "@type": "Offer", "name": "Pro", "price": "14.99", "priceCurrency": "AUD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "14.99", "priceCurrency": "AUD", "billingDuration": "P1M" } }
+            { "@type": "Offer", "name": "Plus", "price": "7.99", "priceCurrency": "AUD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "7.99", "priceCurrency": "AUD", "billingDuration": "P1M" } },
+            { "@type": "Offer", "name": "Pro", "price": "9.99", "priceCurrency": "AUD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "9.99", "priceCurrency": "AUD", "billingDuration": "P1M" } }
         ]
     }
     </script>
@@ -2526,7 +2526,7 @@
             <div class="reveal stagger-3 sd-monthly-card" data-plan="plus" style="display:none;flex:1;min-width:240px;max-width:260px;background:linear-gradient(160deg,#1a1235 0%,#16202a 100%);border:1px solid rgba(108,99,255,0.5);border-radius:20px;padding:1.8rem;position:relative;">
                 <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:0.72rem;font-weight:700;padding:4px 14px;border-radius:20px;white-space:nowrap;">MOST POPULAR</div>
                 <div style="font-size:0.78rem;font-weight:700;color:rgba(108,99,255,0.95);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.7rem;">Plus</div>
-                <div style="font-size:2.6rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$9.99<span style="font-size:0.95rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
+                <div style="font-size:2.6rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$7.99<span style="font-size:0.95rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
                 <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.3rem;">For exam-season volume</div>
                 <ul style="list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:1.6rem;padding:0;">
                     <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Everything in Starter</span></li>
@@ -2541,7 +2541,7 @@
             <!-- Pro -->
             <div class="reveal stagger-4 sd-monthly-card" data-plan="pro" style="display:none;flex:1;min-width:240px;max-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:1.8rem;">
                 <div style="font-size:0.78rem;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.7rem;">Pro</div>
-                <div style="font-size:2.6rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$14.99<span style="font-size:0.95rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
+                <div style="font-size:2.6rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:6px;">$9.99<span style="font-size:0.95rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
                 <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.3rem;">Truly unlimited · flagship AI</div>
                 <ul style="list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:1.6rem;padding:0;">
                     <li style="font-size:0.88rem;color:var(--text-sec);display:flex;align-items:flex-start;gap:8px;"><span style="color:#22c55e;flex-shrink:0;">✓</span><span>Everything in Plus</span></li>
@@ -3238,8 +3238,8 @@
                 classLinkedOnly ? 'Free access via your teacher\'s class' :
                 currentUser.plan === 'lifetime' ? 'Lifetime (one-time)' :
                 currentUser.plan === 'starter' ? 'Starter ($4.99/month)' :
-                currentUser.plan === 'plus' ? 'Plus ($9.99/month)' :
-                currentUser.plan === 'pro' ? 'Pro ($14.99/month)' :
+                currentUser.plan === 'plus' ? 'Plus ($7.99/month)' :
+                currentUser.plan === 'pro' ? 'Pro ($9.99/month)' :
                 currentUser.plan === 'yearly' ? 'Yearly ($50/year)' :
                 currentUser.plan === 'monthly' ? 'Monthly ($5/month)' :
                 currentUser.plan === 'classroom-lifetime' ? 'Classroom Lifetime (discounted)' :

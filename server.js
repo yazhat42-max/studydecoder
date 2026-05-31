@@ -6342,7 +6342,7 @@ const STUDENT_PLANS = {
     },
     plus: {
         label: 'Plus',
-        amount: 999,                 // $9.99 AUD / month
+        amount: 799,                 // $7.99 AUD / month
         aiTier: 'plus',
         dailyUses: 200,
         specialLimits: null,         // uncapped per-tool
@@ -6350,7 +6350,7 @@ const STUDENT_PLANS = {
     },
     pro: {
         label: 'Pro',
-        amount: 1499,                // $14.99 AUD / month
+        amount: 999,                 // $9.99 AUD / month
         aiTier: 'pro',
         dailyUses: null,             // unlimited (fair-use)
         specialLimits: null,
