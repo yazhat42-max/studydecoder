@@ -11072,6 +11072,247 @@ CRITICAL JSON RULES:
     }
 });
 
+// ==================== EXAM GENERATION — STREAMING (item 2) ====================
+// Server-Sent Events endpoint that streams exam-gen output character-by-character
+// as it leaves OpenAI. The client uses a partial-JSON parser (e.g. the
+// `partial-json` npm package) to render each question as it materializes,
+// dropping perceived latency from ~30s of black screen to first-question-
+// visible in 2-4s.
+//
+// This is a NEW endpoint sitting alongside the existing /api/exam/generate
+// so the current frontend keeps working; practice.html can adopt the stream
+// when it's ready. Same auth, same usage limits, same RAG retrieval — just
+// streams the JSON deltas instead of buffering them.
+//
+// Wire from the client:
+//   const es = new EventSource('/api/exam/generate-stream?...');
+//   es.addEventListener('chunk', e => append(e.data));   // raw text delta
+//   es.addEventListener('done', e => { ...JSON.parse(buf)... es.close(); });
+//   es.addEventListener('error', e => { ...show retry... es.close(); });
+app.post('/api/exam/generate-stream', express.json(), async (req, res) => {
+    if (!req.session?.userId) return res.status(401).json({ error: 'Authentication required' });
+    const user = getUser(req.session.userId);
+    if (!user) return res.status(401).json({ error: 'User not found' });
+
+    const hasFull = hasFullAccess(user);
+    const { subject, topics: topicsRaw, duration, difficulty } = req.body;
+    if (!subject) return res.status(400).json({ error: 'Subject is required' });
+    const subjectLock = checkSubjectGate(user, subject);
+    if (subjectLock) return res.status(402).json(subjectLock);
+    if (!hasFull) {
+        const overLimit = tryReserveExamSlot(req.session.userId, 3);
+        if (overLimit !== null) return res.status(403).json({ error: 'Weekly exam limit reached', examLimitReached: true, weeklyCount: overLimit, maxPerWeek: 3 });
+    }
+
+    recordBotStat('practice');
+    recordUserBotUsage(req.session.userId, 'practice');
+
+    const moduleList = normalizeTopics(topicsRaw);
+    const subjectMeta = resolveSubjectMeta(subject);
+    const subjectName = subjectMeta.name;
+    const isJunior = subjectMeta.isJunior;
+    const durationHours = parseFloat(duration) || 2;
+    const totalMarks = durationHours === 1 ? 60 : durationHours === 2 ? 80 : 100;
+
+    // SSE headers
+    res.set({
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache, no-transform',
+        'Connection': 'keep-alive',
+        'X-Accel-Buffering': 'no'
+    });
+    res.flushHeaders?.();
+
+    function send(event, data) {
+        try {
+            res.write(`event: ${event}\n`);
+            res.write(`data: ${typeof data === 'string' ? data : JSON.stringify(data)}\n\n`);
+        } catch (_) { /* client gone */ }
+    }
+    send('start', { subject: subjectName, totalMarks, durationHours });
+
+    // Minimal RAG-aware system prompt — kept compact for the stream. Reuses
+    // retrieveSyllabusChunks when the corpus is loaded; falls back to a small
+    // syllabus dump otherwise.
+    let contextPrompt = '';
+    if (syllabusEmbeddings.chunks.length > 0) {
+        try {
+            const retrieved = await retrieveSyllabusChunks({
+                query: `${subjectName} ${moduleList.join(', ')} ${difficulty || ''} ${durationHours}h exam`,
+                subjectId: subject, modules: moduleList, isJunior, k: 8
+            });
+            contextPrompt += formatRetrievedChunks(retrieved, subjectName);
+        } catch (_) { /* fall through */ }
+    }
+    if (!contextPrompt) {
+        const dump = getSyllabusContentMulti(subject, isJunior, moduleList, 12000);
+        if (dump) contextPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS ===\n${dump.substring(0, 12000)}\n=== END ===`;
+    }
+
+    const sys = `You are an NSW HSC examiner generating a complete ${durationHours}-hour ${subjectName} exam paper worth EXACTLY ${totalMarks} marks. Output ONLY a single valid JSON object with this shape: { "title": "<paper title>", "totalMarks": ${totalMarks}, "duration": "${durationHours}h", "sections": [{ "name": "<section name>", "questions": [{ "number": <n>, "text": "<question>", "marks": <n>, "type": "<short-answer|multiple-choice|extended-response>", "markingCriteria": "<one sentence>" }] }] }. Marks across all questions MUST sum to EXACTLY ${totalMarks}. Ground every question in the syllabus extracts below — do not introduce terms or concepts that aren't in them.${contextPrompt}`;
+
+    const usr = `Generate the complete ${subjectName} exam paper for ${moduleList.length ? `modules: ${moduleList.join(', ')}` : 'all Year 12 content'}. ${difficulty || 'medium'} difficulty. Stream the JSON now.`;
+
+    const examModel = pickModelForTask(user, 'exam');
+    const examReasoning = pickReasoningEffort(user, 'exam');
+    const isGpt5 = examModel.startsWith('gpt-5');
+    const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+    const budget = durationHours >= 3 ? 16000 : durationHours === 2 ? 12000 : 8000;
+
+    const body = {
+        model: examModel,
+        messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }],
+        [tokenParam]: budget + (isGpt5 ? 5000 : 0),
+        stream: true,
+        stream_options: { include_usage: true },
+        ...(isGpt5 ? { reasoning_effort: examReasoning } : { temperature: 0.7 })
+    };
+
+    const t0 = Date.now();
+    let upstream;
+    try {
+        upstream = await aiFetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
+            body: JSON.stringify(body),
+            signal: AbortSignal.timeout(115000)
+        });
+    } catch (e) {
+        send('error', { error: e.message });
+        return res.end();
+    }
+    if (!upstream.ok) {
+        const errText = await upstream.text().catch(() => '');
+        logAiUsage({ userId: req.session.userId, botType: 'exam-stream', model: examModel, latencyMs: Date.now() - t0, error: errText.slice(0, 200) });
+        send('error', { error: 'AI service unavailable', status: upstream.status });
+        return res.end();
+    }
+
+    let fullText = '';
+    let usage = null;
+    let buf = '';
+    try {
+        for await (const chunk of upstream.body) {
+            buf += chunk.toString('utf8');
+            const lines = buf.split('\n');
+            buf = lines.pop();
+            for (const line of lines) {
+                const m = line.match(/^data:\s*(.+)$/);
+                if (!m) continue;
+                const payload = m[1].trim();
+                if (payload === '[DONE]') continue;
+                let evt;
+                try { evt = JSON.parse(payload); } catch (_) { continue; }
+                if (evt.usage) usage = evt.usage;
+                const delta = evt.choices?.[0]?.delta?.content;
+                if (delta) {
+                    fullText += delta;
+                    send('chunk', delta);
+                }
+            }
+        }
+    } catch (e) {
+        send('error', { error: 'stream interrupted: ' + e.message });
+        return res.end();
+    }
+
+    logAiUsage({
+        userId: req.session.userId, botType: 'exam-stream', model: examModel,
+        usage, latencyMs: Date.now() - t0,
+        cached: (usage?.prompt_tokens_details?.cached_tokens || 0) > 0
+    });
+
+    // Final 'done' event with the full text — client can parse-and-validate
+    let parsed = null, parseError = null;
+    try {
+        const cleaned = fullText.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
+        const s = cleaned.indexOf('{');
+        const e = cleaned.lastIndexOf('}');
+        parsed = JSON.parse(cleaned.substring(s, e + 1));
+    } catch (e) { parseError = e.message; }
+    if (parsed && !hasFull) incrementFreeTierUsage(req.session.userId, 'practice');
+    send('done', { ok: !parseError, exam: parsed, error: parseError });
+    res.end();
+});
+
+// ==================== LEARN IRL — DETERMINISTIC FLASHCARD (item 7.5 #5) ====================
+// The Learn IRL system prompt asks the model to SELF-DETECT when a student
+// misunderstood a concept and proactively emit a flashcard — that's a meta-
+// cognition task models are bad at. Result: over-triggered ("you missed X"
+// when they didn't) or under-triggered (real gaps go uncorrected).
+//
+// New flow: every game-turn JSON now carries a hidden correct_choice_index
+// (enforced by the structured-output schema). When the client detects the
+// student picked the wrong choice, it calls THIS endpoint with the wrong
+// choice + correct choice + concept context. We generate a focused 2-line
+// flashcard explaining the specific misunderstanding. Trigger is provably
+// correct: it only fires when the student was actually wrong.
+app.post('/api/learn-irl/flashcard', requireAuth, express.json({ limit: '32kb' }), async (req, res) => {
+    if (!config.openaiApiKey) return res.status(503).json({ error: 'AI not configured' });
+    const { subject, module, scenario, choices, pickedIndex, correctIndex } = req.body || {};
+    if (!subject) return res.status(400).json({ error: 'subject is required' });
+    if (!Array.isArray(choices) || typeof pickedIndex !== 'number' || typeof correctIndex !== 'number') {
+        return res.status(400).json({ error: 'choices[], pickedIndex, correctIndex are required' });
+    }
+    if (pickedIndex === correctIndex) {
+        // Defensive — no flashcard needed when the pick was correct
+        return res.json({ flashcard: null });
+    }
+
+    const meta = resolveSubjectMeta(subject);
+    const subjectName = meta.name;
+    const wrong = choices[pickedIndex] || '(unknown)';
+    const right = choices[correctIndex] || '(unknown)';
+
+    // RAG: grab 2-3 most relevant dot-points for the scenario so the flashcard
+    // cites real syllabus content rather than hallucinating a "definition".
+    let groundingBlock = '';
+    if (syllabusEmbeddings.chunks.length > 0 && scenario) {
+        try {
+            const retrieved = await retrieveSyllabusChunks({
+                query: `${subjectName} ${module || ''} ${scenario}`,
+                subjectId: subject, modules: module ? [module] : null,
+                isJunior: meta.isJunior, k: 3
+            });
+            if (retrieved.length) {
+                groundingBlock = '\n\n=== RELEVANT NESA DOT-POINTS ===\n' +
+                    retrieved.map(r => `- ${r.heading || r.module || subjectName}: ${r.text.slice(0, 400)}`).join('\n') +
+                    '\n=== END ===';
+            }
+        } catch (_) { /* skip */ }
+    }
+
+    const sys = `You write 2-line remediation flashcards for NSW HSC ${subjectName} students who just made the wrong choice in a Learn IRL scenario. Output ONLY a single JSON object: {"term": "<HSC concept name>", "definition": "<one-sentence plain-English explanation tying back to the syllabus>", "why_wrong": "<one sentence explaining why the choice they picked was wrong vs the correct one>", "tag": "<short keyword: module name or topic>"}. The "term" must be an exact NESA-aligned HSC concept name (e.g. "Cash flow" not "money"). Keep the definition under 25 words. Do not introduce concepts that aren't in the dot-points below.${groundingBlock}`;
+    const usr = `Scenario context: ${(scenario || '(none)').slice(0, 1200)}\n\nWrong choice the student made: "${wrong}"\nCorrect choice: "${right}"\n\nGenerate the flashcard.`;
+
+    try {
+        const reply = await callOpenAIChat({
+            model: 'gpt-4o-mini',   // fast cheap call — flashcard quality is structural, not reasoning-heavy
+            jsonMode: true,
+            maxTokens: 300,
+            temperature: 0.4,
+            messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }],
+            botType: 'learn-irl-flashcard',
+            userId: req.user.userId
+        });
+        const parsed = parseJsonLoose(reply);
+        if (!parsed || !parsed.term || !parsed.definition) {
+            return res.status(502).json({ error: 'Flashcard generation produced an invalid response' });
+        }
+        res.json({
+            flashcard: {
+                term: String(parsed.term).slice(0, 80),
+                definition: String(parsed.definition).slice(0, 400),
+                why_wrong: parsed.why_wrong ? String(parsed.why_wrong).slice(0, 400) : null,
+                tag: parsed.tag ? String(parsed.tag).slice(0, 60) : (module || subjectName)
+            }
+        });
+    } catch (e) {
+        console.error('Learn IRL flashcard error:', e.message);
+        res.status(500).json({ error: 'Failed to generate flashcard' });
+    }
+});
+
 // POST /api/games/questions — a batch of fast multiple-choice questions for the
 // arcade games. ONE AI call returns N MC questions spread EVENLY across the
 // selected module(s), so every module gets equal treatment. Questions carry the
