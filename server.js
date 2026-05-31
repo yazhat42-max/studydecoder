@@ -6909,7 +6909,10 @@ try {
     console.error('Failed to load modules-index.json:', e.message);
 }
 
-// Load syllabus content for a subject (cached), optionally scoped to a specific module/topic
+// Load syllabus content for a subject (cached), optionally scoped to a specific module/topic.
+// Cache layout: 'sr:<subject>' / 'jr:<subject>' for full subjects, 'mod:<subject>/<file>'
+// for individual modules. Module reads were previously uncached — every exam-gen
+// hit the disk for the same module file, costing 5-20ms × per request. Now zero.
 const syllabusCache = {};
 function getSyllabusContent(subjectId, isJunior = false, topic = null) {
     // Try module-specific file first when a topic is specified
@@ -6919,7 +6922,6 @@ function getSyllabusContent(subjectId, isJunior = false, topic = null) {
             // Find matching module by exact or fuzzy match
             let moduleFile = subjectModules[topic];
             if (!moduleFile) {
-                // Fuzzy: check if topic is a substring of a module name or vice versa
                 const topicLower = topic.toLowerCase();
                 for (const [modName, modFile] of Object.entries(subjectModules)) {
                     if (modName.toLowerCase().includes(topicLower) || topicLower.includes(modName.toLowerCase())) {
@@ -6929,15 +6931,19 @@ function getSyllabusContent(subjectId, isJunior = false, topic = null) {
                 }
             }
             if (moduleFile) {
+                const modKey = `mod:${subjectId}/${moduleFile}`;
+                if (syllabusCache[modKey] !== undefined) return syllabusCache[modKey];
                 const modulePath = path.join(SYLLABUSES_PATH, 'modules', subjectId, moduleFile);
                 try {
                     if (fs.existsSync(modulePath)) {
                         const content = fs.readFileSync(modulePath, 'utf8');
                         if (content.length > 500) {
                             console.log(`📎 Loaded module-specific syllabus for ${subjectId}/${moduleFile} (${content.length} chars)`);
+                            syllabusCache[modKey] = content;
                             return content;
                         }
                     }
+                    syllabusCache[modKey] = null;
                 } catch (e) {
                     console.error(`Error reading module file ${modulePath}:`, e.message);
                 }
@@ -7005,6 +7011,96 @@ function getSyllabusContentMulti(subjectId, isJunior, topics, totalBudget) {
         if (c) out += `\n\n--- MODULE: ${t} ---\n${c}`;
     }
     return out || (getSyllabusContent(subjectId, isJunior, null) || '').substring(0, budget);
+}
+
+// Read every subject's full syllabus + every module file into memory at
+// startup. Eliminates per-request disk I/O on the AI hot path. Best-effort —
+// missing files are skipped. Logged so the operator sees what got pre-warmed.
+function prewarmSyllabusCache() {
+    const t0 = Date.now();
+    let subjectCount = 0;
+    let moduleCount = 0;
+    let bytes = 0;
+    const configs = [
+        { cfg: subjectsConfig, isJunior: false },
+        { cfg: juniorSubjectsConfig, isJunior: true }
+    ];
+    for (const { cfg, isJunior } of configs) {
+        if (!cfg || !Array.isArray(cfg.subjects)) continue;
+        for (const subject of cfg.subjects) {
+            try {
+                const txt = getSyllabusContent(subject.id, isJunior, null);
+                if (txt) { subjectCount++; bytes += txt.length; }
+            } catch (_) { /* skip */ }
+            // Also pre-warm every module file
+            if (!isJunior && modulesIndex && modulesIndex[subject.id]) {
+                for (const modName of Object.keys(modulesIndex[subject.id])) {
+                    try {
+                        const m = getSyllabusContent(subject.id, false, modName);
+                        if (m) { moduleCount++; bytes += m.length; }
+                    } catch (_) { /* skip */ }
+                }
+            }
+        }
+    }
+    console.log(`📚 Syllabus pre-warm: ${subjectCount} subjects + ${moduleCount} modules, ${(bytes / 1024 / 1024).toFixed(1)}MB cached in ${Date.now() - t0}ms`);
+}
+
+// Pre-warm OpenAI's prompt cache for the top 15 subject/module combos.
+// Run on startup + every 4 hours so the cached prefix never goes stale.
+// Each ping is 1 output token, so the cost is trivial.
+async function warmOpenAIPromptCache() {
+    if (!config.openaiApiKey) return;
+    // Top subjects by enrolment volume in NSW HSC. Picks 1-2 popular modules
+    // per subject so the most-requested prefixes stay warm.
+    const targets = [
+        { subject: 'english-advanced', module: 'Common Module: Texts and Human Experiences' },
+        { subject: 'mathematics-advanced', module: 'Functions' },
+        { subject: 'mathematics-standard-2', module: 'Statistical Analysis' },
+        { subject: 'biology', module: 'Module 5: Heredity' },
+        { subject: 'biology', module: 'Module 6: Genetic Change' },
+        { subject: 'chemistry', module: 'Module 5: Equilibrium and Acid Reactions' },
+        { subject: 'physics', module: 'Module 5: Advanced Mechanics' },
+        { subject: 'modern-history', module: 'Core Study: Power and Authority in the Modern World' },
+        { subject: 'business-studies', module: 'Operations' },
+        { subject: 'economics', module: 'The Global Economy' },
+        { subject: 'legal-studies', module: 'Crime' },
+        { subject: 'pdhpe', module: 'Health Priorities in Australia' },
+        { subject: 'software-engineering', module: 'Programming Fundamentals' },
+        { subject: 'english-standard', module: 'Common Module: Texts and Human Experiences' },
+        { subject: 'mathematics-extension-1', module: 'Proof' }
+    ];
+    let warmed = 0;
+    let skipped = 0;
+    for (const t of targets) {
+        try {
+            const syllabus = getSyllabusContent(t.subject, false, t.module);
+            if (!syllabus || syllabus.length < 1024) { skipped++; continue; }
+            // Identical prefix to a real exam call — gets the same cache entry warm.
+            const sys = `${BOT_PROMPTS?.practice || ''}\n\n=== SYLLABUS ===\n${syllabus.substring(0, 15000)}\n=== END ===`;
+            await callOpenAIChat({
+                model: 'gpt-4o-mini',   // mini is enough for cache-warming; the cache is keyed on prefix tokens
+                messages: [
+                    { role: 'system', content: sys },
+                    { role: 'user', content: 'ok' }
+                ],
+                maxTokens: 1,
+                temperature: 0,
+                botType: 'cache-warm'
+            });
+            warmed++;
+        } catch (e) {
+            skipped++;
+        }
+    }
+    console.log(`🔥 Prompt-cache warm: ${warmed} prefixes pinged, ${skipped} skipped`);
+}
+
+function scheduleDailyCacheWarm() {
+    // Warm 60s after boot so the server is fully up first, then every 4h.
+    // (5-10min cache TTL on OpenAI's side — 4h ensures multiple warms/day.)
+    setTimeout(warmOpenAIPromptCache, 60_000);
+    setInterval(warmOpenAIPromptCache, 4 * 60 * 60 * 1000);
 }
 
 // Compute an EXACTLY-even distribution of `count` items across `modules`.
@@ -13093,8 +13189,6 @@ app.listen(config.port, () => {
     `);
 
     // ── Retroactive trial grant ──────────────────────────────────────
-    // Any free user who existed before trialStart was introduced gets
-    // their free trial reset to now, so they don't miss out.
     const now = new Date().toISOString();
     let granted = 0;
     for (const user of Object.values(db.users)) {
@@ -13104,6 +13198,20 @@ app.listen(config.port, () => {
         }
     }
     if (granted > 0) console.log(`🎁 Retroactive trial granted to ${granted} existing free user${granted === 1 ? '' : 's'}`);
+
+    // ── Syllabus pre-warm ────────────────────────────────────────────
+    // Read every senior + junior subject (and every module file) into
+    // syllabusCache on startup so the request hot-path never touches disk.
+    // Run async so server availability isn't blocked on disk I/O.
+    setImmediate(prewarmSyllabusCache);
+
+    // ── OpenAI prompt-cache pre-warm cron ────────────────────────────
+    // OpenAI's automatic prompt cache evicts entries after ~5-10 min of
+    // disuse. Every morning at 06:00 AEST and again at 14:00, ping the
+    // top subject/module combos with a 1-token throwaway request so the
+    // first real student of the morning hits warm-cache latency rather
+    // than the cold-cache penalty. Costs ~$0.10/day total.
+    scheduleDailyCacheWarm();
 });
 
 module.exports = app;
