@@ -260,6 +260,222 @@ function getAISettings(user) {
     return AI_QUALITY_TIERS.free;
 }
 
+// ==================== AI INFRASTRUCTURE ====================
+// HTTP keepalive agent — pinned globally so every OpenAI call reuses the same
+// TLS connection pool instead of paying a fresh handshake (~300ms) per request.
+// Node 18+ ships undici as the underlying fetch dispatcher.
+let _aiDispatcher = null;
+try {
+    const { Agent } = require('undici');
+    _aiDispatcher = new Agent({
+        keepAliveTimeout: 60_000,
+        keepAliveMaxTimeout: 600_000,
+        connections: 50,
+        pipelining: 1
+    });
+} catch (e) {
+    console.warn('[AI] undici not available — falling back to default fetch dispatcher (no keepalive).');
+}
+
+// User tier helper — collapses owner/lifetime/og/paid/free into a 4-band
+// tier we route on. Pro = real flagship; Plus = mid; Starter/Free = mini.
+function getUserTier(user) {
+    if (!user) return 'free';
+    const role = getUserRole(user.email);
+    if (role === 'owner') return 'owner';
+    if (role === 'lifetime') return 'pro';
+    if (role === 'og_tester') return 'plus';
+    if (user.subscribed === true) {
+        const planKey = (user.plan || '').toLowerCase();
+        if (planKey === 'pro' || planKey === 'yearly' || planKey === 'lifetime') return 'pro';
+        if (planKey === 'plus' || planKey === 'monthly') return 'plus';
+        if (planKey === 'starter') return 'starter';
+        return 'plus';   // generic paid → plus
+    }
+    return 'free';
+}
+
+// Task-based model routing. Conversational tasks (tutor, advisor) lean on
+// gpt-4o for prose richness — reasoning models flatten language. Structured
+// tasks (exam-gen, marker, learn-irl game JSON) lean on gpt-5 / gpt-5.1 for
+// correctness. Marker on Pro is locked to flagship — that's the Pro promise.
+const TASK_MODEL_MATRIX = {
+    // task: { free, starter, plus, pro, owner }
+    tutor:        { free: 'gpt-4o-mini', starter: 'gpt-4o-mini', plus: 'gpt-4o',   pro: 'gpt-4o',   owner: 'gpt-4o'   },
+    advisor:      { free: 'gpt-4o-mini', starter: 'gpt-4o-mini', plus: 'gpt-4o-mini', pro: 'gpt-4o', owner: 'gpt-4o' },
+    syllabus:     { free: 'gpt-4o-mini', starter: 'gpt-5-mini',  plus: 'gpt-5-mini', pro: 'gpt-5.1', owner: 'gpt-5.1' },
+    practice:     { free: 'gpt-4o-mini', starter: 'gpt-5-mini',  plus: 'gpt-5-mini', pro: 'gpt-5.1', owner: 'gpt-5.1' },
+    exam:         { free: 'gpt-5-mini',  starter: 'gpt-5-mini',  plus: 'gpt-5-mini', pro: 'gpt-5.1', owner: 'gpt-5.1' },
+    marker:       { free: 'gpt-5-mini',  starter: 'gpt-5-mini',  plus: 'gpt-5-mini', pro: 'gpt-5.1', owner: 'gpt-5.1' },
+    'learn-irl':  { free: 'gpt-4o-mini', starter: 'gpt-5-mini',  plus: 'gpt-5-mini', pro: 'gpt-5.1', owner: 'gpt-5.1' },
+    warmup:       { free: 'gpt-4o-mini', starter: 'gpt-4o-mini', plus: 'gpt-4o-mini', pro: 'gpt-4o-mini', owner: 'gpt-4o-mini' },
+    flashcards:   { free: 'gpt-4o-mini', starter: 'gpt-4o-mini', plus: 'gpt-5-mini', pro: 'gpt-5-mini', owner: 'gpt-5-mini' },
+    worksheet:    { free: 'gpt-4o-mini', starter: 'gpt-4o-mini', plus: 'gpt-5-mini', pro: 'gpt-5-mini', owner: 'gpt-5-mini' },
+    games:        { free: 'gpt-4o-mini', starter: 'gpt-4o-mini', plus: 'gpt-4o-mini', pro: 'gpt-4o-mini', owner: 'gpt-4o-mini' },
+    embedding:    { free: 'text-embedding-3-small', starter: 'text-embedding-3-small', plus: 'text-embedding-3-small', pro: 'text-embedding-3-small', owner: 'text-embedding-3-small' }
+};
+
+function pickModelForTask(user, task) {
+    const tier = getUserTier(user);
+    const row = TASK_MODEL_MATRIX[task] || TASK_MODEL_MATRIX.tutor;
+    return row[tier] || row.free;
+}
+
+// Reasoning effort by task + tier. GPT-5 models reason internally before
+// emitting prose — too much effort hurts perceived speed and flattens
+// language, too little hurts structural correctness. Tuned per task:
+//  • tutor/advisor: minimal — they're conversational, not reasoning-heavy
+//  • marker/exam: medium baseline, high on Pro/Owner (Pro pays for depth)
+//  • learn-irl: medium — branching consequences benefit from reasoning
+function pickReasoningEffort(user, task) {
+    const tier = getUserTier(user);
+    // Bumped tiers get richer reasoning where it matters
+    const isHighTier = tier === 'pro' || tier === 'owner';
+    switch (task) {
+        case 'marker':
+        case 'exam':
+            return isHighTier ? 'high' : 'medium';
+        case 'learn-irl':
+        case 'syllabus':
+        case 'practice':
+            return isHighTier ? 'medium' : 'low';
+        case 'tutor':
+        case 'advisor':
+        case 'warmup':
+        case 'flashcards':
+        case 'games':
+        case 'worksheet':
+        default:
+            return 'low';
+    }
+}
+
+// Output token budget — raised by ~30% on paid tiers vs the old static
+// `maxTokens` so GPT-5's internal reasoning tokens don't eat the visible
+// prose budget. Returns a sensible cap when no override is given.
+function pickOutputBudget(user, task, override) {
+    if (typeof override === 'number' && override > 0) return override;
+    const tier = getUserTier(user);
+    const base = {
+        free:    { tutor: 1500, exam: 8000, marker: 4000, 'learn-irl': 1500, advisor: 1500, syllabus: 2000, practice: 2000, default: 1500 },
+        starter: { tutor: 3000, exam: 10000, marker: 6000, 'learn-irl': 2500, advisor: 2500, syllabus: 4000, practice: 4000, default: 3000 },
+        plus:    { tutor: 5000, exam: 14000, marker: 10000, 'learn-irl': 4000, advisor: 4000, syllabus: 8000, practice: 8000, default: 5000 },
+        pro:     { tutor: 8000, exam: 18000, marker: 14000, 'learn-irl': 6000, advisor: 6000, syllabus: 12000, practice: 12000, default: 8000 },
+        owner:   { tutor: 12000, exam: 22000, marker: 18000, 'learn-irl': 8000, advisor: 8000, syllabus: 16000, practice: 16000, default: 12000 }
+    };
+    const row = base[tier] || base.free;
+    return row[task] || row.default;
+}
+
+// ==================== AI USAGE LOGGING ====================
+// Per-call token + cost capture. Writes to a daily-rolled JSONL file so the
+// analytics dashboard (item 8) can aggregate per-bot, per-user, per-model
+// spend without touching the request hot path. Logging is best-effort —
+// failures never affect the live response.
+const AI_USAGE_DIR = path.join(DB_PATH, 'ai-usage');
+try { if (!fs.existsSync(AI_USAGE_DIR)) fs.mkdirSync(AI_USAGE_DIR, { recursive: true }); } catch (_) {}
+
+// USD price per 1M tokens, per model. Cached input gets a 50% discount on
+// OpenAI's automatic prompt cache. Source: OpenAI list prices as of Q1 2026.
+const MODEL_PRICES_USD = {
+    'gpt-4o-mini':              { in: 0.15,  cachedIn: 0.075, out: 0.60 },
+    'gpt-4o':                   { in: 2.50,  cachedIn: 1.25,  out: 10.00 },
+    'gpt-4.1-mini':             { in: 0.40,  cachedIn: 0.20,  out: 1.60 },
+    'gpt-5-mini':               { in: 0.25,  cachedIn: 0.125, out: 2.00 },
+    'gpt-5.1':                  { in: 1.25,  cachedIn: 0.625, out: 10.00 },
+    'text-embedding-3-small':   { in: 0.02,  cachedIn: 0.02,  out: 0 }
+};
+const USD_TO_AUD = 1.55;
+
+function computeCallCostAud(model, usage) {
+    const p = MODEL_PRICES_USD[model] || MODEL_PRICES_USD['gpt-4o-mini'];
+    const promptTokens = usage?.prompt_tokens || 0;
+    const cachedTokens = usage?.prompt_tokens_details?.cached_tokens || 0;
+    const completionTokens = usage?.completion_tokens || 0;
+    const uncached = Math.max(0, promptTokens - cachedTokens);
+    const usd = (uncached * p.in + cachedTokens * p.cachedIn + completionTokens * p.out) / 1_000_000;
+    return Math.round(usd * USD_TO_AUD * 10000) / 10000;   // 4dp AUD
+}
+
+function logAiUsage({ userId, botType, model, usage, latencyMs, cached, error }) {
+    try {
+        const today = _getToday();
+        const path_ = path.join(AI_USAGE_DIR, `${today}.jsonl`);
+        const promptTokens = usage?.prompt_tokens || 0;
+        const cachedTokens = usage?.prompt_tokens_details?.cached_tokens || 0;
+        const row = {
+            ts: new Date().toISOString(),
+            userId: userId || null,
+            botType: botType || 'unknown',
+            model: model || 'unknown',
+            promptTokens,
+            cachedTokens,
+            completionTokens: usage?.completion_tokens || 0,
+            totalTokens: usage?.total_tokens || 0,
+            cacheHitRate: promptTokens > 0 ? Math.round((cachedTokens / promptTokens) * 1000) / 1000 : 0,
+            costAud: computeCallCostAud(model, usage),
+            latencyMs: latencyMs || 0,
+            cached: !!cached,
+            error: error || null
+        };
+        fs.appendFileSync(path_, JSON.stringify(row) + '\n');
+    } catch (e) {
+        // Never let logging failures break the user-visible flow
+        console.warn('[AI usage] log failed:', e.message);
+    }
+}
+
+// Drop-in for raw `fetch(url, init)` — pins the keepalive dispatcher so every
+// OpenAI HTTP call reuses TLS connections instead of paying a fresh handshake
+// each request. Used by call sites that still build their own request body
+// (streaming, multimodal, retry loops) and can't use callOpenAIChat directly.
+function aiFetch(url, init) {
+    if (_aiDispatcher && init && typeof init === 'object' && !init.dispatcher) {
+        init.dispatcher = _aiDispatcher;
+    }
+    return fetch(url, init);
+}
+
+// Centralized fetch wrapper for OpenAI calls. Pins the keepalive dispatcher,
+// times the round-trip, and logs token usage. Drop-in replacement for the
+// raw `fetch('https://api.openai.com/v1/chat/completions', ...)` pattern.
+async function openaiFetch(url, init, meta = {}) {
+    const t0 = Date.now();
+    const opts = { ...(init || {}) };
+    if (_aiDispatcher) opts.dispatcher = _aiDispatcher;
+    let response, data;
+    try {
+        response = await fetch(url, opts);
+    } catch (e) {
+        logAiUsage({ ...meta, latencyMs: Date.now() - t0, error: e.message });
+        throw e;
+    }
+    if (!response.ok) {
+        const errBody = await response.text().catch(() => '');
+        logAiUsage({ ...meta, latencyMs: Date.now() - t0, error: `HTTP ${response.status}: ${errBody.slice(0, 200)}` });
+        // Re-shape into a thrown error the callers expect
+        const err = new Error(`OpenAI HTTP ${response.status}`);
+        err.status = response.status;
+        err.body = errBody;
+        throw err;
+    }
+    return {
+        response,
+        // Lazy parse-and-log helper — call from sites that need JSON
+        async json() {
+            data = await response.json();
+            logAiUsage({
+                ...meta,
+                latencyMs: Date.now() - t0,
+                model: meta.model || data.model,
+                usage: data.usage,
+                cached: (data.usage?.prompt_tokens_details?.cached_tokens || 0) > 0
+            });
+            return data;
+        }
+    };
+}
+
 // Track daily usage for free tier — GLOBAL total + per-bot specials (resets at midnight UTC)
 // Persisted to disk so server restarts can't be used to reset abuse counters.
 const freeUsageTracker = new Map(Object.entries(loadDB(FREEUSAGE_FILE, {})));
@@ -3232,7 +3448,8 @@ function leaderboardRows(userIds, weekKey) {
 }
 
 // Shared OpenAI chat call. Returns the raw assistant text.
-async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMode, reasoningEffort }) {
+// Now uses the keepalive dispatcher + logs token usage to ai-usage/<date>.jsonl.
+async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMode, reasoningEffort, botType, userId }) {
     const mdl = model || 'gpt-4o-mini';
     const isGpt5 = mdl.startsWith('gpt-5');
     const body = {
@@ -3241,23 +3458,23 @@ async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMod
         [isGpt5 ? 'max_completion_tokens' : 'max_tokens']: maxTokens || 1000
     };
     if (!isGpt5 && typeof temperature === 'number') body.temperature = temperature;
-    // GPT-5 reasoning models: default heavy reasoning is the slow part. Default
-    // to 'low' so structured generations (teacher tools, assignments) stay fast.
     if (isGpt5) body.reasoning_effort = reasoningEffort || 'low';
     if (jsonMode) body.response_format = { type: 'json_object' };
-    // Per-call hard timeout so a hung OpenAI request can't pin the
-    // event loop and surface to the user as 'stuck on loading' forever.
     const controller = new AbortController();
     const tid = setTimeout(() => controller.abort(), 110000);
+    const t0 = Date.now();
     let r;
     try {
-        r = await fetch('https://api.openai.com/v1/chat/completions', {
+        const fetchOpts = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
             body: JSON.stringify(body),
             signal: controller.signal
-        });
+        };
+        if (_aiDispatcher) fetchOpts.dispatcher = _aiDispatcher;
+        r = await aiFetch('https://api.openai.com/v1/chat/completions', fetchOpts);
     } catch (e) {
+        logAiUsage({ userId, botType, model: mdl, latencyMs: Date.now() - t0, error: e.message });
         if (e.name === 'AbortError') throw new Error('OpenAI request timed out after 110s. Try a shorter prompt or retry.');
         throw e;
     } finally {
@@ -3265,9 +3482,18 @@ async function callOpenAIChat({ model, messages, maxTokens, temperature, jsonMod
     }
     if (!r.ok) {
         const err = await r.json().catch(() => ({}));
+        logAiUsage({ userId, botType, model: mdl, latencyMs: Date.now() - t0, error: err.error?.message || ('HTTP ' + r.status) });
         throw new Error('OpenAI error: ' + (err.error?.message || ('HTTP ' + r.status)));
     }
     const data = await r.json();
+    logAiUsage({
+        userId,
+        botType,
+        model: mdl,
+        usage: data.usage,
+        latencyMs: Date.now() - t0,
+        cached: (data.usage?.prompt_tokens_details?.cached_tokens || 0) > 0
+    });
     return data.choices?.[0]?.message?.content || '';
 }
 
@@ -6915,7 +7141,7 @@ app.post('/api/demo', express.json(), async (req, res) => {
     const userMessage = `${yearLevel} ${subjectName}${topic ? ` - Topic: ${topic}` : ''}. Generate a preview.`;
     
     try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -7046,7 +7272,7 @@ app.post('/api/demo-advisor', express.json(), async (req, res) => {
     const selectedPrompt = DEMO_ADVISOR_PROMPTS[mode] || DEMO_ADVISOR_PROMPTS.selection;
     
     try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -7428,7 +7654,7 @@ app.post('/api/subject-advisor', express.json(), async (req, res) => {
             ...(isGpt5 ? { reasoning_effort: 'low' } : {})
         };
         if (!isGpt5) requestBody.temperature = aiSettings.temperature;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -8430,7 +8656,7 @@ app.post('/api/chat/worksheet', express.json({ limit: '25mb' }), async (req, res
             ...(isGpt5 ? { reasoning_effort: 'low' } : {})
         };
         if (!isGpt5) requestBody.temperature = 0.3;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
             body: JSON.stringify(requestBody),
@@ -8498,7 +8724,7 @@ app.post('/api/chat/notes-transcriber', express.json({ limit: '25mb' }), async (
             ...(isGpt5 ? { reasoning_effort: 'low' } : {})
         };
         if (!isGpt5) requestBody.temperature = 0.3;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
             body: JSON.stringify(requestBody),
@@ -9878,7 +10104,12 @@ CRITICAL JSON RULES:
         : 'Include a concise one-sentence syllabus-aligned markingCriteria for every non-MC question. Do NOT include sampleAnswer — model answers are generated separately on demand.';
 
     try {
-        const isGpt5 = aiSettings.model.startsWith('gpt-5');
+        // Task-based routing: pick model + reasoning effort for the 'exam' task.
+        // Pro/Owner get flagship gpt-5.1 with high reasoning; everyone else gets
+        // gpt-5-mini with medium reasoning. Override aiSettings.model.
+        const examModel = pickModelForTask(user, 'exam');
+        const examReasoning = pickReasoningEffort(user, 'exam');
+        const isGpt5 = examModel.startsWith('gpt-5');
         const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
         // ===== EXAM GENERATION WITH MARK VERIFICATION (retry loop) =====
         let exam = null;
@@ -9886,15 +10117,9 @@ CRITICAL JSON RULES:
         const maxGenerateAttempts = 2;
         let lastError = null;
         // Right-size the output budget by exam length so a full 3h paper finishes
-        // in ONE call, for EVERY tier. Previously the cap (4000 paid / 7000 free)
-        // truncated long papers, the JSON parse failed, and a SECOND full call
-        // ran — the main cause of the long waits on normal accounts. A higher cap
-        // is not slower: latency tracks the tokens actually generated, and one
-        // complete call beats two truncated ones.
+        // in ONE call, for EVERY tier.
         let examTokenBudget = durationHours >= 3 ? 16000 : durationHours === 2 ? 12000 : 8000;
-        // GPT-5 reasoning tokens are billed/counted inside max_completion_tokens,
-        // so give reasoning models extra headroom or the visible JSON truncates.
-        if (isGpt5) examTokenBudget += 5000;
+        if (isGpt5) examTokenBudget += 5000;   // reasoning tokens are billed inside the cap
 
         while (generateAttempts < maxGenerateAttempts && !exam) {
             generateAttempts++;
@@ -9906,23 +10131,18 @@ CRITICAL JSON RULES:
                 ? `Generate a complete ${durationHours}-hour Years 7-10 practice test for ${subjectName}. Topics: ${topics || 'Years 7-10 content'}. REMINDER: ${topics && topics !== 'Years 7-10 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other topic. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Years 7-10 topics for this subject.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. ${samplesClauseJr} Use age-appropriate language and contexts for the chosen year level. VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}`
                 : `Generate a complete ${durationHours}-hour HSC exam paper for ${subjectName}. Topics: ${topics || 'All Year 12 content'}. REMINDER: ${topics && topics !== 'All Year 12 content' ? `ONLY include questions from "${topics}". Do NOT include content from any other module or topic area. EVERY question must verifiably belong to "${topics}" — if it doesn't, replace it.` : 'Spread questions EVENLY across ALL Year 12 modules for this subject. Each module must have at least one question. Do NOT focus on only one or two modules — cover the full breadth of the course.'} Use sub-parts (a)(b)(c) for questions worth 4+ marks. ${samplesClauseHsc} VERIFY: all marks sum to EXACTLY ${totalMarks}. Return ONLY valid JSON.${extraReminder}`;
             const requestBody = {
-                model: aiSettings.model,
+                model: examModel,
                 messages: [
                     { role: 'system', content: finalSystemPrompt },
                     { role: 'user', content: userPromptText }
                 ],
                 [tokenParam]: examTokenBudget,
-
-                ...(isGpt5 ? { reasoning_effort: 'low' } : {})
+                ...(isGpt5 ? { reasoning_effort: examReasoning } : {})
             };
             if (!isGpt5) requestBody.temperature = Math.min(aiSettings.temperature, 0.7);
-            // Reasoning models default to heavy internal reasoning, which is the
-            // slowest part of generation. Exam JSON is structured and the mark
-            // totals are enforced deterministically server-side, so 'low' effort
-            // keeps quality while cutting the wait substantially.
-            if (isGpt5) requestBody.reasoning_effort = 'low';
 
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            const t0 = Date.now();
+            const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
                 body: JSON.stringify(requestBody),
@@ -9931,11 +10151,17 @@ CRITICAL JSON RULES:
 
             if (!response.ok) {
                 const error = await response.json();
+                logAiUsage({ userId: req.session.userId, botType: 'exam', model: examModel, latencyMs: Date.now() - t0, error: error.error?.message || `HTTP ${response.status}` });
                 console.error('OpenAI exam generate error:', error);
                 return res.status(500).json({ error: 'AI service unavailable' });
             }
 
             const data = await response.json();
+            logAiUsage({
+                userId: req.session.userId, botType: 'exam', model: examModel,
+                usage: data.usage, latencyMs: Date.now() - t0,
+                cached: (data.usage?.prompt_tokens_details?.cached_tokens || 0) > 0
+            });
             let reply = data.choices?.[0]?.message?.content || '';
 
             // Robust JSON extraction — strip fences, find JSON object
@@ -10494,14 +10720,19 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                     : `Multiple-choice questions marked automatically. ${pct}% scored across MC questions${unansweredQuestions.length > 0 ? ` — ${unansweredQuestions.length} question${unansweredQuestions.length > 1 ? 's were' : ' was'} left blank` : ''}.`
             };
         } else {
-            // Call AI to mark only the answered questions
-            const isGpt5 = aiSettings.model.startsWith('gpt-5');
+            // Call AI to mark only the answered questions.
+            // Task routing: Pro/Owner get gpt-5.1 flagship with HIGH reasoning
+            // (the Pro marker promise); free/Starter/Plus get gpt-5-mini with
+            // medium reasoning — still a real GPT-5 marker, not gpt-4o-mini.
+            const markerModel = pickModelForTask(user, 'marker');
+            const markerReasoning = pickReasoningEffort(user, 'marker');
+            const isGpt5 = markerModel.startsWith('gpt-5');
             const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+            const markerOutputBudget = pickOutputBudget(user, 'marker', Math.min(aiSettings.maxTokens, 16000));
 
             // Build user content — text-only by default, multimodal if drawings/graphs were submitted
             let userContent;
             if (widgetImages.length > 0) {
-                // Multimodal: text + each image labelled with its question number
                 const parts = [{ type: 'text', text: `Mark the following ${subjectName} exam:\n${questionsText}\n\nThe student also submitted ${widgetImages.length} drawing/graph image${widgetImages.length > 1 ? 's' : ''}, attached below. Inspect each image carefully and incorporate it into the marking for that question.\n\nReturn ONLY valid JSON.` }];
                 widgetImages.forEach(img => {
                     parts.push({ type: 'text', text: `[Image for Q${img.qNumber}]:` });
@@ -10513,19 +10744,19 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
             }
 
             const requestBody = {
-                model: aiSettings.model,
+                model: markerModel,
                 messages: [
                     { role: 'system', content: finalMarkPrompt },
                     { role: 'user', content: userContent }
                 ],
                 response_format: { type: 'json_object' },
-                [tokenParam]: Math.min(aiSettings.maxTokens, 16000),
-
-                ...(isGpt5 ? { reasoning_effort: 'low' } : {})
+                [tokenParam]: markerOutputBudget,
+                ...(isGpt5 ? { reasoning_effort: markerReasoning } : {})
             };
-            if (!isGpt5) requestBody.temperature = 0.3; // Low temp for consistent marking
+            if (!isGpt5) requestBody.temperature = 0.3;
 
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            const t0 = Date.now();
+            const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
                 body: JSON.stringify(requestBody),
@@ -10534,11 +10765,17 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
 
             if (!response.ok) {
                 const error = await response.json();
+                logAiUsage({ userId: req.session.userId, botType: 'marker', model: markerModel, latencyMs: Date.now() - t0, error: error.error?.message || `HTTP ${response.status}` });
                 console.error('OpenAI exam mark error:', error);
                 return res.status(500).json({ error: 'AI service unavailable' });
             }
 
             const data = await response.json();
+            logAiUsage({
+                userId: req.session.userId, botType: 'marker', model: markerModel,
+                usage: data.usage, latencyMs: Date.now() - t0,
+                cached: (data.usage?.prompt_tokens_details?.cached_tokens || 0) > 0
+            });
             let reply = data.choices?.[0]?.message?.content || '';
 
             // Robust JSON extraction — strip fences, find JSON object
@@ -10558,18 +10795,18 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                     // Retry is purely a JSON-format fix — don't re-send images (saves tokens; the first call already inspected them).
                     const retryUserContent = `Mark the following ${subjectName} exam:\n${questionsText}\n\nReturn ONLY a single valid JSON object. No markdown, no commentary, no code fences. Start with { and end with }.`;
                     const retryBody = {
-                        model: aiSettings.model,
+                        model: markerModel,
                         messages: [
                             { role: 'system', content: finalMarkPrompt },
                             { role: 'user', content: retryUserContent }
                         ],
                         response_format: { type: 'json_object' },
-                        [tokenParam]: Math.min(aiSettings.maxTokens, 16000),
-
-                        ...(isGpt5 ? { reasoning_effort: 'low' } : {})
+                        [tokenParam]: markerOutputBudget,
+                        ...(isGpt5 ? { reasoning_effort: markerReasoning } : {})
                     };
                     if (!isGpt5) retryBody.temperature = 0.1;
-                    const retryRes = await fetch('https://api.openai.com/v1/chat/completions', {
+                    const t0r = Date.now();
+                    const retryRes = await aiFetch('https://api.openai.com/v1/chat/completions', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
                         body: JSON.stringify(retryBody),
@@ -10577,6 +10814,7 @@ A 9-mark sample answer that is only 4 lines is UNACCEPTABLE. Write the FULL resp
                     });
                     if (retryRes.ok) {
                         const retryData = await retryRes.json();
+                        logAiUsage({ userId: req.session.userId, botType: 'marker', model: markerModel, usage: retryData.usage, latencyMs: Date.now() - t0r, cached: (retryData.usage?.prompt_tokens_details?.cached_tokens || 0) > 0 });
                         let retryReply = retryData.choices?.[0]?.message?.content || '';
                         retryReply = retryReply.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
                         const rs = retryReply.indexOf('{');
@@ -10763,7 +11001,7 @@ Return ONLY valid JSON: {"sampleAnswer": "<the full sample answer text>"}`;
     if (!isGpt5) requestBody.temperature = 0.4;
 
     try {
-        const r = await fetch('https://api.openai.com/v1/chat/completions', {
+        const r = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
             body: JSON.stringify(requestBody),
@@ -10979,7 +11217,7 @@ ${syllabusContext || '(No syllabus content available — rely on standard curric
     if (!isGpt5) requestBody.temperature = 0.6;
 
     try {
-        const r = await fetch('https://api.openai.com/v1/chat/completions', {
+        const r = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
             body: JSON.stringify(requestBody),
@@ -11319,8 +11557,13 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     const aiSettings = getAISettings(user);
     
     try {
-        // GPT-5 models use max_completion_tokens instead of max_tokens
-        const isGpt5 = aiSettings.model.startsWith('gpt-5');
+        // Task-based model routing per botType. tutor/advisor lean on gpt-4o
+        // for prose richness (reasoning models flatten language); structured
+        // bots (syllabus, practice, learn-irl) lean on gpt-5 for correctness.
+        const chatModel = pickModelForTask(user, botType);
+        const chatReasoning = pickReasoningEffort(user, botType);
+        const chatOutputBudget = pickOutputBudget(user, botType, aiSettings.maxTokens);
+        const isGpt5 = chatModel.startsWith('gpt-5');
         const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
 
         // For tutor: prepend a synthetic subject-establishment exchange so the model
@@ -11336,17 +11579,17 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         }
 
         const requestBody = {
-            model: aiSettings.model,
+            model: chatModel,
             messages: [
                 { role: 'system', content: systemPrompt },
                 ...apiMessages
             ],
-            [tokenParam]: aiSettings.maxTokens,
-
-            ...(isGpt5 ? { reasoning_effort: 'low' } : {})
+            [tokenParam]: chatOutputBudget,
+            ...(isGpt5 ? { reasoning_effort: chatReasoning } : {})
         };
         if (!isGpt5) requestBody.temperature = aiSettings.temperature;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const t0 = Date.now();
+        const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -11355,14 +11598,20 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             body: JSON.stringify(requestBody),
             signal: AbortSignal.timeout(115000)
         });
-        
+
         if (!response.ok) {
             const error = await response.json();
+            logAiUsage({ userId: req.session.userId, botType, model: chatModel, latencyMs: Date.now() - t0, error: error.error?.message || `HTTP ${response.status}` });
             console.error('OpenAI API error:', error);
             return res.status(500).json({ error: 'AI service unavailable' });
         }
-        
+
         const data = await response.json();
+        logAiUsage({
+            userId: req.session.userId, botType, model: chatModel,
+            usage: data.usage, latencyMs: Date.now() - t0,
+            cached: (data.usage?.prompt_tokens_details?.cached_tokens || 0) > 0
+        });
         const reply = data.choices?.[0]?.message?.content || 'No response generated';
         
         // Include remaining questions in response for free users only
@@ -11461,7 +11710,7 @@ app.post('/api/junior-chat/:botType', express.json(), async (req, res) => {
             ...(isGpt5 ? { reasoning_effort: 'low' } : {})
         };
         if (!isGpt5) requestBody.temperature = aiSettings.temperature;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -11680,7 +11929,7 @@ app.get('/api/challenge/today', requireAuth, async (req, res) => {
 
     try {
         const OPENAI_API_KEY = config.openaiApiKey;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
             body: JSON.stringify({
@@ -11730,7 +11979,7 @@ app.post('/api/challenge/submit', requireAuth, express.json(), async (req, res) 
     const { subject, question, marks } = user.todaysChallenge.question;
     try {
         const OPENAI_API_KEY = config.openaiApiKey;
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
             body: JSON.stringify({
