@@ -367,6 +367,124 @@ function pickOutputBudget(user, task, override) {
     return row[task] || row.default;
 }
 
+// ==================== REAL-WORLD EXAMPLES (Learn IRL Breakdown) ====================
+// Loaded once at startup from data/real-world-examples.json. The Breakdown
+// mode prompt asks for 3 real-world examples per concept — the previous
+// model-generated approach hallucinated plausible-sounding companies and
+// court cases that didn't exist. RAG over this curated file kills that.
+// Top up the file as more concepts are vetted; no code change needed.
+const REAL_WORLD_EXAMPLES_FILE = path.join(DB_PATH, 'real-world-examples.json');
+let realWorldExamples = {};
+try {
+    if (fs.existsSync(REAL_WORLD_EXAMPLES_FILE)) {
+        realWorldExamples = JSON.parse(fs.readFileSync(REAL_WORLD_EXAMPLES_FILE, 'utf8')) || {};
+        delete realWorldExamples._meta;
+        const subjectCount = Object.keys(realWorldExamples).length;
+        let exampleCount = 0;
+        for (const subj of Object.values(realWorldExamples)) {
+            for (const mod of Object.values(subj || {})) {
+                for (const concept of Object.values(mod || {})) {
+                    if (Array.isArray(concept)) exampleCount += concept.length;
+                }
+            }
+        }
+        console.log(`🌐 Real-world examples loaded: ${subjectCount} subjects, ${exampleCount} curated examples`);
+    } else {
+        console.log('🌐 Real-world examples: no data file (skipped — Breakdown mode will fall back to model generation).');
+    }
+} catch (e) {
+    console.error('Failed to load real-world-examples.json:', e.message);
+}
+
+// Pick up to N matching examples for a {subject, module, concept} key. Uses
+// case-insensitive substring matching on module + concept so the data file
+// doesn't need to perfectly mirror NESA's module wording.
+function getRealWorldExamples(subjectId, moduleName, concept, limit = 3) {
+    if (!subjectId || !realWorldExamples[subjectId]) return [];
+    const subjectData = realWorldExamples[subjectId];
+    const out = [];
+
+    const moduleNeedle = (moduleName || '').toLowerCase();
+    const conceptNeedle = (concept || '').toLowerCase();
+
+    for (const [modName, modData] of Object.entries(subjectData)) {
+        const modMatch = !moduleNeedle || modName.toLowerCase().includes(moduleNeedle) || moduleNeedle.includes(modName.toLowerCase());
+        if (!modMatch) continue;
+        for (const [conceptKey, examples] of Object.entries(modData || {})) {
+            const cMatch = !conceptNeedle || conceptKey.toLowerCase().includes(conceptNeedle) || conceptNeedle.includes(conceptKey.toLowerCase());
+            if (!cMatch || !Array.isArray(examples)) continue;
+            for (const ex of examples) {
+                out.push({ ...ex, concept: conceptKey, module: modName });
+                if (out.length >= limit) return out;
+            }
+        }
+    }
+    return out;
+}
+
+// ==================== STRUCTURED OUTPUTS ====================
+// OpenAI structured outputs (response_format.json_schema, strict:true) is
+// supported on gpt-4o (Aug 2024+), gpt-4o-mini, gpt-4.1, and the gpt-5 family.
+// Reasoning models on legacy variants and older models still need json_object.
+function _modelSupportsStructuredOutputs(model) {
+    if (!model) return false;
+    if (model.startsWith('gpt-5')) return true;
+    if (model.startsWith('gpt-4.1')) return true;
+    if (model === 'gpt-4o' || model === 'gpt-4o-mini' || model.startsWith('gpt-4o-')) return true;
+    return false;
+}
+
+// Learn IRL game-turn schema. The API enforces this — malformed JSON becomes
+// impossible, eliminating the silent-degrade-to-prose bug. Matches the
+// existing `BOT_PROMPTS['learn-irl']` contract: message + choices + stat
+// effects (+ optional meters relabel on turn 1 + optional flashcard +
+// `final` for game-over turns).
+const LEARN_IRL_GAME_SCHEMA = {
+    type: 'object',
+    additionalProperties: false,
+    required: ['message', 'choices', 'effects', 'final'],
+    properties: {
+        message:    { type: 'string', minLength: 1 },
+        choices:    { type: 'array', items: { type: 'string' }, maxItems: 4 },
+        effects: {
+            type: 'object',
+            additionalProperties: false,
+            required: ['money', 'time', 'risk', 'energy'],
+            properties: {
+                money:  { type: 'number' },
+                time:   { type: 'number' },
+                risk:   { type: 'number' },
+                energy: { type: 'number' }
+            }
+        },
+        meters: {
+            type: ['object', 'null'],
+            additionalProperties: false,
+            properties: {
+                money:  { type: 'string' },
+                time:   { type: 'string' },
+                risk:   { type: 'string' },
+                energy: { type: 'string' }
+            },
+            required: ['money', 'time', 'risk', 'energy']
+        },
+        flashcard: {
+            type: ['object', 'null'],
+            additionalProperties: false,
+            properties: {
+                term:       { type: 'string' },
+                definition: { type: 'string' },
+                tag:        { type: 'string' }
+            },
+            required: ['term', 'definition', 'tag']
+        },
+        // Hidden-from-UI: which choice was the syllabus-correct one. Used
+        // server-side to fire a deterministic flashcard on wrong picks.
+        correct_choice_index: { type: ['integer', 'null'], minimum: 0, maximum: 3 },
+        final: { type: 'boolean' }
+    }
+};
+
 // ==================== AI USAGE LOGGING ====================
 // Per-call token + cost capture. Writes to a daily-rolled JSONL file so the
 // analytics dashboard (item 8) can aggregate per-bot, per-user, per-model
@@ -11496,7 +11614,19 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
     }
     const chatSubjectMeta = subjectId ? resolveSubjectMeta(subjectId) : null;
     const chatIsJunior = !!chatSubjectMeta?.isJunior;
-    
+
+    // Learn IRL: subject is REQUIRED. The system prompt insists every concept
+    // come from the official NSW NESA syllabus, but the previous code only
+    // INJECTED the syllabus when `subjectId` was present — so a null subject
+    // silently let the model invent scenarios from its general training,
+    // which is how the "not in textbook" hallucinations slipped in.
+    if (botType === 'learn-irl' && !subjectId) {
+        return res.status(400).json({
+            error: 'Learn IRL requires a subject so scenarios can be grounded in the NSW NESA syllabus. Pick a subject before starting a session.',
+            code: 'SUBJECT_REQUIRED'
+        });
+    }
+
     // Inject syllabus content for syllabus and practice bots
     if (subjectId && (botType === 'syllabus' || botType === 'practice')) {
         // Extract topic from user message for module-specific loading
@@ -11595,6 +11725,27 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
                 }
             } else if (botType === 'learn-irl') {
                 systemPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) — LEARN IRL REFERENCE ===\nCRITICAL: Every concept, formula, term, and scenario MUST come exclusively from this official NSW NESA syllabus. Do NOT introduce any content, formulas, or concepts that are not in this syllabus. If a formula or concept is not listed here, do not use it.\n\n${truncatedSyllabus}\n\n=== END OF SYLLABUS ===`;
+
+                // Breakdown mode: retrieve up to 3 curated, verified real-world
+                // examples for the requested concept and lock the model to USE
+                // THESE rather than invent its own (which it'd hallucinate).
+                const lastUserText = (messages[messages.length - 1]?.content || '').toString();
+                const isBreakdownMode = /\bmode\s*[:=]\s*["']?breakdown["']?/i.test(lastUserText)
+                    || /"mode"\s*:\s*"breakdown"/i.test(lastUserText)
+                    || /\bbreakdown\s+mode\b/i.test(lastUserText);
+                if (isBreakdownMode) {
+                    const conceptMatch = lastUserText.match(/(?:concept|topic|term)\s*[:=]\s*["']?([^"'\n,]+)["']?/i)
+                        || lastUserText.match(/break\s+down\s+(?:the\s+concept\s+of\s+)?["']?([^"'\n.?!]+)["']?/i);
+                    const concept = conceptMatch ? conceptMatch[1].trim() : null;
+                    const moduleMatch = lastUserText.match(/(?:module|topic)\s*[:=]\s*["']?([^"'\n,]+)["']?/i);
+                    const moduleName = moduleMatch ? moduleMatch[1].trim() : null;
+                    const examples = getRealWorldExamples(subjectId, moduleName, concept, 3);
+                    if (examples.length > 0) {
+                        const list = examples.map((e, i) => `${i + 1}. **${e.title}** — ${e.summary}`).join('\n');
+                        systemPrompt += `\n\n=== "WHERE YOU SEE IT" — USE THESE EXAMPLES (do not invent others) ===\nCurated real-world examples for this concept. Quote them by name in your "## Where You See It" section. Do NOT make up other companies, court cases, or scientific studies.\n\n${list}\n=== END ===`;
+                    }
+                }
+
                 // Anti-hallucination clause: previously the model would invent
                 // module labels like "Module D" for subjects that don't have one
                 // (English HSC only has Common Module + Module A/B/C). Lock it
@@ -11684,6 +11835,27 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
             ...(isGpt5 ? { reasoning_effort: chatReasoning } : {})
         };
         if (!isGpt5) requestBody.temperature = aiSettings.temperature;
+
+        // Learn IRL game mode: enforce schema-valid JSON via structured outputs.
+        // GPT-5 intermittently emits malformed JSON (trailing commas, missing
+        // quotes), and the client's parse-then-fallback path silently degrades
+        // the game into prose — choices vanish, stats freeze, the game feel
+        // dies. Forcing the schema at the API layer eliminates the malformed
+        // path entirely. Only applies on supported models (gpt-4o, gpt-5*).
+        if (botType === 'learn-irl' && LEARN_IRL_GAME_SCHEMA && _modelSupportsStructuredOutputs(chatModel)) {
+            const lastUser = [...apiMessages].reverse().find(m => m.role === 'user');
+            const lastUserText = lastUser ? String(lastUser.content || '') : '';
+            const isGameMode = /\bmode\s*[:=]\s*["']?game["']?/i.test(lastUserText)
+                || /\b(start|continue)\s+(the\s+)?game\b/i.test(lastUserText)
+                || /"mode"\s*:\s*"game"/i.test(lastUserText);
+            if (isGameMode) {
+                requestBody.response_format = {
+                    type: 'json_schema',
+                    json_schema: { name: 'learn_irl_game_turn', strict: true, schema: LEARN_IRL_GAME_SCHEMA }
+                };
+            }
+        }
+
         const t0 = Date.now();
         const response = await aiFetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
