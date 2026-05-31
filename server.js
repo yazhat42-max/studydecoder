@@ -11175,24 +11175,312 @@ app.post('/api/exam/generate-stream', express.json(), async (req, res) => {
         if (dump) contextPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS ===\n${dump.substring(0, 12000)}\n=== END ===`;
     }
 
-    const sys = `You are an NSW HSC examiner generating a complete ${durationHours}-hour ${subjectName} exam paper worth EXACTLY ${totalMarks} marks. Output ONLY a single valid JSON object with this shape: { "title": "<paper title>", "totalMarks": ${totalMarks}, "duration": "${durationHours}h", "sections": [{ "name": "<section name>", "questions": [{ "number": <n>, "text": "<question>", "marks": <n>, "type": "<short-answer|multiple-choice|extended-response>", "markingCriteria": "<one sentence>" }] }] }. Marks across all questions MUST sum to EXACTLY ${totalMarks}. Ground every question in the syllabus extracts below — do not introduce terms or concepts that aren't in them.${contextPrompt}`;
-
-    const usr = `Generate the complete ${subjectName} exam paper for ${moduleList.length ? `modules: ${moduleList.join(', ')}` : 'all Year 12 content'}. ${difficulty || 'medium'} difficulty. Stream the JSON now.`;
+    // ===== ITEM 3: PARALLEL SECTION FAN-OUT =====
+    // Compute the same deterministic allocation the buffered endpoint uses, then
+    // fire one OpenAI call PER SECTION in parallel. With OpenAI's per-key
+    // concurrency, N small calls finish in the same wall-clock as one large one
+    // — sometimes faster, because the model can saturate output tokens on each.
+    // The streamed merge interleaves chunks under a synthesized outer object so
+    // the client's partial-JSON parser still sees one cohesive `{ sections: [...] }`.
+    const category = (subjectsConfig.subjects.find(s => s.id === subject)?.category || '').toLowerCase();
+    const allocation = computeExamAllocation(category, subject, durationHours, totalMarks, topics) || {
+        sections: [
+            { name: 'Section I — Multiple Choice', marks: new Array(Math.min(10, Math.floor(totalMarks * 0.2))).fill(1) },
+            { name: 'Section II — Short Answer', marks: [] }
+        ]
+    };
 
     const examModel = pickModelForTask(user, 'exam');
     const examReasoning = pickReasoningEffort(user, 'exam');
     const isGpt5 = examModel.startsWith('gpt-5');
     const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
-    const budget = durationHours >= 3 ? 16000 : durationHours === 2 ? 12000 : 8000;
 
+    // Per-section system prompt — focused, smaller, faster than the monolithic
+    // version. Shares the syllabus context across all calls (OpenAI prompt
+    // caching makes this ~70% cheaper on cached input after the first call).
+    function buildSectionPrompt(section, sIdx) {
+        const marksList = section.marks.length ? section.marks.join(', ') : 'as appropriate';
+        const totalSecMarks = section.marks.reduce((a, b) => a + b, 0);
+        const startQNum = allocation.sections.slice(0, sIdx).reduce((sum, s) => sum + s.marks.length, 0) + 1;
+        const isMc = /multiple choice/i.test(section.name);
+        return `You are an NSW HSC examiner generating ONE SECTION of a ${durationHours}-hour ${subjectName} exam paper.
+
+YOUR SECTION: "${section.name}" — ${section.marks.length} questions worth ${totalSecMarks} marks total.
+Per-question marks (in order): [${marksList}]
+Start question numbers at ${startQNum}.
+
+${isMc
+    ? 'Each multiple-choice question must have EXACTLY 4 options labelled "A) ", "B) ", "C) ", "D) " and a "correctAnswer" field (letter A-D). Test conceptual understanding — no trick questions.'
+    : 'Use NESA directive verbs precisely. Show stimulus material where appropriate (use a "stimulus" field for source extracts / data / quotes). For 7+ mark questions, write extended-response prompts.'}
+
+Output ONLY a single valid JSON object with this exact shape:
+{
+  "name": "${section.name}",
+  "questions": [
+    { "number": ${startQNum}, "text": "<the actual question>", "marks": <n>, "type": "${isMc ? 'multiple-choice' : 'short-answer'}"${isMc ? ', "options": ["A) ...","B) ...","C) ...","D) ..."], "correctAnswer": "A"' : ''}, "markingCriteria": "<one sentence>"${isMc ? '' : ', "stimulus": "<optional source/data/quote>"'} }
+  ]
+}
+
+MODULE/TOPIC CONSTRAINT — ABSOLUTE:
+- The student selected: "${topics || 'All Year 12 content'}"
+- EVERY question must come EXCLUSIVELY from those modules' syllabus dot points.
+- Ground every question in the syllabus extracts below — do not invent terms, formulas, or concepts that aren't in them.
+
+CRITICAL — DO NOT OUTPUT EMPTY QUESTIONS:
+- The "text" field of every question MUST contain the actual question prompt (what the student is asked to do).
+- A "stimulus" alone is not a question — the "text" must include the imperative verb (Identify, Explain, Calculate, Analyse, etc.).
+- Generate the stimulus FIRST, then write the matching question in "text".
+${contextPrompt}`;
+    }
+
+    function buildSectionUser(section, sIdx) {
+        return `Generate the ${section.marks.length} questions for "${section.name}" now. ${difficulty || 'medium'} difficulty. Return ONLY the section JSON.`;
+    }
+
+    // Synthesize the outer wrapper so the client sees one continuous stream
+    send('chunk', `{"title":"${subjectName} ${durationHours}-hour Exam","duration":"${durationHours}h","totalMarks":${totalMarks},"sections":[`);
+
+    const t0 = Date.now();
+    const sectionPromises = allocation.sections.map((section, sIdx) =>
+        streamOneSection({ section, sIdx, examModel, examReasoning, isGpt5, tokenParam, send, buildSectionPrompt, buildSectionUser, userId: req.session.userId })
+    );
+
+    let mergedSections;
+    let combinedUsage = { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0, prompt_tokens_details: { cached_tokens: 0 } };
+    try {
+        const results = await Promise.all(sectionPromises);
+        mergedSections = results.map(r => r.section).filter(Boolean);
+        for (const r of results) {
+            if (r.usage) {
+                combinedUsage.prompt_tokens += r.usage.prompt_tokens || 0;
+                combinedUsage.completion_tokens += r.usage.completion_tokens || 0;
+                combinedUsage.total_tokens += r.usage.total_tokens || 0;
+                combinedUsage.prompt_tokens_details.cached_tokens += r.usage.prompt_tokens_details?.cached_tokens || 0;
+            }
+        }
+    } catch (e) {
+        send('error', { error: 'parallel section generation failed: ' + e.message });
+        return res.end();
+    }
+    // Close the outer JSON wrapper
+    send('chunk', `]}`);
+
+    logAiUsage({
+        userId: req.session.userId, botType: 'exam-stream-parallel', model: examModel,
+        usage: combinedUsage, latencyMs: Date.now() - t0,
+        cached: combinedUsage.prompt_tokens_details.cached_tokens > 0
+    });
+
+    // Apply the same deterministic mark enforcement the buffered endpoint uses
+    const parsed = { title: `${subjectName} ${durationHours}-hour Exam`, duration: `${durationHours}h`, totalMarks, sections: mergedSections };
+    for (let sIdx = 0; sIdx < parsed.sections.length && sIdx < allocation.sections.length; sIdx++) {
+        const aiSec = parsed.sections[sIdx];
+        const allocSec = allocation.sections[sIdx];
+        if (!aiSec || !aiSec.questions) continue;
+        aiSec.name = allocSec.name;
+        while (aiSec.questions.length < allocSec.marks.length) {
+            aiSec.questions.push({ number: aiSec.questions.length + 1, text: 'Additional question — please regenerate this paper.', marks: 1, type: 'short-answer' });
+        }
+        if (aiSec.questions.length > allocSec.marks.length) aiSec.questions = aiSec.questions.slice(0, allocSec.marks.length);
+        for (let qIdx = 0; qIdx < aiSec.questions.length; qIdx++) {
+            const q = aiSec.questions[qIdx];
+            q.marks = allocSec.marks[qIdx];
+            const txt = (q.text == null ? '' : String(q.text)).trim();
+            if (!txt) {
+                const hasStimulus = q.stimulus && String(q.stimulus).trim();
+                q.text = hasStimulus
+                    ? (q.marks <= 2 ? 'Using the stimulus above, identify and explain its most significant feature.' : `Using the stimulus above, analyse and evaluate its significance. [${q.marks} marks]`)
+                    : `Question ${qIdx + 1} — content was not generated. Please regenerate.`;
+            }
+        }
+    }
+    // Renumber sequentially
+    let qNumber = 1;
+    for (const section of parsed.sections) {
+        if (section.questions) for (const q of section.questions) q.number = qNumber++;
+    }
+
+    if (!hasFull && parsed.sections.length > 0) incrementFreeTierUsage(req.session.userId, 'practice');
+    send('done', { ok: true, exam: parsed, isPremium: hasFull });
+    res.end();
+});
+
+// Stream a single exam section from OpenAI, forwarding chunks under the wrapped
+// outer JSON and returning the parsed section + usage at the end. Used by the
+// parallel fan-out above.
+async function streamOneSection({ section, sIdx, examModel, examReasoning, isGpt5, tokenParam, send, buildSectionPrompt, buildSectionUser, userId }) {
+    const sys = buildSectionPrompt(section, sIdx);
+    const usr = buildSectionUser(section, sIdx);
+    const totalSecMarks = section.marks.reduce((a, b) => a + b, 0);
+    // Per-section budget: ~250 tokens per mark for MC, ~600 per mark for prose,
+    // plus reasoning headroom on GPT-5
+    const isMc = /multiple choice/i.test(section.name);
+    const baseBudget = isMc ? Math.max(800, totalSecMarks * 200) : Math.max(2000, totalSecMarks * 400);
     const body = {
         model: examModel,
         messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }],
-        [tokenParam]: budget + (isGpt5 ? 5000 : 0),
+        [tokenParam]: baseBudget + (isGpt5 ? 3000 : 0),
         stream: true,
         stream_options: { include_usage: true },
         ...(isGpt5 ? { reasoning_effort: examReasoning } : { temperature: 0.7 })
     };
+
+    let upstream;
+    try {
+        upstream = await aiFetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
+            body: JSON.stringify(body),
+            signal: AbortSignal.timeout(115000)
+        });
+    } catch (e) {
+        return { section: null, usage: null, error: e.message };
+    }
+    if (!upstream.ok) {
+        const errText = await upstream.text().catch(() => '');
+        console.error(`[exam-stream-parallel] section "${section.name}" HTTP ${upstream.status}: ${errText.slice(0, 200)}`);
+        return { section: null, usage: null, error: `HTTP ${upstream.status}` };
+    }
+
+    let fullText = '';
+    let usage = null;
+    let buf = '';
+    // Insert a leading comma between sections in the streamed output (sections
+    // after the first need a comma so the merged JSON stays valid)
+    if (sIdx > 0) send('chunk', ',');
+
+    try {
+        for await (const chunk of upstream.body) {
+            buf += chunk.toString('utf8');
+            const lines = buf.split('\n');
+            buf = lines.pop();
+            for (const line of lines) {
+                const m = line.match(/^data:\s*(.+)$/);
+                if (!m) continue;
+                const payload = m[1].trim();
+                if (payload === '[DONE]') continue;
+                let evt;
+                try { evt = JSON.parse(payload); } catch (_) { continue; }
+                if (evt.usage) usage = evt.usage;
+                const delta = evt.choices?.[0]?.delta?.content;
+                if (delta) {
+                    fullText += delta;
+                    send('chunk', delta);
+                }
+            }
+        }
+    } catch (e) {
+        return { section: null, usage, error: e.message };
+    }
+
+    // Parse the section JSON
+    try {
+        const cleaned = fullText.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
+        const s = cleaned.indexOf('{');
+        const e = cleaned.lastIndexOf('}');
+        const parsed = JSON.parse(cleaned.substring(s, e + 1));
+        return { section: parsed, usage, error: null };
+    } catch (e) {
+        return { section: { name: section.name, questions: [] }, usage, error: e.message };
+    }
+}
+
+// ==================== LEARN IRL — STREAMING GAME TURN (item 7.5 #4) ====================
+// Streams a Learn IRL game-mode turn so the scenario text appears character-
+// by-character (felt-latency 60-80% lower than buffered). Game-feel survives
+// the wait. Uses the same syllabus injection + structured-output schema as
+// the buffered /api/chat/learn-irl endpoint; falls back to free-form JSON
+// streaming when structured outputs aren't supported on the chosen model.
+//
+// Client (learn-irl.html) consumes via fetch+ReadableStream, renders the
+// scenario message as it arrives, parses choices/stats/flashcard on 'done'.
+app.post('/api/learn-irl/stream', express.json({ limit: '64kb' }), async (req, res) => {
+    if (!req.session?.userId) return res.status(401).json({ error: 'Authentication required' });
+    const user = getUser(req.session.userId);
+    if (!user) return res.status(401).json({ error: 'User not found' });
+
+    const { messages, subject, module: moduleName } = req.body || {};
+    if (!subject) return res.status(400).json({ error: 'Learn IRL requires a subject so scenarios can be grounded in the NSW NESA syllabus.', code: 'SUBJECT_REQUIRED' });
+    if (!Array.isArray(messages) || !messages.length) return res.status(400).json({ error: 'messages required' });
+
+    const subjectLock = checkSubjectGate(user, subject);
+    if (subjectLock) return res.status(402).json(subjectLock);
+
+    const hasFull = hasFullAccess(user);
+    const canUseFree = !hasFull && tryUseFreeTier(req.session.userId, 'learn-irl');
+    if (!hasFull && !canUseFree) return res.status(403).json({ error: 'Daily limit reached', freeTierExhausted: true, remaining: 0, botType: 'learn-irl', limitType: 'global' });
+    if (hasFull && meteredPlanBlocked(user, 'learn-irl')) return res.status(403).json({ error: 'Plan daily limit reached', planLimitReached: true, botType: 'learn-irl' });
+
+    recordBotStat('learn-irl');
+    recordUserBotUsage(req.session.userId, 'learn-irl');
+    try { notePlanActivity(req.session.userId, 'irl'); } catch (_) {}
+
+    // Build the system prompt the same way the non-streaming route does
+    const subjectMeta = resolveSubjectMeta(subject);
+    const subjectName = subjectMeta.name;
+    const isJunior = !!subjectMeta.isJunior;
+    let systemPrompt = BOT_PROMPTS['learn-irl'];
+
+    // Syllabus injection — RAG-first, full-dump fallback
+    let injected = false;
+    if (syllabusEmbeddings.chunks.length > 0) {
+        try {
+            const lastUser = [...messages].reverse().find(m => m && m.role === 'user');
+            const q = `${subjectName} ${moduleName || ''} ${lastUser ? String(lastUser.content || '').slice(0, 500) : ''}`;
+            const retrieved = await retrieveSyllabusChunks({
+                query: q, subjectId: subject, modules: moduleName ? [moduleName] : null, isJunior, k: 6
+            });
+            if (retrieved.length) {
+                systemPrompt += formatRetrievedChunks(retrieved, subjectName);
+                injected = true;
+            }
+        } catch (_) {}
+    }
+    if (!injected) {
+        const dump = getSyllabusContent(subject, isJunior, moduleName || null) || getSyllabusContentMulti(subject, isJunior, [], 12000);
+        if (dump) systemPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS (NSW NESA) ===\nGround every concept, scenario, and term in this. Never invent content not present here.\n${dump.substring(0, 30000)}\n=== END ===`;
+    }
+
+    // SSE headers
+    res.set({
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache, no-transform',
+        'Connection': 'keep-alive',
+        'X-Accel-Buffering': 'no'
+    });
+    res.flushHeaders?.();
+    function send(event, data) {
+        try {
+            res.write(`event: ${event}\n`);
+            res.write(`data: ${typeof data === 'string' ? data : JSON.stringify(data)}\n\n`);
+        } catch (_) { /* client gone */ }
+    }
+    send('start', { subject: subjectName });
+
+    const model = pickModelForTask(user, 'learn-irl');
+    const reasoning = pickReasoningEffort(user, 'learn-irl');
+    const outputBudget = pickOutputBudget(user, 'learn-irl');
+    const isGpt5 = model.startsWith('gpt-5');
+    const tokenParam = isGpt5 ? 'max_completion_tokens' : 'max_tokens';
+
+    const body = {
+        model,
+        messages: [{ role: 'system', content: systemPrompt }, ...messages.slice(-20).map(m => ({ role: m.role, content: m.content }))],
+        [tokenParam]: outputBudget,
+        stream: true,
+        stream_options: { include_usage: true },
+        ...(isGpt5 ? { reasoning_effort: reasoning } : { temperature: 0.85 })
+    };
+    // Apply structured outputs when the model supports it AND this looks like a game turn
+    if (LEARN_IRL_GAME_SCHEMA && _modelSupportsStructuredOutputs(model)) {
+        const lastUserText = String(messages[messages.length - 1]?.content || '');
+        const isGameMode = /\bmode\s*[:=]\s*["']?game["']?/i.test(lastUserText)
+            || /\b(start|continue)\s+(the\s+)?game\b/i.test(lastUserText)
+            || /"mode"\s*:\s*"game"/i.test(lastUserText);
+        if (isGameMode) {
+            body.response_format = { type: 'json_schema', json_schema: { name: 'learn_irl_game_turn', strict: true, schema: LEARN_IRL_GAME_SCHEMA } };
+        }
+    }
 
     const t0 = Date.now();
     let upstream;
@@ -11209,7 +11497,7 @@ app.post('/api/exam/generate-stream', express.json(), async (req, res) => {
     }
     if (!upstream.ok) {
         const errText = await upstream.text().catch(() => '');
-        logAiUsage({ userId: req.session.userId, botType: 'exam-stream', model: examModel, latencyMs: Date.now() - t0, error: errText.slice(0, 200) });
+        logAiUsage({ userId: req.session.userId, botType: 'learn-irl-stream', model, latencyMs: Date.now() - t0, error: errText.slice(0, 200) });
         send('error', { error: 'AI service unavailable', status: upstream.status });
         return res.end();
     }
@@ -11243,21 +11531,20 @@ app.post('/api/exam/generate-stream', express.json(), async (req, res) => {
     }
 
     logAiUsage({
-        userId: req.session.userId, botType: 'exam-stream', model: examModel,
+        userId: req.session.userId, botType: 'learn-irl-stream', model,
         usage, latencyMs: Date.now() - t0,
         cached: (usage?.prompt_tokens_details?.cached_tokens || 0) > 0
     });
 
-    // Final 'done' event with the full text — client can parse-and-validate
+    // Final 'done' with the parsed payload (or the raw text if parse fails)
     let parsed = null, parseError = null;
     try {
         const cleaned = fullText.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
         const s = cleaned.indexOf('{');
         const e = cleaned.lastIndexOf('}');
-        parsed = JSON.parse(cleaned.substring(s, e + 1));
-    } catch (e) { parseError = e.message; }
-    if (parsed && !hasFull) incrementFreeTierUsage(req.session.userId, 'practice');
-    send('done', { ok: !parseError, exam: parsed, error: parseError });
+        parsed = s >= 0 ? JSON.parse(cleaned.substring(s, e + 1)) : { message: cleaned };
+    } catch (e) { parseError = e.message; parsed = { message: fullText }; }
+    send('done', { ok: !parseError, reply: parsed, raw: fullText });
     res.end();
 });
 

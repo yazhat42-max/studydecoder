@@ -1927,6 +1927,68 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         let examLockdownActive = false;
         let examViolations = 0;
         let examFinalViolations = 0; // preserved for results display after lockdown disabled
+
+        // ===== STREAMING EXAM: PARTIAL JSON EXTRACTOR =====
+        // The /api/exam/generate-stream endpoint streams the exam JSON character-
+        // by-character. We don't need a full incremental parser — we just need to
+        // pull complete question objects out of the buffer as they materialize so
+        // the UI can render question 1 while questions 2-N are still arriving.
+        //
+        // Strategy: scan for "number": N markers, then bracket-count outward to
+        // find the enclosing {...} (skipping inside strings), then JSON.parse
+        // just that slice. Tracks which question numbers we've already rendered.
+        function extractCompleteQuestions(buf, alreadySeen) {
+            const out = [];
+            const numRe = /"number"\s*:\s*(\d+)/g;
+            let m;
+            while ((m = numRe.exec(buf)) !== null) {
+                const n = parseInt(m[1], 10);
+                if (alreadySeen.has(n)) continue;
+                // Walk backwards to find the opening {
+                let depth = 0, inStr = false, esc = false, start = -1;
+                for (let i = m.index; i >= 0; i--) {
+                    const ch = buf[i];
+                    if (esc) { esc = false; continue; }
+                    if (ch === '\\') { esc = true; continue; }
+                    if (ch === '"') { inStr = !inStr; continue; }
+                    if (inStr) continue;
+                    if (ch === '}') depth++;
+                    else if (ch === '{') {
+                        if (depth === 0) { start = i; break; }
+                        depth--;
+                    }
+                }
+                if (start === -1) continue;
+                // Walk forwards from start to find the matching close
+                let d = 0, end = -1;
+                inStr = false; esc = false;
+                for (let i = start; i < buf.length; i++) {
+                    const ch = buf[i];
+                    if (esc) { esc = false; continue; }
+                    if (ch === '\\') { esc = true; continue; }
+                    if (ch === '"') { inStr = !inStr; continue; }
+                    if (inStr) continue;
+                    if (ch === '{') d++;
+                    else if (ch === '}') { d--; if (d === 0) { end = i; break; } }
+                }
+                if (end === -1) continue;   // not yet closed — try again on next chunk
+                try {
+                    const q = JSON.parse(buf.slice(start, end + 1));
+                    if (q && typeof q.number === 'number') {
+                        alreadySeen.add(q.number);
+                        out.push(q);
+                    }
+                } catch (_) { /* skip malformed */ }
+            }
+            return out;
+        }
+
+        // Extract the latest known section name from the buffer (last "name":"..."
+        // before the most recent "questions" key — best-effort).
+        function extractLatestSectionName(buf) {
+            const m = buf.match(/"name"\s*:\s*"([^"\\]+)"\s*,\s*"(?:instructions|questions)"/);
+            return m ? m[1] : null;
+        }
         let lockdownDebounce = 0;    // prevent double-counting from blur+visibility firing together
         let _activeExamSaveDebounce = null;
 
@@ -2642,12 +2704,74 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 examSubjectEl.addEventListener('change', () => {
                     updateExamModules(examSubjectEl.value);
                     if (window.SDLoadingGame) SDLoadingGame.prefetch(examSubjectEl.value);
+                    schedulePrefetch();
                 });
                 if (examSubjectEl.value && window.SDLoadingGame) SDLoadingGame.prefetch(examSubjectEl.value);
             }
+            // Same for duration + difficulty + modules — any change debounces a
+            // new prefetch (the previous one is aborted via AbortController).
+            const examDurEl = document.getElementById('examSetupDuration');
+            const examDiffEl = document.getElementById('examSetupDifficulty');
+            if (examDurEl)  examDurEl.addEventListener('change', schedulePrefetch);
+            if (examDiffEl) examDiffEl.addEventListener('change', schedulePrefetch);
 
             // Load exam history
             loadExamHistory();
+        }
+
+        // ===== ITEM 3.5: SPECULATIVE PRE-GENERATION =====
+        // When the student lands on the exam setup and picks subject+module, fire
+        // the streaming generation in the background. By the time they click
+        // "Generate Exam" the first question is usually already cached client-
+        // side; generateExam() detects window._examPrefetch and attaches to it.
+        // Limited to users who have at least one exam slot remaining — we don't
+        // want to silently burn a free user's weekly slot on a setup screen they
+        // might abandon.
+        let _prefetchDebounce = null;
+        function schedulePrefetch() {
+            if (_prefetchDebounce) clearTimeout(_prefetchDebounce);
+            // Cancel any in-flight prefetch — selection has changed
+            if (window._examPrefetch && window._examPrefetch.abortCtrl) {
+                try { window._examPrefetch.abortCtrl.abort(); } catch (_) {}
+            }
+            window._examPrefetch = null;
+            _prefetchDebounce = setTimeout(startPrefetch, 800);   // wait for the user to stop clicking
+        }
+
+        async function startPrefetch() {
+            const subjEl = document.getElementById('examSetupSubject');
+            const durEl = document.getElementById('examSetupDuration');
+            const diffEl = document.getElementById('examSetupDifficulty');
+            if (!subjEl || !subjEl.value) return;
+            // Free users have only 3 exams/week — too costly to prefetch ahead
+            // of a click that might never happen. Limit to paid (no examLimit).
+            // Easy heuristic: if the dashboard knows user is premium, allow it.
+            const isPremium = (window.currentUser && (window.currentUser.subscribed || window.currentUser.role === 'owner' || window.currentUser.role === 'lifetime'));
+            if (!isPremium) return;
+            const topics = getExamSelectedTopics();
+            const subject = subjEl.value;
+            const duration = durEl ? durEl.value : '2';
+            const difficulty = diffEl ? diffEl.value : 'medium';
+            const abortCtrl = new AbortController();
+            const events = [];
+            let response;
+            try {
+                response = await fetch(`${API_BASE}/api/exam/generate-stream`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ subject, topics, duration, difficulty }),
+                    signal: abortCtrl.signal
+                });
+                if (!response.ok) return;
+            } catch (e) { return; }
+            window._examPrefetch = { subject, topics, duration, difficulty, abortCtrl, response, events };
+            // Buffer events so they can be replayed when generateExam() attaches
+            consumeSSEStream(response, (data) => {
+                if (window._examPrefetch) events.push({ event: 'chunk', data });
+            }, (parsed) => {
+                if (window._examPrefetch) events.push({ event: 'done', data: JSON.stringify(parsed) });
+            }).catch(() => { /* aborted or network error — ignore */ });
         }
 
         let examTopicMs = null;
@@ -2655,7 +2779,7 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             const slot = document.getElementById('examSetupTopicsMs');
             if (!slot) return;
             if (!examTopicMs && window.SDModuleSelect) {
-                examTopicMs = window.SDModuleSelect.create(slot, {});
+                examTopicMs = window.SDModuleSelect.create(slot, { onChange: schedulePrefetch });
             }
             const topics = subjectTopics[subjectId] || [];
             if (examTopicMs) examTopicMs.setModules(topics);
@@ -2799,7 +2923,6 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
         async function generateExam() {
             const subjectEl = document.getElementById('examSetupSubject');
             const durationEl = document.getElementById('examSetupDuration');
-            // exam modules are chosen via the examTopicMs multiselect
             const difficultyEl = document.getElementById('examSetupDifficulty');
             const genBtn = document.getElementById('examGenerateBtn');
             const printBtn = document.getElementById('examPrintSetupBtn');
@@ -2818,83 +2941,138 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             genBtn.textContent = 'Generating exam...';
             trackUsage('exam', examSubjectId, subjectName, topicsLabel);
 
-            // Play a quick warm-up quiz while the (slow) exam generates.
-            document.getElementById('examContent').innerHTML = '<div class="exam-loading" id="examLgHost"></div>';
-            let lgCtrl = (window.SDLoadingGame) ? SDLoadingGame.start(document.getElementById('examLgHost'), { subject: examSubjectId, label: subjectName + ' exam' }) : null;
+            // Speculative pre-gen (item 3.5): if the prefetch fired when the user
+            // picked subject+module, attach to its stream instead of opening a
+            // new one. Otherwise start fresh.
+            const prefetched = window._examPrefetch
+                && window._examPrefetch.subject === examSubjectId
+                && JSON.stringify(window._examPrefetch.topics) === JSON.stringify(topics)
+                && window._examPrefetch.duration === duration
+                && window._examPrefetch.difficulty === difficulty
+                ? window._examPrefetch : null;
+            window._examPrefetch = null;   // claim it — don't reuse
 
-            try {
-                const res = await fetch(`${API_BASE}/api/exam/generate`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ subject: examSubjectId, topics, duration, difficulty })
-                });
-                if (lgCtrl) { lgCtrl.stop(); lgCtrl = null; }
+            // Progressive loading shell: replay or open SSE
+            document.getElementById('examContent').innerHTML = `
+                <div class="exam-streaming-shell" style="padding:32px 20px;text-align:center;">
+                    <div id="examStreamHeader" style="font-size:1.1rem;font-weight:600;color:var(--text,#e7e9ea);margin-bottom:6px;">Generating ${escapeHtml(subjectName)} exam${prefetched ? ' (using pre-fetched)' : ''}...</div>
+                    <div id="examStreamSub" style="font-size:0.85rem;color:var(--text-muted,#71767b);margin-bottom:18px;">First question incoming — start when ready.</div>
+                    <div id="examStreamCounter" style="display:inline-block;background:rgba(108,99,255,0.12);border:1px solid rgba(108,99,255,0.3);border-radius:20px;padding:6px 18px;font-size:0.85rem;color:#a78bfa;font-weight:600;">0 questions ready</div>
+                    <div class="exam-loading" id="examLgHost" style="margin-top:24px;"></div>
+                    <button class="exam-nav-btn primary" id="examStartNowBtn" style="margin-top:18px;display:none;" onclick="startExamFromStream()">▶ Start exam (rest will load in background)</button>
+                </div>`;
+            const lgCtrl = (window.SDLoadingGame) ? SDLoadingGame.start(document.getElementById('examLgHost'), { subject: examSubjectId, label: subjectName + ' exam' }) : null;
 
-                if (!res.ok) {
-                    if (window.SDUpsell && await window.SDUpsell.handleApiError(res)) return;
-                    const err = await res.json().catch(() => ({}));
-                    if (err.examLimitReached) {
-                        document.getElementById('examContent').innerHTML = `
-                            <div style="text-align:center;padding:60px 20px;">
-                                <h2 style="color:#e7e9ea;margin-bottom:12px;">⚡ Weekly Exam Limit Reached</h2>
-                                <p style="color:#71767b;margin-bottom:20px;">You've used all 3 free exams this week. Upgrade for unlimited exams.</p>
-                                <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="exam-generate-btn" style="display:inline-block;text-decoration:none;max-width:300px;">Upgrade to Premium</a>
-                                <br><button class="exam-nav-btn" style="margin-top:16px;" onclick="showExamSetup()">← Back</button>
-                            </div>`;
-                        return;
+            // Reset stream state
+            examQuestions = [];
+            examData = { title: subjectName + ' Exam', sections: [], totalMarks: 0, duration: duration + ' hour(s)' };
+            examAnswers = {};
+            const seenNumbers = new Set();
+            let buf = '';
+            let firstQRendered = false;
+            let abortCtrl = prefetched ? prefetched.abortCtrl : new AbortController();
+            let response;
+
+            function handleChunk(deltaText) {
+                buf += deltaText;
+                const newQs = extractCompleteQuestions(buf, seenNumbers);
+                if (newQs.length > 0) {
+                    const sectionName = extractLatestSectionName(buf);
+                    for (const q of newQs) {
+                        examQuestions.push({ ...q, sectionName: sectionName || (q.type === 'multiple-choice' ? 'Section I — Multiple Choice' : 'Section II') });
                     }
-                    throw new Error(err.error || 'Failed to generate exam');
-                }
-
-                const data = await res.json();
-                examData = data.exam;
-                examIsPremium = data.isPremium;
-                examAnswers = {};
-
-                // Flatten questions with section info
-                examQuestions = [];
-                for (const section of examData.sections) {
-                    for (const q of section.questions) {
-                        examQuestions.push({ ...q, sectionName: section.name });
+                    examQuestions.sort((a, b) => (a.number || 0) - (b.number || 0));
+                    const counterEl = document.getElementById('examStreamCounter');
+                    if (counterEl) counterEl.textContent = examQuestions.length + ' question' + (examQuestions.length === 1 ? '' : 's') + ' ready';
+                    // The moment we have 1 question, let the user start now if they want
+                    if (!firstQRendered && examQuestions.length >= 1) {
+                        firstQRendered = true;
+                        const startNowBtn = document.getElementById('examStartNowBtn');
+                        if (startNowBtn) startNowBtn.style.display = 'inline-block';
+                        const subEl = document.getElementById('examStreamSub');
+                        if (subEl) subEl.textContent = '✓ Question 1 ready — start now, or wait for the rest';
                     }
                 }
+            }
 
+            function handleDone(finalEvent) {
+                if (lgCtrl) lgCtrl.stop();
+                if (finalEvent && finalEvent.exam && Array.isArray(finalEvent.exam.sections) && finalEvent.exam.sections.length) {
+                    // Server's final parsed object is more reliable than our partial extractor
+                    examData = finalEvent.exam;
+                    examIsPremium = finalEvent.isPremium !== false;
+                    examQuestions = [];
+                    for (const section of examData.sections) {
+                        for (const q of section.questions || []) {
+                            examQuestions.push({ ...q, sectionName: section.name });
+                        }
+                    }
+                }
                 if (examQuestions.length === 0) {
-                    throw new Error('No questions generated');
+                    document.getElementById('examContent').innerHTML = `
+                        <div style="text-align:center;padding:60px 20px;">
+                            <h2 style="color:#ef4444;margin-bottom:12px;">Failed to Generate Exam</h2>
+                            <p style="color:#71767b;margin-bottom:20px;">The AI didn't produce any questions. Try again or pick a different module.</p>
+                            <button class="exam-nav-btn primary" onclick="showExamSetup()">Try Again</button>
+                        </div>`;
+                    return;
                 }
-
-                // Client-side mark verification — recount from actual questions
                 let verifiedTotal = 0;
                 for (const q of examQuestions) verifiedTotal += (q.marks || 0);
-                if (verifiedTotal > 0 && verifiedTotal !== examData.totalMarks) {
-                    console.log(`Mark verification: server said ${examData.totalMarks}, actual ${verifiedTotal}. Using actual.`);
-                    examData.totalMarks = verifiedTotal;
+                examData.totalMarks = verifiedTotal;
+                // If the user already clicked "Start now", we're already in exam UI —
+                // just update the counter so they see all questions are loaded
+                if (document.getElementById('examNav') && document.getElementById('examNav').style.display === 'flex') {
+                    renderExamDots();
+                    return;
                 }
+                startExamFromStream();
+            }
 
-                // Start the exam
-                examCurrentIdx = 0;
-                examDurationSeconds = parseFloat(duration) * 3600;
-                document.getElementById('examTitle').textContent = examData.title || `${subjectName} Exam`;
-                document.getElementById('examMeta').textContent = `${examData.duration || duration + ' hour(s)'} · ${examData.totalMarks} marks · ${examQuestions.length} questions`;
-                document.getElementById('examNav').style.display = 'flex';
-                document.getElementById('examDots').style.display = 'flex';
-                setExamPrintVisible(true);
-                if (examIsOwner) enableLockdown();
-                startExamTimer();
-                renderExamDots();
-                renderExamQuestion();
-                saveActiveExam(); // persist to server so it can be resumed
-
+            try {
+                if (prefetched) {
+                    // Replay buffered events from the prefetch, then continue with its live stream
+                    for (const ev of prefetched.events) {
+                        if (ev.event === 'chunk') handleChunk(ev.data);
+                        else if (ev.event === 'done') { handleDone(safeJson(ev.data)); return; }
+                    }
+                    // Attach to the still-running prefetch stream
+                    response = prefetched.response;
+                } else {
+                    response = await fetch(`${API_BASE}/api/exam/generate-stream`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ subject: examSubjectId, topics, duration, difficulty }),
+                        signal: abortCtrl.signal
+                    });
+                    if (!response.ok) {
+                        if (window.SDUpsell && await window.SDUpsell.handleApiError(response)) return;
+                        const err = await response.json().catch(() => ({}));
+                        if (err.examLimitReached) {
+                            document.getElementById('examContent').innerHTML = `
+                                <div style="text-align:center;padding:60px 20px;">
+                                    <h2 style="color:#e7e9ea;margin-bottom:12px;">⚡ Weekly Exam Limit Reached</h2>
+                                    <p style="color:#71767b;margin-bottom:20px;">You've used all 3 free exams this week. Upgrade for unlimited exams.</p>
+                                    <a href="https://buy.stripe.com/eVq14masZ0oEbmO1n57Vm00" target="_blank" class="exam-generate-btn" style="display:inline-block;text-decoration:none;max-width:300px;">Upgrade to Premium</a>
+                                    <br><button class="exam-nav-btn" style="margin-top:16px;" onclick="showExamSetup()">← Back</button>
+                                </div>`;
+                            return;
+                        }
+                        throw new Error(err.error || 'Failed to generate exam');
+                    }
+                }
+                await consumeSSEStream(response, handleChunk, handleDone);
             } catch (error) {
+                if (error.name === 'AbortError') return;   // user navigated away
+                if (lgCtrl) lgCtrl.stop();
                 document.getElementById('examContent').innerHTML = `
                     <div style="text-align:center;padding:60px 20px;">
                         <h2 style="color:#ef4444;margin-bottom:12px;">Failed to Generate Exam</h2>
-                        <p style="color:#71767b;margin-bottom:20px;">${error.message}</p>
+                        <p style="color:#71767b;margin-bottom:20px;">${escapeHtml(error.message)}</p>
                         <button class="exam-nav-btn primary" onclick="showExamSetup()">Try Again</button>
                     </div>`;
             } finally {
-                if (lgCtrl) { lgCtrl.stop(); lgCtrl = null; }
                 const setupGenBtn = document.getElementById('examGenerateBtn');
                 const setupPrintBtn = document.getElementById('examPrintSetupBtn');
                 if (setupGenBtn) {
@@ -2903,6 +3081,70 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
                 }
                 if (setupPrintBtn) setupPrintBtn.disabled = false;
             }
+        }
+
+        function safeJson(s) { try { return JSON.parse(s); } catch (_) { return null; } }
+
+        // Read an SSE stream from a fetch Response. Calls onChunk(text) for each
+        // 'chunk' event, onDone(parsedDataObject) for 'done'. Tolerates partial
+        // event boundaries across read() calls.
+        async function consumeSSEStream(response, onChunk, onDone) {
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buf = '';
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                buf += decoder.decode(value, { stream: true });
+                // SSE events are separated by blank lines
+                let idx;
+                while ((idx = buf.indexOf('\n\n')) !== -1) {
+                    const rawEvent = buf.slice(0, idx);
+                    buf = buf.slice(idx + 2);
+                    const lines = rawEvent.split('\n');
+                    let evName = 'message';
+                    const dataLines = [];
+                    for (const l of lines) {
+                        if (l.startsWith('event:')) evName = l.slice(6).trim();
+                        else if (l.startsWith('data:')) dataLines.push(l.slice(5).replace(/^\s/, ''));
+                    }
+                    const data = dataLines.join('\n');
+                    if (evName === 'chunk') {
+                        onChunk(data);
+                    } else if (evName === 'done') {
+                        onDone(safeJson(data));
+                        return;
+                    } else if (evName === 'error') {
+                        const parsed = safeJson(data);
+                        throw new Error((parsed && parsed.error) || 'stream error');
+                    }
+                }
+            }
+        }
+
+        // Switch from streaming-shell to live exam UI. Called either when the
+        // user clicks "Start now" or automatically when the stream completes.
+        function startExamFromStream() {
+            if (!examQuestions.length) return;
+            examIsPremium = examIsPremium !== false;
+            // Recompute totals from what we have so far
+            let verifiedTotal = 0;
+            for (const q of examQuestions) verifiedTotal += (q.marks || 0);
+            examData.totalMarks = verifiedTotal;
+            const subjectName = document.getElementById('examSetupSubject')?.options[document.getElementById('examSetupSubject').selectedIndex]?.text || 'Exam';
+            const duration = document.getElementById('examSetupDuration')?.value || '2';
+            examCurrentIdx = 0;
+            examDurationSeconds = parseFloat(duration) * 3600;
+            document.getElementById('examTitle').textContent = examData.title || `${subjectName} Exam`;
+            document.getElementById('examMeta').textContent = `${examData.duration || duration + ' hour(s)'} · ${examData.totalMarks} marks · ${examQuestions.length} questions`;
+            document.getElementById('examNav').style.display = 'flex';
+            document.getElementById('examDots').style.display = 'flex';
+            setExamPrintVisible(true);
+            if (examIsOwner) enableLockdown();
+            startExamTimer();
+            renderExamDots();
+            renderExamQuestion();
+            saveActiveExam();
         }
 
         async function printExamFromSetup() {

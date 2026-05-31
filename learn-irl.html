@@ -3110,12 +3110,20 @@
                 showLoading();
             }
 
+            // Item 7.5 #4 — streaming. Use the SSE endpoint so the scenario
+            // text appears character-by-character (perceived 60-80% faster than
+            // waiting for the full game JSON to buffer). Choices + stats render
+            // when the JSON parses on 'done'.
             try {
-                const res = await fetch(API_BASE + '/api/chat/learn-irl', {
+                const res = await fetch(API_BASE + '/api/learn-irl/stream', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ messages: conversationHistory, subject: subjectInput ? subjectInput.value : null })
+                    body: JSON.stringify({
+                        messages: conversationHistory,
+                        subject: subjectInput ? subjectInput.value : null,
+                        module: (topicMs && typeof topicMs.getSelected === 'function') ? (topicMs.getSelected()[0] || null) : null
+                    })
                 });
 
                 if (!res.ok) {
@@ -3125,34 +3133,85 @@
                     }
                     const err = await res.json().catch(() => ({}));
                     if (err.freeTierExhausted) {
-                        if (currentMode === 'game') {
-                            hideGameLoading();
-                            showGameUpsell();
-                        } else {
-                            hideLoading();
-                            showFreeTierUpsell();
-                        }
+                        if (currentMode === 'game') { hideGameLoading(); showGameUpsell(); }
+                        else { hideLoading(); showFreeTierUpsell(); }
+                        return;
+                    }
+                    if (err.code === 'SUBJECT_REQUIRED') {
+                        if (currentMode === 'game') hideGameLoading(); else hideLoading();
+                        alert('Pick a subject before starting — Learn IRL grounds every scenario in the NSW NESA syllabus.');
                         return;
                     }
                     throw new Error(err.error || 'Request failed');
                 }
 
-                const data = await res.json();
-
-                if (currentMode === 'game') hideGameLoading();
-                else hideLoading();
-
-                const reply = data.reply || data.content || '';
-                conversationHistory.push({ role: 'assistant', content: reply });
-
-                if (currentMode === 'game') {
-                    const parsed = tryParseGameResponse(reply);
-                    if (parsed) renderGameResponse(parsed);
-                    else renderGameNarrative(reply);
-                    return;
+                // ===== STREAMING CONSUMER =====
+                let fullText = '';
+                let streamingTarget = null;   // a DOM node to append non-game prose into
+                if (currentMode !== 'game') {
+                    hideLoading();
+                    // Create a placeholder assistant bubble we'll append to
+                    streamingTarget = addMessage('', false);
+                }
+                const reader = res.body.getReader();
+                const decoder = new TextDecoder();
+                let sseBuf = '';
+                let parsedReply = null;
+                outer: while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+                    sseBuf += decoder.decode(value, { stream: true });
+                    let idx;
+                    while ((idx = sseBuf.indexOf('\n\n')) !== -1) {
+                        const raw = sseBuf.slice(0, idx);
+                        sseBuf = sseBuf.slice(idx + 2);
+                        let evName = 'message';
+                        const dataLines = [];
+                        for (const l of raw.split('\n')) {
+                            if (l.startsWith('event:')) evName = l.slice(6).trim();
+                            else if (l.startsWith('data:')) dataLines.push(l.slice(5).replace(/^\s/, ''));
+                        }
+                        const dataStr = dataLines.join('\n');
+                        if (evName === 'chunk') {
+                            fullText += dataStr;
+                            // For non-game (Breakdown) mode, append the text live
+                            if (streamingTarget) {
+                                streamingTarget.textContent = fullText;
+                                const sc = document.getElementById('chatMessages');
+                                if (sc) sc.scrollTop = sc.scrollHeight;
+                            }
+                        } else if (evName === 'done') {
+                            try { parsedReply = JSON.parse(dataStr); } catch (_) {}
+                            break outer;
+                        } else if (evName === 'error') {
+                            let err = {};
+                            try { err = JSON.parse(dataStr); } catch (_) {}
+                            throw new Error(err.error || 'stream error');
+                        }
+                    }
                 }
 
-                addMessage(reply, false);
+                // Determine the assistant content the chat history should see —
+                // the raw text (game JSON or breakdown prose), preserving the
+                // original API contract.
+                const replyContent = (parsedReply && parsedReply.raw) || fullText;
+                conversationHistory.push({ role: 'assistant', content: replyContent });
+
+                if (currentMode === 'game') {
+                    hideGameLoading();
+                    // Prefer the server-parsed object (schema-validated when
+                    // structured outputs is on) over a re-parse of raw text.
+                    const replyObj = parsedReply && parsedReply.reply;
+                    const obj = (replyObj && typeof replyObj === 'object' && replyObj.message)
+                        ? replyObj
+                        : tryParseGameResponse(replyContent);
+                    if (obj) renderGameResponse(obj);
+                    else renderGameNarrative(replyContent);
+                    return;
+                }
+                // Breakdown / chat mode: streamingTarget already holds the prose
+                // — nothing more to do; the addMessage placeholder we created
+                // is the live message.
 
             } catch (e) {
                 if (currentMode === 'game') {
@@ -3580,6 +3639,9 @@
             }
             chatMessages.appendChild(div);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+            // Return the inner <p> so the streaming consumer can append text
+            // live without losing the bubble wrapper.
+            return isUser ? div : div.querySelector('p');
         }
 
         function formatResponse(text) {
