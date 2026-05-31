@@ -659,6 +659,13 @@
         <div class="setup-panel" id="setupPanel">
             <div class="setup-row">
                 <div class="setup-field">
+                    <label>Year level</label>
+                    <select class="setup-input" id="yearLevelInput">
+                        <option value="senior">Year 11–12 (HSC)</option>
+                        <option value="junior">Year 7–10</option>
+                    </select>
+                </div>
+                <div class="setup-field">
                     <label>Subject</label>
                     <select class="setup-input" id="subjectInput">
                         <option value="">Select your subject...</option>
@@ -2868,7 +2875,21 @@
         }
 
         function populateSubjects() {
-            const isJunior = window._sdUserLevel === 'junior';
+            // Year-level dropdown overrides the saved userLevel — default it to
+            // the user's preference on first load, then let them switch per
+            // session without changing their global preference.
+            const yearSel = document.getElementById('yearLevelInput');
+            if (yearSel && !yearSel.dataset.userInit) {
+                yearSel.value = window._sdUserLevel === 'junior' ? 'junior' : 'senior';
+                yearSel.dataset.userInit = '1';
+                yearSel.addEventListener('change', () => {
+                    populateSubjects();
+                    // Reset subject/topic picks when level changes
+                    if (subjectInput) subjectInput.value = '';
+                    if (topicMs) topicMs.setModules([]);
+                });
+            }
+            const isJunior = yearSel ? yearSel.value === 'junior' : (window._sdUserLevel === 'junior');
             const list = isJunior ? JUNIOR_SUBJECTS : subjects;
             const byCategory = {};
             list.forEach(s => {

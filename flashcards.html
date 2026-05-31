@@ -198,6 +198,14 @@ function renderForm(){
         <input class="form-input" id="fTitle" placeholder="e.g. Module 5: Equilibrium key ideas">
       </div>
       <div class="form-group">
+        <label class="form-label" for="fYearLevel">Year level</label>
+        <select class="form-select" id="fYearLevel">
+          <option value="senior">Year 11–12 (HSC)</option>
+          <option value="junior">Year 7–10</option>
+        </select>
+        <div class="muted">Pick the year level — the subject list below switches to match.</div>
+      </div>
+      <div class="form-group">
         <label class="form-label" for="fSubject">Subject</label>
         <select class="form-select" id="fSubject">${flatOptions}</select>
       </div>
@@ -240,11 +248,24 @@ function renderForm(){
     </div>
   `;
   const subjSel = document.getElementById('fSubject');
-  // Show every subject, grouped by faculty (canonical list). Values stay as
-  // display names so they match the SYLLABUS module map and saved decks.
-  if (window.SD_SUBJECTS && window.SD_SUBJECTS.fillSubjectSelect) {
-    window.SD_SUBJECTS.fillSubjectSelect(subjSel, userLevel, { useName: true, placeholder: '— Select a subject —' });
+  const yearSel = document.getElementById('fYearLevel');
+  // Default the year-level dropdown to the user's saved preference, then let
+  // them switch per deck without changing the global preference.
+  if (yearSel) yearSel.value = userLevel === 'junior' ? 'junior' : 'senior';
+  function repopulateSubjects() {
+    const lvl = yearSel ? yearSel.value : userLevel;
+    if (window.SD_SUBJECTS && window.SD_SUBJECTS.fillSubjectSelect) {
+      window.SD_SUBJECTS.fillSubjectSelect(subjSel, lvl, { useName: true, placeholder: '— Select a subject —' });
+    }
+    // Reset module picks when level/subject set changes
+    if (fModuleMs) fModuleMs.setModules([]);
+    // Re-apply locked-subject decoration (class-linked-only students)
+    if (window.SDUpsell && window.SDUpsell.decorateSubjectSelect) {
+      window.SDUpsell.decorateSubjectSelect(subjSel);
+    }
   }
+  repopulateSubjects();
+  if (yearSel) yearSel.addEventListener('change', repopulateSubjects);
   if (window.SDModuleSelect && !fModuleMs) {
     fModuleMs = window.SDModuleSelect.create(document.getElementById('fModuleMs'), {});
   }

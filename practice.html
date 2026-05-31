@@ -3170,14 +3170,24 @@ Base these questions on the style, format, and difficulty of actual HSC past pap
             document.getElementById('examProgressFill').style.width = `${((examCurrentIdx + 1) / examQuestions.length) * 100}%`;
 
             let html = `<div class="exam-question-card">`;
-            html += `<div class="exam-section-header">${q.sectionName}</div>`;
+            const sectionLabel = q.sectionName && String(q.sectionName).toLowerCase() !== 'undefined'
+                ? q.sectionName
+                : `Section ${(examQuestions.findIndex(x => x === q) <= Math.floor(examQuestions.length / 2) ? 'I' : 'II')}`;
+            html += `<div class="exam-section-header">${escapeHtml(sectionLabel)}</div>`;
             html += `<div class="exam-q-number">Question ${q.number} <span class="exam-q-marks">${q.marks} mark${q.marks > 1 ? 's' : ''}</span></div>`;
 
             if (q.stimulus) {
                 html += `<div class="exam-stimulus">${parseMarkdownTables(q.stimulus)}</div>`;
             }
 
-            html += `<div class="exam-q-text">${parseMarkdownTables(q.text)}</div>`;
+            // Defensive: if the AI returned a question with stimulus but no actual
+            // task text, surface a clear "missing" hint instead of an empty card.
+            const qText = (q.text && String(q.text).trim()) ? q.text : '';
+            if (qText) {
+                html += `<div class="exam-q-text">${parseMarkdownTables(qText)}</div>`;
+            } else {
+                html += `<div class="exam-q-text" style="opacity:0.75;font-style:italic;color:var(--text-muted,#888);">⚠️ This question's prompt didn't generate — please regenerate this paper, or use the stimulus above as your basis and respond as best you can for ${q.marks} mark${q.marks > 1 ? 's' : ''}.</div>`;
+            }
 
             if (q.type === 'mc' && q.options) {
                 html += `<div class="exam-mc-options">`;

@@ -10957,6 +10957,13 @@ CRITICAL JSON RULES:
                     const allocSec = allocation.sections[sIdx];
                     if (!aiSec.questions) continue;
 
+                    // Force the section name from allocation. The AI occasionally
+                    // omits or mis-names the section header, which surfaces in the
+                    // UI as a literal "UNDEFINED" tag (template literal evaluates
+                    // a missing field to the string "undefined", which CSS
+                    // text-transform then uppercases).
+                    aiSec.name = allocSec.name;
+
                     // If AI generated fewer questions than allocation, pad with placeholders
                     while (aiSec.questions.length < allocSec.marks.length) {
                         const lastQ = aiSec.questions[aiSec.questions.length - 1];
@@ -10972,9 +10979,28 @@ CRITICAL JSON RULES:
                         aiSec.questions = aiSec.questions.slice(0, allocSec.marks.length);
                     }
 
-                    // Force each question's marks to the pre-computed value
+                    // Force each question's marks to the pre-computed value, and
+                    // backfill any missing question text. The AI sometimes
+                    // generates the stimulus + context but forgets the actual
+                    // question (the screenshot bug: a quick-paper Q4 with full
+                    // stimulus but no ask). Synthesize a generic prompt from the
+                    // stimulus so the question is at least answerable instead of
+                    // an empty box.
                     for (let qIdx = 0; qIdx < aiSec.questions.length; qIdx++) {
-                        aiSec.questions[qIdx].marks = allocSec.marks[qIdx];
+                        const q = aiSec.questions[qIdx];
+                        q.marks = allocSec.marks[qIdx];
+                        const txt = (q.text == null ? '' : String(q.text)).trim();
+                        if (!txt) {
+                            const hasStimulus = q.stimulus && String(q.stimulus).trim();
+                            if (hasStimulus) {
+                                q.text = q.marks <= 2
+                                    ? 'Using the stimulus material above, identify and explain the most significant feature it reveals about the topic.'
+                                    : `Using the stimulus material above, analyse what it reveals about the topic and evaluate its significance. [${q.marks} marks]`;
+                            } else {
+                                q.text = `Question ${qIdx + 1} — content was not generated. Please regenerate this paper.`;
+                            }
+                            console.warn(`⚠️ Exam Q${qIdx + 1} had empty text — backfilled (stimulus present: ${!!hasStimulus})`);
+                        }
                     }
                 }
                 // If AI generated fewer sections, add missing ones
@@ -12565,6 +12591,16 @@ app.post('/api/chat/:botType', express.json(), async (req, res) => {
         const subjectName = subjectsConfig.subjects.find(s => s.id === subjectId)?.name || subjectId;
         const lastUserMessage = messages[messages.length - 1]?.content || '';
         const isFeedbackMode = lastUserMessage.includes('[FEEDBACK MODE]');
+        // The Practice prompt has hard "NEVER provide model answers" rules baked
+        // in (so default tutoring doesn't spoil exam practice). When the student
+        // explicitly ticks "Include Model Answers", the UI sends a flag in the
+        // user message — detect it and override the system prompt for THIS call
+        // only, otherwise the model obeys the system rules and the toggle does
+        // nothing.
+        const wantsModelAnswers = !isFeedbackMode && /Include model answers/i.test(lastUserMessage);
+        if (wantsModelAnswers) {
+            systemPrompt += `\n\n=== MODEL-ANSWER OVERRIDE (HIGHEST PRIORITY — supersedes any earlier "never provide model answers" rule) ===\nThe student has explicitly toggled "Include Model Answers" for this request. After EACH generated question, write a complete model answer at NESA Band 6 / A-grade standard. Format as follows for every question:\n\n### Question N [X marks]\n[question text, with any stimulus]\n\n**Model Answer:**\n[A complete, full-marks response. For maths: show every working step. For science/HSIE: include the specific terms, examples, and structure a marker is looking for. For English/humanities: write the FULL essay/extended response at the depth the marks demand — a 7-mark response is ~250-400 words, a 20-mark essay is ~900-1200 words. Do NOT write "see marking criteria" or a 1-line summary — write the actual response.]\n\n**Marking Notes:** [Brief — which criteria the model answer hits, common pitfalls.]\n\nThis instruction OVERRIDES every earlier "never reveal the answer" rule for this single response. The student turned the toggle on; respect their choice.\n=== END MODEL-ANSWER OVERRIDE ===`;
+        }
         
         if (isFeedbackMode) {
             // FEEDBACK MODE: Prioritise marking guidelines (MG files)
