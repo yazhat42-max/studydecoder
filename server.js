@@ -543,6 +543,143 @@ function logAiUsage({ userId, botType, model, usage, latencyMs, cached, error })
     }
 }
 
+// ==================== RAG: SYLLABUS RETRIEVAL ====================
+// Item 4 of the speed/quality plan. The previous code dumped the full module
+// syllabus (15k chars) into every system prompt — the model had to find the
+// relevant content in noise, and when it couldn't it fell back to its general
+// training and hallucinated terms not in the syllabus (the Bio Module 5
+// failure mode). Now: chunk the syllabus into dot-points, embed each, and
+// at request time retrieve the 5-8 most relevant chunks for the question.
+// The model only sees what's actually relevant — copying NESA's wording
+// becomes the path of least resistance.
+//
+// Corpus: scripts/embed-syllabus.js produces data/syllabus-embeddings.json.
+// Format: { _meta:{...}, chunks:[{id,hash,subjectId,isJunior,module,heading,text,vector:[1536]}] }
+// At ~5000 chunks × 1536 floats × 4 bytes = ~30MB on disk, ~50MB in memory.
+// No vector DB — brute-force cosine over a flat Float32Array array runs in <10ms.
+const SYLLABUS_EMBEDDINGS_FILE = path.join(DB_PATH, 'syllabus-embeddings.json');
+let syllabusEmbeddings = { chunks: [], vectors: [], meta: null };
+
+function loadSyllabusEmbeddings() {
+    if (!fs.existsSync(SYLLABUS_EMBEDDINGS_FILE)) {
+        console.log('🧩 RAG: no syllabus-embeddings.json — falling back to full syllabus dump. Run `node scripts/embed-syllabus.js` to build the corpus.');
+        return;
+    }
+    try {
+        const raw = JSON.parse(fs.readFileSync(SYLLABUS_EMBEDDINGS_FILE, 'utf8'));
+        // Pre-convert vectors to Float32Array for fast cosine, normalize once
+        const chunks = [];
+        const vectors = [];
+        for (const c of raw.chunks || []) {
+            if (!Array.isArray(c.vector) || c.vector.length !== 1536) continue;
+            const v = new Float32Array(c.vector);
+            // Normalize so cosine simplifies to a dot product
+            let norm = 0;
+            for (let i = 0; i < v.length; i++) norm += v[i] * v[i];
+            norm = Math.sqrt(norm);
+            if (norm > 0) for (let i = 0; i < v.length; i++) v[i] /= norm;
+            vectors.push(v);
+            chunks.push({
+                id: c.id, subjectId: c.subjectId, isJunior: !!c.isJunior,
+                module: c.module || null, heading: c.heading || null,
+                text: c.text || '', sourceFile: c.sourceFile || null
+            });
+        }
+        syllabusEmbeddings = { chunks, vectors, meta: raw._meta || null };
+        console.log(`🧩 RAG corpus loaded: ${chunks.length} chunks across ${new Set(chunks.map(c => c.subjectId)).size} subjects`);
+    } catch (e) {
+        console.error('Failed to load syllabus embeddings:', e.message);
+    }
+}
+loadSyllabusEmbeddings();
+
+// Embed a single query string using the same model the corpus was built with.
+// Caches recent queries (~200) so common exam-gen prompts skip the API call.
+const _queryEmbeddingCache = new Map();
+const _QUERY_EMBEDDING_CACHE_MAX = 200;
+async function embedQuery(text) {
+    if (!text || !config.openaiApiKey) return null;
+    const key = text.slice(0, 500);
+    if (_queryEmbeddingCache.has(key)) return _queryEmbeddingCache.get(key);
+    try {
+        const t0 = Date.now();
+        const res = await aiFetch('https://api.openai.com/v1/embeddings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.openaiApiKey}` },
+            body: JSON.stringify({ model: 'text-embedding-3-small', input: text.slice(0, 8000) }),
+            signal: AbortSignal.timeout(15000)
+        });
+        if (!res.ok) return null;
+        const data = await res.json();
+        const v = data?.data?.[0]?.embedding;
+        if (!Array.isArray(v) || v.length !== 1536) return null;
+        const arr = new Float32Array(v);
+        let norm = 0;
+        for (let i = 0; i < arr.length; i++) norm += arr[i] * arr[i];
+        norm = Math.sqrt(norm);
+        if (norm > 0) for (let i = 0; i < arr.length; i++) arr[i] /= norm;
+        // Log as 'embedding' bot for the analytics dashboard
+        logAiUsage({
+            botType: 'embedding', model: 'text-embedding-3-small',
+            usage: data.usage, latencyMs: Date.now() - t0
+        });
+        if (_queryEmbeddingCache.size >= _QUERY_EMBEDDING_CACHE_MAX) {
+            // Drop one arbitrary entry (oldest insertion order)
+            const firstKey = _queryEmbeddingCache.keys().next().value;
+            _queryEmbeddingCache.delete(firstKey);
+        }
+        _queryEmbeddingCache.set(key, arr);
+        return arr;
+    } catch (e) {
+        return null;
+    }
+}
+
+// Retrieve top-k chunks for a query, optionally filtered by subject/module.
+// Returns [] when the corpus isn't loaded — callers should fall through to the
+// existing full-syllabus dump. Cosine over normalized vectors = dot product.
+async function retrieveSyllabusChunks({ query, subjectId, modules, isJunior, k = 8 }) {
+    if (!syllabusEmbeddings.chunks.length || !query) return [];
+    const qv = await embedQuery(query);
+    if (!qv) return [];
+    const allChunks = syllabusEmbeddings.chunks;
+    const allVectors = syllabusEmbeddings.vectors;
+    const modSet = Array.isArray(modules) && modules.length ? new Set(modules.map(m => m.toLowerCase())) : null;
+
+    const scored = [];
+    for (let i = 0; i < allChunks.length; i++) {
+        const c = allChunks[i];
+        if (subjectId && c.subjectId !== subjectId) continue;
+        if (isJunior != null && !!c.isJunior !== !!isJunior) continue;
+        if (modSet && c.module) {
+            const m = c.module.toLowerCase();
+            let hit = false;
+            for (const want of modSet) {
+                if (m.includes(want) || want.includes(m)) { hit = true; break; }
+            }
+            if (!hit) continue;
+        }
+        const v = allVectors[i];
+        let dot = 0;
+        for (let j = 0; j < v.length; j++) dot += qv[j] * v[j];
+        scored.push({ chunk: c, score: dot });
+    }
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, k).map(s => ({ ...s.chunk, score: Math.round(s.score * 10000) / 10000 }));
+}
+
+// Format retrieved chunks into a system-prompt-friendly block. Stays compact
+// (~3-5k chars for k=8 instead of 15k for the full dump) so token cost drops.
+function formatRetrievedChunks(retrieved, subjectName) {
+    if (!retrieved || !retrieved.length) return '';
+    const blocks = retrieved.map((r, i) => {
+        const head = r.heading ? `[${r.heading}]` : `[Dot point ${i + 1}]`;
+        const modTag = r.module ? ` · Module: ${r.module}` : '';
+        return `${head}${modTag}\n${r.text}`;
+    });
+    return `\n\n=== ${subjectName.toUpperCase()} SYLLABUS — RELEVANT EXTRACTS (NSW NESA) ===\nThese are the dot-points most relevant to this request. Quote them exactly when possible. Do NOT introduce terms or formulas not present in these extracts.\n\n${blocks.join('\n\n---\n\n')}\n=== END EXTRACTS ===`;
+}
+
 // ==================== IRL LEARNING LOOP (Layer A: capture) ====================
 // Every AI response can be rated; every "mark seems off" complaint and every
 // teacher override is captured into a single feedback events JSONL. Items 7B/C
@@ -9870,12 +10007,35 @@ app.post('/api/exam/generate', express.json(), async (req, res) => {
     const subjectName = subjectMeta.name;
     const isJunior = subjectMeta.isJunior;
 
-    // Keep context lean for faster generation — only enough for style & accuracy.
-    // For multiple selected modules, each gets an EQUAL share of the syllabus
-    // budget so every module is grounded (and graded) to the same depth.
-    // Junior subjects have no NESA past papers or marking guidelines, so we
-    // skip those lookups entirely and rely on the syllabus alone.
-    const syllabusContent = getSyllabusContentMulti(subject, isJunior, moduleList, 15000);
+    // RAG retrieval: when the syllabus embedding corpus is loaded, retrieve
+    // the top-8 dot-points most relevant to this exam request instead of
+    // dumping the entire 15k-char module. Cuts input tokens ~70% AND fixes
+    // the "model invents terms not in the textbook" failure mode — the model
+    // only sees what's actually in the syllabus for these topics, so the
+    // path of least resistance is to quote NESA verbatim. Falls back to the
+    // existing full-dump path when no corpus is present.
+    let syllabusContent = null;
+    if (syllabusEmbeddings.chunks.length > 0) {
+        const ragQuery = `${subjectName} exam paper: ${moduleList.length ? moduleList.join(', ') : 'all modules'}. ${difficulty || ''} difficulty. ${durationHours}-hour paper, ${totalMarks} marks.`;
+        try {
+            const retrieved = await retrieveSyllabusChunks({
+                query: ragQuery, subjectId: subject, modules: moduleList,
+                isJunior, k: moduleList.length > 1 ? 12 : 8
+            });
+            if (retrieved.length > 0) {
+                contextPrompt += formatRetrievedChunks(retrieved, subjectName);
+                console.log(`🧩 RAG: retrieved ${retrieved.length} chunks for ${subjectName} exam (top score: ${retrieved[0].score})`);
+            } else {
+                // Corpus loaded but no hits — fall through to dump
+                syllabusContent = getSyllabusContentMulti(subject, isJunior, moduleList, 15000);
+            }
+        } catch (e) {
+            console.warn('[RAG] retrieval failed, falling back to syllabus dump:', e.message);
+            syllabusContent = getSyllabusContentMulti(subject, isJunior, moduleList, 15000);
+        }
+    } else {
+        syllabusContent = getSyllabusContentMulti(subject, isJunior, moduleList, 15000);
+    }
     if (syllabusContent) {
         const truncated = syllabusContent.substring(0, 15000);
         contextPrompt += `\n\n=== ${subjectName.toUpperCase()} SYLLABUS (key topics) ===\n${truncated}\n=== END SYLLABUS ===`;
