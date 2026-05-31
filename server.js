@@ -543,6 +543,48 @@ function logAiUsage({ userId, botType, model, usage, latencyMs, cached, error })
     }
 }
 
+// ==================== IRL LEARNING LOOP (Layer A: capture) ====================
+// Every AI response can be rated; every "mark seems off" complaint and every
+// teacher override is captured into a single feedback events JSONL. Items 7B/C
+// (golden eval, retrieval re-ranking, prompt A/B) read from this file.
+// Layer D (fine-tuning) is intentionally deferred — capture the data first.
+const FEEDBACK_DIR = path.join(DB_PATH, 'feedback');
+const GOLDEN_EVAL_DIR = path.join(DB_PATH, 'golden-eval');
+try { if (!fs.existsSync(FEEDBACK_DIR)) fs.mkdirSync(FEEDBACK_DIR, { recursive: true }); } catch (_) {}
+try { if (!fs.existsSync(GOLDEN_EVAL_DIR)) fs.mkdirSync(GOLDEN_EVAL_DIR, { recursive: true }); } catch (_) {}
+
+function logFeedbackEvent(event) {
+    try {
+        const today = _getToday();
+        const path_ = path.join(FEEDBACK_DIR, `${today}.jsonl`);
+        const row = {
+            ts: new Date().toISOString(),
+            eventType: event.eventType || 'unknown',
+            userId: event.userId || null,
+            botType: event.botType || null,
+            subject: event.subject || null,
+            module: event.module || null,
+            ...event
+        };
+        delete row.eventType;
+        row.eventType = event.eventType || 'unknown';   // keep at top for grep
+        fs.appendFileSync(path_, JSON.stringify(row) + '\n');
+    } catch (e) {
+        console.warn('[feedback] log failed:', e.message);
+    }
+}
+
+// Prompt A/B testing — deterministic variant pick by userId so the same user
+// always sees the same variant for a given experiment. Layer C in the plan.
+function pickPromptVariant(userId, experimentKey, variants) {
+    if (!variants || !variants.length) return null;
+    if (!userId) return variants[0];
+    const seed = `${experimentKey}|${userId}`;
+    let h = 0;
+    for (let i = 0; i < seed.length; i++) h = ((h << 5) - h + seed.charCodeAt(i)) | 0;
+    return variants[Math.abs(h) % variants.length];
+}
+
 // Drop-in for raw `fetch(url, init)` — pins the keepalive dispatcher so every
 // OpenAI HTTP call reuses TLS connections instead of paying a fresh handshake
 // each request. Used by call sites that still build their own request body
@@ -6300,6 +6342,358 @@ function requireOwner(req, res, next) {
     
     req.user = user;
     next();
+}
+
+// ==================== FEEDBACK ENDPOINTS (Layer A: capture) ====================
+// All write to data/feedback/<date>.jsonl. Best-effort — failures never block
+// the user-visible flow. Aggregation lives in /api/admin/analytics.
+
+// POST /api/feedback/thumbs — thumbs up/down on any AI response.
+// Body: { botType, subject?, module?, messageHash?, rating: 'up'|'down', reason? }
+app.post('/api/feedback/thumbs', requireAuth, express.json({ limit: '64kb' }), (req, res) => {
+    const { botType, subject, module, messageHash, rating, reason } = req.body || {};
+    if (rating !== 'up' && rating !== 'down') {
+        return res.status(400).json({ error: 'rating must be "up" or "down"' });
+    }
+    logFeedbackEvent({
+        eventType: 'thumbs',
+        userId: req.user.userId,
+        botType: String(botType || 'unknown').slice(0, 40),
+        subject: subject ? String(subject).slice(0, 80) : null,
+        module: module ? String(module).slice(0, 200) : null,
+        messageHash: messageHash ? String(messageHash).slice(0, 64) : null,
+        rating,
+        reason: reason ? String(reason).slice(0, 500) : null
+    });
+    res.json({ ok: true });
+});
+
+// POST /api/feedback/marker-off — "this mark looks wrong" on an exam result.
+// Body: { examId?, questionNumber?, awardedMark, expectedMark?, subject?, complaint? }
+app.post('/api/feedback/marker-off', requireAuth, express.json({ limit: '64kb' }), (req, res) => {
+    const { examId, questionNumber, awardedMark, expectedMark, subject, module, complaint, essay, markerOutput } = req.body || {};
+    logFeedbackEvent({
+        eventType: 'marker-off',
+        userId: req.user.userId,
+        botType: 'marker',
+        subject: subject ? String(subject).slice(0, 80) : null,
+        module: module ? String(module).slice(0, 200) : null,
+        examId: examId ? String(examId).slice(0, 64) : null,
+        questionNumber: typeof questionNumber === 'number' ? questionNumber : null,
+        awardedMark: typeof awardedMark === 'number' ? awardedMark : null,
+        expectedMark: typeof expectedMark === 'number' ? expectedMark : null,
+        complaint: complaint ? String(complaint).slice(0, 1000) : null,
+        // Optional — only if the client sends them; gives Layer D the training pair shape
+        essay: essay ? String(essay).slice(0, 8000) : null,
+        markerOutput: markerOutput ? String(markerOutput).slice(0, 8000) : null
+    });
+    res.json({ ok: true });
+});
+
+// POST /api/feedback/teacher-override — teacher edits an AI mark in Classroom
+// mode. Highest-quality training data in the whole system — captures the diff.
+// Body: { studentUserId, assignmentId, questionNumber?, aiMark, teacherMark, aiFeedback?, teacherFeedback?, essay? }
+app.post('/api/feedback/teacher-override', requireTeacher, express.json({ limit: '64kb' }), (req, res) => {
+    const { studentUserId, assignmentId, questionNumber, aiMark, teacherMark, aiFeedback, teacherFeedback, essay, subject, module } = req.body || {};
+    if (typeof teacherMark !== 'number') {
+        return res.status(400).json({ error: 'teacherMark (number) is required' });
+    }
+    logFeedbackEvent({
+        eventType: 'teacher-override',
+        userId: req.user.userId,
+        teacherUserId: req.user.userId,
+        studentUserId: studentUserId ? String(studentUserId).slice(0, 64) : null,
+        assignmentId: assignmentId ? String(assignmentId).slice(0, 64) : null,
+        questionNumber: typeof questionNumber === 'number' ? questionNumber : null,
+        botType: 'marker',
+        subject: subject ? String(subject).slice(0, 80) : null,
+        module: module ? String(module).slice(0, 200) : null,
+        aiMark: typeof aiMark === 'number' ? aiMark : null,
+        teacherMark,
+        markDelta: typeof aiMark === 'number' ? Math.round((teacherMark - aiMark) * 100) / 100 : null,
+        aiFeedback: aiFeedback ? String(aiFeedback).slice(0, 4000) : null,
+        teacherFeedback: teacherFeedback ? String(teacherFeedback).slice(0, 4000) : null,
+        essay: essay ? String(essay).slice(0, 8000) : null
+    });
+    res.json({ ok: true });
+});
+
+// POST /api/feedback/implicit — implicit signals captured from the client.
+// Examples: same-question re-ask within session, conversation continuation
+// (positive), exam-feedback-not-opened (negative). Body: { eventName, ... }
+app.post('/api/feedback/implicit', requireAuth, express.json({ limit: '32kb' }), (req, res) => {
+    const { eventName, botType, subject, module, ...rest } = req.body || {};
+    if (!eventName) return res.status(400).json({ error: 'eventName is required' });
+    logFeedbackEvent({
+        eventType: 'implicit',
+        userId: req.user.userId,
+        eventName: String(eventName).slice(0, 60),
+        botType: botType ? String(botType).slice(0, 40) : null,
+        subject: subject ? String(subject).slice(0, 80) : null,
+        module: module ? String(module).slice(0, 200) : null,
+        ...rest
+    });
+    res.json({ ok: true });
+});
+
+// GET /api/admin/feedback/summary — owner-only aggregate of the JSONL events
+// for the last N days. Used by the analytics dashboard (item 8). Best-effort
+// — silently returns zeros if the feedback directory is empty.
+app.get('/api/admin/feedback/summary', requireOwner, (req, res) => {
+    const days = Math.min(Math.max(parseInt(req.query.days, 10) || 14, 1), 90);
+    const summary = aggregateFeedback(days);
+    res.json(summary);
+});
+
+function aggregateFeedback(days) {
+    const out = {
+        rangeDays: days,
+        totalEvents: 0,
+        byBot: {},          // bot -> { thumbsUp, thumbsDown, rate, complaints, overrides }
+        bySubject: {},      // subject -> same shape
+        markerOverrides: { count: 0, totalDelta: 0, avgDelta: 0 },
+        complaints: []      // up to 50 most recent
+    };
+    if (!fs.existsSync(FEEDBACK_DIR)) return out;
+    const today = new Date();
+    for (let i = 0; i < days; i++) {
+        const d = new Date(today);
+        d.setUTCDate(d.getUTCDate() - i);
+        const dateKey = d.toISOString().split('T')[0];
+        const p = path.join(FEEDBACK_DIR, `${dateKey}.jsonl`);
+        if (!fs.existsSync(p)) continue;
+        let lines;
+        try { lines = fs.readFileSync(p, 'utf8').split('\n').filter(Boolean); }
+        catch (e) { continue; }
+        for (const line of lines) {
+            let row;
+            try { row = JSON.parse(line); } catch (e) { continue; }
+            out.totalEvents++;
+            const bot = row.botType || 'unknown';
+            const subj = row.subject || 'unknown';
+            if (!out.byBot[bot]) out.byBot[bot] = { thumbsUp: 0, thumbsDown: 0, rate: 0, complaints: 0, overrides: 0 };
+            if (!out.bySubject[subj]) out.bySubject[subj] = { thumbsUp: 0, thumbsDown: 0, rate: 0, complaints: 0, overrides: 0 };
+            if (row.eventType === 'thumbs') {
+                const key = row.rating === 'up' ? 'thumbsUp' : 'thumbsDown';
+                out.byBot[bot][key]++;
+                out.bySubject[subj][key]++;
+            } else if (row.eventType === 'marker-off') {
+                out.byBot[bot].complaints++;
+                out.bySubject[subj].complaints++;
+                if (out.complaints.length < 50 && row.complaint) {
+                    out.complaints.push({ ts: row.ts, subject: subj, complaint: row.complaint, delta: row.expectedMark != null && row.awardedMark != null ? row.expectedMark - row.awardedMark : null });
+                }
+            } else if (row.eventType === 'teacher-override') {
+                out.byBot[bot].overrides++;
+                out.bySubject[subj].overrides++;
+                out.markerOverrides.count++;
+                if (typeof row.markDelta === 'number') out.markerOverrides.totalDelta += Math.abs(row.markDelta);
+            }
+        }
+    }
+    // Compute rates
+    for (const stats of Object.values(out.byBot)) {
+        const total = stats.thumbsUp + stats.thumbsDown;
+        stats.rate = total > 0 ? Math.round((stats.thumbsUp / total) * 1000) / 10 : null;
+    }
+    for (const stats of Object.values(out.bySubject)) {
+        const total = stats.thumbsUp + stats.thumbsDown;
+        stats.rate = total > 0 ? Math.round((stats.thumbsUp / total) * 1000) / 10 : null;
+    }
+    if (out.markerOverrides.count > 0) {
+        out.markerOverrides.avgDelta = Math.round((out.markerOverrides.totalDelta / out.markerOverrides.count) * 100) / 100;
+    }
+    return out;
+}
+
+// ==================== AI USAGE & ANALYTICS DASHBOARD (item 8) ====================
+// Owner-only aggregation of the data/ai-usage/<date>.jsonl files. Powers the
+// admin analytics dashboard — spend by bot/user/model, p50/p95 latency,
+// cache hit rate over time.
+
+function aggregateAiUsage(days) {
+    const out = {
+        rangeDays: days,
+        totalCalls: 0,
+        totalCostAud: 0,
+        cacheHitRate: 0,
+        byBot:    {},   // bot -> { calls, costAud, p50Ms, p95Ms, cacheHitRate, errors }
+        byModel:  {},   // model -> { calls, costAud, promptTokens, completionTokens, cachedTokens }
+        bySubject: {},  // (when botType has subject context — currently unused; populated when call sites set it)
+        topUsers: [],   // top 10 by spend
+        daily:    [],   // [{date, calls, costAud, cacheHitRate, p95Ms}]
+        errors:   { count: 0, recent: [] }
+    };
+    if (!fs.existsSync(AI_USAGE_DIR)) return out;
+    const today = new Date();
+    const perBotLatencies = {};
+    const perUserCost = {};
+    let totalCached = 0;
+    let totalPromptTokens = 0;
+
+    for (let i = days - 1; i >= 0; i--) {
+        const d = new Date(today);
+        d.setUTCDate(d.getUTCDate() - i);
+        const dateKey = d.toISOString().split('T')[0];
+        const p = path.join(AI_USAGE_DIR, `${dateKey}.jsonl`);
+        const dayStat = { date: dateKey, calls: 0, costAud: 0, cachedTokens: 0, promptTokens: 0, p95Ms: 0 };
+        const dayLatencies = [];
+        if (fs.existsSync(p)) {
+            let lines;
+            try { lines = fs.readFileSync(p, 'utf8').split('\n').filter(Boolean); }
+            catch (e) { out.daily.push(dayStat); continue; }
+            for (const line of lines) {
+                let row;
+                try { row = JSON.parse(line); } catch (e) { continue; }
+                out.totalCalls++;
+                dayStat.calls++;
+                const cost = Number(row.costAud) || 0;
+                out.totalCostAud += cost;
+                dayStat.costAud += cost;
+                const bot = row.botType || 'unknown';
+                const model = row.model || 'unknown';
+                if (!out.byBot[bot]) out.byBot[bot] = { calls: 0, costAud: 0, latencies: [], cachedTokens: 0, promptTokens: 0, errors: 0 };
+                if (!out.byModel[model]) out.byModel[model] = { calls: 0, costAud: 0, promptTokens: 0, completionTokens: 0, cachedTokens: 0 };
+                out.byBot[bot].calls++;
+                out.byBot[bot].costAud += cost;
+                out.byBot[bot].latencies.push(row.latencyMs || 0);
+                out.byBot[bot].cachedTokens += row.cachedTokens || 0;
+                out.byBot[bot].promptTokens += row.promptTokens || 0;
+                if (row.error) out.byBot[bot].errors++;
+                out.byModel[model].calls++;
+                out.byModel[model].costAud += cost;
+                out.byModel[model].promptTokens += row.promptTokens || 0;
+                out.byModel[model].completionTokens += row.completionTokens || 0;
+                out.byModel[model].cachedTokens += row.cachedTokens || 0;
+                if (row.userId) perUserCost[row.userId] = (perUserCost[row.userId] || 0) + cost;
+                totalCached += row.cachedTokens || 0;
+                totalPromptTokens += row.promptTokens || 0;
+                dayStat.cachedTokens += row.cachedTokens || 0;
+                dayStat.promptTokens += row.promptTokens || 0;
+                dayLatencies.push(row.latencyMs || 0);
+                if (row.error && out.errors.recent.length < 20) {
+                    out.errors.count++;
+                    out.errors.recent.push({ ts: row.ts, botType: bot, model, error: row.error });
+                }
+            }
+        }
+        if (dayLatencies.length) {
+            dayLatencies.sort((a, b) => a - b);
+            dayStat.p95Ms = dayLatencies[Math.floor(dayLatencies.length * 0.95)] || 0;
+        }
+        dayStat.cacheHitRate = dayStat.promptTokens > 0 ? Math.round((dayStat.cachedTokens / dayStat.promptTokens) * 1000) / 10 : 0;
+        dayStat.costAud = Math.round(dayStat.costAud * 100) / 100;
+        out.daily.push(dayStat);
+    }
+
+    // Finalize per-bot stats
+    for (const stats of Object.values(out.byBot)) {
+        const lat = stats.latencies.sort((a, b) => a - b);
+        stats.p50Ms = lat.length ? lat[Math.floor(lat.length * 0.5)] : 0;
+        stats.p95Ms = lat.length ? lat[Math.floor(lat.length * 0.95)] : 0;
+        stats.p99Ms = lat.length ? lat[Math.floor(lat.length * 0.99)] : 0;
+        stats.cacheHitRate = stats.promptTokens > 0 ? Math.round((stats.cachedTokens / stats.promptTokens) * 1000) / 10 : 0;
+        stats.costAud = Math.round(stats.costAud * 100) / 100;
+        delete stats.latencies;
+        delete stats.cachedTokens;
+        delete stats.promptTokens;
+    }
+    for (const stats of Object.values(out.byModel)) {
+        stats.costAud = Math.round(stats.costAud * 100) / 100;
+    }
+
+    out.topUsers = Object.entries(perUserCost)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10)
+        .map(([userId, costAud]) => {
+            const u = db.users[userId];
+            return {
+                userId,
+                email: u?.email || '(unknown)',
+                role: u ? getUserRole(u.email) : 'unknown',
+                costAud: Math.round(costAud * 100) / 100
+            };
+        });
+    out.totalCostAud = Math.round(out.totalCostAud * 100) / 100;
+    out.cacheHitRate = totalPromptTokens > 0 ? Math.round((totalCached / totalPromptTokens) * 1000) / 10 : 0;
+    return out;
+}
+
+// GET /api/admin/ai-usage/summary?days=14 — owner-only AI spend + latency.
+app.get('/api/admin/ai-usage/summary', requireOwner, (req, res) => {
+    const days = Math.min(Math.max(parseInt(req.query.days, 10) || 14, 1), 90);
+    res.json(aggregateAiUsage(days));
+});
+
+// GET /api/admin/dashboard?days=14 — one-shot bundle for the dashboard page.
+// Combines AI usage + feedback + page-view analytics so the frontend renders
+// in a single round-trip.
+app.get('/api/admin/dashboard', requireOwner, (req, res) => {
+    const days = Math.min(Math.max(parseInt(req.query.days, 10) || 14, 1), 90);
+    res.json({
+        aiUsage: aggregateAiUsage(days),
+        feedback: aggregateFeedback(days),
+        generatedAt: new Date().toISOString()
+    });
+});
+
+// POST /api/admin/golden-eval/run — kick a golden-eval pass (item 7B). Reads
+// data/golden-eval/<subject>.jsonl files (each line: {essay, teacherMark,
+// teacherFeedback, subject, module}), runs the marker, and reports mark-band
+// agreement. Owner-only; intended for the weekly cron.
+app.post('/api/admin/golden-eval/run', requireOwner, express.json(), async (req, res) => {
+    const subject = req.body?.subject || null;
+    try {
+        const result = await runGoldenEval(subject);
+        res.json(result);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+async function runGoldenEval(subjectFilter) {
+    const out = { subjects: {}, totalEssays: 0, totalAgreed: 0, agreementRate: 0, ranAt: new Date().toISOString() };
+    if (!fs.existsSync(GOLDEN_EVAL_DIR)) return { ...out, note: 'No golden eval directory found. Create data/golden-eval/<subject>.jsonl with {essay, teacherMark, teacherFeedback, subject, module} per line.' };
+    const files = fs.readdirSync(GOLDEN_EVAL_DIR).filter(f => f.endsWith('.jsonl'));
+    for (const f of files) {
+        const subjectId = f.replace(/\.jsonl$/, '');
+        if (subjectFilter && subjectId !== subjectFilter) continue;
+        const lines = fs.readFileSync(path.join(GOLDEN_EVAL_DIR, f), 'utf8').split('\n').filter(Boolean);
+        const subjStats = { essays: 0, agreed: 0, avgMarkDelta: 0 };
+        let totalDelta = 0;
+        for (const line of lines) {
+            let row;
+            try { row = JSON.parse(line); } catch (e) { continue; }
+            if (!row.essay || typeof row.teacherMark !== 'number') continue;
+            // Each eval call mirrors a real marker call but uses gpt-5-mini for
+            // throughput. Bumps to flagship if requested via env.
+            const model = process.env.GOLDEN_EVAL_MODEL || 'gpt-5-mini';
+            const sys = `You are an HSC marker for ${subjectId}. Mark the student response strictly to the NESA marking guidelines. Reply ONLY with a JSON object {"mark": <number>, "feedback": "<one paragraph>"} — nothing else.`;
+            const usr = `Module: ${row.module || 'unspecified'}\n\nStudent essay:\n${row.essay}`;
+            try {
+                const reply = await callOpenAIChat({
+                    model, jsonMode: true, maxTokens: 800, temperature: 0,
+                    botType: 'golden-eval',
+                    messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }]
+                });
+                const parsed = parseJsonLoose(reply);
+                const aiMark = Number(parsed.mark);
+                if (Number.isFinite(aiMark)) {
+                    const delta = Math.abs(aiMark - row.teacherMark);
+                    totalDelta += delta;
+                    subjStats.essays++;
+                    if (delta <= 1) subjStats.agreed++;   // within 1 mark = "agreement"
+                }
+            } catch (e) { /* skip failed essays */ }
+        }
+        subjStats.avgMarkDelta = subjStats.essays > 0 ? Math.round((totalDelta / subjStats.essays) * 100) / 100 : 0;
+        subjStats.agreementRate = subjStats.essays > 0 ? Math.round((subjStats.agreed / subjStats.essays) * 1000) / 10 : 0;
+        out.subjects[subjectId] = subjStats;
+        out.totalEssays += subjStats.essays;
+        out.totalAgreed += subjStats.agreed;
+    }
+    out.agreementRate = out.totalEssays > 0 ? Math.round((out.totalAgreed / out.totalEssays) * 1000) / 10 : 0;
+    return out;
 }
 
 /**
